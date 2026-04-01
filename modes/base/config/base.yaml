@@ -1,9 +1,41 @@
 #config_version=6
-
-# Base mode that starts at the beginning of each ball
-# and stops at the end of each ball.
-
+#base mode config file
 mode:
-  start_events: ball_starting
-  stop_events: ball_will_end
+  start_events: ball_started
   priority: 100
+
+
+slide_player:
+  mode_base_started:
+    base:
+      action: play
+
+    attract:
+      action: remove
+
+timers:
+  timer_up_post_hold:
+    start_value: 0
+    end_value: 6
+    tick_interval: 1s
+    control_events:
+      - action: restart
+        event: enable_up_post_event
+        
+light_player:
+  mode_base_started:
+    gi:
+      color: E0E0E0        
+  ramp_raise:
+    gi:
+      color: F0F000        
+  ramp_lower:
+    gi:
+      color: F00000        
+  s_upper_exit_left_opto_active:
+    gi:
+      color: E0E0E0        
+  s_upper_exit_right_opto_active:
+    gi:
+      color: E0E0E0        
+      

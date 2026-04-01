@@ -1,0 +1,290 @@
+#config_version=6
+
+#Can name these to match left, right, center, or however you want. The switch name defined here
+#Will be used in any modes where the switches are activated, etc.
+
+switches:
+    
+#cabinet - flipper switches, etc.
+  s_left_flipper:
+  # 0F
+    number: cab-15
+    debounce: quick            # will use 2ms / 2ms
+    tags: left_flipper	
+  s_right_flipper:
+  # 16
+    number: cab-22
+    debounce: quick            # will use 2ms / 2ms
+    tags: right_flipper
+  s_right_flipper_upper:
+  # 17
+    number: cab-23
+    debounce: quick            # will use 2ms / 2ms
+    tags: right_flipper_upper
+  s_tilt:
+  # 0D
+    number: cab-13
+    tags: tilt_warning
+  s_startbutton:
+  # 0E
+    number: cab-14
+    tags: start
+#  coin_sw:
+#    number: cab-3
+#    tags: coin
+
+
+#upper 3208
+
+# not used
+#  # 18
+#    number: 3208-0
+
+# leaf next to !
+  s_leaf_next_to_1:
+  # 19
+    number: 3208-1
+
+# not used
+  s_diverter_open:
+  # 1A
+    number: 3208-2
+
+  s_web_target_top:
+  # 1B
+    number: 3208-3
+  s_saucer_1:
+  # 1E
+    number: 3208-6
+    tags: saucer_1
+    platform_settings:    
+        debounce_open: 30
+        debounce_close: 30
+  s_saucer_2:
+  # 1D  
+    number: 3208-5
+    tags: saucer_2
+    platform_settings:    
+        debounce_open: 30
+        debounce_close: 30
+  s_saucer_3:
+  # 1C  
+    number: 3208-4
+    tags: saucer_3
+    platform_settings:    
+        debounce_open: 30
+        debounce_close: 30
+#VUK switch         
+  s_vuk_switch:
+  # 1F
+    number: 3208-7
+
+#  not used:
+# 20
+#    number: 3208-8
+  s_upper_entrance_opto:
+  # 23
+    number: 3208-11
+    type: NC
+  s_upper_exit_left_opto:
+  # 21
+    number: 3208-9
+    type: NC
+  s_upper_exit_right_opto:
+  # 24
+    number: 3208-12
+    type: NC
+  s_trispinner_opto:
+  # 22
+    number: 3208-10
+    type: NC
+
+
+  s_upper_target_left:
+  # 25
+    number: 3208-13
+  s_upper_target_center:
+  # 26
+    number: 3208-14
+  s_upper_target_right:
+  # 27
+    number: 3208-15
+
+# 28  not used?
+# 29  not used?
+
+  s_right_drops_top_rubber:
+# 2A 
+    number: 3208-18
+
+# 2B  not used?
+
+
+  s_star_rollover:
+  # 2E
+    number: 3208-22
+  s_inlane_a:
+  # 2D
+    number: 3208-21
+  s_inlane_b:
+  # 2C
+    number: 3208-20
+  s_above_star:
+  # 2F
+    number: 3208-23
+    
+  s_web_spinner:
+  # 30
+    number: 3208-24
+  s_above_spinner:
+  # 31
+    number: 3208-25
+  s_inlane_m_l:
+  # 32
+    number: 3208-26
+  s_web_target_left:
+  # 33
+    number: 3208-27
+# 34 not used?
+  s_EOS_l_upper:
+  # 35
+    number: 3208-29
+    type: NC
+  s_inlane_l:
+  # 36
+    number: 3208-30
+  s_outlane_l:
+  # 37
+    number: 3208-31
+
+
+
+#mid playfield  1616mid
+  s_left_drops_rubber:
+  # 3C
+    number: 1616mid-4
+  s_left_drops_1:
+  # 3D
+    number: 1616mid-5
+  s_left_drops_2:
+  # 3E
+    number: 1616mid-6
+  s_left_drops_3:
+  # 3F
+    number: 1616mid-7
+  s_left_drops_top_left_rubber:
+  # 3B
+    number: 1616mid-3
+  s_left_drops_top_right_rubber:
+  # 3A
+    number: 1616mid-2
+  s_pop_right:
+  # 39
+    number: 1616mid-1
+  s_pop_left:
+  # 38
+    number: 1616mid-0
+  s_right_drops_rubber:
+  # 42
+    number: 1616mid-10
+  s_right_drops_1:
+  # 47
+    number: 1616mid-15
+  s_right_drops_2:
+  # 46
+    number: 1616mid-14
+  s_right_drops_3:
+  # 45
+    number: 1616mid-13
+  s_right_drops_4:
+  # 44
+    number: 1616mid-12
+  s_right_drops_5:
+  # 43
+    number: 1616mid-11
+  s_inlane_m_r:
+  # 40
+    number: 1616mid-8
+  s_mid_right_rubber:
+  # 41
+    number: 1616mid-9
+
+
+#lower playfield  1616bot
+#trough, shooterlane
+  s_plunger:
+  # 4F
+    number: 1616bot-7
+    platform_settings:
+      debounce_open: 5ms
+      debounce_close: 20ms
+  s_trough_jam:
+  # 4E
+    number: 1616bot-6
+    type: NC
+  s_trough6:
+  # 4D
+    number: 1616bot-5
+    type: NC
+  s_trough5:
+  # 4C
+    number: 1616bot-4
+    type: NC
+  s_trough4:
+  # 4B
+    number: 1616bot-3
+    type: NC
+  s_trough3:
+  # 4A
+    number: 1616bot-2
+    type: NC
+  s_trough2:
+  # 49
+    number: 1616bot-1
+    type: NC
+  s_trough1:
+  # 48
+    number: 1616bot-0
+    type: NC
+
+#  unused_sw:
+#    number: 1616bot-8
+
+  s_outlane_r:
+  # 51
+    number: 1616bot-9
+  s_inlane_r:
+  # 52
+    number: 1616bot-10
+  s_sling_r:
+  # 53
+    number: 1616bot-11
+    tags: sling, slingr
+    platform_settings:    
+        debounce_open: 10
+        debounce_close: 10
+        
+#  s_EOS_r_m:
+# 54
+#    number: 1616bot-12
+#  s_EOS_r_l:
+# 55
+#    number: 1616bot-13
+#  s_EOS_l_l:
+# 56
+#    number: 1616bot-14
+
+  s_sling_l:
+  # 57
+    number: 1616bot-15
+    tags: sling, slingl
+    platform_settings:    
+        debounce_open: 10
+        debounce_close: 10      
+ 
+
+
+
+
+
+

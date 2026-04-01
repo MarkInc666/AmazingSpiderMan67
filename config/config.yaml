@@ -1,12 +1,290 @@
 #config_version=6
+hardware:
+    platform: fast 
+fast:
+  net:
+    controller: neuron
+    io_loop:
+      cab:
+        model: FP-I/O-0024
+        order: 1
+      3208:
+        model: FP-I/O-3208
+        order: 2
+      1616mid:
+        model: FP-I/O-1616
+        order: 3
+      1616bot:
+        model: FP-I/O-1616
+        order: 4
+    port: auto
+    baud: 921600
+    debug: false
+    watchdog: 1s
+    default_quick_debounce_open: 2ms
+    default_quick_debounce_close: 2ms
+    default_normal_debounce_open: 4ms
+    default_normal_debounce_close: 4ms
+  exp:
+    boards:
+      playfield:
+        model: FP-EXP-0071
+        led_fade_time: 100ms
+    port: auto
+    baud: 921600
+    debug: False	
 
-## MPF Main Machine Config File
-#
-# This file defines your system-wide properties like switches,
-# drivers, ball devices, hardware platforms, and more. You can
-# include everything here, or create sub-config files to be
-# imported and merged with this one.
+
+#Window is your total size for your displays, below is setup for use with one 1080p monitor.
+
+#window:
+#  width: 1920
+#  height: 1080
+#  title: MPF All Display Window
+#  fullscreen: false
+#  resizable: true
+#  borderless: true
+#  exit_on_escape: true
+#  no_window: false
+#  show_cursor: no
+
+
+#displays:
+
+#  window:
+#    width: 1920
+#    height: 1080
+#  display1:
+#    width: 1920
+#    height: 1080
+
+#slides:
+ # slide_layout:
+ #   target: window
+ #   background_color: white #white for test
+ #   widgets:
+ #     - type: display
+ #       source_display: display1
+ #       width: 1920
+ #       height: 1080
+ #       x: right
+ #       anchor_x: right
+
+
+#slide_player:
+#  mc_ready:
+#    slide_layout:
+#      target: window
+
+
+
+#Game Config
+
+config:
+  - lights.yaml
+  - coils.yaml
+  - switches.yaml
+  - devices.yaml
+  - sounds.yaml
+  - images.yaml
+  - videos.yaml
+
+
+playfields:
+  #Define your playfield
+  playfield:    
+    default_source_device: bd_plunger
+    tags: default
+
+machine:
+  balls_installed: 3
+
+game:
+  balls_per_game: 3
+  max_players: 4
 
 modes:
   - attract
   - base
+  - service
+
+
+
+event_player:
+#  s_right_flipper_active: right_full
+#  s_right_flipper_inactive: right_rest
+  ball_starting:
+    - cmd_flippers_enable
+    - cmd_autofire_coils_enable
+    - cmd_drop_targets_reset
+  ball_ending:
+    - cmd_flippers_disable
+    - cmd_autofire_coils_disable
+    - timer_timer_up_post_hold_complete
+  tilt:
+    - cmd_flippers_disable
+    - cmd_autofire_coils_disable
+  slam_tilt:
+    - cmd_flippers_disable
+    - cmd_autofire_coils_disable
+
+  s_upper_exit_left_opto_active:
+    - enable_up_post_event
+
+
+# s_diverter_open state?
+
+  s_upper_entrance_opto_active:
+    - diverter_close
+    - ramp_raise    
+    
+  s_saucer_1_active{device.switches.s_diverter_open.state == 1}: 
+    - diverter_open1
+    - ramp_lower
+  s_saucer_2_active{device.switches.s_diverter_open.state == 1}: 
+    - diverter_open2
+    - ramp_lower    
+  s_saucer_3_active{device.switches.s_diverter_open.state == 1}: 
+    - diverter_open3
+    - ramp_lower    
+    
+  s_right_drops_top_rubber_active{device.switches.s_diverter_open.state == 1}: 
+    - diverter_open  
+    - ramp_lower    
+
+  s_vuk_switch_active:
+    - up_kick|2s
+    
+    
+show_player:
+  s_outlane_l_active:
+    led_on_show:
+      loops: 0
+      show_tokens:
+        led: l_left_outlane
+        col: f0f0f0
+      key: l_left_outlane_show
+  
+  s_inlane_l_active:  
+    led_on_show:
+      loops: 0    
+      show_tokens:
+        led: l_left_inlane
+        col: f0f0f0        
+      key: l_left_inlane_show        
+
+  s_outlane_r_active:
+    led_on_show:
+      loops: 0    
+      show_tokens:
+        led: l_right_outlane
+        col: f0f0f0        
+      key: l_right_outlane_show
+  
+  s_inlane_r_active:  
+    led_on_show:
+      loops: 0
+      show_tokens:
+        led: l_right_inlane
+        col: f0f0f0        
+      key: l_right_inlane_show        
+  
+  s_upper_target_left_active:
+    led_on_show:
+      loops: 0
+      show_tokens:
+        led: l_upper_left
+        col: f000f0        
+      key: l_upper_left_show        
+
+  s_upper_target_center_active:
+    led_on_show:
+      loops: 0
+      show_tokens:
+        led: l_upper_middle
+        col: f000f0        
+      key: l_upper_middle_show        
+  
+  s_upper_target_right_active:
+    led_on_show:
+      loops: 0
+      show_tokens:
+        led: l_upper_right
+        col: f000f0        
+      key: l_upper_right_show        
+  
+    
+
+    
+
+coil_player:
+  enable_up_post_event:
+    c_up_post:
+      action: enable    
+      
+  timer_timer_up_post_hold_complete:
+    c_up_post:
+      action: disable
+
+  mode_base_stopping:
+    c_up_post:
+      action: disable
+
+  up_kick:
+    c_vuk_to_upper:
+      action: pulse
+    
+  diverter_open:    
+    c_diverter_open_close:
+      action: pulse
+      pulse_ms: 160
+
+  diverter_open1:    
+    c_diverter_open_close:
+      action: pulse
+      pulse_ms: 180
+
+  diverter_open2:    
+    c_diverter_open_close:
+      action: pulse
+      pulse_ms: 200
+
+  diverter_open3:    
+    c_diverter_open_close:
+      action: pulse
+      pulse_ms: 220
+
+  diverter_open4:    
+    c_diverter_open_close:
+      action: pulse
+      pulse_ms: 200
+
+
+
+
+
+  diverter_close:    
+    c_diverter_open_close:
+      action: pulse
+      pulse_ms: 80    
+
+
+
+ 
+sequences:
+  reset_left_bank_after_hit:
+    events:
+      - drop_target_bank_dt_bank_left_down
+      - s_web_target_left_active
+    reset_on_complete: true
+    disable_on_complete: false
+    events_when_complete: drop_target_bank_dt_bank_1eft_reset
+  
+  reset_right_bank_after_hit:
+    events:
+      - drop_target_bank_dt_bank_right_down
+      - s_web_target_top_active
+    reset_on_complete: true
+    disable_on_complete: false
+    events_when_complete: drop_target_bank_dt_bank_right_reset
+

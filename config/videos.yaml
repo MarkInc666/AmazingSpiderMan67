@@ -1,0 +1,8 @@
+#config_version=6
+
+videos: 
+
+  voxintro:
+    width: 1920
+    height: 1080
+    file: voxintro.mp4

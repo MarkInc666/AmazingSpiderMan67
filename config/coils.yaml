@@ -1,0 +1,197 @@
+#config_version=6
+
+coils:
+#Board 1616bot
+
+# Trough
+  c_trough_eject:
+  # 21
+    number: 1616bot-1
+    default_pulse_ms: 16
+
+#Plunger
+  c_auto_plunger:
+  # 20
+    number: 1616bot-0
+    default_pulse_ms: 15
+
+#Slings
+  c_right_sling:
+  # 22
+    number: 1616bot-2
+    default_pulse_ms: 15
+    default_pulse_power: 0.6
+    
+  c_left_sling:
+  # 23
+    number: 1616bot-3
+    default_pulse_ms: 15
+    default_pulse_power: 0.6
+# 4 ?
+# 5 ?
+# 6 ?
+# 7 ?
+
+# lower playfield Flippers
+  c_flipper_right_mid_full:
+    number: 1616bot-8
+    default_pulse_ms: 24
+  c_flipper_right_mid_hold:
+    number: 1616bot-9
+    default_hold_power: 1.0
+    allow_enable: true
+
+  c_flipper_right_lower_full:
+    number: 1616bot-10
+    default_pulse_ms: 24
+  c_flipper_right_lower_hold:
+    number: 1616bot-11
+    default_hold_power: 1.0
+    allow_enable: true
+
+  c_flipper_left_lower_full:
+    number: 1616bot-12
+    default_pulse_ms: 24
+  c_flipper_left_lower_hold:
+    number: 1616bot-13
+    default_hold_power: 1.0
+    allow_enable: true
+
+  c_flipper_left_upper_full:
+    number: 1616bot-14
+    default_pulse_ms: 24
+  c_flipper_left_upper_hold:
+    number: 1616bot-15
+    default_hold_power: 1.0
+    allow_enable: true
+
+
+#Board 1616Mid
+#left drops reset, drop 1,2,3
+#right drops reset, drop 1,2,3,4,5
+  c_pop_left:
+  # 15
+    number: 1616mid-5
+    default_pulse_ms: 12
+    default_pulse_power: 0.6
+  c_pop_right:
+  # 14
+    number: 1616mid-4
+    default_pulse_ms: 12
+    default_pulse_power: 0.6
+  c_left_bank_reset:
+  # 13
+    number: 1616mid-3
+    default_pulse_ms: 40
+    default_pulse_power: 0.75
+  c_left_bank_drop_1:
+  # 10
+    number: 1616mid-0
+  c_left_bank_drop_2:
+  # 11
+    number: 1616mid-1
+  c_left_bank_drop_3:
+  # 12
+    number: 1616mid-2
+
+# to move/rewire to 1616 from 3208 if diverter latch needed
+#  c_up_post:
+#  # 16
+#    number: 1616mid-6
+#    default_hold_power: 0.375
+#    max_hold_power: 0.375
+#    default_pulse_ms: 14
+
+# 17 not used 
+
+  c_right_bank_reset:
+  # 18
+    number: 1616mid-8
+    default_pulse_ms: 30
+    default_pulse_power: 0.75
+
+  c_right_bank_drop_1:
+  # 19
+    number: 1616mid-9
+  c_right_bank_drop_2:
+  # 1A
+    number: 1616mid-10
+  c_right_bank_drop_3:
+  # 1B
+    number: 1616mid-11
+  c_right_bank_drop_4:
+  # 1C
+    number: 1616mid-12
+  c_right_bank_drop_5:
+  # 1D
+    number: 1616mid-13
+# 1E not used
+# 1F not used
+
+
+
+#Board 3208
+#upper playfield flipper 
+  c_flipper_right_upper_full:
+  # 8
+    number: 3208-0
+    default_pulse_ms: 30
+  c_flipper_right_upper_hold:
+  # 9
+    number: 3208-1
+    default_hold_power: 1.0
+    allow_enable: true
+
+  c_saucer_1:
+  # A
+    number: 3208-4
+    default_pulse_ms: 30
+    default_pulse_power: 0.80    
+  c_saucer_2:
+  # B
+    number: 3208-3
+    default_pulse_ms: 30
+    default_pulse_power: 0.80    
+  c_saucer_3:
+  # C
+    number: 3208-2
+    default_pulse_ms: 30    
+    default_pulse_power: 0.80    
+  
+  c_diverter_open_close:  
+  # E  - diverter open/close
+    number: 3208-5
+    default_pulse_ms: 200    
+    default_pulse_power: 1.0
+    
+  c_vuk_to_upper:
+  # D  - VUK to upper
+    number: 3208-6
+    default_pulse_ms: 25
+    default_pulse_power: 0.50        
+    
+  c_up_post:
+  # F
+    number: 3208-7
+    default_hold_power: 0.375
+    max_hold_power: 0.375
+    default_pulse_ms: 14
+
+    
+autofire_coils:
+
+  slingshot_left:
+    coil: c_left_sling
+    switch: s_sling_l
+
+  slingshot_right:
+    coil: c_right_sling
+    switch: s_sling_r
+
+  pop_left:
+    coil: c_pop_left
+    switch: s_pop_left
+
+  pop_right:
+    coil: c_pop_right
+    switch: s_pop_right

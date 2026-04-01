@@ -1,10 +1,55 @@
 #config_version=6
+#attract mode config file
 
-# Attract mode that starts when the machine boots up, stops
-# whenever a game is started, and re-starts after the game ends.
+mode_settings:
+  selectable_items:
+    - title
+    - credits
+    - last_scores_1p{machine.player1_score and not machine.player2_score}
+    - last_scores_2p{machine.player2_score and not machine.player3_score}
+    - last_scores_3p{machine.player3_score and not machine.player4_score}
+    - last_scores_4p{machine.player4_score}
+    - mpf_logo
+  next_item_events: s_right_flipper_active, timer_attract_carousel_timer_complete
+  previous_item_events: s_left_flipper_active
+  
 
+timers:
+  attract_carousel_timer:
+    end_value: 1
+    tick_interval: 5s
+    start_running: true
+    control_events:
+      - event: carousel_item_highlighted
+        action: restart
+      - event: flipper_cradle
+        action: stop
+      - event: flipper_cradle_release
+        action: restart    
+
+show_player:
+   mode_attract_started: 
+     attract_show:
+       show:  testlights
+       speed: 1
+    
 slide_player:
   mode_attract_started: attract
+
+  mode_attract_stopping:
+    attract:
+      action: remove
+
+#slides:
+#  attract:
+#    widgets:
+#      - type: text
+#        text: "Press START"
+#        style: large
+#      - type: text
+#        text: "Mission Pinball Framework"
+#        y: bottom
+#        style: small
 
 sound_player:
   mode_attract_started: 

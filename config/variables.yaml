@@ -1,0 +1,9 @@
+#config_version=6
+
+#You can use variables to define different states and how they react. Please visit https://docs.missionpinball.org/en/latest/machine_vars/index.html
+
+#machine_vars:
+  #diverter_state:
+    #initial_value: 0
+    #persist: false
+    #value_type: int

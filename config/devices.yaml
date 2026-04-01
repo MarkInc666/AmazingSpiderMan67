@@ -1,0 +1,142 @@
+#config_version=6
+
+ball_devices:
+  bd_trough:
+    ball_switches: s_trough1, s_trough2, s_trough3, s_trough4, s_trough5, s_trough6, s_trough_jam
+    eject_coil: c_trough_eject
+    tags: trough, home, drain
+    jam_switch: s_trough_jam
+    eject_coil_jam_pulse: 15ms
+    debug: true
+    eject_targets: bd_plunger
+    eject_timeouts: 3s
+  bd_plunger:
+    ball_switches: s_plunger
+    mechanical_eject: true
+    player_controlled_eject_event: s_launch_button_inactive
+    eject_timeouts: 3s
+
+  bd_saucer1:
+    ball_switches: s_saucer_1
+    eject_coil: c_saucer_1
+    eject_timeouts: 1s
+    
+  bd_saucer2:
+    ball_switches: s_saucer_2
+    eject_coil: c_saucer_2
+    eject_timeouts: 1s
+
+  bd_saucer3:
+    ball_switches: s_saucer_3
+    eject_coil: c_saucer_3
+    eject_timeouts: 1s
+
+
+
+flippers:
+  left_upper_flipper:
+    main_coil: c_flipper_left_upper_full
+    hold_coil: c_flipper_left_upper_hold
+    activation_switch: s_left_flipper
+    enable_events: ball_started
+    disable_events: ball_will_end
+    
+  left_lower_flipper:
+    main_coil: c_flipper_left_lower_full
+    hold_coil: c_flipper_left_lower_hold
+    activation_switch: s_left_flipper
+    enable_events: ball_started
+    disable_events: ball_will_end
+
+  right_lower_flipper:
+    main_coil: c_flipper_right_lower_full
+    hold_coil: c_flipper_right_lower_hold
+    activation_switch: s_right_flipper
+    enable_events: ball_started
+    disable_events: ball_will_end
+
+  right_mid_flipper:
+    main_coil: c_flipper_right_mid_full
+    hold_coil: c_flipper_right_mid_hold
+    activation_switch: s_right_flipper_upper
+    enable_events: ball_started
+    disable_events: ball_will_end
+
+  right_upper_flipper:
+    main_coil: c_flipper_right_upper_full
+    hold_coil: c_flipper_right_upper_hold
+    activation_switch: s_right_flipper_upper
+    enable_events: ball_started
+    disable_events: ball_will_end
+
+
+
+
+drop_target_banks:
+  dt_bank_left:
+    drop_targets: dt_left_1, dt_left_2, dt_left_3
+    reset_coil: c_left_bank_reset         # shared coil raises all targets
+    reset_coil_max_wait_ms: 150    
+    reset_events:
+           machine_reset_phase_3: 100ms    
+           ball_starting: 100ms   
+           drop_target_bank_dt_bank_1eft_reset: 100ms
+    label: "3-Bank Drop Targets"
+
+  dt_bank_right:
+    drop_targets: dt_right_1, dt_right_2, dt_right_3, dt_right_4, dt_right_5
+    reset_coil: c_right_bank_reset         # shared coil raises all targets
+    reset_coil_max_wait_ms: 150    
+    reset_events:
+           machine_reset_phase_3: 200ms    
+           ball_starting: 200ms  
+           drop_target_bank_dt_bank_right_reset: 100ms
+    label: "5-Bank Drop Targets"
+
+
+
+# -------------------------
+# Individual Drop Targets
+# -------------------------
+drop_targets:
+  dt_left_1:
+    switch: s_left_drops_1
+    knockdown_coil: c_left_bank_drop_1
+    label: "Left Bank Drop Target 1"
+
+  dt_left_2:
+    switch: s_left_drops_2
+    knockdown_coil: c_left_bank_drop_2
+    label: "Left Bank Drop Target 2"
+
+  dt_left_3:
+    switch: s_left_drops_3
+    knockdown_coil: c_left_bank_drop_3
+    label: "Left Bank Drop Target 3"
+
+
+  dt_right_1:
+    switch: s_right_drops_1
+    knockdown_coil: c_right_bank_drop_1
+    label: "Right Bank Drop Target 1"
+
+  dt_right_2:
+    switch: s_right_drops_2
+    knockdown_coil: c_right_bank_drop_2
+    label: "Right Bank Drop Target 2"
+
+  dt_right_3:
+    switch: s_right_drops_3
+    knockdown_coil: c_right_bank_drop_3
+    label: "Right Bank Drop Target 3"
+
+  dt_right_4:
+    switch: s_right_drops_4
+    knockdown_coil: c_right_bank_drop_4
+    label: "Right Bank Drop Target 4"
+
+  dt_right_5:
+    switch: s_right_drops_5
+    knockdown_coil: c_right_bank_drop_5
+    label: "Right Bank Drop Target 5"
+
