@@ -34,6 +34,15 @@ fast:
     baud: 921600
     debug: False	
 
+virtual_platform_start_active_switches:
+  - s_trough1
+  - s_trough2
+  - s_trough3
+  - s_trough4
+  - s_trough5
+  - s_trough6
+
+
 
 #Window is your total size for your displays, below is setup for use with one 1080p monitor.
 
@@ -106,6 +115,7 @@ game:
 modes:
   - attract
   - base
+  - bumpers
   - service
 
 

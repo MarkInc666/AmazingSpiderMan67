@@ -4,6 +4,13 @@ mode:
   start_events: ball_started
   priority: 100
 
+event_player:
+  mode_base_started:
+    - start_mode_bumpers
+
+  mode_base_will_stop:
+    - stop_mode_bumpers
+
 
 slide_player:
   mode_base_started:
