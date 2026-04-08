@@ -1,0 +1,37 @@
+# config_version=6
+mode:
+  start_events: start_mode_hurryup
+  stop_events: stop_mode_hurryup
+  #timer_hurryup_timer_complete, hurryup_shot_hit
+  priority: 1000
+
+event_player:
+  timer_hurryup_timer_complete: stop_mode_hurryup
+  hurryup_hit: stop_mode_hurryup
+  timer_hurryup_timer_tick:
+    hurryup_value:
+      current_hurryp:
+        type: int
+        value: 100_000 - ticks * 2_000
+
+shots:
+  hurryup:
+    switch: s_inlane_r
+
+variable_player:
+  hurryup_hit:
+    score: (100_000 - (device.timers.hurryup_timer.ticks * 2_000))
+
+slide_player:
+  mode_hurryup_started: 
+    slide: hurryup
+
+timers:
+  hurryup_timer:
+    end_value: 25
+    start_running: true
+    direction: up
+    tick_interval: 200ms
+
+  
+

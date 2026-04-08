@@ -7,9 +7,16 @@ mode:
 event_player:
   mode_base_started:
     - start_mode_bumpers
-
   mode_base_will_stop:
     - stop_mode_bumpers
+  upper_entrance_hit: start_mode_hurryup
+
+
+shots:
+  upper_entrance:
+    switches: s_upper_entrance_opt
+    
+  
 
 
 slide_player:
