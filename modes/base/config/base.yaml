@@ -14,16 +14,13 @@ event_player:
 
 shots:
   upper_entrance:
-    switches: s_upper_entrance_opt
-    
-  
+    switches: s_upper_entrance_opto
 
 
 slide_player:
   mode_base_started:
     base:
       action: play
-
     attract:
       action: remove
 
