@@ -1,0 +1,96 @@
+Major Recurring / Named Villains
+These are the ones that matter most (multiple appearances or well-defined characters):
+
+Doctor Octopus
+Green Goblin
+Vulture
+Electro
+Sandman
+Rhino
+Scorpion
+Mysterio
+Kingpin
+Lizard
+
+
+🧪 Named One-Off / Series-Specific Villains
+These show up once or are unique to the show:
+
+Parafino
+Dr. Noah Boddy
+Dr. Von Schlick
+Fakir
+Skyboy (not a villain but tied to an episode conflict)
+Trubble
+Dr. Magneto
+
+
+🎭 Disguise / Identity-Based Antagonists
+
+These are recurring types rather than single named characters:
+
+Impostor Spider-Men
+Masters of disguise
+Shape-shifting criminals
+Political impersonators
+Stage magician criminals
+
+
+🤖 Tech / Science-Based Threats
+
+Very common in Seasons 2–3:
+
+Giant humanoid robot
+Freezing-tech scientist
+Slippery chemical scientist
+Rogue inventors / experimental scientists
+Mind-control device users
+🦅 Animal / Creature / Experimental Threats
+Flying creature (“Winged Thing”)
+Trained bird armies (Vulture episodes)
+Engineered or ambiguous creatures
+
+
+🧠 Abstract / Late-Series (Season 3) Antagonists
+
+This is where the show gets weird:
+
+Fear-based criminals
+Illusionist “sorcerers”
+Hidden masterminds
+Cosmic entity
+Extra-dimensional beings
+
+
+🔫 Generic Criminal Groups
+
+Used heavily throughout:
+
+Crime syndicates
+Jewel thieves
+Airborne smugglers
+Organized disguise gangs
+Multi-villain team-ups
+Master planners (heist strategists)
+
+
+⚠️ Special Case
+J. Jonah Jameson
+Not a villain normally, but acts as an antagonist in one episode due to obsession with capturing Spider-Man.
+
+
+🧠 Straight insight (this matters)
+
+If you’re analyzing this (especially for data or patterns):
+
+Season 1 → Character-driven villains (classic rogues gallery)
+Season 2 → Mixed (half real villains, half concepts)
+Season 3 → Mostly abstract threats, not true “villains”
+
+👉 Translation:
+If you're building a clean villain table, split it like this:
+
+canonical_villains (Goblin, Ock, etc.)
+episode_specific_villains (Parafino, Fakir…)
+generic_antagonists (syndicates, impostors…)
+abstract_entities (cosmic, dimensional…)

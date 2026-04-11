@@ -1,0 +1,313 @@
+CORE PINBALL VILLAINS (1967 SERIES ONLY)
+
+These are your main mode anchors — the ones that can carry full gameplay modes.
+
+🧠 Doctor Octopus
+
+Best use: control / capture mode
+
+Multiple appearances in Season 1 + Season 3
+Mechanical arms = perfect for shot locking or staged multiball
+Mode idea: “Tentacle Lockdown”
+Certain shots get “grabbed” (locked out)
+Player must free lanes to continue scoring
+🧪 Green Goblin
+
+Best use: chaos / risk mode
+
+Psychological + gadget-based attacks
+Illusions, unpredictability, traps
+Mode idea: “Goblin Chaos”
+Random shots light/unlight
+Mystery awards / fake jackpots
+⚡ Electro
+
+Best use: speed / combo mode
+
+Travels through electricity, fast and aggressive
+Repeated appearances
+Mode idea: “Power Surge”
+Combo shots build charge meter
+Timed jackpot when fully charged
+🦅 Vulture
+
+Best use: orbit / aerial flow mode
+
+Air-based attacks, bird coordination
+Strong visual identity (flight loops)
+Mode idea: “Sky Attack”
+Orbit shots = points multiplier
+Keep ball moving = survival bonus
+🪨 Rhino
+
+Best use: impact / bash mode
+
+Brute force, straightforward destruction
+Appears multiple times
+Mode idea: “Charge Impact”
+One-shot jackpots (ramps / bash targets)
+Build-up → massive payoff
+🧲 Scorpion
+
+Best use: precision danger mode
+
+High aggression, unstable strength
+Good “punish sloppy play” villain
+Mode idea: “Sting Sequence”
+Tight shot windows
+Miss = timer penalty
+🏖️ Sandman
+
+Best use: physics distortion mode
+
+Shape-shifting, impersonation
+Sand-based instability
+Mode idea: “Shifting Sands”
+Random shot behavior changes
+Some shots “sink” and move
+🎭 Mysterio
+
+Best use: deception / puzzle mode
+
+Illusions and framing Spider-Man
+Strong visual gimmick potential
+Mode idea: “Illusion Trial”
+Fake lit shots vs real shots
+Hit correct sequence to expose him
+👑 Kingpin
+
+Best use: final boss mode
+
+Organized crime mastermind
+No gimmicks — pure control
+Mode idea: “Kingpin Takeover”
+Multi-stage boss fight
+All previous villain mechanics remix
+🧪 SECONDARY 1967 VILLAINS (MINI-MODES / MULTIBALLS)
+
+Use these for short modes, hurry-ups, or inserts between major villains
+
+🧬 Lizard
+Rescue / cure mechanic
+Timed shots to “inject serum”
+🧠 Dr. Noah Boddy
+Hidden identity / mystery shots
+“Find the real target” gameplay
+🎩 Fakir
+Trick shot / random award mode
+Fake-outs and misdirection
+🧪 Dr. Von Schlick
+Slippery physics mode
+Ball control intentionally unstable
+🧱 Parafino
+Disguise identification mode
+Hit correct “real target” sequence
+🕵️ Generic 1967 Groups (use sparingly)
+Crime syndicates
+Impostor Spider-Man villains
+Robotic criminal setups
+Master planners (heist logic villains)
+🧠 IMPORTANT DESIGN RULE (THIS MATTERS FOR PINBALL)
+
+If you want this machine to feel professional (Stern / JJP level):
+
+✔ Use ONLY these as full modes:
+Goblin
+Doc Ock
+Electro
+Vulture
+Rhino
+Scorpion
+Sandman
+Mysterio
+Kingpin
+✔ Everything else:
+Mini modes
+Hurry-ups
+Inserts
+Multiball triggers
+🔥 FINAL STRUCTURE (RECOMMENDED)
+8 core villain modes
+6 mini modes
+1 wizard mode: Kingpin
+1 ultimate wizard: “Sinister Chaos Remix” (all systems combined)
+
+
+
+
+Good — that constraint actually helps a lot. The Gottlieb Amazing Spider-Man layout is tight and simple, so you should design your 1967 villain modes around clear shot identity, not complexity.
+
+That layout typically gives you:
+
+Left + right inlanes/outlanes control flow
+3 main banks / standup clusters
+1–2 primary ramps/lanes (depending on rebuild)
+Center target focus area
+A “risk” zone near middle
+
+So your design goal is:
+👉 Each villain = one dominant shot behavior
+
+🧠 CORE DESIGN RULE (IMPORTANT)
+
+Don’t think “mode per villain.”
+
+Think:
+
+“What does the player DO differently for this villain on THIS layout?”
+
+If you don’t change shot behavior, the mode feels identical.
+
+🕷️ MODE MAPPING TO YOUR LAYOUT
+🧠 Doc Ock — Control / Lockdown Mode
+
+Doctor Octopus
+
+Use: center + main lanes
+
+“Arms” = 2–3 shots temporarily disabled or reversed scoring
+Player must hit alternating left/right banks to “break grip”
+Final shot = center “arm core” target
+Reward: opens all shots for combo burst
+
+👉 This becomes your mechanical restriction mode
+
+🧪 Green Goblin — Chaos Mode
+
+Green Goblin
+
+Use: ALL shots, randomized logic
+
+Shots randomly light/unlight every few seconds
+“Pumpkin bomb” inserts = hurry-up jackpots
+Some shots become fake (no score or negative multiplier unless corrected)
+
+👉 On this layout: chaos works because geometry is predictable
+
+⚡ Electro — Combo / Flow Mode
+
+Electro
+
+Use: orbit/loop + return lanes
+
+Left orbit → right return = combo chain
+Each successful loop increases “charge meter”
+Full charge unlocks center jackpot
+
+👉 This is your flow state mode
+
+🦅 Vulture — Orbit Mastery Mode
+
+Vulture
+
+Use: outer lanes / orbits
+
+Only orbit shots score
+Inner targets temporarily “unsafe” (penalty or low value)
+Keeping ball in upper playfield = multiplier growth
+
+👉 Forces clean, controlled shooting
+
+🪨 Rhino — Bash Mode
+
+Rhino
+
+Use: standup banks / central targets
+
+Only direct hits count (no combos needed)
+Each bank hit = “impact damage”
+3–5 hits = “charge breakthrough” multiball
+
+👉 Perfect for Gottlieb-style satisfying feedback
+
+🧲 Scorpion — Precision Punish Mode
+
+Scorpion
+
+Use: narrow shot lanes
+
+Only 1–2 safe shots lit at a time
+Wrong shot = timer penalty or reset progress
+Success builds “venom meter” to jackpot
+
+👉 This makes players care about accuracy
+
+🏖️ Sandman — Physics Distortion Mode
+
+Sandman
+
+Use: all shots, but unstable rules
+
+Certain shots randomly “sink” (temporary dead scoring)
+Others become high-value unexpectedly
+Ball save or kickback triggers unpredictably
+
+👉 On this layout: this becomes controlled randomness
+
+🎭 Mysterio — Illusion Mode
+
+Mysterio
+
+Use: shot deception layer
+
+Fake-lit shots appear (LED tricking player)
+Only 1 real shot is correct at any time
+Wrong hits reset combo or spawn new illusion
+
+👉 This is your mind game mode
+
+👑 Kingpin — Final Boss Mode
+
+Kingpin
+
+Use: full playfield progression
+
+Phase 1: hit all banks (crime network)
+Phase 2: lock 3 shots (money laundering system)
+Phase 3: center “Kingpin shot” opens
+Phase 4: all shots worth jackpot for limited time
+
+👉 This is your wizard-style endgame
+
+🧪 SECONDARY MODES (USE SPARINGLY ON THIS LAYOUT)
+
+These should NOT dominate gameplay — just spice:
+
+Lizard — timed cure shots
+
+Lizard
+
+Hit 3 “serum” targets before timer expires
+Noah Boddy — hidden target mode
+
+Dr. Noah Boddy
+
+One hidden lit target per cycle
+Parafino — disguise selection
+
+Parafino
+
+Hit correct “real” target among decoys
+Fakir — randomness reward mode
+
+Fakir
+
+Awards depend on timing, not precision
+⚠️ REAL DESIGN ADVICE (IMPORTANT)
+
+The Gottlieb layout is:
+
+Not wide
+Not modern flow-heavy
+Very stop-and-shoot friendly
+
+So:
+
+DO:
+Use standups as “villain identity anchors”
+Make modes change RULES, not geometry
+Keep 1–2 shot priorities per mode
+DON’T:
+Try to simulate modern deep ramp stacking
+Overuse multi-layer objectives
+Add too many simultaneous lit states
