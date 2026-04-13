@@ -11,6 +11,9 @@ Mechanical arms = perfect for shot locking or staged multiball
 Mode idea: “Tentacle Lockdown”
 Certain shots get “grabbed” (locked out)
 Player must free lanes to continue scoring
+
+
+
 🧪 Green Goblin
 
 Best use: chaos / risk mode
@@ -20,6 +23,8 @@ Illusions, unpredictability, traps
 Mode idea: “Goblin Chaos”
 Random shots light/unlight
 Mystery awards / fake jackpots
+
+
 ⚡ Electro
 
 Best use: speed / combo mode
@@ -29,6 +34,8 @@ Repeated appearances
 Mode idea: “Power Surge”
 Combo shots build charge meter
 Timed jackpot when fully charged
+
+
 🦅 Vulture
 
 Best use: orbit / aerial flow mode
@@ -38,6 +45,8 @@ Strong visual identity (flight loops)
 Mode idea: “Sky Attack”
 Orbit shots = points multiplier
 Keep ball moving = survival bonus
+
+
 🪨 Rhino
 
 Best use: impact / bash mode
@@ -47,6 +56,8 @@ Appears multiple times
 Mode idea: “Charge Impact”
 One-shot jackpots (ramps / bash targets)
 Build-up → massive payoff
+
+
 🧲 Scorpion
 
 Best use: precision danger mode
@@ -56,6 +67,8 @@ Good “punish sloppy play” villain
 Mode idea: “Sting Sequence”
 Tight shot windows
 Miss = timer penalty
+
+
 🏖️ Sandman
 
 Best use: physics distortion mode
@@ -65,6 +78,8 @@ Sand-based instability
 Mode idea: “Shifting Sands”
 Random shot behavior changes
 Some shots “sink” and move
+
+
 🎭 Mysterio
 
 Best use: deception / puzzle mode
@@ -74,6 +89,8 @@ Strong visual gimmick potential
 Mode idea: “Illusion Trial”
 Fake lit shots vs real shots
 Hit correct sequence to expose him
+
+
 👑 Kingpin
 
 Best use: final boss mode
@@ -83,6 +100,8 @@ No gimmicks — pure control
 Mode idea: “Kingpin Takeover”
 Multi-stage boss fight
 All previous villain mechanics remix
+
+
 🧪 SECONDARY 1967 VILLAINS (MINI-MODES / MULTIBALLS)
 
 Use these for short modes, hurry-ups, or inserts between major villains
@@ -90,27 +109,32 @@ Use these for short modes, hurry-ups, or inserts between major villains
 🧬 Lizard
 Rescue / cure mechanic
 Timed shots to “inject serum”
+
 🧠 Dr. Noah Boddy
 Hidden identity / mystery shots
 “Find the real target” gameplay
+
 🎩 Fakir
 Trick shot / random award mode
 Fake-outs and misdirection
+
 🧪 Dr. Von Schlick
 Slippery physics mode
 Ball control intentionally unstable
+
 🧱 Parafino
 Disguise identification mode
 Hit correct “real target” sequence
+
+
 🕵️ Generic 1967 Groups (use sparingly)
 Crime syndicates
 Impostor Spider-Man villains
 Robotic criminal setups
 Master planners (heist logic villains)
+
+
 🧠 IMPORTANT DESIGN RULE (THIS MATTERS FOR PINBALL)
-
-If you want this machine to feel professional (Stern / JJP level):
-
 ✔ Use ONLY these as full modes:
 Goblin
 Doc Ock
@@ -126,6 +150,8 @@ Mini modes
 Hurry-ups
 Inserts
 Multiball triggers
+
+
 🔥 FINAL STRUCTURE (RECOMMENDED)
 8 core villain modes
 6 mini modes
@@ -135,25 +161,11 @@ Multiball triggers
 
 
 
-Good — that constraint actually helps a lot. The Gottlieb Amazing Spider-Man layout is tight and simple, so you should design your 1967 villain modes around clear shot identity, not complexity.
-
-That layout typically gives you:
-
-Left + right inlanes/outlanes control flow
-3 main banks / standup clusters
-1–2 primary ramps/lanes (depending on rebuild)
-Center target focus area
-A “risk” zone near middle
-
 So your design goal is:
 👉 Each villain = one dominant shot behavior
-
 🧠 CORE DESIGN RULE (IMPORTANT)
-
 Don’t think “mode per villain.”
-
 Think:
-
 “What does the player DO differently for this villain on THIS layout?”
 
 If you don’t change shot behavior, the mode feels identical.
