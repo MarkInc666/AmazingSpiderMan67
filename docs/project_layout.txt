@@ -21,13 +21,8 @@ spiderman_1967/
     mysterio/
     kingpin_wizard/
     progression/
+    
 ⚙️ 1. config.yaml (CORE GAME)
-mpf:
-  machine_type: custom
-
-game:
-  balls_per_game: 3
-
 modes:
   - base
   - doc_ock
@@ -40,90 +35,14 @@ modes:
   - mysterio
   - kingpin_wizard
   - progression
+  
 🔌 2. switches.yaml (MINIMAL TEMPLATE)
-
-Replace with your actual switch names.
-
-switches:
-
-  s_left_inlane:
-    number: 10
-
-  s_right_inlane:
-    number: 11
-
-  s_left_bank:
-    number: 20
-
-  s_right_bank:
-    number: 21
-
-  s_center_target:
-    number: 22
-
-  s_left_orbit:
-    number: 23
-
-  s_right_orbit:
-    number: 24
 💡 3. lights.yaml (VILLAIN LAYERS)
-lights:
-
-  l_goblin_mode:
-    number: 100
-
-  l_doc_ock_mode:
-    number: 101
-
-  l_electro_mode:
-    number: 102
-
-  l_vulture_mode:
-    number: 103
-
-  l_rhino_mode:
-    number: 104
-
-  l_scorpion_mode:
-    number: 105
-
-  l_sandman_mode:
-    number: 106
-
-  l_mysterio_mode:
-    number: 107
-
-  l_kingpin_mode:
-    number: 108
 🧠 4. BASE MODE (CORE GAME LOOP)
 
-📁 modes/base/config/base.yaml
-
-mode:
-  start_events: ball_started
-  stop_events: ball_ended
-
-event_player:
-
-  ball_started:
-    - base.enable
-
-  sw_left_inlane_active:
-    - score: 1000
-
-  sw_right_inlane_active:
-    - score: 1000
-
-  sw_left_orbit_active:
-    - score: 2000
-
-  sw_right_orbit_active:
-    - score: 2000
 🧠 5. PROGRESSION SYSTEM
 
 📁 modes/progression/config/progression.yaml
-
-This is your backbone.
 
 mode:
   start_events: ball_started
@@ -144,6 +63,8 @@ event_player:
 
   progression_score{value>=9}:
     - start_kingpin
+    
+    
 🧠 6. ELECTRO MODE (FLOW / COMBOS)
 
 Electro
@@ -170,6 +91,8 @@ event_player:
       then:
         - score: 50000
         - electro_complete_mode
+        
+        
 🧠 7. DOC OCK MODE (CONTROL LOCKDOWN)
 
 Doctor Octopus
@@ -197,6 +120,8 @@ event_player:
   sw_center_target_active:
     - score: 75000
     - doc_ock_complete_mode
+    
+    
 🧠 8. GREEN GOBLIN MODE (CHAOS SYSTEM)
 
 Green Goblin
@@ -225,6 +150,8 @@ event_player:
         - score: 10000
       else:
         - score: -2000
+        
+        
 🧠 9. RHINO MODE (BASH)
 
 Rhino
@@ -246,6 +173,8 @@ event_player:
   rhino_hp{value<=0}:
     - enable_rhino_multiball
     - rhino_complete_mode
+    
+    
 🧠 10. MYSTERIO MODE (ILLUSION LOGIC)
 
 Mysterio
@@ -266,6 +195,8 @@ event_player:
         - mysterio_complete
       else:
         - reset_progress
+        
+        
 👑 11. KINGPIN WIZARD MODE (FINAL)
 
 Kingpin
@@ -288,6 +219,8 @@ event_player:
   sw_center_target_active:
     - score: 100000
     - kingpin_complete
+    
+    
 🧠 WHAT YOU NOW HAVE
 
 This is a complete working system with:
