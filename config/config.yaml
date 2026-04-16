@@ -118,7 +118,21 @@ modes:
   - bumpers
   - service
   - hurryup
-
+  - doc_ock
+  - electro
+  - fakir
+  - green_goblin
+  - kingpin
+  - lizard
+  - mysterio
+  - noah_body
+  - parafino
+  - qualifying
+  - rhino
+  - sandman
+  - scorpion
+  - von_schlick
+  - vulture  
 
 
 event_player:

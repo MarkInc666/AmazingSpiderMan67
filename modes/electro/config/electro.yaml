@@ -1,0 +1,6 @@
+#config_version=6
+#electro mode config file
+mode:
+  start_events: start_mode_electro
+  stop_events: stop_mode_electro
+  priority: 500
