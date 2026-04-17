@@ -45,7 +45,6 @@ switches:
   # 19
     number: 3208-1
 
-# not used
   s_diverter_open:
   # 1A
     number: 3208-2
@@ -98,7 +97,6 @@ switches:
   # 22
     number: 3208-10
     type: NC
-
 
   s_upper_target_left:
   # 25

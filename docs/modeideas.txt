@@ -1,0 +1,34 @@
+open diverter gate to upper playfield?    
+A opens, B closes (play test - is this needed?)
+a - s_inlane_m_r, s_inlane_a  (flipper drain from upper will roll over s_inlane_m_r, opening the diverter again)
+b - s_inlane_m_l, s_inlane_b
+
+
+
+upper playfield - spinner, build up spidey sense - qualify modes?
+
+mode start - 3 saucers, unlit saucer gives next mode, lit saucer allows carousel choice of mode
+
+
+
+From upper playfield left exit - uppost above upper left flipper - (timer countdown release of uppost) - shot to flashing drop target 
+ - extra ball, special (roaming target like T2), points, etc.
+ 
+ 
+From upper playfield right exit - hurry up collect (countdown from entering upper playfield)
+
+
+
+ 
+
+multiballs 
+  - hold ball in VUK and auto launch from trough for 2 ball MB 
+  - hold ball in VUK, wait for 2nd ball to lock in 1/2/3 saucer, then start MB
+  - 1/2/3 saucer and auto launch from trough for 2 ball MB 
+  - VUK, then MB - 2,3,4,5,6 MB
+  - 1/2/3 saucer then MB - 2,3,4,5,6 MB  
+  - 1/2/3 saucer then MB with 1,2, or 3 added balls based on saucer
+ 
+
+
+
