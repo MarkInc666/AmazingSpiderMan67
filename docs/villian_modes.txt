@@ -32,13 +32,13 @@ Best use: speed / combo mode
 Travels through electricity, fast and aggressive
 Repeated appearances
 Mode idea: “Power Surge”
-Combo shots build charge meter
+Pop bumpers build charge meter
 Timed jackpot when fully charged
 
 
 🦅 Vulture
 
-Best use: orbit / aerial flow mode
+Best use: upper playfield 
 
 Air-based attacks, bird coordination
 Strong visual identity (flight loops)
@@ -49,7 +49,7 @@ Keep ball moving = survival bonus
 
 🪨 Rhino
 
-Best use: impact / bash mode
+Best use: impact / bash mode - bumpers
 
 Brute force, straightforward destruction
 Appears multiple times
@@ -65,7 +65,7 @@ Best use: precision danger mode
 High aggression, unstable strength
 Good “punish sloppy play” villain
 Mode idea: “Sting Sequence”
-Tight shot windows
+Tight shot windows - drops - only hit correctly lit ones
 Miss = timer penalty
 
 
@@ -75,14 +75,15 @@ Best use: physics distortion mode
 
 Shape-shifting, impersonation
 Sand-based instability
-Mode idea: “Shifting Sands”
+Mode idea: “Shifting Sands” - moving drops
 Random shot behavior changes
 Some shots “sink” and move
 
 
 🎭 Mysterio
 
-Best use: deception / puzzle mode
+Best use: deception / puzzle mode 
+- like find Barb - stranger things
 
 Illusions and framing Spider-Man
 Strong visual gimmick potential
