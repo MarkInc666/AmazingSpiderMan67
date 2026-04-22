@@ -18,8 +18,8 @@ From upper playfield left exit - uppost above upper left flipper - (timer countd
 From upper playfield right exit - hurry up collect (countdown from entering upper playfield)
 
 
+Web targets - linked - hit one, then flash the other, countdown, collect points when hit, hit same one, restart countdown.
 
- 
 
 multiballs 
   - hold ball in VUK and auto launch from trough for 2 ball MB 
@@ -31,4 +31,689 @@ multiballs
  
 
 
+
+
+
+
+
+
+# 🔑 DESIGN INTENT
+
+* Classic Mode = pure, original gameplay
+
+* Rooftop Mode = fast loop between:
+
+  * Upper playfield (build/qualify)
+  * Lower playfield (start/execute modes)
+
+* Upper playfield is:
+
+  * Frequent
+  * Time-limited
+  * Skill-driven
+
+* Villain system adds:
+
+  * Progression
+  * Player choice
+  * Replayability
+
+---
+
+
+
+ 
+ Here’s a clean summary of your **Classic Mode (original rules from your document)**:
+---
+
+# 🕷️ CLASSIC MODE – SUMMARY
+
+## 🎮 Core Objective
+
+Score points by:
+
+* Building the **multiplier bonus (up to 20,000 × 5x)**
+* Lighting and collecting **extra balls / replays**
+* Completing key playfield targets to advance scoring and multiplier
+
+---
+
+## 🎯 Main Gameplay Loop
+
+Players progress by repeatedly hitting:
+
+* **A & B rollovers**
+* **Drop-target banks (3-bank and 5-bank)**
+* **Kick-out holes (3-hole sequence)**
+* **Spinner and lanes**
+* **Pop bumpers and spot targets**
+
+These feed into:
+
+* Multiplier growth
+* Bonus scoring
+* Extra ball / replay opportunities
+
+---
+
+## ⚙️ Key Scoring Systems
+
+### 🔢 Multiplier Bonus
+
+* Base: 1,000 → builds up to 20,000
+* Can be multiplied up to **5x total bonus**
+* Awarded at ball end (or during play via special sequences)
+* Built via:
+
+  * Drop targets
+  * Kick-out holes
+  * Spinner (when lit)
+  * Rollovers (when lit)
+  * Standing targets
+
+---
+
+## 🧩 Major Playfield Features
+
+### 🔵 A & B Rollovers
+
+* Start lit for 5,000 points
+* Control lane multipliers and light lane features
+* Feed into bonus and target progress
+
+---
+
+### 🎯 Drop Target Banks
+
+* **3-bank + 5-bank systems**
+* Core for:
+
+  * Multiplier advancement
+  * Extra ball opportunities
+  * Feature resets and spot lighting
+
+---
+
+### 🕳 Kick-out Holes (3)
+
+* Sequence-based progression system
+* Key to:
+
+  * Bonus multiplier growth
+  * Special lighting states
+  * Extra ball/replay triggers
+
+---
+
+### 🌀 Spinner
+
+* Base scoring + multiplier boost when lit
+* Important for bonus acceleration late in progression
+
+---
+
+### 💡 Lanes / Rollovers
+
+* In-lanes and out-lanes:
+
+  * Advance multiplier
+  * Score bonuses when lit
+* Encourage controlled play near flippers
+
+---
+
+### 🎯 Standup Targets (Centre + Left)
+
+* Provide:
+
+  * Multiplier advancement
+  * Special awards (including extra ball when lit conditions are met)
+
+---
+
+### 🟢 Pop Bumpers
+
+* Move lit spots and advance target states
+* Feed progression toward drop target features
+
+---
+
+## 🎁 Extra Ball / Replay System
+
+Awarded via:
+
+* Score thresholds
+* Completing specific drop target sequences
+* Special lit target conditions
+* Kick-out hole sequences
+
+---
+
+## ⚠️ Tilt / Drain Rules
+
+* Tilt cancels bonus
+* Drain = ends ball, bonus is applied
+* Classic safety rules apply (no modern assists)
+
+---
+
+## 🎯 Overall Feel of Classic Mode
+
+* Precision-based scoring system
+* Focus on **sequence completion and multiplier building**
+* No upper playfield, no modes, no branching systems
+* Pure progression through:
+
+  * targets
+  * lanes
+  * bumpers
+  * timing and control
+
+---
+
+ 
+ 
+ 
+ 
+ 
+ 
+# 🕷️ ROOFTOP MODE + VILLAIN SYSTEM (SUMMARY)
+
+## 🎮 Game Choice
+
+At game start:
+
+* **Classic Mode** → original 1980 rules, no upper playfield
+* **Rooftop Mode** → full modern rules with upper playfield, modes, multiball
+
+---
+
+# 🏙️ ROOFTOP ACCESS (Upper Playfield Entry)
+
+## How to qualify access:
+
+* Hit the **A rollover**
+
+## What it does:
+
+* Opens Rooftop Gate for **8 seconds**
+* Can be refreshed once by hitting A again (optional rule)
+
+## How you enter:
+
+* Shoot the designated **left orbit**
+* Ball lands in VUK
+* Ball is kicked to upper playfield
+
+## Upper playfield entry behavior:
+
+* Brief hold + callout
+
+
+---
+
+# 🌆 UPPER PLAYFIELD PURPOSE
+
+* Spinner = builds villain qualification progress (Spidey sense - expanding circle on city, revealing some flashing trouble beacon)
+* the 3 saucers light up
+* continued spins, 1 saucer flashes, more spins, another saucer flashes, and another 
+* 3 spins -> qualify, 6 spins -> 1 select, 9 spins -> 2 select, 12 spins -> 3 select 
+---
+
+# 🕷️ VILLAIN QUALIFICATION (UPPER PLAYFIELD)
+
+* Spinner spins build progress toward next villain mode
+* Once complete → villain becomes “READY”
+
+---
+
+# 🧠 VILLAIN START SYSTEM (SAUCERS)
+
+After a villain is qualified:
+
+## Saucers behave as follows:
+
+* ** SOLID LIT SAUCERS **
+  → Start current/default villain immediately
+
+* ** FLASHING SAUCERs **
+  → Enter Villain Select Mode
+
+---
+
+## 🎛️ Villain Select Mode (Flashing Saucer)
+
+* Ball is held
+* Flippers cycle through villains
+* Player chooses next villain
+* Auto-start after ~3 seconds or manual confirm
+
+---
+
+# 🎯 FLOW SUMMARY
+
+1. Hit A rollover → opens rooftop (8 sec)
+2. Shoot right lane → upper playfield
+3. Spin spinner → qualify villain
+4. Drop back to main playfield
+5. Choose:
+
+   * Solid saucer = start villain immediately
+   * Flashing saucer = pick villain
+6. Repeat loop
+
+---
+
+
+
+
+
+
+
+
+
+
+
+                           Spider-Man
+                           The Rules Sheet 
+                           
+                           by Peter Hall
+                  e-mail: stork_nest_pins@hotmail.com
+                                        
+   This is a text version of this rulesheet. A HTML version plus other
+   goodies are available at http://www.geocities.com/SouthBeach/Jetty/8726/ 
+
+
+   GAME OBJECTIVES:
+   ---------------
+
+   High-scores are made by advancing the multiplier bonus and winning
+   extra balls (if the game is not set to give replays). In the most
+   part, both objectives are achieved by completing the same playfield
+   targets, namely: the 3 Kick-out holes, the banks of 3 and 5
+   drop-targets, the "A" and "B" roll-overs, the in-lane rollovers, and
+   the centre and left spot targets. The following details the playfield
+   features, their location, scoring, effects on the multiplier bonus and
+   effects on other game features, recommended score settings and some
+   personal notes.
+   
+
+   PLAYFIELD:
+   ---------   
+
+    UPPER "A" & "B" ROLLOVERS
+     Location: Side by side at top left of playfield immediately after
+     gate from plunger lane.
+   
+     Scoring: At the start of each ball the yellow "A" and "B" rollover
+     spots are lit, and the first roll-over scores 5000. The first 
+     rollover knocks out the yellow spot, and subsequent rollovers score
+     500.
+   
+     Multiplier bonus: When the white "Multi-bonus" spot below is lit,
+     each rollover advances the multiplier by 3000.
+   
+     Extras: Each of the "A" and "B" rollovers light the blue advance
+   multiplier spots in the in-lanes and out-lanes until the end of the
+   ball: "A" lights the left out-lane and right in-lane, and B lights the
+   left in-lane and right out-lane. Completing both "A" and "B" rollovers
+   lights the pink spot adjacent to the middle drop-target in the right
+   bank (when the adjacent green spot is lit).
+   
+
+   RIGHT SIDE "A" ROLLOVER
+   
+     Location: Centre-right of the playfield (Entrance guarded by
+   Scorpion!).
+   
+     Scoring: See "A" and "B" upper rollovers above. A hit on the bumpers
+   at entry and exit of lane scores 50.
+   
+     Multiplier bonus: See "A" and "B" upper rollovers above.
+   
+     Extras: See "A" and "B" upper rollovers above.
+
+
+   LEFT SIDE "B" ROLLOVER
+   
+     Location: Centre-left of playfield, leading to left upper flipper.
+     Scoring: See "A" and "B" upper rollovers above.
+     Multiplier bonus: See "A" and "B" upper rollovers above.
+     Extras: See "A" and "B" upper rollovers above.
+
+   
+   5 DROP-TARGET BANK (Featuring a spider-web target design.)
+   
+     Location: Centre-right of playfield, angled inwards to face the left
+     flippers.
+   
+     Scoring: Each target hit scores 500 (3'000 in 3-ball play), or 10,000
+   when the adjacent green spot is lit. A hit on the bumper behind the
+   targets scores 50.
+   
+     Multiplier bonus: Hitting a drop-target when the adjacent green spot
+   is lit advances the multiplier by a factor of one, or advances the
+   multiplier by 1000 when unlit.
+   
+     Extra: Completing all 5 drop-targets resets both drop-target banks
+   and lights the white spinner lamp and red spot below the bank of 3
+   drop-targets. Hitting the middle target when the pink spot is lit
+   awards an extra ball/replay.
+   Note: Game starts with one green spot lit, which is rotated by hitting
+   pop-bumpers. An additional green spot is lit for each completion of
+   the 3 kick-out holes.
+   
+
+   3 DROP-TARGET BANK (Featuring a spider-web target design.
+   Kingpin is rampaging behind the bank!)
+   
+     Location: Left-centre of playfield, angled slightly towards right
+   flippers.
+   
+     Scoring: Each target hit scores 500 (3'000 in 3-ball play).
+   Completing all 3 drop-targets scores 5000. A hit on the bumper behind
+   the targets scores 50. A hit on the bumpers on the back side of
+   drop-target bank scores 10.
+   
+     Multiplier bonus: Each drop-target hit advances the multiplier by
+   1000. Completing all 3 drop-targets when the blue advance multiplier
+   spot is lit advances the multiplier by a factor of one.
+   
+     Extra: Completing all 3 drop-targets awards an extra ball/replay,
+   when the red spot below is lit.
+  
+ 
+   POP-BUMPERS (Capped with a web and Spider-man eyes. Guarded by Kraven the 
+   Hunter!)
+   
+     Location: Upper table; left pop-bumper is under and between the
+   centre and right kick-out holes, and the right pop-bumper is under and
+   between the centre standing target and the "A" and "B" upper
+   rollovers. (Left pop-bumper is 1cm lower than right one!)
+   
+     Scoring: Each hit scores 100, or 1000 when lit. A hit to the bumper
+   below and to left of the left pop-bumper scores 10.
+   
+     Extras: Each hit to the pop-bumpers moves the lit green spot(s) in
+   front of the 5 drop-target bank in rotation (from top to bottom). When
+   the bank of 5 drop-targets is completed, alternate hits on the
+   pop-bumpers light the pink spot beneath the bank of 3 drop-targets.
+   
+
+   SPINNER (Featuring a black web and a red spider design on the 2 faces.)
+   
+     Location: Entrance to left lane (Home to Lizard!) leading to
+   top-left of playfield.
+   
+     Scoring: 100 per revolution, or 1000 when the white "Multi-bonus"
+   spot is lit.
+   
+     Multiplier bonus: When the white "Multi-bonus" spot is lit, each
+   spin adds 1000 to the multiplier bonus (stays on until end of ball!).
+   
+
+   3 KICK-OUT HOLES
+   
+     Location: Top left of playfield in horizontal line.
+   
+     Scoring: The first sink scores 5000, and subsequent sinks in the
+   same hole scores 500. A hit to the bumper to left of the left kick-out
+   hole scores 10.
+   
+     Multiplier bonus: Each sink advances the multiplier by 1000.
+   
+     Extra: Completing the 1-2-3 sequence in any order resets all
+   kick-outs to 5000; lights an additional green spot (for the duration
+   of the game) in front of the right drop-target bank; and lights the
+   white "Scores Bonus" lamp beneath centre kick-out hole (which empties
+   the multiplier either on the next sink in the centre hole, or
+   immediately if the centre hole is the third in the sequence).
+   Note: The white "Scores Bonus" lamp is also lit whenever the
+   multiplier reaches 20,000.
+
+
+   IN-LANE ROLLOVERS
+   
+     Location: Bottom left (entrance overseen by Aunt May Parker!) and
+   right of playfield behind slingshots, and leading to flippers.
+   
+     Scoring: Rollover scores 500, or 5000 when the blue advance
+   multiplier spot is lit.
+   
+     Multiplier bonus: Rollover advances the multiplier by 1000, and when
+   the blue advance multiplier spot is lit the multiplier also advances
+   by a factor of one.
+   
+
+   OUT-LANE ROLLOVERS
+   
+     Location: Bottom left and right of play-field, parallel to in-lanes
+   but leading to drain!
+   
+     Scoring: Rollover scores 500, or 5000 when the blue advance
+   multiplier spot is lit.
+   
+     Multiplier bonus: Rollover advances the multiplier by 1000, and
+   advances the multiplier by a factor of one when blue advance
+   multiplier light is on.
+   
+
+   CENTRE SPOT TARGET (Featuring a spider-web target design.)
+   
+     Location: Centre-top of playfield, above and between (right of
+   centre) pop-bumpers.
+   
+     Scoring: Each hit scores 500.
+   
+     Multiplier bonus: First hit (with white "When Lit" spot) lights the
+   yellow "Multi-bonus" lamp beneath the "A" and "B" roll-overs until the
+   end of the ball (lamp goes out once multiplier is at maximum 20'000
+   value, and comes back on if the multiplier is emptied). Second hit
+   (with blue "When Lit" spot) lights the blue advance multiplier spot
+   below the bank of 3 drop-targets.
+   
+     Extra: Third hit (with yellow "When Lit" spot) lights the red
+   special spot in front of the left spot target (stays on until end of
+   ball!).
+
+   
+   LEFT SPOT TARGET (Featuring a spider-web target design.)
+   
+     Location: Centre-left of playfield, immediately above left flipper,
+   and adjacent to left "B" rollover.
+   
+     Scoring: Each hit scores 500, or 5000 when red Special spot is on.
+   
+     Extra: Each hit advances the multiplier by 1000. Hitting when the
+   red Special spot is lit awards an extra ball/replay.
+   
+
+   ROLLOVER BUTTON
+   
+     Location: Right of centre at top of playfield, leading past right
+   pop-bumper to right lane "A" rollover.
+   
+     Scoring: Rollover scores 1000 at start of each ball, and subsequent
+   rollovers score 100. A hit on the bumpers on the left and right walls
+   of the lane score 50.
+   
+     Extra: The first rollover lights the pop-bumpers until the end of
+   the ball.
+   
+
+   SLINGSHOTS
+   
+     Location: Above the left and right in-lanes, facing up and into
+   central playfield (Right slingshot overseen by J. Jonah Jameson and
+   Mary-Jane West-Parker!)
+   
+     Scoring: A hit on the bumper scores 50.
+   
+
+   MULTIPLIER BONUS
+
+   The multiplier bonus goes from 1000 to 20000, with a multiplying
+   factor from 1 x to 5 x (therefore a maximum bonus of 5 x 20,000 points
+   can be added to the ball in play score). The starting point for each
+   new ball is 1 x 1000.
+   The multiplier bonus is automatically added after each ball drains
+   (Tilt cancels the multiplier bonus). The multiplier bonus can also be
+   added for a ball whilst still in play, in 2 ways:
+   
+   1) completing the 1-2-3 sequence of kick-out holes in any order lights
+   the white "Scores Bonus" lamp beneath centre kick-out hole, which
+   empties the multiplier either on the next sink in the centre hole, or
+   2) immediately if the centre hole is the third in the sequence.
+   
+     Reaching the 20,000 multiplier level lights the white "Scores Bonus"
+   lamp beneath the centre kick-out holes - a sink in this hole before
+   draining adds the multiplier bonus to the score and resets the
+   multiplier lever to 1000 (the multiplier factor however remains at the
+   previous level until the end of the ball).
+   The multiplier level is advanced in 5-6 ways:
+   
+     -by 1000 for each hit of the 3 drop-target bank;
+     -by 1000 for each hit of the 5 drop-target bank, when the adjacent
+       green spot is not lit;
+     -by 1000 for each revolution of the spinner target, after the 5
+       drop-targets are completed;
+     -by 1000 for each sink in the kick-out holes;
+     -by 1000 for each hit on the left standing target;
+     -by 3000 for each "A" or "B" rollover, when the white "Multi-bonus"
+       lamp is lit.
+
+   The multiplier level status is indicated by a ring of 11 white lamps
+   in the centre of the playfield, counting each step through to 20000:
+   
+     -up to 10000, the appropriate white spot is lit (1000, 2000, 3000
+      etc.).
+
+     -for 11000 through to 19000 the white 10,000 spot stays lit and the
+      appropriate 000 spot is also lit.
+   
+     -at the maximum level of 20000, the white spot (featuring the black
+      web and Spider-man eyes) is lit.
+
+   The multiplier factor is advanced (by a factor of one) in 4 ways:
+   
+     -completing the bank of 3 drop-down targets, when the blue advance
+      multiplier spot is lit;
+   
+     -hitting one of the bank of 5 drop-targets, when the adjacent green
+      spot is lit;
+   
+     -by a rollover through the in-lanes or out-lanes, when the blue
+      advance multiplier spot is lit;
+   
+     -hitting the centre standing target twice with the same ball in play.
+
+   The multiplier factor status from 2 x to 5 x is indicated by a
+   staggered line of 4 blue spots (surrounded by the white spot lamps
+   indicating the multiplier level).
+   
+
+   EXTRA BALL / REPLAY SCORES
+   The game standard levels for awarding an extra ball/ replay are set at
+   240,000, 370,000 and 510,000 (according to the card on my machine, at
+   least - the game card shown on the machine in the original promotional
+   flyer has all levels 30,000 lower).
+
+   Extra balls / replays can also be won by hitting playfield targets in
+   3 ways :
+   
+     -completing the bank of 5 drop-targets and then completing the bank
+       of 3 drop-targets whilst the red special spot below is lit;
+   
+     -hitting the centre standing target 3 times and then hitting the left
+       standing target;
+   
+     -completing the "A" and "B" rollovers and then hitting the middle
+   drop-target of the bank of 5, when the adjacent pink spot is lit.
+
+   Note: If switch 21 is On, awarding extra balls instead of replays,
+   then the match feature is over-ridden.
+ 
+  
+   CENTRE DRAIN
+   Occasionally a fast-moving ball will bounce back from the outhole
+   plate and can be caught with the right lower flipper. If the ball
+   drains without scoring (it happens!) the ball does not count!
+   
+
+   _TILTING_
+   Only the ball in play (if control switch #29 is On) and the
+   accumulated multiplier bonus points are lost. If the switch is Off:
+   Game Over!
+   
+   FLIPPERS
+   
+     Upper left: located below left "B" rollover lane, centre-left of
+   playfield (Spider-man shoots a web from here to the bank of 5 drop
+   targets!)
+   
+     Lower left: located at end of left in-lane, and below left
+   slingshot.
+   
+     Upper and lower right: Located in a line at end of right in-lane,
+   and below right slingshot.
+   
+   RECOMMENDED SCORE SETTINGS
+   Thanks to John Erichson in Tromso, Norway for sending me a copy of the
+   Gottlieb score care for Spidey (A-19863-1) (one day I'll scan it). For
+   now here's the raw data:
+   
+     A-19461   - 180000, 310000, 450000
+     A-19462   - 200000, 330000, 470000
+     A-19816   - 210000, 340000, 480000
+     A-19307*  - 230000, 360000, 510000
+     A-19464   - 240000, 370000, 510000
+     A-19308   - 250000, 380000, 530000
+     A-19309%  - 270000, 420000, 570000
+     A-19910   - 290000, 420000, 570000
+     A-19911   - 310000, 430000, 590000
+     A-19471*% - 190000, 330000, 480000
+     A-19461   - 200000, 350000, 500000
+     A-19426   - 210000, 360000, 510000
+
+   * = 3-ball, % = 5-ball
+   
+                 ======================================
+Below is a text version of a score card
+
+
+
+
+
+        /////////////////////////////////////////////////////////////
+        /                       SPIDER-MAN                          /
+        /                                                           /
+        /INSTRUCTIONS                            5-BALLS PER PLAYER /
+        /                                                           /
+        /   COMPLETING 1-2-3 SEQUENCE LIGHTS "SCORES BONUS" ADDS    /
+        /   ONE LIT SPOT TO RIGHT DROP TARGETS AND RESETS 1-2-3     /
+        /   SEQUENCE.                                               /
+        /                                                           /
+        /   COMPLETING A & B ROLLOVERS LIGHT THE RIGHT EXTRA BALL   /
+        /   FEATURE WHEN ADJACENT SPOT IS LIT. THE POP BUMBERS      /
+        /   MOVE LIT SPOTS.                                         / 
+        /                                                           / 
+        /   ALL DROP TARGETS SCORE 500 POINTS. COMPLETING RIGHT     /
+        /   DROP TARGETS LIGHTS LEFT EXTRA BALL FEATURE             /
+        /   ALTERNATELY, SPIN TARGET AND RESETS BOTH TARGET BANKS.  /       
+        /                                                           /
+        /   POP BUMBERS AND SPIN TARGET SCORE 100 OR 1000 WHEN LIT. /
+        /                                                           /
+        /     TILT DOES NOT DISQUALIFY A PLAYER.                    /
+        /                                                           /
+        /     MATCHING LAST TWO NUMBERS IN SCORE TO NUMBER THAT     / 
+        /     APPEARS ON BACKGLASS AFTER GAME IS OVER SCORES ONE    / 
+        /     REPLAY.                                               /
+        /                                                           /
+        /653                                               B-19864-1/
+        /////////////////////////////////////////////////////////////
+
+     _________________________________________________________________
+                                      
+                           Text © Peter Hall 1998
+     _________________________________________________________________
 
