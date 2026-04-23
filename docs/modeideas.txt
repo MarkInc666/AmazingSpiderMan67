@@ -28,13 +28,6 @@ multiballs
   - VUK, then MB - 2,3,4,5,6 MB
   - 1/2/3 saucer then MB - 2,3,4,5,6 MB  
   - 1/2/3 saucer then MB with 1,2, or 3 added balls based on saucer
- 
-
-
-
-
-
-
 
 
 # 🔑 DESIGN INTENT
@@ -62,9 +55,18 @@ multiballs
 
 
 
- 
- Here’s a clean summary of your **Classic Mode (original rules from your document)**:
----
+
+
+
+## 🎮 Game Choice
+
+At game start:
+
+* **Classic Mode** → original 1980 rules, no upper playfield
+* **Rooftop Mode** → full modern rules with upper playfield, modes, multiball
+
+
+
 
 # 🕷️ CLASSIC MODE – SUMMARY
 
@@ -219,14 +221,6 @@ Awarded via:
  
 # 🕷️ ROOFTOP MODE + VILLAIN SYSTEM (SUMMARY)
 
-## 🎮 Game Choice
-
-At game start:
-
-* **Classic Mode** → original 1980 rules, no upper playfield
-* **Rooftop Mode** → full modern rules with upper playfield, modes, multiball
-
----
 
 # 🏙️ ROOFTOP ACCESS (Upper Playfield Entry)
 
