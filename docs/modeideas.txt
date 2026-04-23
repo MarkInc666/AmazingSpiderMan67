@@ -1,19 +1,5 @@
-open diverter gate to upper playfield?    
-A opens, B closes (play test - is this needed?)
-a - s_inlane_m_r, s_inlane_a  (flipper drain from upper will roll over s_inlane_m_r, opening the diverter again)
-b - s_inlane_m_l, s_inlane_b
-
-
-
-upper playfield - spinner, build up spidey sense - qualify modes?
-
-mode start - 3 saucers, unlit saucer gives next mode, lit saucer allows carousel choice of mode
-
-
-
 From upper playfield left exit - uppost above upper left flipper - (timer countdown release of uppost) - shot to flashing drop target 
  - extra ball, special (roaming target like T2), points, etc.
- 
  
 From upper playfield right exit - hurry up collect (countdown from entering upper playfield)
 
@@ -25,16 +11,22 @@ multiballs
   - hold ball in VUK and auto launch from trough for 2 ball MB 
   - hold ball in VUK, wait for 2nd ball to lock in 1/2/3 saucer, then start MB
   - 1/2/3 saucer and auto launch from trough for 2 ball MB 
-  - VUK, then MB - 2,3,4,5,6 MB
-  - 1/2/3 saucer then MB - 2,3,4,5,6 MB  
-  - 1/2/3 saucer then MB with 1,2, or 3 added balls based on saucer
+  - VUK, then MB - 2,3,4,5,6 MB (non physical locks)
+  - 1/2/3 saucer then MB - 2,3,4,5,6 MB (non physical locks)
+  - 1/2/3 saucer then MB with 1,2, or 3 added balls based on saucer ((non physical locks)
+
+
+
+
+
+-----------------------------------------------------------------------
 
 
 # 🔑 DESIGN INTENT
 
 * Classic Mode = pure, original gameplay
 
-* Rooftop Mode = fast loop between:
+* ASM67 = faster, MB, villian modes 
 
   * Upper playfield (build/qualify)
   * Lower playfield (start/execute modes)
@@ -51,7 +43,9 @@ multiballs
   * Player choice
   * Replayability
 
----
+
+-----------------------------------------------------------------------
+
 
 
 
@@ -62,11 +56,108 @@ multiballs
 
 At game start:
 
-* **Classic Mode** → original 1980 rules, no upper playfield
 * **Rooftop Mode** → full modern rules with upper playfield, modes, multiball
+* **Classic Mode** → original 1980 rules, no upper playfield
 
 
 
+
+ 
+# 🕷️ SM67 GAME MODE
+-----------------------------------------------------------------------
+
+
+# 🏙️ ROOFTOP ACCESS (Upper Playfield Entry)
+
+## How to qualify access:
+
+* Hit the **A rollover**
+  A - s_inlane_m_r, s_inlane_a  (flipper drain from upper will roll over s_inlane_m_r, opening the diverter again)
+
+## What it does:
+* Opens Rooftop diverter Gate for **8 seconds**
+* hitting A again sets timer back to **8 seconds**
+
+## How you enter:
+* Shoot the left orbit
+* Ball lands in VUK 
+
+## VUK entry behavior:
+* timer stops
+* gate closes
+* Ball hold (held for ball lock, delayed for video, etc)
+* Ball is either held and a new one launched from trough or kicked to upper playfield
+
+
+---
+
+# 🌆 UPPER PLAYFIELD PURPOSE
+If villian mode not running:
+
+# 🕷️ VILLAIN MODE START QUALIFICATION (UPPER PLAYFIELD)
+
+* Spinner spins build progress toward next villain mode
+* Once complete → villain mode start becomes “READY”
+
+* Spinner -> builds villain qualification progress (Spidey sense - expanding circle on city, revealing some flashing trouble beacon)
+* after **3 spins** the villian mode start is ready, 3 saucers light up
+* upper target switch hits after mode start ready -> flash the corresponding saucers
+* continued spins -> ??
+
+
+---
+
+# 🧠 VILLAIN START SYSTEM (SAUCERS)
+
+After villain mode start is qualified:
+
+## Saucers behave as follows:
+
+* ** SOLID LIT SAUCERS **
+  → Start current/default villain immediately
+
+* ** FLASHING SAUCERs **
+  → Enter Villain Select Mode
+
+---
+
+## 🎛️ Villain Select Mode (Flashing Saucer)
+
+* Ball is held
+* Flippers cycle through villains
+* Player chooses next villain
+* Auto-start after ~3 seconds or manual confirm
+
+---
+
+
+# 🎯 FLOW SUMMARY
+
+1. Hit A rollover → opens rooftop (8 sec)
+2. Shoot right lane → upper playfield
+3. Spin spinner → qualify villain
+4. Drop back to main playfield
+5. Choose:
+
+   * Solid saucer = start villain immediately
+   * Flashing saucer = pick villain
+6. Repeat loop
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+-----------------------------------------------------------------------
 
 # 🕷️ CLASSIC MODE – SUMMARY
 
@@ -211,92 +302,13 @@ Awarded via:
   * bumpers
   * timing and control
 
----
+-----------------------------------------------------------------------
 
  
  
  
  
  
- 
-# 🕷️ ROOFTOP MODE + VILLAIN SYSTEM (SUMMARY)
-
-
-# 🏙️ ROOFTOP ACCESS (Upper Playfield Entry)
-
-## How to qualify access:
-
-* Hit the **A rollover**
-
-## What it does:
-
-* Opens Rooftop Gate for **8 seconds**
-* Can be refreshed once by hitting A again (optional rule)
-
-## How you enter:
-
-* Shoot the designated **left orbit**
-* Ball lands in VUK
-* Ball is kicked to upper playfield
-
-## Upper playfield entry behavior:
-
-* Brief hold + callout
-
-
----
-
-# 🌆 UPPER PLAYFIELD PURPOSE
-
-* Spinner = builds villain qualification progress (Spidey sense - expanding circle on city, revealing some flashing trouble beacon)
-* the 3 saucers light up
-* continued spins, 1 saucer flashes, more spins, another saucer flashes, and another 
-* 3 spins -> qualify, 6 spins -> 1 select, 9 spins -> 2 select, 12 spins -> 3 select 
----
-
-# 🕷️ VILLAIN QUALIFICATION (UPPER PLAYFIELD)
-
-* Spinner spins build progress toward next villain mode
-* Once complete → villain becomes “READY”
-
----
-
-# 🧠 VILLAIN START SYSTEM (SAUCERS)
-
-After a villain is qualified:
-
-## Saucers behave as follows:
-
-* ** SOLID LIT SAUCERS **
-  → Start current/default villain immediately
-
-* ** FLASHING SAUCERs **
-  → Enter Villain Select Mode
-
----
-
-## 🎛️ Villain Select Mode (Flashing Saucer)
-
-* Ball is held
-* Flippers cycle through villains
-* Player chooses next villain
-* Auto-start after ~3 seconds or manual confirm
-
----
-
-# 🎯 FLOW SUMMARY
-
-1. Hit A rollover → opens rooftop (8 sec)
-2. Shoot right lane → upper playfield
-3. Spin spinner → qualify villain
-4. Drop back to main playfield
-5. Choose:
-
-   * Solid saucer = start villain immediately
-   * Flashing saucer = pick villain
-6. Repeat loop
-
----
 
 
 
