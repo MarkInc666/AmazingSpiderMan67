@@ -1,10 +1,23 @@
+entering upper playfield:
+
+1. Villain qualify
+Spinner & Targets light saucers for Villian mode start
+
+2. Target Practice
 From upper playfield left exit - uppost above upper left flipper - (timer countdown release of uppost) - shot to flashing drop target 
  - extra ball, special (roaming target like T2), points, etc.
- 
-From upper playfield right exit - hurry up collect (countdown from entering upper playfield)
+
+3. Countdown
+countdown pot starts at 50K, continuing adds 75K, 100K, 150K, 200K 
+decreases 5K every second - stops at 10K
+exit left - countdown stops, popup post goes up, hit correct drop to collect, miss it and it resets to 0
+exit drain - countdown resets to 0
+exit right - countdown freezes, gate opens (8 seconds)
+
 
 
 Web targets - linked - hit one, then flash the other, countdown, collect points when hit, hit same one, restart countdown.
+
 
 
 multiballs 
