@@ -16,7 +16,9 @@ exit right - countdown freezes, gate opens (8 seconds)
 
 
 
-Web targets - linked - hit one, then flash the other, countdown, collect points when hit, hit same one, restart countdown.
+Web targets (2) - linked - hit one, the other one flashes, short countdown (5s), collect points when hit, hit same one, restart timer.
+
+4 lanes - in/out for doc ock - flippers rotate lights - destroy each of 4 arms
 
 
 
