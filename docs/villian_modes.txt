@@ -1,115 +1,137 @@
-CORE PINBALL VILLAINS (1967 SERIES ONLY)
+VILLAINS (1967 SERIES ONLY)
 
-These are your main mode anchors — the ones that can carry full gameplay modes.
-
-🧠 Doctor Octopus
-
-Best use: control / capture mode
-
-Multiple appearances in Season 1 + Season 3
-Mechanical arms = perfect for shot locking or staged multiball
-Mode idea: “Tentacle Lockdown”
-Certain shots get “grabbed” (locked out)
-Player must free lanes to continue scoring
-
-
-
-🧪 Green Goblin
-
-Best use: chaos / risk mode
-
-Psychological + gadget-based attacks
-Illusions, unpredictability, traps
-Mode idea: “Goblin Chaos”
-Random shots light/unlight
-Mystery awards / fake jackpots
-
-
-⚡ Electro
-
-Best use: speed / combo mode
-
-Travels through electricity, fast and aggressive
-Repeated appearances
-Mode idea: “Power Surge”
-Pop bumpers build charge meter
-Timed jackpot when fully charged
+🏖️ Sandman
+Mode idea: “Shifting Sands” - moving drops
+- raise right drops, the leftmost flashing, then drop one at a time every 3 seconds (3 times L-R or R-L?)
+- if next drop already down, move R 
+- points - flashing one worth 50K, others 5K.  In sequence L to R will be 250K.
 
 
 🦅 Vulture
-
-Best use: upper playfield 
-
-Air-based attacks, bird coordination
-Strong visual identity (flight loops)
 Mode idea: “Sky Attack”
-Orbit shots = points multiplier
-Keep ball moving = survival bonus
+- upper playfield spinner value based on 3 targets 
+- timer starts when entering upper playfield - 60s
+- targets go from off to yellow, orange, red - after 3 seconds, change back R-O-Y-Off
+- spinner value R - 50K, O - 25K, Y - 10K, Off - 1K 
+- max 150K, min 3K per spin   
 
 
-🪨 Rhino
 
-Best use: impact / bash mode - bumpers
+🪨 RHINO
+### During mode:
+Mode idea: Rage
+* Every scoring target hit:
 
-Brute force, straightforward destruction
-Appears multiple times
-Mode idea: “Charge Impact”
-One-shot jackpots (ramps / bash targets)
-Build-up → massive payoff
+  * awards normal mode points
+  * adds to `rhino_jackpot`
+
+* Pop bumpers:
+
+  * do not add jackpot directly
+  * increase `rhino_rage_value`
+
+* Left B rollover:
+
+  * collects current Rhino Jackpot
+
+### Rhino becomes “unstable” when max jackpot value reached
+- after 5 seconds at max, it crashes out resets to base
+* jackpot starts flashing red
+* if player fails to collect Left B in 10 seconds, Rhino crashes and resets value
+
+## Start mode:
+
+* Rhino Jackpot = 25K base
+* Rhino Rage = 1k -> 2K -> 3K, etc - max rage 25K?
+
+## During mode:
+
+### Any standup/drop/web/spinner:
+
+* score normal shot
+* add jackpot based on rage level
+
+### Pops:
+
+* increase Rhino Rage = 1k -> 2K -> 3K, etc - max rage 25K?
+
+### Left B rollover:
+
+* collect current Rhino Jackpot
+* reset jackpot to base
+* keep rage OR partially drop rage (your choice)
+
+after 3 successful collections = Rhino defeated
 
 
-🧲 Scorpion
-
-Best use: precision danger mode
-
-High aggression, unstable strength
-Good “punish sloppy play” villain
-Mode idea: “Sting Sequence”
-Tight shot windows - drops - only hit correctly lit ones
-Miss = timer penalty
 
 
-🏖️ Sandman
-
-Best use: physics distortion mode
-
-Shape-shifting, impersonation
-Sand-based instability
-Mode idea: “Shifting Sands” - moving drops
-Random shot behavior changes
-Some shots “sink” and move
+⚡ Electro
+Mode idea: “Power Surge”
+Travels through electricity, fast and aggressive
+- 5 shots, 2 web targets, (any 3 bank), (any 5 bank), spinner 
+Timed - if not hit, LED sparks out and shot disables
+ - if hit, shot moves - light shows trace movement
 
 
 🎭 Mysterio
-
-Best use: deception / puzzle mode 
-- like find Barb - stranger things
-
-Illusions and framing Spider-Man
-Strong visual gimmick potential
 Mode idea: “Illusion Trial”
-Fake lit shots vs real shots
-Hit correct sequence to expose him
+- like find Barb - stranger things
+- 10 shots lit, one has the super jackpot 
+- super worth 1M , each incorrect shot worth 50K (deducts 100K from super)
+
+
+🧪 Green Goblin
+Mode idea: “Goblin Chaos Multiball”
+- 2 ball MB
+- build up a Chaos bonus by hitting flashing shots, solid shots decrease bonus
+- 3 Random shots begin to flash(2 seconds apart), after 5 seconds they go solid, 
+- if hit or after 3 seconds solid, shot moves  
+- bonus collected end of ball
+- ball in saucer held there and another ball launched
+
+
+🧠 Doctor Octopus
+Mode idea: “Tentacle Lockdown”
+- Mechanical arms = 4 in/out lanes
+- start with one arm disabled
+- slow dim pulsing lights, solid if disabled 
+- flippers rotate lights 
+- disable an arm (collect small points) (lights the JP shot)
+- collect JP (x number of disabled arms) at web targets 
+- left drops releases an arm
+- all arms released - mode over
+
+
+🧲 Scorpion
+Mode idea: “Sting Sequence”
+- upper always available
+- go to upper, exit right to lower flipper, left drops reset and drop 2 
+- spinners increase JP 
+- hit remaining drop for JP 
+
+
+Plutonians
+Mode idea: “Thaw the Icebergs”
+- Pop bumpers blue
+- turn them red 
 
 
 👑 Kingpin
-
-Best use: final boss mode
-
-Organized crime mastermind
-No gimmicks — pure control
-Mode idea: “Kingpin Takeover”
+Mode idea: “Kingpin Takeover - Wiz Mode”
 Multi-stage boss fight
 All previous villain mechanics remix
 
 
-🧪 SECONDARY 1967 VILLAINS (MINI-MODES / MULTIBALLS)
 
-Use these for short modes, hurry-ups, or inserts between major villains
 
-🧬 Lizard
+
+🧪 SECONDARY 1967 VILLAINS (MINI-MODES)
+
+🧬 Lizard Hurry Up
 Rescue / cure mechanic
 Timed shots to “inject serum”
+
 
 🧠 Dr. Noah Boddy
 Hidden identity / mystery shots
@@ -137,25 +159,18 @@ Master planners (heist logic villains)
 
 🧠 IMPORTANT DESIGN RULE (THIS MATTERS FOR PINBALL)
 ✔ Use ONLY these as full modes:
-Goblin
-Doc Ock
-Electro
-Vulture
-Rhino
-Scorpion
-Sandman
-Mysterio
-Kingpin
+
+
+
 ✔ Everything else:
 Mini modes
 Hurry-ups
-Inserts
 Multiball triggers
 
 
 🔥 FINAL STRUCTURE (RECOMMENDED)
-8 core villain modes
-6 mini modes
+10 core villain modes
+? mini modes
 1 wizard mode: Kingpin
 1 ultimate wizard: “Sinister Chaos Remix” (all systems combined)
 

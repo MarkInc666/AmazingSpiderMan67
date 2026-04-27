@@ -16,9 +16,31 @@ exit right - countdown freezes, gate opens (8 seconds)
 
 
 
+Slingshots - cycle the current villain 
+
 Web targets (2) - linked - hit one, the other one flashes, short countdown (5s), collect points when hit, hit same one, restart timer.
 
-4 lanes - in/out for doc ock - flippers rotate lights - destroy each of 4 arms
+After completing villian mode - multiball enabled at saucer 
+- 1/2/3 saucer and auto launch from trough for 3 ball MB 
+- frenzy/victory MB 
+
+
+Ideas for villian modes: 
+1. meteor drop target/spinner idea 
+  - spinner value based on number of drops down * 5K  (1K, 5K, 10K, 15K, 20K)
+
+2. upper spinner similar idea with the 3 targets 
+
+3. popbumpers are frozen blue - repeated hits to turn red (use 13 leds)
+
+4. star rollover 
+
+Mode idea: “Charge Impact”
+- Pop bumpers build power
+- left drops collect small jackpots
+ - all drops down and not fully charged - reset - mode over
+ - all drops down and fully charged, then rubber for super jackpot, then reset 
+
 
 
 

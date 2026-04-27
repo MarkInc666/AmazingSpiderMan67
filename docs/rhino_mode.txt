@@ -1,0 +1,188 @@
+Ah — that fixes it.
+
+So the **risk is not the collect shot**, the risk is **overcooking Rhino**.
+
+That is a much stronger internal tension mechanic, and honestly more original.
+
+Now the mode becomes:
+
+> **build Rhino's anger as high as possible, then cash before he loses control**
+
+Very pinball-friendly.
+
+---
+
+# 🪨 RHINO MODE — THIS VERSION WORKS
+
+## Core psychology:
+
+Safe collect lane + dangerous greed meter = player-created risk.
+
+That means the player is constantly asking:
+
+* “collect now?”
+* “one more pop?”
+* “one more target?”
+* “don’t crash it…”
+
+That’s exactly the right kind of tension.
+
+---
+
+# CLEAN RULE MODEL
+
+You actually need **two separate values**:
+
+---
+
+## 1. RHINO JACKPOT VALUE
+
+This is what Left B collects.
+
+Starts at maybe:
+
+* 25K or 50K
+
+Every scoring target (except pops) adds:
+
+* current rage-based add amount
+
+---
+
+## 2. RHINO RAGE METER
+
+Built by pops only.
+
+Each pop hit increases rage stage:
+
+* Stage 1 = calm
+* Stage 2 = irritated
+* Stage 3 = charging
+* Stage 4 = enraged
+* Stage 5 = berserk (danger zone)
+
+Each stage multiplies jackpot adds.
+
+Example:
+
+| Rage Stage | Add Per Target |
+| ---------- | -------------- |
+| 1          | 5K             |
+| 2          | 10K            |
+| 3          | 20K            |
+| 4          | 35K            |
+| 5          | 50K            |
+
+Now pops are meaningful without directly being score generators.
+
+---
+
+# THE CRASH MECHANIC (ESSENTIAL)
+
+Need a clear overbuild point.
+
+### Suggested:
+
+At Rage Stage 5:
+a hidden Rhino instability timer starts (say 6 sec).
+
+During those 6 sec:
+
+* every target hit adds huge value
+* lamps pulse aggressively
+
+If player does NOT collect Left B before timer expires:
+
+## RHINO CRASH
+
+* jackpot resets to base
+* rage resets to stage 1
+* maybe brief lamp blackout / crash sound
+
+This makes Berserk thrilling.
+
+---
+
+# WHY THIS IS BETTER THAN RANDOM DECAY
+
+Because decay feels passive.
+
+Crash feels like:
+
+### "I pushed him too far."
+
+More thematic and more exciting.
+
+---
+
+# PLAYER GAMEPLAY LOOP
+
+### Early mode:
+
+hit pops to raise rage
+
+### Mid mode:
+
+rip targets to inflate jackpot
+
+### Danger:
+
+rage maxed, berserk timer running
+
+### Decision:
+
+collect Left B now or squeeze one more target?
+
+That is a complete mode arc with no confusing branches.
+
+---
+
+# OPTIONAL NICE TOUCH — RHINO STOMP BONUS
+
+Every successful Left B collect does NOT reset rage fully.
+
+Maybe:
+
+* drops one stage only
+
+So player can chain:
+Berserk → collect → still angry → rebuild faster
+
+Makes repeated collections addictive.
+
+---
+
+# THIS MODE NOW SCORES HIGH
+
+### Theme fit: 9/10
+
+### Readability: 8/10
+
+### Hardware use: 8/10
+
+### Risk/reward: 9/10
+
+This is now a legitimate major villain mode.
+
+---
+
+# MPF IMPLEMENTATION: VERY EASY
+
+This one is also code-friendly:
+
+* integer rage variable
+* integer jackpot variable
+* timer on rage 5
+* rollover collect event
+
+No nasty shot sequencing.
+
+So this is a smart mode from both player and coding standpoint.
+
+---
+
+Rhino is in good shape now.
+
+## Which major villain do you want to tighten next?
+
+Sandman, Doc Ock, Scorpion, Goblin, etc.
