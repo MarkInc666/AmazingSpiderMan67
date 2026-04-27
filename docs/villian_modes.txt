@@ -1,5 +1,14 @@
 VILLAINS (1967 SERIES ONLY)
 
+🪨 RHINO
+Mode: Rhino Bash
+
+** build Rhino's rage (pops), build JP value by smashing targets, collect JPs
+** builld anger as high as possible, then cash before he loses control
+** collect JP 3 times
+** after 3 successful collections = Rhino defeated
+
+
 🏖️ Sandman
 Mode idea: “Shifting Sands” - moving drops
 - raise right drops, the leftmost flashing, then drop one at a time every 3 seconds (3 times L-R or R-L?)
@@ -16,62 +25,14 @@ Mode idea: “Sky Attack”
 - max 150K, min 3K per spin   
 
 
-
-🪨 RHINO
-### During mode:
-Mode idea: Rage
-* Every scoring target hit:
-
-  * awards normal mode points
-  * adds to `rhino_jackpot`
-
-* Pop bumpers:
-
-  * do not add jackpot directly
-  * increase `rhino_rage_value`
-
-* Left B rollover:
-
-  * collects current Rhino Jackpot
-
-### Rhino becomes “unstable” when max jackpot value reached
-- after 5 seconds at max, it crashes out resets to base
-* jackpot starts flashing red
-* if player fails to collect Left B in 10 seconds, Rhino crashes and resets value
-
-## Start mode:
-
-* Rhino Jackpot = 25K base
-* Rhino Rage = 1k -> 2K -> 3K, etc - max rage 25K?
-
-## During mode:
-
-### Any standup/drop/web/spinner:
-
-* score normal shot
-* add jackpot based on rage level
-
-### Pops:
-
-* increase Rhino Rage = 1k -> 2K -> 3K, etc - max rage 25K?
-
-### Left B rollover:
-
-* collect current Rhino Jackpot
-* reset jackpot to base
-* keep rage OR partially drop rage (your choice)
-
-after 3 successful collections = Rhino defeated
-
-
-
-
 ⚡ Electro
 Mode idea: “Power Surge”
-Travels through electricity, fast and aggressive
-- 5 shots, 2 web targets, (any 3 bank), (any 5 bank), spinner 
-Timed - if not hit, LED sparks out and shot disables
- - if hit, shot moves - light shows trace movement
+- traveling shots - like electricity - 5 locations - light shows trace movement
+- 5 shot locations -> Left web target,  spinner , (any drop at left bank),  upper web target, (any drop at right bank),
+- Timed 5? seconds 
+  - if not hit, LED sparks out and shot appears somewhere else that has not been disabled 
+  - if hit, collect JP (super JP for 5th spark) and shot disables
+  - shot moves in pattern left to right, until all shots disabled, or last shot times out
 
 
 🎭 Mysterio
@@ -81,14 +42,33 @@ Mode idea: “Illusion Trial”
 - super worth 1M , each incorrect shot worth 50K (deducts 100K from super)
 
 
+🧲 Scorpion
+Mode idea: “Sting Sequence”
+- 3 chances to hit a drop target
+- upper always available (gate open)
+- spinners increase JP 
+- go to upper to hit spinner and exit left or right
+- exit upper playfield on the right to get to the bottom right flipper
+  this will make the left drops reset and auto drop 2 of the targets
+  - hit remaining drop for JP 
+- exit upper playfield on the left to get to the upper left flipper
+  this will make the right drops reset and auto drop 4 of the targets
+  - hit remaining drop for JP 
+- if drops not hit within 5 seconds, no JP, advance to next try. 3 tries 
+
+
+
+
+
 🧪 Green Goblin
 Mode idea: “Goblin Chaos Multiball”
 - 2 ball MB
 - build up a Chaos bonus by hitting flashing shots, solid shots decrease bonus
-- 3 Random shots begin to flash(2 seconds apart), after 5 seconds they go solid, 
+- 3 Random shots begin to flash, after 5 seconds they go solid, 
 - if hit or after 3 seconds solid, shot moves  
 - bonus collected end of ball
 - ball in saucer held there and another ball launched
+
 
 
 🧠 Doctor Octopus
@@ -102,13 +82,6 @@ Mode idea: “Tentacle Lockdown”
 - left drops releases an arm
 - all arms released - mode over
 
-
-🧲 Scorpion
-Mode idea: “Sting Sequence”
-- upper always available
-- go to upper, exit right to lower flipper, left drops reset and drop 2 
-- spinners increase JP 
-- hit remaining drop for JP 
 
 
 Plutonians
