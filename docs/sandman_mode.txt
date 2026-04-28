@@ -1,0 +1,11 @@
+🏖️ Sandman
+Mode idea: “Shifting Sands” 
+- moving drops
+- raise right drops, all 5 LEDs light up, the leftmost LED flashing
+- points: flashing one worth 50K, others 1K.
+- drop one at a time every 3 seconds (L to R)
+  - if next drop already down, move to next one 
+- every 5 completed while they are flashing will be a 250K JP
+- if 5 completed L to R - 500K JP
+- once all are down, reset bank 
+- repeat 3 times

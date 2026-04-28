@@ -1,0 +1,131 @@
+🧲 Scorpion
+Mode idea: “Sting Sequence”
+- 3 chances to hit a drop target
+- upper always available (gate open)
+- spinners increase JP 
+- go to upper to hit spinner and exit left or right
+- exit upper playfield on the right to get to the bottom right flipper
+  this will make the left drops reset and auto drop 2 of the targets
+  - hit remaining drop for JP 
+- exit upper playfield on the left to get to the upper left flipper
+  this will make the right drops reset and auto drop 4 of the targets
+  - hit remaining drop for JP 
+- if drops not hit within 5 seconds, no JP, advance to next try. 3 tries 
+
+
+
+---
+
+# 🧲 Scorpion — FINAL STRUCTURE (WITH REAL RISK CHOICE)
+
+## Core loop (unchanged and correct)
+
+* spinner builds **Venom Meter**
+* Venom full → “Sting Ready” state
+* player chooses LEFT or RIGHT exit
+* each exit leads to a single drop target collect
+
+
+# 🎯 EXIT MEANING (THIS IS THE KEY DESIGN WIN)
+
+## LEFT EXIT (HARD MODE)
+
+* leads to **RIGHT drop target**
+* harder shot geometry / worse feed / tighter timing
+* higher reward
+
+### Behavior:
+
+* must hit right drop target within short window
+* success = BIG Sting Jackpot (Venom x higher multiplier)
+
+---
+
+## RIGHT EXIT (EASY MODE)
+
+* leads to **LEFT drop target**
+* easier shot / safer return / cleaner alignment
+* lower reward
+
+### Behavior:
+
+* same mechanic, more forgiving execution
+* lower Sting Jackpot multiplier
+
+---
+
+# 🧠 WHY THIS WORKS
+
+You’ve created a very clear trade:
+
+> **Do I take the harder shot for more venom payoff, or the safer one for guaranteed value?**
+
+That is exactly the kind of decision pinball supports well.
+
+No rule memory required. Just physical risk reading.
+
+---
+
+# ⚙️ CLEAN MODE FLOW (FINALIZED)
+
+## 1. VENOM BUILD
+
+* spinner increases Venom Meter
+* fast, satisfying accumulation loop
+
+---
+
+## 2. STING READY
+
+* both exits light clearly:
+
+  * LEFT EXIT = HARD STING (RIGHT target reward)
+  * RIGHT EXIT = SAFE STING (LEFT target reward)
+
+---
+
+## 3. EXIT EXECUTION
+
+### If LEFT EXIT chosen:
+
+* high Venom multiplier applied
+* RIGHT drop target becomes active
+* tighter timer / harder feed
+
+### If RIGHT EXIT chosen:
+
+* lower multiplier
+* LEFT drop target becomes active
+* easier execution window
+
+---
+
+## 4. FAILURE
+
+* miss or timeout:
+
+  * lose Venom value or downgrade next cycle
+  * immediate reset to build phase
+
+---
+
+## 5. SUCCESS
+
+* award Sting Jackpot
+* reset Venom Meter
+* next cycle begins stronger (optional escalation)
+
+---
+
+# 🔥 WHAT THIS NOW GIVES YOU (IMPORTANT)
+
+Scorpion is no longer:
+
+* routing puzzle
+* multi-state drop logic
+* directional rule memory
+
+He is now:
+
+> **charge energy → choose risk level → execute precision strike**
+

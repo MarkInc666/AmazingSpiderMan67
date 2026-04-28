@@ -1,0 +1,11 @@
+🦅 Vulture
+Mode idea: “Sky Attack”
+- upper playfield spinner value based on 3 targets 
+- timer starts when entering upper playfield first time - 60s
+- targets go from yellow, orange, red 
+- after 3 seconds of no switch hits, all 3 drop back one step R-O-Y
+- spinner value R - 25K, O - 10K, Y - 5K 
+- max 75K, min 15K per spin
+- can re-enter if exited before timer expired 
+- points scored during spins but also collected as bonus on ball end (tilting loses bonus)
+

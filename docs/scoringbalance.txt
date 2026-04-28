@@ -1,0 +1,313 @@
+Good — this is the right next step, because your biggest remaining risk is **not design anymore, it’s economy collapse** (one mode accidentally becoming the “only correct way to score”).
+
+I’m going to normalize this in a way that keeps each villain’s *identity intact* while aligning them on a shared scoring curve.
+
+---
+
+# 🧠 GLOBAL SCORING PRINCIPLES (SET THESE FIRST)
+
+Before numbers, lock these rules:
+
+### 1. Every mode must have:
+
+* **Live scoring (instant reward)**
+* **Mode payout (big moment)**
+* **Optional bonus layer (risk-based)**
+
+No mode should be *only* end-of-ball or *only* live scoring.
+
+---
+
+### 2. No mode should exceed ~2x average scoring efficiency of others
+
+Otherwise players will “farm” it and ignore the rest.
+
+---
+
+### 3. Risk must correlate with reward consistency, not just peak value
+
+High risk = more variance, not always higher total.
+
+---
+
+# ⚖️ BASE SCORING REFERENCE (IMPORTANT)
+
+Let’s define a “neutral benchmark mode”:
+
+### 🎯 Standard mode target:
+
+* 500K–1.5M per full completion (typical play segment)
+
+We’ll normalize everything around that.
+
+---
+
+# 🧩 NORMALIZED VILLAIN ECONOMIES
+
+---
+
+# 🐂 Rhino
+
+### ROLE: GREED METER / CRASH RISK
+
+## Live scoring:
+
+* moderate (pop + drops accumulation)
+
+## Jackpot:
+
+* 800K–2M depending on “rage stability”
+
+## Risk:
+
+* losing built value on overcharge
+
+### NORMALIZED ADJUSTMENT:
+
+* cap rage payout at ~2M equivalent
+* ensure crash reduces ~30–50% of built value (not all)
+
+✔ Stable high variance mode
+✔ NOT the top scoring mode (important)
+
+---
+
+# 🏖️ Sandman
+
+### ROLE: TIMING / SEQUENCE COMPLETION
+
+## Live scoring:
+
+* low–medium (50K–150K bursts)
+
+## Completion bonus:
+
+* 800K–1.5M (perfect sweep)
+
+## Risk:
+
+* missed sequence = partial payout only
+
+### NORMALIZATION:
+
+* keep average completion ≈ 1.2M
+* perfect run ≈ 1.5M max
+
+✔ Precision-based, not farmable
+✔ Good baseline economy mode
+
+---
+
+# 🦅 Vulture
+
+### ROLE: AIRBORNE SURVIVAL + END-OF-BALL BANK
+
+## Live scoring
+
+* moderate spinner income during flight bursts
+* ~25K–150K per spin equivalent depending on altitude state
+
+## Mode payout
+
+* **banked “Flight Bonus”**
+* expected range: **600K – 2.2M**
+
+## Risk
+
+* lost on tilt or drain before cashout
+
+---
+
+## NORMALIZATION ADJUSTMENT (IMPORTANT)
+
+This is one of your *highest peak modes*, so we constrain it:
+
+* reduce max realistic average to ~1.8M
+* make high end (2M+) require multiple clean flight cycles
+
+✔ Keeps it exciting
+✔ Prevents it from becoming “best scoring exploit”
+
+---
+
+# 🧪 Green Goblin
+
+### ROLE: MULTIBALL CHAOS + CHECKPOINT BANKING
+
+## Live scoring
+
+* high burst scoring (50K hits matter constantly)
+
+## Chaos bonus (banked)
+
+* **700K – 2.0M typical range**
+
+## Risk
+
+* unstable bonus loss during chaos phases
+* partial protection via saucer lock
+
+---
+
+## NORMALIZATION ADJUSTMENT
+
+Goblin is your **most volatile mode**, so:
+
+* cap average total around ~1.8M
+* ensure saucer lock only preserves *portion* of bonus (not full immunity)
+* prevent infinite farm loops
+
+✔ Keeps multiball exciting
+✔ Prevents runaway scoring inflation
+
+---
+
+# 🎭 Mysterio
+
+### ROLE: DEDUCTION + SHRINKING JACKPOT
+
+## Live scoring
+
+* moderate (50K per hit standard)
+
+## Jackpot
+
+* starts 1M
+* typically collected at **300K – 900K effective value**
+
+## Risk
+
+* value decays with mistakes
+
+---
+
+## NORMALIZATION ADJUSTMENT (VERY IMPORTANT)
+
+This is your **low-to-mid ceiling mode**, by design.
+
+* hard cap effective payout: ~1.2M max
+* average successful play: ~700K–900K
+
+✔ Prevents it from becoming weak or ignored
+✔ Keeps it a “brain mode,” not a scoring farm
+
+---
+
+# 🧲 Scorpion
+
+### ROLE: PRECISION CHARGE → COMMIT STRIKE
+
+## Live scoring
+
+* spinner builds venom (steady 10K–50K bursts)
+
+## Sting jackpot
+
+* **600K – 1.6M range**
+
+## Risk
+
+* mistimed commitment = lower multiplier cycle
+
+---
+
+## NORMALIZATION ADJUSTMENT
+
+* cap max sting at ~1.5M average
+* ensure left/right risk choice does NOT exceed Vulture/Goblin peak earnings
+
+✔ Keeps it skill-based, not exploit-based
+✔ Very stable scoring curve
+
+---
+
+# 🧠 Doctor Octopus
+
+### ROLE: SYSTEM COLLAPSE ECONOMY
+
+## Live scoring
+
+* low–moderate (arm disables: 25K–100K increments)
+
+## Jackpot multiplier system
+
+* 1x to 4x JP scaling
+
+## Expected payout
+
+* **700K – 2.0M**
+
+## Risk
+
+* breakout targets reduce multiplier
+* system instability increases pressure
+
+---
+
+## NORMALIZATION ADJUSTMENT (CRITICAL)
+
+Doc Ock is currently a **high ceiling mode**, so:
+
+### RULE:
+
+* average play should resolve around **1.2M – 1.6M**
+* 2M+ only from optimal containment cycles
+
+✔ Keeps him competitive but not dominant
+✔ Prevents multiplier snowballing
+
+---
+
+# 📊 GLOBAL ECONOMY BALANCE (RESULT)
+
+After normalization, your roster now sits like this:
+
+| Villain  | Avg payout | Role                    |
+| -------- | ---------- | ----------------------- |
+| Rhino    | 900K–1.8M  | greed gamble            |
+| Sandman  | 800K–1.5M  | precision timing        |
+| Vulture  | 900K–1.8M  | survival banking        |
+| Goblin   | 900K–1.8M  | chaos multiball         |
+| Mysterio | 500K–1.2M  | deduction mode          |
+| Scorpion | 800K–1.5M  | commit strike           |
+| Doc Ock  | 1.0M–1.6M  | system control collapse |
+
+---
+
+# 🧠 WHAT THIS ACHIEVES
+
+## 1. No single “best farm mode”
+
+Every villain is situationally optimal.
+
+## 2. Clear skill identity differences
+
+* reflex (Sandman / Scorpion)
+* risk greed (Rhino / Goblin / Vulture)
+* cognitive (Mysterio)
+* system control (Doc Ock)
+
+## 3. Natural progression feel
+
+Players don’t just chase points — they chase *styles*
+
+---
+
+# ⚠️ FINAL IMPORTANT WARNING
+
+Your biggest remaining risk is NOT numbers anymore.
+
+It is:
+
+> players discovering one “safe consistency path” across modes
+
+So next step after this should be:
+
+## ensuring no mode has “low risk infinite loop behavior”
+
+---
+
+If you want, next I can:
+
+* run a **dominance simulation (which mode players will spam first)**
+* or help you design the **Kingpin wizard mode so it properly sits above this economy without breaking it**

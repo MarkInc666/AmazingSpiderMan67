@@ -1,73 +1,37 @@
 VILLAINS (1967 SERIES ONLY)
+(see villian mode docs)
 
 🪨 RHINO
 Mode: Rhino Bash
-
-** build Rhino's rage (pops), build JP value by smashing targets, collect JPs
-** builld anger as high as possible, then cash before he loses control
-** collect JP 3 times
-** after 3 successful collections = Rhino defeated
-
+** build Rhino's rage (pops), build JP value by smashing targets, collect JPs at Left Upper rollover
 
 🏖️ Sandman
-Mode idea: “Shifting Sands” - moving drops
-- raise right drops, the leftmost flashing, then drop one at a time every 3 seconds (3 times L-R or R-L?)
-- if next drop already down, move R 
-- points - flashing one worth 50K, others 5K.  In sequence L to R will be 250K.
-
+Mode idea: “Shifting Sands” 
+** moving drops
 
 🦅 Vulture
 Mode idea: “Sky Attack”
-- upper playfield spinner value based on 3 targets 
-- timer starts when entering upper playfield - 60s
-- targets go from off to yellow, orange, red - after 3 seconds, change back R-O-Y-Off
-- spinner value R - 50K, O - 25K, Y - 10K, Off - 1K 
-- max 150K, min 3K per spin   
+** upper playfield spinner value based on 3 targets 
 
 
 ⚡ Electro
 Mode idea: “Power Surge”
-- traveling shots - like electricity - 5 locations - light shows trace movement
-- 5 shot locations -> Left web target,  spinner , (any drop at left bank),  upper web target, (any drop at right bank),
-- Timed 5? seconds 
-  - if not hit, LED sparks out and shot appears somewhere else that has not been disabled 
-  - if hit, collect JP (super JP for 5th spark) and shot disables
-  - shot moves in pattern left to right, until all shots disabled, or last shot times out
-
-
-🎭 Mysterio
-Mode idea: “Illusion Trial”
-- like find Barb - stranger things
-- 10 shots lit, one has the super jackpot 
-- super worth 1M , each incorrect shot worth 50K (deducts 100K from super)
-
-
-🧲 Scorpion
-Mode idea: “Sting Sequence”
-- 3 chances to hit a drop target
-- upper always available (gate open)
-- spinners increase JP 
-- go to upper to hit spinner and exit left or right
-- exit upper playfield on the right to get to the bottom right flipper
-  this will make the left drops reset and auto drop 2 of the targets
-  - hit remaining drop for JP 
-- exit upper playfield on the left to get to the upper left flipper
-  this will make the right drops reset and auto drop 4 of the targets
-  - hit remaining drop for JP 
-- if drops not hit within 5 seconds, no JP, advance to next try. 3 tries 
-
-
-
+** moving shot through 5 locations
 
 
 🧪 Green Goblin
 Mode idea: “Goblin Chaos Multiball”
-- 2 ball MB
-- build up a Chaos bonus by hitting flashing shots, solid shots decrease bonus
-- 3 Random shots begin to flash, after 5 seconds they go solid, 
-- if hit or after 3 seconds solid, shot moves  
-- bonus collected end of ball
-- ball in saucer held there and another ball launched
+- build up a Chaos bonus by hitting flashing shots, avoid solid lit shots which decrease bonus
+
+
+🎭 Mysterio
+Mode idea: “Illusion Trial”
+* like find Barb - stranger things
+
+
+🧲 Scorpion
+Mode idea: “Sting Sequence”
+- go to upper to hit spinner and exit left or right, hit single drop target
 
 
 
@@ -84,12 +48,6 @@ Mode idea: “Tentacle Lockdown”
 
 
 
-Plutonians
-Mode idea: “Thaw the Icebergs”
-- Pop bumpers blue
-- turn them red 
-
-
 👑 Kingpin
 Mode idea: “Kingpin Takeover - Wiz Mode”
 Multi-stage boss fight
@@ -100,6 +58,15 @@ All previous villain mechanics remix
 
 
 🧪 SECONDARY 1967 VILLAINS (MINI-MODES)
+
+Use 2 web target timed sequence with the impostor spider-man pointing at each Other
+
+
+Plutonians
+Mode idea: “Thaw the Icebergs”
+- Pop bumpers blue
+- turn them red 
+
 
 🧬 Lizard Hurry Up
 Rescue / cure mechanic
@@ -148,6 +115,331 @@ Multiball triggers
 1 ultimate wizard: “Sinister Chaos Remix” (all systems combined)
 
 
+
+Good — this is the right point to do it. Your individual modes are strong now. The remaining risk isn’t creativity anymore, it’s **system overlap, scoring inflation, and player comprehension across modes**.
+
+I’ll review this like a production designer would: clarity, uniqueness, risk type, and whether anything is stepping on another mode’s identity.
+
+---
+
+# 🕷️ FULL VILLAIN SYSTEM REVIEW (Spider-Man 1967 Pinball Set)
+
+## 🧠 Global check (important)
+
+You’ve successfully built a **risk-economy roster**, not just “hit lit shots” modes.
+
+Each villain now represents a different psychological pressure. That’s rare in homebrew design — and it’s good.
+
+But we need to make sure:
+
+* no two modes feel like “build meter → cash jackpot”
+* no two modes depend on delayed end-of-ball scoring in the same way
+* no scoring loop dominates others (Goblin + Doc Ock are the main risks here)
+
+---
+
+# 🧩 1. Rhino
+
+### Status: VERY STRONG
+
+## Core:
+
+* pop bumpers = rage buildup
+* drops = collect / stabilize / risk crash
+* “overcharge then cash” economy
+
+## Identity:
+
+> greed escalation with crash risk
+
+## Risk overlap:
+
+None serious — this is your only true “push your luck meter” mode.
+
+## Verdict:
+
+✔ Keep as-is
+✔ Clear identity
+✔ Easy to read in play
+
+---
+
+# 🧩 2. Sandman
+
+### Status: STRONG (slight tuning watch)
+
+## Core:
+
+* moving drop bank
+* sequence completion rewards
+* perfect sweep bonus
+
+## Identity:
+
+> timing + pattern completion under motion
+
+## Risk overlap:
+
+Slight overlap with Scorpion if Scorpion had stayed complex — but you fixed that.
+
+## Verdict:
+
+✔ Good
+⚠ Just ensure movement stays visually readable at speed
+
+---
+
+# 🧩 3. Vulture
+
+### Status: VERY STRONG
+
+## Core:
+
+* upper PF entry cycles
+* flight bursts
+* survival-based banked bonus
+* end-of-ball vulnerability
+
+## Identity:
+
+> aerial risk banking + survival persistence
+
+## Risk overlap:
+
+None — this is your ONLY “end-of-ball vulnerable bank” system now.
+
+## Verdict:
+
+✔ Excellent differentiation
+✔ One of your best-designed modes
+
+---
+
+# 🧩 4. Green Goblin
+
+### Status: STRONG BUT HIGH RISK COMPLEXITY
+
+## Core:
+
+* 2-ball multiball chaos
+* flashing/solid shot states
+* saucer “chaos lock”
+* end-of-ball bonus
+
+## Identity:
+
+> chaotic scoring under instability + checkpoint preservation
+
+## Risk overlap:
+
+⚠ overlaps slightly with:
+
+* Doc Ock (progress + instability loop)
+* Mysterio (information reduction pressure if not careful)
+
+## Main risk:
+
+Goblin is **closest to “system overload” mode**
+
+## Fix requirement:
+
+* ensure shot rules stay visually simple
+* avoid adding more state layers
+
+## Verdict:
+
+✔ Good concept
+⚠ Needs strict simplicity discipline
+
+---
+
+# 🧩 5. Mysterio
+
+### Status: VERY STRONG (cleanest puzzle mode now)
+
+## Core:
+
+* 10 shots
+* hidden jackpot
+* clue system (directional intuition)
+* shrinking value
+
+## Identity:
+
+> deduction under pressure
+
+## Risk overlap:
+
+None — this is your ONLY true “information game” mode.
+
+## Verdict:
+
+✔ Excellent thematic uniqueness
+✔ Strong cognitive gameplay contrast vs others
+
+---
+
+# 🧩 6. Scorpion
+
+### Status: VERY STRONG (after simplification)
+
+## Core:
+
+* spinner builds Venom
+* choose LEFT/RIGHT exit
+* hit single precise drop target
+* risk/reward exit choice
+
+## Identity:
+
+> charge → commit → precision execution
+
+## Risk overlap:
+
+None — very clean “decision shot” mode
+
+## Verdict:
+
+✔ Great now
+✔ Keep it minimal (don’t re-add complexity)
+
+---
+
+# 🧩 7. Doctor Octopus
+
+### Status: STRONG BUT MOST COMPLEX SYSTEM
+
+## Core:
+
+* 4 arms = system stability
+* lock arms → increase multiplier
+* web targets = jackpot collection
+* jackpot collection spawns breakout targets
+* breakout frees arms (progress toward mode end)
+
+## Identity:
+
+> success destabilizes system (controlled collapse economy)
+
+## Risk overlap:
+
+⚠ MOST IMPORTANT WATCH ITEM:
+
+* Goblin also has “instability + scoring pressure”
+* BUT Goblin = chaos reaction
+* Doc Ock = structured system collapse
+
+So they are different, but close in *feel intensity*
+
+## Verdict:
+
+✔ Very good design
+⚠ Needs strict cap on breakout targets (important)
+
+---
+
+# 🧠 GLOBAL SYSTEM HEALTH CHECK
+
+## You now have 4 distinct economy types:
+
+### 1. GREED RISK (Rhino)
+
+* overbuild → crash
+
+### 2. TIMING CONTROL (Sandman / Scorpion)
+
+* precision execution
+
+### 3. SYSTEM SURVIVAL (Vulture / Doc Ock / Goblin)
+
+* persistence under instability
+
+### 4. INFORMATION CONTROL (Mysterio)
+
+* deduction under uncertainty
+
+This is actually a **very strong structural spread**.
+
+---
+
+# 🚨 MAIN BALANCE RISKS (IMPORTANT)
+
+## 1. END-OF-BALL DEPENDENCE
+
+You currently have multiple modes with:
+
+* banked end-of-ball rewards (Vulture, Goblin)
+
+⚠ Risk: player feels “nothing matters until end”
+
+### Fix:
+
+ensure every mode also has **strong live scoring identity**
+
+You’re mostly already doing this — just keep it consistent.
+
+---
+
+## 2. SYSTEM OVERLAP (Doc Ock + Goblin)
+
+They both involve:
+
+* escalating instability
+* player managing worsening conditions
+
+Difference is:
+
+* Goblin = chaos reaction (fast, noisy, multiball)
+* Doc Ock = structured collapse (controlled, mechanical)
+
+Just maintain that separation visually and mechanically.
+
+---
+
+## 3. COMPLEXITY CREEP
+
+Your biggest strength is also the risk:
+
+> every mode has a “system”
+
+So you must ensure:
+
+* no mode adds a second system layer later
+* no hidden secondary rules creep in
+
+---
+
+# 🧩 FINAL ROSTER SUMMARY
+
+| Villain  | Role                         |
+| -------- | ---------------------------- |
+| Rhino    | greed meter survival         |
+| Sandman  | moving timing puzzle         |
+| Vulture  | aerial survival banking      |
+| Goblin   | chaotic multiball checkpoint |
+| Mysterio | deduction illusion           |
+| Scorpion | precision charge/commit      |
+| Doc Ock  | system collapse economy      |
+
+---
+
+# 🧠 FINAL VERDICT
+
+You are actually very close to something unusual for a pinball project:
+
+> a full roster of **distinct psychological gameplay systems**
+
+Not just modes.
+
+That’s why this is starting to feel like a *designed ecosystem*, not a set of features.
+
+---
+
+If you want next step, the most valuable thing now is:
+
+## 👉 scoring normalization + difficulty pacing map
+
+so no villain unintentionally becomes the “always optimal choice.”
 
 
 So your design goal is:

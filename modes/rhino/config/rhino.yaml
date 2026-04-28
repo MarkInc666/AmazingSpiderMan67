@@ -1,6 +1,118 @@
 #config_version=6
-#rhino mode config file
+# RHINO MODE - RAGE BUILD
+
 mode:
-  start_events: start_mode_rhino
-  stop_events: stop_mode_rhino
-  priority: 500
+  start_events: rhino_mode_start
+  stop_events: rhino_mode_stop
+  priority: 200
+
+# -------------------------------------------------
+# VARIABLES
+# -------------------------------------------------
+variables:
+  rage_level:
+    initial_value: 0
+    persist: false
+
+  rhino_jp:
+    initial_value: 0
+    persist: false
+
+# -------------------------------------------------
+# SHOTS / SWITCHES
+# -------------------------------------------------
+shots:
+  left_rollover:
+    switch: s_inlane_m_l
+
+  pop_bumpers:
+    hit_events: bumper_hit
+
+  # todo list all drop targets
+  drop_targets:
+    switch: s_drop_target_hit
+
+# -------------------------------------------------
+# POP BUMPERS = RAGE BUILD ENGINE
+# -------------------------------------------------
+event_player:
+  bumper_hit:
+    - add_rage_small
+
+  s_drop_target_hit:
+    - add_rage_large
+
+  s_left_rollover_active:
+    - collect_rhino_jp
+    - reset_rhino_jp
+
+# -------------------------------------------------
+# RAGE BUILD LOGIC
+# -------------------------------------------------
+variable_player:
+  add_rage_small:
+    rage_level:
+      int: 5
+      action: add
+    rhino_jp:
+      int: 2000
+      action: add
+
+  add_rage_large:
+    rage_level:
+      int: 10
+      action: add
+    rhino_jp:
+      int: 5000
+      action: add
+
+# -------------------------------------------------
+# RAGE OVERFLOW (CRASH MECHANIC)
+# -------------------------------------------------
+logic_blocks:
+  - logic_block:
+      name: rage_check
+      type: compare
+      source: device.variables.rage_level
+      operator: greater_than
+      value: 100
+      output_event: rhino_crash
+
+event_player:
+  rhino_crash:
+    - reset_rage
+
+variable_player:
+  reset_rage:
+    rage_level:
+      int: 0
+      action: set
+    rhino_jp:
+      int: 0
+      action: multiply
+      multiplier: 0.5
+
+# -------------------------------------------------
+# JP COLLECTION
+# -------------------------------------------------
+score:
+  collect_rhino_jp:
+    score: device.variables.rhino_jp
+    bonus: true
+
+variable_player:
+  reset_rhino_jp:
+    rhino_jp:
+      int: 0
+      action: set
+
+# -------------------------------------------------
+# OPTIONAL FEEDBACK HOOKS
+# -------------------------------------------------
+show_player:
+  rage_level:
+    - show_rage_meter
+
+sound_player:
+  rhino_crash:
+    crash_sound   

@@ -1,0 +1,121 @@
+🎭 Mysterio
+Mode idea: “Illusion Trial”
+
+- like find Barb - stranger things
+- 10 shots lit, one has the super jackpot 
+- super worth 1M , each incorrect shot worth 50K (deducts 100K from super)
+
+
+
+Because Mysterio is a mode where the *callouts sell the illusion mechanic.*
+
+Using Spider-Man intuition instead of generic “left/right hint” makes it feel integrated into theme instead of abstract puzzle logic.
+
+---
+
+# 🎭 MYSTERIO — “ILLUSION TRIAL” FINAL SHAPE
+
+## Core fiction:
+
+Mysterio clouds reality.
+
+Spider-Man uses **Spidey Sense** to narrow where the real threat is.
+
+That is a perfect narrative wrapper.
+
+---
+
+# 🔊 CLUE CALLOUT STYLE
+
+Instead of sterile clues:
+
+* “Spidey Sense tells me it’s to the right…”
+* “Something feels wrong on the left…”
+* “The danger isn’t upstairs…”
+* “My instincts say stay low…”
+* “The real threat is near…”
+
+Now each clue feels like:
+
+> Spider-Man trying to see through the illusion.
+
+Much stronger.
+
+---
+
+# FINALIZED RULE FLOW
+
+## Mode Start
+
+* 10 shots lit
+* one hidden Super Illusion Jackpot
+* jackpot = 1M
+
+---
+
+## Wrong standard shot
+
+* 50K live score
+* jackpot -100K
+
+---
+
+## Wrong clue shot
+
+* 50K live score
+* jackpot -25K
+* Spidey Sense directional clue given
+
+Examples:
+
+* right / left
+* upper / lower
+* near / far
+* bank / lane region
+
+---
+
+## Correct shot
+
+* collect current jackpot
+* Mysterio defeated
+
+---
+
+## Jackpot floor
+
+* minimum 300K
+
+---
+
+# WHY THIS MODE NOW WORKS
+
+Before:
+random hidden award.
+
+Now:
+
+> narrowing field through intuition while value slips away.
+
+Player feels:
+
+* “I know more than I did”
+* “but I’m losing money while searching”
+
+That is exactly the tension we needed.
+
+---
+
+# EXTRA NICE TOUCH (RECOMMENDED)
+
+Every clue shot could also briefly:
+
+* dim eliminated areas
+  or
+* pulse hinted region
+
+Not enough to reveal, just reinforce the spoken clue.
+
+This helps players in noisy gameplay.
+
+---

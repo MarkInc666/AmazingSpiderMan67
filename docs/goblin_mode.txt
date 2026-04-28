@@ -1,0 +1,80 @@
+# 🧪 GOBLIN CHAOS MULTIBALL
+
+### Start:
+
+* 2-ball multiball begins
+* Chaos Bonus = 0
+* Chaos Lock = 0
+
+### During Chaos:
+
+* 3 random shots flashing
+* after 5 sec flashing → solid
+* after 3 sec solid → off/new random flashing set
+
+### Shot scoring:
+
+#### flashing hit:
+
+* 50K live score
+* +50K Chaos Bonus
+
+#### solid hit:
+
+* penalty shot
+* only 2K live score
+* deduct 50K from Chaos Bonus
+* but never below Chaos Lock
+
+---
+
+# 🧠 SAUCER = CHAOS STABILIZER
+
+When either ball enters saucer:
+
+* current Chaos Bonus becomes `Chaos Lock`
+* held ball stays for 10 sec
+* all currently active scoring shots flash safely
+* no penalty shots during hold window
+* player gets controlled single-ball harvest time
+
+Then:
+
+* saucer eject
+* random chaos pattern resumes
+
+Each time saucer lock occurs:
+
+* next hold time decreases by 1 second down to min 5 seconds
+* flashing duration shrinks from 5 sec to 4 sec to 3 sec
+
+> Goblin momentarily cornered, then escapes.
+
+Players understand:
+“I secured my gains, now I can push higher.”
+
+---
+
+### Chaos Bonus:
+
+* continuously vulnerable above Chaos Lock
+* paid at end of ball
+
+---
+
+
+
+
+# SCORING ARC EXAMPLE
+
+* build Chaos to 300K
+* saucer locks 300K
+* controlled 10 sec builds to 550K
+* eject chaos resumes
+* solid hits knock back to 450K but not below 300K
+* build to 700K
+* drain one ball, continue mode/end ball eventually collect
+
+This is compelling.
+
+---

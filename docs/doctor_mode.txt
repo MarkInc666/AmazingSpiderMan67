@@ -1,0 +1,204 @@
+🧠 Doctor Octopus
+Mode idea: “Tentacle Lockdown”
+- Mechanical arms = 4 in/out lanes
+- start with one arm disabled
+- slow dim pulsing lights, solid if disabled 
+- flippers rotate lights 
+- disable an arm (collect small points) (lights the JP shot)
+- collect JP (x number of disabled arms) at web targets 
+- collecting JP adds another breakout target 
+- breakout target releases an arm
+- after 2 jackpots, timed arm releases - every 10 seconds arm releases
+- all arms released - mode over
+
+
+
+
+
+# 🧠 Doctor Octopus 
+
+> each time player collects a jackpot, a new “breakout target” appears that can free an arm
+
+* cash in = more danger added
+* delay cash in = safer board, smaller reward pressure
+
+---
+
+# ⚙️ CLEAN RULE MODEL
+
+## ARM STATES
+
+* Locked (player control / scoring state)
+* Free (Doc Ock escaping)
+
+---
+
+## CORE LOOP
+
+### 1. LOCK ARMS
+
+* hit arm → locks it
+* increases JP multiplier
+
+---
+
+### 2. JACKPOT COLLECTION (WEB TARGETS)
+
+When player collects JP:
+
+* score awarded
+* AND:
+
+  > a BREAKOUT TARGET is added
+
+This is the key change.
+
+---
+
+## 3. BREAKOUT TARGET SYSTEM
+
+### Each collected jackpot:
+
+* adds 1 active “breakout shot”
+* each breakout shot can free 1 locked arm
+
+So:
+
+> more scoring = more instability in the system
+
+This is very thematic and very good design.
+
+---
+
+# 🧠 IMPORTANT BALANCE RULE (CRITICAL)
+
+You must cap this or it will spiral.
+
+## Recommended limits:
+
+* max 2–3 active breakout targets at once
+
+Otherwise:
+
+* board becomes chaos too quickly
+* players lose ability to plan
+
+---
+
+# 🎯 HOW THE PLAYER EXPERIENCES IT
+
+## EARLY MODE
+
+* few locked arms
+* low JP multiplier
+* no breakout pressure yet
+
+---
+
+## MID MODE
+
+* player starts collecting jackpots
+* breakout targets appear
+* tension rises: “my scoring is making this harder”
+
+---
+
+## LATE MODE
+
+* high multiplier possible
+* but multiple breakout targets threaten containment
+* player must choose:
+
+  * cash now (risk adding chaos)
+  * or wait for safer window
+
+---
+
+# 🔥 WHY THIS WORKS WELL
+
+You’ve created a loop where:
+
+> success creates instability
+
+That is perfect for Doctor Octopus.
+
+It also differentiates him strongly from your other villains:
+
+| Villain  | Economy type                     |
+| -------- | -------------------------------- |
+| Rhino    | greed explosion control          |
+| Sandman  | moving timing chase              |
+| Vulture  | airborne survival banking        |
+| Goblin   | multiball chaos checkpoint       |
+| Mysterio | deduction/illusion               |
+| Scorpion | precision charge/strike          |
+| Doc Ock  | success → system destabilization |
+
+---
+
+# ⚠️ ONE IMPORTANT DESIGN WARNING
+
+Do NOT let breakout targets:
+
+* feel optional or ignorable
+
+If players can just “ignore them safely,” the tension collapses.
+
+They must feel like:
+
+> “I need to deal with this eventually or I lose control”
+
+But not so urgent that they dominate everything.
+
+---
+
+# 🧩 SUGGESTED TUNING
+
+To keep it fair:
+
+* breakout target has short but clear window
+* freeing an arm slightly reduces JP multiplier (so there’s real cost)
+* but does NOT instantly kill the mode
+
+This keeps decisions meaningful instead of punitive.
+
+---
+
+# FINAL STRUCTURE (CLEAN VERSION)
+
+## LOCK ARMS
+
+* build multiplier
+
+## CASH JACKPOT
+
+* web target collects JP
+
+## ON CASH:
+
+* spawn breakout target
+
+## BREAKOUT TARGET:
+
+* frees one locked arm
+* reduces multiplier slightly
+* pushes mode toward escape/end state
+
+## END CONDITION:
+
+* all arms free → Doc Ock escapes → mode ends
+
+---
+
+# RESULT
+
+This version is now:
+
+* coherent
+* theme-driven
+* risk-reward based on *success*, not failure
+* and still readable under pinball speed
+
+---
+
+If you want next step, we should probably do a **full “mode overlap stress test” across all villains**, because now Doc Ock introduces the last major economy type: *progress that creates instability*.
