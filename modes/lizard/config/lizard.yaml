@@ -1,6 +1,239 @@
 #config_version=6
-#lizard mode config file
+
 mode:
   start_events: start_mode_lizard
-  stop_events: stop_mode_lizard
-  priority: 500
+  stop_events:
+    - lizard_mode_complete
+    - ball_ended
+  priority: 300
+
+variable_player:
+
+  mode_lizard_started:
+    lizard_serum_ready:
+      action: set
+      int: 0
+    lizard_deliveries:
+      action: set
+      int: 0
+    lizard_delivery_value:
+      action: set
+      int: 1000000
+
+  lizard_serum_collected:
+    score: 50000
+    lizard_serum_ready:
+      action: set
+      int: 1
+    lizard_delivery_value:
+      action: set
+      int: 1000000
+
+  lizard_delivery_tick:
+    lizard_delivery_value: -100000
+
+  lizard_serum_delivered:
+    score: current_player.lizard_delivery_value
+    lizard_deliveries: 1
+    lizard_serum_ready:
+      action: set
+      int: 0
+
+  lizard_serum_expired:
+    lizard_serum_ready:
+      action: set
+      int: 0
+    lizard_delivery_value:
+      action: set
+      int: 1000000
+
+switch_player:
+
+  # Collect serum
+  s_star_rollover_active:
+    lizard_serum_collect_request
+
+  # Delivery 1
+  s_web_target_left_active:
+    lizard_left_web_deliver_request
+
+  # Delivery 2
+  s_web_target_top_active:
+    lizard_center_web_deliver_request
+
+conditional_events:
+
+  lizard_serum_collect_request:
+    - condition: current_player.lizard_serum_ready == 0
+      events:
+        - lizard_serum_collected
+        - lizard_light_delivery_target
+        - lizard_delivery_timer_start
+
+  lizard_left_web_deliver_request:
+    - condition: current_player.lizard_serum_ready == 1 and current_player.lizard_deliveries == 0
+      events:
+        - lizard_serum_delivered
+        - lizard_after_delivery
+
+  lizard_center_web_deliver_request:
+    - condition: current_player.lizard_serum_ready == 1 and current_player.lizard_deliveries == 1
+      events:
+        - lizard_serum_delivered
+        - lizard_after_delivery
+
+  lizard_light_delivery_target:
+    - condition: current_player.lizard_deliveries == 0
+      events: lizard_light_left_web
+    - condition: current_player.lizard_deliveries == 1
+      events: lizard_light_center_web
+
+  lizard_after_delivery:
+    - condition: current_player.lizard_deliveries >= 2
+      events:
+        - lizard_delivery_timer_stop
+        - lizard_mode_complete
+    - condition: current_player.lizard_deliveries < 2
+      events:
+        - lizard_delivery_timer_stop
+        - lizard_light_serum_location
+
+  lizard_delivery_tick_check:
+    - condition: device.timers.lizard_delivery_timer.ticks <= 10 and device.timers.lizard_delivery_timer.ticks >= 3
+      events:
+        - lizard_delivery_tick
+
+event_player:
+
+  mode_lizard_started:
+    - lizard_light_serum_location
+
+  lizard_serum_expired:
+    - lizard_delivery_timer_stop
+    - lizard_light_serum_location
+    - lizard_serum_expired_show
+
+timers:
+
+  lizard_delivery_timer:
+    start_value: 12
+    end_value: 0
+    direction: down
+    tick_interval: 1s
+    control_events:
+      - event: lizard_delivery_timer_start
+        action: restart
+      - event: lizard_delivery_timer_stop
+        action: stop
+    tick_events:
+      - lizard_delivery_tick_check
+    complete_events:
+      - lizard_serum_expired
+
+show_player:
+
+  lizard_light_serum_location:
+    lizard_serum_star_show:
+      loops: -1
+    lizard_left_web_show:
+      action: stop
+    lizard_center_web_show:
+      action: stop
+
+  lizard_serum_collected:
+    lizard_serum_star_show:
+      action: stop
+
+  lizard_light_left_web:
+    lizard_left_web_show:
+      loops: -1
+    lizard_center_web_show:
+      action: stop
+
+  lizard_light_center_web:
+    lizard_center_web_show:
+      loops: -1
+    lizard_left_web_show:
+      action: stop
+
+  lizard_serum_delivered:
+    lizard_left_web_show:
+      action: stop
+    lizard_center_web_show:
+      action: stop
+    lizard_delivery_success_show:
+      loops: 1
+
+  lizard_serum_expired_show:
+    lizard_left_web_show:
+      action: stop
+    lizard_center_web_show:
+      action: stop
+    lizard_serum_expired_lights:
+      loops: 1
+
+  lizard_mode_complete:
+    lizard_serum_star_show:
+      action: stop
+    lizard_left_web_show:
+      action: stop
+    lizard_center_web_show:
+      action: stop
+    lizard_complete_show:
+      loops: 1
+
+shows:
+
+  lizard_serum_star_show:
+    - duration: 300ms
+      lights:
+        l_star: green
+    - duration: 300ms
+      lights:
+        l_star: off
+
+  lizard_left_web_show:
+    - duration: 250ms
+      lights:
+        l_left_web_target: green
+    - duration: 250ms
+      lights:
+        l_left_web_target: white
+
+  lizard_center_web_show:
+    - duration: 250ms
+      lights:
+        l_mid_spider_target: green
+    - duration: 250ms
+      lights:
+        l_mid_spider_target: white
+
+  lizard_delivery_success_show:
+    - duration: 150ms
+      lights:
+        l_left_web_target: white
+        l_mid_spider_target: white
+    - duration: 150ms
+      lights:
+        l_left_web_target: green
+        l_mid_spider_target: green
+
+  lizard_serum_expired_lights:
+    - duration: 150ms
+      lights:
+        l_star: red
+        l_left_web_target: red
+        l_mid_spider_target: red
+    - duration: 150ms
+      lights:
+        l_star: off
+        l_left_web_target: off
+        l_mid_spider_target: off
+
+  lizard_complete_show:
+    - duration: 200ms
+      lights:
+        gi: green
+    - duration: 200ms
+      lights:
+        gi: white

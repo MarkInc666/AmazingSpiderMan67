@@ -1,9 +1,0 @@
-#config_version=6
-#qualifying mode config file
-mode:
-  start_events: ball_started
-  priority: 100
-
-shots:
-  upper_entrance:
-    switches: s_upper_entrance_opto

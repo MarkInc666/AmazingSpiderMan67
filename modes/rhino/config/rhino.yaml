@@ -1,118 +1,641 @@
 #config_version=6
-# RHINO MODE - RAGE BUILD
 
 mode:
-  start_events: rhino_mode_start
-  stop_events: rhino_mode_stop
-  priority: 200
+  start_events: start_mode_rhino_bash
+  stop_events:
+    - rhino_bash_complete
+    - ball_ended
+  priority: 300
 
-# -------------------------------------------------
-# VARIABLES
-# -------------------------------------------------
-variables:
-  rage_level:
-    initial_value: 0
-    persist: false
-
-  rhino_jp:
-    initial_value: 0
-    persist: false
-
-# -------------------------------------------------
-# SHOTS / SWITCHES
-# -------------------------------------------------
-shots:
-  left_rollover:
-    switch: s_inlane_m_l
-
-  pop_bumpers:
-    hit_events: bumper_hit
-
-  # todo list all drop targets
-  drop_targets:
-    switch: s_drop_target_hit
-
-# -------------------------------------------------
-# POP BUMPERS = RAGE BUILD ENGINE
-# -------------------------------------------------
-event_player:
-  bumper_hit:
-    - add_rage_small
-
-  s_drop_target_hit:
-    - add_rage_large
-
-  s_left_rollover_active:
-    - collect_rhino_jp
-    - reset_rhino_jp
-
-# -------------------------------------------------
-# RAGE BUILD LOGIC
-# -------------------------------------------------
 variable_player:
-  add_rage_small:
-    rage_level:
-      int: 5
-      action: add
-    rhino_jp:
+
+  mode_rhino_bash_started:
+    rhino_rage_stage:
+      action: set
+      int: 1
+    rhino_pops:
+      action: set
+      int: 0
+    rhino_jackpots:
+      action: set
+      int: 0
+    rhino_jackpot_base:
+      action: set
+      int: 50000
+    rhino_jackpot_value:
+      action: set
+      int: 50000
+    rhino_add_value:
+      action: set
       int: 2000
-      action: add
 
-  add_rage_large:
-    rage_level:
-      int: 10
-      action: add
-    rhino_jp:
+  rhino_pop_hit:
+    score: 10000
+    rhino_pops: 1
+
+  rhino_smash_hit:
+    score: 25000
+    rhino_jackpot_value: current_player.rhino_add_value
+
+  rhino_jackpot_collect:
+    score: current_player.rhino_jackpot_value
+    rhino_jackpots: 1
+
+  rhino_crash:
+    rhino_jackpot_value:
+      action: set
+      int: current_player.rhino_jackpot_base
+    rhino_rage_stage:
+      action: set
+      int: 2
+    rhino_pops:
+      action: set
+      int: 2
+    rhino_add_value:
+      action: set
       int: 5000
-      action: add
 
-# -------------------------------------------------
-# RAGE OVERFLOW (CRASH MECHANIC)
-# -------------------------------------------------
-logic_blocks:
-  - logic_block:
-      name: rage_check
-      type: compare
-      source: device.variables.rage_level
-      operator: greater_than
-      value: 100
-      output_event: rhino_crash
+  rhino_set_stage_2:
+    rhino_rage_stage:
+      action: set
+      int: 2
+    rhino_add_value:
+      action: set
+      int: 5000
+
+  rhino_set_stage_3:
+    rhino_rage_stage:
+      action: set
+      int: 3
+    rhino_add_value:
+      action: set
+      int: 15000
+
+  rhino_set_stage_4:
+    rhino_rage_stage:
+      action: set
+      int: 4
+    rhino_add_value:
+      action: set
+      int: 50000
+
+  rhino_set_stage_5:
+    rhino_rage_stage:
+      action: set
+      int: 5
+    rhino_add_value:
+      action: set
+      int: 100000
+
+  rhino_set_base_100k:
+    rhino_jackpot_base:
+      action: set
+      int: 100000
+    rhino_jackpot_value:
+      action: set
+      int: 100000
+
+  rhino_set_base_150k:
+    rhino_jackpot_base:
+      action: set
+      int: 150000
+    rhino_jackpot_value:
+      action: set
+      int: 150000
+
+  rhino_drop_to_stage_4:
+    rhino_rage_stage:
+      action: set
+      int: 4
+    rhino_pops:
+      action: set
+      int: 7
+    rhino_add_value:
+      action: set
+      int: 50000
+
+  rhino_drop_to_stage_3:
+    rhino_rage_stage:
+      action: set
+      int: 3
+    rhino_pops:
+      action: set
+      int: 4
+    rhino_add_value:
+      action: set
+      int: 15000
+
+  rhino_drop_to_stage_2:
+    rhino_rage_stage:
+      action: set
+      int: 2
+    rhino_pops:
+      action: set
+      int: 2
+    rhino_add_value:
+      action: set
+      int: 5000
+
+  rhino_drop_to_stage_1:
+    rhino_rage_stage:
+      action: set
+      int: 1
+    rhino_pops:
+      action: set
+      int: 0
+    rhino_add_value:
+      action: set
+      int: 2000
+
+switch_player:
+
+  s_pop_left_active:
+    rhino_pop_hit
+    rhino_check_rage_stage
+
+  s_pop_right_active:
+    rhino_pop_hit
+    rhino_check_rage_stage
+
+  # Rhino Smash switches
+  s_left_drops_1_active: rhino_smash_hit
+  s_left_drops_2_active: rhino_smash_hit
+  s_left_drops_3_active: rhino_smash_hit
+
+  s_right_drops_1_active: rhino_smash_hit
+  s_right_drops_2_active: rhino_smash_hit
+  s_right_drops_3_active: rhino_smash_hit
+  s_right_drops_4_active: rhino_smash_hit
+  s_right_drops_5_active: rhino_smash_hit
+
+  s_web_target_left_active: rhino_smash_hit
+  s_web_target_top_active: rhino_smash_hit
+
+  s_saucer_1_active: rhino_smash_hit
+  s_saucer_2_active: rhino_smash_hit
+  s_saucer_3_active: rhino_smash_hit
+
+  s_web_spinner_active: rhino_smash_hit
+  s_trispinner_opto_active: rhino_smash_hit
+
+  s_upper_target_left_active: rhino_smash_hit
+  s_upper_target_center_active: rhino_smash_hit
+  s_upper_target_right_active: rhino_smash_hit
+
+  s_upper_exit_left_opto_active: rhino_smash_hit
+  s_upper_exit_right_opto_active: rhino_smash_hit
+
+  s_inlane_a_active: rhino_smash_hit
+  s_inlane_b_active: rhino_smash_hit
+
+  # Left Middle B lane jackpot collect
+  s_inlane_m_l_active:
+    rhino_jackpot_collect
+    rhino_after_jackpot_collect
 
 event_player:
+
+  mode_rhino_bash_started:
+    - rhino_stage_1
+    - rhino_light_jackpot_collect
+
+  rhino_stage_1:
+    - rhino_show_rage_1
+
+  rhino_stage_2:
+    - rhino_show_rage_2
+
+  rhino_stage_3:
+    - rhino_show_rage_3
+
+  rhino_stage_4:
+    - rhino_show_rage_4
+    - rhino_rage_callout
+
+  rhino_stage_5:
+    - rhino_show_rage_5
+    - rhino_start_berserk
+
+  rhino_after_jackpot_collect:
+    - rhino_stop_berserk
+    - rhino_set_next_jackpot_base
+    - rhino_reduce_rage_after_collect
+    - rhino_check_mode_complete
+
   rhino_crash:
-    - reset_rage
+    - rhino_stop_berserk
+    - rhino_show_crash
+    - rhino_stage_2
 
-variable_player:
-  reset_rage:
-    rage_level:
-      int: 0
-      action: set
-    rhino_jp:
-      int: 0
-      action: multiply
-      multiplier: 0.5
+conditional_events:
 
-# -------------------------------------------------
-# JP COLLECTION
-# -------------------------------------------------
-score:
-  collect_rhino_jp:
-    score: device.variables.rhino_jp
-    bonus: true
+  rhino_check_rage_stage:
+    - condition: current_player.rhino_pops >= 10 and current_player.rhino_rage_stage < 5
+      events: rhino_set_stage_5, rhino_stage_5
 
-variable_player:
-  reset_rhino_jp:
-    rhino_jp:
-      int: 0
-      action: set
+    - condition: current_player.rhino_pops >= 7 and current_player.rhino_pops < 10 and current_player.rhino_rage_stage < 4
+      events: rhino_set_stage_4, rhino_stage_4
 
-# -------------------------------------------------
-# OPTIONAL FEEDBACK HOOKS
-# -------------------------------------------------
+    - condition: current_player.rhino_pops >= 4 and current_player.rhino_pops < 7 and current_player.rhino_rage_stage < 3
+      events: rhino_set_stage_3, rhino_stage_3
+
+    - condition: current_player.rhino_pops >= 2 and current_player.rhino_pops < 4 and current_player.rhino_rage_stage < 2
+      events: rhino_set_stage_2, rhino_stage_2
+
+  rhino_set_next_jackpot_base:
+    - condition: current_player.rhino_jackpots == 1
+      events: rhino_set_base_100k
+
+    - condition: current_player.rhino_jackpots == 2
+      events: rhino_set_base_150k
+
+    - condition: current_player.rhino_jackpots >= 3
+      events: rhino_bash_complete
+
+  rhino_reduce_rage_after_collect:
+    - condition: current_player.rhino_rage_stage == 5
+      events: rhino_drop_to_stage_4, rhino_stage_4
+
+    - condition: current_player.rhino_rage_stage == 4
+      events: rhino_drop_to_stage_3, rhino_stage_3
+
+    - condition: current_player.rhino_rage_stage == 3
+      events: rhino_drop_to_stage_2, rhino_stage_2
+
+    - condition: current_player.rhino_rage_stage == 2
+      events: rhino_drop_to_stage_2, rhino_stage_2
+
+    - condition: current_player.rhino_rage_stage == 1
+      events: rhino_drop_to_stage_1, rhino_stage_1
+
+  rhino_check_mode_complete:
+    - condition: current_player.rhino_jackpots >= 3
+      events: rhino_bash_complete
+
+timers:
+
+  rhino_berserk_timer:
+    start_value: 8
+    end_value: 0
+    direction: down
+    tick_interval: 1s
+    control_events:
+      - event: rhino_start_berserk
+        action: restart
+      - event: rhino_stop_berserk
+        action: stop
+    complete_events:
+      - rhino_crash
+
 show_player:
-  rage_level:
-    - show_rage_meter
 
-sound_player:
-  rhino_crash:
-    crash_sound   
+  rhino_light_jackpot_collect:
+    rhino_left_b_lit:
+      loops: -1
+
+  rhino_jackpot_collect:
+    rhino_left_b_lit:
+      action: stop
+    rhino_jackpot_collect_show:
+      loops: 1
+
+  rhino_show_rage_1:
+    rhino_rage_1:
+      loops: -1
+
+  rhino_show_rage_2:
+    rhino_rage_1:
+      action: stop
+    rhino_rage_2:
+      loops: -1
+
+  rhino_show_rage_3:
+    rhino_rage_2:
+      action: stop
+    rhino_rage_3:
+      loops: -1
+
+  rhino_show_rage_4:
+    rhino_rage_3:
+      action: stop
+    rhino_rage_4:
+      loops: -1
+
+  rhino_show_rage_5:
+    rhino_rage_4:
+      action: stop
+    rhino_rage_5:
+      loops: -1
+
+  rhino_start_berserk:
+    rhino_berserk_gi:
+      loops: -1
+
+  rhino_stop_berserk:
+    rhino_berserk_gi:
+      action: stop
+    rhino_rage_5:
+      action: stop
+
+  rhino_show_crash:
+    rhino_crash_show:
+      loops: 1
+
+  rhino_bash_complete:
+    rhino_berserk_gi:
+      action: stop
+    rhino_rage_1:
+      action: stop
+    rhino_rage_2:
+      action: stop
+    rhino_rage_3:
+      action: stop
+    rhino_rage_4:
+      action: stop
+    rhino_rage_5:
+      action: stop
+    rhino_left_b_lit:
+      action: stop
+    rhino_bash_complete_show:
+      loops: 1
+
+shows:
+
+  rhino_left_b_lit:
+    - duration: 300ms
+      lights:
+        l_left_b: white
+    - duration: 300ms
+      lights:
+        l_left_b: off
+
+  rhino_rage_1:
+    - duration: 1s
+      lights:
+        l_pop_1_1: white
+        l_pop_1_2: white
+        l_pop_1_3: off
+        l_pop_1_4: off
+        l_pop_1_5: off
+        l_pop_1_6: off
+        l_pop_1_7: off
+        l_pop_1_8: off
+        l_pop_1_9: off
+        l_pop_1_10: off
+        l_pop_1_11: off
+        l_pop_1_12: off
+        l_pop_2_1: white
+        l_pop_2_2: white
+        l_pop_2_3: off
+        l_pop_2_4: off
+        l_pop_2_5: off
+        l_pop_2_6: off
+        l_pop_2_7: off
+        l_pop_2_8: off
+        l_pop_2_9: off
+        l_pop_2_10: off
+        l_pop_2_11: off
+        l_pop_2_12: off
+
+  rhino_rage_2:
+    - duration: 1s
+      lights:
+        l_pop_1_1: yellow
+        l_pop_1_2: yellow
+        l_pop_1_3: yellow
+        l_pop_1_4: yellow
+        l_pop_1_5: off
+        l_pop_1_6: off
+        l_pop_1_7: off
+        l_pop_1_8: off
+        l_pop_1_9: off
+        l_pop_1_10: off
+        l_pop_1_11: off
+        l_pop_1_12: off
+        l_pop_2_1: yellow
+        l_pop_2_2: yellow
+        l_pop_2_3: yellow
+        l_pop_2_4: yellow
+        l_pop_2_5: off
+        l_pop_2_6: off
+        l_pop_2_7: off
+        l_pop_2_8: off
+        l_pop_2_9: off
+        l_pop_2_10: off
+        l_pop_2_11: off
+        l_pop_2_12: off
+
+  rhino_rage_3:
+    - duration: 1s
+      lights:
+        l_pop_1_1: orange
+        l_pop_1_2: orange
+        l_pop_1_3: orange
+        l_pop_1_4: orange
+        l_pop_1_5: orange
+        l_pop_1_6: orange
+        l_pop_1_7: orange
+        l_pop_1_8: off
+        l_pop_1_9: off
+        l_pop_1_10: off
+        l_pop_1_11: off
+        l_pop_1_12: off
+        l_pop_2_1: orange
+        l_pop_2_2: orange
+        l_pop_2_3: orange
+        l_pop_2_4: orange
+        l_pop_2_5: orange
+        l_pop_2_6: orange
+        l_pop_2_7: orange
+        l_pop_2_8: off
+        l_pop_2_9: off
+        l_pop_2_10: off
+        l_pop_2_11: off
+        l_pop_2_12: off
+
+  rhino_rage_4:
+    - duration: 500ms
+      lights:
+        l_pop_1_1: red
+        l_pop_1_2: red
+        l_pop_1_3: red
+        l_pop_1_4: red
+        l_pop_1_5: red
+        l_pop_1_6: red
+        l_pop_1_7: red
+        l_pop_1_8: red
+        l_pop_1_9: red
+        l_pop_1_10: red
+        l_pop_1_11: off
+        l_pop_1_12: off
+        l_pop_2_1: red
+        l_pop_2_2: red
+        l_pop_2_3: red
+        l_pop_2_4: red
+        l_pop_2_5: red
+        l_pop_2_6: red
+        l_pop_2_7: red
+        l_pop_2_8: red
+        l_pop_2_9: red
+        l_pop_2_10: red
+        l_pop_2_11: off
+        l_pop_2_12: off
+    - duration: 500ms
+      lights:
+        l_pop_1_1: yellow
+        l_pop_1_2: yellow
+        l_pop_1_3: yellow
+        l_pop_1_4: yellow
+        l_pop_1_5: yellow
+        l_pop_1_6: yellow
+        l_pop_1_7: yellow
+        l_pop_1_8: yellow
+        l_pop_1_9: yellow
+        l_pop_1_10: yellow
+        l_pop_1_11: off
+        l_pop_1_12: off
+        l_pop_2_1: yellow
+        l_pop_2_2: yellow
+        l_pop_2_3: yellow
+        l_pop_2_4: yellow
+        l_pop_2_5: yellow
+        l_pop_2_6: yellow
+        l_pop_2_7: yellow
+        l_pop_2_8: yellow
+        l_pop_2_9: yellow
+        l_pop_2_10: yellow
+        l_pop_2_11: off
+        l_pop_2_12: off
+
+  rhino_rage_5:
+    - duration: 150ms
+      lights:
+        l_pop_1_1: red
+        l_pop_1_2: red
+        l_pop_1_3: red
+        l_pop_1_4: red
+        l_pop_1_5: red
+        l_pop_1_6: red
+        l_pop_1_7: red
+        l_pop_1_8: red
+        l_pop_1_9: red
+        l_pop_1_10: red
+        l_pop_1_11: red
+        l_pop_1_12: red
+        l_pop_2_1: red
+        l_pop_2_2: red
+        l_pop_2_3: red
+        l_pop_2_4: red
+        l_pop_2_5: red
+        l_pop_2_6: red
+        l_pop_2_7: red
+        l_pop_2_8: red
+        l_pop_2_9: red
+        l_pop_2_10: red
+        l_pop_2_11: red
+        l_pop_2_12: red
+    - duration: 150ms
+      lights:
+        l_pop_1_1: off
+        l_pop_1_2: off
+        l_pop_1_3: off
+        l_pop_1_4: off
+        l_pop_1_5: off
+        l_pop_1_6: off
+        l_pop_1_7: off
+        l_pop_1_8: off
+        l_pop_1_9: off
+        l_pop_1_10: off
+        l_pop_1_11: off
+        l_pop_1_12: off
+        l_pop_2_1: off
+        l_pop_2_2: off
+        l_pop_2_3: off
+        l_pop_2_4: off
+        l_pop_2_5: off
+        l_pop_2_6: off
+        l_pop_2_7: off
+        l_pop_2_8: off
+        l_pop_2_9: off
+        l_pop_2_10: off
+        l_pop_2_11: off
+        l_pop_2_12: off
+
+  rhino_berserk_gi:
+    - duration: 250ms
+      lights:
+        gi: red
+    - duration: 250ms
+      lights:
+        gi: off
+
+  rhino_jackpot_collect_show:
+    - duration: 150ms
+      lights:
+        l_left_b: white
+        l_pop_1_1: white
+        l_pop_1_2: white
+        l_pop_1_3: white
+        l_pop_1_4: white
+        l_pop_2_1: white
+        l_pop_2_2: white
+        l_pop_2_3: white
+        l_pop_2_4: white
+    - duration: 150ms
+      lights:
+        l_left_b: red
+        l_pop_1_1: red
+        l_pop_1_2: red
+        l_pop_1_3: red
+        l_pop_1_4: red
+        l_pop_2_1: red
+        l_pop_2_2: red
+        l_pop_2_3: red
+        l_pop_2_4: red
+
+  rhino_crash_show:
+    - duration: 250ms
+      lights:
+        gi: off
+        l_left_b: off
+        l_pop_1_1: off
+        l_pop_1_2: off
+        l_pop_1_3: off
+        l_pop_1_4: off
+        l_pop_1_5: off
+        l_pop_1_6: off
+        l_pop_1_7: off
+        l_pop_1_8: off
+        l_pop_1_9: off
+        l_pop_1_10: off
+        l_pop_1_11: off
+        l_pop_1_12: off
+        l_pop_2_1: off
+        l_pop_2_2: off
+        l_pop_2_3: off
+        l_pop_2_4: off
+        l_pop_2_5: off
+        l_pop_2_6: off
+        l_pop_2_7: off
+        l_pop_2_8: off
+        l_pop_2_9: off
+        l_pop_2_10: off
+        l_pop_2_11: off
+        l_pop_2_12: off
+    - duration: 400ms
+      lights:
+        gi: red
+
+  rhino_bash_complete_show:
+    - duration: 200ms
+      lights:
+        gi: white
+        l_left_b: white
+    - duration: 200ms
+      lights:
+        gi: red
+        l_left_b: red
+    - duration: 200ms
+      lights:
+        gi: white
+        l_left_b: white

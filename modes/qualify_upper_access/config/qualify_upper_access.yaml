@@ -1,0 +1,87 @@
+#config_version=6
+
+mode:
+  start_events: ball_started
+  priority: 100
+
+variable_player:
+  mode_qualify_upper_access_started:
+    villain_mode_running:
+      action: set
+      int: 0
+    villain_start_ready:
+      action: set
+      int: 0
+
+switch_player:
+  s_inlane_a_active:
+    rooftop_access_request
+
+  s_inlane_m_r_active:
+    rooftop_access_request
+
+  s_vuk_switch_active:
+    rooftop_vuk_entered
+
+  s_upper_entrance_opto_active:
+    rooftop_upper_entered
+
+conditional_events:
+  rooftop_access_request:
+    - condition: current_player.villain_mode_running == 0 and current_player.villain_start_ready == 0
+      events:
+        - rooftop_access_open
+
+event_player:
+  rooftop_access_open:
+    - rooftop_diverter_open
+    - rooftop_access_lit
+
+  rooftop_access_close:
+    - rooftop_diverter_close
+    - rooftop_access_unlit
+
+  rooftop_vuk_entered:
+    - rooftop_diverter_close
+    - rooftop_access_unlit
+    - rooftop_vuk_hold_or_kick
+
+timers:
+  rooftop_access_timer:
+    start_value: 8
+    end_value: 0
+    direction: down
+    tick_interval: 1s
+    control_events:
+      - event: rooftop_access_open
+        action: restart
+      - event: rooftop_vuk_entered
+        action: stop
+      - event: villain_start_ready
+        action: stop
+    complete_events:
+      - rooftop_access_close
+
+show_player:
+  rooftop_access_lit:
+    rooftop_access_show:
+      loops: -1
+
+  rooftop_access_unlit:
+    rooftop_access_show:
+      action: stop
+
+  villain_start_ready:
+    rooftop_access_show:
+      action: stop
+
+shows:
+  rooftop_access_show:
+    - duration: 300ms
+      lights:
+        l_a_rollover: white
+        l_b_rollover: white
+    - duration: 300ms
+      lights:
+        l_a_rollover: blue
+        l_b_rollover: blue

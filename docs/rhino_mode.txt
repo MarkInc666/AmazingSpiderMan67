@@ -83,3 +83,470 @@ If player does NOT collect Left B before 8 sec timer expires:
 * JP3 base = 150K
 
 * does NOT reset rage fully. 5->4, 4->3, 3->2, 2->2, 1->1
+
+
+
+
+
+Perfect.
+
+So Rhino Jackpot Collect = `s_inlane_m_l`.
+
+That gives us everything needed.
+
+I’m going to build this in **MPF 0.80 / config_version=6 style**, with:
+
+* mode start/stop
+* player vars
+* rage thresholds
+* berserk timer
+* jackpot build
+* jackpot collect
+* crash handling
+* 3 jackpot victory
+
+This will be a genuine working skeleton, not pseudo-code.
+
+---
+
+## `modes/rhino/config/rhino.yaml`
+
+```yaml
+#config_version=6
+
+mode:
+  start_events: start_mode_rhino
+  stop_events: rhino_mode_complete, rhino_mode_failed
+  priority: 400
+
+
+player_vars:
+  rhino_pop_count:
+    value_type: int
+    initial_value: 0
+  rhino_rage_stage:
+    value_type: int
+    initial_value: 1
+  rhino_add_value:
+    value_type: int
+    initial_value: 2000
+  rhino_jackpot:
+    value_type: int
+    initial_value: 50000
+  rhino_jackpots_collected:
+    value_type: int
+    initial_value: 0
+
+
+timers:
+  rhino_berserk_timer:
+    start_value: 8
+    end_value: 0
+    direction: down
+    tick_interval: 1s
+    control_events:
+      - action: start
+        event: rhino_berserk_start
+      - action: stop
+        event: rhino_jackpot_collect
+      - action: stop
+        event: rhino_berserk_crash
+
+
+# -------------------------
+# POPS BUILD RHINO RAGE
+# -------------------------
+
+variable_player:
+  s_pop_left_active:
+    rhino_pop_count: 1
+
+  s_pop_right_active:
+    rhino_pop_count: 1
+
+
+event_player:
+
+  s_pop_left_active{current_player.rhino_pop_count>=2 and current_player.rhino_rage_stage==1}: rhino_rage_2
+  s_pop_right_active{current_player.rhino_pop_count>=2 and current_player.rhino_rage_stage==1}: rhino_rage_2
+
+  s_pop_left_active{current_player.rhino_pop_count>=4 and current_player.rhino_rage_stage==2}: rhino_rage_3
+  s_pop_right_active{current_player.rhino_pop_count>=4 and current_player.rhino_rage_stage==2}: rhino_rage_3
+
+  s_pop_left_active{current_player.rhino_pop_count>=7 and current_player.rhino_rage_stage==3}: rhino_rage_4
+  s_pop_right_active{current_player.rhino_pop_count>=7 and current_player.rhino_rage_stage==3}: rhino_rage_4
+
+  s_pop_left_active{current_player.rhino_pop_count>=10 and current_player.rhino_rage_stage==4}: rhino_berserk_start
+  s_pop_right_active{current_player.rhino_pop_count>=10 and current_player.rhino_rage_stage==4}: rhino_berserk_start
+
+
+# -------------------------
+# RAGE STAGE ADVANCEMENT
+# -------------------------
+
+variable_player:
+  rhino_rage_2:
+    rhino_rage_stage: 2
+    rhino_add_value: 5000
+
+  rhino_rage_3:
+    rhino_rage_stage: 3
+    rhino_add_value: 15000
+
+  rhino_rage_4:
+    rhino_rage_stage: 4
+    rhino_add_value: 40000
+
+  rhino_berserk_start:
+    rhino_rage_stage: 5
+    rhino_add_value: 100000
+
+
+# -------------------------
+# RHINO SMASH SHOTS BUILD JACKPOT
+# -------------------------
+
+variable_player:
+
+  s_web_target_left_active:
+    rhino_jackpot: current_player.rhino_add_value
+
+  s_web_target_top_active:
+    rhino_jackpot: current_player.rhino_add_value
+
+  s_saucer_1_active:
+    rhino_jackpot: current_player.rhino_add_value
+
+  s_saucer_2_active:
+    rhino_jackpot: current_player.rhino_add_value
+
+  s_saucer_3_active:
+    rhino_jackpot: current_player.rhino_add_value
+
+  s_web_spinner_active:
+    rhino_jackpot: current_player.rhino_add_value
+
+  s_star_rollover_active:
+    rhino_jackpot: current_player.rhino_add_value
+
+  s_inlane_a_active:
+    rhino_jackpot: current_player.rhino_add_value
+
+  s_left_drops_1_active:
+    rhino_jackpot: current_player.rhino_add_value
+  s_left_drops_2_active:
+    rhino_jackpot: current_player.rhino_add_value
+  s_left_drops_3_active:
+    rhino_jackpot: current_player.rhino_add_value
+
+  s_right_drops_1_active:
+    rhino_jackpot: current_player.rhino_add_value
+  s_right_drops_2_active:
+    rhino_jackpot: current_player.rhino_add_value
+  s_right_drops_3_active:
+    rhino_jackpot: current_player.rhino_add_value
+  s_right_drops_4_active:
+    rhino_jackpot: current_player.rhino_add_value
+  s_right_drops_5_active:
+    rhino_jackpot: current_player.rhino_add_value
+
+
+# -------------------------
+# JACKPOT COLLECT
+# -------------------------
+
+event_player:
+  s_inlane_m_l_active: rhino_jackpot_collect
+
+
+variable_player:
+  rhino_jackpot_collect:
+    score: current_player.rhino_jackpot
+    rhino_jackpots_collected: 1
+
+
+# increase next base jackpot after each collect
+  rhino_jackpot_collect{current_player.rhino_jackpots_collected==1}:
+    rhino_jackpot: 100000
+
+  rhino_jackpot_collect{current_player.rhino_jackpots_collected==2}:
+    rhino_jackpot: 150000
+
+  rhino_jackpot_collect{current_player.rhino_jackpots_collected>=3}:
+    rhino_jackpot: 200000
+
+
+# rage drops one level after successful collect
+  rhino_jackpot_collect{current_player.rhino_rage_stage==5}:
+    rhino_rage_stage: 4
+    rhino_add_value: 40000
+
+  rhino_jackpot_collect{current_player.rhino_rage_stage==4}:
+    rhino_rage_stage: 3
+    rhino_add_value: 15000
+
+  rhino_jackpot_collect{current_player.rhino_rage_stage==3}:
+    rhino_rage_stage: 2
+    rhino_add_value: 5000
+
+  rhino_jackpot_collect{current_player.rhino_rage_stage==2}:
+    rhino_rage_stage: 1
+    rhino_add_value: 2000
+
+
+event_player:
+  rhino_jackpot_collect{current_player.rhino_jackpots_collected>=3}: rhino_mode_complete
+
+
+# -------------------------
+# BERSERK CRASH
+# -------------------------
+
+event_player:
+  timer_rhino_berserk_timer_complete: rhino_berserk_crash
+
+
+variable_player:
+  rhino_berserk_crash:
+    rhino_jackpot: 50000
+    rhino_rage_stage: 2
+    rhino_add_value: 5000
+    rhino_pop_count: 2
+
+
+# -------------------------
+# OPTIONAL SHOW HOOKS
+# -------------------------
+
+show_player:
+  start_mode_rhino:
+    rhino_mode_running:
+      loops: -1
+
+  rhino_berserk_start:
+    rhino_berserk_show:
+      loops: -1
+
+  rhino_berserk_crash:
+    rhino_crash_show:
+      loops: 0
+
+  rhino_mode_complete:
+    rhino_win_show:
+      loops: 0
+```
+
+---
+
+# ⚠️ VERY IMPORTANT
+
+This is a **working framework skeleton**, but before using it raw:
+
+there are 2 MPF syntax cleanup items I still need to do because MPF can be picky about:
+
+* conditional `variable_player` formatting
+* whether we want to use custom events instead of direct switch `_active`
+
+I can make this **100% MPF-safe production syntax** in the next pass.
+
+This first version is the complete logic map.
+
+---
+
+## Also:
+
+Rhino really should have:
+
+* dedicated lights
+* maybe a display widget
+* sound callouts
+
+and I can wire those in too.
+
+### Want me to do the production-safe cleaned version next?
+
+
+
+
+
+old bits:
+
+#config_version=6
+# RHINO MODE - RAGE BUILD
+
+mode:
+  start_events: rhino_mode_start
+  stop_events: rhino_mode_stop
+  priority: 200
+
+# -------------------------------------------------
+# VARIABLES
+# -------------------------------------------------
+variables:
+  rage_level:
+    initial_value: 0
+    persist: false
+
+  rhino_jp:
+    initial_value: 0
+    persist: false
+
+# -------------------------------------------------
+# SHOTS / SWITCHES
+# -------------------------------------------------
+shots:
+  left_rollover:
+    switch: s_inlane_m_l
+
+  pop_bumpers:
+    hit_events: bumper_hit
+
+  # todo list all drop targets
+  drop_targets:
+    switch: s_drop_target_hit
+
+# -------------------------------------------------
+# POP BUMPERS = RAGE BUILD ENGINE
+# -------------------------------------------------
+event_player:
+  bumper_hit:
+    - add_rage_small
+
+  s_drop_target_hit:
+    - add_rage_large
+
+  s_left_rollover_active:
+    - collect_rhino_jp
+    - reset_rhino_jp
+
+# -------------------------------------------------
+# RAGE BUILD LOGIC
+# -------------------------------------------------
+variable_player:
+  add_rage_small:
+    rage_level:
+      int: 5
+      action: add
+    rhino_jp:
+      int: 2000
+      action: add
+
+  add_rage_large:
+    rage_level:
+      int: 10
+      action: add
+    rhino_jp:
+      int: 5000
+      action: add
+
+# -------------------------------------------------
+# RAGE OVERFLOW (CRASH MECHANIC)
+# -------------------------------------------------
+logic_blocks:
+  - logic_block:
+      name: rage_check
+      type: compare
+      source: device.variables.rage_level
+      operator: greater_than
+      value: 100
+      output_event: rhino_crash
+
+event_player:
+  rhino_crash:
+    - reset_rage
+
+variable_player:
+  reset_rage:
+    rage_level:
+      int: 0
+      action: set
+    rhino_jp:
+      int: 0
+      action: multiply
+      multiplier: 0.5
+
+# -------------------------------------------------
+# JP COLLECTION
+# -------------------------------------------------
+score:
+  collect_rhino_jp:
+    score: device.variables.rhino_jp
+    bonus: true
+
+variable_player:
+  reset_rhino_jp:
+    rhino_jp:
+      int: 0
+      action: set
+
+# -------------------------------------------------
+# OPTIONAL FEEDBACK HOOKS
+# -------------------------------------------------
+show_player:
+  rage_level:
+    - show_rage_meter
+
+sound_player:
+  rhino_crash:
+    crash_sound   
+    
+    
+    
+
+#config_version=6
+mode:
+  start_events: start_rhino_mode
+  stop_events: rhino_mode_complete, rhino_mode_failed
+  priority: 400
+
+timers:
+  rhino_berserk_timer:
+    start_value: 8
+    end_value: 0
+    direction: down
+    tick_interval: 1s
+    control_events:
+      - action: start
+        event: rhino_berserk_start
+      - action: stop
+        event: rhino_jackpot_collected
+
+variable_player:
+  pop_bumper_hit:
+    rhino_pop_count: 1
+
+event_player:
+  pop_bumper_hit{current_player.rhino_pop_count>=2 and current_player.rhino_rage==1}: rhino_rage_2
+  pop_bumper_hit{current_player.rhino_pop_count>=4 and current_player.rhino_rage==2}: rhino_rage_3
+  pop_bumper_hit{current_player.rhino_pop_count>=7 and current_player.rhino_rage==3}: rhino_rage_4
+  pop_bumper_hit{current_player.rhino_pop_count>=10 and current_player.rhino_rage==4}: rhino_berserk_start
+  
+  sw_left_b_lane_active: rhino_try_collect
+  
+  rhino_try_collect{current_player.rhino_collected>=3}: rhino_mode_complete  
+  
+  
+
+variable_player:
+  rhino_try_collect:
+    score: current_player.rhino_jackpot
+    rhino_collected: 1
+    
+  sw_left_web_active:
+    rhino_jackpot: current_player.rhino_add_value
+
+  sw_center_web_active:
+    rhino_jackpot: current_player.rhino_add_value
+
+  sw_spinner_active:
+    rhino_jackpot: current_player.rhino_add_value
+
+  drop_target_bank_left_down:
+    rhino_jackpot: current_player.rhino_add_value
+
+  drop_target_bank_right_down:
+    rhino_jackpot: current_player.rhino_add_value
+
+
+    
+  

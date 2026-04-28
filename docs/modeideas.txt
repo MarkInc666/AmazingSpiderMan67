@@ -162,6 +162,20 @@ After villain mode start is qualified:
 
 * Ball is held
 * Flippers cycle through villains
+
+| Villain  | Role                         |
+| -------- | ---------------------------- |
+| Rhino    | greed meter survival         |
+| Sandman  | moving timing puzzle         |
+| Vulture  | aerial survival banking      |
+| Goblin   | chaotic multiball checkpoint |
+| Mysterio | deduction illusion           |
+| Scorpion | precision charge/commit      |
+| Doc Ock  | system collapse economy      |
+| Electro  | |
+| Doc Ock  | system collapse economy      |
+|   |
+
 * Player chooses next villain
 * Auto-start after ~3 seconds or manual confirm
 
@@ -171,7 +185,7 @@ After villain mode start is qualified:
 # 🎯 FLOW SUMMARY
 
 1. Hit A rollover → opens rooftop (8 sec)
-2. Shoot right lane → upper playfield
+2. Shoot left orbit lane → upper playfield
 3. Spin spinner → qualify villain
 4. Drop back to main playfield
 5. Choose:

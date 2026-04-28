@@ -1,0 +1,75 @@
+🎭 Parafino Mode: “Melt the Wax”
+Core Theme
+
+Parafino has trapped the city in a frozen wax museum atmosphere.
+
+GI turns ice blue
+playfield feels cold / lifeless
+need to raise heat and melt him
+Core Rules
+Start Mode
+GI = light blue / white
+inserts dim
+“Everything is frozen…”
+Build Heat
+
+Hit heat shots:
+
+left drops
+right drops
+spinner
+pops
+upper targets
+
+Each hit adds Heat Meter
+
+Visual Progression
+Heat Level	GI Color
+0	icy blue
+1	blue-white
+2	white
+3	warm white
+4	orange
+5	red
+
+This would look incredible.
+
+Final Objective
+
+At max heat:
+
+Parafino begins melting
+Jackpot lit at center web / saucer
+
+Shoot it to defeat him.
+
+Optional Twist (great one)
+
+If no shots for 4 seconds:
+
+heat drops one level
+
+So player must keep attacking.
+
+Why this mode is strong
+Different from all your others
+
+Not just “hit lit shots.”
+
+It’s:
+
+build environment state
+maintain pressure
+dramatic payoff
+Sound package
+cold wind at start
+cracking wax
+dripping sounds
+final scream / melt
+My blunt opinion
+
+This is one of the best villain modes you've discussed.
+
+Because it has a real story arc:
+
+cold → warm → burning → melt → finish

@@ -1,0 +1,140 @@
+#config_version=6
+
+mode:
+  start_events: start_mode_villain_select
+  stop_events: carousel_item_selected
+  code: mpf.modes.carousel.code.carousel.Carousel
+  priority: 500
+
+mode_settings:
+  selectable_items:
+    - rhino
+    - sandman
+    - vulture
+    - electro
+    - goblin
+    - mysterio
+    - scorpion
+    - doc_ock
+    - parafino
+    - lizard
+
+  next_item_events: s_right_flipper_inactive
+  previous_item_events: s_left_flipper_inactive
+  select_item_events: both_flippers_held_2s
+
+  block_events: both_flippers_held_2s
+  release_events: both_flippers_inactive
+
+timed_switches:
+  both_flippers_held:
+    switch_tags: left_flipper, right_flipper
+    time: 2s
+    events_when_active: both_flippers_held_2s
+    events_when_released: both_flippers_inactive
+
+event_player:
+  carousel_rhino_selected: start_rhino_villain
+  carousel_sandman_selected: start_sandman_villain
+  carousel_vulture_selected: start_vulture_villain
+  carousel_electro_selected: start_electro_villain
+  carousel_goblin_selected: start_goblin_villain
+  carousel_mysterio_selected: start_mysterio_villain
+  carousel_scorpion_selected: start_scorpion_villain
+  carousel_doc_ock_selected: start_doc_ock_villain
+  carousel_parafino_selected: start_parafino_villain
+  carousel_lizard_selected: start_lizard_villain
+
+show_player:
+  carousel_rhino_highlighted:
+    villain_select_rhino_show:
+      loops: 1
+
+  carousel_sandman_highlighted:
+    villain_select_sandman_show:
+      loops: 1
+
+  carousel_vulture_highlighted:
+    villain_select_vulture_show:
+      loops: 1
+
+  carousel_electro_highlighted:
+    villain_select_electro_show:
+      loops: 1
+
+  carousel_goblin_highlighted:
+    villain_select_goblin_show:
+      loops: 1
+
+  carousel_mysterio_highlighted:
+    villain_select_mysterio_show:
+      loops: 1
+
+  carousel_scorpion_highlighted:
+    villain_select_scorpion_show:
+      loops: 1
+
+  carousel_doc_ock_highlighted:
+    villain_select_doc_ock_show:
+      loops: 1
+
+  carousel_parafino_highlighted:
+    villain_select_parafino_show:
+      loops: 1
+
+  carousel_lizard_highlighted:
+    villain_select_lizard_show:
+      loops: 1
+
+shows:
+  villain_select_rhino_show:
+    - duration: 250ms
+      lights:
+        l_left_b: red
+
+  villain_select_sandman_show:
+    - duration: 250ms
+      lights:
+        l_spinner: yellow
+
+  villain_select_vulture_show:
+    - duration: 250ms
+      lights:
+        l_upper_middle: white
+
+  villain_select_electro_show:
+    - duration: 250ms
+      lights:
+        l_a_rollover: blue
+        l_b_rollover: blue
+
+  villain_select_goblin_show:
+    - duration: 250ms
+      lights:
+        l_3_hole_l: green
+
+  villain_select_mysterio_show:
+    - duration: 250ms
+      lights:
+        l_star: purple
+
+  villain_select_scorpion_show:
+    - duration: 250ms
+      lights:
+        l_right_a: orange
+
+  villain_select_doc_ock_show:
+    - duration: 250ms
+      lights:
+        l_left_web_target: white
+        l_mid_spider_target: white
+
+  villain_select_parafino_show:
+    - duration: 250ms
+      lights:
+        l_5bank_3: yellow
+
+  villain_select_lizard_show:
+    - duration: 250ms
+      lights:
+        l_1_hole_l: green

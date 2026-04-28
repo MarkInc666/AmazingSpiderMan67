@@ -1,0 +1,86 @@
+#config_version=6
+
+mode:
+  start_events: ball_started
+  priority: 110
+
+variable_player:
+  mode_qualify_villain_locate_started:
+    villain_locate_spins:
+      action: set
+      int: 0
+
+  villain_spinner_locate_progress:
+    score: 5000
+    villain_locate_spins: 1
+
+  villain_start_ready_set:
+    villain_start_ready:
+      action: set
+      int: 1
+
+switch_player:
+  s_trispinner_opto_active:
+    - villain_spinner_locate_request
+
+conditional_events:
+  villain_spinner_locate_request:
+    - condition: current_player.villain_mode_running == 0 and current_player.villain_start_ready == 0
+      events:
+        - villain_spinner_locate_progress
+        - villain_check_located
+
+  villain_check_located:
+    - condition: current_player.villain_locate_spins >= 3
+      events:
+        - villain_start_ready_set
+        - villain_start_ready
+
+event_player:
+  villain_start_ready:
+    - villain_saucers_solid_lit
+
+show_player:
+  villain_spinner_locate_progress:
+    villain_spinner_progress_show:
+      loops: 1
+
+  villain_saucers_solid_lit:
+    villain_saucer_1_solid:
+      loops: -1
+    villain_saucer_2_solid:
+      loops: -1
+    villain_saucer_3_solid:
+      loops: -1
+
+  start_current_villain:
+    villain_saucer_1_solid:
+      action: stop
+    villain_saucer_2_solid:
+      action: stop
+    villain_saucer_3_solid:
+      action: stop
+
+shows:
+  villain_spinner_progress_show:
+    - duration: 100ms
+      lights:
+        l_spinner: white
+    - duration: 100ms
+      lights:
+        l_spinner: blue
+
+  villain_saucer_1_solid:
+    - duration: 1s
+      lights:
+        l_1_hole_l: white
+
+  villain_saucer_2_solid:
+    - duration: 1s
+      lights:
+        l_2_hole_l: white
+
+  villain_saucer_3_solid:
+    - duration: 1s
+      lights:
+        l_3_hole_l: white

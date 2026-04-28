@@ -1,6 +1,401 @@
+Yes. Here’s a clean first MPF pass for **Parafino – Melt the Wax** using your real switch/light names. 
+
+```yaml
 #config_version=6
-#vulture mode config file
+
 mode:
-  start_events: start_mode_vulture
-  stop_events: stop_mode_vulture
-  priority: 500
+  start_events: start_mode_parafino
+  stop_events:
+    - parafino_mode_complete
+    - ball_ended
+  priority: 300
+
+# Required order:
+# 1. Pops, both
+# 2. Left drops
+# 3. Any saucer
+# 4. Left web target
+# 5. Right drops
+# Complete: wax melts
+
+variable_player:
+
+  mode_parafino_started:
+    parafino_heat_level:
+      action: set
+      int: 0
+    parafino_step:
+      action: set
+      int: 1
+    parafino_pop_left_hit:
+      action: set
+      int: 0
+    parafino_pop_right_hit:
+      action: set
+      int: 0
+    parafino_left_drops_hit:
+      action: set
+      int: 0
+    parafino_right_drops_hit:
+      action: set
+      int: 0
+
+  parafino_heat_up:
+    score: 100000
+    parafino_heat_level: 1
+    parafino_step: 1
+
+  parafino_pop_left_mark:
+    parafino_pop_left_hit:
+      action: set
+      int: 1
+
+  parafino_pop_right_mark:
+    parafino_pop_right_hit:
+      action: set
+      int: 1
+
+  parafino_reset_pop_hits:
+    parafino_pop_left_hit:
+      action: set
+      int: 0
+    parafino_pop_right_hit:
+      action: set
+      int: 0
+
+  parafino_mode_complete:
+    score: 1000000
+
+switch_player:
+
+  s_pop_left_active:
+    - parafino_pop_left_request
+
+  s_pop_right_active:
+    - parafino_pop_right_request
+
+  s_saucer_1_active:
+    - parafino_saucer_request
+  s_saucer_2_active:
+    - parafino_saucer_request
+  s_saucer_3_active:
+    - parafino_saucer_request
+
+  s_web_target_left_active:
+    - parafino_left_web_request
+
+
+conditional_events:
+
+  # Step 1: hit BOTH pops
+  parafino_pop_left_request:
+    - condition: current_player.parafino_step == 1
+      events:
+        - parafino_pop_left_mark
+        - parafino_check_pops_complete
+
+  parafino_pop_right_request:
+    - condition: current_player.parafino_step == 1
+      events:
+        - parafino_pop_right_mark
+        - parafino_check_pops_complete
+
+  parafino_check_pops_complete:
+    - condition: current_player.parafino_pop_left_hit == 1 and current_player.parafino_pop_right_hit == 1
+      events:
+        - parafino_heat_up
+        - parafino_reset_pop_hits
+        - parafino_show_heat_1
+        - parafino_light_left_drops
+
+  # Step 2: any left drop
+  parafino_left_drops_request:
+    - condition: current_player.parafino_step == 2
+      events:
+        - parafino_heat_up
+        - parafino_show_heat_2
+        - parafino_light_saucers
+
+  # Step 3: any saucer
+  parafino_saucer_request:
+    - condition: current_player.parafino_step == 3
+      events:
+        - parafino_heat_up
+        - parafino_show_heat_3
+        - parafino_light_left_web
+
+  # Step 4: left web target
+  parafino_left_web_request:
+    - condition: current_player.parafino_step == 4
+      events:
+        - parafino_heat_up
+        - parafino_show_heat_4
+        - parafino_light_right_drops
+
+  # Step 5: any right drop
+  parafino_right_drops_request:
+    - condition: current_player.parafino_step == 5
+      events:
+        - parafino_heat_up
+        - parafino_show_heat_5
+        - parafino_wax_melts
+        - parafino_mode_complete
+
+event_player:
+
+  mode_parafino_started:
+    - parafino_show_heat_0
+    - parafino_light_pops
+
+  dt_bank_left_down:
+    - parafino_left_drops_request
+
+  dt_bank_right_down:
+    - parafino_right_drops_request    
+
+
+show_player:
+
+  # Heat / GI states
+  parafino_show_heat_0:
+    parafino_heat_0:
+      loops: -1
+
+  parafino_show_heat_1:
+    parafino_heat_0:
+      action: stop
+    parafino_heat_1:
+      loops: -1
+
+  parafino_show_heat_2:
+    parafino_heat_1:
+      action: stop
+    parafino_heat_2:
+      loops: -1
+
+  parafino_show_heat_3:
+    parafino_heat_2:
+      action: stop
+    parafino_heat_3:
+      loops: -1
+
+  parafino_show_heat_4:
+    parafino_heat_3:
+      action: stop
+    parafino_heat_4:
+      loops: -1
+
+  parafino_show_heat_5:
+    parafino_heat_4:
+      action: stop
+    parafino_heat_5:
+      loops: -1
+
+  # Shot indicators
+  parafino_light_pops:
+    parafino_pops_show:
+      loops: -1
+
+  parafino_light_left_drops:
+    parafino_pops_show:
+      action: stop
+    parafino_left_drops_show:
+      loops: -1
+
+  parafino_light_saucers:
+    parafino_left_drops_show:
+      action: stop
+    parafino_saucers_show:
+      loops: -1
+
+  parafino_light_left_web:
+    parafino_saucers_show:
+      action: stop
+    parafino_left_web_show:
+      loops: -1
+
+  parafino_light_right_drops:
+    parafino_left_web_show:
+      action: stop
+    parafino_right_drops_show:
+      loops: -1
+
+  parafino_wax_melts:
+    parafino_right_drops_show:
+      action: stop
+    parafino_melt_show:
+      loops: 1
+
+  parafino_mode_complete:
+    parafino_heat_0:
+      action: stop
+    parafino_heat_1:
+      action: stop
+    parafino_heat_2:
+      action: stop
+    parafino_heat_3:
+      action: stop
+    parafino_heat_4:
+      action: stop
+    parafino_heat_5:
+      action: stop
+
+shows:
+
+  # Cold to hot GI progression
+  parafino_heat_0:
+    - duration: 1s
+      lights:
+        gi: blue
+
+  parafino_heat_1:
+    - duration: 1s
+      lights:
+        gi: cyan
+
+  parafino_heat_2:
+    - duration: 1s
+      lights:
+        gi: white
+
+  parafino_heat_3:
+    - duration: 1s
+      lights:
+        gi: yellow
+
+  parafino_heat_4:
+    - duration: 500ms
+      lights:
+        gi: orange
+    - duration: 500ms
+      lights:
+        gi: red
+
+  parafino_heat_5:
+    - duration: 200ms
+      lights:
+        gi: red
+    - duration: 200ms
+      lights:
+        gi: orange
+
+  # Step 1: both pops
+  parafino_pops_show:
+    - duration: 250ms
+      lights:
+        l_pop_1_1: blue
+        l_pop_1_2: blue
+        l_pop_1_3: blue
+        l_pop_2_1: blue
+        l_pop_2_2: blue
+        l_pop_2_3: blue
+    - duration: 250ms
+      lights:
+        l_pop_1_1: white
+        l_pop_1_2: white
+        l_pop_1_3: white
+        l_pop_2_1: white
+        l_pop_2_2: white
+        l_pop_2_3: white
+
+  # Step 2: left drops
+  parafino_left_drops_show:
+    - duration: 300ms
+      lights:
+        l_3bankbonus: orange
+        l_left_multibonus: orange
+    - duration: 300ms
+      lights:
+        l_3bankbonus: off
+        l_left_multibonus: off
+
+  # Step 3: one saucer
+  parafino_saucers_show:
+    - duration: 300ms
+      lights:
+        l_1_hole_l: orange
+        l_2_hole_l: orange
+        l_3_hole_l: orange
+    - duration: 300ms
+      lights:
+        l_1_hole_l: off
+        l_2_hole_l: off
+        l_3_hole_l: off
+
+  # Step 4: left web target
+  parafino_left_web_show:
+    - duration: 250ms
+      lights:
+        l_left_web_target: red
+    - duration: 250ms
+      lights:
+        l_left_web_target: white
+
+  # Step 5: right drops
+  parafino_right_drops_show:
+    - duration: 300ms
+      lights:
+        l_5bank_1: red
+        l_5bank_2: red
+        l_5bank_3: red
+        l_5bank_4: red
+        l_5bank_5: red
+    - duration: 300ms
+      lights:
+        l_5bank_1: off
+        l_5bank_2: off
+        l_5bank_3: off
+        l_5bank_4: off
+        l_5bank_5: off
+
+  parafino_melt_show:
+    - duration: 150ms
+      lights:
+        gi: red
+        l_left_web_target: red
+        l_1_hole_l: red
+        l_2_hole_l: red
+        l_3_hole_l: red
+        l_5bank_1: red
+        l_5bank_2: red
+        l_5bank_3: red
+        l_5bank_4: red
+        l_5bank_5: red
+    - duration: 150ms
+      lights:
+        gi: orange
+        l_left_web_target: orange
+        l_1_hole_l: orange
+        l_2_hole_l: orange
+        l_3_hole_l: orange
+        l_5bank_1: orange
+        l_5bank_2: orange
+        l_5bank_3: orange
+        l_5bank_4: orange
+        l_5bank_5: orange
+    - duration: 150ms
+      lights:
+        gi: white
+
+
+
+
+drop_target_banks:
+
+  dt_bank_left:
+    drop_targets:
+      - dt_left_1
+      - dt_left_2
+      - dt_left_3
+    reset_coil: c_left_bank_reset
+
+  dt_bank_right:
+    drop_targets:
+      - dt_right_1
+      - dt_right_2
+      - dt_right_3
+      - dt_right_4
+      - dt_right_5
+    reset_coil: c_right_bank_reset
+    
+    

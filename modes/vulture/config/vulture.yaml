@@ -1,6 +1,419 @@
+Yes. Vulture is a strong upper-playfield mode.
+
+Core interpretation:
+
+* Start mode → upper gate opens
+* First upper entrance starts 60s timer
+* 3 upper targets each build from Yellow → Orange → Red
+* Spinner value = sum of the 3 target values
+* Yellow = 5K, Orange = 10K, Red = 25K
+* No upper switch activity for 3 seconds → all targets decay one step
+* Spinner scores live points and adds same amount to Vulture bonus
+* Vulture bonus is paid at ball end unless tilted
+
+Here’s the clean MPF draft using your names:
+
+```yaml
 #config_version=6
-#vulture mode config file
+
 mode:
   start_events: start_mode_vulture
-  stop_events: stop_mode_vulture
-  priority: 500
+  stop_events:
+    - vulture_mode_complete
+    - ball_ended
+  priority: 300
+
+variable_player:
+
+  mode_vulture_started:
+    vulture_started:
+      action: set
+      int: 0
+    vulture_bonus:
+      action: set
+      int: 0
+    vulture_left_stage:
+      action: set
+      int: 1
+    vulture_center_stage:
+      action: set
+      int: 1
+    vulture_right_stage:
+      action: set
+      int: 1
+
+  vulture_spin_yellow:
+    score: 5000
+    vulture_bonus: 5000
+
+  vulture_spin_orange:
+    score: 10000
+    vulture_bonus: 10000
+
+  vulture_spin_red:
+    score: 25000
+    vulture_bonus: 25000
+
+  vulture_award_bonus:
+    score: current_player.vulture_bonus
+
+  vulture_left_to_orange:
+    vulture_left_stage:
+      action: set
+      int: 2
+
+  vulture_left_to_red:
+    vulture_left_stage:
+      action: set
+      int: 3
+
+  vulture_center_to_orange:
+    vulture_center_stage:
+      action: set
+      int: 2
+
+  vulture_center_to_red:
+    vulture_center_stage:
+      action: set
+      int: 3
+
+  vulture_right_to_orange:
+    vulture_right_stage:
+      action: set
+      int: 2
+
+  vulture_right_to_red:
+    vulture_right_stage:
+      action: set
+      int: 3
+
+  vulture_left_decay_to_orange:
+    vulture_left_stage:
+      action: set
+      int: 2
+
+  vulture_left_decay_to_yellow:
+    vulture_left_stage:
+      action: set
+      int: 1
+
+  vulture_center_decay_to_orange:
+    vulture_center_stage:
+      action: set
+      int: 2
+
+  vulture_center_decay_to_yellow:
+    vulture_center_stage:
+      action: set
+      int: 1
+
+  vulture_right_decay_to_orange:
+    vulture_right_stage:
+      action: set
+      int: 2
+
+  vulture_right_decay_to_yellow:
+    vulture_right_stage:
+      action: set
+      int: 1
+
+  vulture_set_started:
+    vulture_started:
+      action: set
+      int: 1
+
+
+switch_player:
+
+  s_upper_entrance_opto_active:
+    - vulture_upper_entered
+    - vulture_upper_switch_hit
+
+  s_upper_exit_left_opto_active:
+    - vulture_upper_switch_hit
+
+  s_upper_exit_right_opto_active:
+    - vulture_upper_switch_hit
+
+  s_upper_target_left_active:
+    - vulture_upper_switch_hit
+    - vulture_left_target_hit
+
+  s_upper_target_center_active:
+    - vulture_upper_switch_hit
+    - vulture_center_target_hit
+
+  s_upper_target_right_active:
+    - vulture_upper_switch_hit
+    - vulture_right_target_hit
+
+  s_trispinner_opto_active:
+    - vulture_upper_switch_hit
+    - vulture_spinner_hit
+
+event_player:
+
+  mode_vulture_started:
+    - vulture_open_upper_gate
+    - vulture_show_targets
+
+  vulture_upper_entered:
+    - vulture_start_if_needed
+
+  vulture_spinner_hit:
+    - vulture_score_left_spinner_value
+    - vulture_score_center_spinner_value
+    - vulture_score_right_spinner_value
+
+  vulture_idle_decay:
+    - vulture_decay_left
+    - vulture_decay_center
+    - vulture_decay_right
+    - vulture_show_targets
+    - vulture_restart_idle_timer
+
+  ball_ending{not current_player.tilted}:
+    - vulture_award_bonus
+
+conditional_events:
+
+  vulture_start_if_needed:
+    - condition: current_player.vulture_started == 0
+      events:
+        - vulture_timer_start
+        - vulture_mark_started
+
+  vulture_mark_started:
+    - condition: current_player.vulture_started == 0
+      events: vulture_set_started
+
+  vulture_left_target_hit:
+    - condition: current_player.vulture_left_stage == 1
+      events: vulture_left_to_orange, vulture_show_targets
+    - condition: current_player.vulture_left_stage == 2
+      events: vulture_left_to_red, vulture_show_targets
+
+  vulture_center_target_hit:
+    - condition: current_player.vulture_center_stage == 1
+      events: vulture_center_to_orange, vulture_show_targets
+    - condition: current_player.vulture_center_stage == 2
+      events: vulture_center_to_red, vulture_show_targets
+
+  vulture_right_target_hit:
+    - condition: current_player.vulture_right_stage == 1
+      events: vulture_right_to_orange, vulture_show_targets
+    - condition: current_player.vulture_right_stage == 2
+      events: vulture_right_to_red, vulture_show_targets
+
+  vulture_score_left_spinner_value:
+    - condition: current_player.vulture_left_stage == 1
+      events: vulture_spin_yellow
+    - condition: current_player.vulture_left_stage == 2
+      events: vulture_spin_orange
+    - condition: current_player.vulture_left_stage == 3
+      events: vulture_spin_red
+
+  vulture_score_center_spinner_value:
+    - condition: current_player.vulture_center_stage == 1
+      events: vulture_spin_yellow
+    - condition: current_player.vulture_center_stage == 2
+      events: vulture_spin_orange
+    - condition: current_player.vulture_center_stage == 3
+      events: vulture_spin_red
+
+  vulture_score_right_spinner_value:
+    - condition: current_player.vulture_right_stage == 1
+      events: vulture_spin_yellow
+    - condition: current_player.vulture_right_stage == 2
+      events: vulture_spin_orange
+    - condition: current_player.vulture_right_stage == 3
+      events: vulture_spin_red
+
+  vulture_decay_left:
+    - condition: current_player.vulture_left_stage == 3
+      events: vulture_left_decay_to_orange
+    - condition: current_player.vulture_left_stage == 2
+      events: vulture_left_decay_to_yellow
+
+  vulture_decay_center:
+    - condition: current_player.vulture_center_stage == 3
+      events: vulture_center_decay_to_orange
+    - condition: current_player.vulture_center_stage == 2
+      events: vulture_center_decay_to_yellow
+
+  vulture_decay_right:
+    - condition: current_player.vulture_right_stage == 3
+      events: vulture_right_decay_to_orange
+    - condition: current_player.vulture_right_stage == 2
+      events: vulture_right_decay_to_yellow
+
+  vulture_show_targets:
+    - condition: current_player.vulture_left_stage == 1
+      events: vulture_show_left_yellow
+    - condition: current_player.vulture_left_stage == 2
+      events: vulture_show_left_orange
+    - condition: current_player.vulture_left_stage == 3
+      events: vulture_show_left_red
+
+    - condition: current_player.vulture_center_stage == 1
+      events: vulture_show_center_yellow
+    - condition: current_player.vulture_center_stage == 2
+      events: vulture_show_center_orange
+    - condition: current_player.vulture_center_stage == 3
+      events: vulture_show_center_red
+
+    - condition: current_player.vulture_right_stage == 1
+      events: vulture_show_right_yellow
+    - condition: current_player.vulture_right_stage == 2
+      events: vulture_show_right_orange
+    - condition: current_player.vulture_right_stage == 3
+      events: vulture_show_right_red
+
+
+timers:
+
+  vulture_mode_timer:
+    start_value: 60
+    end_value: 0
+    direction: down
+    tick_interval: 1s
+    control_events:
+      - event: vulture_timer_start
+        action: start
+    complete_events:
+      - vulture_mode_complete
+
+  vulture_idle_timer:
+    start_value: 3
+    end_value: 0
+    direction: down
+    tick_interval: 1s
+    control_events:
+      - event: vulture_upper_switch_hit
+        action: restart
+      - event: vulture_restart_idle_timer
+        action: restart
+      - event: vulture_mode_complete
+        action: stop
+    complete_events:
+      - vulture_idle_decay
+
+show_player:
+
+  vulture_show_left_yellow:
+    vulture_left_yellow:
+      loops: -1
+
+  vulture_show_left_orange:
+    vulture_left_yellow:
+      action: stop
+    vulture_left_orange:
+      loops: -1
+
+  vulture_show_left_red:
+    vulture_left_orange:
+      action: stop
+    vulture_left_red:
+      loops: -1
+
+  vulture_show_center_yellow:
+    vulture_center_yellow:
+      loops: -1
+
+  vulture_show_center_orange:
+    vulture_center_yellow:
+      action: stop
+    vulture_center_orange:
+      loops: -1
+
+  vulture_show_center_red:
+    vulture_center_orange:
+      action: stop
+    vulture_center_red:
+      loops: -1
+
+  vulture_show_right_yellow:
+    vulture_right_yellow:
+      loops: -1
+
+  vulture_show_right_orange:
+    vulture_right_yellow:
+      action: stop
+    vulture_right_orange:
+      loops: -1
+
+  vulture_show_right_red:
+    vulture_right_orange:
+      action: stop
+    vulture_right_red:
+      loops: -1
+
+  vulture_mode_complete:
+    vulture_left_yellow:
+      action: stop
+    vulture_left_orange:
+      action: stop
+    vulture_left_red:
+      action: stop
+    vulture_center_yellow:
+      action: stop
+    vulture_center_orange:
+      action: stop
+    vulture_center_red:
+      action: stop
+    vulture_right_yellow:
+      action: stop
+    vulture_right_orange:
+      action: stop
+    vulture_right_red:
+      action: stop
+
+shows:
+
+  vulture_left_yellow:
+    - duration: 1s
+      lights:
+        l_upper_left: yellow
+
+  vulture_left_orange:
+    - duration: 1s
+      lights:
+        l_upper_left: orange
+
+  vulture_left_red:
+    - duration: 1s
+      lights:
+        l_upper_left: red
+
+  vulture_center_yellow:
+    - duration: 1s
+      lights:
+        l_upper_middle: yellow
+
+  vulture_center_orange:
+    - duration: 1s
+      lights:
+        l_upper_middle: orange
+
+  vulture_center_red:
+    - duration: 1s
+      lights:
+        l_upper_middle: red
+
+  vulture_right_yellow:
+    - duration: 1s
+      lights:
+        l_upper_right: yellow
+
+  vulture_right_orange:
+    - duration: 1s
+      lights:
+        l_upper_right: orange
+
+  vulture_right_red:
+    - duration: 1s
+      lights:
+        l_upper_right: red
+```
+
+One thing to merge before testing: this has **two `variable_player:` blocks**. Put `vulture_set_started` into the first one.

@@ -1,0 +1,12 @@
+Lizard Mode: “Serum Chase”
+
+Rules:
+
+star rollover to collect serum
+
+Once serum is collected, a delivery target lights
+s_web_target_left then next time s_web_target_top
+You have 12 seconds to deliver serum
+Successful delivery scores and advances cure progress
+Fail timer = serum expires, collect again
+Deliver serum 2 times to complete Lizard

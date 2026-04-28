@@ -10,7 +10,7 @@ switches:
   # 0F
     number: cab-15
     debounce: quick            # will use 2ms / 2ms
-    tags: left_flipper	
+    tags: left_flipper
   s_right_flipper:
   # 16
     number: cab-22

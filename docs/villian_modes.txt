@@ -1,6 +1,21 @@
 VILLAINS (1967 SERIES ONLY)
 (see villian mode docs)
 
+
+Rhino
+Sandman
+Vulture
+Electro
+Goblin
+Mysterio
+Scorpion
+Doc Ock
+Kraven
+Lizard
+
+Kingpin
+
+
 🪨 RHINO
 Mode: Rhino Bash
 ** build Rhino's rage (pops), build JP value by smashing targets, collect JPs at Left Upper rollover
@@ -13,39 +28,29 @@ Mode idea: “Shifting Sands”
 Mode idea: “Sky Attack”
 ** upper playfield spinner value based on 3 targets 
 
-
 ⚡ Electro
 Mode idea: “Power Surge”
 ** moving shot through 5 locations
-
 
 🧪 Green Goblin
 Mode idea: “Goblin Chaos Multiball”
 - build up a Chaos bonus by hitting flashing shots, avoid solid lit shots which decrease bonus
 
-
 🎭 Mysterio
 Mode idea: “Illusion Trial”
 * like find Barb - stranger things
-
 
 🧲 Scorpion
 Mode idea: “Sting Sequence”
 - go to upper to hit spinner and exit left or right, hit single drop target
 
-
-
 🧠 Doctor Octopus
 Mode idea: “Tentacle Lockdown”
 - Mechanical arms = 4 in/out lanes
-- start with one arm disabled
-- slow dim pulsing lights, solid if disabled 
-- flippers rotate lights 
-- disable an arm (collect small points) (lights the JP shot)
-- collect JP (x number of disabled arms) at web targets 
-- left drops releases an arm
-- all arms released - mode over
 
+Kraven
+
+Lizard
 
 
 👑 Kingpin
