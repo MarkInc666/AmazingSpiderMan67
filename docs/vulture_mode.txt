@@ -11,3 +11,19 @@ Mode idea: “Sky Attack”
 - live points scored during spins but also collected as bonus on ball end (tilting loses bonus)
 
 
+Yes. Vulture is a strong upper-playfield mode.
+
+Core interpretation:
+
+* Start mode → upper gate opens
+* First upper entrance starts 60s timer
+* 3 upper targets each build from Yellow → Orange → Red
+* Spinner value = sum of the 3 target values
+* Yellow = 5K, Orange = 10K, Red = 25K
+* No upper switch activity for 3 seconds → all targets decay one step
+* Spinner scores live points and adds same amount to Vulture bonus
+* Vulture bonus is paid at ball end unless tilted
+
+Here’s the clean MPF draft using your names:
+
+```yaml

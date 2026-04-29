@@ -1,6 +1,3 @@
-Yes. Here’s a clean first MPF pass for **Parafino – Melt the Wax** using your real switch/light names. 
-
-```yaml
 #config_version=6
 
 mode:
@@ -66,8 +63,7 @@ variable_player:
   parafino_mode_complete:
     score: 1000000
 
-switch_player:
-
+event_player:
   s_pop_left_active:
     - parafino_pop_left_request
 
@@ -84,73 +80,54 @@ switch_player:
   s_web_target_left_active:
     - parafino_left_web_request
 
-
-conditional_events:
-
   # Step 1: hit BOTH pops
-  parafino_pop_left_request:
-    - condition: current_player.parafino_step == 1
-      events:
-        - parafino_pop_left_mark
-        - parafino_check_pops_complete
+  parafino_pop_left_request{current_player.parafino_step == 1}:
+    - parafino_pop_left_mark
+    - parafino_check_pops_complete
 
-  parafino_pop_right_request:
-    - condition: current_player.parafino_step == 1
-      events:
-        - parafino_pop_right_mark
-        - parafino_check_pops_complete
+  parafino_pop_right_request{current_player.parafino_step == 1}:
+    - parafino_pop_right_mark
+    - parafino_check_pops_complete
 
-  parafino_check_pops_complete:
-    - condition: current_player.parafino_pop_left_hit == 1 and current_player.parafino_pop_right_hit == 1
-      events:
-        - parafino_heat_up
-        - parafino_reset_pop_hits
-        - parafino_show_heat_1
-        - parafino_light_left_drops
+  parafino_check_pops_complete{current_player.parafino_pop_left_hit == 1 and current_player.parafino_pop_right_hit == 1}:
+    - parafino_heat_up
+    - parafino_reset_pop_hits
+    - parafino_show_heat_1
+    - parafino_light_left_drops
 
   # Step 2: any left drop
-  parafino_left_drops_request:
-    - condition: current_player.parafino_step == 2
-      events:
-        - parafino_heat_up
-        - parafino_show_heat_2
-        - parafino_light_saucers
+  parafino_left_drops_request{current_player.parafino_step == 2}:
+    - parafino_heat_up
+    - parafino_show_heat_2
+    - parafino_light_saucers
 
   # Step 3: any saucer
-  parafino_saucer_request:
-    - condition: current_player.parafino_step == 3
-      events:
-        - parafino_heat_up
-        - parafino_show_heat_3
-        - parafino_light_left_web
+  parafino_saucer_request{current_player.parafino_step == 3}:
+    - parafino_heat_up
+    - parafino_show_heat_3
+    - parafino_light_left_web
 
   # Step 4: left web target
-  parafino_left_web_request:
-    - condition: current_player.parafino_step == 4
-      events:
-        - parafino_heat_up
-        - parafino_show_heat_4
-        - parafino_light_right_drops
+  parafino_left_web_request{current_player.parafino_step == 4}:
+    - parafino_heat_up
+    - parafino_show_heat_4
+    - parafino_light_right_drops
 
   # Step 5: any right drop
-  parafino_right_drops_request:
-    - condition: current_player.parafino_step == 5
-      events:
-        - parafino_heat_up
-        - parafino_show_heat_5
-        - parafino_wax_melts
-        - parafino_mode_complete
-
-event_player:
+  parafino_right_drops_request{current_player.parafino_step == 5}:
+    - parafino_heat_up
+    - parafino_show_heat_5
+    - parafino_wax_melts
+    - parafino_mode_complete
 
   mode_parafino_started:
     - parafino_show_heat_0
     - parafino_light_pops
 
-  dt_bank_left_down:
+  para_dt_bank_left_down:
     - parafino_left_drops_request
 
-  dt_bank_right_down:
+  para_dt_bank_right_down:
     - parafino_right_drops_request    
 
 
@@ -378,24 +355,20 @@ shows:
         gi: white
 
 
-
-
 drop_target_banks:
 
-  dt_bank_left:
+  para_dt_bank_left:
     drop_targets:
       - dt_left_1
       - dt_left_2
       - dt_left_3
-    reset_coil: c_left_bank_reset
 
-  dt_bank_right:
+  para_dt_bank_right:
     drop_targets:
       - dt_right_1
       - dt_right_2
       - dt_right_3
       - dt_right_4
       - dt_right_5
-    reset_coil: c_right_bank_reset
     
     

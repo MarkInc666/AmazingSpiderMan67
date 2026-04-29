@@ -84,7 +84,11 @@ variable_player:
       action: set
       int: 1
 
-switch_player:
+
+
+
+
+event_player:
   s_upper_target_left_active: saucer_1_flash_request
   s_upper_target_center_active: saucer_2_flash_request
   s_upper_target_right_active: saucer_3_flash_request
@@ -93,70 +97,45 @@ switch_player:
   s_saucer_2_active: saucer_2_villain_start_request
   s_saucer_3_active: saucer_3_villain_start_request
 
-conditional_events:
-  saucer_1_flash_request:
-    - condition: current_player.villain_start_ready == 1 and current_player.villain_mode_running == 0
-      events: saucer_1_select_ready_set, saucer_1_flash_lit
+  saucer_1_flash_request{current_player.villain_start_ready == 1 and current_player.villain_mode_running == 0}:
+    - saucer_1_select_ready_set
+    - saucer_1_flash_lit
 
-  saucer_2_flash_request:
-    - condition: current_player.villain_start_ready == 1 and current_player.villain_mode_running == 0
-      events: saucer_2_select_ready_set, saucer_2_flash_lit
+  saucer_2_flash_request{current_player.villain_start_ready == 1 and current_player.villain_mode_running == 0}:
+    - saucer_2_select_ready_set
+    - saucer_2_flash_lit
 
-  saucer_3_flash_request:
-    - condition: current_player.villain_start_ready == 1 and current_player.villain_mode_running == 0
-      events: saucer_3_select_ready_set, saucer_3_flash_lit
+  saucer_3_flash_request{current_player.villain_start_ready == 1 and current_player.villain_mode_running == 0}:
+    - saucer_3_select_ready_set
+    - saucer_3_flash_lit
 
-  saucer_1_villain_start_request:
-    - condition: current_player.saucer_1_select_ready == 1
-      events: start_mode_villain_select
-    - condition: current_player.villain_start_ready == 1 and current_player.saucer_1_select_ready == 0
-      events: start_current_villain
+  saucer_1_villain_start_request{current_player.saucer_1_select_ready == 1}: start_mode_villain_select
+  saucer_1_villain_start_request{current_player.villain_start_ready == 1 and current_player.saucer_1_select_ready == 0}: start_current_villain
 
-  saucer_2_villain_start_request:
-    - condition: current_player.saucer_2_select_ready == 1
-      events: start_mode_villain_select
-    - condition: current_player.villain_start_ready == 1 and current_player.saucer_2_select_ready == 0
-      events: start_current_villain
+  saucer_2_villain_start_request{current_player.saucer_2_select_ready == 1}: start_mode_villain_select
+  saucer_2_villain_start_request{current_player.villain_start_ready == 1 and current_player.saucer_2_select_ready == 0}: start_current_villain
 
-  saucer_3_villain_start_request:
-    - condition: current_player.saucer_3_select_ready == 1
-      events: start_mode_villain_select
-    - condition: current_player.villain_start_ready == 1 and current_player.saucer_3_select_ready == 0
-      events: start_current_villain
+  saucer_3_villain_start_request{current_player.saucer_3_select_ready == 1}: start_mode_villain_select
+  saucer_3_villain_start_request{current_player.villain_start_ready == 1 and current_player.saucer_3_select_ready == 0}: start_current_villain
 
-  start_current_villain:
-    - condition: current_player.kingpin_ready == 1
-      events: start_kingpin_wizard
-    - condition: current_player.villain_current_index == 1
-      events: start_rhino_villain
-    - condition: current_player.villain_current_index == 2
-      events: start_sandman_villain
-    - condition: current_player.villain_current_index == 3
-      events: start_vulture_villain
-    - condition: current_player.villain_current_index == 4
-      events: start_electro_villain
-    - condition: current_player.villain_current_index == 5
-      events: start_goblin_villain
-    - condition: current_player.villain_current_index == 6
-      events: start_mysterio_villain
-    - condition: current_player.villain_current_index == 7
-      events: start_scorpion_villain
-    - condition: current_player.villain_current_index == 8
-      events: start_doc_ock_villain
-    - condition: current_player.villain_current_index == 9
-      events: start_parafino_villain
-    - condition: current_player.villain_current_index == 10
-      events: start_lizard_villain
+  start_current_villain{current_player.kingpin_ready == 1}: start_kingpin_wizard
+  start_current_villain{current_player.kingpin_ready == 0 and current_player.villain_current_index == 1}: start_rhino_villain
+  start_current_villain{current_player.kingpin_ready == 0 and current_player.villain_current_index == 2}: start_sandman_villain
+  start_current_villain{current_player.kingpin_ready == 0 and current_player.villain_current_index == 3}: start_vulture_villain
+  start_current_villain{current_player.kingpin_ready == 0 and current_player.villain_current_index == 4}: start_electro_villain
+  start_current_villain{current_player.kingpin_ready == 0 and current_player.villain_current_index == 5}: start_goblin_villain
+  start_current_villain{current_player.kingpin_ready == 0 and current_player.villain_current_index == 6}: start_mysterio_villain
+  start_current_villain{current_player.kingpin_ready == 0 and current_player.villain_current_index == 7}: start_scorpion_villain
+  start_current_villain{current_player.kingpin_ready == 0 and current_player.villain_current_index == 8}: start_doc_ock_villain
+  start_current_villain{current_player.kingpin_ready == 0 and current_player.villain_current_index == 9}: start_parafino_villain
+  start_current_villain{current_player.kingpin_ready == 0 and current_player.villain_current_index == 10}: start_lizard_villain
 
-  check_kingpin_ready:
-    - condition: current_player.villains_completed_total >= 10
-      events: kingpin_ready_set, kingpin_wizard_ready
+  check_kingpin_ready{current_player.villains_completed_total >= 10}:
+    - kingpin_ready_set
+    - kingpin_wizard_ready
 
-  current_villain_wrap_check:
-    - condition: current_player.villain_current_index > 10
-      events: current_villain_wrap_to_1
-
-event_player:
+  current_villain_wrap_check{current_player.villain_current_index > 10}: current_villain_wrap_to_1
+  
   start_rhino_villain:
     - villain_started_set
     - start_mode_rhino_bash

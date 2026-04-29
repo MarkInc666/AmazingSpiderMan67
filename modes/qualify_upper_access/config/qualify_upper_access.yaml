@@ -13,7 +13,10 @@ variable_player:
       action: set
       int: 0
 
-switch_player:
+event_player:
+  timer_rooftop_access_timer_complete:
+    - rooftop_access_close
+
   s_inlane_a_active:
     rooftop_access_request
 
@@ -26,13 +29,9 @@ switch_player:
   s_upper_entrance_opto_active:
     rooftop_upper_entered
 
-conditional_events:
-  rooftop_access_request:
-    - condition: current_player.villain_mode_running == 0 and current_player.villain_start_ready == 0
-      events:
-        - rooftop_access_open
+  rooftop_access_request{current_player.villain_mode_running == 0 and current_player.villain_start_ready == 0}:
+    - rooftop_access_open
 
-event_player:
   rooftop_access_open:
     - rooftop_diverter_open
     - rooftop_access_lit
@@ -53,14 +52,13 @@ timers:
     direction: down
     tick_interval: 1s
     control_events:
-      - event: rooftop_access_open
-        action: restart
-      - event: rooftop_vuk_entered
-        action: stop
-      - event: villain_start_ready
-        action: stop
-    complete_events:
-      - rooftop_access_close
+      - action: restart
+        event: rooftop_access_open
+      - action: stop
+        event: rooftop_vuk_entered
+      - action: stop
+        event: villain_start_ready
+
 
 show_player:
   rooftop_access_lit:

@@ -147,15 +147,15 @@ variable_player:
       action: set
       int: 2000
 
-switch_player:
+event_player:
 
   s_pop_left_active:
-    rhino_pop_hit
-    rhino_check_rage_stage
+    - rhino_pop_hit
+    - rhino_check_rage_stage
 
   s_pop_right_active:
-    rhino_pop_hit
-    rhino_check_rage_stage
+    - rhino_pop_hit
+    - rhino_check_rage_stage
 
   # Rhino Smash switches
   s_left_drops_1_active: rhino_smash_hit
@@ -190,10 +190,8 @@ switch_player:
 
   # Left Middle B lane jackpot collect
   s_inlane_m_l_active:
-    rhino_jackpot_collect
-    rhino_after_jackpot_collect
-
-event_player:
+    - rhino_jackpot_collect
+    - rhino_after_jackpot_collect
 
   mode_rhino_bash_started:
     - rhino_stage_1
@@ -222,55 +220,58 @@ event_player:
     - rhino_reduce_rage_after_collect
     - rhino_check_mode_complete
 
+  timer_rhino_berserk_timer_complete:
+    - rhino_crash
+
   rhino_crash:
     - rhino_stop_berserk
     - rhino_show_crash
     - rhino_stage_2
 
-conditional_events:
+  rhino_check_rage_stage{current_player.rhino_pops >= 10 and current_player.rhino_rage_stage < 5}:
+    - rhino_set_stage_5
+    - rhino_stage_5
 
-  rhino_check_rage_stage:
-    - condition: current_player.rhino_pops >= 10 and current_player.rhino_rage_stage < 5
-      events: rhino_set_stage_5, rhino_stage_5
+  rhino_check_rage_stage{current_player.rhino_pops >= 7 and current_player.rhino_pops < 10 and current_player.rhino_rage_stage < 4}:
+    - rhino_set_stage_4
+    - rhino_stage_4
 
-    - condition: current_player.rhino_pops >= 7 and current_player.rhino_pops < 10 and current_player.rhino_rage_stage < 4
-      events: rhino_set_stage_4, rhino_stage_4
+  rhino_check_rage_stage{current_player.rhino_pops >= 4 and current_player.rhino_pops < 7 and current_player.rhino_rage_stage < 3}:
+    - rhino_set_stage_3
+    - rhino_stage_3
 
-    - condition: current_player.rhino_pops >= 4 and current_player.rhino_pops < 7 and current_player.rhino_rage_stage < 3
-      events: rhino_set_stage_3, rhino_stage_3
+  rhino_check_rage_stage{current_player.rhino_pops >= 2 and current_player.rhino_pops < 4 and current_player.rhino_rage_stage < 2}:
+    - rhino_set_stage_2
+    - rhino_stage_2
 
-    - condition: current_player.rhino_pops >= 2 and current_player.rhino_pops < 4 and current_player.rhino_rage_stage < 2
-      events: rhino_set_stage_2, rhino_stage_2
+  rhino_set_next_jackpot_base{current_player.rhino_jackpots == 1}: rhino_set_base_100k
 
-  rhino_set_next_jackpot_base:
-    - condition: current_player.rhino_jackpots == 1
-      events: rhino_set_base_100k
+  rhino_set_next_jackpot_base{current_player.rhino_jackpots == 2}: rhino_set_base_150k
 
-    - condition: current_player.rhino_jackpots == 2
-      events: rhino_set_base_150k
+  rhino_set_next_jackpot_base{current_player.rhino_jackpots >= 3}: rhino_bash_complete
 
-    - condition: current_player.rhino_jackpots >= 3
-      events: rhino_bash_complete
+  rhino_reduce_rage_after_collect{current_player.rhino_rage_stage == 5}:
+    - rhino_drop_to_stage_4
+    - rhino_stage_4
 
-  rhino_reduce_rage_after_collect:
-    - condition: current_player.rhino_rage_stage == 5
-      events: rhino_drop_to_stage_4, rhino_stage_4
+  rhino_reduce_rage_after_collect{current_player.rhino_rage_stage == 4}:
+    - rhino_drop_to_stage_3
+    - rhino_stage_3
 
-    - condition: current_player.rhino_rage_stage == 4
-      events: rhino_drop_to_stage_3, rhino_stage_3
+  rhino_reduce_rage_after_collect{current_player.rhino_rage_stage == 3}:
+    - rhino_drop_to_stage_2
+    - rhino_stage_2
 
-    - condition: current_player.rhino_rage_stage == 3
-      events: rhino_drop_to_stage_2, rhino_stage_2
+  rhino_reduce_rage_after_collect{current_player.rhino_rage_stage == 2}:
+    - rhino_drop_to_stage_1
+    - rhino_stage_1
 
-    - condition: current_player.rhino_rage_stage == 2
-      events: rhino_drop_to_stage_2, rhino_stage_2
+  rhino_reduce_rage_after_collect{current_player.rhino_rage_stage == 1}:
+    - rhino_drop_to_stage_1
+    - rhino_stage_1
 
-    - condition: current_player.rhino_rage_stage == 1
-      events: rhino_drop_to_stage_1, rhino_stage_1
+  rhino_check_mode_complete{current_player.rhino_jackpots >= 3}: rhino_bash_complete
 
-  rhino_check_mode_complete:
-    - condition: current_player.rhino_jackpots >= 3
-      events: rhino_bash_complete
 
 timers:
 
@@ -284,8 +285,6 @@ timers:
         action: restart
       - event: rhino_stop_berserk
         action: stop
-    complete_events:
-      - rhino_crash
 
 show_player:
 

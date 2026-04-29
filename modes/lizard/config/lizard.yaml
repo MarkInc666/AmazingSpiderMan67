@@ -47,7 +47,40 @@ variable_player:
       action: set
       int: 1000000
 
-switch_player:
+
+event_player:
+
+  timer_lizard_delivery_timer_tick: lizard_delivery_tick_check
+  timer_lizard_delivery_timer_complete: lizard_serum_expired
+
+  lizard_serum_collect_request{current_player.lizard_serum_ready == 0}:
+    - lizard_serum_collected
+    - lizard_light_delivery_target
+    - lizard_delivery_timer_start
+
+  lizard_left_web_deliver_request{current_player.lizard_serum_ready == 1 and current_player.lizard_deliveries == 0}:
+    - lizard_serum_delivered
+    - lizard_after_delivery
+
+  lizard_center_web_deliver_request{current_player.lizard_serum_ready == 1 and current_player.lizard_deliveries == 1}:
+    - lizard_serum_delivered
+    - lizard_after_delivery
+
+  lizard_light_delivery_target{current_player.lizard_deliveries == 0}:
+    - lizard_light_left_web
+
+  lizard_light_delivery_target{current_player.lizard_deliveries == 1}: lizard_light_center_web
+
+  lizard_after_delivery{current_player.lizard_deliveries >= 2}:
+    - lizard_delivery_timer_stop
+    - lizard_mode_complete
+
+  lizard_after_delivery{current_player.lizard_deliveries < 2}:
+    - lizard_delivery_timer_stop
+    - lizard_light_serum_location
+
+  lizard_delivery_tick_check{device.timers.lizard_delivery_timer.ticks <= 10 and device.timers.lizard_delivery_timer.ticks >= 3}:
+    - lizard_delivery_tick
 
   # Collect serum
   s_star_rollover_active:
@@ -60,50 +93,6 @@ switch_player:
   # Delivery 2
   s_web_target_top_active:
     lizard_center_web_deliver_request
-
-conditional_events:
-
-  lizard_serum_collect_request:
-    - condition: current_player.lizard_serum_ready == 0
-      events:
-        - lizard_serum_collected
-        - lizard_light_delivery_target
-        - lizard_delivery_timer_start
-
-  lizard_left_web_deliver_request:
-    - condition: current_player.lizard_serum_ready == 1 and current_player.lizard_deliveries == 0
-      events:
-        - lizard_serum_delivered
-        - lizard_after_delivery
-
-  lizard_center_web_deliver_request:
-    - condition: current_player.lizard_serum_ready == 1 and current_player.lizard_deliveries == 1
-      events:
-        - lizard_serum_delivered
-        - lizard_after_delivery
-
-  lizard_light_delivery_target:
-    - condition: current_player.lizard_deliveries == 0
-      events: lizard_light_left_web
-    - condition: current_player.lizard_deliveries == 1
-      events: lizard_light_center_web
-
-  lizard_after_delivery:
-    - condition: current_player.lizard_deliveries >= 2
-      events:
-        - lizard_delivery_timer_stop
-        - lizard_mode_complete
-    - condition: current_player.lizard_deliveries < 2
-      events:
-        - lizard_delivery_timer_stop
-        - lizard_light_serum_location
-
-  lizard_delivery_tick_check:
-    - condition: device.timers.lizard_delivery_timer.ticks <= 10 and device.timers.lizard_delivery_timer.ticks >= 3
-      events:
-        - lizard_delivery_tick
-
-event_player:
 
   mode_lizard_started:
     - lizard_light_serum_location
@@ -125,10 +114,7 @@ timers:
         action: restart
       - event: lizard_delivery_timer_stop
         action: stop
-    tick_events:
-      - lizard_delivery_tick_check
-    complete_events:
-      - lizard_serum_expired
+
 
 show_player:
 

@@ -4,6 +4,8 @@ mode:
   start_events: ball_started
   priority: 110
 
+
+
 variable_player:
   mode_qualify_villain_locate_started:
     villain_locate_spins:
@@ -19,26 +21,24 @@ variable_player:
       action: set
       int: 1
 
-switch_player:
+
+
+event_player:
   s_trispinner_opto_active:
     - villain_spinner_locate_request
 
-conditional_events:
-  villain_spinner_locate_request:
-    - condition: current_player.villain_mode_running == 0 and current_player.villain_start_ready == 0
-      events:
-        - villain_spinner_locate_progress
-        - villain_check_located
+  villain_spinner_locate_request{current_player.villain_mode_running == 0 and current_player.villain_start_ready == 0}:
+    - villain_spinner_locate_progress
+    - villain_check_located
 
-  villain_check_located:
-    - condition: current_player.villain_locate_spins >= 3
-      events:
-        - villain_start_ready_set
-        - villain_start_ready
+  villain_check_located{current_player.villain_locate_spins >= 3}:
+    - villain_start_ready_set
+    - villain_start_ready
 
-event_player:
   villain_start_ready:
     - villain_saucers_solid_lit
+
+
 
 show_player:
   villain_spinner_locate_progress:

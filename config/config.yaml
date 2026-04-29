@@ -118,21 +118,27 @@ modes:
   - bumpers
   - service
   - hurryup
-  - doc_ock
-  - electro
-  - fakir
-  - green_goblin
-  - kingpin
-  - lizard
-  - mysterio
-  - noah_body
+  - qualify_upper_access
+  - qualify_villain_locate
+  - qualify_villain_select
+  - qualify_villain_start
+  - green_goblin 
   - parafino
-  - qualifying
-  - rhino
-  - sandman
-  - scorpion
-  - von_schlick
   - vulture  
+  - lizard
+  - rhino
+  
+#  - doc_ock
+#  - electro
+ # - kingpin
+ # - mysterio
+ # - sandman
+ # - scorpion
+ 
+
+#  - noah_body
+#  - fakir
+#  - von_schlick
 
 
 event_player:
