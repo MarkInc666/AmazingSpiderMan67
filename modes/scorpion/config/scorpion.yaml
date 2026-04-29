@@ -1,6 +1,201 @@
 #config_version=6
-#scorpion mode config file
+
 mode:
   start_events: start_mode_scorpion
-  stop_events: stop_mode_scorpion
-  priority: 500
+  stop_events:
+    - scorpion_mode_complete
+    - ball_ended
+  code: scorpion.Scorpion
+  priority: 300
+
+variable_player:
+  mode_scorpion_started:
+    scorpion_venom_value:
+      action: set
+      int: 0
+
+  scorpion_spinner_build:
+    score: 25000
+    scorpion_venom_value: 50000
+
+  scorpion_safe_jackpot:
+    score: current_player.scorpion_venom_value * 2
+
+  scorpion_hard_jackpot:
+    score: current_player.scorpion_venom_value * 4
+
+event_player:
+  mode_scorpion_started:
+    - rooftop_diverter_open
+    - scorpion_build_phase_started
+
+  # Upper spinner builds venom
+  s_trispinner_opto_active:
+    - scorpion_spinner_hit
+
+  # Upper exits choose risk path
+  s_upper_exit_right_opto_active:
+    - scorpion_right_exit_chosen
+
+  s_upper_exit_left_opto_active:
+    - scorpion_left_exit_chosen
+
+  s_left_drops_1_active:
+    - scorpion_left_drop_1_hit
+  s_left_drops_2_active:
+    - scorpion_left_drop_2_hit
+  s_left_drops_3_active:
+    - scorpion_left_drop_3_hit
+
+  s_right_drops_1_active:
+    - scorpion_right_drop_1_hit
+  s_right_drops_2_active:
+    - scorpion_right_drop_2_hit
+  s_right_drops_3_active:
+    - scorpion_right_drop_3_hit
+  s_right_drops_4_active:
+    - scorpion_right_drop_4_hit
+  s_right_drops_5_active:
+    - scorpion_right_drop_5_hit
+
+    
+timers:
+  scorpion_sting_timer:
+    start_value: 5
+    end_value: 0
+    direction: down
+    tick_interval: 1s
+    control_events:
+      - event: scorpion_sting_timer_start
+        action: restart
+      - event: scorpion_sting_timer_stop
+        action: stop
+      - event: scorpion_mode_complete
+        action: stop
+    complete_events:
+      - scorpion_sting_timeout
+
+show_player:
+  scorpion_build_phase_started:
+    scorpion_build_show:
+      loops: -1
+
+  scorpion_sting_ready:
+    scorpion_build_show:
+      action: stop
+    scorpion_ready_show:
+      loops: -1
+
+  scorpion_safe_sting_started:
+    scorpion_ready_show:
+      action: stop
+    scorpion_safe_sting_show:
+      loops: -1
+
+  scorpion_hard_sting_started:
+    scorpion_ready_show:
+      action: stop
+    scorpion_hard_sting_show:
+      loops: -1
+
+  scorpion_sting_success:
+    scorpion_safe_sting_show:
+      action: stop
+    scorpion_hard_sting_show:
+      action: stop
+    scorpion_success_show:
+      loops: 1
+
+  scorpion_sting_failed:
+    scorpion_safe_sting_show:
+      action: stop
+    scorpion_hard_sting_show:
+      action: stop
+    scorpion_fail_show:
+      loops: 1
+
+  scorpion_mode_complete:
+    scorpion_build_show:
+      action: stop
+    scorpion_ready_show:
+      action: stop
+    scorpion_safe_sting_show:
+      action: stop
+    scorpion_hard_sting_show:
+      action: stop
+    scorpion_complete_show:
+      loops: 1
+
+shows:
+  scorpion_build_show:
+    - duration: 250ms
+      lights:
+        l_spinner: green
+        l_upper_middle: green
+    - duration: 250ms
+      lights:
+        l_spinner: yellow
+        l_upper_middle: yellow
+
+  scorpion_ready_show:
+    - duration: 300ms
+      lights:
+        l_upper_left: red
+        l_upper_right: green
+    - duration: 300ms
+      lights:
+        l_upper_left: yellow
+        l_upper_right: yellow
+
+  scorpion_safe_sting_show:
+    - duration: 200ms
+      lights:
+        l_3bankbonus: green
+        l_left_multibonus: green
+    - duration: 200ms
+      lights:
+        l_3bankbonus: off
+        l_left_multibonus: off
+
+  scorpion_hard_sting_show:
+    - duration: 200ms
+      lights:
+        l_5bank_1: red
+        l_5bank_2: red
+        l_5bank_3: red
+        l_5bank_4: red
+        l_5bank_5: red
+    - duration: 200ms
+      lights:
+        l_5bank_1: off
+        l_5bank_2: off
+        l_5bank_3: off
+        l_5bank_4: off
+        l_5bank_5: off
+
+  scorpion_success_show:
+    - duration: 150ms
+      lights:
+        gi: green
+    - duration: 150ms
+      lights:
+        gi: yellow
+
+  scorpion_fail_show:
+    - duration: 150ms
+      lights:
+        gi: red
+    - duration: 150ms
+      lights:
+        gi: off
+
+  scorpion_complete_show:
+    - duration: 150ms
+      lights:
+        gi: green
+    - duration: 150ms
+      lights:
+        gi: white
+        
+        
+        

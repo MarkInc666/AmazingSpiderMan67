@@ -32,7 +32,7 @@ fast:
         led_fade_time: 100ms
     port: auto
     baud: 921600
-    debug: False	
+    debug: False
 
 virtual_platform_start_active_switches:
   - s_trough1
@@ -44,51 +44,8 @@ virtual_platform_start_active_switches:
 
 
 
-#Window is your total size for your displays, below is setup for use with one 1080p monitor.
-
-#window:
-#  width: 1920
-#  height: 1080
-#  title: MPF All Display Window
-#  fullscreen: false
-#  resizable: true
-#  borderless: true
-#  exit_on_escape: true
-#  no_window: false
-#  show_cursor: no
-
-
-#displays:
-
-#  window:
-#    width: 1920
-#    height: 1080
-#  display1:
-#    width: 1920
-#    height: 1080
-
-#slides:
- # slide_layout:
- #   target: window
- #   background_color: white #white for test
- #   widgets:
- #     - type: display
- #       source_display: display1
- #       width: 1920
- #       height: 1080
- #       x: right
- #       anchor_x: right
-
-
-#slide_player:
-#  mc_ready:
-#    slide_layout:
-#      target: window
-
-
 
 #Game Config
-
 config:
   - lights.yaml
   - coils.yaml
@@ -98,9 +55,7 @@ config:
   - images.yaml
   - videos.yaml
 
-
 playfields:
-  #Define your playfield
   playfield:    
     default_source_device: bd_plunger
     tags: default
@@ -124,17 +79,16 @@ modes:
   - qualify_villain_start
   - green_goblin 
   - parafino
-  - vulture  
+  - vulture
   - lizard
   - rhino
+  - mysterio
+  - sandman
+  - scorpion
+  - electro
   
-#  - doc_ock
-#  - electro
+ # - doc_ock
  # - kingpin
- # - mysterio
- # - sandman
- # - scorpion
- 
 
 #  - noah_body
 #  - fakir
@@ -142,8 +96,6 @@ modes:
 
 
 event_player:
-#  s_right_flipper_active: right_full
-#  s_right_flipper_inactive: right_rest
   ball_starting:
     - cmd_flippers_enable
     - cmd_autofire_coils_enable
@@ -155,19 +107,19 @@ event_player:
   tilt:
     - cmd_flippers_disable
     - cmd_autofire_coils_disable
+    - timer_timer_up_post_hold_complete
   slam_tilt:
     - cmd_flippers_disable
     - cmd_autofire_coils_disable
+    - timer_timer_up_post_hold_complete
+
+
 
   s_upper_exit_left_opto_active:
     - enable_up_post_event
 
-
-# s_diverter_open state?
-
   s_upper_entrance_opto_active:
     - diverter_close
-    - ramp_raise    
     
   s_saucer_1_active{device.switches.s_diverter_open.state == 1}: 
     - diverter_open1

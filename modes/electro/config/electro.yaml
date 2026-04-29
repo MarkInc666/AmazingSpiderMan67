@@ -1,6 +1,229 @@
 #config_version=6
-#electro mode config file
+
 mode:
   start_events: start_mode_electro
-  stop_events: stop_mode_electro
-  priority: 500
+  stop_events:
+    - electro_mode_complete
+    - ball_ended
+  code: electro.Electro
+  priority: 300
+
+variable_player:
+  mode_electro_started:
+    electro_jackpot_value:
+      action: set
+      int: 250000
+
+  electro_award_jackpot:
+    score: current_player.electro_jackpot_value
+
+  electro_award_super_jackpot:
+    score: 1000000
+
+event_player:
+  mode_electro_started:
+    - rooftop_diverter_open
+    - electro_start_spark
+
+  # Shot 1: left web target
+  s_web_target_left_active:
+    - electro_shot_1_request
+
+  # Shot 2: spinner
+  s_web_spinner_active:
+    - electro_shot_2_request
+
+  # Shot 3: any left drop
+  s_left_drops_1_active:
+    - electro_shot_3_request
+  s_left_drops_2_active:
+    - electro_shot_3_request
+  s_left_drops_3_active:
+    - electro_shot_3_request
+
+  # Shot 4: upper web target
+  s_web_target_top_active:
+    - electro_shot_4_request
+
+  # Shot 5: any right drop
+  s_right_drops_1_active:
+    - electro_shot_5_request
+  s_right_drops_2_active:
+    - electro_shot_5_request
+  s_right_drops_3_active:
+    - electro_shot_5_request
+  s_right_drops_4_active:
+    - electro_shot_5_request
+  s_right_drops_5_active:
+    - electro_shot_5_request
+
+  # Shot 6: any upper target
+  s_upper_target_left_active:
+    - electro_shot_6_request
+  s_upper_target_center_active:
+    - electro_shot_6_request
+  s_upper_target_right_active:
+    - electro_shot_6_request
+
+timers:
+  electro_spark_timer:
+    start_value: 5
+    end_value: 0
+    direction: down
+    tick_interval: 1s
+    control_events:
+      - event: electro_spark_timer_start
+        action: restart
+      - event: electro_mode_complete
+        action: stop
+    complete_events:
+      - electro_spark_timeout
+
+show_player:
+  electro_light_shot_1:
+    electro_shot_1_show:
+      loops: -1
+
+  electro_light_shot_2:
+    electro_shot_1_show:
+      action: stop
+    electro_shot_2_show:
+      loops: -1
+
+  electro_light_shot_3:
+    electro_shot_2_show:
+      action: stop
+    electro_shot_3_show:
+      loops: -1
+
+  electro_light_shot_4:
+    electro_shot_3_show:
+      action: stop
+    electro_shot_4_show:
+      loops: -1
+
+  electro_light_shot_5:
+    electro_shot_4_show:
+      action: stop
+    electro_shot_5_show:
+      loops: -1
+
+  electro_light_shot_6:
+    electro_shot_5_show:
+      action: stop
+    electro_shot_6_show:
+      loops: -1
+
+  electro_spark_hit_show:
+    electro_spark_hit:
+      loops: 1
+
+  electro_spark_out_show:
+    electro_spark_out:
+      loops: 1
+
+  electro_mode_complete:
+    electro_shot_1_show:
+      action: stop
+    electro_shot_2_show:
+      action: stop
+    electro_shot_3_show:
+      action: stop
+    electro_shot_4_show:
+      action: stop
+    electro_shot_5_show:
+      action: stop
+    electro_shot_6_show:
+      action: stop
+    electro_complete_show:
+      loops: 1
+
+shows:
+  electro_shot_1_show:
+    - duration: 120ms
+      lights:
+        l_left_web_target: yellow
+    - duration: 120ms
+      lights:
+        l_left_web_target: blue
+
+  electro_shot_2_show:
+    - duration: 120ms
+      lights:
+        l_spinner: yellow
+    - duration: 120ms
+      lights:
+        l_spinner: blue
+
+  electro_shot_3_show:
+    - duration: 120ms
+      lights:
+        l_3bankbonus: yellow
+        l_left_multibonus: yellow
+    - duration: 120ms
+      lights:
+        l_3bankbonus: blue
+        l_left_multibonus: blue
+
+  electro_shot_4_show:
+    - duration: 120ms
+      lights:
+        l_mid_spider_target: yellow
+    - duration: 120ms
+      lights:
+        l_mid_spider_target: blue
+
+  electro_shot_5_show:
+    - duration: 120ms
+      lights:
+        l_5bank_1: yellow
+        l_5bank_2: yellow
+        l_5bank_3: yellow
+        l_5bank_4: yellow
+        l_5bank_5: yellow
+    - duration: 120ms
+      lights:
+        l_5bank_1: blue
+        l_5bank_2: blue
+        l_5bank_3: blue
+        l_5bank_4: blue
+        l_5bank_5: blue
+
+  electro_shot_6_show:
+    - duration: 120ms
+      lights:
+        l_upper_left: yellow
+        l_upper_middle: yellow
+        l_upper_right: yellow
+    - duration: 120ms
+      lights:
+        l_upper_left: blue
+        l_upper_middle: blue
+        l_upper_right: blue
+
+  electro_spark_hit:
+    - duration: 100ms
+      lights:
+        gi: white
+    - duration: 100ms
+      lights:
+        gi: blue
+
+  electro_spark_out:
+    - duration: 100ms
+      lights:
+        gi: yellow
+    - duration: 100ms
+      lights:
+        gi: off
+
+  electro_complete_show:
+    - duration: 150ms
+      lights:
+        gi: yellow
+    - duration: 150ms
+      lights:
+        gi: blue
+    - duration: 150ms
+      lights:
+        gi: white

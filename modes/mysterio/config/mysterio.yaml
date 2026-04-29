@@ -1,6 +1,347 @@
 #config_version=6
-#mysterio mode config file
+
 mode:
   start_events: start_mode_mysterio
-  stop_events: stop_mode_mysterio
-  priority: 500
+  stop_events:
+    - mysterio_mode_complete
+    - ball_ended
+  priority: 300
+
+variable_player:
+
+  mode_mysterio_started:
+    mysterio_secret_shot:
+      action: set
+      int: 0
+    mysterio_jackpot_value:
+      action: set
+      int: 1000000
+
+  mysterio_set_secret_1:
+    mysterio_secret_shot:
+      action: set
+      int: 1
+
+  mysterio_set_secret_2:
+    mysterio_secret_shot:
+      action: set
+      int: 2
+
+  mysterio_set_secret_3:
+    mysterio_secret_shot:
+      action: set
+      int: 3
+
+  mysterio_set_secret_4:
+    mysterio_secret_shot:
+      action: set
+      int: 4
+
+  mysterio_set_secret_5:
+    mysterio_secret_shot:
+      action: set
+      int: 5
+
+  mysterio_set_secret_6:
+    mysterio_secret_shot:
+      action: set
+      int: 6
+
+  mysterio_set_secret_7:
+    mysterio_secret_shot:
+      action: set
+      int: 7
+
+  mysterio_set_secret_8:
+    mysterio_secret_shot:
+      action: set
+      int: 8
+
+  mysterio_set_secret_9:
+    mysterio_secret_shot:
+      action: set
+      int: 9
+
+  mysterio_set_secret_10:
+    mysterio_secret_shot:
+      action: set
+      int: 10
+
+  mysterio_wrong_standard_score:
+    score: 50000
+
+  mysterio_wrong_clue_score:
+    score: 50000
+
+  mysterio_standard_deduct:
+    mysterio_jackpot_value: -100000
+
+  mysterio_clue_deduct:
+    mysterio_jackpot_value: -25000
+
+  mysterio_jackpot_floor:
+    mysterio_jackpot_value:
+      action: set
+      int: 300000
+
+  mysterio_collect_super:
+    score: current_player.mysterio_jackpot_value
+
+random_event_player:
+
+  mode_mysterio_started:
+    events:
+      - mysterio_set_secret_1
+      - mysterio_set_secret_2
+      - mysterio_set_secret_3
+      - mysterio_set_secret_4
+      - mysterio_set_secret_5
+      - mysterio_set_secret_6
+      - mysterio_set_secret_7
+      - mysterio_set_secret_8
+      - mysterio_set_secret_9
+      - mysterio_set_secret_10
+
+event_player:
+
+  mode_mysterio_started:
+    - mysterio_light_all_illusions
+
+  # ----------------------------
+  # Physical shot routing
+  # ----------------------------
+
+  dt_bank_left_down:
+    - mysterio_shot_1_request
+
+  dt_bank_right_down:
+    - mysterio_shot_2_request
+
+  s_saucer_1_active:
+    - mysterio_shot_3_request
+
+  s_saucer_2_active:
+    - mysterio_shot_4_request
+
+  s_saucer_3_active:
+    - mysterio_shot_5_request
+
+  s_web_target_left_active:
+    - mysterio_shot_6_request
+
+  s_web_target_top_active:
+    - mysterio_shot_7_request
+
+  s_web_spinner_active:
+    - mysterio_shot_8_request
+
+  s_upper_target_left_active:
+    - mysterio_shot_9_request
+
+  s_upper_target_center_active:
+    - mysterio_shot_10_request
+
+  # ----------------------------
+  # Correct / incorrect checks
+  # ----------------------------
+
+  mysterio_shot_1_request{current_player.mysterio_secret_shot == 1}:
+    - mysterio_correct_shot
+  mysterio_shot_1_request{current_player.mysterio_secret_shot != 1}:
+    - mysterio_wrong_standard
+
+  mysterio_shot_2_request{current_player.mysterio_secret_shot == 2}:
+    - mysterio_correct_shot
+  mysterio_shot_2_request{current_player.mysterio_secret_shot != 2}:
+    - mysterio_wrong_standard
+
+  mysterio_shot_3_request{current_player.mysterio_secret_shot == 3}:
+    - mysterio_correct_shot
+  mysterio_shot_3_request{current_player.mysterio_secret_shot != 3}:
+    - mysterio_wrong_clue_right
+
+  mysterio_shot_4_request{current_player.mysterio_secret_shot == 4}:
+    - mysterio_correct_shot
+  mysterio_shot_4_request{current_player.mysterio_secret_shot != 4}:
+    - mysterio_wrong_clue_near
+
+  mysterio_shot_5_request{current_player.mysterio_secret_shot == 5}:
+    - mysterio_correct_shot
+  mysterio_shot_5_request{current_player.mysterio_secret_shot != 5}:
+    - mysterio_wrong_clue_low
+
+  mysterio_shot_6_request{current_player.mysterio_secret_shot == 6}:
+    - mysterio_correct_shot
+  mysterio_shot_6_request{current_player.mysterio_secret_shot != 6}:
+    - mysterio_wrong_standard
+
+  mysterio_shot_7_request{current_player.mysterio_secret_shot == 7}:
+    - mysterio_correct_shot
+  mysterio_shot_7_request{current_player.mysterio_secret_shot != 7}:
+    - mysterio_wrong_standard
+
+  mysterio_shot_8_request{current_player.mysterio_secret_shot == 8}:
+    - mysterio_correct_shot
+  mysterio_shot_8_request{current_player.mysterio_secret_shot != 8}:
+    - mysterio_wrong_standard
+
+  mysterio_shot_9_request{current_player.mysterio_secret_shot == 9}:
+    - mysterio_correct_shot
+  mysterio_shot_9_request{current_player.mysterio_secret_shot != 9}:
+    - mysterio_wrong_standard
+
+  mysterio_shot_10_request{current_player.mysterio_secret_shot == 10}:
+    - mysterio_correct_shot
+  mysterio_shot_10_request{current_player.mysterio_secret_shot != 10}:
+    - mysterio_wrong_standard
+
+  # ----------------------------
+  # Wrong shot behavior
+  # ----------------------------
+
+  mysterio_wrong_standard:
+    - mysterio_wrong_standard_score
+    - mysterio_standard_deduct_check
+    - mysterio_wrong_flash
+
+  mysterio_wrong_clue_right:
+    - mysterio_wrong_clue_score
+    - mysterio_clue_deduct_check
+    - mysterio_clue_right_callout
+    - mysterio_clue_flash
+
+  mysterio_wrong_clue_near:
+    - mysterio_wrong_clue_score
+    - mysterio_clue_deduct_check
+    - mysterio_clue_near_callout
+    - mysterio_clue_flash
+
+  mysterio_wrong_clue_low:
+    - mysterio_wrong_clue_score
+    - mysterio_clue_deduct_check
+    - mysterio_clue_low_callout
+    - mysterio_clue_flash
+
+  # ----------------------------
+  # Jackpot floor checks
+  # ----------------------------
+
+  mysterio_standard_deduct_check{current_player.mysterio_jackpot_value > 400000}:
+    - mysterio_standard_deduct
+
+  mysterio_standard_deduct_check{current_player.mysterio_jackpot_value <= 400000}:
+    - mysterio_jackpot_floor
+
+  mysterio_clue_deduct_check{current_player.mysterio_jackpot_value > 325000}:
+    - mysterio_clue_deduct
+
+  mysterio_clue_deduct_check{current_player.mysterio_jackpot_value <= 325000}:
+    - mysterio_jackpot_floor
+
+  # ----------------------------
+  # Correct shot
+  # ----------------------------
+
+  mysterio_correct_shot:
+    - mysterio_collect_super
+    - mysterio_reveal_show
+    - mysterio_mode_complete
+
+show_player:
+
+  mysterio_light_all_illusions:
+    mysterio_all_shots_lit:
+      loops: -1
+
+  mysterio_wrong_flash:
+    mysterio_wrong_show:
+      loops: 1
+
+  mysterio_clue_flash:
+    mysterio_clue_show:
+      loops: 1
+
+  mysterio_reveal_show:
+    mysterio_all_shots_lit:
+      action: stop
+    mysterio_reveal:
+      loops: 1
+
+  mysterio_mode_complete:
+    mysterio_all_shots_lit:
+      action: stop
+
+shows:
+
+  mysterio_all_shots_lit:
+    - duration: 400ms
+      lights:
+        l_3bankbonus: purple
+        l_5bank_1: purple
+        l_5bank_2: purple
+        l_5bank_3: purple
+        l_5bank_4: purple
+        l_5bank_5: purple
+        l_1_hole_l: purple
+        l_2_hole_l: purple
+        l_3_hole_l: purple
+        l_left_web_target: purple
+        l_mid_spider_target: purple
+        l_spinner: purple
+        l_upper_left: purple
+        l_upper_middle: purple
+    - duration: 400ms
+      lights:
+        l_3bankbonus: blue
+        l_5bank_1: blue
+        l_5bank_2: blue
+        l_5bank_3: blue
+        l_5bank_4: blue
+        l_5bank_5: blue
+        l_1_hole_l: blue
+        l_2_hole_l: blue
+        l_3_hole_l: blue
+        l_left_web_target: blue
+        l_mid_spider_target: blue
+        l_spinner: blue
+        l_upper_left: blue
+        l_upper_middle: blue
+
+  mysterio_wrong_show:
+    - duration: 150ms
+      lights:
+        gi: purple
+    - duration: 150ms
+      lights:
+        gi: off
+
+  mysterio_clue_show:
+    - duration: 150ms
+      lights:
+        gi: white
+    - duration: 150ms
+      lights:
+        gi: purple
+
+  mysterio_reveal:
+    - duration: 150ms
+      lights:
+        gi: green
+        l_1_hole_l: green
+        l_2_hole_l: green
+        l_3_hole_l: green
+        l_left_web_target: green
+        l_mid_spider_target: green
+        l_spinner: green
+        l_upper_left: green
+        l_upper_middle: green
+    - duration: 150ms
+      lights:
+        gi: white
+        
+        
+        
+# todo
+#mysterio_clue_right_callout
+#mysterio_clue_near_callout
+#mysterio_clue_low_callout

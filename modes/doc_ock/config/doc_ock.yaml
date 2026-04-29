@@ -1,6 +1,253 @@
 #config_version=6
-#doc_ock mode config file
+
 mode:
   start_events: start_mode_doc_ock
-  stop_events: stop_mode_doc_ock
-  priority: 500
+  stop_events:
+    - doc_ock_mode_complete
+    - ball_ended
+  code: doc_ock.DocOck
+  priority: 300
+
+variable_player:
+  mode_doc_ock_started:
+    doc_ock_jackpot_value:
+      action: set
+      int: 250000
+
+  doc_ock_arm_locked_score:
+    score: 50000
+
+  doc_ock_jackpot_award:
+    score: current_player.doc_ock_jackpot_value
+
+event_player:
+  mode_doc_ock_started:
+    - doc_ock_start
+
+  s_left_flipper_active:
+    - doc_ock_rotate_left
+
+  s_right_flipper_active:
+    - doc_ock_rotate_right
+
+  s_outlane_l_active:
+    - doc_ock_arm_1_hit
+
+  s_inlane_l_active:
+    - doc_ock_arm_2_hit
+
+  s_inlane_r_active:
+    - doc_ock_arm_3_hit
+
+  s_outlane_r_active:
+    - doc_ock_arm_4_hit
+
+  s_web_target_left_active:
+    - doc_ock_jackpot_request
+
+  s_web_target_top_active:
+    - doc_ock_jackpot_request
+
+  s_saucer_1_active:
+    - doc_ock_breakout_1_request
+
+  s_saucer_2_active:
+    - doc_ock_breakout_2_request
+
+  s_saucer_3_active:
+    - doc_ock_breakout_3_request
+
+timers:
+  doc_ock_timed_release:
+    start_value: 10
+    end_value: 0
+    direction: down
+    tick_interval: 1s
+    control_events:
+      - event: doc_ock_start_timed_release
+        action: restart
+      - event: doc_ock_stop_timed_release
+        action: stop
+      - event: doc_ock_mode_complete
+        action: stop
+    complete_events:
+      - doc_ock_timed_release_complete
+
+show_player:
+  doc_ock_arm_1_selected:
+    doc_ock_arm_1_pulse:
+      loops: -1
+
+  doc_ock_arm_2_selected:
+    doc_ock_arm_1_pulse:
+      action: stop
+    doc_ock_arm_2_pulse:
+      loops: -1
+
+  doc_ock_arm_3_selected:
+    doc_ock_arm_2_pulse:
+      action: stop
+    doc_ock_arm_3_pulse:
+      loops: -1
+
+  doc_ock_arm_4_selected:
+    doc_ock_arm_3_pulse:
+      action: stop
+    doc_ock_arm_4_pulse:
+      loops: -1
+
+  doc_ock_refresh_locks:
+    doc_ock_locked_arms_show:
+      loops: 1
+
+  doc_ock_jackpot_lit:
+    doc_ock_web_jackpot_show:
+      loops: -1
+
+  doc_ock_jackpot_collected:
+    doc_ock_web_jackpot_show:
+      action: stop
+    doc_ock_jackpot_collect_show:
+      loops: 1
+
+  doc_ock_breakout_1_lit:
+    doc_ock_breakout_1_show:
+      loops: -1
+
+  doc_ock_breakout_2_lit:
+    doc_ock_breakout_2_show:
+      loops: -1
+
+  doc_ock_breakout_3_lit:
+    doc_ock_breakout_3_show:
+      loops: -1
+
+  doc_ock_breakout_hit:
+    doc_ock_breakout_1_show:
+      action: stop
+    doc_ock_breakout_2_show:
+      action: stop
+    doc_ock_breakout_3_show:
+      action: stop
+    doc_ock_breakout_hit_show:
+      loops: 1
+
+  doc_ock_mode_complete:
+    doc_ock_arm_1_pulse:
+      action: stop
+    doc_ock_arm_2_pulse:
+      action: stop
+    doc_ock_arm_3_pulse:
+      action: stop
+    doc_ock_arm_4_pulse:
+      action: stop
+    doc_ock_web_jackpot_show:
+      action: stop
+    doc_ock_breakout_1_show:
+      action: stop
+    doc_ock_breakout_2_show:
+      action: stop
+    doc_ock_breakout_3_show:
+      action: stop
+    doc_ock_complete_show:
+      loops: 1
+
+shows:
+  doc_ock_arm_1_pulse:
+    - duration: 400ms
+      lights:
+        l_left_outlane: purple
+    - duration: 400ms
+      lights:
+        l_left_outlane: blue
+
+  doc_ock_arm_2_pulse:
+    - duration: 400ms
+      lights:
+        l_left_inlane: purple
+    - duration: 400ms
+      lights:
+        l_left_inlane: blue
+
+  doc_ock_arm_3_pulse:
+    - duration: 400ms
+      lights:
+        l_right_inlane: purple
+    - duration: 400ms
+      lights:
+        l_right_inlane: blue
+
+  doc_ock_arm_4_pulse:
+    - duration: 400ms
+      lights:
+        l_right_outlane: purple
+    - duration: 400ms
+      lights:
+        l_right_outlane: blue
+
+  doc_ock_locked_arms_show:
+    - duration: 200ms
+      lights:
+        l_left_outlane: white
+        l_left_inlane: white
+        l_right_inlane: white
+        l_right_outlane: white
+
+  doc_ock_web_jackpot_show:
+    - duration: 250ms
+      lights:
+        l_left_web_target: purple
+        l_mid_spider_target: purple
+    - duration: 250ms
+      lights:
+        l_left_web_target: white
+        l_mid_spider_target: white
+
+  doc_ock_jackpot_collect_show:
+    - duration: 150ms
+      lights:
+        gi: purple
+    - duration: 150ms
+      lights:
+        gi: white
+
+  doc_ock_breakout_1_show:
+    - duration: 250ms
+      lights:
+        l_1_hole_l: red
+    - duration: 250ms
+      lights:
+        l_1_hole_l: off
+
+  doc_ock_breakout_2_show:
+    - duration: 250ms
+      lights:
+        l_2_hole_l: red
+    - duration: 250ms
+      lights:
+        l_2_hole_l: off
+
+  doc_ock_breakout_3_show:
+    - duration: 250ms
+      lights:
+        l_3_hole_l: red
+    - duration: 250ms
+      lights:
+        l_3_hole_l: off
+
+  doc_ock_breakout_hit_show:
+    - duration: 150ms
+      lights:
+        gi: red
+    - duration: 150ms
+      lights:
+        gi: purple
+
+  doc_ock_complete_show:
+    - duration: 200ms
+      lights:
+        gi: red
+    - duration: 200ms
+      lights:
+        gi: off
+        

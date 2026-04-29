@@ -1,8 +1,9 @@
 ⚡ Electro
 Mode idea: “Power Surge”
 
-- traveling shots - like electricity - 5 locations - light shows trace movement
-- 5 shot locations -> Left web target,  spinner , (any drop at left bank),  upper web target, (any drop at right bank),
+- gate opens allowing upper access
+- traveling shots - like electricity - 6 locations - light shows trace movement
+- 6 shot locations -> Left web target,  spinner , (any drop at left bank),  upper web target, (any drop at right bank), any upper playfield target
 - Timed 5? seconds 
   - if not hit, LED sparks out and shot appears somewhere else that has not been disabled 
   - if hit, collect JP (super JP for 5th spark) and shot disables

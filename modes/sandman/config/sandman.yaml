@@ -1,6 +1,195 @@
 #config_version=6
-#sandman mode config file
+
 mode:
   start_events: start_mode_sandman
-  stop_events: stop_mode_sandman
-  priority: 500
+  stop_events:
+    - sandman_mode_complete
+    - ball_ended
+  code: sandman.Sandman
+  priority: 300
+
+variable_player:
+  sandman_regular_hit:
+    score: 1000
+
+  sandman_flashing_hit:
+    score: 50000
+
+  sandman_five_flashing_jackpot:
+    score: 250000
+
+  sandman_left_to_right_jackpot:
+    score: 500000
+
+event_player:
+  mode_sandman_started:
+    - sandman_start_bank
+
+  s_right_drops_1_active:
+    - sandman_drop_1_hit
+  s_right_drops_2_active:
+    - sandman_drop_2_hit
+  s_right_drops_3_active:
+    - sandman_drop_3_hit
+  s_right_drops_4_active:
+    - sandman_drop_4_hit
+  s_right_drops_5_active:
+    - sandman_drop_5_hit
+
+show_player:
+  sandman_flash_1:
+    sandman_flash_1_show:
+      loops: -1
+  sandman_flash_2:
+    sandman_flash_1_show:
+      action: stop
+    sandman_flash_2_show:
+      loops: -1
+  sandman_flash_3:
+    sandman_flash_2_show:
+      action: stop
+    sandman_flash_3_show:
+      loops: -1
+  sandman_flash_4:
+    sandman_flash_3_show:
+      action: stop
+    sandman_flash_4_show:
+      loops: -1
+  sandman_flash_5:
+    sandman_flash_4_show:
+      action: stop
+    sandman_flash_5_show:
+      loops: -1
+
+  sandman_bank_complete:
+    sandman_flash_1_show:
+      action: stop
+    sandman_flash_2_show:
+      action: stop
+    sandman_flash_3_show:
+      action: stop
+    sandman_flash_4_show:
+      action: stop
+    sandman_flash_5_show:
+      action: stop
+    sandman_bank_complete_show:
+      loops: 1
+
+  sandman_mode_complete:
+    sandman_flash_1_show:
+      action: stop
+    sandman_flash_2_show:
+      action: stop
+    sandman_flash_3_show:
+      action: stop
+    sandman_flash_4_show:
+      action: stop
+    sandman_flash_5_show:
+      action: stop
+    sandman_complete_show:
+      loops: 1
+
+shows:
+  sandman_flash_1_show:
+    - duration: 250ms
+      lights:
+        l_5bank_1: yellow
+        l_5bank_2: orange
+        l_5bank_3: orange
+        l_5bank_4: orange
+        l_5bank_5: orange
+    - duration: 250ms
+      lights:
+        l_5bank_1: white
+        l_5bank_2: orange
+        l_5bank_3: orange
+        l_5bank_4: orange
+        l_5bank_5: orange
+
+  sandman_flash_2_show:
+    - duration: 250ms
+      lights:
+        l_5bank_1: orange
+        l_5bank_2: yellow
+        l_5bank_3: orange
+        l_5bank_4: orange
+        l_5bank_5: orange
+    - duration: 250ms
+      lights:
+        l_5bank_1: orange
+        l_5bank_2: white
+        l_5bank_3: orange
+        l_5bank_4: orange
+        l_5bank_5: orange
+
+  sandman_flash_3_show:
+    - duration: 250ms
+      lights:
+        l_5bank_1: orange
+        l_5bank_2: orange
+        l_5bank_3: yellow
+        l_5bank_4: orange
+        l_5bank_5: orange
+    - duration: 250ms
+      lights:
+        l_5bank_1: orange
+        l_5bank_2: orange
+        l_5bank_3: white
+        l_5bank_4: orange
+        l_5bank_5: orange
+
+  sandman_flash_4_show:
+    - duration: 250ms
+      lights:
+        l_5bank_1: orange
+        l_5bank_2: orange
+        l_5bank_3: orange
+        l_5bank_4: yellow
+        l_5bank_5: orange
+    - duration: 250ms
+      lights:
+        l_5bank_1: orange
+        l_5bank_2: orange
+        l_5bank_3: orange
+        l_5bank_4: white
+        l_5bank_5: orange
+
+  sandman_flash_5_show:
+    - duration: 250ms
+      lights:
+        l_5bank_1: orange
+        l_5bank_2: orange
+        l_5bank_3: orange
+        l_5bank_4: orange
+        l_5bank_5: yellow
+    - duration: 250ms
+      lights:
+        l_5bank_1: orange
+        l_5bank_2: orange
+        l_5bank_3: orange
+        l_5bank_4: orange
+        l_5bank_5: white
+
+  sandman_bank_complete_show:
+    - duration: 150ms
+      lights:
+        l_5bank_1: yellow
+        l_5bank_2: yellow
+        l_5bank_3: yellow
+        l_5bank_4: yellow
+        l_5bank_5: yellow
+    - duration: 150ms
+      lights:
+        l_5bank_1: white
+        l_5bank_2: white
+        l_5bank_3: white
+        l_5bank_4: white
+        l_5bank_5: white
+
+  sandman_complete_show:
+    - duration: 150ms
+      lights:
+        gi: yellow
+    - duration: 150ms
+      lights:
+        gi: white

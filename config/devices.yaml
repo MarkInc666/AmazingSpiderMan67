@@ -10,6 +10,7 @@ ball_devices:
     debug: true
     eject_targets: bd_plunger
     eject_timeouts: 3s
+    
   bd_plunger:
     ball_switches: s_plunger
     mechanical_eject: true
