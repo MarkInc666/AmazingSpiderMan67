@@ -57,6 +57,10 @@ event_player:
   s_saucer_3_active:
     - doc_ock_breakout_3_request
 
+  doc_ock_timed_release_complete:
+    - doc_ock_timed_release_complete
+
+
 timers:
   doc_ock_timed_release:
     start_value: 10
@@ -70,8 +74,6 @@ timers:
         action: stop
       - event: doc_ock_mode_complete
         action: stop
-    complete_events:
-      - doc_ock_timed_release_complete
 
 show_player:
   doc_ock_arm_1_selected:

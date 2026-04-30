@@ -2,7 +2,7 @@
 
 mode:
   start_events: start_mode_villain_select
-  stop_events: carousel_item_selected
+  stop_events: stop_carousel_select
   code: mpf.modes.carousel.code.carousel.Carousel
   priority: 500
 
@@ -21,29 +21,49 @@ mode_settings:
 
   next_item_events: s_right_flipper_inactive
   previous_item_events: s_left_flipper_inactive
-  select_item_events: both_flippers_held_2s
+  select_item_events: both_flippers_held_1s
 
-  block_events: both_flippers_held_2s
+  block_events: both_flippers_held_1s
   release_events: both_flippers_inactive
 
 timed_switches:
   both_flippers_held:
     switch_tags: left_flipper, right_flipper
-    time: 2s
-    events_when_active: both_flippers_held_2s
+    time: 1s
+    events_when_active: both_flippers_held_1s
     events_when_released: both_flippers_inactive
 
 event_player:
-  carousel_rhino_selected: start_rhino_villain
-  carousel_sandman_selected: start_sandman_villain
-  carousel_vulture_selected: start_vulture_villain
-  carousel_electro_selected: start_electro_villain
-  carousel_goblin_selected: start_goblin_villain
-  carousel_mysterio_selected: start_mysterio_villain
-  carousel_scorpion_selected: start_scorpion_villain
-  carousel_doc_ock_selected: start_doc_ock_villain
-  carousel_parafino_selected: start_parafino_villain
-  carousel_lizard_selected: start_lizard_villain
+  carousel_item_selected{item=="rhino"}:
+    - start_rhino_villain
+    - stop_carousel_select
+  carousel_item_selected{item=="sandman"}: 
+    - start_sandman_villain
+    - stop_carousel_select
+  carousel_item_selected{item=="vulture"}:
+    - start_vulture_villain
+    - stop_carousel_select
+  carousel_item_selected{item=="electro"}:
+    - start_electro_villain
+    - stop_carousel_select    
+  carousel_item_selected{item=="goblin"}:  
+    - start_goblin_villain
+    - stop_carousel_select    
+  carousel_item_selected{item=="mysterio"}:
+    - start_mysterio_villain
+    - stop_carousel_select    
+  carousel_item_selected{item=="scorpion"}:
+    - start_scorpion_villain
+    - stop_carousel_select    
+  carousel_item_selected{item=="doc_ock"}:  
+    - start_doc_ock_villain
+    - stop_carousel_select    
+  carousel_item_selected{item=="parafino"}:
+    - start_parafino_villain
+    - stop_carousel_select    
+  carousel_item_selected{item=="lizard"}: 
+    - start_lizard_villain
+    - stop_carousel_select    
 
 show_player:
   carousel_rhino_highlighted:

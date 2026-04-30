@@ -1,99 +1,109 @@
 events:
   game_ended: 0
-  game_started: 11
+  game_started: 20
 missing_switches:
-  s_EOS_l_upper: 11
-  s_above_spinner: 11
-  s_diverter_open: 11
-  s_inlane_a: 11
-  s_inlane_b: 11
-  s_inlane_l: 11
-  s_inlane_r: 2
-  s_leaf_next_to_1: 11
-  s_left_drops_rubber: 11
-  s_left_drops_top_left_rubber: 11
-  s_mid_right_rubber: 11
-  s_outlane_l: 11
-  s_outlane_r: 11
-  s_right_drops_1: 11
-  s_right_drops_2: 11
-  s_right_drops_3: 11
-  s_right_drops_4: 11
-  s_right_drops_5: 11
-  s_right_drops_rubber: 11
-  s_right_drops_top_rubber: 11
-  s_right_flipper_upper: 11
-  s_startbutton: 9
-  s_tilt: 11
-  s_vuk_switch: 11
-  s_web_target_top: 11
+  s_EOS_l_upper: 20
+  s_above_spinner: 20
+  s_diverter_open: 20
+  s_inlane_b: 3
+  s_inlane_l: 20
+  s_inlane_m_l: 4
+  s_inlane_m_r: 4
+  s_inlane_r: 11
+  s_leaf_next_to_1: 20
+  s_left_drops_1: 9
+  s_left_drops_rubber: 20
+  s_left_drops_top_left_rubber: 20
+  s_left_drops_top_right_rubber: 9
+  s_mid_right_rubber: 20
+  s_outlane_l: 20
+  s_outlane_r: 20
+  s_pop_left: 4
+  s_right_drops_rubber: 20
+  s_right_drops_top_rubber: 20
+  s_right_flipper_upper: 5
+  s_sling_l: 9
+  s_sling_r: 9
+  s_star_rollover: 9
+  s_startbutton: 8
+  s_tilt: 20
+  s_trough1: 3
+  s_trough2: 3
+  s_trough3: 3
+  s_trough4: 3
+  s_trough5: 3
+  s_trough_jam: 9
+  s_upper_exit_left_opto: 9
+  s_upper_exit_right_opto: 9
+  s_web_spinner: 9
+  s_web_target_top: 20
 player:
   score:
     average: 0
     top: []
     total: 0
 shots:
-  bumper_left: 49
-  bumper_right: 39
+  bumper_left: 73
+  bumper_right: 71
   hurryup: 6
-  upper_entrance: 17
+  upper_entrance: 29
 switches:
   s_EOS_l_upper: 0
   s_above_spinner: 0
-  s_above_star: 1
+  s_above_star: 4
   s_diverter_open: 0
-  s_inlane_a: 0
-  s_inlane_b: 0
+  s_inlane_a: 13
+  s_inlane_b: 8
   s_inlane_l: 0
-  s_inlane_m_l: 4
-  s_inlane_m_r: 1
+  s_inlane_m_l: 8
+  s_inlane_m_r: 5
   s_inlane_r: 12
   s_leaf_next_to_1: 0
   s_left_drops_1: 1
-  s_left_drops_2: 1
-  s_left_drops_3: 1
+  s_left_drops_2: 3
+  s_left_drops_3: 3
   s_left_drops_rubber: 0
   s_left_drops_top_left_rubber: 0
   s_left_drops_top_right_rubber: 2
-  s_left_flipper: 16
+  s_left_flipper: 35
   s_mid_right_rubber: 0
   s_outlane_l: 0
   s_outlane_r: 0
-  s_plunger: 5
-  s_pop_left: 49
-  s_pop_right: 39
-  s_right_drops_1: 0
-  s_right_drops_2: 0
-  s_right_drops_3: 0
-  s_right_drops_4: 0
-  s_right_drops_5: 0
+  s_plunger: 17
+  s_pop_left: 73
+  s_pop_right: 71
+  s_right_drops_1: 18
+  s_right_drops_2: 8
+  s_right_drops_3: 23
+  s_right_drops_4: 6
+  s_right_drops_5: 3
   s_right_drops_rubber: 0
   s_right_drops_top_rubber: 0
-  s_right_flipper: 17
-  s_right_flipper_upper: 0
-  s_saucer_1: 9
-  s_saucer_2: 16
-  s_saucer_3: 6
+  s_right_flipper: 49
+  s_right_flipper_upper: 1
+  s_saucer_1: 17
+  s_saucer_2: 25
+  s_saucer_3: 9
   s_sling_l: 2
   s_sling_r: 6
   s_star_rollover: 1
-  s_startbutton: 1
+  s_startbutton: 2
   s_tilt: 0
-  s_trispinner_opto: 13
-  s_trough1: 6
-  s_trough2: 3
-  s_trough3: 5
-  s_trough4: 1
-  s_trough5: 1
-  s_trough6: 1
+  s_trispinner_opto: 72
+  s_trough1: 9
+  s_trough2: 5
+  s_trough3: 7
+  s_trough4: 3
+  s_trough5: 3
+  s_trough6: 5
   s_trough_jam: 1
-  s_upper_entrance_opto: 18
+  s_upper_entrance_opto: 30
   s_upper_exit_left_opto: 2
   s_upper_exit_right_opto: 1
-  s_upper_target_center: 3
-  s_upper_target_left: 7
-  s_upper_target_right: 4
-  s_vuk_switch: 0
+  s_upper_target_center: 13
+  s_upper_target_left: 14
+  s_upper_target_right: 12
+  s_vuk_switch: 10
   s_web_spinner: 3
-  s_web_target_left: 3
+  s_web_target_left: 11
   s_web_target_top: 0

@@ -74,13 +74,19 @@ shows:
     - duration: 1s
       lights:
         l_1_hole_l: white
+        l_1: white
+        l_1_hole_r: white
 
   villain_saucer_2_solid:
     - duration: 1s
       lights:
         l_2_hole_l: white
+        l_2: white
+        l_2_hole_r: white
 
   villain_saucer_3_solid:
     - duration: 1s
       lights:
         l_3_hole_l: white
+        l_3: white
+        l_3_hole_r: white

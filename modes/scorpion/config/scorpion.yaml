@@ -58,6 +58,9 @@ event_player:
   s_right_drops_5_active:
     - scorpion_right_drop_5_hit
 
+  timer_scorpion_sting_timer_complete:
+    - scorpion_sting_timeout
+
     
 timers:
   scorpion_sting_timer:
@@ -72,8 +75,6 @@ timers:
         action: stop
       - event: scorpion_mode_complete
         action: stop
-    complete_events:
-      - scorpion_sting_timeout
 
 show_player:
   scorpion_build_phase_started:

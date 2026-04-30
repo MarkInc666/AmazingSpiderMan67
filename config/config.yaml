@@ -86,8 +86,7 @@ modes:
   - sandman
   - scorpion
   - electro
-  
- # - doc_ock
+  - doc_ock
  # - kingpin
 
 #  - noah_body
@@ -113,27 +112,25 @@ event_player:
     - cmd_autofire_coils_disable
     - timer_timer_up_post_hold_complete
 
+ # s_upper_exit_left_opto_active:
+ #   - enable_up_post_event
 
-
-  s_upper_exit_left_opto_active:
-    - enable_up_post_event
-
-  s_upper_entrance_opto_active:
-    - diverter_close
+ # s_upper_entrance_opto_active:
+ #   - diverter_close
     
-  s_saucer_1_active{device.switches.s_diverter_open.state == 1}: 
-    - diverter_open1
-    - ramp_lower
-  s_saucer_2_active{device.switches.s_diverter_open.state == 1}: 
-    - diverter_open2
-    - ramp_lower    
-  s_saucer_3_active{device.switches.s_diverter_open.state == 1}: 
-    - diverter_open3
-    - ramp_lower    
+ # s_saucer_1_active{device.switches.s_diverter_open.state == 1}: 
+ #   - diverter_open1
+ #   - ramp_lower
+ # s_saucer_2_active{device.switches.s_diverter_open.state == 1}: 
+ #   - diverter_open2
+ #   - ramp_lower    
+ # s_saucer_3_active{device.switches.s_diverter_open.state == 1}: 
+ #   - diverter_open3
+ #   - ramp_lower    
     
-  s_right_drops_top_rubber_active{device.switches.s_diverter_open.state == 1}: 
-    - diverter_open  
-    - ramp_lower    
+ # s_right_drops_top_rubber_active{device.switches.s_diverter_open.state == 1}: 
+ #   - diverter_open  
+ #   - ramp_lower    
 
   s_vuk_switch_active:
     - up_kick|2s
@@ -220,36 +217,12 @@ coil_player:
   diverter_open:    
     c_diverter_open_close:
       action: pulse
-      pulse_ms: 160
-
-  diverter_open1:    
-    c_diverter_open_close:
-      action: pulse
-      pulse_ms: 180
-
-  diverter_open2:    
-    c_diverter_open_close:
-      action: pulse
-      pulse_ms: 200
-
-  diverter_open3:    
-    c_diverter_open_close:
-      action: pulse
       pulse_ms: 220
-
-  diverter_open4:    
-    c_diverter_open_close:
-      action: pulse
-      pulse_ms: 200
-
-
-
-
 
   diverter_close:    
     c_diverter_open_close:
       action: pulse
-      pulse_ms: 80    
+      pulse_ms: 100    
 
 
 

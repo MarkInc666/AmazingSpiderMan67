@@ -17,20 +17,23 @@ ball_devices:
     player_controlled_eject_event: s_launch_button_inactive
     eject_timeouts: 3s
 
-  bd_saucer1:
-    ball_switches: s_saucer_1
-    eject_coil: c_saucer_1
-    eject_timeouts: 1s
+ # bd_saucer1:
+ #   ball_switches: s_saucer_1
+ #   eject_coil: c_saucer_1
+ #   player_controlled_eject_event: kickout_saucer_1
+ #   eject_timeouts: 1s
     
-  bd_saucer2:
-    ball_switches: s_saucer_2
-    eject_coil: c_saucer_2
-    eject_timeouts: 1s
+ # bd_saucer2:
+ #   ball_switches: s_saucer_2
+ #   player_controlled_eject_event: kickout_saucer_2
+ #   eject_coil: c_saucer_2
+ #   eject_timeouts: 1s
 
-  bd_saucer3:
-    ball_switches: s_saucer_3
-    eject_coil: c_saucer_3
-    eject_timeouts: 1s
+ # bd_saucer3:
+ #   ball_switches: s_saucer_3
+ #   player_controlled_eject_event: kickout_saucer_3   
+ #   eject_coil: c_saucer_3
+ #   eject_timeouts: 1s
 
 
 

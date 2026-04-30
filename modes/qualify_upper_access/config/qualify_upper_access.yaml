@@ -13,6 +13,7 @@ variable_player:
       action: set
       int: 0
 
+
 event_player:
   timer_rooftop_access_timer_complete:
     - rooftop_access_close

@@ -65,6 +65,9 @@ event_player:
   s_upper_target_right_active:
     - electro_shot_6_request
 
+  timer_electro_spark_timer_complete:
+    - electro_spark_timeout
+
 timers:
   electro_spark_timer:
     start_value: 5
@@ -76,8 +79,6 @@ timers:
         action: restart
       - event: electro_mode_complete
         action: stop
-    complete_events:
-      - electro_spark_timeout
 
 show_player:
   electro_light_shot_1:
