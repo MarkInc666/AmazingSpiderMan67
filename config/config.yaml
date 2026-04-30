@@ -132,8 +132,8 @@ event_player:
  #   - diverter_open  
  #   - ramp_lower    
 
-  s_vuk_switch_active:
-    - up_kick|2s
+#  s_vuk_switch_active:
+#    - up_kick|1s
     
     
 show_player:
@@ -210,16 +210,17 @@ coil_player:
     c_up_post:
       action: disable
 
+
   up_kick:
     c_vuk_to_upper:
       action: pulse
     
-  diverter_open:    
+  rooftop_diverter_open:
     c_diverter_open_close:
       action: pulse
       pulse_ms: 220
-
-  diverter_close:    
+  
+  rooftop_diverter_close:
     c_diverter_open_close:
       action: pulse
       pulse_ms: 100    

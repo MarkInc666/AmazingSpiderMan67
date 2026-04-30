@@ -15,20 +15,23 @@ variable_player:
 
 
 event_player:
+  s_vuk_switch_active{current_player.villain_mode_running == 0 and current_player.villain_start_ready == 0}:
+    - up_kick|1s
+
   timer_rooftop_access_timer_complete:
     - rooftop_access_close
 
   s_inlane_a_active:
-    rooftop_access_request
+    - rooftop_access_request
 
   s_inlane_m_r_active:
-    rooftop_access_request
+    - rooftop_access_request
 
   s_vuk_switch_active:
-    rooftop_vuk_entered
+    - rooftop_vuk_entered
 
   s_upper_entrance_opto_active:
-    rooftop_upper_entered
+    - rooftop_upper_entered
 
   rooftop_access_request{current_player.villain_mode_running == 0 and current_player.villain_start_ready == 0}:
     - rooftop_access_open
@@ -41,10 +44,10 @@ event_player:
     - rooftop_diverter_close
     - rooftop_access_unlit
 
-  rooftop_vuk_entered:
+  rooftop_vuk_entered{current_player.villain_mode_running == 0 and current_player.villain_start_ready == 0}:
     - rooftop_diverter_close
     - rooftop_access_unlit
-    - rooftop_vuk_hold_or_kick
+    - rooftop_vuk_hold_or_kick  #needed?
 
 timers:
   rooftop_access_timer:

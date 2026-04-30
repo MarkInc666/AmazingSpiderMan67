@@ -89,25 +89,11 @@ variable_player:
 
 
 event_player:
-  s_upper_target_left_active: saucer_1_flash_request
-  s_upper_target_center_active: saucer_2_flash_request
-  s_upper_target_right_active: saucer_3_flash_request
 
   s_saucer_1_active: saucer_1_villain_start_request
   s_saucer_2_active: saucer_2_villain_start_request
   s_saucer_3_active: saucer_3_villain_start_request
 
-  saucer_1_flash_request{current_player.villain_start_ready == 1 and current_player.villain_mode_running == 0}:
-    - saucer_1_select_ready_set
-    - saucer_1_flash_lit
-
-  saucer_2_flash_request{current_player.villain_start_ready == 1 and current_player.villain_mode_running == 0}:
-    - saucer_2_select_ready_set
-    - saucer_2_flash_lit
-
-  saucer_3_flash_request{current_player.villain_start_ready == 1 and current_player.villain_mode_running == 0}:
-    - saucer_3_select_ready_set
-    - saucer_3_flash_lit
 
   saucer_1_villain_start_request{current_player.saucer_1_select_ready == 1}: start_mode_villain_select
   saucer_1_villain_start_request{current_player.villain_start_ready == 1 and current_player.saucer_1_select_ready == 0}: start_current_villain
@@ -185,24 +171,8 @@ event_player:
     - advance_current_villain
     - current_villain_wrap_check
 
+
 show_player:
-  saucer_1_flash_lit:
-    villain_saucer_1_solid:
-      action: stop
-    villain_saucer_1_flash:
-      loops: -1
-
-  saucer_2_flash_lit:
-    villain_saucer_2_solid:
-      action: stop
-    villain_saucer_2_flash:
-      loops: -1
-
-  saucer_3_flash_lit:
-    villain_saucer_3_solid:
-      action: stop
-    villain_saucer_3_flash:
-      loops: -1
 
   start_mode_villain_select:
     villain_saucer_1_solid:
@@ -210,6 +180,12 @@ show_player:
     villain_saucer_2_solid:
       action: stop
     villain_saucer_3_solid:
+      action: stop
+    villain_saucer_1_flash:
+      action: stop
+    villain_saucer_2_flash:
+      action: stop
+    villain_saucer_3_flash:
       action: stop
 
   start_current_villain:
@@ -225,6 +201,7 @@ show_player:
       action: stop
     villain_saucer_3_flash:
       action: stop
+
 
 shows:
   villain_saucer_1_flash:

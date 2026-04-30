@@ -36,34 +36,45 @@ timed_switches:
 event_player:
   carousel_item_selected{item=="rhino"}:
     - start_rhino_villain
+    - villain_started_set    
     - stop_carousel_select
   carousel_item_selected{item=="sandman"}: 
     - start_sandman_villain
+    - villain_started_set    
     - stop_carousel_select
   carousel_item_selected{item=="vulture"}:
     - start_vulture_villain
+    - villain_started_set    
     - stop_carousel_select
   carousel_item_selected{item=="electro"}:
     - start_electro_villain
+    - villain_started_set    
     - stop_carousel_select    
   carousel_item_selected{item=="goblin"}:  
     - start_goblin_villain
+    - villain_started_set    
     - stop_carousel_select    
   carousel_item_selected{item=="mysterio"}:
     - start_mysterio_villain
+    - villain_started_set    
     - stop_carousel_select    
   carousel_item_selected{item=="scorpion"}:
     - start_scorpion_villain
+    - villain_started_set    
     - stop_carousel_select    
   carousel_item_selected{item=="doc_ock"}:  
     - start_doc_ock_villain
+    - villain_started_set    
     - stop_carousel_select    
   carousel_item_selected{item=="parafino"}:
     - start_parafino_villain
+    - villain_started_set    
     - stop_carousel_select    
   carousel_item_selected{item=="lizard"}: 
     - start_lizard_villain
+    - villain_started_set    
     - stop_carousel_select    
+
 
 show_player:
   carousel_rhino_highlighted:
