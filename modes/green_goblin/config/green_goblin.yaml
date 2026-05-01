@@ -4,7 +4,9 @@
 
 mode:
   start_events: start_mode_goblin
-  stop_events: goblin_mode_ended, ball_ended
+  stop_events: 
+    - goblin_mode_ended
+    - ball_ended
   priority: 500
 
 variable_player:
@@ -87,6 +89,9 @@ variable_player:
 
 
 event_player:
+
+  goblin_mode_complete:
+    - reset_villain_locate
 
   mode_goblin_started:
     - goblin_start_multiball

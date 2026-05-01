@@ -104,6 +104,9 @@ random_event_player:
 
 event_player:
 
+  mysterio_mode_complete:
+    - reset_villain_locate
+
   mode_mysterio_started:
     - mysterio_light_all_illusions
 

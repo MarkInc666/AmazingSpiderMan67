@@ -25,6 +25,10 @@ variable_player:
     score: current_player.scorpion_venom_value * 4
 
 event_player:
+
+  scorpion_mode_complete:
+    - reset_villain_locate
+
   mode_scorpion_started:
     - rooftop_diverter_open
     - scorpion_build_phase_started

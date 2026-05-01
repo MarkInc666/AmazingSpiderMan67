@@ -64,6 +64,10 @@ variable_player:
     score: 1000000
 
 event_player:
+
+  parafino_mode_complete:
+    - reset_villain_locate
+
   s_pop_left_active:
     - parafino_pop_left_request
 

@@ -149,6 +149,9 @@ variable_player:
 
 event_player:
 
+  rhino_bash_complete:
+    - reset_villain_locate
+
   s_pop_left_active:
     - rhino_pop_hit
     - rhino_check_rage_stage

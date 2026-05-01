@@ -5,7 +5,7 @@ mode:
   stop_events:
     - doc_ock_mode_complete
     - ball_ended
-  code: doc_ock.DocOck
+  code: doc_ock.doc_ock
   priority: 300
 
 variable_player:
@@ -21,8 +21,12 @@ variable_player:
     score: current_player.doc_ock_jackpot_value
 
 event_player:
+
+  doc_ock_mode_complete:
+    - reset_villain_locate
+
   mode_doc_ock_started:
-    - doc_ock_start
+    - doc_ock_start_arms
 
   s_left_flipper_active:
     - doc_ock_rotate_left

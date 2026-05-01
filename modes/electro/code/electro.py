@@ -30,6 +30,8 @@ class Electro(Mode):
         self.machine.events.post("electro_spark_timer_start")
 
     def shot_request(self, shot_num, **kwargs):
+        self.machine.events.post("shot request called")
+
         if shot_num != self.current_shot:
             return
 

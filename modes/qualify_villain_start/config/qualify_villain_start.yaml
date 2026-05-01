@@ -31,6 +31,24 @@ variable_player:
       action: set
       int: 0
 
+  reset_villain_locate:
+    villain_mode_running:
+      action: set
+      int: 0
+    villain_start_ready:
+      action: set
+      int: 0
+    saucer_1_select_ready:
+      action: set
+      int: 0
+    saucer_2_select_ready:
+      action: set
+      int: 0
+    saucer_3_select_ready:
+      action: set
+      int: 0
+
+
   villain_started_set:
     villain_mode_running:
       action: set
@@ -84,11 +102,30 @@ variable_player:
       action: set
       int: 1
 
+  slings_hit: 
+    score: 110
 
 
+shots:
+  sling_left:
+    switch: s_sling_l
+  sling_right:
+    switch: s_sling_r
+
+shot_groups:
+  slings:
+      shots:   sling_left, sling_right
 
 
 event_player:
+
+  reset_villain_locate:
+    - advance_current_villain
+    - current_villain_wrap_check
+
+  slings_hit:
+    - advance_current_villain
+    - current_villain_wrap_check
 
   s_saucer_1_active: saucer_1_villain_start_request
   s_saucer_2_active: saucer_2_villain_start_request
@@ -105,14 +142,14 @@ event_player:
   saucer_3_villain_start_request{current_player.villain_start_ready == 1 and current_player.saucer_3_select_ready == 0}: start_current_villain
 
   start_current_villain{current_player.kingpin_ready == 1}: start_kingpin_wizard
-  start_current_villain{current_player.kingpin_ready == 0 and current_player.villain_current_index == 1}: start_rhino_villain
+  start_current_villain{current_player.kingpin_ready == 0 and current_player.villain_current_index == 1}: start_doc_ock_villain
   start_current_villain{current_player.kingpin_ready == 0 and current_player.villain_current_index == 2}: start_sandman_villain
   start_current_villain{current_player.kingpin_ready == 0 and current_player.villain_current_index == 3}: start_vulture_villain
-  start_current_villain{current_player.kingpin_ready == 0 and current_player.villain_current_index == 4}: start_electro_villain
+  start_current_villain{current_player.kingpin_ready == 0 and current_player.villain_current_index == 4}: start_rhino_villain
   start_current_villain{current_player.kingpin_ready == 0 and current_player.villain_current_index == 5}: start_goblin_villain
   start_current_villain{current_player.kingpin_ready == 0 and current_player.villain_current_index == 6}: start_mysterio_villain
   start_current_villain{current_player.kingpin_ready == 0 and current_player.villain_current_index == 7}: start_scorpion_villain
-  start_current_villain{current_player.kingpin_ready == 0 and current_player.villain_current_index == 8}: start_doc_ock_villain
+  start_current_villain{current_player.kingpin_ready == 0 and current_player.villain_current_index == 8}: start_electro_villain
   start_current_villain{current_player.kingpin_ready == 0 and current_player.villain_current_index == 9}: start_parafino_villain
   start_current_villain{current_player.kingpin_ready == 0 and current_player.villain_current_index == 10}: start_lizard_villain
 
@@ -166,10 +203,6 @@ event_player:
     - villain_started_set
     - start_mode_kingpin
 
-  villain_mode_ended:
-    - villain_mode_running_clear
-    - advance_current_villain
-    - current_villain_wrap_check
 
 
 show_player:

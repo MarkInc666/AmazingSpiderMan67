@@ -2,7 +2,7 @@ from mpf.core.mode import Mode
 import random
 
 
-class DocOck(Mode):
+class doc_ock(Mode):
 
     ARMS = [1, 2, 3, 4]
     MAX_BREAKOUT_TARGETS = 3
@@ -25,7 +25,7 @@ class DocOck(Mode):
         self.jackpots_collected = 0
         self.active_breakouts = set()
 
-        self.add_mode_event_handler("doc_ock_start", self.start)
+        self.add_mode_event_handler("doc_ock_start_arms", self.doc_ock_start_arms)
         self.add_mode_event_handler("doc_ock_rotate_left", self.rotate_left)
         self.add_mode_event_handler("doc_ock_rotate_right", self.rotate_right)
         self.add_mode_event_handler("doc_ock_jackpot_request", self.jackpot_request)
@@ -45,7 +45,9 @@ class DocOck(Mode):
                 breakout=breakout
             )
 
-    def start(self, **kwargs):
+ 
+
+    def doc_ock_start_arms(self, **kwargs):
         self.machine.events.post("doc_ock_refresh_locks")
         self.light_selected_arm()
         self.check_jackpot_lit()

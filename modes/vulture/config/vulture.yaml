@@ -108,6 +108,9 @@ variable_player:
 
 event_player:
 
+  vulture_mode_complete:
+    - reset_villain_locate
+
   timer_vulture_mode_timer_complete:
     - vulture_mode_complete
 

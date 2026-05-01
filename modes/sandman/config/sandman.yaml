@@ -22,6 +22,10 @@ variable_player:
     score: 500000
 
 event_player:
+
+  sandman_mode_complete:
+    - reset_villain_locate
+
   mode_sandman_started:
     - sandman_start_bank
 

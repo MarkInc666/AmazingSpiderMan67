@@ -50,6 +50,9 @@ variable_player:
 
 event_player:
 
+  lizard_mode_complete:
+    - reset_villain_locate
+
   timer_lizard_delivery_timer_tick: lizard_delivery_tick_check
   timer_lizard_delivery_timer_complete: lizard_serum_expired
 
