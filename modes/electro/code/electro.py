@@ -8,6 +8,7 @@ class Electro(Mode):
 
         self.current_shot = 1
         self.disabled = set()
+        self.shots_completed = 0
 
         self.add_mode_event_handler("electro_start_spark", self.start_spark)
         self.add_mode_event_handler("electro_spark_timeout", self.spark_timeout)
@@ -35,8 +36,10 @@ class Electro(Mode):
         if shot_num != self.current_shot:
             return
 
+        self.shots_completed +1
+        
         # 6th disabled spark = Super Jackpot
-        if len(self.disabled) == 5:
+        if len(self.shots_completed) == 6:
             self.machine.events.post("electro_award_super_jackpot")
         else:
             self.machine.events.post("electro_award_jackpot")

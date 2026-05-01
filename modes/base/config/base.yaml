@@ -9,7 +9,8 @@ event_player:
     - start_mode_bumpers
   mode_base_will_stop:
     - stop_mode_bumpers
-  upper_entrance_hit: start_mode_hurryup
+    
+#  upper_entrance_hit: start_mode_hurryup
 
 
 shots:
