@@ -73,6 +73,7 @@ modes:
   - bumpers
   - service
   - hurryup
+  - qualify_villain_vars
   - qualify_upper_access
   - qualify_villain_locate
   - qualify_villain_select

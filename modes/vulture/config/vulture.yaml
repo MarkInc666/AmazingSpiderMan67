@@ -230,7 +230,7 @@ event_player:
 timers:
 
   vulture_mode_timer:
-    start_value: 60
+    start_value: 40
     end_value: 0
     direction: down
     tick_interval: 1s

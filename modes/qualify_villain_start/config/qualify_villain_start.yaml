@@ -24,10 +24,7 @@ variable_player:
     saucer_3_select_ready:
       action: set
       int: 0
-    villains_completed_total:
-      action: set
-      int: 0
-    kingpin_ready:
+    villains_completed_this_ball_total:
       action: set
       int: 0
 
@@ -235,28 +232,152 @@ show_player:
     villain_saucer_3_flash:
       action: stop
 
+  carousel_rhino_highlighted:
+    villain_select_rhino_show:
+      loops: 1
+
+  carousel_sandman_highlighted:
+    villain_select_sandman_show:
+      loops: 1
+
+  carousel_vulture_highlighted:
+    villain_select_vulture_show:
+      loops: 1
+
+  carousel_electro_highlighted:
+    villain_select_electro_show:
+      loops: 1
+
+  carousel_goblin_highlighted:
+    villain_select_goblin_show:
+      loops: 1
+
+  carousel_mysterio_highlighted:
+    villain_select_mysterio_show:
+      loops: 1
+
+  carousel_scorpion_highlighted:
+    villain_select_scorpion_show:
+      loops: 1
+
+  carousel_doc_ock_highlighted:
+    villain_select_doc_ock_show:
+      loops: 1
+
+  carousel_parafino_highlighted:
+    villain_select_parafino_show:
+      loops: 1
+
+  carousel_lizard_highlighted:
+    villain_select_lizard_show:
+      loops: 1
 
 shows:
+  villain_select_rhino_show:
+    - duration: 250ms
+      lights:
+        l_left_b: red
+
+  villain_select_sandman_show:
+    - duration: 250ms
+      lights:
+        l_spinner: yellow
+
+  villain_select_vulture_show:
+    - duration: 250ms
+      lights:
+        l_upper_middle: white
+
+  villain_select_electro_show:
+    - duration: 250ms
+      lights:
+        l_a_rollover: blue
+        l_b_rollover: blue
+
+  villain_select_goblin_show:
+    - duration: 250ms
+      lights:
+        l_3_hole_l: green
+
+  villain_select_mysterio_show:
+    - duration: 250ms
+      lights:
+        l_star: purple
+
+  villain_select_scorpion_show:
+    - duration: 250ms
+      lights:
+        l_right_a: orange
+
+  villain_select_doc_ock_show:
+    - duration: 250ms
+      lights:
+        l_left_web_target: white
+        l_mid_spider_target: white
+
+  villain_select_parafino_show:
+    - duration: 250ms
+      lights:
+        l_5bank_3: yellow
+
+  villain_select_lizard_show:
+    - duration: 250ms
+      lights:
+        l_1_hole_l: green
+
   villain_saucer_1_flash:
     - duration: 250ms
       lights:
         l_1_hole_l: red
+        l_1: red
+        l_1_hole_r: red
     - duration: 250ms
       lights:
         l_1_hole_l: off
+        l_1: off
+        l_1_hole_r: off
 
   villain_saucer_2_flash:
     - duration: 250ms
       lights:
         l_2_hole_l: red
+        l_2: red
+        l_2_hole_r: red
     - duration: 250ms
       lights:
         l_2_hole_l: off
+        l_2: off
+        l_2_hole_r: off
 
   villain_saucer_3_flash:
     - duration: 250ms
       lights:
         l_3_hole_l: red
+        l_3: red
+        l_3_hole_r: red
     - duration: 250ms
       lights:
         l_3_hole_l: off
+        l_3: off
+        l_3_hole_r: off
+
+  villain_saucer_1_solid:
+    - duration: 1s
+      lights:
+        l_1_hole_l: white
+        l_1: white
+        l_1_hole_r: white
+
+  villain_saucer_2_solid:
+    - duration: 1s
+      lights:
+        l_2_hole_l: white
+        l_2: white
+        l_2_hole_r: white
+
+  villain_saucer_3_solid:
+    - duration: 1s
+      lights:
+        l_3_hole_l: white
+        l_3: white
+        l_3_hole_r: white

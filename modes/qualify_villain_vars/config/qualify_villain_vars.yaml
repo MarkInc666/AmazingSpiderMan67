@@ -1,0 +1,55 @@
+#config_version=6
+
+mode:
+  start_events: ball_started
+  priority: 10
+
+#which carry over from ball to ball?
+variable_player:
+  mode_qualify_villain_vars_started:
+    rhino_played:
+      action: set
+      int: current_player.rhino_played
+    sandman_played:
+      action: set
+      int: current_player.sandman_played
+    vulture_played:
+      action: set
+      int: current_player.vulture_played
+    electro_played:
+      action: set
+      int: current_player.electro_played
+    goblin_played:
+      action: set
+      int: current_player.goblin_played
+    mysterio_played:
+      action: set
+      int: current_player.mysterio_played
+    scorpion_played:
+      action: set
+      int: current_player.scorpion_played
+    doc_ock_played:
+      action: set
+      int: current_player.doc_ock_played
+    parafino_played:
+      action: set
+      int: current_player.parafino_played
+    lizard_played:
+      action: set
+      int: current_player.lizard_played
+
+    villain_mode_running:
+      action: set
+      int: 0
+    villain_start_ready:
+      action: set
+      int: 0
+    current_villain:
+      action: set
+      string: current_player.current_villain
+    kingpin_ready:
+      action: set
+      int: current_player.kingpin_ready
+    villains_completed_total:
+      action: set
+      int: current_player.villains_completed_total

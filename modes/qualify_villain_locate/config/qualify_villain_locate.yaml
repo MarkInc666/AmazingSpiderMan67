@@ -104,6 +104,13 @@ show_player:
       action: stop
     villain_saucer_3_solid:
       action: stop
+    villain_saucer_1_flash:
+      action: stop
+    villain_saucer_2_flash:
+      action: stop
+    villain_saucer_3_flash:
+      action: stop
+
 
 shows:
   villain_spinner_progress_show:
@@ -114,23 +121,3 @@ shows:
       lights:
         l_spinner: blue
 
-  villain_saucer_1_solid:
-    - duration: 1s
-      lights:
-        l_1_hole_l: white
-        l_1: white
-        l_1_hole_r: white
-
-  villain_saucer_2_solid:
-    - duration: 1s
-      lights:
-        l_2_hole_l: white
-        l_2: white
-        l_2_hole_r: white
-
-  villain_saucer_3_solid:
-    - duration: 1s
-      lights:
-        l_3_hole_l: white
-        l_3: white
-        l_3_hole_r: white

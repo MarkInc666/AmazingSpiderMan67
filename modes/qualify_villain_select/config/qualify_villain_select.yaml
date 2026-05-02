@@ -3,11 +3,12 @@
 mode:
   start_events: start_mode_villain_select
   stop_events: stop_carousel_select
-  code: mpf.modes.carousel.code.carousel.Carousel
+  code: qualify_villain_select.QualifyVillainSelect
   priority: 500
 
 mode_settings:
   selectable_items:
+    - lizard
     - rhino
     - sandman
     - vulture
@@ -17,155 +18,16 @@ mode_settings:
     - scorpion
     - doc_ock
     - parafino
-    - lizard
 
   next_item_events: s_right_flipper_inactive
   previous_item_events: s_left_flipper_inactive
-  select_item_events: both_flippers_held_1s
-
-  block_events: both_flippers_held_1s
-  release_events: both_flippers_inactive
+  select_item_events: both_flippers_pressed_within_1s
+  block_events: carousel_selection_locked
+  release_events: carousel_selection_unlocked
 
 timed_switches:
   both_flippers_held:
     switch_tags: left_flipper, right_flipper
     time: 1s
-    events_when_active: both_flippers_held_1s
+    events_when_active: both_flippers_pressed_within_1s
     events_when_released: both_flippers_inactive
-
-event_player:
-  carousel_item_selected{item=="rhino"}:
-    - start_rhino_villain
-    - villain_started_set    
-    - stop_carousel_select
-  carousel_item_selected{item=="sandman"}: 
-    - start_sandman_villain
-    - villain_started_set    
-    - stop_carousel_select
-  carousel_item_selected{item=="vulture"}:
-    - start_vulture_villain
-    - villain_started_set    
-    - stop_carousel_select
-  carousel_item_selected{item=="electro"}:
-    - start_electro_villain
-    - villain_started_set    
-    - stop_carousel_select    
-  carousel_item_selected{item=="goblin"}:  
-    - start_goblin_villain
-    - villain_started_set    
-    - stop_carousel_select    
-  carousel_item_selected{item=="mysterio"}:
-    - start_mysterio_villain
-    - villain_started_set    
-    - stop_carousel_select    
-  carousel_item_selected{item=="scorpion"}:
-    - start_scorpion_villain
-    - villain_started_set    
-    - stop_carousel_select    
-  carousel_item_selected{item=="doc_ock"}:  
-    - start_doc_ock_villain
-    - villain_started_set    
-    - stop_carousel_select    
-  carousel_item_selected{item=="parafino"}:
-    - start_parafino_villain
-    - villain_started_set    
-    - stop_carousel_select    
-  carousel_item_selected{item=="lizard"}: 
-    - start_lizard_villain
-    - villain_started_set    
-    - stop_carousel_select    
-
-
-show_player:
-  carousel_rhino_highlighted:
-    villain_select_rhino_show:
-      loops: 1
-
-  carousel_sandman_highlighted:
-    villain_select_sandman_show:
-      loops: 1
-
-  carousel_vulture_highlighted:
-    villain_select_vulture_show:
-      loops: 1
-
-  carousel_electro_highlighted:
-    villain_select_electro_show:
-      loops: 1
-
-  carousel_goblin_highlighted:
-    villain_select_goblin_show:
-      loops: 1
-
-  carousel_mysterio_highlighted:
-    villain_select_mysterio_show:
-      loops: 1
-
-  carousel_scorpion_highlighted:
-    villain_select_scorpion_show:
-      loops: 1
-
-  carousel_doc_ock_highlighted:
-    villain_select_doc_ock_show:
-      loops: 1
-
-  carousel_parafino_highlighted:
-    villain_select_parafino_show:
-      loops: 1
-
-  carousel_lizard_highlighted:
-    villain_select_lizard_show:
-      loops: 1
-
-shows:
-  villain_select_rhino_show:
-    - duration: 250ms
-      lights:
-        l_left_b: red
-
-  villain_select_sandman_show:
-    - duration: 250ms
-      lights:
-        l_spinner: yellow
-
-  villain_select_vulture_show:
-    - duration: 250ms
-      lights:
-        l_upper_middle: white
-
-  villain_select_electro_show:
-    - duration: 250ms
-      lights:
-        l_a_rollover: blue
-        l_b_rollover: blue
-
-  villain_select_goblin_show:
-    - duration: 250ms
-      lights:
-        l_3_hole_l: green
-
-  villain_select_mysterio_show:
-    - duration: 250ms
-      lights:
-        l_star: purple
-
-  villain_select_scorpion_show:
-    - duration: 250ms
-      lights:
-        l_right_a: orange
-
-  villain_select_doc_ock_show:
-    - duration: 250ms
-      lights:
-        l_left_web_target: white
-        l_mid_spider_target: white
-
-  villain_select_parafino_show:
-    - duration: 250ms
-      lights:
-        l_5bank_3: yellow
-
-  villain_select_lizard_show:
-    - duration: 250ms
-      lights:
-        l_1_hole_l: green

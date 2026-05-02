@@ -72,7 +72,8 @@ event_player:
   lizard_light_delivery_target{current_player.lizard_deliveries == 0}:
     - lizard_light_left_web
 
-  lizard_light_delivery_target{current_player.lizard_deliveries == 1}: lizard_light_center_web
+  lizard_light_delivery_target{current_player.lizard_deliveries == 1}: 
+    - lizard_light_center_web
 
   lizard_after_delivery{current_player.lizard_deliveries >= 2}:
     - lizard_delivery_timer_stop
