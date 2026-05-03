@@ -1,126 +1,109 @@
 events:
   game_ended: 0
-  game_started: 74
+  game_started: 76
 missing_switches:
-  s_EOS_l_upper: 74
-  s_above_spinner: 74
-  s_above_star: 35
-  s_diverter_open: 74
-  s_inlane_b: 57
-  s_inlane_l: 13
-  s_inlane_m_l: 28
-  s_inlane_m_r: 28
-  s_inlane_r: 13
-  s_leaf_next_to_1: 74
-  s_left_drops_1: 29
-  s_left_drops_2: 29
-  s_left_drops_3: 29
-  s_left_drops_rubber: 29
-  s_left_drops_top_left_rubber: 74
-  s_left_drops_top_right_rubber: 63
-  s_left_flipper: 13
-  s_mid_right_rubber: 74
-  s_outlane_l: 13
-  s_outlane_r: 13
-  s_pop_left: 29
-  s_pop_right: 29
-  s_right_drops_1: 29
-  s_right_drops_2: 50
-  s_right_drops_3: 50
-  s_right_drops_4: 50
-  s_right_drops_5: 50
-  s_right_drops_rubber: 74
-  s_right_drops_top_rubber: 74
-  s_right_flipper: 14
-  s_right_flipper_upper: 59
-  s_saucer_2: 12
-  s_saucer_3: 40
-  s_startbutton: 62
-  s_tilt: 74
-  s_trough1: 57
-  s_trough2: 57
-  s_trough3: 57
-  s_trough4: 57
-  s_trough5: 57
-  s_trough6: 1
-  s_trough_jam: 63
-  s_upper_entrance_opto: 29
-  s_upper_exit_left_opto: 29
-  s_upper_exit_right_opto: 50
-  s_upper_target_center: 15
-  s_upper_target_left: 12
-  s_upper_target_right: 29
-  s_vuk_switch: 29
-  s_web_spinner: 29
+  s_EOS_l_upper: 1
+  s_above_spinner: 76
+  s_inlane_a: 2
+  s_inlane_l: 15
+  s_inlane_m_l: 1
+  s_inlane_r: 15
+  s_leaf_next_to_1: 1
+  s_left_drops_1: 1
+  s_left_drops_2: 1
+  s_left_drops_3: 1
+  s_left_drops_rubber: 1
+  s_left_drops_top_left_rubber: 76
+  s_left_drops_top_right_rubber: 65
+  s_left_flipper: 1
+  s_mid_right_rubber: 1
+  s_outlane_l: 15
+  s_outlane_r: 1
+  s_pop_left: 1
+  s_right_drops_top_rubber: 76
+  s_right_flipper: 1
+  s_right_flipper_upper: 1
+  s_saucer_2: 14
+  s_saucer_3: 1
+  s_sling_r: 2
+  s_startbutton: 64
+  s_tilt: 76
+  s_upper_entrance_opto: 1
+  s_upper_exit_left_opto: 1
+  s_upper_exit_right_opto: 52
+  s_upper_target_center: 1
+  s_upper_target_left: 1
+  s_vuk_switch: 1
+  s_web_target_top: 1
 player:
   score:
     average: 0
     top: []
     total: 0
 shots:
-  bumper_left: 112
-  bumper_right: 74
+  bumper_left: 134
+  bumper_right: 94
   hurryup: 6
-  sling_left: 27
+  sling_left: 40
   sling_right: 45
-  upper_entrance: 39
+  upper_entrance: 41
 switches:
-  s_EOS_l_upper: 0
+  s_EOS_l_upper: 5
   s_above_spinner: 0
-  s_above_star: 26
-  s_diverter_open: 0
+  s_above_star: 32
+  s_diverter_open: 10
   s_inlane_a: 107
-  s_inlane_b: 8
+  s_inlane_b: 11
   s_inlane_l: 8
-  s_inlane_m_l: 13
-  s_inlane_m_r: 11
+  s_inlane_m_l: 19
+  s_inlane_m_r: 24
   s_inlane_r: 13
-  s_leaf_next_to_1: 0
-  s_left_drops_1: 6
-  s_left_drops_2: 35
-  s_left_drops_3: 8
-  s_left_drops_rubber: 2
+  s_leaf_next_to_1: 3
+  s_left_drops_1: 11
+  s_left_drops_2: 40
+  s_left_drops_3: 13
+  s_left_drops_rubber: 3
   s_left_drops_top_left_rubber: 0
   s_left_drops_top_right_rubber: 2
-  s_left_flipper: 124
-  s_mid_right_rubber: 0
+  s_left_flipper: 129
+  s_mid_right_rubber: 1
   s_outlane_l: 1
-  s_outlane_r: 1
-  s_plunger: 72
-  s_pop_left: 112
-  s_pop_right: 74
-  s_right_drops_1: 40
-  s_right_drops_2: 17
-  s_right_drops_3: 29
-  s_right_drops_4: 9
-  s_right_drops_5: 12
-  s_right_drops_rubber: 0
+  s_outlane_r: 2
+  s_plunger: 78
+  s_pop_left: 134
+  s_pop_right: 94
+  s_right_drops_1: 48
+  s_right_drops_2: 27
+  s_right_drops_3: 37
+  s_right_drops_4: 18
+  s_right_drops_5: 20
+  s_right_drops_rubber: 18
   s_right_drops_top_rubber: 0
-  s_right_flipper: 221
-  s_right_flipper_upper: 1
-  s_saucer_1: 128
+  s_right_flipper: 232
+  s_right_flipper_upper: 13
+  s_saucer_1: 134
   s_saucer_2: 28
-  s_saucer_3: 16
-  s_sling_l: 29
+  s_saucer_3: 20
+  s_sling_l: 42
   s_sling_r: 51
-  s_star_rollover: 23
+  s_star_rollover: 32
   s_startbutton: 2
   s_tilt: 0
-  s_trispinner_opto: 811
-  s_trough1: 9
-  s_trough2: 5
-  s_trough3: 7
-  s_trough4: 3
-  s_trough5: 3
-  s_trough6: 34
-  s_trough_jam: 1
-  s_upper_entrance_opto: 40
-  s_upper_exit_left_opto: 8
+  s_trispinner_opto: 854
+  s_trough1: 14
+  s_trough2: 10
+  s_trough3: 12
+  s_trough4: 6
+  s_trough5: 6
+  s_trough6: 37
+  s_trough_jam: 6
+  s_upper_entrance_opto: 42
+  s_upper_exit_left_opto: 11
   s_upper_exit_right_opto: 4
-  s_upper_target_center: 58
-  s_upper_target_left: 127
-  s_upper_target_right: 73
-  s_vuk_switch: 18
-  s_web_spinner: 53
-  s_web_target_left: 29
-  s_web_target_top: 10
+  s_upper_target_center: 61
+  s_upper_target_left: 128
+  s_upper_target_right: 75
+  s_vuk_switch: 28
+  s_web_spinner: 94
+  s_web_target_left: 34
+  s_web_target_top: 13

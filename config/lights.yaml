@@ -172,9 +172,9 @@ lights:
     number: playfield-3-11
   l_5bank_2:
     number: playfield-3-12
-  l_right_extraball:
-    number: playfield-3-13
   l_5bank_3:
+    number: playfield-3-13
+  l_right_extraball:
     number: playfield-3-14
   l_5bank_4:
     number: playfield-3-15
