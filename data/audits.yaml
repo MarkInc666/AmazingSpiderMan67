@@ -1,56 +1,57 @@
 events:
   game_ended: 0
-  game_started: 60
+  game_started: 74
 missing_switches:
-  s_EOS_l_upper: 60
-  s_above_spinner: 60
-  s_above_star: 21
-  s_diverter_open: 60
-  s_inlane_b: 43
-  s_inlane_l: 8
-  s_inlane_m_l: 14
-  s_inlane_m_r: 14
-  s_inlane_r: 51
-  s_leaf_next_to_1: 60
-  s_left_drops_1: 15
-  s_left_drops_2: 15
-  s_left_drops_3: 15
-  s_left_drops_rubber: 15
-  s_left_drops_top_left_rubber: 60
-  s_left_drops_top_right_rubber: 49
-  s_mid_right_rubber: 60
-  s_outlane_l: 60
-  s_outlane_r: 60
-  s_pop_left: 15
-  s_pop_right: 15
-  s_right_drops_1: 15
-  s_right_drops_2: 36
-  s_right_drops_3: 36
-  s_right_drops_4: 36
-  s_right_drops_5: 36
-  s_right_drops_rubber: 60
-  s_right_drops_top_rubber: 60
-  s_right_flipper_upper: 45
-  s_saucer_2: 36
-  s_saucer_3: 26
-  s_sling_l: 13
-  s_sling_r: 36
-  s_startbutton: 48
-  s_tilt: 60
-  s_trough1: 43
-  s_trough2: 43
-  s_trough3: 43
-  s_trough4: 43
-  s_trough5: 43
-  s_trough6: 13
-  s_trough_jam: 49
-  s_upper_entrance_opto: 15
-  s_upper_exit_left_opto: 15
-  s_upper_exit_right_opto: 36
-  s_upper_target_center: 1
-  s_upper_target_right: 15
-  s_vuk_switch: 15
-  s_web_spinner: 15
+  s_EOS_l_upper: 74
+  s_above_spinner: 74
+  s_above_star: 35
+  s_diverter_open: 74
+  s_inlane_b: 57
+  s_inlane_l: 13
+  s_inlane_m_l: 28
+  s_inlane_m_r: 28
+  s_inlane_r: 13
+  s_leaf_next_to_1: 74
+  s_left_drops_1: 29
+  s_left_drops_2: 29
+  s_left_drops_3: 29
+  s_left_drops_rubber: 29
+  s_left_drops_top_left_rubber: 74
+  s_left_drops_top_right_rubber: 63
+  s_left_flipper: 13
+  s_mid_right_rubber: 74
+  s_outlane_l: 13
+  s_outlane_r: 13
+  s_pop_left: 29
+  s_pop_right: 29
+  s_right_drops_1: 29
+  s_right_drops_2: 50
+  s_right_drops_3: 50
+  s_right_drops_4: 50
+  s_right_drops_5: 50
+  s_right_drops_rubber: 74
+  s_right_drops_top_rubber: 74
+  s_right_flipper: 14
+  s_right_flipper_upper: 59
+  s_saucer_2: 12
+  s_saucer_3: 40
+  s_startbutton: 62
+  s_tilt: 74
+  s_trough1: 57
+  s_trough2: 57
+  s_trough3: 57
+  s_trough4: 57
+  s_trough5: 57
+  s_trough6: 1
+  s_trough_jam: 63
+  s_upper_entrance_opto: 29
+  s_upper_exit_left_opto: 29
+  s_upper_exit_right_opto: 50
+  s_upper_target_center: 15
+  s_upper_target_left: 12
+  s_upper_target_right: 29
+  s_vuk_switch: 29
+  s_web_spinner: 29
 player:
   score:
     average: 0
@@ -60,20 +61,20 @@ shots:
   bumper_left: 112
   bumper_right: 74
   hurryup: 6
-  sling_left: 10
-  sling_right: 9
+  sling_left: 27
+  sling_right: 45
   upper_entrance: 39
 switches:
   s_EOS_l_upper: 0
   s_above_spinner: 0
   s_above_star: 26
   s_diverter_open: 0
-  s_inlane_a: 91
+  s_inlane_a: 107
   s_inlane_b: 8
-  s_inlane_l: 2
+  s_inlane_l: 8
   s_inlane_m_l: 13
   s_inlane_m_r: 11
-  s_inlane_r: 12
+  s_inlane_r: 13
   s_leaf_next_to_1: 0
   s_left_drops_1: 6
   s_left_drops_2: 35
@@ -81,11 +82,11 @@ switches:
   s_left_drops_rubber: 2
   s_left_drops_top_left_rubber: 0
   s_left_drops_top_right_rubber: 2
-  s_left_flipper: 119
+  s_left_flipper: 124
   s_mid_right_rubber: 0
-  s_outlane_l: 0
-  s_outlane_r: 0
-  s_plunger: 59
+  s_outlane_l: 1
+  s_outlane_r: 1
+  s_plunger: 72
   s_pop_left: 112
   s_pop_right: 74
   s_right_drops_1: 40
@@ -97,29 +98,29 @@ switches:
   s_right_drops_top_rubber: 0
   s_right_flipper: 221
   s_right_flipper_upper: 1
-  s_saucer_1: 113
-  s_saucer_2: 27
+  s_saucer_1: 128
+  s_saucer_2: 28
   s_saucer_3: 16
-  s_sling_l: 12
-  s_sling_r: 15
-  s_star_rollover: 21
+  s_sling_l: 29
+  s_sling_r: 51
+  s_star_rollover: 23
   s_startbutton: 2
   s_tilt: 0
-  s_trispinner_opto: 759
+  s_trispinner_opto: 811
   s_trough1: 9
   s_trough2: 5
   s_trough3: 7
   s_trough4: 3
   s_trough5: 3
-  s_trough6: 25
+  s_trough6: 34
   s_trough_jam: 1
   s_upper_entrance_opto: 40
   s_upper_exit_left_opto: 8
   s_upper_exit_right_opto: 4
   s_upper_target_center: 58
-  s_upper_target_left: 126
+  s_upper_target_left: 127
   s_upper_target_right: 73
   s_vuk_switch: 18
   s_web_spinner: 53
-  s_web_target_left: 23
-  s_web_target_top: 9
+  s_web_target_left: 29
+  s_web_target_top: 10

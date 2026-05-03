@@ -41,12 +41,15 @@ variable_player:
     villain_mode_running:
       action: set
       int: 0
+    villain_mode_running_name:
+      action: set
+      string: "No Villain"
     villain_start_ready:
       action: set
       int: 0
-    current_villain:
+    villain_current_name:
       action: set
-      string: current_player.current_villain
+      string: "not set"
     kingpin_ready:
       action: set
       int: current_player.kingpin_ready

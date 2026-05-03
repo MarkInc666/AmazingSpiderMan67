@@ -50,7 +50,13 @@ class QualifyVillainSelect(Carousel):
         player[f"{item}_played"] = 1
         player["current_villain"] = item
         player["villain_mode_running"] = 1
+        player["villain_mode_running_name"] = item
+
         player["villain_start_ready"] = 0
+        player["villain_locate_spins"] = 0
+        player["saucer_1_select_ready"] = 0
+        player["saucer_2_select_ready"] = 0
+        player["saucer_3_select_ready"] = 0
 
         self.machine.events.post("villain_started_set")
         self.machine.events.post("carousel_selection_locked")
