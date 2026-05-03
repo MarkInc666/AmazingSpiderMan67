@@ -107,7 +107,7 @@ coils:
   c_right_bank_reset:
   # 18
     number: 1616mid-8
-    default_pulse_ms: 30
+    default_pulse_ms: 40
     default_pulse_power: 0.75
 
   c_right_bank_drop_1:

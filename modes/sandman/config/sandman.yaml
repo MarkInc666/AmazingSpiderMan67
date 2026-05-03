@@ -26,9 +26,6 @@ event_player:
   sandman_mode_complete:
     - reset_villain_locate
 
-  mode_sandman_started:
-    - sandman_start_bank
-
   s_right_drops_1_active:
     - sandman_drop_1_hit
   s_right_drops_2_active:
@@ -39,6 +36,8 @@ event_player:
     - sandman_drop_4_hit
   s_right_drops_5_active:
     - sandman_drop_5_hit
+
+
 
 show_player:
   sandman_flash_1:
