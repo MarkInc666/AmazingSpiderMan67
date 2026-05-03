@@ -28,18 +28,13 @@ class Sandman(Mode):
             )
 
         self.add_mode_event_handler("sandman_start_bank", self.start_bank)
-        self.delay.add(
-            ms=500,
-            callback=self.start_bank
-        )
 
     def start_bank(self, **kwargs):
         self.down_targets = set()
         self.hit_order = []
         self.current_flash = 1
 
-        #self.machine.coils["c_right_bank_reset"].pulse()    
-        self.machine.events.post("drop_target_bank_dt_bank_1eft_reset")
+        self.machine.coils["c_right_bank_reset"].pulse()
 
         self.delay.add(
             ms=self.RESET_SETTLE_MS,
@@ -59,10 +54,6 @@ class Sandman(Mode):
         )
 
     def shift_flash(self):
-        #drop the current target        
-        self.down_targets.add(self.current_flash)
-        self.machine.coils[f"c_right_bank_drop_{self.current_flash}"].pulse()
-    
         next_target = self.find_next_standing_target(self.current_flash)
 
         if next_target is None:
