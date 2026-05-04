@@ -6,7 +6,6 @@ from mpf.core.delays import DelayManager
 class Sandman(Mode):
 
     BANK_TARGETS = [1, 2, 3, 4, 5]
-    BANK_TARGETS_REV = [5, 4, 3, 2, 1]    
     MAX_BANKS = 3
     MOVE_INTERVAL_MS = 3000
     RESET_SETTLE_MS = 500
@@ -22,7 +21,7 @@ class Sandman(Mode):
         self.flash_hits = 0
         self.banks_completed = 0
         self.hit_order = []
-        self.direction = 1 # 0 = L to R, 1 = R to L
+        self.direction = 0 # 0 = L to R, 1 = R to L
 
         for target in self.BANK_TARGETS:
             self.add_mode_event_handler(
@@ -37,13 +36,9 @@ class Sandman(Mode):
 
 
     def start_bank(self, **kwargs):
-        self.direction = 1 - self.direction
         self.down_targets = set()
         self.hit_order = []
-        if self.direction == 1:
-            self.current_flash = 1
-        else:
-            self.current_flash = 5
+        self.current_flash = 1
 
         self.machine.coils["c_right_bank_reset"].pulse()
 
@@ -58,7 +53,7 @@ class Sandman(Mode):
             self.schedule_next_shift()
 
 
-    def schedule_next_shift(self):
+    def schedule_next_shift(self, **kwargs):
         self.delay.remove("sandman_shift")
         self.delay.add(
             name="sandman_shift",
@@ -68,10 +63,15 @@ class Sandman(Mode):
 
     def shift_flash(self):
         self.hit_order = []
-        self.down_targets.add(self.current_flash)
+
+        if self.current_flash not in self.down_targets:
+            self.down_targets.add(self.current_flash)
+
         self.machine.coils[f"c_right_bank_drop_{self.current_flash}"].pulse()
 
         next_target = self.find_next_standing_target(self.current_flash)
+
+        self.info_log(f"direction:{self.direction} next target {next_target}")
 
         if next_target is None:
             self.complete_bank()
@@ -83,14 +83,14 @@ class Sandman(Mode):
 
 
     def light_current_flash(self):
-        self.machine.events.post(f"sandman_flash_{self.current_flash}")
+        if self.direction == 1:
+            self.machine.events.post(f"sandman_flash_{(6-self.current_flash)}")
+        else:
+            self.machine.events.post(f"sandman_flash_{self.current_flash}")
         
 
     def find_next_standing_target(self, current):
-        if self.direction == 1:
-            ordered = self.BANK_TARGETS[current:]
-        else:
-            ordered = self.BANK_TARGETS_REV[current:]
+        ordered = self.BANK_TARGETS[current:]
 
         for target in ordered:
             if target not in self.down_targets:
@@ -100,13 +100,16 @@ class Sandman(Mode):
         
 
     def drop_hit(self, target, **kwargs):
+        if self.direction == 1:
+            target = 6 - target
+
         if target in self.down_targets:
             return
 
         self.down_targets.add(target)
-        self.hit_order.append(target)
 
         if target == self.current_flash:
+            self.hit_order.append(target)
             self.flash_hits += 1
             self.machine.events.post("sandman_flashing_hit")
         else:
@@ -114,13 +117,10 @@ class Sandman(Mode):
 
         self.award_points()
 
-        if len(self.down_targets) >= 5:
-            self.complete_bank()
-            return
-
         if target == self.current_flash:
             next_target = self.find_next_standing_target(self.current_flash)
             if next_target is not None:
+                self.first_target = 1
                 self.current_flash = next_target
                 self.light_current_flash()
                 self.schedule_next_shift()
@@ -130,13 +130,17 @@ class Sandman(Mode):
             self.first_target = 1
             self.schedule_next_shift()
 
+        if len(self.down_targets) >= 5:
+            self.complete_bank()
+            return
+
 
     def award_points(self):
 
-        if self.flash_hits = 5:
+        if self.flash_hits == 5:
             self.machine.events.post("sandman_5_flashing_jackpot")
 
-        if self.flash_hits = 10:
+        if self.flash_hits == 10:
             self.machine.events.post("sandman_10_flashing_jackpot")
 
         if self.hit_order == [1, 2, 3, 4, 5]:
@@ -163,34 +167,10 @@ class Sandman(Mode):
         if self.hit_order == [4, 5]:
             self.machine.events.post("sandman_2_in_a_row_jackpot")
 
-        if self.hit_order == [5, 4, 3, 2, 1]:
-            self.machine.events.post("sandman_5_in_a_row_jackpot")
-            
-        if self.hit_order == [5, 4, 3, 2]:
-            self.machine.events.post("sandman_4_in_a_row_jackpot")
-        if self.hit_order == [4, 3, 2, 1]:
-            self.machine.events.post("sandman_4_in_a_row_jackpot")
-            
-        if self.hit_order == [5, 4, 3]:
-            self.machine.events.post("sandman_3_in_a_row_jackpot")
-        if self.hit_order == [4, 3, 2]:
-            self.machine.events.post("sandman_3_in_a_row_jackpot")
-        if self.hit_order == [3, 2, 1]:
-            self.machine.events.post("sandman_3_in_a_row_jackpot")
-
-        if self.hit_order == [5, 4]:
-            self.machine.events.post("sandman_2_in_a_row_jackpot")
-        if self.hit_order == [4, 3]:
-            self.machine.events.post("sandman_2_in_a_row_jackpot")
-        if self.hit_order == [3, 2]:
-            self.machine.events.post("sandman_2_in_a_row_jackpot")
-        if self.hit_order == [2, 1]:
-            self.machine.events.post("sandman_2_in_a_row_jackpot")
-
-
 
     def complete_bank(self):
         self.delay.remove("sandman_shift")
+        self.direction = 1 - self.direction
 
         self.banks_completed += 1
         self.machine.events.post("sandman_bank_complete")

@@ -61,6 +61,10 @@ event_player:
 
 
 show_player:
+  mode_sandman_started:
+    sandman_gi_show:
+      loops: -1
+
   sandman_flash_1:
     sandman_flash_1_show:
       loops: -1
@@ -97,7 +101,7 @@ show_player:
     sandman_flash_5_show:
       action: stop
     sandman_bank_complete_show:
-      loops: 1
+      loops: 4
 
   sandman_mode_complete:
     sandman_flash_1_show:
@@ -111,97 +115,97 @@ show_player:
     sandman_flash_5_show:
       action: stop
     sandman_complete_show:
-      loops: 1
+      loops: 10
 
 shows:
   sandman_flash_1_show:
     - duration: 250ms
       lights:
-        l_5bank_1: yellow
-        l_5bank_2: orange
-        l_5bank_3: orange
-        l_5bank_4: orange
-        l_5bank_5: orange
+        l_5bank_1: 00A000
+        l_5bank_2: blue
+        l_5bank_3: blue
+        l_5bank_4: blue
+        l_5bank_5: blue
     - duration: 250ms
       lights:
         l_5bank_1: white
-        l_5bank_2: orange
-        l_5bank_3: orange
-        l_5bank_4: orange
-        l_5bank_5: orange
+        l_5bank_2: blue
+        l_5bank_3: blue
+        l_5bank_4: blue
+        l_5bank_5: blue
 
   sandman_flash_2_show:
     - duration: 250ms
       lights:
-        l_5bank_1: orange
-        l_5bank_2: yellow
-        l_5bank_3: orange
-        l_5bank_4: orange
-        l_5bank_5: orange
+        l_5bank_1: blue
+        l_5bank_2: 00A000
+        l_5bank_3: blue
+        l_5bank_4: blue
+        l_5bank_5: blue
     - duration: 250ms
       lights:
-        l_5bank_1: orange
+        l_5bank_1: blue
         l_5bank_2: white
-        l_5bank_3: orange
-        l_5bank_4: orange
-        l_5bank_5: orange
+        l_5bank_3: blue
+        l_5bank_4: blue
+        l_5bank_5: blue
 
   sandman_flash_3_show:
     - duration: 250ms
       lights:
-        l_5bank_1: orange
-        l_5bank_2: orange
-        l_5bank_3: yellow
-        l_5bank_4: orange
-        l_5bank_5: orange
+        l_5bank_1: blue
+        l_5bank_2: blue
+        l_5bank_3: 00A000
+        l_5bank_4: blue
+        l_5bank_5: blue
     - duration: 250ms
       lights:
-        l_5bank_1: orange
-        l_5bank_2: orange
+        l_5bank_1: blue
+        l_5bank_2: blue
         l_5bank_3: white
-        l_5bank_4: orange
-        l_5bank_5: orange
+        l_5bank_4: blue
+        l_5bank_5: blue
 
   sandman_flash_4_show:
     - duration: 250ms
       lights:
-        l_5bank_1: orange
-        l_5bank_2: orange
-        l_5bank_3: orange
-        l_5bank_4: yellow
-        l_5bank_5: orange
+        l_5bank_1: blue
+        l_5bank_2: blue
+        l_5bank_3: blue
+        l_5bank_4: 00A000
+        l_5bank_5: blue
     - duration: 250ms
       lights:
-        l_5bank_1: orange
-        l_5bank_2: orange
-        l_5bank_3: orange
+        l_5bank_1: blue
+        l_5bank_2: blue
+        l_5bank_3: blue
         l_5bank_4: white
-        l_5bank_5: orange
+        l_5bank_5: blue
 
   sandman_flash_5_show:
     - duration: 250ms
       lights:
-        l_5bank_1: orange
-        l_5bank_2: orange
-        l_5bank_3: orange
-        l_5bank_4: orange
-        l_5bank_5: yellow
+        l_5bank_1: blue
+        l_5bank_2: blue
+        l_5bank_3: blue
+        l_5bank_4: blue
+        l_5bank_5: 00A000
     - duration: 250ms
       lights:
-        l_5bank_1: orange
-        l_5bank_2: orange
-        l_5bank_3: orange
-        l_5bank_4: orange
+        l_5bank_1: blue
+        l_5bank_2: blue
+        l_5bank_3: blue
+        l_5bank_4: blue
         l_5bank_5: white
 
   sandman_bank_complete_show:
     - duration: 150ms
       lights:
-        l_5bank_1: yellow
-        l_5bank_2: yellow
-        l_5bank_3: yellow
-        l_5bank_4: yellow
-        l_5bank_5: yellow
+        l_5bank_1: green
+        l_5bank_2: green
+        l_5bank_3: green
+        l_5bank_4: green
+        l_5bank_5: green
     - duration: 150ms
       lights:
         l_5bank_1: white
@@ -210,8 +214,8 @@ shows:
         l_5bank_4: white
         l_5bank_5: white
 
-  sandman_complete_show:
-    - duration: 150ms
+  sandman_gi_show:
+    - duration: 250ms
       lights:
         gi: yellow
     - duration: 150ms

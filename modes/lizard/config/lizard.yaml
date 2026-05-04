@@ -216,9 +216,10 @@ shows:
         gi: FFFFFF
 
   lizard_serum_star_show:    
+    - duration: 500ms  
       lights:
         l_star: white
-    - duration: 300ms
+    - duration: 500ms
       lights:
         l_star: off
 
