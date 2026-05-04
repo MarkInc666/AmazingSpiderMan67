@@ -127,6 +127,7 @@ event_player:
   mode_parafino_started:
     - parafino_show_heat_0
     - parafino_light_pops
+    - clear_saucers
 
   para_dt_bank_left_down:
     - parafino_left_drops_request

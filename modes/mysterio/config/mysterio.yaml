@@ -109,6 +109,7 @@ event_player:
 
   mode_mysterio_started:
     - mysterio_light_all_illusions
+    - clear_saucers
 
   # ----------------------------
   # Physical shot routing

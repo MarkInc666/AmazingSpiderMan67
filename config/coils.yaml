@@ -195,3 +195,9 @@ autofire_coils:
   pop_right:
     coil: c_pop_right
     switch: s_pop_right
+
+  plunger_autofire:
+    coil: c_auto_plunger
+    switch: s_plunger
+    enable_events: multiball_autoplunge_active
+    disable_events: multiball_autoplunge_inactive

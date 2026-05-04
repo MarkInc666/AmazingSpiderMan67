@@ -28,6 +28,7 @@ event_player:
   mode_electro_started:
     - rooftop_diverter_open
     - electro_start_spark
+    - clear_saucers
 
   # Shot 1: left web target
   s_web_target_left_active:

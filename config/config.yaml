@@ -78,7 +78,7 @@ modes:
   - qualify_villain_locate
   - qualify_villain_select
   - qualify_villain_start
-  - green_goblin 
+  - goblin 
   - parafino
   - vulture
   - lizard
@@ -112,29 +112,6 @@ event_player:
     - cmd_flippers_disable
     - cmd_autofire_coils_disable
     - timer_timer_up_post_hold_complete
-
- # s_upper_exit_left_opto_active:
- #   - enable_up_post_event
-
- # s_upper_entrance_opto_active:
- #   - diverter_close
-    
- # s_saucer_1_active{device.switches.s_diverter_open.state == 1}: 
- #   - diverter_open1
- #   - ramp_lower
- # s_saucer_2_active{device.switches.s_diverter_open.state == 1}: 
- #   - diverter_open2
- #   - ramp_lower    
- # s_saucer_3_active{device.switches.s_diverter_open.state == 1}: 
- #   - diverter_open3
- #   - ramp_lower    
-    
- # s_right_drops_top_rubber_active{device.switches.s_diverter_open.state == 1}: 
- #   - diverter_open  
- #   - ramp_lower    
-
-#  s_vuk_switch_active:
-#    - up_kick|1s
     
     
 show_player:
@@ -211,7 +188,6 @@ coil_player:
     c_up_post:
       action: disable
 
-
   up_kick:
     c_vuk_to_upper:
       action: pulse
@@ -225,6 +201,11 @@ coil_player:
     c_diverter_open_close:
       action: pulse
       pulse_ms: 100    
+
+  reset_5bank:
+    c_right_bank_reset:
+      action: pulse
+        
 
 
 

@@ -100,6 +100,7 @@ event_player:
 
   mode_lizard_started:
     - lizard_light_serum_location
+    - clear_saucers
 
   lizard_serum_expired:
     - lizard_delivery_timer_stop

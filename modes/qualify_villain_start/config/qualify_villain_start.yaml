@@ -57,6 +57,8 @@ variable_player:
   slings_hit:
     score: 110
 
+
+
 shots:
   sling_left:
     switch: s_sling_l

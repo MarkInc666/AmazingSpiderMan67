@@ -28,6 +28,7 @@ event_player:
 
   mode_sandman_started:
     - sandman_start_bank
+    - clear_saucers
 
   s_right_drops_1_active:
     - sandman_drop_1_hit

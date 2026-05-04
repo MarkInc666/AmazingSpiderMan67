@@ -1,6 +1,8 @@
 #config_version=6
 
-#Important: `goblin_randomize_three_shots`, `goblin_start_multiball`, `goblin_saucer_hold_ball`, and `goblin_saucer_eject` are hook events. Wire those to your existing multiball, ball hold, eject coil, and random shot selection logic.
+#Important: `goblin_randomize_three_shots`,  `goblin_saucer_hold_ball`, 
+#`goblin_saucer_eject` are hook events. 
+#Wire those to your existing multiball, ball hold, eject coil, and random shot selection logic.
 
 mode:
   start_events: start_mode_goblin
@@ -8,6 +10,19 @@ mode:
     - goblin_mode_ended
     - ball_ended
   priority: 500
+
+
+multiballs:
+  goblin_chaos_multiball:
+    ball_count: 2
+    ball_count_type: total
+    shoot_again: 10s
+    start_events: goblin_start_multiball
+    stop_events: 
+      - goblin_stop_multiball
+      - goblin_mode_ended
+      - ball_ended
+
 
 variable_player:
 
@@ -89,13 +104,21 @@ variable_player:
 
 
 event_player:
-
-  goblin_mode_complete:
-    - reset_villain_locate
-
+    
   mode_goblin_started:
     - goblin_start_multiball
     - goblin_pick_new_pattern
+    - clear_saucers
+
+  multiball_goblin_chaos_multiball_started:
+    - multiball_autoplunge_active
+
+  multiball_goblin_chaos_multiball_ended:
+    - multiball_autoplunge_inactive
+    - goblin_mode_ended
+
+  goblin_mode_complete:
+    - reset_villain_locate
 
   # -------------------------------
   # Replace these with your 10 real shot switch events.

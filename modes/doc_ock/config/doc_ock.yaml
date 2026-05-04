@@ -27,6 +27,7 @@ event_player:
 
   mode_doc_ock_started:
     - doc_ock_start_arms
+    - clear_saucers
 
   s_left_flipper_active:
     - doc_ock_rotate_left

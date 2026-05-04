@@ -146,6 +146,7 @@ event_player:
   mode_vulture_started:
     - vulture_open_upper_gate
     - vulture_show_targets
+    - clear_saucers
 
   vulture_upper_entered:
     - vulture_start_if_needed

@@ -32,6 +32,7 @@ event_player:
   mode_scorpion_started:
     - rooftop_diverter_open
     - scorpion_build_phase_started
+    - clear_saucers
 
   # Upper spinner builds venom
   s_trispinner_opto_active:

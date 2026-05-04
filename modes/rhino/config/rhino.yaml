@@ -199,6 +199,7 @@ event_player:
   mode_rhino_bash_started:
     - rhino_stage_1
     - rhino_light_jackpot_collect
+    - clear_saucers
 
   rhino_stage_1:
     - rhino_show_rage_1
