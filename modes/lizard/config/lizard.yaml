@@ -122,8 +122,9 @@ timers:
 
 
 show_player:
-
   lizard_light_serum_location:
+    lizard_gi_show:
+      loops: -1
     lizard_serum_star_show:
       loops: -1
     lizard_left_web_show:
@@ -134,6 +135,11 @@ show_player:
   lizard_serum_collected:
     lizard_serum_star_show:
       action: stop
+    lizard_gi_show:
+      action: stop
+    lizard_gi_hurry_show:
+      loops: -1
+
 
   lizard_light_left_web:
     lizard_left_web_show:
@@ -154,6 +160,10 @@ show_player:
       action: stop
     lizard_delivery_success_show:
       loops: 1
+    lizard_gi_show:
+      action: stop
+    lizard_gi_hurry_show:
+      action: stop
 
   lizard_serum_expired_show:
     lizard_left_web_show:
@@ -162,6 +172,10 @@ show_player:
       action: stop
     lizard_serum_expired_lights:
       loops: 1
+    lizard_gi_show:
+      action: stop
+    lizard_gi_hurry_show:
+      action: stop
 
   lizard_mode_complete:
     lizard_serum_star_show:
@@ -172,13 +186,38 @@ show_player:
       action: stop
     lizard_complete_show:
       loops: 1
+    lizard_gi_show:
+      action: stop
+    lizard_gi_hurry_show:
+      action: stop
 
 shows:
 
-  lizard_serum_star_show:
-    - duration: 300ms
+  lizard_gi_show:
+    - duration: 400ms  
       lights:
-        l_star: green
+        gi: B0FFB0
+    - duration: 200ms  
+      lights:
+        gi: D0FFD0
+    - duration: 100ms
+      lights:
+        gi: FFFFFF
+
+  lizard_gi_hurry_show:
+    - duration: 400ms  
+      lights:
+        gi: FFFFB0
+    - duration: 200ms  
+      lights:
+        gi: FFFFD0
+    - duration: 100ms
+      lights:
+        gi: FFFFFF
+
+  lizard_serum_star_show:    
+      lights:
+        l_star: white
     - duration: 300ms
       lights:
         l_star: off

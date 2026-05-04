@@ -15,11 +15,25 @@ variable_player:
   sandman_flashing_hit:
     score: 50000
 
-  sandman_five_flashing_jackpot:
+  sandman_any_5_flashing_jackpot:
     score: 250000
 
-  sandman_left_to_right_jackpot:
+  sandman_any_10_flashing_jackpot:
+    score: 750000
+
+  sandman_2_in_a_row_jackpot:
+    score: 50000
+
+  sandman_3_in_a_row_jackpot:
+    score: 100000
+
+  sandman_4_in_a_row_jackpot:
     score: 500000
+
+  sandman_5_in_a_row_jackpot:
+    score: 1000000
+
+
 
 event_player:
 
@@ -40,6 +54,11 @@ event_player:
     - sandman_drop_4_hit
   s_right_drops_5_active:
     - sandman_drop_5_hit
+
+  s_right_drops_rubber_active:
+    - sandman_rubber_hit
+
+
 
 show_player:
   sandman_flash_1:
