@@ -1,6 +1,6 @@
 from mpf.core.mode import Mode
 
-
+#todo: open gate to upper for upper shot!
 class Electro(Mode):
 
     def mode_start(self, **kwargs):
@@ -39,7 +39,7 @@ class Electro(Mode):
         self.shots_completed +1
         
         # 6th disabled spark = Super Jackpot
-        if len(self.shots_completed) == 6:
+        if self.shots_completed == 6:
             self.machine.events.post("electro_award_super_jackpot")
         else:
             self.machine.events.post("electro_award_jackpot")

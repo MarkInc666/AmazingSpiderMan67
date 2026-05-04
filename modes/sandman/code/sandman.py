@@ -1,6 +1,7 @@
 from mpf.core.mode import Mode
 from mpf.core.delays import DelayManager
 
+#possible bug when 2 targets hit, flash doesn't move
 
 class Sandman(Mode):
 
@@ -26,9 +27,10 @@ class Sandman(Mode):
                 self.drop_hit,
                 target=target
             )
-
+        
+        self.start_bank()
         self.add_mode_event_handler("sandman_start_bank", self.start_bank)
-        self.machine.coils["c_right_bank_reset"].pulse()
+        #self.machine.coils["c_right_bank_reset"].pulse()
 
     def start_bank(self, **kwargs):
         self.down_targets = set()
@@ -56,7 +58,7 @@ class Sandman(Mode):
 
     def shift_flash(self):
         self.down_targets.add(self.current_flash)
-        self.machine.coils["c_right_bank_drop_{self.current_flash}"].pulse()
+        self.machine.coils[f"c_right_bank_drop_{self.current_flash}"].pulse()
 
         next_target = self.find_next_standing_target(self.current_flash)
 

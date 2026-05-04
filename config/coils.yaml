@@ -196,6 +196,7 @@ autofire_coils:
     coil: c_pop_right
     switch: s_pop_right
 
+#todo, change from autofire - make plunerlane switch active rule - use multiball_autoplunge_active
   plunger_autofire:
     coil: c_auto_plunger
     switch: s_plunger
