@@ -19,15 +19,53 @@ variable_player:
     lizard_delivery_value:
       action: set
       int: 1000000
+    lizard_a_hit:
+      action: set
+      int: 0
+    lizard_b_hit:
+      action: set
+      int: 0
+    lizard_ab_ready:
+      action: set
+      int: 0
 
   lizard_serum_collected:
-    score: 50000
+    score: 100000
     lizard_serum_ready:
       action: set
       int: 1
     lizard_delivery_value:
       action: set
       int: 1000000
+
+  lizard_apply_ab_bonus:
+    lizard_delivery_value: 500000
+
+  lizard_set_a:
+    lizard_a_hit:
+      action: set
+      int: 1
+
+  lizard_set_b:
+    lizard_b_hit:
+      action: set
+      int: 1
+
+  lizard_ab_ready_event:
+    lizard_ab_ready:
+      action: set
+      int: 1
+
+  lizard_clear_ab:
+    lizard_a_hit:
+      action: set
+      int: 0
+    lizard_b_hit:
+      action: set
+      int: 0
+    lizard_ab_ready:
+      action: set
+      int: 0
 
   lizard_delivery_tick:
     lizard_delivery_value: -100000
@@ -47,16 +85,51 @@ variable_player:
       action: set
       int: 1000000
 
-
 event_player:
 
   lizard_mode_complete:
     - reset_villain_locate
 
-  timer_lizard_delivery_timer_tick: lizard_delivery_tick_check
-  timer_lizard_delivery_timer_complete: lizard_serum_expired
+  timer_lizard_delivery_timer_tick:
+    - lizard_delivery_tick_check
 
-  lizard_serum_collect_request{current_player.lizard_serum_ready == 0}:
+  timer_lizard_delivery_timer_complete:
+    - lizard_serum_expired
+
+  # A rollovers
+  s_inlane_a_active:
+    - lizard_a_rollover
+
+  s_inlane_m_r_active:
+    - lizard_a_rollover
+
+  # B rollovers
+  s_inlane_b_active:
+    - lizard_b_rollover
+
+  s_inlane_m_l_active:
+    - lizard_b_rollover
+
+  lizard_a_rollover:
+    - lizard_set_a
+
+  lizard_b_rollover:
+    - lizard_set_b
+
+  lizard_set_a{current_player.lizard_b_hit == 1}:
+    - lizard_ab_ready_event
+
+  lizard_set_b{current_player.lizard_a_hit == 1}:
+    - lizard_ab_ready_event
+
+  lizard_serum_collect_request{current_player.lizard_serum_ready == 0 and current_player.lizard_ab_ready == 1}:
+    - lizard_serum_collected
+    - lizard_apply_ab_bonus
+    - lizard_clear_ab
+    - lizard_light_delivery_target
+    - lizard_delivery_timer_start
+
+  lizard_serum_collect_request{current_player.lizard_serum_ready == 0 and current_player.lizard_ab_ready == 0}:
     - lizard_serum_collected
     - lizard_light_delivery_target
     - lizard_delivery_timer_start
@@ -88,15 +161,15 @@ event_player:
 
   # Collect serum
   s_star_rollover_active:
-    lizard_serum_collect_request
+    - lizard_serum_collect_request
 
   # Delivery 1
   s_web_target_left_active:
-    lizard_left_web_deliver_request
+    - lizard_left_web_deliver_request
 
   # Delivery 2
   s_web_target_top_active:
-    lizard_center_web_deliver_request
+    - lizard_center_web_deliver_request
 
   mode_lizard_started:
     - lizard_light_serum_location
@@ -120,8 +193,8 @@ timers:
       - event: lizard_delivery_timer_stop
         action: stop
 
-
 show_player:
+
   lizard_light_serum_location:
     lizard_gi_show:
       loops: -1
@@ -139,7 +212,6 @@ show_player:
       action: stop
     lizard_gi_hurry_show:
       loops: -1
-
 
   lizard_light_left_web:
     lizard_left_web_show:

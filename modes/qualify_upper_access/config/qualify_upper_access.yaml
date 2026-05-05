@@ -13,25 +13,17 @@ variable_player:
       action: set
       int: 0
 
-
 event_player:
-  s_vuk_switch_active{current_player.villain_mode_running == 0 and current_player.villain_start_ready == 0}:
-    - up_kick|1s
 
-  timer_rooftop_access_timer_complete:
-    - rooftop_access_close
-
-  s_inlane_a_active:
+  # Any saucer opens upper access if no villain is running/ready
+  s_saucer_1_active:
     - rooftop_access_request
 
-  s_inlane_m_r_active:
+  s_saucer_2_active:
     - rooftop_access_request
 
-  s_vuk_switch_active:
-    - rooftop_vuk_entered
-
-  s_upper_entrance_opto_active:
-    - rooftop_upper_entered
+  s_saucer_3_active:
+    - rooftop_access_request
 
   rooftop_access_request{current_player.villain_mode_running == 0 and current_player.villain_start_ready == 0}:
     - rooftop_access_open
@@ -40,14 +32,26 @@ event_player:
     - rooftop_diverter_open
     - rooftop_access_lit
 
+  timer_rooftop_access_timer_complete:
+    - rooftop_access_close
+
   rooftop_access_close:
     - rooftop_diverter_close
     - rooftop_access_unlit
 
+  # VUK reached: close gate, stop access lighting, then kick/hold
+  s_vuk_switch_active:
+    - rooftop_vuk_entered
+
+#may need to add another condition - if we need another mode to handle it
   rooftop_vuk_entered{current_player.villain_mode_running == 0 and current_player.villain_start_ready == 0}:
     - rooftop_diverter_close
     - rooftop_access_unlit
-    - rooftop_vuk_hold_or_kick  #needed?
+    - up_kick|1s
+
+  # Ball has actually landed on upper playfield
+  s_upper_entrance_opto_active:
+    - rooftop_upper_entered
 
 timers:
   rooftop_access_timer:
@@ -63,7 +67,6 @@ timers:
       - action: stop
         event: villain_start_ready
 
-
 show_player:
   rooftop_access_lit:
     rooftop_access_show:
@@ -78,12 +81,22 @@ show_player:
       action: stop
 
 shows:
+
   rooftop_access_show:
-    - duration: 300ms
+    - duration: 200ms
       lights:
-        l_a_rollover: white
-        l_b_rollover: white
-    - duration: 300ms
+        l_1_hole_l: F0F0F0
+        l_1_hole_r: F0F0F0
+        l_2_hole_l: F0F0F0
+        l_2_hole_r: F0F0F0
+        l_3_hole_l: F0F0F0
+        l_3_hole_r: F0F0F0
+    - duration: 800ms
       lights:
-        l_a_rollover: blue
-        l_b_rollover: blue
+        l_1_hole_l: A0A0A0
+        l_1_hole_r: A0A0A0
+        l_2_hole_l: A0A0A0
+        l_2_hole_r: A0A0A0
+        l_3_hole_l: A0A0A0
+        l_3_hole_r: A0A0A0
+

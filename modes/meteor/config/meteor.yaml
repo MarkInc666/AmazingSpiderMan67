@@ -1,0 +1,126 @@
+#config_version=6
+
+mode:
+  start_events: start_mode_meteor
+  stop_events:
+    - meteor_mode_complete
+    - ball_ended
+  code: meteor.Meteor
+  priority: 300
+
+
+variable_player:
+
+  mode_meteor_started:
+    meteor_running:
+      action: set
+      int: 1
+
+  mode_meteor_stopped:
+    meteor_running:
+      action: set
+      int: 0
+      
+      
+event_player:
+    - enable_up_post_event
+    - meteor_start
+
+  s_web_spinner_active:
+    - meteor_spinner_hit
+
+  s_left_drops_1_active:
+    - meteor_left_drop_1_hit
+  s_left_drops_2_active:
+    - meteor_left_drop_2_hit
+  s_left_drops_3_active:
+    - meteor_left_drop_3_hit
+
+  s_right_drops_1_active:
+    - meteor_right_drop_1_hit
+  s_right_drops_2_active:
+    - meteor_right_drop_2_hit
+  s_right_drops_3_active:
+    - meteor_right_drop_3_hit
+  s_right_drops_4_active:
+    - meteor_right_drop_4_hit
+  s_right_drops_5_active:
+    - meteor_right_drop_5_hit
+
+show_player:
+  meteor_start:
+    meteor_base_show:
+      loops: -1
+
+  meteor_spinner_scored:
+    meteor_spinner_show:
+      loops: 1
+
+  meteor_drop_scored:
+    meteor_drop_show:
+      loops: 1
+
+  meteor_danger_warning:
+    meteor_danger_show:
+      loops: 1
+
+  meteor_mode_complete:
+    meteor_base_show:
+      action: stop
+    meteor_complete_show:
+      loops: 1
+
+shows:
+  meteor_base_show:
+    - duration: 300ms
+      lights:
+        l_spinner: white
+    - duration: 300ms
+      lights:
+        l_spinner: blue
+
+  meteor_spinner_show:
+    - duration: 100ms
+      lights:
+        l_spinner: yellow
+        gi: yellow
+    - duration: 100ms
+      lights:
+        l_spinner: white
+        gi: white
+
+  meteor_drop_show:
+    - duration: 100ms
+      lights:
+        gi: white
+    - duration: 100ms
+      lights:
+        gi: blue
+
+  meteor_danger_show:
+    - duration: 100ms
+      lights:
+        l_3bankbonus: red
+        l_left_multibonus: red
+        l_5bank_1: red
+        l_5bank_2: red
+        l_5bank_3: red
+        l_5bank_4: red
+        l_5bank_5: red
+    - duration: 100ms
+      lights:
+        l_3bankbonus: off
+        l_left_multibonus: off
+        l_5bank_1: off
+        l_5bank_2: off
+        l_5bank_3: off
+        l_5bank_4: off
+        l_5bank_5: off
+
+  meteor_complete_show:
+    - duration: 150ms
+      lights:
+        gi: red
+    - duration: 150ms
+      lights:
+        gi: off

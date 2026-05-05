@@ -28,6 +28,17 @@ variable_player:
 
 
 event_player:
+
+  s_upper_exit_left_opto_active:
+    - meteor_start_request
+
+  meteor_start_request{
+    current_player.villain_mode_running == 0 and
+    current_player.villain_start_ready == 0 and
+    current_player.meteor_running != 1
+  }:
+    - start_mode_meteor
+
   #accumulate spins until mode is running
   s_trispinner_opto_active{current_player.villain_mode_running == 0}:
     - villain_spinner_locate_progress

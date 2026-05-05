@@ -1,3 +1,76 @@
+| Villain  | Mode  |  Status  |
+
+| Rhino    | greed meter survival         |  Good |
+ - frenzy mode - build value, cash out
+ - pops increase rage - target value multiplier
+ - max rage begins timer
+ - mode ends if timer expires
+ 
+| Sandman  | moving timing puzzle         |  Good |
+- drop targets, hit flashing target or they auto drop
+
+| Mysterio | deduction illusion           |  Good |
+- 8 shots lit
+- 1 jackpot
+- others 'fake' some with directional clues
+
+| Scorpion | precision charge/commit      |  Good |
+- spinners to build venom
+- left or right exits to timed, staged, randomly selected single drop target jackpot
+
+
+
+| Lizard   | collect and deliver Venom    |  Good |
+- star to collect, web targets to deliver 
+- A + B to boost serum
+
+| Vulture  | aerial survival banking  MB  |
+
+| Parafino | hit 3 areas to melt MB - ball added after each area      |
+
+
+
+
+
+| Electro  | moving spark                 |  Good |
+- time based spark moves around enabled playfield targets
+- disable them by hitting targets
+- final spark super jackpot before it expires
+
+| Doc Ock  | system collapse economy      |  
+
+| Goblin   | chaotic MB checkpoint BNS at saucers|
+
+Kingpin
+
+
+
+
+
+
+Left drops heat LEFT
+Pops heat CENTER
+Right drops heat RIGHT
+
+Each zone cools after 5 seconds without hits.
+
+First time each zone reaches max:
+  lights its saucer
+  saucer collect = add-a-ball
+
+All 3 zones max:
+  spinner lights
+
+Spinner hit:
+  500K × balls in play
+  mode complete
+
+
+
+
+
+
+
 entering upper playfield:
 
 1. Villain qualify
