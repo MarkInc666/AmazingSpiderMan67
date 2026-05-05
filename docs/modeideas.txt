@@ -167,19 +167,23 @@ After villain mode start is qualified:
 | -------- | ---------------------------- |
 | Rhino    | greed meter survival         |
 | Sandman  | moving timing puzzle         |
-| Vulture  | aerial survival banking      |
-| Goblin   | chaotic multiball checkpoint |
+| Vulture  | aerial survival banking  MB    |
+| Goblin   | chaotic MB checkpoint BNS at saucers|
 | Mysterio | deduction illusion           |
 | Scorpion | precision charge/commit      |
 | Doc Ock  | system collapse economy      |
-| Electro  | |
-| Doc Ock  | system collapse economy      |
-|   |
+| Electro  | moving spark
+| Parafino | hit 3 areas to melt MB - ball added after each area      |
+| Lizard   | hurry up venom collect and deliver
 
 * Player chooses next villain
 * Auto-start after ~3 seconds or manual confirm
 
----
+parafino - up to 6 ball MB - add one per area melted 
+
+vulture - 3 ball MB - balls in upper for multipliers 
+
+electro - 1st spark light?, open upper gate when upper targets lit
 
 
 # 🎯 FLOW SUMMARY
