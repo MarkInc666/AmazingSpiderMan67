@@ -46,7 +46,7 @@ class Parafino(Mode):
 
         self.meltdown_lit = False
 
-        self.add_mode_event_handler("parafino_start", self.start)
+        self.add_mode_event_handler("parafino_start", self.start_para)
 
         self.add_mode_event_handler("parafino_left_heat_hit", self.heat_hit, zone="left")
         self.add_mode_event_handler("parafino_center_heat_hit", self.heat_hit, zone="center")
@@ -58,10 +58,9 @@ class Parafino(Mode):
 
         self.add_mode_event_handler("parafino_spinner_hit", self.spinner_hit)
 
-    def start(self, **kwargs):
+    def start_para(self, **kwargs):
         for zone in self.ZONES:
             self.post_heat_event(zone)
-
         self.update_player_vars()
 
     def heat_hit(self, zone, **kwargs):
@@ -153,7 +152,8 @@ class Parafino(Mode):
         self.machine.events.post("parafino_mode_complete")
 
     def post_heat_event(self, zone):
-        self.machine.events.post(f"parafino_{zone}_heat_{self.heat[zone]}")
+        zheat = self.heat[zone]
+        self.machine.events.post(f"parafino_{zone}_heat_{zheat}")
 
     def get_balls_in_play(self):
         game = self.machine.game
