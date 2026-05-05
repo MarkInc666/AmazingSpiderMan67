@@ -144,8 +144,8 @@ event_player:
     - vulture_spinner_hit
 
   mode_vulture_started:
-    - vulture_open_upper_gate
     - vulture_show_targets
+    - rooftop_diverter_open
     - clear_saucers
 
   vulture_upper_entered:
@@ -176,6 +176,7 @@ event_player:
   vulture_left_target_hit{current_player.vulture_left_stage == 1}:
     - vulture_left_to_orange
     - vulture_show_targets
+
   vulture_left_target_hit{current_player.vulture_left_stage == 2}:
     - vulture_left_to_red
     - vulture_show_targets
@@ -191,6 +192,7 @@ event_player:
   vulture_right_target_hit{current_player.vulture_right_stage == 1}:
     - vulture_right_to_orange
     - vulture_show_targets
+
   vulture_right_target_hit{current_player.vulture_right_stage == 2}:
     - vulture_right_to_red
     - vulture_show_targets

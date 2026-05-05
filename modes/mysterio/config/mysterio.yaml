@@ -2,350 +2,283 @@
 
 mode:
   start_events: start_mode_mysterio
-  stop_events:
-    - mysterio_mode_complete
-    - ball_ended
-  priority: 300
-
-variable_player:
-
-  mode_mysterio_started:
-    mysterio_secret_shot:
-      action: set
-      int: 0
-    mysterio_jackpot_value:
-      action: set
-      int: 1000000
-
-  mysterio_set_secret_1:
-    mysterio_secret_shot:
-      action: set
-      int: 1
-
-  mysterio_set_secret_2:
-    mysterio_secret_shot:
-      action: set
-      int: 2
-
-  mysterio_set_secret_3:
-    mysterio_secret_shot:
-      action: set
-      int: 3
-
-  mysterio_set_secret_4:
-    mysterio_secret_shot:
-      action: set
-      int: 4
-
-  mysterio_set_secret_5:
-    mysterio_secret_shot:
-      action: set
-      int: 5
-
-  mysterio_set_secret_6:
-    mysterio_secret_shot:
-      action: set
-      int: 6
-
-  mysterio_set_secret_7:
-    mysterio_secret_shot:
-      action: set
-      int: 7
-
-  mysterio_set_secret_8:
-    mysterio_secret_shot:
-      action: set
-      int: 8
-
-  mysterio_set_secret_9:
-    mysterio_secret_shot:
-      action: set
-      int: 9
-
-  mysterio_set_secret_10:
-    mysterio_secret_shot:
-      action: set
-      int: 10
-
-  mysterio_wrong_standard_score:
-    score: 50000
-
-  mysterio_wrong_clue_score:
-    score: 50000
-
-  mysterio_standard_deduct:
-    mysterio_jackpot_value: -100000
-
-  mysterio_clue_deduct:
-    mysterio_jackpot_value: -25000
-
-  mysterio_jackpot_floor:
-    mysterio_jackpot_value:
-      action: set
-      int: 300000
-
-  mysterio_collect_super:
-    score: current_player.mysterio_jackpot_value
-
-random_event_player:
-
-  mode_mysterio_started:
-    events:
-      - mysterio_set_secret_1
-      - mysterio_set_secret_2
-      - mysterio_set_secret_3
-      - mysterio_set_secret_4
-      - mysterio_set_secret_5
-      - mysterio_set_secret_6
-      - mysterio_set_secret_7
-      - mysterio_set_secret_8
-      - mysterio_set_secret_9
-      - mysterio_set_secret_10
+  stop_events: mysterio_mode_complete, ball_ended
+  code: mysterio.Mysterio
+  priority: 500
 
 event_player:
-
   mysterio_mode_complete:
     - reset_villain_locate
 
   mode_mysterio_started:
-    - mysterio_light_all_illusions
     - clear_saucers
 
-  # ----------------------------
-  # Physical shot routing
-  # ----------------------------
+  s_left_web_target_active: mysterio_left_web_hit
+  s_web_target_top_active: mysterio_right_web_hit
+  s_web_spinner_active: mysterio_spinner_hit
+  left_drops_hit: mysterio_left_drops_hit
+  right_drops_hit: mysterio_right_drops_hit
+  s_trispinner_opto_active: mysterio_upper_spinner_hit
+  saucers_hit: mysterio_saucers_hit
+  upper_targets_hit: mysterio_upper_target_hit
 
-  dt_bank_left_down:
-    - mysterio_shot_1_request
+  mysterio_all_shots_lit:
+    - mysterio_lite_left_web
+    - mysterio_lite_right_web
+    - mysterio_lite_spinner
+    - mysterio_lite_left_drops
+    - mysterio_lite_right_drops
+    - mysterio_lite_upper_spinner
+    - mysterio_lite_saucers
+    - mysterio_lite_upper_target
 
-  dt_bank_right_down:
-    - mysterio_shot_2_request
 
-  s_saucer_1_active:
-    - mysterio_shot_3_request
+shot_groups:
+  right_drops:
+    shots: right_drop_1, right_drop_2, right_drop_3, right_drop_4, right_drop_5
 
-  s_saucer_2_active:
-    - mysterio_shot_4_request
+  left_drops:
+    shots: left_drop_1, left_drop_3, left_drop_3
 
-  s_saucer_3_active:
-    - mysterio_shot_5_request
+  upper_targets:
+    shots: upper_target_left, upper_target_center, upper_target_right
 
-  s_web_target_left_active:
-    - mysterio_shot_6_request
+  saucers:
+    shots: saucer_1, saucer_2, saucer_3
 
-  s_web_target_top_active:
-    - mysterio_shot_7_request
+shots:
 
-  s_web_spinner_active:
-    - mysterio_shot_8_request
+  saucer_1:
+    switch: s_saucer_1
 
-  s_upper_target_left_active:
-    - mysterio_shot_9_request
+  saucer_2:
+    switch: s_saucer_2
 
-  s_upper_target_center_active:
-    - mysterio_shot_10_request
+  saucer_3:
+    switch: s_saucer_3
 
-  # ----------------------------
-  # Correct / incorrect checks
-  # ----------------------------
+  upper_target_left:
+    switch: s_upper_target_left
 
-  mysterio_shot_1_request{current_player.mysterio_secret_shot == 1}:
-    - mysterio_correct_shot
-  mysterio_shot_1_request{current_player.mysterio_secret_shot != 1}:
-    - mysterio_wrong_standard
+  upper_target_center:
+    switch: s_upper_target_center
 
-  mysterio_shot_2_request{current_player.mysterio_secret_shot == 2}:
-    - mysterio_correct_shot
-  mysterio_shot_2_request{current_player.mysterio_secret_shot != 2}:
-    - mysterio_wrong_standard
+  upper_target_right:
+    switch: s_upper_target_right
 
-  mysterio_shot_3_request{current_player.mysterio_secret_shot == 3}:
-    - mysterio_correct_shot
-  mysterio_shot_3_request{current_player.mysterio_secret_shot != 3}:
-    - mysterio_wrong_clue_right
+  right_drop_1:
+    switch: s_right_drops_1
 
-  mysterio_shot_4_request{current_player.mysterio_secret_shot == 4}:
-    - mysterio_correct_shot
-  mysterio_shot_4_request{current_player.mysterio_secret_shot != 4}:
-    - mysterio_wrong_clue_near
+  right_drop_2:
+    switch: s_right_drops_2
 
-  mysterio_shot_5_request{current_player.mysterio_secret_shot == 5}:
-    - mysterio_correct_shot
-  mysterio_shot_5_request{current_player.mysterio_secret_shot != 5}:
-    - mysterio_wrong_clue_low
+  right_drop_3:
+    switch: s_right_drops_3
 
-  mysterio_shot_6_request{current_player.mysterio_secret_shot == 6}:
-    - mysterio_correct_shot
-  mysterio_shot_6_request{current_player.mysterio_secret_shot != 6}:
-    - mysterio_wrong_standard
+  right_drop_4:
+    switch: s_right_drops_4
 
-  mysterio_shot_7_request{current_player.mysterio_secret_shot == 7}:
-    - mysterio_correct_shot
-  mysterio_shot_7_request{current_player.mysterio_secret_shot != 7}:
-    - mysterio_wrong_standard
+  right_drop_5:
+    switch: s_right_drops_5
 
-  mysterio_shot_8_request{current_player.mysterio_secret_shot == 8}:
-    - mysterio_correct_shot
-  mysterio_shot_8_request{current_player.mysterio_secret_shot != 8}:
-    - mysterio_wrong_standard
+  left_drop_1:
+    switch: s_left_drops_1
 
-  mysterio_shot_9_request{current_player.mysterio_secret_shot == 9}:
-    - mysterio_correct_shot
-  mysterio_shot_9_request{current_player.mysterio_secret_shot != 9}:
-    - mysterio_wrong_standard
+  left_drop_2:
+    switch: s_left_drops_2
 
-  mysterio_shot_10_request{current_player.mysterio_secret_shot == 10}:
-    - mysterio_correct_shot
-  mysterio_shot_10_request{current_player.mysterio_secret_shot != 10}:
-    - mysterio_wrong_standard
+  left_drop_3:
+    switch: s_left_drops_3
 
-  # ----------------------------
-  # Wrong shot behavior
-  # ----------------------------
+variable_player:
+  mysterio_score_wrong_shot:
+    score:
+      action: add
+      int: 50000
 
-  mysterio_wrong_standard:
-    - mysterio_wrong_standard_score
-    - mysterio_standard_deduct_check
-    - mysterio_wrong_flash
-
-  mysterio_wrong_clue_right:
-    - mysterio_wrong_clue_score
-    - mysterio_clue_deduct_check
-    - mysterio_clue_right_callout
-    - mysterio_clue_flash
-
-  mysterio_wrong_clue_near:
-    - mysterio_wrong_clue_score
-    - mysterio_clue_deduct_check
-    - mysterio_clue_near_callout
-    - mysterio_clue_flash
-
-  mysterio_wrong_clue_low:
-    - mysterio_wrong_clue_score
-    - mysterio_clue_deduct_check
-    - mysterio_clue_low_callout
-    - mysterio_clue_flash
-
-  # ----------------------------
-  # Jackpot floor checks
-  # ----------------------------
-
-  mysterio_standard_deduct_check{current_player.mysterio_jackpot_value > 400000}:
-    - mysterio_standard_deduct
-
-  mysterio_standard_deduct_check{current_player.mysterio_jackpot_value <= 400000}:
-    - mysterio_jackpot_floor
-
-  mysterio_clue_deduct_check{current_player.mysterio_jackpot_value > 325000}:
-    - mysterio_clue_deduct
-
-  mysterio_clue_deduct_check{current_player.mysterio_jackpot_value <= 325000}:
-    - mysterio_jackpot_floor
-
-  # ----------------------------
-  # Correct shot
-  # ----------------------------
-
-  mysterio_correct_shot:
-    - mysterio_collect_super
-    - mysterio_reveal_show
-    - mysterio_mode_complete
+  mysterio_super_collected:
+    score:
+      action: add
+      int: current_player.mysterio_award_value
 
 show_player:
-
-  mysterio_light_all_illusions:
-    mysterio_all_shots_lit:
+#  mysterio_trial_started:
+#    mysterio_start_show:
+#      loops: 0
+#
+#  mysterio_spidey_sense_left:
+#    mysterio_hint_left_show:
+#      loops: 0
+#
+#  mysterio_spidey_sense_right:
+#    mysterio_hint_right_show:
+#      loops: 0
+#
+#  mysterio_spidey_sense_upper:
+#    mysterio_hint_upper_show:
+#      loops: 0
+#
+#  mysterio_super_collected:
+#    mysterio_super_show:
+#      loops: 0
+      
+  mysterio_lite_left_web:
+    mysterio_lite_left_web_show:
       loops: -1
 
-  mysterio_wrong_flash:
-    mysterio_wrong_show:
-      loops: 1
+  mysterio_lite_right_web:
+    mysterio_lite_right_web_show:
+      loops: -1
 
-  mysterio_clue_flash:
-    mysterio_clue_show:
-      loops: 1
+  mysterio_lite_spinner:
+    mysterio_lite_spinner_show:
+      loops: -1
 
-  mysterio_reveal_show:
-    mysterio_all_shots_lit:
+  mysterio_lite_left_drops:
+    mysterio_lite_left_drops_show:
+      loops: -1
+
+  mysterio_lite_right_drops:
+    mysterio_lite_right_drops_show:
+      loops: -1
+
+  mysterio_lite_upper_spinner:
+    mysterio_lite_upper_spinner_show:
+      loops: -1
+
+  mysterio_lite_saucers:
+    mysterio_lite_saucers_show:
+      loops: -1
+
+  mysterio_lite_upper_target:
+    mysterio_lite_upper_target_show:
+      loops: -1
+
+  mysterio_stop_left_web:
+    mysterio_lite_left_web_show:
       action: stop
-    mysterio_reveal:
-      loops: 1
 
-  mysterio_mode_complete:
-    mysterio_all_shots_lit:
+  mysterio_stop_right_web:
+    mysterio_lite_right_web_show:
       action: stop
+
+  mysterio_stop_spinner:
+    mysterio_lite_spinner_show:
+      action: stop
+
+  mysterio_stop_left_drops:
+    mysterio_lite_left_drops_show:
+      action: stop
+
+  mysterio_stop_right_drops:
+    mysterio_lite_right_drops_show:
+      action: stop
+
+  mysterio_stop_upper_spinner:
+    mysterio_lite_upper_spinner_show:
+      action: stop
+
+  mysterio_stop_saucers:
+    mysterio_lite_saucers_show:
+      action: stop
+
+  mysterio_stop_upper_target:
+    mysterio_lite_upper_target_show:
+      action: stop
+
 
 shows:
 
-  mysterio_all_shots_lit:
-    - duration: 400ms
+  mysterio_lite_left_web_show:
+    - duration: 120ms
       lights:
-        l_3bankbonus: purple
-        l_5bank_1: purple
-        l_5bank_2: purple
-        l_5bank_3: purple
-        l_5bank_4: purple
-        l_5bank_5: purple
-        l_1_hole_l: purple
-        l_2_hole_l: purple
-        l_3_hole_l: purple
-        l_left_web_target: purple
-        l_mid_spider_target: purple
-        l_spinner: purple
-        l_upper_left: purple
-        l_upper_middle: purple
-    - duration: 400ms
+        l_left_web_target: yellow
+    - duration: 120ms
+      lights:
+        l_left_web_target: blue
+
+  mysterio_lite_right_web_show:
+    - duration: 120ms
+      lights:
+        l_mid_spider_target: yellow
+    - duration: 120ms
+      lights:
+        l_mid_spider_target: blue
+
+  mysterio_lite_spinner_show:
+    - duration: 120ms
+      lights:
+        l_spinner: yellow
+    - duration: 120ms
+      lights:
+        l_spinner: blue
+
+  mysterio_lite_left_drops_show:
+    - duration: 120ms
+      lights:
+        l_3bankbonus: yellow
+        l_left_multibonus: yellow
+    - duration: 120ms
       lights:
         l_3bankbonus: blue
+        l_left_multibonus: blue
+
+  mysterio_lite_right_drops_show:
+    - duration: 120ms
+      lights:
+        l_5bank_1: yellow
+        l_5bank_2: yellow
+        l_5bank_3: yellow
+        l_5bank_4: yellow
+        l_5bank_5: yellow
+    - duration: 120ms
+      lights:
         l_5bank_1: blue
         l_5bank_2: blue
         l_5bank_3: blue
         l_5bank_4: blue
         l_5bank_5: blue
+
+  mysterio_lite_upper_spinner_show:
+    - duration: 120ms
+      lights:
+        l_gi_a: yellow
+    - duration: 120ms
+      lights:
+        l_gi_a: blue
+
+  mysterio_lite_saucers_show:
+    - duration: 120ms
+      lights:
+        l_1_hole_l: yellow
+        l_1: yellow
+        l_1_hole_r: yellow
+        l_2_hole_l: yellow
+        l_2: yellow
+        l_2_hole_r: yellow
+        l_3_hole_l: yellow
+        l_3: yellow
+        l_3_hole_r: yellow
+    - duration: 120ms
+      lights:
         l_1_hole_l: blue
+        l_1: blue
+        l_1_hole_r: blue
         l_2_hole_l: blue
+        l_2: blue
+        l_2_hole_r: blue
         l_3_hole_l: blue
-        l_left_web_target: blue
-        l_mid_spider_target: blue
-        l_spinner: blue
+        l_3: blue
+        l_3_hole_r: blue
+
+  mysterio_lite_upper_target_show:
+    - duration: 120ms
+      lights:
+        l_upper_left: yellow
+        l_upper_middle: yellow
+        l_upper_right: yellow
+    - duration: 120ms
+      lights:
         l_upper_left: blue
         l_upper_middle: blue
-
-  mysterio_wrong_show:
-    - duration: 150ms
-      lights:
-        gi: purple
-    - duration: 150ms
-      lights:
-        gi: off
-
-  mysterio_clue_show:
-    - duration: 150ms
-      lights:
-        gi: white
-    - duration: 150ms
-      lights:
-        gi: purple
-
-  mysterio_reveal:
-    - duration: 150ms
-      lights:
-        gi: green
-        l_1_hole_l: green
-        l_2_hole_l: green
-        l_3_hole_l: green
-        l_left_web_target: green
-        l_mid_spider_target: green
-        l_spinner: green
-        l_upper_left: green
-        l_upper_middle: green
-    - duration: 150ms
-      lights:
-        gi: white
-        
-        
-        
-# todo
-#mysterio_clue_right_callout
-#mysterio_clue_near_callout
-#mysterio_clue_low_callout
+        l_upper_right: blue
