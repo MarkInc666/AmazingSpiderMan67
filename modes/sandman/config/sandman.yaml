@@ -114,8 +114,8 @@ show_player:
       action: stop
     sandman_flash_5_show:
       action: stop
-    sandman_complete_show:
-      loops: 10
+#    sandman_complete_show:
+#      loops: 10
 
 shows:
   sandman_flash_1_show:

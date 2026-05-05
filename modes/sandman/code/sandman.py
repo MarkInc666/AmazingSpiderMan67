@@ -67,7 +67,11 @@ class Sandman(Mode):
         if self.current_flash not in self.down_targets:
             self.down_targets.add(self.current_flash)
 
-        self.machine.coils[f"c_right_bank_drop_{self.current_flash}"].pulse()
+        target = self.current_flash
+        if self.direction == 1:
+            target = 6 - target
+
+        self.machine.coils[f"c_right_bank_drop_{target}"].pulse()
 
         next_target = self.find_next_standing_target(self.current_flash)
 
