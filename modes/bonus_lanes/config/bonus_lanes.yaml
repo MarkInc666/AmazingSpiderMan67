@@ -1,0 +1,147 @@
+#config_version=6
+
+mode:
+  start_events: ball_started
+  code: bonus_lanes.BonusLanes
+  priority: 80
+
+event_player:
+  mode_bonus_lanes_started:
+    - bonus_lanes_start
+
+  s_web_target_left_active:
+    - bonus_count_add
+
+  s_web_target_top_active:
+    - bonus_count_add
+
+  s_upper_entrance_opto_active:
+    - bonus_count_add
+
+  s_left_flipper_active:
+    - bonus_lanes_rotate_left
+
+  s_right_flipper_active:
+    - bonus_lanes_rotate_right
+
+  s_outlane_l_active:
+    - bonus_lane_1_hit
+
+  s_inlane_l_active:
+    - bonus_lane_2_hit
+
+  s_inlane_r_active:
+    - bonus_lane_3_hit
+
+  s_outlane_r_active:
+    - bonus_lane_4_hit
+
+  s_web_target_top_active:
+    - bonus_center_web_request
+
+  s_web_target_left_active:
+    - bonus_left_web_request
+
+  timer_bonus_center_web_timer_complete:
+    - bonus_center_web_timeout
+
+  timer_bonus_left_web_timer_complete:
+    - bonus_left_web_timeout
+
+  drop_target_bank_dt_bank_left_down:
+    - bonus_left_bank_complete
+
+  drop_target_bank_dt_bank_right_down:
+    - bonus_right_bank_complete    
+
+
+timers:
+  bonus_center_web_timer:
+    start_value: 6
+    end_value: 0
+    direction: down
+    tick_interval: 1s
+    control_events:
+      - event: bonus_center_web_lit
+        action: restart
+      - event: bonus_center_web_collected
+        action: stop
+      - event: ball_ended
+        action: stop
+
+  bonus_left_web_timer:
+    start_value: 6
+    end_value: 0
+    direction: down
+    tick_interval: 1s
+    control_events:
+      - event: bonus_left_web_lit
+        action: restart
+      - event: bonus_left_web_collected
+        action: stop
+      - event: ball_ended
+        action: stop
+
+show_player:
+  bonus_show_lanes:
+    bonus_lane_show:
+      loops: 1
+
+  bonus_center_web_lit:
+    bonus_center_web_show:
+      loops: -1
+
+  bonus_center_web_collected:
+    bonus_center_web_show:
+      action: stop
+
+  bonus_center_web_timeout:
+    bonus_center_web_show:
+      action: stop
+
+  bonus_left_web_lit:
+    bonus_left_web_show:
+      loops: -1
+
+  bonus_left_web_collected:
+    bonus_left_web_show:
+      action: stop
+    bonus_multiplier_award_show:
+      loops: 1
+
+  bonus_left_web_timeout:
+    bonus_left_web_show:
+      action: stop
+
+shows:
+  bonus_lane_show:
+    - duration: 200ms
+      lights:
+        l_left_outlane: white
+        l_left_inlane: white
+        l_right_inlane: white
+        l_right_outlane: white
+
+  bonus_center_web_show:
+    - duration: 250ms
+      lights:
+        l_mid_spider_target: white
+    - duration: 250ms
+      lights:
+        l_mid_spider_target: blue
+
+  bonus_left_web_show:
+    - duration: 250ms
+      lights:
+        l_left_web_target: white
+    - duration: 250ms
+      lights:
+        l_left_web_target: blue
+
+  bonus_multiplier_award_show:
+    - duration: 150ms
+      lights:
+        gi: white
+    - duration: 150ms
+      lights:
+        gi: blue

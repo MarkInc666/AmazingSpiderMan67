@@ -1,0 +1,110 @@
+#config_version=6
+
+mode:
+  start_events: ball_started
+  code: daily_bugle_mystery.DailyBugleMystery
+  priority: 90
+
+event_player:
+
+  # A rollovers
+  s_inlane_a_active:
+    - daily_bugle_a_hit
+
+  s_inlane_m_r_active:
+    - daily_bugle_a_hit
+
+  # B rollovers
+  s_inlane_b_active:
+    - daily_bugle_b_hit
+
+  s_inlane_m_l_active:
+    - daily_bugle_b_hit
+
+  # Successful rooftop traversal
+  s_upper_exit_right_opto_active:
+    - daily_bugle_rooftop_right_exit
+
+  # VUK collects mystery when ready
+  s_vuk_switch_active:
+    - daily_bugle_vuk_collect_request
+
+show_player:
+
+  daily_bugle_ab_ready:
+    daily_bugle_ab_ready_show:
+      loops: -1
+
+  daily_bugle_rooftop_traversal_complete:
+    daily_bugle_ab_ready_show:
+      action: stop
+    daily_bugle_mystery_ready_show:
+      loops: -1
+
+  daily_bugle_mystery_collected:
+    daily_bugle_mystery_ready_show:
+      action: stop
+    daily_bugle_mystery_collect_show:
+      loops: 1
+
+  daily_bugle_extra_ball_lit:
+    daily_bugle_mystery_ready_show:
+      action: stop
+    daily_bugle_extra_ball_lit_show:
+      loops: -1
+
+  daily_bugle_extra_ball_awarded:
+    daily_bugle_extra_ball_lit_show:
+      action: stop
+    daily_bugle_extra_ball_award_show:
+      loops: 1
+
+shows:
+
+  daily_bugle_ab_ready_show:
+    - duration: 300ms
+      lights:
+        l_a_rollover: white
+        l_b_rollover: white
+    - duration: 300ms
+      lights:
+        l_a_rollover: blue
+        l_b_rollover: blue
+
+  daily_bugle_mystery_ready_show:
+    - duration: 250ms
+      lights:
+        l_1_hole_l: white
+        l_2_hole_l: white
+        l_3_hole_l: white
+    - duration: 250ms
+      lights:
+        l_1_hole_l: blue
+        l_2_hole_l: blue
+        l_3_hole_l: blue
+
+  daily_bugle_mystery_collect_show:
+    - duration: 150ms
+      lights:
+        gi: white
+    - duration: 150ms
+      lights:
+        gi: blue
+
+  daily_bugle_extra_ball_lit_show:
+    - duration: 200ms
+      lights:
+        l_shoot_again: white
+    - duration: 200ms
+      lights:
+        l_shoot_again: blue
+
+  daily_bugle_extra_ball_award_show:
+    - duration: 150ms
+      lights:
+        l_shoot_again: white
+        gi: white
+    - duration: 150ms
+      lights:
+        l_shoot_again: blue
+        gi: blue

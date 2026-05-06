@@ -27,9 +27,6 @@ event_player:
   timer_vulture_idle_timer_complete:
     - vulture_idle_decay
 
-  ball_ending{not current_player.tilted}:
-    - vulture_award_bonus
-
   vulture_mode_complete:
     - reset_villain_locate
 

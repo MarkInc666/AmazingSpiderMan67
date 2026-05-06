@@ -227,3 +227,38 @@ sequences:
     disable_on_complete: false
     events_when_complete: drop_target_bank_dt_bank_right_reset
 
+
+
+ball_saves:
+
+  mystery_ball_save:
+    active_time: 10s
+    hurry_up_time: 3s
+    grace_period: 2s
+    enable_events:
+      - start_mystery_ball_save
+
+
+  default_ball_save:
+    active_time: 10s
+    hurry_up_time: 3s
+    grace_period: 2s
+    enable_events:
+      - ball_started
+    timer_start_events:
+      - playfield_active      
+
+#todo - when ball saved, use these events to trigger display
+#ball_save_default_ball_save_saving_ball
+#  - start ball save show (flash light) and video
+#ball_save_default_ball_save_enabled
+#ball_save_default_ball_save_hurry_up
+#  - blink light faster
+#ball_save_default_ball_save_disabled
+#  - turn off light
+#ball_save_default_ball_save_timer_start
+# event_player:
+
+#  ball_save_default_ball_save_saving_ball:
+#    - play_ball_save_callout
+#    - flash_gi_blue

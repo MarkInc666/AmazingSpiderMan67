@@ -1,0 +1,351 @@
+# 🕸️ GAME OVER MODE
+
+# “New York At Night”
+
+
+
+## Attract mode concept
+
+* rooftop GI sweeps
+* comic-book color cycling
+* spinner pulse animations
+* villain teases
+* rotating villain posters/cards
+* “Meanwhile…” callouts
+
+---
+
+# Recommended Attract Flow
+
+## Phase 1
+
+Spider-Man patrol
+
+rooftop lights
+spinner pulses
+city ambience
+
+---
+
+## Phase 2
+
+Villain interruptions
+
+Example:
+
+Electro flashes blue
+Goblin flashes green/purple
+Mysterio illusion flickers
+
+---
+
+## Phase 3
+
+Daily Bugle headlines
+
+“RHINO RAMPAGE!”
+“MYSTERIO STRIKES!”
+“SPIDER-MAN WANTED!”
+
+
+This fits the 1967 tone perfectly.
+
+---
+
+
+
+
+# ⭐ HIGH SCORE MODE
+
+# “Daily Bugle Headlines”
+
+# High Score Categories
+# comic-book style award names
+
+## Front Page Hero
+- Highest score
+
+## Most Wanted
+- Most villains defeated
+
+## Web Master
+- Most rooftop spins
+
+## Kingpin Crusher
+- Fastest Kingpin completion
+
+## Daily Bugle Scoop
+- Most mystery awards
+
+## Sky King
+- Best Vulture score
+
+
+---
+
+# 🎬 HIGH SCORE ENTRY MODE
+
+Daily Bugle “headline typing”
+“ _ _ _ SAVES CITY!”
+
+
+
+
+# 🎵 Audio Identity
+* newsroom sounds
+* printing presses
+* radio reports
+* dramatic narration
+* 1967 comic-book energy
+* villain stingers
+* rooftop sounds
+* Spider-Sense alerts
+* mode transitions
+* “Meanwhile…” style clips
+* music
+
+
+
+# 🏆 End-of-ball bonus additions 
+
+* villains defeated
+* rooftop spins
+* mystery awards collected
+* spidey bonus
+* vulture bonus
+
+
+# Priority Order Now
+
+## Highest priority remaining
+
+1. villain progression architecture
+2. stacking rules
+3. bonus mode polish
+4. skill shots/traversal chains
+
+## Medium
+
+5. attract mode
+6. high score mode
+7. presentation/audio
+
+## Late polish
+
+8. comic-book transitions
+9. narration
+10. city escalation visuals
+
+You’re well past “random ideas stage” now. This is becoming actual machine architecture.
+
+
+
+
+
+------------------------------------------------------
+
+You actually have the hard part done already:
+
+* villain identities
+* upper/lower integration
+* side progression
+* bonus structure
+* mystery structure
+
+What you’re mostly missing now are:
+
+meta systems
+polish systems
+bridges between systems
+
+
+Here’s what still matters.
+
+---
+
+# 1. 👑 Final Villain Progression Structure
+
+overall villain progression logic
+
+Questions still open:
+
+* How many villains must be defeated before Kingpin?  - 10
+* Can villains repeat? - after kingpin, villains reset
+* Are villains “completed” permanently for the game? - no
+* Is there a mini-wizard before Kingpin? - no but maybe open mystery after 5 villains 
+* What resets between balls? - keep track of game totals and per ball totals qualifying - qualify state restores to previous point
+
+
+
+
+---
+
+# 2. 🕷️ Villain Select / Progression UI
+
+* completed indicators
+* defeated vs played states - just played 
+* villain progress display - 
+* lockout logic 
+* visual progression toward Kingpin
+
+
+---
+
+
+
+---
+
+# 4. 🌆 Overall City Progression
+* Mystery progression
+* Villains - whenever we have a qualify transition will show progress screen
+* Bonus - visual playfield lights 
+* Rooftop traversal
+
+---
+
+# 5. ⚠️ Stacking Rules
+
+Very important.
+
+You need final decisions on:
+
+* can modes overlap?
+* can Meteor run during villain qualification?
+* can rooftop cashout happen during villain modes?
+* can Mystery happen during multiball?
+* can Parafino multiball overlap other villains?
+
+This is now a MAJOR system design step.
+
+---
+
+# 6. 🧮 Scoring Balance Pass
+
+You’ve built:
+
+* great mechanics
+* good progression
+
+But scoring is still rough/unbalanced.
+
+Eventually you’ll need:
+
+```text id="q0hvlq"
+score economy normalization
+```
+
+Especially:
+
+* spinner scoring
+* multiball values
+* bonus values
+* mystery values
+
+Right now some modes can probably explode scoring.
+
+That’s normal at this stage.
+
+---
+
+# 7. 🎯 Skill Shot / Ball Start
+
+You surprisingly don’t yet have:
+
+```text id="jlwm0a"
+strong plunge/skill-shot gameplay
+```
+
+This is a big opportunity.
+
+You should absolutely have:
+
+* plunge lane skill shot
+* soft plunge rooftop feed
+* lane change skill shot
+* Spider-Sense skill shot
+
+Very Spider-Man appropriate.
+
+---
+
+# 8. 🕸️ Web-Sling Traversal Identity
+
+Your machine’s strongest unique feature is:
+
+```text id="jlwm0b"
+rooftop traversal
+```
+
+You should lean into it EVEN MORE.
+
+Potential additions:
+
+* combo traversal awards
+* rooftop chains
+* traversal multipliers
+* rooftop streaks
+
+This is what makes your machine unique.
+
+---
+
+# 9. 💥 Endgame Escalation
+
+You need:
+
+```text id="jlwm0c"
+“everything is going crazy” late-game feeling
+```
+
+before Kingpin.
+
+Examples:
+
+* villains become harder
+* rooftop timers shorten
+* multiball frequency increases
+* city danger level rises
+
+---
+
+# 10. 🎬 Mode Entry / Exit Polish
+
+You now need:
+
+* intro transitions
+* villain defeat transitions
+* mode cleanup/reset logic
+* return-to-base-state logic
+
+Especially:
+
+```text id="jlwm0d"
+resetting qualification flow cleanly
+```
+
+You already noticed this problem earlier.
+
+---
+
+# Biggest remaining gameplay gap?
+
+Honestly:
+
+# ⭐ Skill shots + traversal combo system
+
+That’s the one thing your game still lacks that could make it feel truly elite.
+
+Because your machine is fundamentally about:
+
+```text id="jlwm0e"
+movement across the city
+```
+
+You should reward:
+
+* chaining movement
+* successful rooftop control
+* traversal mastery
+
+That’s your real unique identity.
+

@@ -1,3 +1,877 @@
+# 🕷️ Villain Modes Summary
+
+## 🦏 Rhino — “Rhino Bash”
+
+* Pops build Rage Meter
+* Higher rage increases jackpot growth
+* Cash out jackpots before things get too dangerous
+
+---
+
+## 🏖️ Sandman — “Shifting Sands”
+
+* Moving flashing right-bank drop targets
+* Flashing target worth major points
+* Complete left→right sweeps for jackpots
+
+---
+
+## 🦅 Vulture — “Sky Attack”
+
+* Upper targets build spinner values
+* Values decay over time
+* Max all targets to add-a-ball
+* 2 balls on upper = scoring multiplier
+
+---
+
+## ⚡ Electro — “Power Surge”
+
+* Traveling lit shots across playfield
+* Hit lit shot before it moves
+* Later shots become more valuable
+
+---
+
+## 🎃 Goblin — “Goblin Chaos Multiball”
+
+* Flashing shots are safe/high value
+* Solid shots reduce Chaos Bonus
+* Saucer locks stabilize chaos temporarily
+
+---
+
+## 🎭 Mysterio — “Illusion Trial”
+
+* Hidden super jackpot among 10 lit shots
+* Wrong shots reduce jackpot
+* Clue shots provide directional hints
+
+---
+
+## 🧲 Scorpion — “Sting Sequence”
+
+* Spinner builds Venom Meter
+* Choose upper exit path:
+
+  * safer/lower reward
+  * harder/higher reward
+* Hit timed drop target for jackpot
+
+---
+
+## 🧠 Doctor Octopus — “Tentacle Lockdown”
+
+* Lock “arms” to build jackpot multiplier
+* Jackpot collections create breakout shots
+* Breakout shots release locked arms
+
+---
+
+## 🦎 Lizard — “Serum Delivery”
+
+* Collect serum at star rollover
+* Deliver to left then center web target
+* Serum value decays over time
+* A+B rollovers boost value
+
+---
+
+## 🎭 Parafino — “Wax Meltdown”
+
+* Left drops, pops, and right drops heat 3 zones
+* Zones cool independently
+* Max a zone to light saucer add-a-ball
+* All 3 maxed lights spinner jackpot
+* Jackpot multiplied by balls in play
+
+---
+
+## ☄️ Meteor — “Impact Zone”
+
+* Left drops build multiplier
+* Right drops build spinner value
+* Spinner is only scoring shot
+* Completing either bank ends mode
+
+---
+
+## 👑 Kingpin — Wizard Mode
+
+* Final city-wide showdown
+* Combines multiple villain mechanics
+* Large-scale multiball/endgame mode
+
+
+
+
+
+
+
+
+
+
+
+
+You need a few **persistent non-villain progression systems** so the game doesn’t feel like:
+
+```text
+qualify villain → play villain → repeat
+```
+
+The best side systems:
+
+* are always available
+* survive between modes
+* use lower playfield
+* give players long-term goals
+
+Here are the strongest fits for your game.
+
+---
+
+# 🎁 Mystery Award System — “Daily Bugle Scoop”
+
+## Theme
+
+Peter Parker gathering information/photos for the Bugle.
+
+## Core Loop
+
+Complete small objectives to spell:
+
+```text
+SCOOP
+```
+
+or
+
+```text
+BUGLE
+```
+
+Then:
+
+```text
+Mystery lit at saucer
+```
+
+---
+
+# Ways to collect letters
+
+Use classic lower-playfield gameplay:
+
+* inlanes
+* outlanes
+* left orbit
+* standups
+* drop completions
+
+Example:
+
+```text
+A/B rollover completion advances one letter
+```
+
+---
+
+# Mystery Awards Ideas
+
+Not random junk — weighted useful stuff:
+
+```text
++ spinner boost
++ heat freeze (Parafino)
++ rage hold (Rhino)
++ upper gate open
++ light extra ball
++ bonus X
++ add villain spin progress
++ mystery multiball
+```
+
+---
+
+# 💡 BEST Twist
+
+If collected during villain mode:
+
+```text
+villain-specific mystery
+```
+
+That would feel very polished.
+
+---
+
+# ⭐ Extra Ball System — “Spider-Sense”
+
+You want EB to feel:
+
+* difficult
+* skill-based
+* visible
+
+NOT random.
+
+---
+
+# Best version for your game
+
+## Repeated dangerous upper-loop completion
+
+Example:
+
+```text
+Complete rooftop loop 3 times without draining
+→ light Spider-Sense
+```
+
+Then:
+
+```text
+left outlane save shot lights Extra Ball
+```
+
+---
+
+# Another strong option
+
+## “Perfect Rooftop”
+
+During any villain mode:
+
+```text
+enter upper
+spin
+exit safely
+repeat 3 times
+```
+
+No missed exits.
+
+Then:
+
+```text
+Extra Ball lit
+```
+
+This rewards mastery of your unique upper playfield.
+
+---
+
+# Another really good one
+
+## “Villain Streak”
+
+Defeat:
+
+```text
+3 unique villains in one ball
+```
+
+Then:
+
+```text
+Extra Ball lit
+```
+
+That creates long-term tension naturally.
+
+---
+
+# 🔥 My strongest recommendation
+
+## Mystery:
+
+### “Daily Bugle Scoop”
+
+because it:
+
+* fits Spider-Man perfectly
+* encourages lower-playfield flow
+* gives constant side progression
+
+## Extra Ball:
+
+### “Perfect Rooftop”
+
+because it:
+
+* rewards mastery
+* highlights your custom upper playfield
+* feels unique to YOUR machine
+
+Those two together would add a LOT of structure outside villain modes.
+
+
+
+* upper spinner adds 5K to rooftop value
+* star collects value
+
+
+Mystery Award Ideas — “Daily Bugle Scoop”
+* A+B complete
+* gate opens 
+* rooftop traversal, exit right
+* gate opens 
+* VUK mystery collect
+* 4th award lights extra ball
+* 10th award grants extra ball
+
+
+🦏 Villain Assist Awards
+Hold Rhino Rage
+rage cannot decay briefly
+Freeze Parafino Cooling
+all heat zones stop cooling temporarily
+Stabilize Goblin Chaos
+all flashing shots safe for several seconds
+Stop Vulture Decay
+upper target stages stop decaying temporarily
+Add Electro Time
+traveling shot timer slows briefly
+Boost Scorpion Venom
+large venom meter increase
+
+⭐ Progression Awards
+Bonus X
++1 bonus multiplier
+Extra Villain Spins
+adds villain qualification spins
+Light Villain Start
+instantly qualify villain start
+Light Extra Ball
+rare award
+
+💥 Scoring Awards
+Big Points
+250K / 500K / 1M
+Hold Bonus
+bonus held through drain
+Double Spinner Scoring
+all spinner values doubled briefly
+
+🛡️ Safety Awards
+Ball Save
+temporary save
+Add Time
+extends current mode timer
+Spot Completed A+B
+instantly completes one rollover pair
+
+🎭 Rare/Special Awards
+Mystery Multiball
+short 2-ball chaos multiball
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 🕷️ Spider-Man Villain Modes Summary
+
+--
+
+# 🦏 Rhino — “Rhino Bash”
+
+## Core Theme
+
+Build Rhino’s rage until the city becomes dangerous.
+
+## Main Mechanic
+
+Pop bumpers increase a multi-stage Rage Meter.
+
+```text
+Low rage → low jackpot growth
+High rage → huge jackpot growth
+```
+
+## Gameplay
+
+* Pops increase rage level
+* Higher rage increases jackpot add value
+* Other shots add to jackpot based on current rage
+* Player can cash out multiple times
+
+## Feel
+
+```text
+greed
+overload
+aggression
+```
+
+## Economy Type
+
+Risk escalation / cashout management.
+
+---
+
+# 🏖️ Sandman — “Shifting Sands”
+
+## Core Theme
+
+The playfield constantly shifts beneath you.
+
+## Main Mechanic
+
+Moving right-bank drop targets.
+
+## Gameplay
+
+* Right drops reset
+* One flashing target moves left→right
+* Completing flashing targets builds jackpots
+* Completing entire sweep L→R awards major jackpot
+* Bank resets repeatedly
+
+## Feel
+
+```text
+timing
+tracking
+moving objectives
+```
+
+## Economy Type
+
+Moving target chase.
+
+---
+
+# 🦅 Vulture — “Sky Attack”
+
+## Core Theme
+
+Gain aerial control of the rooftops.
+
+## Main Mechanic
+
+Upper target stages + spinner scoring + add-a-ball.
+
+## Gameplay
+
+* Upper targets build:
+
+  ```text
+  yellow → orange → red
+  ```
+* Spinner scores based on all current target stages
+* Stages decay after inactivity
+* Maxing all targets:
+
+  ```text
+  add-a-ball
+  ```
+* If 2 balls are on upper playfield:
+
+  ```text
+  scoring ×2
+  ```
+
+## Feel
+
+```text
+maintain momentum
+survival
+aerial multiball chaos
+```
+
+## Economy Type
+
+Decay management / upper-playfield control.
+
+---
+
+# ⚡ Electro — “Power Surge”
+
+## Core Theme
+
+Electricity surging unpredictably across the city.
+
+## Main Mechanic
+
+Traveling lit shots.
+
+## Gameplay
+
+* One shot lit at a time
+* Shot moves if not collected
+* Collected shots disable permanently
+* Later shots become more valuable
+* Super jackpot near end
+
+## Feel
+
+```text
+chasing instability
+fast transitions
+routing pressure
+```
+
+## Economy Type
+
+Traveling shot control.
+
+---
+
+# 🎃 Goblin — “Goblin Chaos Multiball”
+
+## Core Theme
+
+Controlled chaos collapsing into danger.
+
+## Main Mechanic
+
+Dynamic shot states during multiball.
+
+## Gameplay
+
+* Flashing shots:
+
+  ```text
+  safe/high value
+  ```
+* Solid shots:
+
+  ```text
+  dangerous/penalty
+  ```
+* Saucer locks stabilize chaos temporarily
+* Chaos bonus can grow or shrink
+
+## Feel
+
+```text
+chaotic
+volatile
+high-pressure multiball
+```
+
+## Economy Type
+
+Checkpoint chaos management.
+
+---
+
+# 🎭 Mysterio — “Illusion Trial”
+
+## Core Theme
+
+See through deception before value disappears.
+
+## Main Mechanic
+
+Hidden jackpot deduction game.
+
+## Gameplay
+
+* 10 lit shots
+* One hidden super jackpot
+* Wrong shots:
+
+  ```text
+  small points
+  jackpot deduction
+  ```
+* Clue shots provide directional hints
+* Jackpot has floor value
+
+## Feel
+
+```text
+deduction
+intuition
+narrowing possibilities
+```
+
+## Economy Type
+
+Information deduction.
+
+---
+
+# 🧲 Scorpion — “Sting Sequence”
+
+## Core Theme
+
+Charge energy → choose strike risk → execute.
+
+## Main Mechanic
+
+Spinner venom build + directional exits.
+
+## Gameplay
+
+* Spinner builds venom meter
+* Upper exit choice matters:
+
+  ```text
+  LEFT exit = harder/higher reward
+  RIGHT exit = safer/lower reward
+  ```
+* Exit determines which drop-bank challenge appears
+* Random remaining drop target must be hit quickly
+
+## Feel
+
+```text
+precision
+risk selection
+execution timing
+```
+
+## Economy Type
+
+Precision strike risk.
+
+---
+
+# 🧠 Doctor Octopus — “Tentacle Lockdown”
+
+## Core Theme
+
+Success destabilizes containment.
+
+## Main Mechanic
+
+Locking/releasing “arms”.
+
+## Gameplay
+
+* In/outlanes represent tentacles
+* Locking arms increases jackpot multiplier
+* Jackpot collection spawns breakout targets
+* Breakout targets release locked arms
+* Later:
+
+  ```text
+  timed arm releases
+  ```
+* All arms released:
+
+  ```text
+  mode over
+  ```
+
+## Feel
+
+```text
+containment
+instability
+pressure from success
+```
+
+## Economy Type
+
+Success creates danger.
+
+---
+
+# 🦎 Lizard — “Serum Delivery”
+
+## Core Theme
+
+Transport unstable serum before it degrades.
+
+## Main Mechanic
+
+Timed delivery chain.
+
+## Gameplay
+
+* Collect serum at star rollover
+* Deliver:
+
+  ```text
+  left web target
+  then center web target
+  ```
+* Serum value decays over time
+* A+B rollovers can boost serum value
+
+## Feel
+
+```text
+urgency
+routing
+delivery pressure
+```
+
+## Economy Type
+
+Time-decay transport.
+
+---
+
+# 🎭 Parafino — “Wax Meltdown”
+
+## Core Theme
+
+Keep wax structures destabilized long enough to melt them.
+
+## Main Mechanic
+
+Three independent heat zones + escalating multiball.
+
+## Gameplay
+
+### LEFT
+
+Left drops heat LEFT zone
+
+### CENTER
+
+Pops heat CENTER zone
+
+### RIGHT
+
+Right drops heat RIGHT zone
+
+Each zone:
+
+```text
+0 → 3 heat
+```
+
+Zones cool independently.
+
+First time a zone maxes:
+
+```text
+light saucer
+collect saucer
+→ add-a-ball
+```
+
+Possible:
+
+```text
+1–4 balls in play
+```
+
+When all 3 zones max:
+
+```text
+spinner lights
+```
+
+Spinner jackpot:
+
+```text
+500K × balls in play
+```
+
+## Feel
+
+```text
+stability management
+thermal balancing
+escalating chaos
+```
+
+## Economy Type
+
+Multi-zone maintenance under multiball pressure.
+
+---
+
+# ☄️ Meteor — “Impact Zone”
+
+## Core Theme
+
+Push scoring to the brink without overcommitting.
+
+## Main Mechanic
+
+Drop-controlled live spinner value.
+
+## Gameplay
+
+### LEFT drops
+
+Multiplier:
+
+```text
+1X → 2X → 5X
+```
+
+### RIGHT drops
+
+Increase spinner value:
+
+```text
++10K each × multiplier
+```
+
+### Spinner
+
+ONLY scoring source.
+
+### Danger
+
+If either bank fully completes:
+
+```text
+mode ends
+```
+
+## Feel
+
+```text
+precision
+restraint
+controlled greed
+```
+
+## Economy Type
+
+Live-risk scoring optimization.
+
+---
+
+# 👑 Kingpin — Wizard Mode (planned)
+
+## Current Direction
+
+Final culmination of all villain progression.
+
+Likely themes:
+
+* city-wide control
+* layered systems
+* stacked villain mechanics
+* large-scale multiball
+
+Still open for final structure.
+
+
+
+
+
+
+
+
+
 | Villain  | Mode  |  Status  |
 
 | Rhino    | greed meter survival         |  Good |

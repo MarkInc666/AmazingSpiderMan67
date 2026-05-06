@@ -63,12 +63,18 @@ class Electro(Mode):
             self.start_super_jackpot(active[0])
             return
 
+        previous_location = selc.current_shot.group
+        
         self.current_shot = random.choice(active)
         self.current_shot.is_lit = True
 
         self.machine.events.post("electro_lit_shot_changed")
         self.machine.events.post(f"electro_lite_{self.current_shot.name}")
         self.machine.events.post("electro_shot_timer_start")
+        if previous_location == "upper" and self.current_shot.group != "upper"
+            self.machine.events.post("rooftop_diverter_close")
+        if previous_location != "upper" and self.current_shot.group == "upper":
+            self.machine.events.post("rooftop_diverter_open")
 
     def stop_current_lit_shot(self):
         if self.current_shot:

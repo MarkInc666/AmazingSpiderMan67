@@ -13,7 +13,6 @@ class Vulture(Mode):
         super().mode_start(**kwargs)
 
         self.started = False
-        self.bonus = 0
         self.upper_balls = 0
         self.add_a_ball_awarded = False
 
@@ -33,7 +32,6 @@ class Vulture(Mode):
         self.add_mode_event_handler("vulture_spinner_hit", self.spinner_hit)
         self.add_mode_event_handler("vulture_idle_decay", self.idle_decay)
         self.add_mode_event_handler("vulture_show_targets", self.show_targets)
-        self.add_mode_event_handler("vulture_award_bonus", self.award_bonus)
 
         self.update_player_vars()
 
@@ -84,11 +82,13 @@ class Vulture(Mode):
             total *= 2
 
         self.award_score(total)
-        self.bonus += total
+        self.bank_bonus(total)
+        
 
+    def bank_bonus(self, value):
         player = self.machine.game.player
-        player["vulture_last_spinner_score"] = total
-        player["vulture_bonus"] = self.bonus
+        player["vulture_bonus"] = player.get("vulture_bonus", 0) + value                
+
 
     def idle_decay(self, **kwargs):
         for target in self.stages:
@@ -111,17 +111,10 @@ class Vulture(Mode):
             return "orange"
         return "red"
 
-    def award_bonus(self, **kwargs):
-        if self.bonus <= 0:
-            return
-
-        self.award_score(self.bonus)
-
     def update_player_vars(self):
         player = self.machine.game.player
 
         player["vulture_started"] = int(self.started)
-        player["vulture_bonus"] = self.bonus
         player["vulture_left_stage"] = self.stages["left"]
         player["vulture_center_stage"] = self.stages["center"]
         player["vulture_right_stage"] = self.stages["right"]
@@ -130,3 +123,4 @@ class Vulture(Mode):
 
     def award_score(self, value):
         self.machine.game.player["score"] += value
+        player["vulture_last_spinner_score"] = value        

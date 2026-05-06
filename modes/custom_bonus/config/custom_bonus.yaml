@@ -1,0 +1,22 @@
+#config_version=6
+
+mode:
+  start_events: ball_started
+  code: custom_bonus.CustomBonus
+  priority: 50
+
+queue_event_player:
+
+  ball_ending:
+    queue_event: custom_bonus_start
+
+event_player:
+
+  ball_started:
+    - custom_bonus_init
+
+  s_left_flipper_active:
+    - custom_bonus_speed_press
+
+  s_right_flipper_active:
+    - custom_bonus_speed_press
