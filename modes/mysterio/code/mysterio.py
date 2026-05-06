@@ -58,13 +58,11 @@ class Mysterio(Mode):
         self.machine.events.post("mysterio_all_shots_lit")
 
     def build_hint(self, jackpot_shot):
-        if jackpot_shot.x < 60:
-            return "left"
-        if jackpot_shot.x >= 60:
-            return "right"
         if jackpot_shot.group == "upper":
             return "upper"
-        return "center"
+        if jackpot_shot.x < 60:
+            return "left"
+        return "right"     
 
     def shot_hit(self, shot_name=None, **kwargs):
         if not shot_name:

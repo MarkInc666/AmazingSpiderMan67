@@ -38,6 +38,10 @@ variable_player:
       action: set
       int: current_player.lizard_played
 
+    villain_locate_spins_needed:
+      action: set
+      int: current_player.villain_locate_spins_needed
+
     villain_mode_running:
       action: set
       int: 0

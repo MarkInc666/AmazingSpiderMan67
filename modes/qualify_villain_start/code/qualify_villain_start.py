@@ -19,10 +19,14 @@ class QualifyVillainStart(Mode):
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
 
+        self.machine.game.player["villain_locate_spins_needed"] = 3  
+        #start at 3, then increase after each villain
+
         self.add_mode_event_handler("start_current_villain", self.start_current_villain)
         self.add_mode_event_handler("advance_current_villain", self.advance_current_villain)
         self.add_mode_event_handler("reset_villain_locate", self.reset_villain_locate)
         self.add_mode_event_handler("clear_saucers", self.clear_saucers)
+        
 
 
     def start_current_villain(self, **kwargs):
@@ -106,6 +110,10 @@ class QualifyVillainStart(Mode):
         player["saucer_1_select_ready"] = 0
         player["saucer_2_select_ready"] = 0
         player["saucer_3_select_ready"] = 0
+        
+        player["villain_locate_spins_needed"] = player["villain_locate_spins_needed"] + 1
+        if player["villain_locate_spins_needed"] < 3:
+            player["villain_locate_spins_needed"] = 3
 
         self.advance_current_villain()
 

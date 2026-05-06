@@ -11,11 +11,7 @@ variable_player:
     villain_locate_spins:
       action: set
       int: 0
-    villain_locate_spins_needed:
-      action: set
-      int: 3
       
-
   villain_spinner_locate_progress:
     score: 5000
     villain_locate_spins: 1

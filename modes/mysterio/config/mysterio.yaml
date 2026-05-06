@@ -38,7 +38,7 @@ shot_groups:
     shots: right_drop_1, right_drop_2, right_drop_3, right_drop_4, right_drop_5
 
   left_drops:
-    shots: left_drop_1, left_drop_3, left_drop_3
+    shots: left_drop_1, left_drop_2, left_drop_3
 
   upper_targets:
     shots: upper_target_left, upper_target_center, upper_target_right

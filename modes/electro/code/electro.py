@@ -1,94 +1,143 @@
 from mpf.core.mode import Mode
+from modes.common.shot_registry import Shot
+import random
 
-#todo: open gate to upper for upper shot!
+
 class Electro(Mode):
+
+    NORMAL_JACKPOT_VALUE = 100000
+    SUPER_JACKPOT_VALUE = 1000000
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
 
-        self.current_shot = 1
-        self.disabled = set()
-        self.shots_completed = 0
+        self.super_active = False
+        self.current_shot = None
 
-        self.add_mode_event_handler("electro_start_spark", self.start_spark)
-        self.add_mode_event_handler("electro_spark_timeout", self.spark_timeout)
+        self.shots = [
+            Shot("left_web", 10, 70, "electro_left_web_hit", group="left"),
+            Shot("spinner", 20, 50, "electro_spinner_hit", group="center"),
+            Shot("left_drops", 40, 60, "electro_left_drops_hit", group="left"),
+            Shot("saucers", 50, 30, "electro_saucers_hit", group="left"),
+            Shot("right_web", 80, 30, "electro_right_web_hit", group="right"),
+            Shot("upper_spinner", 90, 30, "electro_upper_spinner_hit", group="upper"),
+            Shot("upper_targets", 95, 20, "electro_upper_target_hit", group="upper"),
+            Shot("right_drops", 100, 80, "electro_right_drops_hit", group="right"),
+        ]
 
-        for shot_num in range(1, 7):
-            self.add_mode_event_handler(
-                f"electro_shot_{shot_num}_request",
-                self.shot_request,
-                shot_num=shot_num
-            )
+        self.shots_by_name = {shot.name: shot for shot in self.shots}
 
-    def start_spark(self, **kwargs):
-        self.current_shot = self.next_enabled_shot(start_after=0)
+        for shot in self.shots:
+            self.add_mode_event_handler(shot.event, self.shot_hit, shot_name=shot.name)
 
-        if self.current_shot is None:
-            self.machine.events.post("electro_mode_complete")
+        self.add_mode_event_handler("electro_lit_shot_timeout", self.lit_shot_timeout)
+        self.add_mode_event_handler("electro_super_timeout", self.super_timeout)
+
+        self.begin_power_surge()
+
+    def begin_power_surge(self):
+        self.super_active = False
+        self.current_shot = None
+
+        for shot in self.shots:
+            shot.is_lit = False
+            shot.disabled = False
+            shot.is_jackpot = False
+
+        self.machine.events.post("electro_mode_started")
+        self.pick_next_lit_shot()
+
+    def active_shots(self):
+        return [shot for shot in self.shots if not shot.disabled]
+
+    def pick_next_lit_shot(self):
+        self.stop_current_lit_shot()
+
+        active = self.active_shots()
+
+        if len(active) <= 0:
+            self.machine.events.post("electro_mode_failed")
             return
 
-        self.light_current_shot()
-        self.machine.events.post("electro_spark_timer_start")
-
-    def shot_request(self, shot_num, **kwargs):
-        self.machine.events.post("shot request called")
-
-        if shot_num != self.current_shot:
+        if len(active) == 1:
+            self.start_super_jackpot(active[0])
             return
 
-        self.shots_completed +1
-        
-        # 6th disabled spark = Super Jackpot
-        if self.shots_completed == 6:
-            self.machine.events.post("electro_award_super_jackpot")
-        else:
-            self.machine.events.post("electro_award_jackpot")
+        self.current_shot = random.choice(active)
+        self.current_shot.is_lit = True
 
-        self.disabled.add(shot_num)
-        self.machine.events.post("electro_spark_hit_show")
+        self.machine.events.post("electro_lit_shot_changed")
+        self.machine.events.post(f"electro_lite_{self.current_shot.name}")
+        self.machine.events.post("electro_shot_timer_start")
 
-        if len(self.disabled) >= 6:
-            self.machine.events.post("electro_mode_complete")
+    def stop_current_lit_shot(self):
+        if self.current_shot:
+            self.current_shot.is_lit = False
+            self.machine.events.post(f"electro_stop_{self.current_shot.name}")
+
+        self.machine.events.post("electro_shot_timer_stop")
+
+    def lit_shot_timeout(self, **kwargs):
+        if self.super_active:
             return
 
-        self.advance_spark()
+        # Timeout means the shot remains active, but the spark moves elsewhere.
+        self.pick_next_lit_shot()
 
-    def spark_timeout(self, **kwargs):
-        self.machine.events.post("electro_spark_out_show")
-
-        # Last remaining spark timed out = mode ends
-        if len(self.disabled) >= 5:
-            self.machine.events.post("electro_mode_complete")
+    def shot_hit(self, shot_name=None, **kwargs):
+        if not shot_name:
             return
 
-        self.advance_spark()
+        shot = self.shots_by_name.get(shot_name)
 
-    def advance_spark(self):
-        next_shot = self.next_enabled_shot(start_after=self.current_shot)
-
-        if next_shot is None:
-            self.machine.events.post("electro_mode_complete")
+        if not shot or shot.disabled:
             return
 
-        self.current_shot = next_shot
-        self.light_current_shot()
-        self.machine.events.post("electro_spark_timer_start")
+        if self.super_active:
+            if shot == self.current_shot:
+                self.collect_super()
+            return
 
-    def next_enabled_shot(self, start_after):
-        shots = [1, 2, 3, 4, 5, 6]
+        if shot != self.current_shot:
+            return
 
-        if start_after in shots:
-            index = shots.index(start_after) + 1
-        else:
-            index = 0
+        self.collect_normal_jackpot(shot)
 
-        ordered = shots[index:] + shots[:index]
+    def collect_normal_jackpot(self, shot):
+        self.machine.game.player["electro_jackpot_value"] = self.NORMAL_JACKPOT_VALUE
 
-        for shot in ordered:
-            if shot not in self.disabled:
-                return shot
+        self.machine.events.post("electro_jackpot_collected")
+        self.machine.events.post(f"electro_{shot.name}_collected")
 
-        return None
+        shot.disabled = True
+        shot.is_lit = False
 
-    def light_current_shot(self):
-        self.machine.events.post(f"electro_light_shot_{self.current_shot}")
+        self.machine.events.post(f"electro_stop_{shot.name}")
+        self.machine.events.post(f"electro_deactivate_{shot.name}")
+
+        self.machine.events.post("electro_shot_timer_stop")
+        self.pick_next_lit_shot()
+
+    def start_super_jackpot(self, shot):
+        self.stop_current_lit_shot()
+
+        self.super_active = True
+        self.current_shot = shot
+        self.current_shot.is_lit = True
+        self.current_shot.is_jackpot = True
+
+        self.machine.game.player["electro_super_jackpot_value"] = self.SUPER_JACKPOT_VALUE
+
+        self.machine.events.post("electro_super_lit")
+        self.machine.events.post(f"electro_super_lite_{shot.name}")
+        self.machine.events.post("electro_super_timer_start")
+
+    def collect_super(self):
+        self.machine.events.post("electro_super_collected")
+        self.machine.events.post(f"electro_{self.current_shot.name}_super_collected")
+        self.machine.events.post("electro_super_timer_stop")
+        self.machine.events.post("electro_mode_complete")
+
+    def super_timeout(self, **kwargs):
+        self.machine.events.post("electro_super_missed")
+        self.machine.events.post("electro_mode_failed")

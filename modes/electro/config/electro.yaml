@@ -1,235 +1,416 @@
 #config_version=6
 
+
+#todo: open gate to upper for upper shots
+
 mode:
   start_events: start_mode_electro
   stop_events:
     - electro_mode_complete
+    - electro_mode_failed
     - ball_ended
   code: electro.Electro
-  priority: 300
-
-variable_player:
-  mode_electro_started:
-    electro_jackpot_value:
-      action: set
-      int: 250000
-
-  electro_award_jackpot:
-    score: current_player.electro_jackpot_value
-
-  electro_award_super_jackpot:
-    score: 1000000
+  priority: 500
 
 event_player:
+  # -------------------------------
+  # Real switches / shot groups -> Electro Python events
+  # -------------------------------
+  s_left_web_target_active: electro_left_web_hit
+  s_spinner_active: electro_spinner_hit
+  electro_left_drops_hit: electro_left_drops_hit
+  electro_saucers_hit: electro_saucers_hit
+  s_right_web_target_active: electro_right_web_hit
+  s_upper_spinner_active: electro_upper_spinner_hit
+  electro_upper_targets_hit: electro_upper_target_hit
+  electro_right_drops_hit: electro_right_drops_hit
 
-  electro_mode_complete:
-    - reset_villain_locate
+  # -------------------------------
+  # Timer completions -> Python
+  # -------------------------------
+  timer_electro_shot_timer_complete: electro_lit_shot_timeout
+  timer_electro_super_timer_complete: electro_super_timeout
 
-  mode_electro_started:
-    - rooftop_diverter_open
-    - electro_start_spark
-    - clear_saucers
 
-  # Shot 1: left web target
-  s_web_target_left_active:
-    - electro_shot_1_request
+shot_groups:
+  electro_right_drops:
+    shots: electro_right_drop_1, electro_right_drop_2, electro_right_drop_3, electro_right_drop_4, electro_right_drop_5
 
-  # Shot 2: spinner
-  s_web_spinner_active:
-    - electro_shot_2_request
+  electro_left_drops:
+    shots: electro_left_drop_1, electro_left_drop_2, electro_left_drop_3
 
-  # Shot 3: any left drop
-  s_left_drops_1_active:
-    - electro_shot_3_request
-  s_left_drops_2_active:
-    - electro_shot_3_request
-  s_left_drops_3_active:
-    - electro_shot_3_request
+  electro_upper_targets:
+    shots: electro_upper_target_left, electro_upper_target_center, electro_upper_target_right
 
-  # Shot 4: upper web target
-  s_web_target_top_active:
-    - electro_shot_4_request
+  electro_saucers:
+    shots: electro_saucer_1, electro_saucer_2, electro_saucer_3
 
-  # Shot 5: any right drop
-  s_right_drops_1_active:
-    - electro_shot_5_request
-  s_right_drops_2_active:
-    - electro_shot_5_request
-  s_right_drops_3_active:
-    - electro_shot_5_request
-  s_right_drops_4_active:
-    - electro_shot_5_request
-  s_right_drops_5_active:
-    - electro_shot_5_request
+shots:
 
-  # Shot 6: any upper target
-  s_upper_target_left_active:
-    - electro_shot_6_request
-  s_upper_target_center_active:
-    - electro_shot_6_request
-  s_upper_target_right_active:
-    - electro_shot_6_request
+  electro_saucer_1:
+    switch: s_saucer_1
 
-  timer_electro_spark_timer_complete:
-    - electro_spark_timeout
+  electro_saucer_2:
+    switch: s_saucer_2
+
+  electro_saucer_3:
+    switch: s_saucer_3
+
+  electro_upper_target_left:
+    switch: s_upper_target_left
+
+  electro_upper_target_center:
+    switch: s_upper_target_center
+
+  electro_upper_target_right:
+    switch: s_upper_target_right
+
+  electro_right_drop_1:
+    switch: s_right_drops_1
+
+  electro_right_drop_2:
+    switch: s_right_drops_2
+
+  electro_right_drop_3:
+    switch: s_right_drops_3
+
+  electro_right_drop_4:
+    switch: s_right_drops_4
+
+  electro_right_drop_5:
+    switch: s_right_drops_5
+
+  electro_left_drop_1:
+    switch: s_left_drops_1
+
+  electro_left_drop_2:
+    switch: s_left_drops_2
+
+  electro_left_drop_3:
+    switch: s_left_drops_3
+
+
+variable_player:
+  electro_jackpot_collected:
+    score:
+      action: add
+      int: current_player.electro_jackpot_value
+
+  electro_super_collected:
+    score:
+      action: add
+      int: current_player.electro_super_jackpot_value
 
 timers:
-  electro_spark_timer:
+  electro_shot_timer:
     start_value: 5
     end_value: 0
     direction: down
     tick_interval: 1s
     control_events:
-      - event: electro_spark_timer_start
+      - event: electro_shot_timer_start
         action: restart
-      - event: electro_mode_complete
+      - event: electro_shot_timer_stop
+        action: stop
+
+  electro_super_timer:
+    start_value: 10
+    end_value: 0
+    direction: down
+    tick_interval: 1s
+    control_events:
+      - event: electro_super_timer_start
+        action: restart
+      - event: electro_super_timer_stop
         action: stop
 
 show_player:
-  electro_light_shot_1:
-    electro_shot_1_show:
+  electro_mode_started:
+    electro_mode_start_show:
+      loops: 0
+
+  # -------------------------------
+  # Normal lit shots
+  # -------------------------------
+  electro_lite_left_web:
+    electro_left_web_lit_show:
       loops: -1
 
-  electro_light_shot_2:
-    electro_shot_1_show:
+  electro_lite_spinner:
+    electro_spinner_lit_show:
+      loops: -1
+
+  electro_lite_left_drops:
+    electro_left_drops_lit_show:
+      loops: -1
+
+  electro_lite_saucers:
+    electro_saucers_lit_show:
+      loops: -1
+
+  electro_lite_right_web:
+    electro_right_web_lit_show:
+      loops: -1
+
+  electro_lite_upper_spinner:
+    electro_upper_spinner_lit_show:
+      loops: -1
+
+  electro_lite_upper_targets:
+    electro_upper_targets_lit_show:
+      loops: -1
+
+  electro_lite_right_drops:
+    electro_right_drops_lit_show:
+      loops: -1
+
+  # -------------------------------
+  # Stop normal lit shots
+  # -------------------------------
+  electro_stop_left_web:
+    electro_left_web_lit_show:
       action: stop
-    electro_shot_2_show:
-      loops: -1
 
-  electro_light_shot_3:
-    electro_shot_2_show:
+  electro_stop_spinner:
+    electro_spinner_lit_show:
       action: stop
-    electro_shot_3_show:
-      loops: -1
 
-  electro_light_shot_4:
-    electro_shot_3_show:
+  electro_stop_left_drops:
+    electro_left_drops_lit_show:
       action: stop
-    electro_shot_4_show:
-      loops: -1
 
-  electro_light_shot_5:
-    electro_shot_4_show:
+  electro_stop_saucers:
+    electro_saucers_lit_show:
       action: stop
-    electro_shot_5_show:
-      loops: -1
 
-  electro_light_shot_6:
-    electro_shot_5_show:
+  electro_stop_right_web:
+    electro_right_web_lit_show:
       action: stop
-    electro_shot_6_show:
+
+  electro_stop_upper_spinner:
+    electro_upper_spinner_lit_show:
+      action: stop
+
+  electro_stop_upper_targets:
+    electro_upper_targets_lit_show:
+      action: stop
+
+  electro_stop_right_drops:
+    electro_right_drops_lit_show:
+      action: stop
+
+  # -------------------------------
+  # Super jackpot lit shots
+  # -------------------------------
+  electro_super_lite_left_web:
+    electro_left_web_super_show:
       loops: -1
 
-  electro_spark_hit_show:
-    electro_spark_hit:
-      loops: 1
+  electro_super_lite_spinner:
+    electro_spinner_super_show:
+      loops: -1
 
-  electro_spark_out_show:
-    electro_spark_out:
-      loops: 1
+  electro_super_lite_left_drops:
+    electro_left_drops_super_show:
+      loops: -1
+
+  electro_super_lite_saucers:
+    electro_saucers_super_show:
+      loops: -1
+
+  electro_super_lite_right_web:
+    electro_right_web_super_show:
+      loops: -1
+
+  electro_super_lite_upper_spinner:
+    electro_upper_spinner_super_show:
+      loops: -1
+
+  electro_super_lite_upper_targets:
+    electro_upper_targets_super_show:
+      loops: -1
+
+  electro_super_lite_right_drops:
+    electro_right_drops_super_show:
+      loops: -1
+
+  electro_super_collected:
+    electro_super_collected_show:
+      loops: 0
 
   electro_mode_complete:
-    electro_shot_1_show:
-      action: stop
-    electro_shot_2_show:
-      action: stop
-    electro_shot_3_show:
-      action: stop
-    electro_shot_4_show:
-      action: stop
-    electro_shot_5_show:
-      action: stop
-    electro_shot_6_show:
-      action: stop
-    electro_complete_show:
-      loops: 1
+    electro_mode_complete_show:
+      loops: 0
+
+  electro_mode_failed:
+    electro_mode_failed_show:
+      loops: 0
 
 shows:
-  electro_shot_1_show:
-    - duration: 120ms
+  electro_mode_start_show:
+    - duration: 200ms
       lights:
-        l_left_web_target: yellow
-    - duration: 120ms
+        l_20k: yellow
+    - duration: 200ms
       lights:
-        l_left_web_target: blue
+        l_20k: off
 
-  electro_shot_2_show:
-    - duration: 120ms
-      lights:
-        l_spinner: yellow
-    - duration: 120ms
-      lights:
-        l_spinner: blue
-
-  electro_shot_3_show:
-    - duration: 120ms
-      lights:
-        l_3bankbonus: yellow
-        l_left_multibonus: yellow
-    - duration: 120ms
-      lights:
-        l_3bankbonus: blue
-        l_left_multibonus: blue
-
-  electro_shot_4_show:
-    - duration: 120ms
-      lights:
-        l_mid_spider_target: yellow
-    - duration: 120ms
-      lights:
-        l_mid_spider_target: blue
-
-  electro_shot_5_show:
-    - duration: 120ms
-      lights:
-        l_5bank_1: yellow
-        l_5bank_2: yellow
-        l_5bank_3: yellow
-        l_5bank_4: yellow
-        l_5bank_5: yellow
-    - duration: 120ms
-      lights:
-        l_5bank_1: blue
-        l_5bank_2: blue
-        l_5bank_3: blue
-        l_5bank_4: blue
-        l_5bank_5: blue
-
-  electro_shot_6_show:
-    - duration: 120ms
-      lights:
-        l_upper_left: yellow
-        l_upper_middle: yellow
-        l_upper_right: yellow
-    - duration: 120ms
-      lights:
-        l_upper_left: blue
-        l_upper_middle: blue
-        l_upper_right: blue
-
-  electro_spark_hit:
-    - duration: 100ms
-      lights:
-        gi: white
-    - duration: 100ms
-      lights:
-        gi: blue
-
-  electro_spark_out:
-    - duration: 100ms
-      lights:
-        gi: yellow
-    - duration: 100ms
-      lights:
-        gi: off
-
-  electro_complete_show:
+  # -------------------------------
+  # Normal lit shot shows
+  # Replace lights with your actual shot indicator lights.
+  # -------------------------------
+  electro_left_web_lit_show:
     - duration: 150ms
       lights:
-        gi: yellow
+        l_20k: yellow
     - duration: 150ms
       lights:
-        gi: blue
+        l_20k: off
+
+  electro_spinner_lit_show:
     - duration: 150ms
       lights:
-        gi: white
+        l_1k: yellow
+    - duration: 150ms
+      lights:
+        l_1k: off
+
+  electro_left_drops_lit_show:
+    - duration: 150ms
+      lights:
+        l_2k: yellow
+    - duration: 150ms
+      lights:
+        l_2k: off
+
+  electro_saucers_lit_show:
+    - duration: 150ms
+      lights:
+        l_3k: yellow
+    - duration: 150ms
+      lights:
+        l_3k: off
+
+  electro_right_web_lit_show:
+    - duration: 150ms
+      lights:
+        l_4k: yellow
+    - duration: 150ms
+      lights:
+        l_4k: off
+
+  electro_upper_spinner_lit_show:
+    - duration: 150ms
+      lights:
+        l_5k: yellow
+    - duration: 150ms
+      lights:
+        l_5k: off
+
+  electro_upper_targets_lit_show:
+    - duration: 150ms
+      lights:
+        l_shoot_again: yellow
+    - duration: 150ms
+      lights:
+        l_shoot_again: off
+
+  electro_right_drops_lit_show:
+    - duration: 150ms
+      lights:
+        l_20k: yellow
+        l_1k: yellow
+    - duration: 150ms
+      lights:
+        l_20k: off
+        l_1k: off
+
+  # -------------------------------
+  # Super shows
+  # -------------------------------
+  electro_left_web_super_show:
+    - duration: 100ms
+      lights:
+        l_20k: white
+    - duration: 100ms
+      lights:
+        l_20k: yellow
+
+  electro_spinner_super_show:
+    - duration: 100ms
+      lights:
+        l_1k: white
+    - duration: 100ms
+      lights:
+        l_1k: yellow
+
+  electro_left_drops_super_show:
+    - duration: 100ms
+      lights:
+        l_2k: white
+    - duration: 100ms
+      lights:
+        l_2k: yellow
+
+  electro_saucers_super_show:
+    - duration: 100ms
+      lights:
+        l_3k: white
+    - duration: 100ms
+      lights:
+        l_3k: yellow
+
+  electro_right_web_super_show:
+    - duration: 100ms
+      lights:
+        l_4k: white
+    - duration: 100ms
+      lights:
+        l_4k: yellow
+
+  electro_upper_spinner_super_show:
+    - duration: 100ms
+      lights:
+        l_5k: white
+    - duration: 100ms
+      lights:
+        l_5k: yellow
+
+  electro_upper_targets_super_show:
+    - duration: 100ms
+      lights:
+        l_shoot_again: white
+    - duration: 100ms
+      lights:
+        l_shoot_again: yellow
+
+  electro_right_drops_super_show:
+    - duration: 100ms
+      lights:
+        l_20k: white
+        l_1k: white
+    - duration: 100ms
+      lights:
+        l_20k: yellow
+        l_1k: yellow
+
+  electro_super_collected_show:
+    - duration: 500ms
+      lights:
+        l_20k: white
+        l_1k: white
+        l_2k: white
+        l_3k: white
+        l_4k: white
+        l_5k: white
+
+  electro_mode_complete_show:
+    - duration: 500ms
+      lights:
+        l_20k: green
+
+  electro_mode_failed_show:
+    - duration: 500ms
+      lights:
+        l_20k: red
+
