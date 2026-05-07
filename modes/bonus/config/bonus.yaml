@@ -1,0 +1,130 @@
+#config_version=6
+
+mode:
+  code: bonus.Bonus
+  priority: 500
+  use_wait_queue: true
+
+# todo 
+#* villains defeated
+#* rooftop spins
+#* mystery awards collected
+#* spidey bonus
+#* vulture bonus
+
+mode_settings:
+  display_delay_ms: 1s
+  hurry_up_delay_ms: 0
+
+  keep_multiplier: false
+
+  bonus_entries:
+
+    - entry: bonus_1k
+      text: "1K"
+      player_score_entry: bonus_1k_lit
+      score: 1000
+      skip_if_zero: true
+
+    - entry: bonus_2k
+      text: "2K"
+      player_score_entry: bonus_2k_lit
+      score: 2000
+      skip_if_zero: true
+
+    - entry: bonus_3k
+      text: "3K"
+      player_score_entry: bonus_3k_lit
+      score: 3000
+      skip_if_zero: true
+
+    - entry: bonus_4k
+      text: "4K"
+      player_score_entry: bonus_4k_lit
+      score: 4000
+      skip_if_zero: true
+
+    - entry: bonus_5k
+      text: "5K"
+      player_score_entry: bonus_5k_lit
+      score: 5000
+      skip_if_zero: true
+
+    - entry: bonus_6k
+      text: "6K"
+      player_score_entry: bonus_6k_lit
+      score: 6000
+      skip_if_zero: true
+
+    - entry: bonus_7k
+      text: "7K"
+      player_score_entry: bonus_7k_lit
+      score: 7000
+      skip_if_zero: true
+
+    - entry: bonus_8k
+      text: "8K"
+      player_score_entry: bonus_8k_lit
+      score: 8000
+      skip_if_zero: true
+
+    - entry: bonus_9k
+      text: "9K"
+      player_score_entry: bonus_9k_lit
+      score: 9000
+      skip_if_zero: true
+
+    - entry: bonus_10k
+      text: "10K"
+      player_score_entry: bonus_10k_lit
+      score: 10000
+      skip_if_zero: true
+
+    - entry: bonus_20k
+      text: "20K"
+      player_score_entry: bonus_20k_lit
+      score: 20000
+      skip_if_zero: true
+
+    - entry: vulture_bonus
+      text: "VULTURE FLIGHT"
+      player_score_entry: vulture_bonus_total
+      score: 1
+      skip_if_zero: true
+
+
+#event_player:
+#  bonus_start:
+#    - bonus_music_start
+
+#  bonus_complete:
+#    - bonus_music_stop
+
+
+#slide_player:
+#  bonus_entry: bonus_entry_slide
+#  bonus_total: bonus_total_slide
+
+
+#light_player:
+  # Turn off the light as it is counted
+#  bonus_bonus_1k_earned:
+#    l_bonus_1k: off
+#  bonus_bonus_2k_earned:
+#    l_bonus_2k: off
+#  # ... and so on ...
+#  bonus_bonus_20k_earned:
+#    l_bonus_20k: off
+
+#  bonus_multiplier:
+#    l_multiplier_2x: off
+#    l_multiplier_3x: off
+#    l_multiplier_4x: off
+#    l_multiplier_5x: off
+
+
+#sound_player:
+#  bonus_entry:
+#    bonus_tick_sound:
+#      action: play
+

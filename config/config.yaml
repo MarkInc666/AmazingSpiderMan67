@@ -91,9 +91,10 @@ modes:
   - electro
   - doc_ock
   - bonus_lanes
-  - custom_bonus
+  - bonus
   - daily_bugle_mystery
   - meteor
+  - high_score
  # - kingpin
 
 #  - noah_body
@@ -251,8 +252,8 @@ ball_saves:
     grace_period: 2s
     enable_events:
       - ball_started
-    timer_start_events:
-      - playfield_active      
+#    timer_start_events:
+#      - playfield_active      
 
 #todo - when ball saved, use these events to trigger display
 #ball_save_default_ball_save_saving_ball
