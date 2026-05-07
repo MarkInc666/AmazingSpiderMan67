@@ -1,37 +1,49 @@
 from mpf.core.mode import Mode
 import random
 
+# rollovers to lock arms (1 to 4)
+# spinner increases JP multiplier
+# collect JP = base*spins*locks (resets spins)
+# JP collect adds breakout targets (to avoid)
+# breakout targets release an arm
+# after 2 jackpots, timed arm release starts
+# all arms released, mode ends
 
 class doc_ock(Mode):
 
-    ARMS = [1, 2, 3, 4]
-    MAX_BREAKOUT_TARGETS = 3
+    MAX_BREAKOUT_TARGETS = 6
+    
+    LANE_LIGHTS = {
+        1: "l_left_outlane",
+        2: "l_left_inlane",
+        3: "l_right_inlane",
+        4: "l_right_outlane",
+    }
+    
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
 
-        # False = free, True = locked
-        self.locked_arms = {
-            1: False,
-            2: False,
-            3: False,
-            4: False,
-        }
+        self.doc_ock_jackpot_base_value = 100000
+        self.doc_ock_jackpot_spinner_multi = 1
+        self.doc_ock_arm_locked_score = 50000
+        self.doc_ock_arm_relocked_score = 10000
 
         # Start with one arm already disabled/locked.
-        self.locked_arms[1] = True
+        # False = free, True = locked
+        self.locked_arms = [True, False, False, False]
 
-        self.selected_arm = 2
         self.jackpots_collected = 0
         self.active_breakouts = set()
 
+        self.add_mode_event_handler("doc_ock_spinner_hit", self.doc_ock_spinner)
         self.add_mode_event_handler("doc_ock_start_arms", self.doc_ock_start_arms)
         self.add_mode_event_handler("doc_ock_rotate_left", self.rotate_left)
         self.add_mode_event_handler("doc_ock_rotate_right", self.rotate_right)
         self.add_mode_event_handler("doc_ock_jackpot_request", self.jackpot_request)
         self.add_mode_event_handler("doc_ock_timed_release_complete", self.timed_release)
 
-        for arm in self.ARMS:
+        for arm in [1, 2, 3, 4]:
             self.add_mode_event_handler(
                 f"doc_ock_arm_{arm}_hit",
                 self.arm_hit,
@@ -44,62 +56,69 @@ class doc_ock(Mode):
                 self.breakout_hit,
                 breakout=breakout
             )
-
- 
+            
+        self.update_player_vars()
 
     def doc_ock_start_arms(self, **kwargs):
-        self.machine.events.post("doc_ock_refresh_locks")
-        self.light_selected_arm()
+        self.refresh_lane_lights()
         self.check_jackpot_lit()
+
+    def doc_ock_spinner(self, **kwargs):
+        self.doc_ock_jackpot_spinner_multi = self.doc_ock_jackpot_spinner_multi + 1
 
     def rotate_left(self, **kwargs):
-        self.selected_arm -= 1
-        if self.selected_arm < 1:
-            self.selected_arm = 4
-        self.light_selected_arm()
+        self.locked_arms = self.locked_arms[1:] + self.locked_arms[:1]
+        self.refresh_lane_lights()
 
     def rotate_right(self, **kwargs):
-        self.selected_arm += 1
-        if self.selected_arm > 4:
-            self.selected_arm = 1
-        self.light_selected_arm()
+        self.locked_arms = self.locked_arms[-1:] + self.locked_arms[:-1]
+        self.refresh_lane_lights()
 
-    def light_selected_arm(self):
-        self.machine.events.post(f"doc_ock_arm_{self.selected_arm}_selected")
+    def refresh_lane_lights(self):
+        for lane, light_name in self.LANE_LIGHTS.items():
+            light = self.machine.lights.get(light_name)
+
+            if not light:
+                continue
+
+            if self.locked_arms[lane - 1]:
+                light.on(color="white")
+            else:
+                light.off()
 
     def arm_hit(self, arm, **kwargs):
-        # Only the currently selected/free arm can be locked.
-        if arm != self.selected_arm:
+        #already locked
+        if self.locked_arms[arm-1]:
+            self.machine.game.player["score"] += self.doc_ock_arm_relocked_score
             return
 
-        if self.locked_arms[arm]:
-            return
-
-        self.locked_arms[arm] = True
+        self.machine.game.player["score"] += self.doc_ock_arm_locked_score
+        self.locked_arms[arm-1] = True
+        self.refresh_lane_lights()
+        
         self.machine.events.post("doc_ock_arm_locked_score")
-        self.machine.events.post("doc_ock_refresh_locks")
         self.check_jackpot_lit()
 
-    def locked_count(self):
-        return sum(1 for locked in self.locked_arms.values() if locked)
-
-    def free_count(self):
-        return 4 - self.locked_count()
 
     def check_jackpot_lit(self):
-        if self.locked_count() > 0:
+        if sum(self.locked_arms) > 0:
             self.machine.events.post("doc_ock_jackpot_lit")
 
     def jackpot_request(self, **kwargs):
-        locked = self.locked_count()
+        locked = sum(self.locked_arms)
 
         if locked <= 0:
             return
 
-        # Award base JP through variable_player.
+        jp_value = self.doc_ock_jackpot_base_value * locked * self.doc_ock_jackpot_spinner_multi
+
+        self.machine.game.player["score"] += jp_value
+        self.machine.game.player["doc_ock_last_jackpot"] = jp_value
+        
         self.machine.events.post("doc_ock_jackpot_award")
         self.machine.events.post("doc_ock_jackpot_collected")
 
+        self.doc_ock_jackpot_spinner_multi = 1
         self.jackpots_collected += 1
 
         self.spawn_breakout_target()
@@ -144,17 +163,27 @@ class doc_ock(Mode):
         self.machine.events.post("doc_ock_start_timed_release")
 
     def release_random_locked_arm(self):
-        locked = [arm for arm, is_locked in self.locked_arms.items() if is_locked]
+        locked = [i for i, val in enumerate(self.locked_arms) if val]
 
         if not locked:
             return
 
         arm = random.choice(locked)
         self.locked_arms[arm] = False
-        self.machine.events.post("doc_ock_refresh_locks")
+        self.refresh_lane_lights()        
+
 
     def check_mode_over(self):
-        if self.locked_count() <= 0:
+        if sum(self.locked_arms) <= 0:
             self.machine.events.post("doc_ock_mode_complete")
             return True
         return False
+
+    def update_player_vars(self):
+        player = self.machine.game.player
+
+        player["doc_ock_locked_arms"] = self.locked_count()
+        player["doc_ock_spinner_multi"] = self.spinner_multi
+        player["doc_ock_jackpots_collected"] = self.jackpots_collected
+        player["doc_ock_active_breakouts"] = len(self.active_breakouts)
+

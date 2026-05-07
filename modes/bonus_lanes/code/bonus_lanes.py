@@ -59,21 +59,10 @@ class BonusLanes(Mode):
         self.add_mode_event_handler("bonus_left_web_request", self.left_web_hit)
         self.add_mode_event_handler("bonus_center_web_timeout", self.center_web_timeout)
         self.add_mode_event_handler("bonus_left_web_timeout", self.left_web_timeout)
-        
-        self.add_mode_event_handler(
-            "bonus_left_bank_complete",
-            self.add_bonus_count,
-            amount=3
-        )
+        self.add_mode_event_handler("bonus_left_bank_complete", self.add_bonus_count, amount=3)
+        self.add_mode_event_handler("bonus_right_bank_complete", self.add_bonus_count, amount=5)
+        self.add_mode_event_handler("custom_bonus_base_tick", self.update_bonus_lights)
 
-        self.add_mode_event_handler(
-            "bonus_right_bank_complete",
-            self.add_bonus_count,
-            amount=5
-        )     
-
-        self.add_mode_event_handler("custom_bonus_base_tick", self.update_bonus_lights)        
-        
 
     def blane_start(self, **kwargs):
         player = self.machine.game.player
@@ -160,9 +149,14 @@ class BonusLanes(Mode):
 
     def center_web_timeout(self, **kwargs):
         self.center_web_lit = False
+        self.completed = [False, False, False, False]
+        self.refresh_lane_lights()
+
 
     def left_web_timeout(self, **kwargs):
         self.left_web_lit = False
+        self.completed = [False, False, False, False]
+        self.refresh_lane_lights()
 
     def refresh_lane_lights(self):
         for lane, light_name in self.LANE_LIGHTS.items():

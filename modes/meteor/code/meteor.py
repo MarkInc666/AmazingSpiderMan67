@@ -13,7 +13,7 @@ class Meteor(Mode):
         self.left_down = set()
         self.right_down = set()
 
-        self.add_mode_event_handler("meteor_start", self.start)
+        self.add_mode_event_handler("meteor_start", self.met_start)
 
         self.add_mode_event_handler("meteor_spinner_hit", self.spinner_hit)
 
@@ -31,7 +31,7 @@ class Meteor(Mode):
                 target=target
             )
 
-    def start(self, **kwargs):
+    def met_start(self, **kwargs):
         self.update_player_vars()
 
     def left_drop_hit(self, target, **kwargs):
