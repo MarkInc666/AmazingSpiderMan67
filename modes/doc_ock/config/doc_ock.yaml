@@ -107,7 +107,6 @@ show_player:
     doc_ock_arm_4_pulse:
       loops: -1
 
-
   doc_ock_jackpot_lit:
     doc_ock_web_jackpot_show:
       loops: -1
@@ -117,6 +116,7 @@ show_player:
       action: stop
     doc_ock_jackpot_collect_show:
       loops: 1
+
 
   doc_ock_breakout_1_lit:
     doc_ock_breakout_1_show:
@@ -216,31 +216,37 @@ shows:
     - duration: 250ms
       lights:
         l_1_hole_l: red
+        l_1_hole_r: red        
     - duration: 250ms
       lights:
         l_1_hole_l: off
+        l_1_hole_r: off        
 
   doc_ock_breakout_2_show:
     - duration: 250ms
       lights:
         l_2_hole_l: red
+        l_2_hole_r: red        
     - duration: 250ms
       lights:
         l_2_hole_l: off
+        l_2_hole_r: off        
 
   doc_ock_breakout_3_show:
     - duration: 250ms
       lights:
         l_3_hole_l: red
+        l_3_hole_r: red        
     - duration: 250ms
       lights:
         l_3_hole_l: off
+        l_3_hole_r: off        
 
   doc_ock_breakout_hit_show:
-    - duration: 150ms
+    - duration: 500ms
       lights:
         gi: red
-    - duration: 150ms
+    - duration: 500ms
       lights:
         gi: purple
 

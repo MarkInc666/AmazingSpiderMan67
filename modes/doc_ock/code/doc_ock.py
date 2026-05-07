@@ -145,7 +145,6 @@ class doc_ock(Mode):
         if breakout not in self.active_breakouts:
             return
 
-        self.active_breakouts.remove(breakout)
         self.release_random_locked_arm()
         self.machine.events.post("doc_ock_breakout_hit")
         self.check_mode_over()
