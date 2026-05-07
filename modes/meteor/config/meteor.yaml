@@ -23,6 +23,7 @@ variable_player:
       
       
 event_player:
+  mode_meteor_started:
     - enable_up_post_event
     - meteor_start
 

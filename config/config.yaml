@@ -67,6 +67,8 @@ game:
   balls_per_game: 3
   max_players: 4
 
+
+
 modes:
   - attract
   - base
@@ -88,6 +90,10 @@ modes:
   - scorpion
   - electro
   - doc_ock
+  - bonus_lanes
+  - custom_bonus
+  - daily_bugle_mystery
+  - meteor
  # - kingpin
 
 #  - noah_body

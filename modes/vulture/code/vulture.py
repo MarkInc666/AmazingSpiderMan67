@@ -87,7 +87,7 @@ class Vulture(Mode):
 
     def bank_bonus(self, value):
         player = self.machine.game.player
-        player["vulture_bonus"] = player.get("vulture_bonus", 0) + value                
+        player["vulture_bonus"] = player["vulture_bonus"] + value                
 
 
     def idle_decay(self, **kwargs):

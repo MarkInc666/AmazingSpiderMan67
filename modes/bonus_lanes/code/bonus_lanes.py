@@ -28,6 +28,13 @@ class BonusLanes(Mode):
         (1, "l_1k"),
     ]
 
+    BONUS_X_LIGHTS = {
+        2: "l_2x",
+        3: "l_3x",
+        4: "l_4x",
+        5: "l_5x",
+    }
+
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
@@ -82,7 +89,7 @@ class BonusLanes(Mode):
             amount = self.BONUS_ADD_VALUE
 
         player = self.machine.game.player
-        current = player.get("bonus_count", 0)
+        current = player["bonus_count"]
 
         if current < self.MAX_BONUS_COUNT:
             player["bonus_count"] = min(
@@ -119,6 +126,7 @@ class BonusLanes(Mode):
 
     def center_web_hit(self, **kwargs):
         if not self.center_web_lit:
+            self.add_bonus_count()
             return
 
         self.center_web_lit = False
@@ -129,6 +137,7 @@ class BonusLanes(Mode):
 
     def left_web_hit(self, **kwargs):
         if not self.left_web_lit:
+            self.add_bonus_count()
             return
 
         self.left_web_lit = False
@@ -141,10 +150,13 @@ class BonusLanes(Mode):
 
     def advance_bonus_multiplier(self):
         player = self.machine.game.player
-        current = player.get("bonus_multiplier", 1)
+        current = player["bonus_multiplier"]
 
         if current < self.MAX_MULTIPLIER:
             player["bonus_multiplier"] = current + 1
+
+        self.update_bonus_lights()            
+
 
     def center_web_timeout(self, **kwargs):
         self.center_web_lit = False
@@ -169,7 +181,7 @@ class BonusLanes(Mode):
         
     def update_bonus_lights(self, **kwargs):
         player = self.machine.game.player
-        bonus_count = player.get("bonus_count", 0)
+        bonus_count = player["bonus_count"]
 
         remaining = min(bonus_count, 75)
 
@@ -186,4 +198,19 @@ class BonusLanes(Mode):
                 if light:
                     light.on(color="white")
                 remaining -= value
+
+        player = self.machine.game.player
+        mx = player["bonus_multiplier"]
+
+        for value, light_name in self.BONUS_X_LIGHTS.items():
+            light = self.machine.lights.get(light_name)                
+            if light:
+                if value == mx:
+                    light.on(color="white")
+                else:
+                    light.off()
+
+
+
+
         

@@ -9,12 +9,6 @@ event_player:
   mode_bonus_lanes_started:
     - bonus_lanes_start
 
-  s_web_target_left_active:
-    - bonus_count_add
-
-  s_web_target_top_active:
-    - bonus_count_add
-
   s_upper_entrance_opto_active:
     - bonus_count_add
 
@@ -38,9 +32,11 @@ event_player:
 
   s_web_target_top_active:
     - bonus_center_web_request
+#    - bonus_count_add
 
   s_web_target_left_active:
     - bonus_left_web_request
+#    - bonus_count_add
 
   timer_bonus_center_web_timer_complete:
     - bonus_center_web_timeout

@@ -12,7 +12,7 @@ queue_event_player:
 
 event_player:
 
-  ball_started:
+  mode_custom_bonus_started:
     - custom_bonus_init
 
   s_left_flipper_active:

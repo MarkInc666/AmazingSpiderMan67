@@ -71,7 +71,7 @@ class Electro(Mode):
         self.machine.events.post("electro_lit_shot_changed")
         self.machine.events.post(f"electro_lite_{self.current_shot.name}")
         self.machine.events.post("electro_shot_timer_start")
-        if previous_location == "upper" and self.current_shot.group != "upper"
+        if previous_location == "upper" and self.current_shot.group != "upper":
             self.machine.events.post("rooftop_diverter_close")
         if previous_location != "upper" and self.current_shot.group == "upper":
             self.machine.events.post("rooftop_diverter_open")

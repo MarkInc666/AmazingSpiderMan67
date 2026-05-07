@@ -22,17 +22,17 @@ class CustomBonus(Mode):
         self.grand_total = 0
 
         self.add_mode_event_handler("custom_bonus_init", self.init_bonus_vars)
-        self.add_mode_event_handler("ball_ending", self.ball_ending)
+        self.add_mode_event_handler("ball_ending", self.game_ball_ending)
         self.add_mode_event_handler("custom_bonus_speed_press", self.speed_press)
 
-        self.add_mode_event_handler("custom_bonus_start", self.ball_ending )        
+        self.add_mode_event_handler("custom_bonus_start", self.game_ball_ending )        
 
     def init_bonus_vars(self, **kwargs):
         player = self.machine.game.player
 
-        player["bonus_count"] = player.get("bonus_count", 0)
-        player["bonus_multiplier"] = player.get("bonus_multiplier", 1)
-        player["vulture_bonus"] = player.get("vulture_bonus", 0)
+        player["bonus_count"] = player["bonus_count"]
+        player["bonus_multiplier"] = player["bonus_multiplier"]
+        player["vulture_bonus"] = player["vulture_bonus"]
 
         player["custom_bonus_phase"] = "idle"
         player["custom_bonus_base_awarded"] = 0
@@ -41,7 +41,7 @@ class CustomBonus(Mode):
         player["custom_bonus_total_awarded"] = 0
         player["custom_bonus_count_remaining"] = 0
 
-    def ball_ending(self, queue=None, **kwargs):
+    def game_ball_ending(self, queue=None, **kwargs):
         player = self.machine.game.player
 
         if player.get("tilted", False):
