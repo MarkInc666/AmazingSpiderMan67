@@ -85,27 +85,54 @@ timers:
         action: stop
 
 show_player:
-  doc_ock_arm_1_selected:
+  doc_ock_arm_1_pulse:
+    doc_ock_arm_1_solid:
+      action: stop
     doc_ock_arm_1_pulse:
       loops: -1
 
-  doc_ock_arm_2_selected:
-    doc_ock_arm_1_pulse:
+  doc_ock_arm_2_pulse:
+    doc_ock_arm_2_solid:
       action: stop
     doc_ock_arm_2_pulse:
       loops: -1
 
-  doc_ock_arm_3_selected:
-    doc_ock_arm_2_pulse:
+  doc_ock_arm_3_pulse:
+    doc_ock_arm_3_solid:
       action: stop
     doc_ock_arm_3_pulse:
       loops: -1
 
-  doc_ock_arm_4_selected:
-    doc_ock_arm_3_pulse:
+  doc_ock_arm_4_pulse:
+    doc_ock_arm_4_solid:
       action: stop
     doc_ock_arm_4_pulse:
       loops: -1
+
+  doc_ock_arm_1_solid:
+    doc_ock_arm_1_pulse:
+      action: stop
+    doc_ock_arm_1_solid:
+      loops: -1
+
+  doc_ock_arm_2_solid:
+    doc_ock_arm_2_pulse:
+      action: stop
+    doc_ock_arm_2_solid:
+      loops: -1
+
+  doc_ock_arm_3_solid:
+    doc_ock_arm_3_pulse:
+      action: stop
+    doc_ock_arm_3_solid:
+      loops: -1
+
+  doc_ock_arm_4_solid:
+    doc_ock_arm_4_pulse:
+      action: stop
+    doc_ock_arm_4_solid:
+      loops: -1
+
 
   doc_ock_jackpot_lit:
     doc_ock_web_jackpot_show:
@@ -130,15 +157,18 @@ show_player:
     doc_ock_breakout_3_show:
       loops: -1
 
-  doc_ock_breakout_hit:
-    doc_ock_breakout_1_show:
-      action: stop
-    doc_ock_breakout_2_show:
-      action: stop
-    doc_ock_breakout_3_show:
-      action: stop
-    doc_ock_breakout_hit_show:
-      loops: 1
+  doc_ock_breakout_4_lit:
+    doc_ock_breakout_4_show:
+      loops: -1
+
+  doc_ock_breakout_5_lit:
+    doc_ock_breakout_5_show:
+      loops: -1
+
+  doc_ock_breakout_6_lit:
+    doc_ock_breakout_6_show:
+      loops: -1
+
 
   doc_ock_mode_complete:
     doc_ock_arm_1_pulse:
@@ -156,6 +186,12 @@ show_player:
     doc_ock_breakout_2_show:
       action: stop
     doc_ock_breakout_3_show:
+      action: stop
+    doc_ock_breakout_4_show:
+      action: stop
+    doc_ock_breakout_5_show:
+      action: stop
+    doc_ock_breakout_6_show:
       action: stop
     doc_ock_complete_show:
       loops: 1
@@ -193,6 +229,37 @@ shows:
       lights:
         l_right_outlane: blue
 
+  doc_ock_arm_1_solid:
+    - duration: 400ms
+      lights:
+        l_left_outlane: white
+    - duration: 400ms
+      lights:
+        l_left_outlane: cyan
+
+  doc_ock_arm_2_solid:
+    - duration: 400ms
+      lights:
+        l_left_inlane: white
+    - duration: 400ms
+      lights:
+        l_left_inlane: cyan
+
+  doc_ock_arm_3_solid:
+    - duration: 400ms
+      lights:
+        l_right_inlane: white
+    - duration: 400ms
+      lights:
+        l_right_inlane: cyan
+
+  doc_ock_arm_4_solid:
+    - duration: 400ms
+      lights:
+        l_right_outlane: white
+    - duration: 400ms
+      lights:
+        l_right_outlane: cyan
 
   doc_ock_web_jackpot_show:
     - duration: 250ms
@@ -241,6 +308,30 @@ shows:
       lights:
         l_3_hole_l: off
         l_3_hole_r: off        
+
+  doc_ock_breakout_4_show:
+    - duration: 250ms
+      lights:
+        l_star: red
+    - duration: 250ms
+      lights:
+        l_star: off        
+
+  doc_ock_breakout_5_show:
+    - duration: 250ms
+      lights:
+        l_a_rollover: red
+    - duration: 250ms
+      lights:
+        l_a_rollover: off        
+
+  doc_ock_breakout_6_show:
+    - duration: 250ms
+      lights:
+        l_b_rollover: red
+    - duration: 250ms
+      lights:
+        l_b_rollover: off        
 
   doc_ock_breakout_hit_show:
     - duration: 500ms

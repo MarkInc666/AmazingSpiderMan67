@@ -3,7 +3,7 @@ import random
 
 # rollovers to lock arms (1 to 4)
 # spinner increases JP multiplier
-# collect JP = base*spins*locks (resets spins)
+# collect JP = base*spins*(5-locks) (resets spins)
 # JP collect adds breakout targets (to avoid)
 # breakout targets release an arm
 # after 2 jackpots, timed arm release starts
@@ -41,7 +41,7 @@ class doc_ock(Mode):
         self.add_mode_event_handler("doc_ock_rotate_left", self.rotate_left)
         self.add_mode_event_handler("doc_ock_rotate_right", self.rotate_right)
         self.add_mode_event_handler("doc_ock_jackpot_request", self.jackpot_request)
-        self.add_mode_event_handler("doc_ock_timed_release_complete", self.timed_release)
+        self.add_mode_event_handler("timer_doc_ock_timed_release_complete", self.timed_release)
 
         for arm in [1, 2, 3, 4]:
             self.add_mode_event_handler(
@@ -50,7 +50,7 @@ class doc_ock(Mode):
                 arm=arm
             )
 
-        for breakout in [1, 2, 3]:
+        for breakout in [1, 2, 3, 4, 5, 6]:
             self.add_mode_event_handler(
                 f"doc_ock_breakout_{breakout}_request",
                 self.breakout_hit,
@@ -75,16 +75,11 @@ class doc_ock(Mode):
         self.refresh_lane_lights()
 
     def refresh_lane_lights(self):
-        for lane, light_name in self.LANE_LIGHTS.items():
-            light = self.machine.lights.get(light_name)
-
-            if not light:
-                continue
-
-            if self.locked_arms[lane - 1]:
-                light.on(color="white")
+        for arm in [1, 2, 3, 4]:
+            if self.locked_arms[arm-1]:
+                self.machine.events.post(f"doc_ock_arm_{arm}_solid")
             else:
-                light.off()
+                self.machine.events.post(f"doc_ock_arm_{arm}_pulse")
 
     def arm_hit(self, arm, **kwargs):
         #already locked
@@ -99,7 +94,6 @@ class doc_ock(Mode):
         self.machine.events.post("doc_ock_arm_locked_score")
         self.check_jackpot_lit()
 
-
     def check_jackpot_lit(self):
         if sum(self.locked_arms) > 0:
             self.machine.events.post("doc_ock_jackpot_lit")
@@ -110,7 +104,7 @@ class doc_ock(Mode):
         if locked <= 0:
             return
 
-        jp_value = self.doc_ock_jackpot_base_value * locked * self.doc_ock_jackpot_spinner_multi
+        jp_value = self.doc_ock_jackpot_base_value * (5-locked) * self.doc_ock_jackpot_spinner_multi
 
         self.machine.game.player["score"] += jp_value
         self.machine.game.player["doc_ock_last_jackpot"] = jp_value
@@ -132,7 +126,7 @@ class doc_ock(Mode):
         if len(self.active_breakouts) >= self.MAX_BREAKOUT_TARGETS:
             return
 
-        available = [1, 2, 3]
+        available = [1, 2, 3, 4, 5, 6]
         random.shuffle(available)
 
         for target in available:
@@ -175,14 +169,15 @@ class doc_ock(Mode):
     def check_mode_over(self):
         if sum(self.locked_arms) <= 0:
             self.machine.events.post("doc_ock_mode_complete")
+            self.machine.events.post("doc_ock_stop_timed_release")
             return True
         return False
 
     def update_player_vars(self):
         player = self.machine.game.player
 
-        player["doc_ock_locked_arms"] = self.locked_count()
-        player["doc_ock_spinner_multi"] = self.spinner_multi
+        player["doc_ock_locked_arms"] = sum(self.locked_arms)
+        player["doc_ock_spinner_multi"] = self.doc_ock_jackpot_spinner_multi
         player["doc_ock_jackpots_collected"] = self.jackpots_collected
         player["doc_ock_active_breakouts"] = len(self.active_breakouts)
 
