@@ -13,8 +13,8 @@ mode:
 #* vulture bonus
 
 mode_settings:
-  display_delay_ms: 1s
-  hurry_up_delay_ms: 0
+  display_delay_ms: 500ms
+  hurry_up_delay_ms: 50ms
 
   keep_multiplier: false
 

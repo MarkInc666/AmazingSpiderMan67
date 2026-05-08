@@ -120,6 +120,12 @@ event_player:
     - cmd_autofire_coils_disable
     - timer_timer_up_post_hold_complete
     
+  rooftop_diverter_open{device.switches.s_diverter_open.state == 0}:
+    - fire_rooftop_diverter_open
+    
+  rooftop_diverter_close{device.switches.s_diverter_open.state == 1}:
+    - fire_rooftop_diverter_close
+
     
 show_player:
   xxx_s_outlane_l_active:
@@ -199,12 +205,12 @@ coil_player:
     c_vuk_to_upper:
       action: pulse
     
-  rooftop_diverter_open:
+  fire_rooftop_diverter_open:
     c_diverter_open_close:
       action: pulse
       pulse_ms: 220
   
-  rooftop_diverter_close:
+  fire_rooftop_diverter_close:
     c_diverter_open_close:
       action: pulse
       pulse_ms: 100    

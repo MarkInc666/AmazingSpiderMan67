@@ -170,6 +170,8 @@ show_player:
 
 
 shows:
+
+#todo - change all thesevillain select light shows 
   villain_spinner_progress_show:
     - duration: 100ms
       lights:

@@ -109,6 +109,118 @@ show_player:
     bonus_left_web_show:
       action: stop
 
+  bonus_lane_1_solid:
+    bonus_lane_1_solid:
+      loops: -1
+
+  bonus_lane_1_off:
+    bonus_lane_1_solid:
+      action: stop
+      
+  bonus_lane_2_solid:
+    bonus_lane_2_solid:
+      loops: -1
+
+  bonus_lane_2_off:
+    bonus_lane_2_solid:
+      action: stop
+
+  bonus_lane_3_solid:
+    bonus_lane_3_solid:
+      loops: -1
+
+  bonus_lane_3_off:
+    bonus_lane_3_solid:
+      action: stop
+
+  bonus_lane_4_solid:
+    bonus_lane_4_solid:
+      loops: -1
+
+  bonus_lane_4_off:
+    bonus_lane_4_solid:
+      action: stop
+
+
+  bonus_light_l_1k_on:
+    bonus_light_l_1k_on:
+      loops: -1    
+  bonus_light_l_1k_off:
+    bonus_light_l_1k_on:
+      action: stop
+
+  bonus_light_l_2k_on:
+    bonus_light_l_2k_on:
+      loops: -1
+  bonus_light_l_2k_off:
+    bonus_light_l_2k_on:
+      action: stop
+
+  bonus_light_l_3k_on:
+    bonus_light_l_3k_on:
+      loops: -1
+  bonus_light_l_3k_off:
+    bonus_light_l_3k_on:
+      action: stop
+      
+  bonus_light_l_4k_on:
+    bonus_light_l_4k_on:
+      loops: -1
+  bonus_light_l_4k_off:
+    bonus_light_l_4k_on:
+      action: stop
+
+  bonus_light_l_5k_on:
+    bonus_light_l_5k_on:
+      loops: -1    
+  bonus_light_l_5k_off:
+    bonus_light_l_5k_on:
+      action: stop
+
+  bonus_light_l_6k_on:
+    bonus_light_l_6k_on:
+      loops: -1
+  bonus_light_l_6k_off:
+    bonus_light_l_6k_on:
+      action: stop
+
+  bonus_light_l_7k_on:
+    bonus_light_l_7k_on:
+      loops: -1
+  bonus_light_l_7k_off:
+    bonus_light_l_7k_on:
+      action: stop
+      
+  bonus_light_l_8k_on:
+    bonus_light_l_8k_on:
+      loops: -1
+  bonus_light_l_8k_off:
+    bonus_light_l_8k_on:
+      action: stop
+
+  bonus_light_l_9k_on:
+    bonus_light_l_9k_on:
+      loops: -1    
+  bonus_light_l_9k_off:
+    bonus_light_l_9k_on:
+      action: stop
+
+  bonus_light_l_10k_on:
+    bonus_light_l_10k_on:
+      loops: -1
+  bonus_light_l_10k_off:
+    bonus_light_l_10k_on:
+      action: stop
+
+  bonus_light_l_20k_on:
+    bonus_light_l_20k_on:
+      loops: -1
+  bonus_light_l_20k_off:
+    bonus_light_l_20k_on:
+      action: stop
+
+
+
 shows:
   bonus_lane_show:
     - duration: 200ms
@@ -141,3 +253,112 @@ shows:
     - duration: 150ms
       lights:
         gi: blue
+        
+  bonus_lane_1_pulse:
+    - duration: 400ms
+      lights:
+        l_left_outlane: purple
+    - duration: 400ms
+      lights:
+        l_left_outlane: blue
+
+  bonus_lane_2_pulse:
+    - duration: 400ms
+      lights:
+        l_left_inlane: purple
+    - duration: 400ms
+      lights:
+        l_left_inlane: blue
+
+  bonus_lane_3_pulse:
+    - duration: 400ms
+      lights:
+        l_right_inlane: purple
+    - duration: 400ms
+      lights:
+        l_right_inlane: blue
+
+  bonus_lane_4_pulse:
+    - duration: 400ms
+      lights:
+        l_right_outlane: purple
+    - duration: 400ms
+      lights:
+        l_right_outlane: blue
+
+  bonus_lane_1_solid:
+    - duration: 1ms
+      lights:
+        l_left_outlane: white
+
+  bonus_lane_2_solid:
+    - duration: 1s
+      lights:
+        l_left_inlane: white
+
+  bonus_lane_3_solid:
+    - duration: 1s
+      lights:
+        l_right_inlane: white
+
+  bonus_lane_4_solid:
+    - duration: 1s
+      lights:
+        l_right_outlane: white
+
+
+  bonus_light_l_1k_on:
+    - duration: 1s
+      lights:
+        l_1k: white
+
+  bonus_light_l_2k_on:
+    - duration: 1s
+      lights:
+        l_2k: white
+
+  bonus_light_l_3k_on:
+    - duration: 1s
+      lights:
+        l_3k: white
+
+  bonus_light_l_4k_on:
+    - duration: 1s
+      lights:
+        l_4k: white
+
+  bonus_light_l_5k_on:
+    - duration: 1s
+      lights:
+        l_5k: white
+
+  bonus_light_l_6k_on:
+    - duration: 1s
+      lights:
+        l_6k: white
+
+  bonus_light_l_7k_on:
+    - duration: 1s
+      lights:
+        l_7k: white
+
+  bonus_light_l_8k_on:
+    - duration: 1s
+      lights:
+        l_8k: white
+
+  bonus_light_l_9k_on:
+    - duration: 1s
+      lights:
+        l_9k: white
+
+  bonus_light_l_10k_on:
+    - duration: 1s
+      lights:
+        l_10k: white
+
+  bonus_light_l_20k_on:
+    - duration: 1s
+      lights:
+        l_20k: white
+

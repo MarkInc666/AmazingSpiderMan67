@@ -159,19 +159,13 @@ class BonusLanes(Mode):
         self.refresh_lane_lights()
 
     def refresh_lane_lights(self):
-        for lane, light_name in self.LANE_LIGHTS.items():
-            light = self.machine.lights.get(light_name)
-
-            if not light:
-                continue
-
+        for lane in [1, 2, 3, 4]:
             if self.completed[lane - 1]:
-                light.on(color="white")
+                self.machine.events.post(f"bonus_lane_{lane}_solid")
             else:
-                light.off()
+                self.machine.events.post(f"bonus_lane_{lane}_off")
 
-        self.machine.events.post("bonus_show_lanes")
-        
+        #self.machine.events.post("bonus_show_lanes")
         
     def update_bonus_lights(self, **kwargs):
         player = self.machine.game.player
@@ -179,32 +173,19 @@ class BonusLanes(Mode):
 
         remaining = min(bonus_count, 75)
 
-        # Turn all bonus lights off first
-        for value, light_name in self.BONUS_LIGHTS:
-            light = self.machine.lights.get(light_name)
-            if light:
-                light.off()
-
         # Light additive combo
         for value, light_name in self.BONUS_LIGHTS:
             if remaining >= value:
-                light = self.machine.lights.get(light_name)
-                if light:
-                    light.on(color="white")
+                self.machine.events.post(f"bonus_light_{light_name}_on")
                 remaining -= value
+            else:
+                self.machine.events.post(f"bonus_light_{light_name}_off")
 
-        player = self.machine.game.player
         mx = player["bonus_multiplier"]
 
         for value, light_name in self.BONUS_X_LIGHTS.items():
-            light = self.machine.lights.get(light_name)                
-            if light:
-                if value == mx:
-                    light.on(color="white")
-                else:
-                    light.off()
-
-
-
-
-        
+            if mx >= value:
+                self.machine.events.post(f"bonus_light_{light_name}_on")
+                remaining -= value
+            else:
+                self.machine.events.post(f"bonus_light_{light_name}_off")
