@@ -15,6 +15,18 @@ multiballs:
     shoot_again: 10s
     start_events: vulture_add_a_ball
 
+variable_player:
+  multiball_vulture_add_a_ball_started:
+    multiball_autoplunge_active:
+      action: set
+      int: 1
+
+  multiball_vulture_add_a_ball_ended:
+    multiball_autoplunge_active:
+      action: set
+      int: 0
+
+
 event_player:
   mode_vulture_started:
     - rooftop_diverter_open
@@ -84,6 +96,7 @@ timers:
         action: stop
 
 show_player:
+
   vulture_show_left_yellow:
     vulture_left_yellow:
       loops: -1

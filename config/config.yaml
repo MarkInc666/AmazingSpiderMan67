@@ -126,67 +126,11 @@ event_player:
   rooftop_diverter_close{device.switches.s_diverter_open.state == 1}:
     - fire_rooftop_diverter_close
 
-    
-show_player:
-  xxx_s_outlane_l_active:
-    led_on_show:
-      loops: 0
-      show_tokens:
-        led: l_left_outlane
-        col: f0f0f0
-      key: l_left_outlane_show
-  
-  xxx_s_inlane_l_active:  
-    led_on_show:
-      loops: 0    
-      show_tokens:
-        led: l_left_inlane
-        col: f0f0f0        
-      key: l_left_inlane_show        
+  s_plunger_active{current_player.multiball_autoplunge_active == 1}:
+    - plunger_auto_fire|2s
 
-  xxx_s_outlane_r_active:
-    led_on_show:
-      loops: 0    
-      show_tokens:
-        led: l_right_outlane
-        col: f0f0f0        
-      key: l_right_outlane_show
-  
-  xxx_s_inlane_r_active:  
-    led_on_show:
-      loops: 0
-      show_tokens:
-        led: l_right_inlane
-        col: f0f0f0        
-      key: l_right_inlane_show        
-  
-  s_upper_target_left_active:
-    led_on_show:
-      loops: 0
-      show_tokens:
-        led: l_upper_left
-        col: f000f0        
-      key: l_upper_left_show        
 
-  s_upper_target_center_active:
-    led_on_show:
-      loops: 0
-      show_tokens:
-        led: l_upper_middle
-        col: f000f0        
-      key: l_upper_middle_show        
-  
-  s_upper_target_right_active:
-    led_on_show:
-      loops: 0
-      show_tokens:
-        led: l_upper_right
-        col: f000f0        
-      key: l_upper_right_show        
-  
-    
 
-    
 
 coil_player:
   enable_up_post_event:
@@ -218,7 +162,12 @@ coil_player:
   reset_5bank:
     c_right_bank_reset:
       action: pulse
-        
+
+  plunger_auto_fire:
+    coil: c_auto_plunger
+      action: pulse
+      
+
 
 
 
@@ -275,3 +224,113 @@ ball_saves:
 #  ball_save_default_ball_save_saving_ball:
 #    - play_ball_save_callout
 #    - flash_gi_blue
+
+
+show_player:
+  xxx_s_outlane_l_active:
+    led_on_show:
+      loops: 0
+      show_tokens:
+        led: l_left_outlane
+        col: f0f0f0
+      key: l_left_outlane_show
+  
+  xxx_s_inlane_l_active:  
+    led_on_show:
+      loops: 0    
+      show_tokens:
+        led: l_left_inlane
+        col: f0f0f0        
+      key: l_left_inlane_show        
+
+  xxx_s_outlane_r_active:
+    led_on_show:
+      loops: 0    
+      show_tokens:
+        led: l_right_outlane
+        col: f0f0f0        
+      key: l_right_outlane_show
+  
+  xxx_s_inlane_r_active:  
+    led_on_show:
+      loops: 0
+      show_tokens:
+        led: l_right_inlane
+        col: f0f0f0        
+      key: l_right_inlane_show        
+  
+  s_upper_target_left_active:
+    led_on_show:
+      loops: 0
+      show_tokens:
+        led: l_upper_left
+        col: f000f0        
+      key: l_upper_left_show        
+
+  s_upper_target_center_active:
+    led_on_show:
+      loops: 0
+      show_tokens:
+        led: l_upper_middle
+        col: f000f0        
+      key: l_upper_middle_show        
+  
+  s_upper_target_right_active:
+    led_on_show:
+      loops: 0
+      show_tokens:
+        led: l_upper_right
+        col: f000f0        
+      key: l_upper_right_show        
+
+  ball_save_default_ball_save_enabled:
+    shoot_again_flash:
+      loops: -1
+
+  ball_save_default_ball_save_hurry_up:
+    shoot_again_fast_flash:
+      loops: -1
+
+  ball_save_default_ball_save_disabled:
+    shoot_again_flash:
+      action: stop
+    shoot_again_fast_flash:
+      action: stop
+
+
+  ball_save_mystery_ball_save_enabled:
+    shoot_again_flash:
+      loops: -1
+
+  ball_save_mystery_ball_save_hurry_up:
+    shoot_again_fast_flash:
+      loops: -1
+
+  ball_save_mystery_ball_save_disabled:
+    shoot_again_flash:
+      action: stop
+    shoot_again_fast_flash:
+      action: stop
+
+
+      
+
+ shows:
+
+  shoot_again_fast_flash:
+    - duration: 250ms
+      lights:
+        l_shoot_again: white
+    - duration: 250ms
+      lights:
+        l_shoot_again: off     
+
+  shoot_again_flash:
+    - duration: 500ms
+      lights:
+        l_shoot_again: white
+    - duration: 500ms
+      lights:
+        l_shoot_again: off     
+
+      

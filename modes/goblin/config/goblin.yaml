@@ -102,6 +102,17 @@ variable_player:
       action: add
       int: current_player.goblin_chaos_bonus
 
+  multiball_goblin_chaos_multiball_started:
+    multiball_autoplunge_active:
+      action: set
+      int: 1
+
+  multiball_goblin_chaos_multiball_ended:
+    multiball_autoplunge_active:
+      action: set
+      int: 0
+
+
 
 event_player:
     
@@ -110,11 +121,7 @@ event_player:
     - goblin_pick_new_pattern
     - clear_saucers
 
-  multiball_goblin_chaos_multiball_started:
-    - multiball_autoplunge_active
-
   multiball_goblin_chaos_multiball_ended:
-    - multiball_autoplunge_inactive
     - goblin_mode_ended
 
   goblin_mode_complete:
