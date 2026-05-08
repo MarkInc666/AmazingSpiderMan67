@@ -5,290 +5,82 @@ mode:
   stop_events:
     - rhino_bash_complete
     - ball_ended
+  code: rhino_bash.RhinoBash
   priority: 300
-
-variable_player:
-
-  mode_rhino_bash_started:
-    rhino_rage_stage:
-      action: set
-      int: 1
-    rhino_pops:
-      action: set
-      int: 0
-    rhino_jackpots:
-      action: set
-      int: 0
-    rhino_jackpot_base:
-      action: set
-      int: 50000
-    rhino_jackpot_value:
-      action: set
-      int: 50000
-    rhino_add_value:
-      action: set
-      int: 2000
-
-  rhino_pop_hit:
-    score: 10000
-    rhino_pops: 1
-
-  rhino_smash_hit:
-    score: 25000
-    rhino_jackpot_value: current_player.rhino_add_value
-
-  rhino_jackpot_collect:
-    score: current_player.rhino_jackpot_value
-    rhino_jackpots: 1
-
-  rhino_crash:
-    rhino_jackpot_value:
-      action: set
-      int: current_player.rhino_jackpot_base
-    rhino_rage_stage:
-      action: set
-      int: 2
-    rhino_pops:
-      action: set
-      int: 2
-    rhino_add_value:
-      action: set
-      int: 5000
-
-  rhino_set_stage_2:
-    rhino_rage_stage:
-      action: set
-      int: 2
-    rhino_add_value:
-      action: set
-      int: 5000
-
-  rhino_set_stage_3:
-    rhino_rage_stage:
-      action: set
-      int: 3
-    rhino_add_value:
-      action: set
-      int: 15000
-
-  rhino_set_stage_4:
-    rhino_rage_stage:
-      action: set
-      int: 4
-    rhino_add_value:
-      action: set
-      int: 50000
-
-  rhino_set_stage_5:
-    rhino_rage_stage:
-      action: set
-      int: 5
-    rhino_add_value:
-      action: set
-      int: 100000
-
-  rhino_set_base_100k:
-    rhino_jackpot_base:
-      action: set
-      int: 100000
-    rhino_jackpot_value:
-      action: set
-      int: 100000
-
-  rhino_set_base_150k:
-    rhino_jackpot_base:
-      action: set
-      int: 150000
-    rhino_jackpot_value:
-      action: set
-      int: 150000
-
-  rhino_drop_to_stage_4:
-    rhino_rage_stage:
-      action: set
-      int: 4
-    rhino_pops:
-      action: set
-      int: 7
-    rhino_add_value:
-      action: set
-      int: 50000
-
-  rhino_drop_to_stage_3:
-    rhino_rage_stage:
-      action: set
-      int: 3
-    rhino_pops:
-      action: set
-      int: 4
-    rhino_add_value:
-      action: set
-      int: 15000
-
-  rhino_drop_to_stage_2:
-    rhino_rage_stage:
-      action: set
-      int: 2
-    rhino_pops:
-      action: set
-      int: 2
-    rhino_add_value:
-      action: set
-      int: 5000
-
-  rhino_drop_to_stage_1:
-    rhino_rage_stage:
-      action: set
-      int: 1
-    rhino_pops:
-      action: set
-      int: 0
-    rhino_add_value:
-      action: set
-      int: 2000
 
 event_player:
 
   rhino_bash_complete:
     - reset_villain_locate
 
-  s_pop_left_active:
-    - rhino_pop_hit
-    - rhino_check_rage_stage
-
-  s_pop_right_active:
-    - rhino_pop_hit
-    - rhino_check_rage_stage
-
-  # Rhino Smash switches
-  s_left_drops_1_active: rhino_smash_hit
-  s_left_drops_2_active: rhino_smash_hit
-  s_left_drops_3_active: rhino_smash_hit
-
-  s_right_drops_1_active: rhino_smash_hit
-  s_right_drops_2_active: rhino_smash_hit
-  s_right_drops_3_active: rhino_smash_hit
-  s_right_drops_4_active: rhino_smash_hit
-  s_right_drops_5_active: rhino_smash_hit
-
-  s_web_target_left_active: rhino_smash_hit
-  s_web_target_top_active: rhino_smash_hit
-
-  s_saucer_1_active: rhino_smash_hit
-  s_saucer_2_active: rhino_smash_hit
-  s_saucer_3_active: rhino_smash_hit
-
-  s_web_spinner_active: rhino_smash_hit
-  s_trispinner_opto_active: rhino_smash_hit
-
-  s_upper_target_left_active: rhino_smash_hit
-  s_upper_target_center_active: rhino_smash_hit
-  s_upper_target_right_active: rhino_smash_hit
-
-  s_upper_exit_left_opto_active: rhino_smash_hit
-  s_upper_exit_right_opto_active: rhino_smash_hit
-
-  s_inlane_a_active: rhino_smash_hit
-  s_inlane_b_active: rhino_smash_hit
-
-  # Left Middle B lane jackpot collect
-  s_inlane_m_l_active:
-    - rhino_jackpot_collect
-    - rhino_after_jackpot_collect
-
   mode_rhino_bash_started:
-    - rhino_stage_1
+    - rhino_start
     - rhino_light_jackpot_collect
     - clear_saucers
 
-  rhino_stage_1:
-    - rhino_show_rage_1
+  # Pops build rage
+  s_pop_left_active:
+    - rhino_pop_hit
 
-  rhino_stage_2:
-    - rhino_show_rage_2
+  s_pop_right_active:
+    - rhino_pop_hit
 
-  rhino_stage_3:
-    - rhino_show_rage_3
+  # Rhino Smash switches
+  s_left_drops_1_active:
+    - rhino_smash_hit
+  s_left_drops_2_active:
+    - rhino_smash_hit
+  s_left_drops_3_active:
+    - rhino_smash_hit
 
-  rhino_stage_4:
-    - rhino_show_rage_4
-    - rhino_rage_callout
+  s_right_drops_1_active:
+    - rhino_smash_hit
+  s_right_drops_2_active:
+    - rhino_smash_hit
+  s_right_drops_3_active:
+    - rhino_smash_hit
+  s_right_drops_4_active:
+    - rhino_smash_hit
+  s_right_drops_5_active:
+    - rhino_smash_hit
 
-  rhino_stage_5:
-    - rhino_show_rage_5
-    - rhino_start_berserk
+  s_web_target_left_active:
+    - rhino_smash_hit
+  s_web_target_top_active:
+    - rhino_smash_hit
 
-  rhino_after_jackpot_collect:
-    - rhino_stop_berserk
-    - rhino_set_next_jackpot_base
-    - rhino_reduce_rage_after_collect
-    - rhino_check_mode_complete
+  s_saucer_1_active:
+    - rhino_smash_hit
+  s_saucer_2_active:
+    - rhino_smash_hit
+  s_saucer_3_active:
+    - rhino_smash_hit
 
-  timer_rhino_berserk_timer_complete:
-    - rhino_crash
+  s_web_spinner_active:
+    - rhino_smash_hit
+  s_trispinner_opto_active:
+    - rhino_smash_hit
 
-  rhino_crash:
-    - rhino_stop_berserk
-    - rhino_show_crash
-    - rhino_stage_2
+  s_upper_target_left_active:
+    - rhino_smash_hit
+  s_upper_target_center_active:
+    - rhino_smash_hit
+  s_upper_target_right_active:
+    - rhino_smash_hit
 
-  rhino_check_rage_stage{current_player.rhino_pops >= 10 and current_player.rhino_rage_stage < 5}:
-    - rhino_set_stage_5
-    - rhino_stage_5
+  s_upper_exit_left_opto_active:
+    - rhino_smash_hit
+  s_upper_exit_right_opto_active:
+    - rhino_smash_hit
 
-  rhino_check_rage_stage{current_player.rhino_pops >= 7 and current_player.rhino_pops < 10 and current_player.rhino_rage_stage < 4}:
-    - rhino_set_stage_4
-    - rhino_stage_4
+  s_inlane_a_active:
+    - rhino_smash_hit
+  s_inlane_b_active:
+    - rhino_smash_hit
 
-  rhino_check_rage_stage{current_player.rhino_pops >= 4 and current_player.rhino_pops < 7 and current_player.rhino_rage_stage < 3}:
-    - rhino_set_stage_3
-    - rhino_stage_3
-
-  rhino_check_rage_stage{current_player.rhino_pops >= 2 and current_player.rhino_pops < 4 and current_player.rhino_rage_stage < 2}:
-    - rhino_set_stage_2
-    - rhino_stage_2
-
-  rhino_set_next_jackpot_base{current_player.rhino_jackpots == 1}: rhino_set_base_100k
-
-  rhino_set_next_jackpot_base{current_player.rhino_jackpots == 2}: rhino_set_base_150k
-
-  rhino_set_next_jackpot_base{current_player.rhino_jackpots >= 3}: rhino_bash_complete
-
-  rhino_reduce_rage_after_collect{current_player.rhino_rage_stage == 5}:
-    - rhino_drop_to_stage_4
-    - rhino_stage_4
-
-  rhino_reduce_rage_after_collect{current_player.rhino_rage_stage == 4}:
-    - rhino_drop_to_stage_3
-    - rhino_stage_3
-
-  rhino_reduce_rage_after_collect{current_player.rhino_rage_stage == 3}:
-    - rhino_drop_to_stage_2
-    - rhino_stage_2
-
-  rhino_reduce_rage_after_collect{current_player.rhino_rage_stage == 2}:
-    - rhino_drop_to_stage_1
-    - rhino_stage_1
-
-  rhino_reduce_rage_after_collect{current_player.rhino_rage_stage == 1}:
-    - rhino_drop_to_stage_1
-    - rhino_stage_1
-
-  rhino_check_mode_complete{current_player.rhino_jackpots >= 3}: rhino_bash_complete
-
-
-timers:
-
-  rhino_berserk_timer:
-    start_value: 8
-    end_value: 0
-    direction: down
-    tick_interval: 1s
-    control_events:
-      - event: rhino_start_berserk
-        action: restart
-      - event: rhino_stop_berserk
-        action: stop
+  # Left Middle B lane jackpot collect
+  s_inlane_m_l_active:
+    - rhino_jackpot_collect_request
 
 show_player:
 
@@ -296,9 +88,7 @@ show_player:
     rhino_left_b_lit:
       loops: -1
 
-  rhino_jackpot_collect:
-    rhino_left_b_lit:
-      action: stop
+  rhino_jackpot_collected:
     rhino_jackpot_collect_show:
       loops: 1
 
@@ -330,17 +120,17 @@ show_player:
     rhino_rage_5:
       loops: -1
 
-  rhino_start_berserk:
+  rhino_berserk_started:
     rhino_berserk_gi:
       loops: -1
 
-  rhino_stop_berserk:
+  rhino_berserk_stopped:
     rhino_berserk_gi:
       action: stop
     rhino_rage_5:
       action: stop
 
-  rhino_show_crash:
+  rhino_crashed:
     rhino_crash_show:
       loops: 1
 
@@ -361,6 +151,18 @@ show_player:
       action: stop
     rhino_bash_complete_show:
       loops: 1
+
+# Keep your existing shows section from the current Rhino file:
+# rhino_left_b_lit
+# rhino_rage_1
+# rhino_rage_2
+# rhino_rage_3
+# rhino_rage_4
+# rhino_rage_5
+# rhino_berserk_gi
+# rhino_jackpot_collect_show
+# rhino_crash_show
+# rhino_bash_complete_show
 
 shows:
 
