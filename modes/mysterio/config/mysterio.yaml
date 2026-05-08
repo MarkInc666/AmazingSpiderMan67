@@ -13,7 +13,7 @@ event_player:
   mode_mysterio_started:
     - clear_saucers
 
-  s_left_web_target_active: mysterio_left_web_hit
+  s_web_target_left_active: mysterio_left_web_hit
   s_web_target_top_active: mysterio_right_web_hit
   s_web_spinner_active: mysterio_spinner_hit
   left_drops_hit: mysterio_left_drops_hit
@@ -217,11 +217,11 @@ shows:
     - duration: 120ms
       lights:
         l_3bankbonus: yellow
-        l_left_multibonus: yellow
+        l_extraball: yellow
     - duration: 120ms
       lights:
         l_3bankbonus: blue
-        l_left_multibonus: blue
+        l_extraball: blue
 
   mysterio_lite_right_drops_show:
     - duration: 120ms

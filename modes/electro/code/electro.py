@@ -62,8 +62,10 @@ class Electro(Mode):
         if len(active) == 1:
             self.start_super_jackpot(active[0])
             return
-
-        previous_location = selc.current_shot.group
+        if self.current_shot:
+            previous_location = self.current_shot.group
+        else:
+            previous_location = "lower"
         
         self.current_shot = random.choice(active)
         self.current_shot.is_lit = True
@@ -71,6 +73,7 @@ class Electro(Mode):
         self.machine.events.post("electro_lit_shot_changed")
         self.machine.events.post(f"electro_lite_{self.current_shot.name}")
         self.machine.events.post("electro_shot_timer_start")
+        
         if previous_location == "upper" and self.current_shot.group != "upper":
             self.machine.events.post("rooftop_diverter_close")
         if previous_location != "upper" and self.current_shot.group == "upper":

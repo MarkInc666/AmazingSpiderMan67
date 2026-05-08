@@ -123,4 +123,4 @@ class Vulture(Mode):
 
     def award_score(self, value):
         self.machine.game.player["score"] += value
-        player["vulture_last_spinner_score"] = value        
+        self.machine.game.player["vulture_last_spinner_score"] = value        

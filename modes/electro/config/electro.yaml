@@ -16,12 +16,12 @@ event_player:
   # -------------------------------
   # Real switches / shot groups -> Electro Python events
   # -------------------------------
-  s_left_web_target_active: electro_left_web_hit
-  s_spinner_active: electro_spinner_hit
+  s_web_target_left_active: electro_left_web_hit
+  s_web_spinner_active: electro_spinner_hit
   elect_left_drops_hit: electro_left_drops_hit
   elect_saucers_hit: electro_saucers_hit
-  s_right_web_target_active: electro_right_web_hit
-  s_upper_spinner_active: electro_upper_spinner_hit
+  s_web_target_top_active: electro_right_web_hit
+  s_trispinner_opto_active: electro_upper_spinner_hit
   elect_upper_targets_hit: electro_upper_target_hit
   elect_right_drops_hit: electro_right_drops_hit
 
@@ -262,68 +262,90 @@ shows:
   electro_left_web_lit_show:
     - duration: 150ms
       lights:
-        l_20k: yellow
+        l_left_web_target: yellow      
     - duration: 150ms
       lights:
-        l_20k: off
+        l_left_web_target: off
 
   electro_spinner_lit_show:
     - duration: 150ms
       lights:
-        l_1k: yellow
+        l_spinner: yellow
     - duration: 150ms
       lights:
-        l_1k: off
+        l_spinner: off
 
   electro_left_drops_lit_show:
-    - duration: 150ms
+    - duration: 120ms
       lights:
-        l_2k: yellow
-    - duration: 150ms
+        l_3bankbonus: yellow
+        l_extraball: yellow
+    - duration: 120ms
       lights:
-        l_2k: off
+        l_3bankbonus: blue
+        l_extraball: blue
 
   electro_saucers_lit_show:
     - duration: 150ms
       lights:
-        l_3k: yellow
+        l_1_hole_l: yellow
+        l_1_hole_r: yellow        
+        l_2_hole_l: yellow
+        l_2_hole_r: yellow        
+        l_3_hole_l: yellow
+        l_3_hole_r: yellow        
     - duration: 150ms
       lights:
-        l_3k: off
+        l_1_hole_l: off
+        l_1_hole_r: off        
+        l_2_hole_l: off
+        l_2_hole_r: off        
+        l_3_hole_l: off
+        l_3_hole_r: off        
 
   electro_right_web_lit_show:
     - duration: 150ms
       lights:
-        l_4k: yellow
+        l_mid_spider_target: yellow
     - duration: 150ms
       lights:
-        l_4k: off
+        l_mid_spider_target: off
 
   electro_upper_spinner_lit_show:
-    - duration: 150ms
+    - duration: 120ms
       lights:
-        l_5k: yellow
-    - duration: 150ms
+        l_gi_a: yellow
+    - duration: 120ms
       lights:
-        l_5k: off
+        l_gi_a: blue
 
   electro_upper_targets_lit_show:
-    - duration: 150ms
+    - duration: 120ms
       lights:
-        l_shoot_again: yellow
-    - duration: 150ms
+        l_upper_left: yellow
+        l_upper_middle: yellow
+        l_upper_right: yellow
+    - duration: 120ms
       lights:
-        l_shoot_again: off
+        l_upper_left: blue
+        l_upper_middle: blue
+        l_upper_right: blue
 
   electro_right_drops_lit_show:
-    - duration: 150ms
+    - duration: 120ms
       lights:
-        l_20k: yellow
-        l_1k: yellow
-    - duration: 150ms
+        l_5bank_1: yellow
+        l_5bank_2: yellow
+        l_5bank_3: yellow
+        l_5bank_4: yellow
+        l_5bank_5: yellow
+    - duration: 120ms
       lights:
-        l_20k: off
-        l_1k: off
+        l_5bank_1: blue
+        l_5bank_2: blue
+        l_5bank_3: blue
+        l_5bank_4: blue
+        l_5bank_5: blue
 
   # -------------------------------
   # Super shows
