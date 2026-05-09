@@ -80,12 +80,6 @@ timers:
 
 show_player:
   bonus_show_lanes:
-    bonus_lane_show:
-      loops: 1
-
-  bonus_center_web_lit:
-    bonus_center_web_show:
-      loops: -1
   #shut off the lanes
     bonus_lane_1_solid:
       action: stop
@@ -95,6 +89,12 @@ show_player:
       action: stop
     bonus_lane_4_solid:
       action: stop
+    bonus_lane_show:
+      loops: 3
+
+  bonus_center_web_lit:
+    bonus_center_web_show:
+      loops: -1
 
   bonus_center_web_collected:
     bonus_center_web_show:
@@ -259,12 +259,19 @@ show_player:
 
 shows:
   bonus_lane_show:
-    - duration: 200ms
+    - duration: 300ms
       lights:
         l_left_outlane: white
         l_left_inlane: white
         l_right_inlane: white
         l_right_outlane: white
+    - duration: 300ms
+      lights:
+        l_left_outlane: off
+        l_left_inlane: off
+        l_right_inlane: off
+        l_right_outlane: off
+                
 
   bonus_center_web_show:
     - duration: 250ms

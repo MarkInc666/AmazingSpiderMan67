@@ -198,36 +198,36 @@ show_player:
 
 shows:
   doc_ock_arm_1_pulse:
-    - duration: 400ms
+    - duration: 200ms
       lights:
-        l_left_outlane: 207070
-    - duration: 400ms
+        l_left_outlane: 202060
+    - duration: 200ms
       lights:
-        l_left_outlane: 2020B0
+        l_left_outlane: 2020C0
 
   doc_ock_arm_2_pulse:
-    - duration: 400ms
+    - duration: 200ms
       lights:
-        l_left_inlane: 207070
-    - duration: 400ms
+        l_left_inlane: 202060
+    - duration: 200ms
       lights:
-        l_left_inlane: 2020B0
+        l_left_inlane: 2020C0
 
   doc_ock_arm_3_pulse:
-    - duration: 400ms
+    - duration: 200ms
       lights:
-        l_right_inlane: 207070
-    - duration: 400ms
+        l_right_inlane: 202060
+    - duration: 200ms
       lights:
-        l_right_inlane: 2020B0
+        l_right_inlane: 2020C0
 
   doc_ock_arm_4_pulse:
-    - duration: 400ms
+    - duration: 200ms
       lights:
-        l_right_outlane: 207070
-    - duration: 400ms
+        l_right_outlane: 202060
+    - duration: 200ms
       lights:
-        l_right_outlane: 2020B0
+        l_right_outlane: 2020C0
 
   doc_ock_arm_1_solid:
     - duration: 400ms

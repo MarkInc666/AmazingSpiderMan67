@@ -112,6 +112,7 @@ class BonusLanes(Mode):
         self.center_web_lit = True
         self.left_web_lit = False
         self.machine.events.post("bonus_center_web_lit")
+        self.machine.events.post("bonus_show_lanes")
 
     def center_web_hit(self, **kwargs):
         if not self.center_web_lit:
@@ -165,7 +166,6 @@ class BonusLanes(Mode):
             else:
                 self.machine.events.post(f"bonus_lane_{lane}_off")
 
-        #self.machine.events.post("bonus_show_lanes")
         
     def update_bonus_lights(self, **kwargs):
         player = self.machine.game.player
