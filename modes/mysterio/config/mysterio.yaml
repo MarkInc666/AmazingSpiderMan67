@@ -11,6 +11,7 @@ event_player:
     - reset_villain_locate
 
   mode_mysterio_started:
+    - reset_drops
     - clear_saucers
 
   s_web_target_left_active: mysterio_left_web_hit

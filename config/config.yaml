@@ -129,6 +129,12 @@ event_player:
   s_plunger_active{current_player.multiball_autoplunge_active == 1}:
     - plunger_auto_fire|2s
 
+  reset_drops:
+    - reset_3bank
+    - reset_5bank|300ms
+
+  reset_5bank_delayed:
+    - reset_5bank|500ms
 
 
 
@@ -163,6 +169,10 @@ coil_player:
     c_right_bank_reset:
       action: pulse
 
+  reset_3bank:
+    c_left_bank_reset:
+      action: pulse
+
   plunger_auto_fire:
     c_auto_plunger:
       action: pulse
@@ -176,7 +186,7 @@ sequences:
   reset_left_bank_after_hit:
     events:
       - drop_target_bank_dt_bank_left_down
-      - s_web_target_left_active
+      - xxxs_web_target_left_active
     reset_on_complete: true
     disable_on_complete: false
     events_when_complete: drop_target_bank_dt_bank_1eft_reset
@@ -184,7 +194,7 @@ sequences:
   reset_right_bank_after_hit:
     events:
       - drop_target_bank_dt_bank_right_down
-      - s_web_target_top_active
+      - xxxs_web_target_top_active
     reset_on_complete: true
     disable_on_complete: false
     events_when_complete: drop_target_bank_dt_bank_right_reset

@@ -1,16 +1,12 @@
 #config_version=6
 
-#Important: `goblin_randomize_three_shots`,  `goblin_saucer_hold_ball`, 
-#`goblin_saucer_eject` are hook events. 
-#Wire those to your existing multiball, ball hold, eject coil, and random shot selection logic.
-
 mode:
   start_events: start_mode_goblin
-  stop_events: 
+  stop_events:
     - goblin_mode_ended
     - ball_ended
+  code: goblin.Goblin
   priority: 500
-
 
 multiballs:
   goblin_chaos_multiball:
@@ -18,14 +14,101 @@ multiballs:
     ball_count_type: total
     shoot_again: 10s
     start_events: goblin_start_multiball
-    stop_events: 
+    stop_events:
       - goblin_stop_multiball
       - goblin_mode_ended
       - ball_ended
 
+shots:
+
+  gob_right_drop_1:
+    switch: s_right_drops_1
+  gob_right_drop_2:
+    switch: s_right_drops_2
+  gob_right_drop_3:
+    switch: s_right_drops_3
+  gob_right_drop_4:
+    switch: s_right_drops_4
+  gob_right_drop_5:
+    switch: s_right_drops_5
+
+  gob_left_drop_1:
+    switch: s_left_drops_1
+  gob_left_drop_2:
+    switch: s_left_drops_2
+  gob_left_drop_3:
+    switch: s_left_drops_3
+
+  gob_saucer_1:
+    switch: s_saucer_1
+  gob_saucer_2:
+    switch: s_saucer_2
+  gob_saucer_3:
+    switch: s_saucer_3
+
+  gob_upper_target_left:
+    switch: s_upper_target_left
+  gob_upper_target_center:
+    switch: s_upper_target_center
+  gob_upper_target_right:
+    switch: s_upper_target_right
+
+
+shot_groups:
+  gob_right_drops:
+    shots: gob_right_drop_1, gob_right_drop_2, gob_right_drop_3, gob_right_drop_4, gob_right_drop_5
+
+  gob_left_drops:
+    shots: gob_left_drop_1, gob_left_drop_2, gob_left_drop_3
+
+  gob_upper_targets:
+    shots: gob_upper_target_left, gob_upper_target_center, gob_upper_target_right
+
+  gob_saucers:
+    shots: gob_saucer_1, gob_saucer_2, gob_saucer_3
+
+
+event_player:
+  mode_goblin_started:
+    - reset_drops
+    - goblin_start_multiball
+    - clear_saucers
+
+  multiball_goblin_chaos_multiball_ended:
+    - goblin_mode_ended
+
+  goblin_mode_ended:
+    - goblin_stop_all_shows
+    - reset_villain_locate
+
+  # real playfield input -> Python shot events
+  s_left_web_target_active: goblin_left_web_hit
+  s_web_target_top_active: goblin_right_web_hit
+  s_web_spinner_active: goblin_spinner_hit
+  gob_left_drops_hit: goblin_left_drops_hit
+  gob_right_drops_hit: goblin_right_drops_hit
+  s_trispinner_opto_active: goblin_upper_spinner_hit
+  gob_saucers_hit: goblin_saucers_hit
+  gob_upper_targets_hit: goblin_upper_target_hit
+
+  # saucers also stabilize chaos
+  saucers_hit{current_player.goblin_hold_active == 0}:
+    - goblin_saucer_lock_request
+
+  # timers -> Python
+  timer_goblin_flash_timer_complete:
+    - goblin_flash_timer_complete
+
+  timer_goblin_solid_timer_complete:
+    - goblin_solid_timer_complete
+
+  timer_goblin_hold_timer_complete:
+    - goblin_hold_timer_complete
+
+  ball_ending:
+    - goblin_collect_bonus
 
 variable_player:
-
   mode_goblin_started:
     goblin_chaos_bonus:
       action: set
@@ -39,11 +122,8 @@ variable_player:
     goblin_hold_active:
       action: set
       int: 0
-    goblin_shot_state:
-      action: set
-      int: 0       # 0=off, 1=flashing, 2=solid
 
-  goblin_flashing_shot_hit:
+  goblin_flashing_shot_score:
     score:
       action: add
       int: 50000
@@ -51,51 +131,10 @@ variable_player:
       action: add
       int: 50000
 
-  goblin_solid_shot_hit:
+  goblin_solid_shot_score:
     score:
       action: add
       int: 2000
-
-  goblin_solid_penalty_full{current_player.goblin_chaos_bonus >= current_player.goblin_chaos_lock + 50000}:
-    goblin_chaos_bonus:
-      action: add
-      int: -50000
-
-  goblin_solid_penalty_clamp{current_player.goblin_chaos_bonus < current_player.goblin_chaos_lock + 50000 and current_player.goblin_chaos_bonus > current_player.goblin_chaos_lock}:
-    goblin_chaos_bonus:
-      action: set
-      int: current_player.goblin_chaos_lock
-
-  goblin_lock_bonus:
-    goblin_chaos_lock:
-      action: set
-      int: current_player.goblin_chaos_bonus
-    goblin_hold_active:
-      action: set
-      int: 1
-    goblin_hold_count:
-      action: add
-      int: 1
-
-  goblin_hold_released:
-    goblin_hold_active:
-      action: set
-      int: 0
-
-  goblin_set_flashing:
-    goblin_shot_state:
-      action: set
-      int: 1
-
-  goblin_set_solid:
-    goblin_shot_state:
-      action: set
-      int: 2
-
-  goblin_set_off:
-    goblin_shot_state:
-      action: set
-      int: 0
 
   goblin_collect_bonus:
     score:
@@ -112,140 +151,17 @@ variable_player:
       action: set
       int: 0
 
-
-
-event_player:
-    
-  mode_goblin_started:
-    - goblin_start_multiball
-    - goblin_pick_new_pattern
-    - clear_saucers
-
-  multiball_goblin_chaos_multiball_ended:
-    - goblin_mode_ended
-
-  goblin_mode_complete:
-    - reset_villain_locate
-
-  # -------------------------------
-  # Replace these with your 10 real shot switch events.
-  # These are examples only.
-  # -------------------------------
-
-  s_left_web_target_active{current_player.goblin_shot_state == 1}: goblin_flashing_shot_hit
-  s_right_web_target_active{current_player.goblin_shot_state == 1}: goblin_flashing_shot_hit
-  s_spinner_active{current_player.goblin_shot_state == 1}: goblin_flashing_shot_hit
-  s_left_drop_bank_hit_active{current_player.goblin_shot_state == 1}: goblin_flashing_shot_hit
-  s_right_drop_bank_hit_active{current_player.goblin_shot_state == 1}: goblin_flashing_shot_hit
-
-  s_left_web_target_active{current_player.goblin_shot_state == 2 and current_player.goblin_hold_active == 0}:
-    - goblin_solid_shot_hit
-    - goblin_solid_penalty_full
-    - goblin_solid_penalty_clamp
-
-  s_right_web_target_active{current_player.goblin_shot_state == 2 and current_player.goblin_hold_active == 0}:
-    - goblin_solid_shot_hit
-    - goblin_solid_penalty_full
-    - goblin_solid_penalty_clamp
-
-  s_spinner_active{current_player.goblin_shot_state == 2 and current_player.goblin_hold_active == 0}:
-    - goblin_solid_shot_hit
-    - goblin_solid_penalty_full
-    - goblin_solid_penalty_clamp
-
-  s_left_drop_bank_hit_active{current_player.goblin_shot_state == 2 and current_player.goblin_hold_active == 0}:
-    - goblin_solid_shot_hit
-    - goblin_solid_penalty_full
-    - goblin_solid_penalty_clamp
-
-  s_right_drop_bank_hit_active{current_player.goblin_shot_state == 2 and current_player.goblin_hold_active == 0}:
-    - goblin_solid_shot_hit
-    - goblin_solid_penalty_full
-    - goblin_solid_penalty_clamp
-
-  # -------------------------------
-  # Saucer hold / stabilizer
-  # -------------------------------
-
-  s_saucer_active{current_player.goblin_hold_active == 0}:
-    - goblin_lock_bonus
-    - goblin_safe_phase_start
-    - goblin_start_hold_timer
-
-  goblin_safe_phase_start:
-    - goblin_set_flashing
-    - goblin_all_active_shots_flash
-    - goblin_saucer_hold_ball
-
-  timer_goblin_hold_timer_complete:
-    - goblin_hold_released
-    - goblin_saucer_eject
-    - goblin_pick_new_pattern
-
-  # -------------------------------
-  # Flashing duration progression
-  # hold count 0 = 5s
-  # hold count 1 = 4s
-  # hold count 2+ = 3s
-  # -------------------------------
-
-  goblin_pick_new_pattern:
-    - goblin_set_flashing
-    - goblin_randomize_three_shots
-    - goblin_start_flash_timer
-
-  goblin_start_flash_timer{current_player.goblin_hold_count == 0}: goblin_flash_5_start
-  goblin_start_flash_timer{current_player.goblin_hold_count == 1}: goblin_flash_4_start
-  goblin_start_flash_timer{current_player.goblin_hold_count >= 2}: goblin_flash_3_start
-
-  timer_goblin_flash_5_timer_complete:
-    - goblin_set_solid
-    - goblin_solid_timer_start
-
-  timer_goblin_flash_4_timer_complete:
-    - goblin_set_solid
-    - goblin_solid_timer_start
-
-  timer_goblin_flash_3_timer_complete:
-    - goblin_set_solid
-    - goblin_solid_timer_start
-
-  timer_goblin_solid_timer_complete:
-    - goblin_set_off
-    - goblin_pick_new_pattern
-
-  ball_ending:
-    - goblin_collect_bonus
-
-
 timers:
-
-  goblin_flash_5_timer:
+  goblin_flash_timer:
     start_value: 5
     end_value: 0
     direction: down
     tick_interval: 1s
     control_events:
-      - event: goblin_flash_5_start
+      - event: goblin_flash_timer_start
         action: restart
-
-  goblin_flash_4_timer:
-    start_value: 4
-    end_value: 0
-    direction: down
-    tick_interval: 1s
-    control_events:
-      - event: goblin_flash_4_start
-        action: restart
-
-  goblin_flash_3_timer:
-    start_value: 3
-    end_value: 0
-    direction: down
-    tick_interval: 1s
-    control_events:
-      - event: goblin_flash_3_start
-        action: restart
+      - event: goblin_flash_timer_stop
+        action: stop
 
   goblin_solid_timer:
     start_value: 3
@@ -255,6 +171,8 @@ timers:
     control_events:
       - event: goblin_solid_timer_start
         action: restart
+      - event: goblin_solid_timer_stop
+        action: stop
 
   goblin_hold_timer:
     start_value: 10
@@ -262,58 +180,301 @@ timers:
     direction: down
     tick_interval: 1s
     control_events:
-      - event: goblin_start_hold_timer
+      - event: goblin_hold_timer_start
         action: restart
-
+      - event: goblin_hold_timer_stop
+        action: stop
 
 show_player:
-
   mode_goblin_started:
     goblin_mode_start_show:
       loops: 0
 
-  goblin_all_active_shots_flash:
-    goblin_safe_flash_show:
+  goblin_lite_left_web:
+    goblin_left_web_flash_show:
+      loops: -1
+  goblin_lite_right_web:
+    goblin_right_web_flash_show:
+      loops: -1
+  goblin_lite_spinner:
+    goblin_spinner_flash_show:
+      loops: -1
+  goblin_lite_left_drops:
+    goblin_left_drops_flash_show:
+      loops: -1
+  goblin_lite_right_drops:
+    goblin_right_drops_flash_show:
+      loops: -1
+  goblin_lite_upper_spinner:
+    goblin_upper_spinner_flash_show:
+      loops: -1
+  goblin_lite_saucers:
+    goblin_saucers_flash_show:
+      loops: -1
+  goblin_lite_upper_target:
+    goblin_upper_target_flash_show:
       loops: -1
 
-  goblin_hold_released:
-    goblin_safe_flash_show:
+  goblin_solid_left_web:
+    goblin_left_web_solid_show:
+      loops: -1
+  goblin_solid_right_web:
+    goblin_right_web_solid_show:
+      loops: -1
+  goblin_solid_spinner:
+    goblin_spinner_solid_show:
+      loops: -1
+  goblin_solid_left_drops:
+    goblin_left_drops_solid_show:
+      loops: -1
+  goblin_solid_right_drops:
+    goblin_right_drops_solid_show:
+      loops: -1
+  goblin_solid_upper_spinner:
+    goblin_upper_spinner_solid_show:
+      loops: -1
+  goblin_solid_saucers:
+    goblin_saucers_solid_show:
+      loops: -1
+  goblin_solid_upper_target:
+    goblin_upper_target_solid_show:
+      loops: -1
+
+  goblin_stop_left_web:
+    goblin_left_web_flash_show:
+      action: stop
+    goblin_left_web_solid_show:
       action: stop
 
-  goblin_set_solid:
-    goblin_warning_solid_show:
-      loops: -1
+  goblin_stop_right_web:
+    goblin_right_web_flash_show:
+      action: stop
+    goblin_right_web_solid_show:
+      action: stop
 
-  goblin_set_off:
-    goblin_warning_solid_show:
+  goblin_stop_spinner:
+    goblin_spinner_flash_show:
+      action: stop
+    goblin_spinner_solid_show:
+      action: stop
+
+  goblin_stop_left_drops:
+    goblin_left_drops_flash_show:
+      action: stop
+    goblin_left_drops_solid_show:
+      action: stop
+
+  goblin_stop_right_drops:
+    goblin_right_drops_flash_show:
+      action: stop
+    goblin_right_drops_solid_show:
+      action: stop
+
+  goblin_stop_upper_spinner:
+    goblin_upper_spinner_flash_show:
+      action: stop
+    goblin_upper_spinner_solid_show:
+      action: stop
+
+  goblin_stop_saucers:
+    goblin_saucers_flash_show:
+      action: stop
+    goblin_saucers_solid_show:
+      action: stop
+
+  goblin_stop_upper_target:
+    goblin_upper_target_flash_show:
+      action: stop
+    goblin_upper_target_solid_show:
+      action: stop
+
+  goblin_stop_all_shows:
+    goblin_left_web_flash_show:
+      action: stop
+    goblin_right_web_flash_show:
+      action: stop
+    goblin_spinner_flash_show:
+      action: stop
+    goblin_left_drops_flash_show:
+      action: stop
+    goblin_right_drops_flash_show:
+      action: stop
+    goblin_upper_spinner_flash_show:
+      action: stop
+    goblin_saucers_flash_show:
+      action: stop
+    goblin_upper_target_flash_show:
+      action: stop
+    goblin_left_web_solid_show:
+      action: stop
+    goblin_right_web_solid_show:
+      action: stop
+    goblin_spinner_solid_show:
+      action: stop
+    goblin_left_drops_solid_show:
+      action: stop
+    goblin_right_drops_solid_show:
+      action: stop
+    goblin_upper_spinner_solid_show:
+      action: stop
+    goblin_saucers_solid_show:
+      action: stop
+    goblin_upper_target_solid_show:
       action: stop
 
 
 shows:
 
-  goblin_mode_start_show:
-    - duration: 500ms
+  goblin_left_web_flash_show:
+    - duration: 120ms
       lights:
-        gi: green
-    - duration: 500ms
-      lights:
-        gi: purple
-
-  goblin_safe_flash_show:
-    - duration: 250ms
+        l_left_web_target: yellow
+    - duration: 120ms
       lights:
         l_left_web_target: green
-        l_mid_spider_target: green
-        l_spinner: green
-    - duration: 250ms
-      lights:
-        l_left_web_target: off
-        l_mid_spider_target: off
-        l_spinner: off
 
-  goblin_warning_solid_show:
-    - duration: 250ms
+  goblin_right_web_flash_show:
+    - duration: 120ms
       lights:
-        l_left_web_target: red
-        l_mid_spider_target: red
-        l_spinner: red
+        l_mid_spider_target: yellow
+    - duration: 120ms
+      lights:
+        l_mid_spider_target: green
+
+  goblin_spinner_flash_show:
+    - duration: 120ms
+      lights:
+        l_spinner: yellow
+    - duration: 120ms
+      lights:
+        l_spinner: green
+
+  goblin_left_drops_flash_show:
+    - duration: 120ms
+      lights:
+        l_3bankbonus: yellow
+        l_extraball: yellow
+    - duration: 120ms
+      lights:
+        l_3bankbonus: green
+        l_extraball: green
+
+  goblin_right_drops_flash_show:
+    - duration: 120ms
+      lights:
+        l_5bank_1: yellow
+        l_5bank_2: yellow
+        l_5bank_3: yellow
+        l_5bank_4: yellow
+        l_5bank_5: yellow
+    - duration: 120ms
+      lights:
+        l_5bank_1: green
+        l_5bank_2: green
+        l_5bank_3: green
+        l_5bank_4: green
+        l_5bank_5: green
+
+  goblin_upper_spinner_flash_show:
+    - duration: 120ms
+      lights:
+        l_gi_a: yellow
+    - duration: 120ms
+      lights:
+        l_gi_a: green
+
+  goblin_saucers_flash_show:
+    - duration: 120ms
+      lights:
+        l_1_hole_l: yellow
+        l_1: yellow
+        l_1_hole_r: yellow
+        l_2_hole_l: yellow
+        l_2: yellow
+        l_2_hole_r: yellow
+        l_3_hole_l: yellow
+        l_3: yellow
+        l_3_hole_r: yellow
+    - duration: 120ms
+      lights:
+        l_1_hole_l: green
+        l_1: green
+        l_1_hole_r: green
+        l_2_hole_l: green
+        l_2: green
+        l_2_hole_r: green
+        l_3_hole_l: green
+        l_3: green
+        l_3_hole_r: green
+
+  goblin_upper_target_flash_show:
+    - duration: 120ms
+      lights:
+        l_upper_left: yellow
+        l_upper_middle: yellow
+        l_upper_right: yellow
+    - duration: 120ms
+      lights:
+        l_upper_left: green
+        l_upper_middle: green
+        l_upper_right: green
+
+  goblin_left_web_solid_show:
+    - duration: -1
+      lights:
+        l_left_web_target: green
+
+  goblin_right_web_solid_show:
+    - duration: -1
+      lights:
+        l_mid_spider_target: green
+
+  goblin_spinner_solid_show:
+    - duration: -1
+      lights:
+        l_spinner: green
+
+  goblin_left_drops_solid_show:
+    - duration: -1
+      lights:
+        l_3bankbonus: green
+        l_extraball: green
+
+  goblin_right_drops_solid_show:
+    - duration: -1
+      lights:
+        l_5bank_1: green
+        l_5bank_2: green
+        l_5bank_3: green
+        l_5bank_4: green
+        l_5bank_5: green
+
+  goblin_upper_spinner_solid_show:
+    - duration: -1
+      lights:
+        l_gi_a: green
+
+  goblin_saucers_solid_show:
+    - duration: -1
+      lights:
+        l_1_hole_l: green
+        l_1: green
+        l_1_hole_r: green
+        l_2_hole_l: green
+        l_2: green
+        l_2_hole_r: green
+        l_3_hole_l: green
+        l_3: green
+        l_3_hole_r: green
+
+  goblin_upper_target_solid_show:
+    - duration: -1
+      lights:
+        l_upper_left: green
+        l_upper_middle: green
+        l_upper_right: green        
+
+  goblin_mode_start_show:
+    - duration: -1
+      lights:
+        gi: green

@@ -157,20 +157,18 @@ shows:
     - duration: 200ms
       lights:
         l_3bankbonus: green
-        l_left_multibonus: green
     - duration: 200ms
       lights:
         l_3bankbonus: off
-        l_left_multibonus: off
 
   scorpion_hard_sting_show:
     - duration: 200ms
       lights:
-        l_5bank_1: red
-        l_5bank_2: red
-        l_5bank_3: red
-        l_5bank_4: red
-        l_5bank_5: red
+        l_5bank_1: green
+        l_5bank_2: green
+        l_5bank_3: green
+        l_5bank_4: green
+        l_5bank_5: green
     - duration: 200ms
       lights:
         l_5bank_1: off

@@ -17,6 +17,7 @@ event_player:
     - reset_villain_locate
 
   electro_mode_started:
+    - reset_drops
     - clear_saucers
 
   # -------------------------------

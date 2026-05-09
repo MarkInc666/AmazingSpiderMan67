@@ -24,6 +24,7 @@ variable_player:
       
 event_player:
   mode_meteor_started:
+    - reset_drops 
     - enable_up_post_event
     - meteor_start
 

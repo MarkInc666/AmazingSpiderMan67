@@ -181,7 +181,7 @@ class Sandman(Mode):
 
         if self.banks_completed >= self.MAX_BANKS:
             self.machine.events.post("sandman_mode_complete")
-            self.machine.events.post("reset_5bank")
+            self.machine.events.post("reset_5bank_delayed")
             return
 
         self.delay.add(
