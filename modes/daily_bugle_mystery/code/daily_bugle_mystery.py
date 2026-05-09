@@ -60,16 +60,16 @@ class DailyBugleMystery(Mode):
         self.update_player_vars()
 
     def a_rollover_hit(self, **kwargs):
-        if self.a_hit == false:
+        if self.a_hit == False:
             self.machine.events.post("daily_bugle_a_complete")
-        self.a_hit = True
-        self.check_ab_complete()
+            self.a_hit = True
+            self.check_ab_complete()
 
     def b_rollover_hit(self, **kwargs):
-        if self.b_hit == false:
+        if self.b_hit == False:
             self.machine.events.post("daily_bugle_b_complete")
-        self.b_hit = True
-        self.check_ab_complete()
+            self.b_hit = True
+            self.check_ab_complete()
 
     def check_ab_complete(self):
         if not self.a_hit or not self.b_hit:

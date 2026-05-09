@@ -13,6 +13,12 @@ mode:
   priority: 500
 
 event_player:
+  electro_mode_complete:
+    - reset_villain_locate
+
+  electro_mode_started:
+    - clear_saucers
+
   # -------------------------------
   # Real switches / shot groups -> Electro Python events
   # -------------------------------
@@ -288,12 +294,12 @@ shows:
   electro_saucers_lit_show:
     - duration: 150ms
       lights:
-        l_1_hole_l: yellow
-        l_1_hole_r: yellow        
-        l_2_hole_l: yellow
-        l_2_hole_r: yellow        
-        l_3_hole_l: yellow
-        l_3_hole_r: yellow        
+        l_1_hole_l: red
+        l_1_hole_r: red        
+        l_2_hole_l: red
+        l_2_hole_r: red        
+        l_3_hole_l: red
+        l_3_hole_r: red        
     - duration: 150ms
       lights:
         l_1_hole_l: off
@@ -351,88 +357,114 @@ shows:
   # Super shows
   # -------------------------------
   electro_left_web_super_show:
-    - duration: 100ms
+    - duration: 150ms
       lights:
-        l_20k: white
-    - duration: 100ms
+        l_left_web_target: white      
+    - duration: 150ms
       lights:
-        l_20k: yellow
+        l_left_web_target: off
 
   electro_spinner_super_show:
-    - duration: 100ms
+    - duration: 150ms
       lights:
-        l_1k: white
-    - duration: 100ms
+        l_spinner: white
+    - duration: 150ms
       lights:
-        l_1k: yellow
+        l_spinner: off
 
   electro_left_drops_super_show:
-    - duration: 100ms
+    - duration: 120ms
       lights:
-        l_2k: white
-    - duration: 100ms
+        l_3bankbonus: white
+        l_extraball: white
+    - duration: 120ms
       lights:
-        l_2k: yellow
+        l_3bankbonus: off
+        l_extraball: off
 
   electro_saucers_super_show:
-    - duration: 100ms
+    - duration: 150ms
       lights:
-        l_3k: white
-    - duration: 100ms
+        l_1_hole_l: white
+        l_1_hole_r: white        
+        l_2_hole_l: white
+        l_2_hole_r: white        
+        l_3_hole_l: white
+        l_3_hole_r: white        
+    - duration: 150ms
       lights:
-        l_3k: yellow
+        l_1_hole_l: off
+        l_1_hole_r: off        
+        l_2_hole_l: off
+        l_2_hole_r: off        
+        l_3_hole_l: off
+        l_3_hole_r: off        
 
   electro_right_web_super_show:
-    - duration: 100ms
+    - duration: 150ms
       lights:
-        l_4k: white
-    - duration: 100ms
+        l_mid_spider_target: white
+    - duration: 150ms
       lights:
-        l_4k: yellow
+        l_mid_spider_target: off
 
   electro_upper_spinner_super_show:
-    - duration: 100ms
+    - duration: 120ms
       lights:
-        l_5k: white
-    - duration: 100ms
+        l_gi_a: white
+    - duration: 120ms
       lights:
-        l_5k: yellow
+        l_gi_a: blue
 
   electro_upper_targets_super_show:
-    - duration: 100ms
+    - duration: 120ms
       lights:
-        l_shoot_again: white
-    - duration: 100ms
+        l_upper_left: white
+        l_upper_middle: white
+        l_upper_right: white
+    - duration: 120ms
       lights:
-        l_shoot_again: yellow
+        l_upper_left: off
+        l_upper_middle: off
+        l_upper_right: off
 
   electro_right_drops_super_show:
-    - duration: 100ms
+    - duration: 120ms
       lights:
-        l_20k: white
-        l_1k: white
-    - duration: 100ms
+        l_5bank_1: white
+        l_5bank_2: white
+        l_5bank_3: white
+        l_5bank_4: white
+        l_5bank_5: white
+    - duration: 120ms
       lights:
-        l_20k: yellow
-        l_1k: yellow
+        l_5bank_1: off
+        l_5bank_2: off
+        l_5bank_3: off
+        l_5bank_4: off
+        l_5bank_5: off
 
   electro_super_collected_show:
     - duration: 500ms
       lights:
-        l_20k: white
-        l_1k: white
-        l_2k: white
-        l_3k: white
-        l_4k: white
-        l_5k: white
+        gi: white
+    - duration: 500ms
+      lights:
+        gi: red
+    - duration: 500ms
+      lights:
+        gi: red
+    - duration: 500ms
+      lights:
+        gi: white
 
   electro_mode_complete_show:
     - duration: 500ms
       lights:
-        l_20k: green
+        gi: green
 
   electro_mode_failed_show:
     - duration: 500ms
       lights:
-        l_20k: red
+        gi: red
 

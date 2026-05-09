@@ -40,6 +40,10 @@ show_player:
       loops: -1
 
   daily_bugle_ab_ready:
+    daily_bugle_a_complete_show:
+      action: stop
+    daily_bugle_b_complete_show:
+      action: stop
     daily_bugle_ab_ready_show:
       loops: -1
 
@@ -61,11 +65,13 @@ show_player:
     daily_bugle_extra_ball_lit_show:
       loops: -1
 
+#this will move to extra ball mode
   daily_bugle_extra_ball_awarded:
     daily_bugle_extra_ball_lit_show:
       action: stop
     daily_bugle_extra_ball_award_show:
       loops: 1
+
 
 shows:
 

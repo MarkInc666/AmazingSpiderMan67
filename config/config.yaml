@@ -164,7 +164,7 @@ coil_player:
       action: pulse
 
   plunger_auto_fire:
-    coil: c_auto_plunger
+    c_auto_plunger:
       action: pulse
       
 
@@ -297,7 +297,6 @@ show_player:
     shoot_again_fast_flash:
       action: stop
 
-
   ball_save_mystery_ball_save_enabled:
     shoot_again_flash:
       loops: -1
@@ -313,10 +312,7 @@ show_player:
       action: stop
 
 
-      
-
- shows:
-
+shows:
   shoot_again_fast_flash:
     - duration: 250ms
       lights:

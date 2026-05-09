@@ -5,7 +5,7 @@ mode:
   stop_events:
     - rhino_bash_complete
     - ball_ended
-  code: rhino_bash.RhinoBash
+  code: rhino.RhinoBash
   priority: 300
 
 event_player:

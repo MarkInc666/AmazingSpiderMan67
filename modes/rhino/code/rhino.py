@@ -38,14 +38,14 @@ class RhinoBash(Mode):
         self.berserk_running = False
         self.mode_done = False
 
-        self.add_mode_event_handler("rhino_start", self.start)
+        self.add_mode_event_handler("rhino_start", self.start_rh)
         self.add_mode_event_handler("rhino_pop_hit", self.pop_hit)
         self.add_mode_event_handler("rhino_smash_hit", self.smash_hit)
         self.add_mode_event_handler("rhino_jackpot_collect_request", self.collect_jackpot)
 
         self.update_player_vars()
 
-    def start(self, **kwargs):
+    def start_rh(self, **kwargs):
         self.post_rage_show()
         self.update_player_vars()
 
