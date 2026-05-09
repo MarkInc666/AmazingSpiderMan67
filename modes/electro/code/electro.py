@@ -149,4 +149,5 @@ class Electro(Mode):
 
     def super_timeout(self, **kwargs):
         self.machine.events.post("electro_super_missed")
+        self.machine.events.post("electro_mode_complete")        
         self.machine.events.post("electro_mode_failed")
