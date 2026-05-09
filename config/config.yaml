@@ -120,10 +120,10 @@ event_player:
     - cmd_autofire_coils_disable
     - timer_timer_up_post_hold_complete
     
-  rooftop_diverter_open{device.switches.s_diverter_open.state == 0}:
+  rooftop_diverter_open{device.switches.s_diverter_open.state == 1}:
     - fire_rooftop_diverter_open
     
-  rooftop_diverter_close{device.switches.s_diverter_open.state == 1}:
+  rooftop_diverter_close{device.switches.s_diverter_open.state == 0}:
     - fire_rooftop_diverter_close
 
   s_plunger_active{current_player.multiball_autoplunge_active == 1}:

@@ -53,7 +53,7 @@ event_player:
 
 timers:
   bonus_center_web_timer:
-    start_value: 6
+    start_value: 10
     end_value: 0
     direction: down
     tick_interval: 1s
@@ -66,7 +66,7 @@ timers:
         action: stop
 
   bonus_left_web_timer:
-    start_value: 6
+    start_value: 10
     end_value: 0
     direction: down
     tick_interval: 1s
@@ -86,6 +86,15 @@ show_player:
   bonus_center_web_lit:
     bonus_center_web_show:
       loops: -1
+  #shut off the lanes
+    bonus_lane_1_solid:
+      action: stop
+    bonus_lane_2_solid:
+      action: stop
+    bonus_lane_3_solid:
+      action: stop
+    bonus_lane_4_solid:
+      action: stop
 
   bonus_center_web_collected:
     bonus_center_web_show:
@@ -219,6 +228,33 @@ show_player:
     bonus_light_l_20k_on:
       action: stop
 
+  bonus_light_l_2x_on:
+    bonus_light_l_2x_on:
+      loops: -1
+  bonus_light_l_2x_off:
+    bonus_light_l_2x_on:
+      action: stop
+
+  bonus_light_l_3x_on:
+    bonus_light_l_3x_on:
+      loops: -1
+  bonus_light_l_3x_off:
+    bonus_light_l_3x_on:
+      action: stop
+
+  bonus_light_l_4x_on:
+    bonus_light_l_4x_on:
+      loops: -1
+  bonus_light_l_4x_off:
+    bonus_light_l_4x_on:
+      action: stop
+
+  bonus_light_l_5x_on:
+    bonus_light_l_5x_on:
+      loops: -1
+  bonus_light_l_5x_off:
+    bonus_light_l_5x_on:
+      action: stop
 
 
 shows:
@@ -362,3 +398,19 @@ shows:
       lights:
         l_20k: white
 
+  bonus_light_l_2x_on:
+    - duration: 1s
+      lights:
+        l_2x: white
+  bonus_light_l_3x_on:
+    - duration: 1s
+      lights:
+        l_3x: white
+  bonus_light_l_4x_on:
+    - duration: 1s
+      lights:
+        l_4x: white
+  bonus_light_l_5x_on:
+    - duration: 1s
+      lights:
+        l_5x: white

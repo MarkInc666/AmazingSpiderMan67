@@ -200,34 +200,34 @@ shows:
   doc_ock_arm_1_pulse:
     - duration: 400ms
       lights:
-        l_left_outlane: purple
+        l_left_outlane: 207070
     - duration: 400ms
       lights:
-        l_left_outlane: blue
+        l_left_outlane: 2020B0
 
   doc_ock_arm_2_pulse:
     - duration: 400ms
       lights:
-        l_left_inlane: purple
+        l_left_inlane: 207070
     - duration: 400ms
       lights:
-        l_left_inlane: blue
+        l_left_inlane: 2020B0
 
   doc_ock_arm_3_pulse:
     - duration: 400ms
       lights:
-        l_right_inlane: purple
+        l_right_inlane: 207070
     - duration: 400ms
       lights:
-        l_right_inlane: blue
+        l_right_inlane: 2020B0
 
   doc_ock_arm_4_pulse:
     - duration: 400ms
       lights:
-        l_right_outlane: purple
+        l_right_outlane: 207070
     - duration: 400ms
       lights:
-        l_right_outlane: blue
+        l_right_outlane: 2020B0
 
   doc_ock_arm_1_solid:
     - duration: 400ms
@@ -235,7 +235,7 @@ shows:
         l_left_outlane: white
     - duration: 400ms
       lights:
-        l_left_outlane: cyan
+        l_left_outlane: 20D0D0
 
   doc_ock_arm_2_solid:
     - duration: 400ms
@@ -243,7 +243,7 @@ shows:
         l_left_inlane: white
     - duration: 400ms
       lights:
-        l_left_inlane: cyan
+        l_left_inlane: 20D0D0
 
   doc_ock_arm_3_solid:
     - duration: 400ms
@@ -251,7 +251,7 @@ shows:
         l_right_inlane: white
     - duration: 400ms
       lights:
-        l_right_inlane: cyan
+        l_right_inlane: 20D0D0
 
   doc_ock_arm_4_solid:
     - duration: 400ms
@@ -259,7 +259,7 @@ shows:
         l_right_outlane: white
     - duration: 400ms
       lights:
-        l_right_outlane: cyan
+        l_right_outlane: 20D0D0
 
   doc_ock_web_jackpot_show:
     - duration: 250ms

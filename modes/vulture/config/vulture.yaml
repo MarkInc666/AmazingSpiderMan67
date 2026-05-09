@@ -26,6 +26,16 @@ variable_player:
       action: set
       int: 0
 
+  timer_vulture_mode_timer_complete:
+    vulture_time_expired:
+      action: set
+      int: 1
+
+  mode_vulture_started:
+    vulture_time_expired:
+      action: set
+      int: 0
+
 
 event_player:
   mode_vulture_started:
@@ -33,7 +43,10 @@ event_player:
     - clear_saucers
     - vulture_show_targets
 
-  timer_vulture_mode_timer_complete:
+  timer_vulture_mode_timer_complete{current_player.multiball_autoplunge_active == 0}:
+    - vulture_mode_complete
+
+  multiball_vulture_add_a_ball_ended{current_player.vulture_time_expired == 1}:
     - vulture_mode_complete
 
   timer_vulture_idle_timer_complete:
@@ -183,7 +196,7 @@ shows:
   vulture_left_yellow:
     - duration: 1s
       lights:
-        l_upper_left: yellow
+        l_upper_left: D0D020
 
   vulture_left_orange:
     - duration: 1s
@@ -198,7 +211,7 @@ shows:
   vulture_center_yellow:
     - duration: 1s
       lights:
-        l_upper_middle: yellow
+        l_upper_middle: D0D020
 
   vulture_center_orange:
     - duration: 1s
@@ -213,7 +226,7 @@ shows:
   vulture_right_yellow:
     - duration: 1s
       lights:
-        l_upper_right: yellow
+        l_upper_right: D0D020
 
   vulture_right_orange:
     - duration: 1s

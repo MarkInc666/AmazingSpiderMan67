@@ -152,18 +152,6 @@ show_player:
     rhino_bash_complete_show:
       loops: 1
 
-# Keep your existing shows section from the current Rhino file:
-# rhino_left_b_lit
-# rhino_rage_1
-# rhino_rage_2
-# rhino_rage_3
-# rhino_rage_4
-# rhino_rage_5
-# rhino_berserk_gi
-# rhino_jackpot_collect_show
-# rhino_crash_show
-# rhino_bash_complete_show
-
 shows:
 
   rhino_left_b_lit:
