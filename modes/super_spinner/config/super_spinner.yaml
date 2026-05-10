@@ -1,0 +1,57 @@
+#config_version=6
+
+mode:
+  start_events: mystery_award_start_super_spinner
+  stop_events:
+    - timer_super_spinner_timer_complete
+    - ball_ended
+  priority: 400
+
+event_player:
+  mode_super_spinner_started:
+    - super_spinner_lit
+    - super_spinner_timer_start
+
+  timer_super_spinner_timer_complete:
+    - super_spinner_unlit
+
+  s_web_spinner_active:
+    - super_spinner_score
+
+variable_player:
+  super_spinner_score:
+    score:
+      action: add
+      int: 50000
+
+timers:
+  super_spinner_timer:
+    start_value: 20
+    end_value: 0
+    direction: down
+    tick_interval: 1s
+    control_events:
+      - event: super_spinner_timer_start
+        action: restart
+
+show_player:
+  super_spinner_lit:
+    super_spinner_flash_show:
+      loops: -1
+
+  super_spinner_unlit:
+    super_spinner_flash_show:
+      action: stop
+
+  mode_super_spinner_stopping:
+    super_spinner_flash_show:
+      action: stop
+
+shows:
+  super_spinner_flash_show:
+    - duration: 150ms
+      lights:
+        l_spinner: white
+    - duration: 150ms
+      lights:
+        l_spinner: blue

@@ -158,122 +158,42 @@ shows:
     - duration: 300ms
       lights:
         l_left_b: white
+        l_left_multibonus: white
     - duration: 300ms
       lights:
         l_left_b: off
+        l_left_multibonus: off
 
   rhino_rage_1:
     - duration: 1s
       lights:
-        l_pop_1_1: white
-        l_pop_1_2: white
-        l_pop_1_3: off
+        l_pop_1_1: yellow
+        l_pop_1_2: off
+        l_pop_1_3: yellow
         l_pop_1_4: off
-        l_pop_1_5: off
+        l_pop_1_5: yellow
         l_pop_1_6: off
-        l_pop_1_7: off
+        l_pop_1_7: yellow
         l_pop_1_8: off
-        l_pop_1_9: off
+        l_pop_1_9: yellow
         l_pop_1_10: off
-        l_pop_1_11: off
+        l_pop_1_11: yellow
         l_pop_1_12: off
-        l_pop_2_1: white
-        l_pop_2_2: white
-        l_pop_2_3: off
+        l_pop_2_1: yellow
+        l_pop_2_2: off
+        l_pop_2_3: yellow
         l_pop_2_4: off
-        l_pop_2_5: off
+        l_pop_2_5: yellow
         l_pop_2_6: off
-        l_pop_2_7: off
+        l_pop_2_7: yellow
         l_pop_2_8: off
-        l_pop_2_9: off
+        l_pop_2_9: yellow
         l_pop_2_10: off
-        l_pop_2_11: off
+        l_pop_2_11: yellow
         l_pop_2_12: off
 
   rhino_rage_2:
     - duration: 1s
-      lights:
-        l_pop_1_1: yellow
-        l_pop_1_2: yellow
-        l_pop_1_3: yellow
-        l_pop_1_4: yellow
-        l_pop_1_5: off
-        l_pop_1_6: off
-        l_pop_1_7: off
-        l_pop_1_8: off
-        l_pop_1_9: off
-        l_pop_1_10: off
-        l_pop_1_11: off
-        l_pop_1_12: off
-        l_pop_2_1: yellow
-        l_pop_2_2: yellow
-        l_pop_2_3: yellow
-        l_pop_2_4: yellow
-        l_pop_2_5: off
-        l_pop_2_6: off
-        l_pop_2_7: off
-        l_pop_2_8: off
-        l_pop_2_9: off
-        l_pop_2_10: off
-        l_pop_2_11: off
-        l_pop_2_12: off
-
-  rhino_rage_3:
-    - duration: 1s
-      lights:
-        l_pop_1_1: orange
-        l_pop_1_2: orange
-        l_pop_1_3: orange
-        l_pop_1_4: orange
-        l_pop_1_5: orange
-        l_pop_1_6: orange
-        l_pop_1_7: orange
-        l_pop_1_8: off
-        l_pop_1_9: off
-        l_pop_1_10: off
-        l_pop_1_11: off
-        l_pop_1_12: off
-        l_pop_2_1: orange
-        l_pop_2_2: orange
-        l_pop_2_3: orange
-        l_pop_2_4: orange
-        l_pop_2_5: orange
-        l_pop_2_6: orange
-        l_pop_2_7: orange
-        l_pop_2_8: off
-        l_pop_2_9: off
-        l_pop_2_10: off
-        l_pop_2_11: off
-        l_pop_2_12: off
-
-  rhino_rage_4:
-    - duration: 500ms
-      lights:
-        l_pop_1_1: red
-        l_pop_1_2: red
-        l_pop_1_3: red
-        l_pop_1_4: red
-        l_pop_1_5: red
-        l_pop_1_6: red
-        l_pop_1_7: red
-        l_pop_1_8: red
-        l_pop_1_9: red
-        l_pop_1_10: red
-        l_pop_1_11: off
-        l_pop_1_12: off
-        l_pop_2_1: red
-        l_pop_2_2: red
-        l_pop_2_3: red
-        l_pop_2_4: red
-        l_pop_2_5: red
-        l_pop_2_6: red
-        l_pop_2_7: red
-        l_pop_2_8: red
-        l_pop_2_9: red
-        l_pop_2_10: red
-        l_pop_2_11: off
-        l_pop_2_12: off
-    - duration: 500ms
       lights:
         l_pop_1_1: yellow
         l_pop_1_2: yellow
@@ -285,8 +205,8 @@ shows:
         l_pop_1_8: yellow
         l_pop_1_9: yellow
         l_pop_1_10: yellow
-        l_pop_1_11: off
-        l_pop_1_12: off
+        l_pop_1_11: yellow
+        l_pop_1_12: yellow
         l_pop_2_1: yellow
         l_pop_2_2: yellow
         l_pop_2_3: yellow
@@ -297,8 +217,90 @@ shows:
         l_pop_2_8: yellow
         l_pop_2_9: yellow
         l_pop_2_10: yellow
-        l_pop_2_11: off
-        l_pop_2_12: off
+        l_pop_2_11: yellow
+        l_pop_2_12: yellow
+
+  rhino_rage_3:
+    - duration: 1s
+      lights:
+        l_pop_1_1: orange
+        l_pop_1_2: orange
+        l_pop_1_3: orange
+        l_pop_1_4: orange
+        l_pop_1_5: orange
+        l_pop_1_6: orange
+        l_pop_1_7: orange
+        l_pop_1_8: orange
+        l_pop_1_9: orange
+        l_pop_1_10: orange
+        l_pop_1_11: orange
+        l_pop_1_12: orange
+        l_pop_2_1: orange
+        l_pop_2_2: orange
+        l_pop_2_3: orange
+        l_pop_2_4: orange
+        l_pop_2_5: orange
+        l_pop_2_6: orange
+        l_pop_2_7: orange
+        l_pop_2_8: orange
+        l_pop_2_9: orange
+        l_pop_2_10: orange
+        l_pop_2_11: orange
+        l_pop_2_12: orange
+
+  rhino_rage_4:
+    - duration: 500ms
+      lights:
+        l_pop_1_1: orange
+        l_pop_1_2: orange
+        l_pop_1_3: orange
+        l_pop_1_4: orange
+        l_pop_1_5: orange
+        l_pop_1_6: orange
+        l_pop_1_7: orange
+        l_pop_1_8: orange
+        l_pop_1_9: orange
+        l_pop_1_10: orange
+        l_pop_1_11: orange
+        l_pop_1_12: orange
+        l_pop_2_1: orange
+        l_pop_2_2: orange
+        l_pop_2_3: orange
+        l_pop_2_4: orange
+        l_pop_2_5: orange
+        l_pop_2_6: orange
+        l_pop_2_7: orange
+        l_pop_2_8: orange
+        l_pop_2_9: orange
+        l_pop_2_10: orange
+        l_pop_2_11: orange
+        l_pop_2_12: orange
+    - duration: 500ms
+      lights:
+        l_pop_1_1: F09010
+        l_pop_1_2: F09010
+        l_pop_1_3: F09010
+        l_pop_1_4: F09010
+        l_pop_1_5: F09010
+        l_pop_1_6: F09010
+        l_pop_1_7: F09010
+        l_pop_1_8: F09010
+        l_pop_1_9: F09010
+        l_pop_1_10: F09010
+        l_pop_1_11: F09010
+        l_pop_1_12: F09010
+        l_pop_2_1: F09010
+        l_pop_2_2: F09010
+        l_pop_2_3: F09010
+        l_pop_2_4: F09010
+        l_pop_2_5: F09010
+        l_pop_2_6: F09010
+        l_pop_2_7: F09010
+        l_pop_2_8: F09010
+        l_pop_2_9: F09010
+        l_pop_2_10: F09010
+        l_pop_2_11: F09010
+        l_pop_2_12: F09010
 
   rhino_rage_5:
     - duration: 150ms

@@ -3,8 +3,9 @@
 ## 🦏 Rhino — “Rhino Bash”
 
 * Pops build Rage Meter
-* Higher rage increases jackpot growth
-* Cash out jackpots before things get too dangerous
+* Higher rage increases jackpot growth (all switches)
+* Cash out jackpots (at left B) before things get too dangerous
+* ends after 5 JPs or rage meter breaks
 
 ---
 
@@ -12,7 +13,8 @@
 
 * Moving flashing right-bank drop targets
 * Flashing target worth major points
-* Complete left→right sweeps for jackpots
+* Complete in sequence for jackpots
+* ends after 3 sweeps
 
 ---
 
@@ -22,6 +24,7 @@
 * Values decay over time
 * Max all targets to add-a-ball
 * 2 balls on upper = scoring multiplier
+* ends after 40 seconds, or later when MB ends
 
 ---
 
@@ -29,7 +32,8 @@
 
 * Traveling lit shots across playfield
 * Hit lit shot before it moves
-* Later shots become more valuable
+* Last shot is timed super 
+* ends when all hit or super times out
 
 ---
 
@@ -63,17 +67,21 @@
 ## 🧠 Doctor Octopus — “Tentacle Lockdown”
 
 * Lock “arms” to build jackpot multiplier
-* Jackpot collections create breakout shots
+* spinner increases JP value
+* Jackpot collections create breakout shots (upper shots)
+* later, timer starts for auto arm release
 * Breakout shots release locked arms
+* ends when all arms free
 
 ---
 
 ## 🦎 Lizard — “Serum Delivery”
 
 * Collect serum at star rollover
-* Deliver to left then center web target
+* Deliver to left web, then 2nd serum to center web target
 * Serum value decays over time
 * A+B rollovers boost value
+* ends after 2 deliveries or times out
 
 ---
 
@@ -136,152 +144,24 @@ Here are the strongest fits for your game.
 
 Peter Parker gathering information/photos for the Bugle.
 
-## Core Loop
+Steps:
+A+B to open rooftop gate
+VUK to roof
+roof traversal to right exit
+VUK for award
 
-Complete small objectives to spell:
-
-```text
-SCOOP
-```
-
-or
-
-```text
-BUGLE
-```
-
-Then:
-
-```text
-Mystery lit at saucer
-```
-
----
-
-# Ways to collect letters
-
-Use classic lower-playfield gameplay:
-
-* inlanes
-* outlanes
-* left orbit
-* standups
-* drop completions
-
-Example:
-
-```text
-A/B rollover completion advances one letter
-```
-
----
 
 # Mystery Awards Ideas
 
-Not random junk — weighted useful stuff:
-
-```text
-+ spinner boost
-+ heat freeze (Parafino)
-+ rage hold (Rhino)
-+ upper gate open
-+ light extra ball
++ super spinners 20s
++ extra ball (at 10)
++ light extra ball (at 3)
++ ball save (20s)
 + bonus X
-+ add villain spin progress
++ villain qualify
 + mystery multiball
-```
 
 ---
-
-# 💡 BEST Twist
-
-If collected during villain mode:
-
-```text
-villain-specific mystery
-```
-
-That would feel very polished.
-
----
-
-# ⭐ Extra Ball System — “Spider-Sense”
-
-You want EB to feel:
-
-* difficult
-* skill-based
-* visible
-
-NOT random.
-
----
-
-# Best version for your game
-
-## Repeated dangerous upper-loop completion
-
-Example:
-
-```text
-Complete rooftop loop 3 times without draining
-→ light Spider-Sense
-```
-
-Then:
-
-```text
-left outlane save shot lights Extra Ball
-```
-
----
-
-# Another strong option
-
-## “Perfect Rooftop”
-
-During any villain mode:
-
-```text
-enter upper
-spin
-exit safely
-repeat 3 times
-```
-
-No missed exits.
-
-Then:
-
-```text
-Extra Ball lit
-```
-
-This rewards mastery of your unique upper playfield.
-
----
-
-# Another really good one
-
-## “Villain Streak”
-
-Defeat:
-
-```text
-3 unique villains in one ball
-```
-
-Then:
-
-```text
-Extra Ball lit
-```
-
-That creates long-term tension naturally.
-
----
-
-# 🔥 My strongest recommendation
 
 ## Mystery:
 

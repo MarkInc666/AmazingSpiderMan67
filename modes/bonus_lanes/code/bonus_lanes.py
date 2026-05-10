@@ -35,7 +35,6 @@ class BonusLanes(Mode):
         5: "l_5x",
     }
 
-
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
 
@@ -55,6 +54,8 @@ class BonusLanes(Mode):
                 lane=lane
             )
 
+        self.add_mode_event_handler("mystery_award_advance_bonus_multiplier", self.advance_bonus_multiplier)
+        self.add_mode_event_handler("mystery_award_hold_bonus", self.set_hold_bonus)
         self.add_mode_event_handler("bonus_center_web_request", self.center_web_hit)
         self.add_mode_event_handler("bonus_left_web_request", self.left_web_hit)
         self.add_mode_event_handler("bonus_center_web_timeout", self.center_web_timeout)
@@ -138,15 +139,20 @@ class BonusLanes(Mode):
 
         self.machine.events.post("bonus_left_web_collected")
 
-    def advance_bonus_multiplier(self):
+    def advance_bonus_multiplier(self, **kwargs):
         player = self.machine.game.player
         current = player["bonus_multiplier"]
 
         if current < self.MAX_MULTIPLIER:
             player["bonus_multiplier"] = current + 1
+        else:
+            player["score"] += 100000
 
         self.update_bonus_lights()            
 
+
+    def set_hold_bonus(self, **kwargs):
+        self.machine.game.player["hold_bonus"] = True
 
     def center_web_timeout(self, **kwargs):
         self.center_web_lit = False

@@ -18,17 +18,28 @@ class DailyBugleMystery(Mode):
     - 1st, 2nd, 3rd awards = placeholder mystery awards
     - 4th award = light Extra Ball
     - 10th award = award Extra Ball
+
+    # Mystery Awards Ideas
+    + light extra ball (at 3)
+    + extra ball (at 10)
+    + ball save (20s)
+    + super spinners 20s
+    + bonus X
+    + hold bonus
+    + villain qualify  ?
+    + mystery multiball  ?
+
     """
 
     EXTRA_BALL_LIGHT_AT = 4
     EXTRA_BALL_AWARD_AT = 10
 
     PLACEHOLDER_AWARDS = [
-        "start_mystery_ball_save",
-        "daily_bugle_award_placeholder_2",
-        "daily_bugle_award_placeholder_3",
-        "daily_bugle_award_placeholder_4",
-        "daily_bugle_award_placeholder_5",
+        "mystery_award_ball_save",
+        "mystery_award_start_super_spinner",
+        "mystery_award_advance_bonus_multiplier",
+        "mystery_award_hold_bonus",
+        "mystery_award_villain_start_ready",
     ]
 
     def mode_start(self, **kwargs):
@@ -119,13 +130,28 @@ class DailyBugleMystery(Mode):
         elif count == self.EXTRA_BALL_AWARD_AT:
             self.award_extra_ball()
         else:
-            self.award_placeholder_mystery()
+            self.award_psuedo_random_mystery()
 
         self.reset_cycle()
         self.update_player_vars()
 
-    def award_placeholder_mystery(self):
-        award_event = random.choice(self.PLACEHOLDER_AWARDS)
+    def award_psuedo_random_mystery(self):
+        valid = False
+
+        while not valid:
+            award_event = random.choice(self.PLACEHOLDER_AWARDS)
+            if award_event == "mystery_award_villain_start_ready":
+                if (
+                    self.machine.game.player.villain_mode_running == 0
+                    and self.machine.game.player.villain_start_ready == 0
+                ):
+                    valid = True
+            elif award_event == "mystery_award_hold_bonus":
+                if self.machine.game.player.hold_bonus == 0:
+                    valid = True
+            else:
+                valid = True
+
         self.machine.events.post(award_event)
 
     def light_extra_ball(self):

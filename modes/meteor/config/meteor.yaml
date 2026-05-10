@@ -102,13 +102,13 @@ shows:
   meteor_danger_show:
     - duration: 100ms
       lights:
-        l_3bankbonus: red
-        l_left_multibonus: red
-        l_5bank_1: red
-        l_5bank_2: red
-        l_5bank_3: red
-        l_5bank_4: red
-        l_5bank_5: red
+        l_3bankbonus: cyan
+        l_left_multibonus: cyan
+        l_5bank_1: cyan
+        l_5bank_2: cyan
+        l_5bank_3: cyan
+        l_5bank_4: cyan
+        l_5bank_5: cyan
     - duration: 100ms
       lights:
         l_3bankbonus: off

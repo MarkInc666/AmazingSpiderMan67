@@ -208,7 +208,7 @@ ball_saves:
     hurry_up_time: 3s
     grace_period: 2s
     enable_events:
-      - start_mystery_ball_save
+      - mystery_award_ball_save
 
 
   default_ball_save:

@@ -44,6 +44,11 @@ event_player:
     - villain_start_ready_set
     - villain_start_ready
 
+  mystery_award_villain_start_ready:
+    - villain_start_ready_set
+    - villain_start_ready
+
+
   villain_start_ready:
     - villain_saucers_solid_lit
     
