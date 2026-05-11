@@ -1,4 +1,5 @@
 #config_version=6
+
 mode:
   start_events: start_mode_lizard
   stop_events:
@@ -159,12 +160,10 @@ event_player:
 
   # Delivery shots
   s_web_target_left_active:
-    - lizard_delivery_request:
-        target: left
+    - lizard_delivery_request_left
 
   s_web_target_top_active:
-    - lizard_delivery_request:
-        target: center
+    - lizard_delivery_request_center
 
   mode_lizard_started:
     - lizard_light_serum_location

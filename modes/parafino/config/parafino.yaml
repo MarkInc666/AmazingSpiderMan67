@@ -53,15 +53,6 @@ event_player:
   drop_target_bank_dt_bank_right_down:
     - drop_target_bank_dt_bank_right_reset
 
-  s_saucer_1_active:
-    - clear_saucers
-    
-  s_saucer_2_active:
-    - clear_saucers
-    
-  s_saucer_3_active:
-    - clear_saucers    
-
   parafino_mode_complete:
     - reset_villain_locate
 
@@ -94,12 +85,15 @@ event_player:
   # Saucer add-a-ball collects
   s_saucer_1_active:
     - parafino_saucer_1_hit
-
+    - clear_saucers
+  
   s_saucer_2_active:
     - parafino_saucer_2_hit
+    - clear_saucers
 
   s_saucer_3_active:
     - parafino_saucer_3_hit
+    - clear_saucers
 
   # Spinner cashout
   s_web_spinner_active:

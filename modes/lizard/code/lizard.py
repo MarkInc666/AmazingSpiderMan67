@@ -19,8 +19,15 @@ class Lizard(Mode):
         super().mode_start(**kwargs)
 
         self.add_mode_event_handler(
-            "lizard_delivery_request",
-            self.delivery_request
+            "lizard_delivery_request_left",
+            self.delivery_request,
+            target="left"
+        )
+
+        self.add_mode_event_handler(
+            "lizard_delivery_request_center",
+            self.delivery_request,
+            target="center"
         )
 
         self.add_mode_event_handler(
