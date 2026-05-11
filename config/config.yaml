@@ -72,7 +72,6 @@ game:
 modes:
   - attract
   - base
-  - bumpers
   - service
   - hurryup
   - qualify_villain_vars
@@ -95,11 +94,9 @@ modes:
   - daily_bugle_mystery
   - meteor
   - high_score
+  - custom_bonus
  # - kingpin
 
-#  - noah_body
-#  - fakir
-#  - von_schlick
 
 
 event_player:

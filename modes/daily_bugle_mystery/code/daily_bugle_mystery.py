@@ -24,6 +24,7 @@ class DailyBugleMystery(Mode):
     + extra ball (at 10)
     + ball save (20s)
     + super spinners 20s
+    + collect bonus
     + bonus X
     + hold bonus
     + villain qualify  ?
@@ -38,6 +39,7 @@ class DailyBugleMystery(Mode):
         "mystery_award_ball_save",
         "mystery_award_start_super_spinner",
         "mystery_award_advance_bonus_multiplier",
+        "mystery_award_collect_bonus",
         "mystery_award_hold_bonus",
         "mystery_award_villain_start_ready",
     ]

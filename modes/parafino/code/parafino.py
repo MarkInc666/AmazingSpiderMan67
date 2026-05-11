@@ -117,10 +117,12 @@ class Parafino(Mode):
             return
 
         self.saucer_lit[zone] = False
-        self.add_a_ball_earned[zone] = True
 
-        self.machine.events.post(f"parafino_saucer_{saucer}_collected")
-        self.machine.events.post("parafino_add_a_ball")
+        if self.add_a_ball_earned[zone] == False:
+            self.machine.events.post(f"parafino_add_a_ball_{saucer}")
+            self.add_a_ball_earned[zone] = True
+            
+        self.machine.events.post(f"parafino_saucer_{saucer}_collected")            
 
         self.update_player_vars()
 

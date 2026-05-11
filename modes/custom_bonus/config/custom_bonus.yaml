@@ -1,22 +1,13 @@
 #config_version=6
 
 mode:
-  start_events: ball_started
+  start_events: mystery_award_collect_bonus
   code: custom_bonus.CustomBonus
   priority: 50
 
-queue_event_player:
 
-  ball_ending:
-    queue_event: custom_bonus_start
-
+#todo, light shows and video/audio stuff
 event_player:
-
-  mode_custom_bonus_started:
-    - custom_bonus_init
-
-  s_left_flipper_active:
-    - custom_bonus_speed_press
-
-  s_right_flipper_active:
-    - custom_bonus_speed_press
+  custom_bonus_complete:
+    - upkick
+    
