@@ -56,25 +56,11 @@ class Goblin(Mode):
                 shot_name=shot.name
             )
 
-        self.add_mode_event_handler(
-            "goblin_flash_timer_complete",
-            self.flash_timer_complete
-        )
+        self.add_mode_event_handler("goblin_flash_timer_complete",self.flash_timer_complete)
+        self.add_mode_event_handler("goblin_solid_timer_complete",self.solid_timer_complete)
+        self.add_mode_event_handler("goblin_saucer_hit",self.saucer_lock)
 
-        self.add_mode_event_handler(
-            "goblin_solid_timer_complete",
-            self.solid_timer_complete
-        )
-
-        self.add_mode_event_handler(
-            "goblin_saucer_lock_request",
-            self.saucer_lock
-        )
-
-        self.add_mode_event_handler(
-            "goblin_hold_timer_complete",
-            self.end_hold
-        )
+        self.add_mode_event_handler("goblin_hold_timer_complete",self.end_hold)
 
         self.begin_mode()
 
@@ -170,15 +156,11 @@ class Goblin(Mode):
 
     def collect_flashing_shot(self, shot_name):
 
-        self.machine.events.post(
-            "goblin_flashing_shot_score"
-        )
+        self.machine.events.post("goblin_flashing_shot_score")
 
         self.active_shots.remove(shot_name)
 
-        self.machine.events.post(
-            f"goblin_stop_{shot_name}"
-        )
+        self.machine.events.post(f"goblin_stop_{shot_name}")
 
         self.current_flashing.discard(shot_name)
 
@@ -204,9 +186,11 @@ class Goblin(Mode):
 
         player.goblin_chaos_bonus = new_bonus
 
-    def saucer_lock(self, **kwargs):
+    def saucer_lock(self, saucer, **kwargs):
 
         if self.hold_active:
+            #eject this new lock, we have one already
+            self.machine.events.post("eject_saucer", saucer = saucer)
             return
 
         self.hold_active = True
@@ -231,21 +215,10 @@ class Goblin(Mode):
             self.BASE_HOLD_TIME - player.goblin_hold_count
         )
 
-        self.machine.events.post(
-            "goblin_hold_started"
-        )
-
-        self.machine.events.post(
-            "goblin_flash_timer_stop"
-        )
-
-        self.machine.events.post(
-            "goblin_solid_timer_stop"
-        )
-
-        self.machine.events.post(
-            "goblin_hold_timer_start"
-        )
+        self.machine.events.post("goblin_hold_started")
+        self.machine.events.post("goblin_flash_timer_stop")
+        self.machine.events.post("goblin_solid_timer_stop")
+        self.machine.events.post("goblin_hold_timer_start")
 
     def end_hold(self, **kwargs):
 
@@ -254,18 +227,14 @@ class Goblin(Mode):
         player = self.machine.game.player
         player.goblin_hold_active = 0
 
-        self.machine.events.post(
-            "goblin_hold_ended"
-        )
+        self.machine.events.post("goblin_hold_ended")
 
         self.pick_flashing_shots()
 
     def clear_flashing(self):
 
         for shot_name in self.current_flashing:
-            self.machine.events.post(
-                f"goblin_stop_{shot_name}"
-            )
+            self.machine.events.post(f"goblin_stop_{shot_name}")
 
     def clear_current_shows(self):
 

@@ -39,20 +39,12 @@ shots:
   gob_left_drop_3:
     switch: s_left_drops_3
 
-  gob_saucer_1:
-    switch: s_saucer_1
-  gob_saucer_2:
-    switch: s_saucer_2
-  gob_saucer_3:
-    switch: s_saucer_3
-
   gob_upper_target_left:
     switch: s_upper_target_left
   gob_upper_target_center:
     switch: s_upper_target_center
   gob_upper_target_right:
     switch: s_upper_target_right
-
 
 shot_groups:
   gob_right_drops:
@@ -63,9 +55,6 @@ shot_groups:
 
   gob_upper_targets:
     shots: gob_upper_target_left, gob_upper_target_center, gob_upper_target_right
-
-  gob_saucers:
-    shots: gob_saucer_1, gob_saucer_2, gob_saucer_3
 
 
 event_player:
@@ -81,6 +70,11 @@ event_player:
     - goblin_stop_all_shows
     - reset_villain_locate
 
+  goblin_hold_ended:
+    - eject_saucers
+
+
+
   # real playfield input -> Python shot events
   s_left_web_target_active: goblin_left_web_hit
   s_web_target_top_active: goblin_right_web_hit
@@ -88,12 +82,17 @@ event_player:
   gob_left_drops_hit: goblin_left_drops_hit
   gob_right_drops_hit: goblin_right_drops_hit
   s_trispinner_opto_active: goblin_upper_spinner_hit
-  gob_saucers_hit: goblin_saucers_hit
   gob_upper_targets_hit: goblin_upper_target_hit
-
   # saucers also stabilize chaos
-  saucers_hit{current_player.goblin_hold_active == 0}:
-    - goblin_saucer_lock_request
+  s_saucer_1_active: 
+    goblin_saucer_hit:
+      saucer: 1
+  s_saucer_2_active: 
+    goblin_saucer_hit:
+      saucer: 2
+  s_saucer_3_active: 
+    goblin_saucer_hit:
+      saucer: 3
 
   # timers -> Python
   timer_goblin_flash_timer_complete:

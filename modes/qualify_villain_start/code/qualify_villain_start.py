@@ -26,8 +26,9 @@ class QualifyVillainStart(Mode):
         self.add_mode_event_handler("advance_current_villain", self.advance_current_villain)
         self.add_mode_event_handler("reset_villain_locate", self.reset_villain_locate)
         self.add_mode_event_handler("clear_saucers", self.clear_saucers)
+        for saucer in [1, 2, 3]:
+            self.add_mode_event_handler("eject_saucer", self.eject_saucer, saucer=saucer)
         
-
 
     def start_current_villain(self, **kwargs):
         player = self.machine.game.player
@@ -130,4 +131,12 @@ class QualifyVillainStart(Mode):
 
         if self.machine.switch_controller.is_active(self.machine.switches["s_saucer_3"]):
             self.machine.events.post("kickout_saucer_3")
+
+    def eject_saucer(self, saucer, **kwargs):
+
+        #if self.machine.switch_controller.is_active(self.machine.switches[f"s_saucer_{saucer}"]):
+        #    self.machine.events.post(f"kickout_saucer_{saucer}")
+
+        self.machine.events.post(f"kickout_saucer_{saucer}")
+        
 

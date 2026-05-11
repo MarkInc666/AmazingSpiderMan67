@@ -112,9 +112,17 @@ class DailyBugleMystery(Mode):
         self.update_player_vars()
 
     def vuk_collect_request(self, **kwargs):
-        if not self.mystery_ready:
-            return
 
+        if not self.mystery_ready:
+            # kick up for all others
+            self.delay.add(
+                name=f"vuk_delay_eject",
+                ms=500,
+                callback=self.fire_VUK
+            )
+            return
+        
+        #second time, collect and wait 
         self.collect_mystery()
 
     def collect_mystery(self):
@@ -153,6 +161,14 @@ class DailyBugleMystery(Mode):
                 valid = True
 
         self.machine.events.post(award_event)
+        self.delay.add(
+            name=f"vuk_delay_eject",
+            ms=8000,
+            callback=self.fire_VUK
+        )
+
+    def fire_VUK(self):
+        self.machine.events.post("up_kick")
 
     def light_extra_ball(self):
         self.extra_ball_lit = True

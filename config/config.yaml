@@ -129,6 +129,12 @@ event_player:
   s_plunger_active{current_player.multiball_autoplunge_active == 1}:
     - plunger_auto_fire|2s
 
+  drop_target_bank_dt_bank_left_down{current_player.villain_mode_running == 0}:
+    - drop_target_bank_dt_bank_1eft_reset
+
+  drop_target_bank_dt_bank_right_down{current_player.villain_mode_running == 0}:
+    - drop_target_bank_dt_bank_right_reset
+
   reset_drops:
     - reset_3bank
     - reset_5bank|300ms
@@ -150,6 +156,18 @@ coil_player:
   mode_base_stopping:
     c_up_post:
       action: disable
+
+  kickout_saucer_1:
+    c_saucer_1:
+      action: pulse
+
+  kickout_saucer_2:
+    c_saucer_2:
+      action: pulse
+
+  kickout_saucer_3:
+    c_saucer_3:
+      action: pulse
 
   up_kick:
     c_vuk_to_upper:
