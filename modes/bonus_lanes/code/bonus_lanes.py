@@ -69,7 +69,6 @@ class BonusLanes(Mode):
         player = self.machine.game.player
 
         player["bonus_count"] = 0
-        player["bonus_multiplier"] = 1
 
         self.refresh_lane_lights()
 

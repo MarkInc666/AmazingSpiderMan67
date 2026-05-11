@@ -27,6 +27,7 @@ event_player:
 
   rooftop_access_request{current_player.villain_mode_running == 0 and current_player.villain_start_ready == 0}:
     - rooftop_access_open
+    - clear_saucers|1s
 
   rooftop_access_open:
     - rooftop_diverter_open
@@ -47,7 +48,7 @@ event_player:
   rooftop_vuk_entered{current_player.villain_mode_running == 0 and current_player.villain_start_ready == 0}:
     - rooftop_diverter_close
     - rooftop_access_unlit
-    - up_kick|2s
+#    - up_kick|2s
 
   # Ball has actually landed on upper playfield
   s_upper_entrance_opto_active:

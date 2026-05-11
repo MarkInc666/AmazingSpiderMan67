@@ -5,6 +5,13 @@ mode:
   code: bonus_lanes.BonusLanes
   priority: 80
 
+      
+variable_player:
+  mode_bonus_lanes_started:
+    bonus_multiplier:
+      action: set
+      int: 1
+
 event_player:
   mode_bonus_lanes_started:
     - bonus_lanes_start

@@ -186,12 +186,21 @@ class Goblin(Mode):
 
         player.goblin_chaos_bonus = new_bonus
 
+
+    def delayed_eject(self, saucer, **kwargs):
+        self.machine.events.post("eject_saucer", saucer = saucer)
+
+
     def saucer_lock(self, saucer, **kwargs):
 
         if self.hold_active:
             #eject this new lock, we have one already
-            self.machine.events.post("eject_saucer", saucer = saucer)
-            return
+            self.delay.add(
+                name=f"saucer_delay_eject",
+                ms=2000,
+                saucer=saucer,
+                callback=self.delayed_eject
+            )
 
         self.hold_active = True
 

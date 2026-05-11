@@ -25,6 +25,9 @@ variable_player:
 
 event_player:
 
+  clear_saucers:
+    - clear_saucers_delayed|2s
+
   s_upper_exit_left_opto_active:
     - meteor_start_request
 

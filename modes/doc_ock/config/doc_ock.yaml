@@ -6,7 +6,7 @@ mode:
     - doc_ock_mode_complete
     - ball_ended
   code: doc_ock.doc_ock
-  priority: 300
+  priority: 600
 
 variable_player:
   doc_ock_jackpot_award:
