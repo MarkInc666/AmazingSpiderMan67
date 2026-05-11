@@ -27,12 +27,23 @@ variable_player:
 event_player:
 
   scorpion_mode_complete:
+    - reset_drops
     - reset_villain_locate
 
   mode_scorpion_started:
     - rooftop_diverter_open
     - scorpion_build_phase_started
     - clear_saucers
+
+  s_saucer_1_active:
+    - clear_saucers
+    
+  s_saucer_2_active:
+    - clear_saucers
+    
+  s_saucer_3_active:
+    - clear_saucers    
+
 
   # Upper spinner builds venom
   s_trispinner_opto_active:

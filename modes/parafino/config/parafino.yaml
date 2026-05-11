@@ -35,6 +35,21 @@ event_player:
     - parafino_start
     - clear_saucers
 
+  drop_target_bank_dt_bank_left_down:
+    - drop_target_bank_dt_bank_1eft_reset
+
+  drop_target_bank_dt_bank_right_down:
+    - drop_target_bank_dt_bank_right_reset
+
+  s_saucer_1_active:
+    - clear_saucers
+    
+  s_saucer_2_active:
+    - clear_saucers
+    
+  s_saucer_3_active:
+    - clear_saucers    
+
   parafino_mode_complete:
     - reset_villain_locate
 

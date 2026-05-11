@@ -14,11 +14,18 @@ variable_player:
 
 event_player:
 
+  drop_target_bank_dt_bank_left_down:
+    - drop_target_bank_dt_bank_1eft_reset
+
+  drop_target_bank_dt_bank_right_down:
+    - drop_target_bank_dt_bank_right_reset
+
   doc_ock_mode_complete:
     - reset_villain_locate
 
   mode_doc_ock_started:
     - doc_ock_start_arms
+    - reset_drops|1s
     - clear_saucers
 
   s_left_flipper_active:
@@ -68,6 +75,10 @@ event_player:
 
   doc_ock_timed_release_complete:
     - doc_ock_timed_release_complete
+  
+  #if any ball in saucer, release it
+  doc_ock_breakout_hit:
+    - clear_saucers
 
 
 timers:

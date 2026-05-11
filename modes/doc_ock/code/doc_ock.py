@@ -24,6 +24,7 @@ class doc_ock(Mode):
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
 
+        self.doc_ock_jackpot_unlit_value = 25000       
         self.doc_ock_jackpot_base_value = 100000
         self.doc_ock_jackpot_spinner_multi = 1
         self.doc_ock_arm_locked_score = 50000
@@ -33,6 +34,7 @@ class doc_ock(Mode):
         # False = free, True = locked
         self.locked_arms = [True, False, False, False]
 
+        self.jackpot_lit = 1
         self.jackpots_collected = 0
         self.active_breakouts = set()
 
@@ -64,6 +66,7 @@ class doc_ock(Mode):
         self.check_jackpot_lit()
 
     def doc_ock_spinner(self, **kwargs):
+        self.jackpot_lit = 1        
         self.doc_ock_jackpot_spinner_multi = self.doc_ock_jackpot_spinner_multi + 1
 
     def rotate_left(self, **kwargs):
@@ -82,6 +85,7 @@ class doc_ock(Mode):
                 self.machine.events.post(f"doc_ock_arm_{arm}_pulse")
 
     def arm_hit(self, arm, **kwargs):
+        self.jackpot_lit = 1        
         #already locked
         if self.locked_arms[arm-1]:
             self.machine.game.player["score"] += self.doc_ock_arm_relocked_score
@@ -99,8 +103,12 @@ class doc_ock(Mode):
             self.machine.events.post("doc_ock_jackpot_lit")
 
     def jackpot_request(self, **kwargs):
+        if self.jackpot_lit == 0:
+            self.machine.events.post("doc_ock_jackpot_not_lit")
+            self.machine.game.player["score"] += self.doc_ock_jackpot_unlit_value
+            return
+            
         locked = sum(self.locked_arms)
-
         if locked <= 0:
             return
 
@@ -114,6 +122,7 @@ class doc_ock(Mode):
 
         self.doc_ock_jackpot_spinner_multi = 1
         self.jackpots_collected += 1
+        self.jackpot_lit = 0
 
         self.spawn_breakout_target()
 
@@ -164,7 +173,6 @@ class doc_ock(Mode):
         arm = random.choice(locked)
         self.locked_arms[arm] = False
         self.refresh_lane_lights()        
-
 
     def check_mode_over(self):
         if sum(self.locked_arms) <= 0:

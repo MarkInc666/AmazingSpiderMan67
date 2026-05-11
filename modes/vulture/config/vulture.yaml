@@ -42,6 +42,21 @@ event_player:
     - rooftop_diverter_open
     - clear_saucers
     - vulture_show_targets
+    
+  drop_target_bank_dt_bank_left_down:
+    - drop_target_bank_dt_bank_1eft_reset
+
+  drop_target_bank_dt_bank_right_down:
+    - drop_target_bank_dt_bank_right_reset
+
+  s_saucer_1_active:
+    - clear_saucers
+    
+  s_saucer_2_active:
+    - clear_saucers
+    
+  s_saucer_3_active:
+    - clear_saucers    
 
   timer_vulture_mode_timer_complete{current_player.multiball_autoplunge_active == 0}:
     - vulture_mode_complete
