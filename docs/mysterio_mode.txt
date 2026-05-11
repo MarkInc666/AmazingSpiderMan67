@@ -1,7 +1,7 @@
 🎭 Mysterio
 Mode idea: “Illusion Trial”
 - like find Barb - stranger things
-- 10 shots lit, one has the super jackpot 
+- 8 shots lit, one has the super jackpot 
 - super worth 1M , each incorrect shot worth 50K (deducts 100K from super)
 
 
@@ -33,7 +33,7 @@ Much stronger.
 
 ## Mode Start
 
-* 10 shots lit
+* 8 shots lit
 * one hidden Super Illusion Jackpot
 * jackpot = 1M
 
