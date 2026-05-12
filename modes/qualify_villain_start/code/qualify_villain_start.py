@@ -25,7 +25,7 @@ class QualifyVillainStart(Mode):
         self.add_mode_event_handler("start_current_villain", self.start_current_villain)
         self.add_mode_event_handler("advance_current_villain", self.advance_current_villain)
         self.add_mode_event_handler("reset_villain_locate", self.reset_villain_locate)
-        self.add_mode_event_handler("clear_saucers", self.clear_saucers)
+        self.add_mode_event_handler("clear_saucers_delayed", self.clear_saucers2)
         for saucer in [1, 2, 3]:
             self.add_mode_event_handler("eject_saucer", self.eject_saucer, saucer=saucer)
         
@@ -121,7 +121,7 @@ class QualifyVillainStart(Mode):
 # called after villain mode starts have given the signal
 # can wait until they are done their instruction intros
 # multiballs may wait
-    def clear_saucers(self, **kwargs):
+    def clear_saucers2(self, **kwargs):
 
         if self.machine.switch_controller.is_active(self.machine.switches["s_saucer_1"]):
             self.machine.events.post("kickout_saucer_1")

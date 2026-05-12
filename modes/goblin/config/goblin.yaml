@@ -71,7 +71,7 @@ event_player:
     - reset_villain_locate
 
   goblin_hold_ended:
-    - eject_saucers
+    - clear_saucers
 
 
 
