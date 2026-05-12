@@ -45,7 +45,7 @@ show_player:
     daily_bugle_b_complete_show:
       loops: -1
 
-  daily_bugle_ab_ready:
+  mystery_ab_ready:
     daily_bugle_a_complete_show:
       action: stop
     daily_bugle_b_complete_show:

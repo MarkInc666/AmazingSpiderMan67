@@ -51,7 +51,7 @@ class DailyBugleMystery(Mode):
 
         self.a_hit = False
         self.b_hit = False
-        self.ab_ready = False
+        self.machine.game.player["mystery_ab_ready"] = False
         self.rooftop_traversal_complete = False
         self.mystery_ready = False
         self.extra_ball_lit = False
@@ -91,19 +91,18 @@ class DailyBugleMystery(Mode):
             self.update_player_vars()
             return
 
-        if self.ab_ready:
+        if self.machine.game.player["mystery_ab_ready"]:
             self.update_player_vars()
             return
 
-        self.ab_ready = True
+        self.machine.game.player["mystery_ab_ready"] = True
 
-        self.machine.events.post("daily_bugle_ab_ready")
         self.machine.events.post("rooftop_diverter_open")
 
         self.update_player_vars()
 
     def rooftop_right_exit(self, **kwargs):
-        if not self.ab_ready:
+        if not self.machine.game.player["mystery_ab_ready"]:
             return
 
         self.rooftop_traversal_complete = True
@@ -190,7 +189,7 @@ class DailyBugleMystery(Mode):
     def reset_cycle(self):
         self.a_hit = False
         self.b_hit = False
-        self.ab_ready = False
+        self.machine.game.player["mystery_ab_ready"] = False
         self.rooftop_traversal_complete = False
         self.mystery_ready = False
 
@@ -199,7 +198,6 @@ class DailyBugleMystery(Mode):
 
         player["daily_bugle_a_hit"] = int(self.a_hit)
         player["daily_bugle_b_hit"] = int(self.b_hit)
-        player["daily_bugle_ab_ready"] = int(self.ab_ready)
         player["daily_bugle_rooftop_traversal_complete"] = int(self.rooftop_traversal_complete)
         player["daily_bugle_mystery_ready"] = int(self.mystery_ready)
         player["daily_bugle_extra_ball_lit"] = int(self.extra_ball_lit)

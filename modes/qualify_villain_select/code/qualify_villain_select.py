@@ -21,6 +21,7 @@ class QualifyVillainSelect(Carousel):
 
         self.add_mode_event_handler("carousel_item_selected", self.carousel_item_selected)
 
+        #debugging
         for vils in self.VILLAINS:
           played_var = f"{vils}_played"
           self.info_log(f"from player[]: {self.machine.game.player[played_var]}")
@@ -60,5 +61,6 @@ class QualifyVillainSelect(Carousel):
 
         self.machine.events.post("villain_started_set")
         self.machine.events.post("carousel_selection_locked")
-        self.machine.events.post("stop_carousel_select")
         self.machine.events.post(self.VILLAINS[item])
+        self.machine.events.post("stop_carousel_select")
+        
