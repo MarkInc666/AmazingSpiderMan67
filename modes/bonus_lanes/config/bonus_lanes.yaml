@@ -11,6 +11,10 @@ variable_player:
     bonus_multiplier:
       action: set
       int: 1
+    bonus_count:
+      action: set
+      int: 0
+
 
 event_player:
   mode_bonus_lanes_started:

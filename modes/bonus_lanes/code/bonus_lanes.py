@@ -66,10 +66,6 @@ class BonusLanes(Mode):
 
 
     def blane_start(self, **kwargs):
-        player = self.machine.game.player
-
-        player["bonus_count"] = 0
-
         self.refresh_lane_lights()
 
     def add_bonus_count(self, amount=None, **kwargs):

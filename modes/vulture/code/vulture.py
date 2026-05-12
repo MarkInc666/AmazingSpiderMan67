@@ -69,8 +69,8 @@ class Vulture(Mode):
             return
 
         if self.stages["left"] == 3 and self.stages["center"] == 3 and self.stages["right"] == 3:
+            self.machine.events.post("start_vulture_add_a_ball")
             self.add_a_ball_awarded = True
-            self.machine.events.post("vulture_add_a_ball")
 
     def spinner_hit(self, **kwargs):
         total = 0

@@ -12,8 +12,9 @@ multiballs:
   vulture_add_a_ball:
     ball_count: 1
     ball_count_type: add
+    replace_balls_in_play: True
     shoot_again: 10s
-    start_events: vulture_add_a_ball
+    start_events: start_vulture_add_a_ball
 
 variable_player:
   multiball_vulture_add_a_ball_started:

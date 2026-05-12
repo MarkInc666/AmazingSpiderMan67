@@ -6,13 +6,15 @@ class Lizard(Mode):
     DELIVERY_SEQUENCE = [
         "left",
         "center",
-        # "right"
+         "left",
+        "center"
     ]
 
     TARGET_LIGHT_EVENTS = {
         "left": "lizard_light_left_web",
         "center": "lizard_light_center_web",
-        # "right": "lizard_light_right_web"
+        "left": "lizard_light_right_web",
+        "center": "lizard_light_center_web"
     }
 
     def mode_start(self, **kwargs):

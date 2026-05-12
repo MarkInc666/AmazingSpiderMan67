@@ -57,12 +57,15 @@ event_player:
 
   s_saucer_1_active:
     - doc_ock_breakout_1_request
+    - clear_saucers
 
   s_saucer_2_active:
     - doc_ock_breakout_2_request
+    - clear_saucers
 
   s_saucer_3_active:
     - doc_ock_breakout_3_request
+    - clear_saucers
 
   s_star_rollover_active:
     - doc_ock_breakout_4_request
@@ -76,9 +79,6 @@ event_player:
   doc_ock_timed_release_complete:
     - doc_ock_timed_release_complete
   
-  #if any ball in saucer, release it
-  doc_ock_breakout_hit:
-    - clear_saucers
 
 
 timers:
