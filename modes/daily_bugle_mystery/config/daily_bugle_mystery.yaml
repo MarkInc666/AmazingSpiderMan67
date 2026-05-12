@@ -29,6 +29,12 @@ event_player:
   s_vuk_switch_active:
     - daily_bugle_vuk_collect_request
 
+
+variable_player:
+  mystery_award_million_points:
+    score: 1000000
+
+
 show_player:
 
   daily_bugle_a_complete:

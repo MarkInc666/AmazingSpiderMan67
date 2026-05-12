@@ -73,27 +73,29 @@ modes:
   - attract
   - base
   - service
+  - high_score  
+  - bonus
+  - bonus_lanes
+  - daily_bugle_mystery
+  - meteor
+  - custom_bonus
+  - super_spinner
+  - super_pops
   - qualify_villain_vars
   - qualify_upper_access
   - qualify_villain_locate
   - qualify_villain_select
   - qualify_villain_start
+  - doc_ock
+  - electro
   - goblin 
-  - parafino
-  - vulture
   - lizard
-  - rhino
   - mysterio
+  - parafino
+  - rhino
   - sandman
   - scorpion
-  - electro
-  - doc_ock
-  - bonus_lanes
-  - bonus
-  - daily_bugle_mystery
-  - meteor
-  - high_score
-  - custom_bonus
+  - vulture
  # - kingpin
 
 

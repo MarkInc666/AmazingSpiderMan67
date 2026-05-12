@@ -1,0 +1,107 @@
+#config_version=6
+
+mode:
+  start_events: mystery_award_start_super_pops
+  stop_events:
+    - timer_super_pops_timer_complete
+    - ball_ended
+  priority: 400
+
+event_player:
+  mode_super_pops_started:
+    - super_pops_lit
+    - super_pops_timer_start
+
+  timer_super_pops_timer_complete:
+    - super_pops_unlit
+
+  s_pop_left_active:
+    - super_pops_score
+
+  s_pop_right_active:
+    - super_pops_score
+
+
+variable_player:
+  super_pops_score:
+    score:
+      action: add
+      int: 50000
+
+timers:
+  super_pops_timer:
+    start_value: 20
+    end_value: 0
+    direction: down
+    tick_interval: 1s
+    control_events:
+      - event: super_pops_timer_start
+        action: restart
+
+show_player:
+  super_pops_lit:
+    super_pops_flash_show:
+      loops: -1
+
+  super_spinner_unlit:
+    super_pops_flash_show:
+      action: stop
+
+  mode_super_pops_stopping:
+    super_pops_flash_show:
+      action: stop
+
+shows:
+  super_pops_flash_show:
+    - duration: 250ms
+      lights:
+        l_pop_1_1: red
+        l_pop_1_2: red
+        l_pop_1_3: red
+        l_pop_1_4: red
+        l_pop_1_5: red
+        l_pop_1_6: red
+        l_pop_1_7: red
+        l_pop_1_8: red
+        l_pop_1_9: red
+        l_pop_1_10: red
+        l_pop_1_11: red
+        l_pop_1_12: red
+        l_pop_2_1: red
+        l_pop_2_2: red
+        l_pop_2_3: red
+        l_pop_2_4: red
+        l_pop_2_5: red
+        l_pop_2_6: red
+        l_pop_2_7: red
+        l_pop_2_8: red
+        l_pop_2_9: red
+        l_pop_2_10: red
+        l_pop_2_11: red
+        l_pop_2_12: red
+    - duration: 250ms
+      lights:
+        l_pop_1_1: blue
+        l_pop_1_2: blue
+        l_pop_1_3: blue
+        l_pop_1_4: blue
+        l_pop_1_5: blue
+        l_pop_1_6: blue
+        l_pop_1_7: blue
+        l_pop_1_8: blue
+        l_pop_1_9: blue
+        l_pop_1_10: blue
+        l_pop_1_11: blue
+        l_pop_1_12: blue
+        l_pop_2_1: blue
+        l_pop_2_2: blue
+        l_pop_2_3: blue
+        l_pop_2_4: blue
+        l_pop_2_5: blue
+        l_pop_2_6: blue
+        l_pop_2_7: blue
+        l_pop_2_8: blue
+        l_pop_2_9: blue
+        l_pop_2_10: blue
+        l_pop_2_11: blue
+        l_pop_2_12: blue

@@ -41,6 +41,8 @@ class DailyBugleMystery(Mode):
         "mystery_award_advance_bonus_multiplier",
         "mystery_award_collect_bonus",
         "mystery_award_hold_bonus",
+        "mystery_award_start_super_pops",
+        "mystery_award_million_points",        
         "mystery_award_villain_start_ready",
     ]
 

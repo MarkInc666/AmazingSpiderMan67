@@ -56,7 +56,7 @@ event_player:
 
 timers:
   rooftop_access_timer:
-    start_value: 8
+    start_value: 12
     end_value: 0
     direction: down
     tick_interval: 1s
