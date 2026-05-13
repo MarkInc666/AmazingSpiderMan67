@@ -19,6 +19,8 @@ class QualifyVillainSelect(Carousel):
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
 
+  #     'carousel_item_highlighted'====== Args={'carousel': 'qualify_villain_select', 'direction': 'forwards', 'item': 'sandman'}
+        self.add_mode_event_handler("carousel_item_highlighted", self.carousel_item_highlighted)
         self.add_mode_event_handler("carousel_item_selected", self.carousel_item_selected)
 
         #debugging
@@ -27,6 +29,19 @@ class QualifyVillainSelect(Carousel):
           self.info_log(f"from player[]: {self.machine.game.player[played_var]}")
   
 
+    def carousel_item_highlighted(self, item=None, **kwargs):
+        if not item:
+            return
+
+        played_var = f"{item}_played"
+        played_state = self.machine.game.player[played_var]
+
+        if played_state == 1:
+            self.machine.events.post(f"villain_select_{item}_played")
+        else:
+            self.machine.events.post(f"villain_select_{item}_available")
+            return
+
     def carousel_item_selected(self, item=None, **kwargs):
         if not item:
             return
@@ -34,11 +49,12 @@ class QualifyVillainSelect(Carousel):
         played_var = f"{item}_played"
         played_state = self.machine.game.player[played_var]
 
+        #debugging
         self.info_log(f"current villain played variable: {played_var}")
         self.info_log(f"current villain played state: {played_state}")
 
         if played_state == 1:
-            self.machine.events.post("villain_select_played")
+            self.machine.events.post("villain_select_already_played")
             self.machine.events.post("carousel_selection_unlocked")
             return
 

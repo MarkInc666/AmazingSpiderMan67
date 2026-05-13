@@ -46,7 +46,7 @@ event_player:
   s_outlane_r_active:
     - doc_ock_arm_4_hit
 
-  s_spinner_active:
+  s_web_spinner_active:
     - doc_ock_spinner_hit
 
   s_web_target_left_active:

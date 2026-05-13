@@ -33,7 +33,7 @@ event_player:
     - rooftop_diverter_open
     - rooftop_access_lit
 
-  timer_rooftop_access_timer_complete{current_player.mystery_ab_ready == 0}
+  timer_rooftop_access_timer_complete{current_player.mystery_ab_ready == 0}:
     - rooftop_access_close
 
   rooftop_access_close:

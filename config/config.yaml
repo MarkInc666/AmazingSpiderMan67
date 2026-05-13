@@ -72,6 +72,7 @@ game:
 modes:
   - attract
   - base
+  - music_control
   - service
   - high_score  
   - bonus

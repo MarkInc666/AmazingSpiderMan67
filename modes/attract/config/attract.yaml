@@ -40,16 +40,6 @@ slide_player:
     attract:
       action: remove
 
-#slides:
-#  attract:
-#    widgets:
-#      - type: text
-#        text: "Press START"
-#        style: large
-#      - type: text
-#        text: "Mission Pinball Framework"
-#        y: bottom
-#        style: small
 
 sound_player:
   mode_attract_started: 

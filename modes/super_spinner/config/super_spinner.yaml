@@ -55,3 +55,11 @@ shows:
     - duration: 150ms
       lights:
         l_spinner: blue
+
+sound_player:
+  s_web_spinner_active:
+    rope_1:
+      action: play
+      bus: sfx
+      priority: 100
+      volume: 0.8        
