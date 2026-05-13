@@ -7,7 +7,7 @@ mode:
 
 event_player:
   mode_base_started:
-    - music_start_prowl
+    - music_start_prowl|1s
 
 
 slide_player:
@@ -43,3 +43,8 @@ light_player:
     gi:
       color: E0E0E0        
       
+sound_player:
+  s_web_spinner_active{mode.super_spinner.active == False}:
+    rope_1:
+      action: play
+      bus: effects

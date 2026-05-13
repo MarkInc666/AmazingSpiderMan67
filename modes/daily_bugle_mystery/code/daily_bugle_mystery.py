@@ -36,14 +36,14 @@ class DailyBugleMystery(Mode):
     EXTRA_BALL_AWARD_AT = 10
 
     PLACEHOLDER_AWARDS = [
-        "mystery_award_ball_save",
+#        "mystery_award_ball_save",
         "mystery_award_start_super_spinner",
-        "mystery_award_advance_bonus_multiplier",
-        "mystery_award_collect_bonus",
-        "mystery_award_hold_bonus",
+#        "mystery_award_advance_bonus_multiplier",
+#        "mystery_award_collect_bonus",
+#        "mystery_award_hold_bonus",
         "mystery_award_start_super_pops",
-        "mystery_award_million_points",        
-        "mystery_award_villain_start_ready",
+ #       "mystery_award_million_points",        
+ #       "mystery_award_villain_start_ready",
     ]
 
     def mode_start(self, **kwargs):
