@@ -67,7 +67,7 @@ drop_target_banks:
     reset_events:
            machine_reset_phase_3: 100ms    
            ball_starting: 100ms   
-           drop_target_bank_dt_bank_1eft_reset: 100ms
+           drop_target_bank_dt_bank_left_reset: 100ms
     label: "3-Bank Drop Targets"
 
   dt_bank_right:

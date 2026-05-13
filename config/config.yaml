@@ -129,7 +129,7 @@ event_player:
     - plunger_auto_fire|2s
 
   drop_target_bank_dt_bank_left_down{current_player.villain_mode_running == 0}:
-    - drop_target_bank_dt_bank_1eft_reset
+    - drop_target_bank_dt_bank_left_reset
 
   drop_target_bank_dt_bank_right_down{current_player.villain_mode_running == 0}:
     - drop_target_bank_dt_bank_right_reset
@@ -206,7 +206,7 @@ sequences:
       - xxxs_web_target_left_active
     reset_on_complete: true
     disable_on_complete: false
-    events_when_complete: drop_target_bank_dt_bank_1eft_reset
+    events_when_complete: drop_target_bank_dt_bank_left_reset
   
   reset_right_bank_after_hit:
     events:

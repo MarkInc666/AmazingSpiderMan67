@@ -10,9 +10,8 @@ mode:
 
 multiballs:
   vulture_add_a_ball:
-    ball_count: 1
-    ball_count_type: add
-    replace_balls_in_play: True
+    ball_count: 2
+    ball_count_type: total
     shoot_again: 10s
     start_events: start_vulture_add_a_ball
 
@@ -45,7 +44,7 @@ event_player:
     - vulture_show_targets
     
   drop_target_bank_dt_bank_left_down:
-    - drop_target_bank_dt_bank_1eft_reset
+    - drop_target_bank_dt_bank_left_reset
 
   drop_target_bank_dt_bank_right_down:
     - drop_target_bank_dt_bank_right_reset

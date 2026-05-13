@@ -15,7 +15,7 @@ event_player:
     - clear_saucers
     
   drop_target_bank_dt_bank_left_down:
-    - drop_target_bank_dt_bank_1eft_reset
+    - drop_target_bank_dt_bank_left_reset
 
   drop_target_bank_dt_bank_right_down:
     - drop_target_bank_dt_bank_right_reset
