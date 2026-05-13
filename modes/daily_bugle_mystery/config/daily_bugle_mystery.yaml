@@ -65,20 +65,20 @@ show_player:
     daily_bugle_mystery_ready_show:
       action: stop
     daily_bugle_mystery_collect_show:
-      loops: 1
+      loops: 4
 
-  daily_bugle_extra_ball_lit:
-    daily_bugle_mystery_ready_show:
-      action: stop
-    daily_bugle_extra_ball_lit_show:
-      loops: -1
+  # daily_bugle_extra_ball_lit:
+    # daily_bugle_mystery_ready_show:
+      # action: stop
+    # daily_bugle_extra_ball_lit_show:
+      # loops: -1
 
-#this will move to extra ball mode
-  daily_bugle_extra_ball_awarded:
-    daily_bugle_extra_ball_lit_show:
-      action: stop
-    daily_bugle_extra_ball_award_show:
-      loops: 1
+# #this will move to extra ball mode
+  # daily_bugle_extra_ball_awarded:
+    # daily_bugle_extra_ball_lit_show:
+      # action: stop
+    # daily_bugle_extra_ball_award_show:
+      # loops: 1
 
 
 shows:
@@ -141,20 +141,22 @@ shows:
       lights:
         gi: blue
 
-  daily_bugle_extra_ball_lit_show:
-    - duration: 200ms
-      lights:
-        l_extraball: white
-    - duration: 200ms
-      lights:
-        l_extraball: blue
+  # daily_bugle_extra_ball_lit_show:
+    # - duration: 200ms
+      # lights:
+        # l_extraball: white
+    # - duration: 200ms
+      # lights:
+        # l_extraball: blue
 
-  daily_bugle_extra_ball_award_show:
-    - duration: 150ms
-      lights:
-        l_shoot_again: white
-        gi: white
-    - duration: 150ms
-      lights:
-        l_shoot_again: blue
-        gi: blue
+  # daily_bugle_extra_ball_award_show:
+    # - duration: 150ms
+      # lights:
+        # l_shoot_again: white
+        # gi: white
+    # - duration: 150ms
+      # lights:
+        # l_shoot_again: blue
+        # gi: blue
+        
+        

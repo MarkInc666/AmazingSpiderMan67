@@ -46,6 +46,9 @@ class DailyBugleMystery(Mode):
  #       "mystery_award_villain_start_ready",
     ]
 
+#        "mystery_award_light_extra_ball"
+#        "mystery_award_award_extra_ball"
+
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
 
@@ -54,7 +57,6 @@ class DailyBugleMystery(Mode):
         self.machine.game.player["mystery_ab_ready"] = False
         self.rooftop_traversal_complete = False
         self.mystery_ready = False
-        self.extra_ball_lit = False
 
         self.add_mode_event_handler("daily_bugle_a_hit", self.a_rollover_hit)
         self.add_mode_event_handler("daily_bugle_b_hit", self.b_rollover_hit)
@@ -174,17 +176,10 @@ class DailyBugleMystery(Mode):
         self.machine.events.post("up_kick")
 
     def light_extra_ball(self):
-        self.extra_ball_lit = True
-
-        # Hook this event to your real extra ball light/logic later.
-        self.machine.events.post("daily_bugle_extra_ball_lit")
+        self.machine.events.post("mystery_award_light_extra_ball")
 
     def award_extra_ball(self):
-        player = self.machine.game.player
-        player["daily_bugle_extra_balls_awarded"] += 1
-
-        # Hook this event to your real extra ball device/award later.
-        self.machine.events.post("daily_bugle_extra_ball_awarded")
+        self.machine.events.post("mystery_award_award_extra_ball")
 
     def reset_cycle(self):
         self.a_hit = False
@@ -200,4 +195,3 @@ class DailyBugleMystery(Mode):
         player["daily_bugle_b_hit"] = int(self.b_hit)
         player["daily_bugle_rooftop_traversal_complete"] = int(self.rooftop_traversal_complete)
         player["daily_bugle_mystery_ready"] = int(self.mystery_ready)
-        player["daily_bugle_extra_ball_lit"] = int(self.extra_ball_lit)

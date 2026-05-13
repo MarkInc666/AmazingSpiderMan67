@@ -1,0 +1,77 @@
+#config_version=6
+
+mode:
+  start_events: ball_started
+  priority: 90
+
+extra_ball_groups:
+  main_extra_ball_group:
+    max_per_game: 3
+
+extra_balls:
+  mystery_extra_ball:
+    group: main_extra_ball_group
+    light_events: mystery_extra_ball_lit
+    award_events: mystery_extra_ball_award
+    disable_events: mystery_extra_ball_awarded
+
+event_player:
+ 
+  #directly from bugle
+  mystery_award_award_extra_ball:
+    - mystery_extra_ball_award
+
+  #light the eb at left bank
+  mystery_award_light_extra_ball:
+    - mystery_extra_ball_lit
+
+  #left bank complete when lit
+  drop_target_bank_dt_bank_left_down{device.extra_balls.mystery_extra_ball.enabled}:
+    mystery_extra_ball_award
+
+
+
+variable_player:
+  #if points instead of eb - TODO - call this from somewhere else
+  extra_ball_award_million_points:
+    score: 1000000
+
+
+show_player:
+
+  mystery_extra_ball_lit:
+    extra_ball_lit_show:
+      action: stop
+    daily_bugle_extra_ball_lit_show:
+      loops: -1
+
+  mystery_extra_ball_award:
+    extra_ball_awarded_show:
+      action: stop
+    extra_ball_award_show:
+      loops: 1
+
+
+shows:
+
+  extra_ball_collect_gi_show:
+    - duration: 250ms
+      lights:
+        gi: white
+    - duration: 250ms
+      lights:
+        gi: blue
+
+  extra_ball_lit_show:
+    - duration: 200ms
+      lights:
+        l_extraball: white
+    - duration: 200ms
+      lights:
+        l_extraball: blue
+
+  extra_ball_awarded_show:
+      lights:
+        l_shoot_again: white
+        gi: white
+        
