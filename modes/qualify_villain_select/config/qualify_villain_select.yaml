@@ -25,6 +25,15 @@ mode_settings:
   block_events: carousel_selection_locked
   release_events: carousel_selection_unlocked
 
+
+slide_player:
+  mode_qualify_villain_select_started:
+    villain_select:
+      priority: 1000
+  stop_carousel_select:
+    villain_select:
+      action: remove
+
 timed_switches:
   both_flippers_held:
     switch_tags: left_flipper, right_flipper

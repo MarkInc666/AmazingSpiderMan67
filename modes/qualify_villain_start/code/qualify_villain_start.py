@@ -4,17 +4,17 @@ from mpf.core.mode import Mode
 class QualifyVillainStart(Mode):
 
     VILLAINS = [
-        ("doc_ock", "start_mode_doc_ock"),
+        ("lizard", "start_mode_lizard"),
+        ("rhino", "start_mode_rhino_bash"),
         ("sandman", "start_mode_sandman"),
         ("vulture", "start_mode_vulture"),
-        ("rhino", "start_mode_rhino_bash"),
+        ("electro", "start_mode_electro"),
         ("goblin", "start_mode_goblin"),
         ("mysterio", "start_mode_mysterio"),
         ("scorpion", "start_mode_scorpion"),
-        ("electro", "start_mode_electro"),
+        ("doc_ock", "start_mode_doc_ock"),        
         ("parafino", "start_mode_parafino"),
-        ("lizard", "start_mode_lizard"),
-    ]
+     ]
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)

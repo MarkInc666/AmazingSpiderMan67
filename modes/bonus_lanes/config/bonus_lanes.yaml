@@ -341,7 +341,7 @@ shows:
         l_right_outlane: blue
 
   bonus_lane_1_solid:
-    - duration: 1ms
+    - duration: 1s
       lights:
         l_left_outlane: white
 

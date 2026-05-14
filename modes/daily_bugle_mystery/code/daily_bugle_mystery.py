@@ -32,7 +32,7 @@ class DailyBugleMystery(Mode):
 
     """
 
-    EXTRA_BALL_LIGHT_AT = 4
+    EXTRA_BALL_LIGHT_AT = 2 #4
     EXTRA_BALL_AWARD_AT = 10
 
     PLACEHOLDER_AWARDS = [
@@ -97,6 +97,7 @@ class DailyBugleMystery(Mode):
             self.update_player_vars()
             return
 
+        self.machine.events.post("daily_bugle_ab_complete")
         self.machine.game.player["mystery_ab_ready"] = True
 
         self.machine.events.post("rooftop_diverter_open")

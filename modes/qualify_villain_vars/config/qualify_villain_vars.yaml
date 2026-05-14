@@ -53,7 +53,10 @@ variable_player:
       int: 0
     villain_current_name:
       action: set
-      string: "not set"
+      string: "Lizard"
+    villain_current_index:
+      action: set
+      int: 1
     kingpin_ready:
       action: set
       int: current_player.kingpin_ready

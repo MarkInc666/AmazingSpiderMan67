@@ -10,6 +10,9 @@ variable_player:
     villain_current_index:
       action: set
       int: 1
+    villain_current_name:
+      action: set
+      string: "Lizard"
     villain_mode_running:
       action: set
       int: 0
@@ -57,6 +60,16 @@ variable_player:
   slings_hit:
     score: 110
 
+
+slide_player:
+  villain_started_set:
+    villain_active:
+      action: play
+      priority: 1000
+
+  reset_villain_locate:
+    villain_active:
+      action: remove
 
 
 shots:

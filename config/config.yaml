@@ -144,6 +144,13 @@ event_player:
 
 
 
+extra_ball_groups:
+  main_extra_ball_group:
+    max_per_game: 3
+    light_events: mystery_extra_ball_lit
+    award_lit_events: mystery_extra_ball_award
+
+
 coil_player:
   enable_up_post_event:
     c_up_post:

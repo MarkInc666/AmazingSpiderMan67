@@ -4,16 +4,24 @@ mode:
   start_events: ball_started
   priority: 90
 
-extra_ball_groups:
-  main_extra_ball_group:
-    max_per_game: 3
+
 
 extra_balls:
   mystery_extra_ball:
     group: main_extra_ball_group
-    light_events: mystery_extra_ball_lit
-    award_events: mystery_extra_ball_award
-    disable_events: mystery_extra_ball_awarded
+
+
+slide_player:
+  mystery_extra_ball_lit:
+    extra_ball:
+      expire: 5s
+      priority: 1000
+
+  mystery_extra_ball_award:
+    extra_ball:
+      expire: 5s
+      priority: 1000
+
 
 event_player:
  
@@ -27,7 +35,7 @@ event_player:
 
   #left bank complete when lit
   drop_target_bank_dt_bank_left_down{device.extra_balls.mystery_extra_ball.enabled}:
-    mystery_extra_ball_award
+    - mystery_extra_ball_award
 
 
 
@@ -36,18 +44,28 @@ variable_player:
   extra_ball_award_million_points:
     score: 1000000
 
+  mystery_award_award_extra_ball:  
+    extra_ball_text:
+      action: set
+      string: "COLLECTED"
+
+  mystery_award_light_extra_ball:
+    extra_ball_text:
+      action: set
+      string: "IS LIT"
+
 
 show_player:
 
   mystery_extra_ball_lit:
     extra_ball_lit_show:
-      action: stop
-    daily_bugle_extra_ball_lit_show:
       loops: -1
 
   mystery_extra_ball_award:
-    extra_ball_awarded_show:
+    extra_ball_lit_show:
       action: stop
+    extra_ball_collect_gi_show:
+      loops: 4
     extra_ball_award_show:
       loops: 1
 
@@ -70,7 +88,8 @@ shows:
       lights:
         l_extraball: blue
 
-  extra_ball_awarded_show:
+  extra_ball_award_show:
+    - duration: -1
       lights:
         l_shoot_again: white
         gi: white

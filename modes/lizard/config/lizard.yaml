@@ -210,14 +210,10 @@ show_player:
   lizard_light_left_web:
     lizard_left_web_show:
       loops: -1
-    lizard_center_web_show:
-      action: stop
 
   lizard_light_center_web:
     lizard_center_web_show:
       loops: -1
-    lizard_left_web_show:
-      action: stop
 
   lizard_serum_delivered:
     lizard_left_web_show:

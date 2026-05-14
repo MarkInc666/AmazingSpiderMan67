@@ -45,17 +45,21 @@ show_player:
     daily_bugle_b_complete_show:
       loops: -1
 
-  mystery_ab_ready:
+  daily_bugle_ab_complete:
     daily_bugle_a_complete_show:
       action: stop
     daily_bugle_b_complete_show:
       action: stop
     daily_bugle_ab_ready_show:
       loops: 3
+
+  mystery_ab_ready:
     daily_bugle_spinner_ready_show:
       loops: -1
 
   daily_bugle_rooftop_traversal_complete:
+    daily_bugle_ab_off_show:
+      loops: 0
     daily_bugle_spinner_ready_show:
       action: stop
     daily_bugle_mystery_ready_show:
@@ -67,18 +71,6 @@ show_player:
     daily_bugle_mystery_collect_show:
       loops: 4
 
-  # daily_bugle_extra_ball_lit:
-    # daily_bugle_mystery_ready_show:
-      # action: stop
-    # daily_bugle_extra_ball_lit_show:
-      # loops: -1
-
-# #this will move to extra ball mode
-  # daily_bugle_extra_ball_awarded:
-    # daily_bugle_extra_ball_lit_show:
-      # action: stop
-    # daily_bugle_extra_ball_award_show:
-      # loops: 1
 
 
 shows:
@@ -100,8 +92,16 @@ shows:
         l_left_b: white
     - duration: 300ms
       lights:
-        l_a_rollover: blue
+        l_b_rollover: blue
         l_left_b: blue
+
+  daily_bugle_ab_off_show:
+    - duration: 300ms
+      lights:
+        l_a_rollover: off
+        l_right_a: off
+        l_b_rollover: off
+        l_left_b: off
 
   daily_bugle_ab_ready_show:
     - duration: 300ms
@@ -139,24 +139,5 @@ shows:
         gi: white
     - duration: 150ms
       lights:
-        gi: blue
-
-  # daily_bugle_extra_ball_lit_show:
-    # - duration: 200ms
-      # lights:
-        # l_extraball: white
-    # - duration: 200ms
-      # lights:
-        # l_extraball: blue
-
-  # daily_bugle_extra_ball_award_show:
-    # - duration: 150ms
-      # lights:
-        # l_shoot_again: white
-        # gi: white
-    # - duration: 150ms
-      # lights:
-        # l_shoot_again: blue
-        # gi: blue
-        
+        gi: blue        
         
