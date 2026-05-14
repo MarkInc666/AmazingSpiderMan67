@@ -36,12 +36,6 @@ variable_player:
     lizard_serum_ready:
       action: set
       int: 1
-    lizard_delivery_value:
-      action: set
-      int: 1000000
-
-  lizard_apply_ab_bonus:
-    lizard_delivery_value: 500000
 
   lizard_set_a:
     lizard_a_hit:
@@ -52,6 +46,9 @@ variable_player:
     lizard_b_hit:
       action: set
       int: 1
+
+  lizard_apply_ab_bonus:
+    lizard_delivery_value: 500000
 
   lizard_ab_ready_event:
     lizard_ab_ready:
@@ -78,6 +75,9 @@ variable_player:
     lizard_serum_ready:
       action: set
       int: 0
+    lizard_delivery_value:
+      action: set
+      int: 1000000
 
   lizard_serum_expired:
     lizard_serum_ready:
@@ -139,6 +139,10 @@ event_player:
   lizard_set_b{current_player.lizard_a_hit == 1}:
     - lizard_ab_ready_event
 
+  # Collect serum
+  s_star_rollover_active:
+    - lizard_serum_collect_request
+
   lizard_serum_collect_request{current_player.lizard_serum_ready == 0 and current_player.lizard_ab_ready == 1}:
     - lizard_serum_collected
     - lizard_apply_ab_bonus
@@ -154,9 +158,6 @@ event_player:
   lizard_delivery_tick_check{device.timers.lizard_delivery_timer.ticks <= 10 and device.timers.lizard_delivery_timer.ticks >= 3}:
     - lizard_delivery_tick
 
-  # Collect serum
-  s_star_rollover_active:
-    - lizard_serum_collect_request
 
   # Delivery shots
   s_web_target_left_active:

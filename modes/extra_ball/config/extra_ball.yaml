@@ -55,6 +55,7 @@ variable_player:
       string: "IS LIT"
 
 
+
 show_player:
 
   mystery_extra_ball_lit:
@@ -69,9 +70,54 @@ show_player:
     extra_ball_award_show:
       loops: 1
 
+#todo:  flash shoot again light during goblin, vulture, parafino MBs  - find events from logs
+
+  ball_save_default_ball_save_enabled:
+    shoot_again_flash:
+      loops: -1
+
+  ball_save_default_ball_save_hurry_up:
+    shoot_again_fast_flash:
+      loops: -1
+
+  ball_save_default_ball_save_disabled:
+    shoot_again_flash:
+      action: stop
+    shoot_again_fast_flash:
+      action: stop
+
+  ball_save_mystery_ball_save_enabled:
+    shoot_again_flash:
+      loops: -1
+
+  ball_save_mystery_ball_save_hurry_up:
+    shoot_again_fast_flash:
+      loops: -1
+
+  ball_save_mystery_ball_save_disabled:
+    shoot_again_flash:
+      action: stop
+    shoot_again_fast_flash:
+      action: stop
+
 
 shows:
+  shoot_again_fast_flash:
+    - duration: 250ms
+      lights:
+        l_shoot_again: white
+    - duration: 250ms
+      lights:
+        l_shoot_again: off     
 
+  shoot_again_flash:
+    - duration: 500ms
+      lights:
+        l_shoot_again: white
+    - duration: 500ms
+      lights:
+        l_shoot_again: off     
+      
   extra_ball_collect_gi_show:
     - duration: 250ms
       lights:

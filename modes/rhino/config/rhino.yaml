@@ -19,6 +19,7 @@ event_player:
   rhino_bash_complete:
     - reset_villain_locate
 
+#TODO: is this called? when?  saucer doesnt clear?
   mode_rhino_bash_started:
     - rhino_start
     - rhino_light_jackpot_collect

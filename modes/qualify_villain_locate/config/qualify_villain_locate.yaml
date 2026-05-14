@@ -174,6 +174,31 @@ show_player:
     villain_select_lizard_show:
       loops: 1
 
+#todo - change these - vulture, scorpion, electro, mysterio will do their own
+  s_upper_target_left_active:
+    led_on_show:
+      loops: 0
+      show_tokens:
+        led: l_upper_left
+        col: f000f0        
+      key: l_upper_left_show        
+
+  s_upper_target_center_active:
+    led_on_show:
+      loops: 0
+      show_tokens:
+        led: l_upper_middle
+        col: f000f0        
+      key: l_upper_middle_show        
+  
+  s_upper_target_right_active:
+    led_on_show:
+      loops: 0
+      show_tokens:
+        led: l_upper_right
+        col: f000f0        
+      key: l_upper_right_show        
+
 
 
 

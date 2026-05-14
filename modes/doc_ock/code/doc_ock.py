@@ -66,7 +66,8 @@ class doc_ock(Mode):
         self.check_jackpot_lit()
 
     def doc_ock_spinner(self, **kwargs):
-        self.jackpot_lit = 1        
+        self.jackpot_lit = 1
+        self.check_jackpot_lit()
         self.doc_ock_jackpot_spinner_multi = self.doc_ock_jackpot_spinner_multi + 1
 
     def rotate_left(self, **kwargs):

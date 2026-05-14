@@ -59,7 +59,6 @@ class Lizard(Mode):
             return
 
         self.machine.events.post("lizard_serum_delivered")
-
         self.machine.events.post("lizard_delivery_timer_stop")
 
         deliveries_after = player["lizard_deliveries"] + 1
