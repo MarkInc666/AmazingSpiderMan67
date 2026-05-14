@@ -221,8 +221,8 @@ show_player:
       action: stop
     lizard_center_web_show:
       action: stop
-    lizard_delivery_success_show:
-      loops: 1
+#    lizard_delivery_success_show:
+#      loops: 1
     lizard_gi_show:
       action: stop
     lizard_gi_hurry_show:
@@ -233,8 +233,8 @@ show_player:
       action: stop
     lizard_center_web_show:
       action: stop
-    lizard_serum_expired_lights:
-      loops: 1
+#    lizard_serum_expired_lights:
+#      loops: 1
     lizard_gi_show:
       action: stop
     lizard_gi_hurry_show:

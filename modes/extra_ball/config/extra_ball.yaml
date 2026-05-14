@@ -16,11 +16,13 @@ slide_player:
     extra_ball:
       expire: 5s
       priority: 1000
+      action: play
 
   mystery_extra_ball_award:
     extra_ball:
       expire: 5s
       priority: 1000
+      action: play
 
 
 event_player:

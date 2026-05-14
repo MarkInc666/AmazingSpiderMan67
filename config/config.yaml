@@ -39,8 +39,8 @@ virtual_platform_start_active_switches:
   - s_trough2
   - s_trough3
   - s_trough4
-  - s_trough5
-  - s_trough6
+#  - s_trough5
+#  - s_trough6
 
 
 
@@ -61,7 +61,7 @@ playfields:
     tags: default
 
 machine:
-  balls_installed: 3
+  balls_installed: 4
 
 game:
   balls_per_game: 3
@@ -83,7 +83,6 @@ modes:
   - custom_bonus
   - super_spinner
   - super_pops
-  - qualify_villain_vars
   - qualify_upper_access
   - qualify_villain_locate
   - qualify_villain_select
@@ -99,6 +98,65 @@ modes:
   - scorpion
   - vulture
  # - kingpin
+
+
+player_vars:
+
+  rhino_played:
+    initial_value: 0
+    value_type: int
+  sandman_played:
+    initial_value: 0
+    value_type: int
+  vulture_played:
+    initial_value: 0
+    value_type: int
+  electro_played:
+    initial_value: 0
+    value_type: int
+  goblin_played:
+    initial_value: 0
+    value_type: int
+  mysterio_played:
+    initial_value: 0
+    value_type: int
+  scorpion_played:
+    initial_value: 0
+    value_type: int
+  doc_ock_played:
+    initial_value: 0
+    value_type: int
+  parafino_played:
+    initial_value: 0
+    value_type: int
+  lizard_played:
+    initial_value: 0
+    value_type: int
+  villain_locate_spins_needed:
+    initial_value: 0
+    value_type: int
+  villain_mode_running:
+    initial_value: 0
+    value_type: int
+  villain_mode_running_name:
+    initial_value: "No Villain"
+    value_type: str 
+  villain_start_ready:
+    initial_value: 0
+    value_type: int
+  villain_current_name:
+    initial_value: "Lizard"
+    value_type: str 
+  villain_current_index:
+    initial_value: 1
+    value_type: int
+  kingpin_ready:
+    initial_value: 0
+    value_type: int
+  villains_completed_total:
+    initial_value: 0
+    value_type: int
+
 
 
 

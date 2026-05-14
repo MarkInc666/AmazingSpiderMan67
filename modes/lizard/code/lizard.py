@@ -6,14 +6,14 @@ class Lizard(Mode):
     DELIVERY_SEQUENCE = [
         "left",
         "center",
-         "left",
+        "left",
         "center"
     ]
 
     TARGET_LIGHT_EVENTS = {
         "left": "lizard_light_left_web",
         "center": "lizard_light_center_web",
-        "left": "lizard_light_right_web",
+        "left": "lizard_light_left_web",
         "center": "lizard_light_center_web"
     }
 
