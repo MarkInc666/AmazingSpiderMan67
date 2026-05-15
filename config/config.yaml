@@ -79,6 +79,7 @@ modes:
   - bonus_lanes
   - daily_bugle_mystery
   - extra_ball
+  - skillshot
   - meteor
   - custom_bonus
   - super_spinner
@@ -159,6 +160,9 @@ player_vars:
   extra_ball_text:
     initial_value: ""
     value_type: str
+  skillshots_awarded:
+    initial_value: 0
+    value_type: int
 
 
 

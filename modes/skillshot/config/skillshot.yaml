@@ -1,0 +1,93 @@
+#config_version=6
+
+mode:
+  start_events: ball_started
+  stop_events:
+    - skillshot_awarded
+    - skillshot_missed
+  priority: 500
+  code: skillshot.SkillShot
+
+
+# ----------------------------
+# Skill shot lights
+# ----------------------------
+
+show_player:
+
+  skillshot_clear_lit_shot:
+    skillshot_lit_show:
+      action: stop
+
+  skillshot_lit_saucer_left:
+    flash_skillshot:
+      key: skillshot_lit_show
+      show_tokens:
+        lights: l_saucer_left
+
+  skillshot_lit_saucer_center:
+    flash_skillshot:
+      key: skillshot_lit_show
+      show_tokens:
+        lights: l_saucer_center
+
+  skillshot_lit_saucer_right:
+    flash_skillshot:
+      key: skillshot_lit_show
+      show_tokens:
+        lights: l_saucer_right
+
+  skillshot_lit_star:
+    flash_skillshot:
+      key: skillshot_lit_show
+      show_tokens:
+        lights: l_star
+
+  skillshot_lit_upper_a:
+    flash_skillshot:
+      key: skillshot_lit_show
+      show_tokens:
+        lights: l_upper_a
+
+  skillshot_lit_upper_b:
+    flash_skillshot:
+      key: skillshot_lit_show
+      show_tokens:
+        lights: l_upper_b
+
+  skillshot_awarded:
+    skillshot_lit_show:
+      action: stop
+
+  skillshot_missed:
+    skillshot_lit_show:
+      action: stop
+
+  mode_skillshot_stopping:
+    skillshot_lit_show:
+      action: stop
+
+
+
+shows:
+  flash_skillshot:
+  - duration: 500ms
+    lights:
+      (lights): white
+
+  - duration: 500ms
+    lights:
+      (lights): off  
+
+
+# ----------------------------
+# Optional display/sound hooks
+# ----------------------------
+
+event_player:
+
+  skillshot_awarded:
+    - skillshot_success_callout
+
+  skillshot_missed:
+    - skillshot_miss_callout
