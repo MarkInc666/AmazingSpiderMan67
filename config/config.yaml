@@ -156,6 +156,9 @@ player_vars:
   villains_completed_total:
     initial_value: 0
     value_type: int
+  extra_ball_text:
+    initial_value: ""
+    value_type: str
 
 
 

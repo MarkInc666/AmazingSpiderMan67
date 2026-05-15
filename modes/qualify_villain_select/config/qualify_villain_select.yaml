@@ -19,11 +19,19 @@ mode_settings:
     - doc_ock
     - parafino
 
-  next_item_events: s_right_flipper_inactive
-  previous_item_events: s_left_flipper_inactive
-  select_item_events: flipper_cancel
-  block_events: carousel_selection_locked
-  release_events: carousel_selection_unlocked
+  next_item_events: villain_carousel_next
+  previous_item_events: villain_carousel_previous
+  select_item_events: villain_carousel_accept_selection
+
+
+event_player:
+  s_right_flipper_inactive{device.switches.s_left_flipper.state == 0}:
+    villain_carousel_next
+
+  s_left_flipper_inactive{device.switches.s_right_flipper.state == 0}:
+    villain_carousel_previous
+
+
 
 
 slide_player:

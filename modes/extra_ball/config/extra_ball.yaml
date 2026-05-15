@@ -14,7 +14,7 @@ extra_balls:
 slide_player:
   mystery_extra_ball_lit:
     extra_ball:
-      expire: 5s
+      expire: 4s
       priority: 1000
       action: play
 
@@ -36,7 +36,7 @@ event_player:
     - mystery_extra_ball_lit
 
   #left bank complete when lit
-  drop_target_bank_dt_bank_left_down{device.extra_balls.mystery_extra_ball.enabled}:
+  drop_target_bank_dt_bank_left_down{current_player.extra_ball_text == "IS LIT"}:
     - mystery_extra_ball_award
 
 
@@ -55,6 +55,11 @@ variable_player:
     extra_ball_text:
       action: set
       string: "IS LIT"
+
+  mystery_extra_ball_award:
+    extra_ball_text:
+      action: set
+      string: "COLLECTED"
 
 
 
