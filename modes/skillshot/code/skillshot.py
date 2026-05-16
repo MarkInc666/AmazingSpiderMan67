@@ -1,5 +1,5 @@
 from mpf.core.mode import Mode
-
+import random
 
 class SkillShot(Mode):
 
@@ -53,7 +53,8 @@ class SkillShot(Mode):
         super().mode_start(**kwargs)
 
         self.skillshot_active = True
-        self.current_index = 0
+        self.skillshot_moved = False
+        self.current_index = random.randint(0, len(self.SHOTS) - 1)
         
         # Flipper navigation.
         self.add_mode_event_handler("s_left_flipper_active", self.move_left)
@@ -73,6 +74,7 @@ class SkillShot(Mode):
         if not self.skillshot_active:
             return
 
+        self.skillshot_moved = True
         self.current_index -= 1
 
         if self.current_index < 0:
@@ -84,6 +86,7 @@ class SkillShot(Mode):
         if not self.skillshot_active:
             return
 
+        self.skillshot_moved = True
         self.current_index += 1
 
         if self.current_index >= len(self.SHOTS):
@@ -122,6 +125,9 @@ class SkillShot(Mode):
         self.machine.game.player["skillshots_awarded"] +=1
         
         award = self.machine.game.player["skillshots_awarded"] * 100000
+
+        if self.skillshot_moved == False:
+            award = award * 2
 
         self.player.score += award
 
