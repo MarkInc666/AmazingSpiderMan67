@@ -23,19 +23,19 @@ show_player:
     flash_skillshot:
       key: skillshot_lit_show
       show_tokens:
-        lights: l_saucer_left
+        lights: l_1
 
   skillshot_lit_saucer_center:
     flash_skillshot:
       key: skillshot_lit_show
       show_tokens:
-        lights: l_saucer_center
+        lights: l_2
 
   skillshot_lit_saucer_right:
     flash_skillshot:
       key: skillshot_lit_show
       show_tokens:
-        lights: l_saucer_right
+        lights: l_3
 
   skillshot_lit_star:
     flash_skillshot:
@@ -47,13 +47,13 @@ show_player:
     flash_skillshot:
       key: skillshot_lit_show
       show_tokens:
-        lights: l_upper_a
+        lights: l_a_rollover
 
   skillshot_lit_upper_b:
     flash_skillshot:
       key: skillshot_lit_show
       show_tokens:
-        lights: l_upper_b
+        lights: l_b_rollover
 
   skillshot_awarded:
     skillshot_lit_show:
