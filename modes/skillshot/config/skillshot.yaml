@@ -3,8 +3,7 @@
 mode:
   start_events: ball_started
   stop_events:
-    - skillshot_awarded
-    - skillshot_missed
+    - finish_skillshot
   priority: 500
   code: skillshot.SkillShot
 
@@ -88,6 +87,16 @@ event_player:
 
   skillshot_awarded:
     - skillshot_success_callout
+    - finish_skillshot
+   
 
   skillshot_missed:
     - skillshot_miss_callout
+    - finish_skillshot    
+  
+  
+sound_player:
+  skillshot_awarded:
+    drum_1:
+      action: play
+      bus: effects

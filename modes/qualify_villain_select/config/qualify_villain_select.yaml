@@ -34,12 +34,12 @@ event_player:
 
 sound_player:
   villain_carousel_next:
-    hp_up_1:
+    hb_up_1:
       action: play
       bus: effects
 
   villain_carousel_previous:
-    hp_down_1:
+    hb_down_1:
       action: play
       bus: effects
 
