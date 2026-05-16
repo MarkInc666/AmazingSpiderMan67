@@ -32,7 +32,26 @@ event_player:
     villain_carousel_previous
 
 
+sound_player:
+  villain_carousel_next:
+    hp_up_1:
+      action: play
+      bus: effects
 
+  villain_carousel_previous:
+    hp_down_1:
+      action: play
+      bus: effects
+
+  villain_carousel_accept_selection:
+    zip_out:
+      action: play
+      bus: effects
+
+  villain_select_already_played:
+    hb_bonk_1:
+      action: play
+      bus: effects
 
 slide_player:
   mode_qualify_villain_select_started:

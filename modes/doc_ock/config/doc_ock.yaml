@@ -80,6 +80,17 @@ event_player:
     - doc_ock_timed_release_complete
   
 
+sound_player:
+  doc_ock_breakout_hit:
+    arm_powerup:
+      action: play
+      bus: effects
+
+  doc_ock_arm_locked_score:
+    arm_powerdown:
+      action: play
+      bus: effects
+
 
 timers:
   doc_ock_timed_release:

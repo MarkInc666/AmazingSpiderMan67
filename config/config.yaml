@@ -268,8 +268,11 @@ coil_player:
       action: pulse
       
 
-
-
+sound_player:
+  up_kick:
+    hb_spring_1:
+      action: play
+      bus: effects
 
  
 sequences:
