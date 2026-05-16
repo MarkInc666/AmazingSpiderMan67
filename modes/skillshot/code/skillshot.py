@@ -52,7 +52,7 @@ class SkillShot(Mode):
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
 
-        self.active = True
+        self.skillshot_active = True
         self.current_index = 0
         
         # Flipper navigation.
@@ -70,7 +70,7 @@ class SkillShot(Mode):
         self.light_current_shot()
 
     def move_left(self, **kwargs):
-        if not self.active:
+        if not self.skillshot_active:
             return
 
         self.current_index -= 1
@@ -81,7 +81,7 @@ class SkillShot(Mode):
         self.light_current_shot()
 
     def move_right(self, **kwargs):
-        if not self.active:
+        if not self.skillshot_active:
             return
 
         self.current_index += 1
@@ -92,7 +92,7 @@ class SkillShot(Mode):
         self.light_current_shot()
 
     def light_current_shot(self):
-        if not self.active:
+        if not self.skillshot_active:
             return
 
         self.machine.events.post("skillshot_clear_lit_shot")
@@ -101,10 +101,10 @@ class SkillShot(Mode):
         self.machine.events.post(lit_event)
     
     def skillshot_switch_hit(self, shot_key=None, **kwargs):
-        if not self.active:
+        if not self.skillshot_active:
             return
 
-        self.active = False
+        self.skillshot_active = False
 
         lit_key = self.SHOTS[self.current_index]["key"]
 
