@@ -54,6 +54,9 @@ class SkillShot(Mode):
 
         self.skillshot_active = True
         self.skillshot_moved = False
+
+        self.machine.game.player["skillshot_collected_value"] = 0
+
         self.current_index = random.randint(0, len(self.SHOTS) - 1)
         
         # Flipper navigation.
@@ -114,6 +117,7 @@ class SkillShot(Mode):
         if shot_key == lit_key:
             self.award_skillshot()
         else:
+            self.machine.game.player["skillshot_collected_value"] = 0
             self.machine.events.post(
                 "skillshot_missed",
                 hit=shot_key,
@@ -130,6 +134,8 @@ class SkillShot(Mode):
             award = award * 2
 
         self.player.score += award
+
+        self.machine.game.player["skillshot_collected_value"] = award
 
         self.machine.events.post(
             "skillshot_awarded",

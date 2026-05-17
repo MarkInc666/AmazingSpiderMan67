@@ -163,6 +163,9 @@ player_vars:
   skillshots_awarded:
     initial_value: 0
     value_type: int
+  skillshot_collected_value:
+    initial_value: 0
+    value_type: int
 
 
 

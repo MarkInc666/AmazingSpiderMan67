@@ -3,22 +3,42 @@
 mode:
   start_events: ball_started
   stop_events:
-    - finish_skillshot
+    - finish_skillshot2
   priority: 500
   code: skillshot.SkillShot
 
 
 event_player:
   skillshot_awarded:
+    - show_skillshot_result
     - skillshot_success_callout
     - skillshot_clear_lit_shot
-    - finish_skillshot
+    - finish_skillshot|2s
 
   skillshot_missed:
+    - show_skillshot_result
     - skillshot_missed_callout
     - skillshot_clear_lit_shot
-    - finish_skillshot    
-  
+    - finish_skillshot|2s    
+
+  finish_skillshot:
+    - finish_skillshot2|100ms
+
+variable_player:
+  finish_skillshot:
+    skillshot_active: 0
+
+widget_player:
+  mode_skillshot_started:
+    skillshot:
+      action: play
+
+  show_skillshot_result:
+    skillshot_completed:
+      action: play
+
+
+
 sound_player:
   skillshot_success_callout:
     drum_1:
