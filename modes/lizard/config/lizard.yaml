@@ -139,18 +139,21 @@ event_player:
   lizard_set_b{current_player.lizard_a_hit == 1}:
     - lizard_ab_ready_event
 
+  #ab reset the timer
+  lizard_ab_ready_event:
+    - lizard_delivery_timer_start
+    - lizard_clear_ab
+
   # Collect serum
   s_star_rollover_active:
     - lizard_serum_collect_request
 
   lizard_serum_collect_request{current_player.lizard_serum_ready == 0 and current_player.lizard_ab_ready == 1}:
     - lizard_serum_collected
-    - lizard_apply_ab_bonus
-    - lizard_clear_ab
     - lizard_light_delivery_target
     - lizard_delivery_timer_start
 
-  lizard_serum_collect_request{current_player.lizard_serum_ready == 0 and current_player.lizard_ab_ready == 0}:
+  lizard_serum_collect_request{current_player.lizard_serum_ready == 0}:
     - lizard_serum_collected
     - lizard_light_delivery_target
     - lizard_delivery_timer_start
@@ -254,6 +257,23 @@ show_player:
     lizard_gi_hurry_show:
       action: stop
 
+  lizard_a_complete:
+    lizard_a_complete_show:
+      loops: -1
+
+  lizard_b_complete:
+    lizard_b_complete_show:
+      loops: -1
+
+  lizard_ab_complete:
+    lizard_a_complete_show:
+      action: stop
+    lizard_b_complete_show:
+      action: stop
+    lizard_ab_ready_show:
+      loops: 3
+
+
 shows:
 
   lizard_gi_show:
@@ -331,3 +351,46 @@ shows:
     - duration: 200ms
       lights:
         gi: white
+
+  lizard_a_complete_show:
+    - duration: 300ms
+      lights:
+        l_a_rollover: white
+        l_right_a: white
+    - duration: 300ms
+      lights:
+        l_a_rollover: blue
+        l_right_a: blue
+
+  lizard_b_complete_show:
+    - duration: 300ms
+      lights:
+        l_b_rollover: white
+        l_left_b: white
+    - duration: 300ms
+      lights:
+        l_b_rollover: blue
+        l_left_b: blue
+
+  lizard_ab_off_show:
+    - duration: 300ms
+      lights:
+        l_a_rollover: off
+        l_right_a: off
+        l_b_rollover: off
+        l_left_b: off
+
+  lizard_ab_ready_show:
+    - duration: 300ms
+      lights:
+        l_a_rollover: white
+        l_right_a: white
+        l_b_rollover: white
+        l_left_b: white
+    - duration: 300ms
+      lights:
+        l_a_rollover: blue
+        l_b_rollover: blue
+        l_right_a: blue
+        l_left_b: blue
+

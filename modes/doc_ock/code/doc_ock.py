@@ -60,6 +60,8 @@ class doc_ock(Mode):
             )
             
         self.update_player_vars()
+        self.machine.events.post("rooftop_diverter_close")
+
 
     def doc_ock_start_arms(self, **kwargs):
         self.refresh_lane_lights()
@@ -119,7 +121,7 @@ class doc_ock(Mode):
         self.machine.game.player["doc_ock_last_jackpot"] = jp_value
         
         self.machine.events.post("doc_ock_jackpot_award")
-        self.machine.events.post("doc_ock_jackpot_collected")
+        #self.machine.events.post("doc_ock_jackpot_collected")
 
         self.doc_ock_jackpot_spinner_multi = 1
         self.jackpots_collected += 1

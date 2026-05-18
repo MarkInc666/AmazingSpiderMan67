@@ -36,6 +36,7 @@ widget_player:
   show_skillshot_result:
     skillshot_completed:
       action: play
+      expire: 2s
 
 
 

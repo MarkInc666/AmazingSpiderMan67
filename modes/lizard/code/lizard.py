@@ -36,6 +36,8 @@ class Lizard(Mode):
             "lizard_light_delivery_target",
             self.light_next_target
         )
+        self.machine.events.post("rooftop_diverter_close")
+
 
     def current_target(self):
         player = self.machine.game.player
@@ -68,7 +70,7 @@ class Lizard(Mode):
             return
 
         self.machine.events.post("lizard_light_serum_location")
-        self.machine.events.post("lizard_light_delivery_target")
+        #self.machine.events.post("lizard_light_delivery_target")
 
     def light_next_target(self, **kwargs):
         target = self.current_target()

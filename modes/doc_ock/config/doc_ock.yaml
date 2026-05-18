@@ -10,7 +10,13 @@ mode:
 
 variable_player:
   doc_ock_jackpot_award:
-    score: current_player.doc_ock_jackpot_value
+    score: current_player.doc_ock_last_jackpot
+
+widget_player:
+  doc_ock_jackpot_award:
+    jackpot_collected:
+      action: play
+      expire: 2s
 
 event_player:
 
@@ -91,6 +97,16 @@ sound_player:
       action: play
       bus: effects
 
+  doc_ock_jackpot_not_lit:
+    hb_blip_1:
+      action: play
+      bus: effects
+
+  doc_ock_jackpot_award:
+    drum_1:
+      action: play
+      bus: effects
+
 
 timers:
   doc_ock_timed_release:
@@ -160,7 +176,7 @@ show_player:
     doc_ock_web_jackpot_show:
       loops: -1
 
-  doc_ock_jackpot_collected:
+  doc_ock_jackpot_award:
     doc_ock_web_jackpot_show:
       action: stop
     doc_ock_jackpot_collect_show:

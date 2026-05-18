@@ -12,6 +12,41 @@ mode:
   code: electro.Electro
   priority: 500
 
+
+random_event_player:
+  electro_jackpot_collected:
+    - electro_jackpot_collected_1  
+    - electro_jackpot_collected_2  
+    - electro_jackpot_collected_3  
+
+
+sound_player:
+  electro_lit_shot_changed:
+    electro_zap:
+      action: play
+      bus: effects
+
+  electro_jackpot_collected_1:
+    light_smash_1:
+      action: play
+      bus: effects
+
+  electro_jackpot_collected_2:
+    light_smash_2:
+      action: play
+      bus: effects
+
+  electro_jackpot_collected_3:
+    light_smash_3:
+      action: play
+      bus: effects
+
+  electro_super_collected:
+    jackpot:
+      action: play
+      bus: effects
+
+
 event_player:
   electro_mode_complete:
     - reset_villain_locate
@@ -28,6 +63,7 @@ event_player:
 
   electro_saucers_hit:
     - clear_saucers  
+
 
   # -------------------------------
   # Real switches / shot groups -> Electro Python events

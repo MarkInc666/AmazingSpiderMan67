@@ -6,6 +6,23 @@ mode:
   code: mysterio.Mysterio
   priority: 500
 
+
+sound_player:
+  mysterio_spidey_sense_left:
+    sm_my_spidey_sense_left:
+      action: play
+      bus: voice
+
+  mysterio_spidey_sense_right:
+    sm_my_spidey_sense_right:
+      action: play
+      bus: voice
+
+  mysterio_spidey_sense_upper:
+    sm_my_spidey_sense_rooftop:
+      action: play
+      bus: voice
+
 event_player:
   mysterio_mode_complete:
     - reset_villain_locate
