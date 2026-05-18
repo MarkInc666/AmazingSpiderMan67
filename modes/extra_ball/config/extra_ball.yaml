@@ -40,8 +40,31 @@ event_player:
     - mystery_extra_ball_award
 
 
+  ball_save_default_ball_save_enabled:
+    - increase_ballsave_count
+  ball_save_mystery_ball_save_enabled:
+    - increase_ballsave_count
+
+  ball_save_default_ball_save_disabled:
+    - decrease_ballsave_count
+  ball_save_mystery_ball_save_disabled:
+    - decrease_ballsave_count
+
+
+
+
 
 variable_player:
+  increase_ballsave_count:
+    ball_save_count:
+      action: set
+      int: current_player.ball_save_count+1
+
+  decrease_ballsave_count:
+    ball_save_count:
+      action: set
+      int: current_player.ball_save_count-1
+
   #if points instead of eb - TODO - call this from somewhere else
   extra_ball_award_million_points:
     score: 1000000

@@ -9,6 +9,9 @@ event_player:
   mode_base_started:
     - music_start_prowl|1s
 
+  s_plunger_inactive:
+    - start_my_default_ball_save
+
 
 slide_player:
   mode_base_started:
@@ -48,3 +51,13 @@ sound_player:
     rope_1:
       action: play
       bus: effects
+
+  s_outlane_r_active{current_player.ball_save_count == 0}:
+    jj_end_of_the_line:
+      action: play
+      bus: voice
+
+  s_outlane_l_active{current_player.ball_save_count == 0}:
+    jj_spiderman_caught:
+      action: play
+      bus: voice

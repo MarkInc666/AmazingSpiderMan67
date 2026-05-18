@@ -166,6 +166,9 @@ player_vars:
   skillshot_collected_value:
     initial_value: 0
     value_type: int
+  ball_save_count:
+    initial_value: 0
+    value_type: int
 
 
 
@@ -312,7 +315,7 @@ ball_saves:
     hurry_up_time: 3s
     grace_period: 2s
     enable_events:
-      - ball_started
+      - start_my_default_ball_save
 #    timer_start_events:
 #      - playfield_active      
 
