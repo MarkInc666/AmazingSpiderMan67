@@ -8,6 +8,17 @@ mode:
   code: rhino.RhinoBash
   priority: 300
 
+
+widget_player:
+  mode_rhino_started:
+    rhino:
+      action: play
+
+  rhino_bash_complete:
+    rhino:
+      action: remove
+
+
 event_player:
 
   drop_target_bank_dt_bank_left_down:
@@ -19,8 +30,7 @@ event_player:
   rhino_bash_complete:
     - reset_villain_locate
 
-#TODO: is this called? when?  saucer doesnt clear?
-  mode_rhino_bash_started:
+  mode_rhino_started:
     - rhino_start
     - rhino_light_jackpot_collect
     - clear_saucers

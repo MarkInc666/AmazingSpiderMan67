@@ -9,6 +9,26 @@ mode:
   priority: 300
 
 
+
+
+
+sound_player:
+  lizard_serum_collected:
+    sm_i_have_to_hurry:
+      action: play
+      bus: voice
+
+  lizard_light_serum_location{current_player.lizard_deliveries == 0}:
+    sm_i_need_to_pick_up_the_serum:
+      action: play
+      bus: voice
+
+  lizard_light_serum_location{current_player.lizard_deliveries > 0}:
+    sm_i_need_to_pick_up_more_serum:
+      action: play
+      bus: voice
+
+
 variable_player:
 
   mode_lizard_started:

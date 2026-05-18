@@ -22,6 +22,14 @@ variable_player:
       int: 1
 
 
+sound_player:
+
+  villain_start_ready_set:
+    sm_my_spidey_senses_are_starting_to_tingle:
+      action: play
+      bus: voice
+
+
 
 event_player:
 

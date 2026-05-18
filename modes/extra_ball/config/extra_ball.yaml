@@ -25,6 +25,19 @@ slide_player:
       action: play
 
 
+
+sound_player:
+  mystery_extra_ball_award:
+    sm_extra_ball: 
+      action: play
+      bus: voice
+
+  mystery_extra_ball_lit:
+    sm_extra_ball_is_lit: 
+      action: play
+      bus: voice
+
+
 event_player:
  
   #directly from bugle

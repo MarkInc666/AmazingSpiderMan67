@@ -34,6 +34,12 @@ variable_player:
     score: 1000000
 
 
+sound_player:
+  sandman_start_bank:
+    sm_i_need_to_hit_flashing_drops:
+      action: play
+      bus: voice
+
 
 event_player:
 
