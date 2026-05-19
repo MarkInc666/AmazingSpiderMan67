@@ -54,7 +54,7 @@ event_player:
   right_drops_hit: mysterio_right_drops_hit
   s_trispinner_opto_active: mysterio_upper_spinner_hit
   saucers_hit: mysterio_saucers_hit
-  upper_targets_hit: mysterio_upper_target_hit
+  upper_targets_hit: mysterio_upper_targets_hit
 
   mysterio_all_shots_lit:
     - mysterio_lite_left_web
@@ -64,7 +64,7 @@ event_player:
     - mysterio_lite_right_drops
     - mysterio_lite_upper_spinner
     - mysterio_lite_saucers
-    - mysterio_lite_upper_target
+    - mysterio_lite_upper_targets
 
 
 shot_groups:
@@ -184,8 +184,8 @@ show_player:
     mysterio_lite_saucers_show:
       loops: -1
 
-  mysterio_lite_upper_target:
-    mysterio_lite_upper_target_show:
+  mysterio_lite_upper_targets:
+    mysterio_lite_upper_targets_show:
       loops: -1
 
   mysterio_stop_left_web:
@@ -216,8 +216,8 @@ show_player:
     mysterio_lite_saucers_show:
       action: stop
 
-  mysterio_stop_upper_target:
-    mysterio_lite_upper_target_show:
+  mysterio_stop_upper_targets:
+    mysterio_lite_upper_targets_show:
       action: stop
 
 
@@ -305,7 +305,7 @@ shows:
         l_3: blue
         l_3_hole_r: blue
 
-  mysterio_lite_upper_target_show:
+  mysterio_lite_upper_targets_show:
     - duration: 120ms
       lights:
         l_upper_left: yellow

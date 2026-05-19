@@ -12,6 +12,31 @@ event_player:
   s_plunger_inactive:
     - start_my_default_ball_save
 
+  s_leaf_next_to_1_active:
+    - secondary_switch_hit
+  s_right_drops_top_rubber_active:
+    - secondary_switch_hit  
+  s_above_star_active:
+    - secondary_switch_hit
+  s_above_spinner_active:
+    - secondary_switch_hit
+  s_left_drops_top_left_rubber_active:
+    - secondary_switch_hit
+  s_left_drops_top_right_rubber_active:
+    - secondary_switch_hit
+  s_mid_right_rubber_active:
+    - secondary_switch_hit
+  s_left_drops_rubber_active:
+    - secondary_switch_hit
+  s_right_drops_rubber_active:
+    - secondary_switch_hit
+
+  s_pop_right_active:
+    - pops_hit
+  s_pop_left_active:
+    - pops_hit
+
+
 
 slide_player:
   mode_base_started:
@@ -61,3 +86,23 @@ sound_player:
     jj_spiderman_caught:
       action: play
       bus: voice
+
+  secondary_switch_hit:
+    hb_blip_1:
+      action: play
+      bus: effects
+
+  pops_hit:
+    hb_pot_1:
+      action: play
+      bus: effects
+
+
+
+
+variable_player:
+  secondary_switch_hit:
+    score: 500
+
+  pops_hit:
+    score: 1000

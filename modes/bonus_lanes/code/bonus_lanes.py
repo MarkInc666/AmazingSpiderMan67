@@ -100,6 +100,7 @@ class BonusLanes(Mode):
 
         self.completed[index] = True
         self.refresh_lane_lights()
+        self.machine.events.post("bonus_lane_lit_sfx")
 
         if all(self.completed):
             self.light_center_web()
@@ -138,10 +139,13 @@ class BonusLanes(Mode):
         player = self.machine.game.player
         current = player["bonus_multiplier"]
 
+
         if current < self.MAX_MULTIPLIER:
             player["bonus_multiplier"] = current + 1
+            self.machine.events.post(f"bonus_left_web_collected_{(current+1)}x")
         else:
             player["score"] += 100000
+            self.machine.events.post("bonus_left_web_collected_max")
 
         self.update_bonus_lights()            
 

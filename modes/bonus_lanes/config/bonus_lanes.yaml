@@ -15,12 +15,62 @@ variable_player:
       action: set
       int: 0
 
+sound_player:
+  #bonus 1K
+  bonus_count_add:
+    hb_pot_1:
+      action: play
+      bus: effects
+
+  #1/4 lanes lit
+  bonus_lane_lit_sfx:
+    hb_pot_1:
+      action: play
+      bus: effects
+
+  #center target ready 
+  bonus_center_web_lit:
+    sm_hit_the_center_web:
+      action: play
+      bus: voice
+
+  #almost bonus x
+  bonus_center_web_collected:
+    sm_hit_the_left_web:
+      action: play
+      bus: voice
+
+  #bonus X
+  bonus_left_web_collected_2x:
+    sm_2x:
+      action: play
+      bus: voice
+  bonus_left_web_collected_3x:
+    sm_3x:
+      action: play
+      bus: voice
+  bonus_left_web_collected_4x:
+    sm_4x:
+      action: play
+      bus: voice
+  bonus_left_web_collected_5x:
+    sm_5x:
+      action: play
+      bus: voice
+  bonus_left_web_collected_max:
+    hb_bounce_2:
+      action: play
+      bus: effects
+
 
 event_player:
   mode_bonus_lanes_started:
     - bonus_lanes_start
 
   s_upper_entrance_opto_active:
+    - bonus_count_add
+
+  s_star_rollover_active:
     - bonus_count_add
 
   s_left_flipper_active:

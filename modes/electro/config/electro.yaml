@@ -19,9 +19,24 @@ random_event_player:
     - electro_jackpot_collected_2  
     - electro_jackpot_collected_3  
 
+  electro_lit_shot_changed:
+    - electro_jackpot_moved_1  
+    - electro_jackpot_moved_2  
+    - electro_jackpot_moved_3  
+
 
 sound_player:
-  electro_lit_shot_changed:
+  electro_jackpot_moved_1:
+    spark_1:
+      action: play
+      bus: effects
+
+  electro_jackpot_moved_2:
+    spark_2:
+      action: play
+      bus: effects
+
+  electro_jackpot_moved_3:
     electro_zap:
       action: play
       bus: effects

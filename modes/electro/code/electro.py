@@ -1,5 +1,7 @@
 from mpf.core.mode import Mode
 from modes.common.shot_registry import Shot
+from mpf.core.delays import DelayManager
+
 import random
 
 
@@ -10,6 +12,8 @@ class Electro(Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+
+        self.delay = DelayManager(self.machine)
 
         self.super_active = False
         self.current_shot = None
@@ -124,6 +128,14 @@ class Electro(Mode):
         self.machine.events.post(f"electro_stop_{shot.name}")
         self.machine.events.post(f"electro_deactivate_{shot.name}")
 
+        self.delay.remove("next_shot_delay")
+        self.delay.add(
+            name="next_shot_delay",
+            ms=1000,
+            callback=self.delayed_next_shot
+        )
+
+    def delayed_next_shot(self, **kwargs):
         self.machine.events.post("electro_shot_timer_stop")
         self.pick_next_lit_shot()
 

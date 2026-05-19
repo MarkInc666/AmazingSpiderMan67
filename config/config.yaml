@@ -74,7 +74,8 @@ modes:
   - base
   - music_control
   - service
-  - high_score  
+  - high_score
+  - tilt  
   - bonus
   - bonus_lanes
   - daily_bugle_mystery

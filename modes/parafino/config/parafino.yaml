@@ -55,6 +55,8 @@ event_player:
 
   parafino_mode_complete:
     - reset_villain_locate
+    - drop_target_bank_dt_bank_left_reset
+    - drop_target_bank_dt_bank_right_reset
 
   # LEFT ZONE: left drops
   s_left_drops_1_active:

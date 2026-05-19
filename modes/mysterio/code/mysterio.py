@@ -22,7 +22,7 @@ class Mysterio(Mode):
             Shot("saucers", 50, 30, "mysterio_saucers_hit", group="left"),
             Shot("right_web", 80, 30, "mysterio_right_web_hit", group="right"),
             Shot("upper_spinner", 90, 30, "mysterio_upper_spinner_hit", group="upper"),
-            Shot("upper_targets", 95, 20, "mysterio_upper_target_hit", group="upper"),
+            Shot("upper_targets", 95, 20, "mysterio_upper_targets_hit", group="upper"),
             Shot("right_drops", 100, 80, "mysterio_right_drops_hit", group="right"),
         ]
 

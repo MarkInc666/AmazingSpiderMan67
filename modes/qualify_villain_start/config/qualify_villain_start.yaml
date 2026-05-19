@@ -58,7 +58,7 @@ variable_player:
       int: 1
 
   slings_hit:
-    score: 110
+    score: 710
 
 
 slide_player:
@@ -106,3 +106,9 @@ event_player:
   check_kingpin_ready{current_player.villains_completed_total >= 10}:
     - kingpin_ready_set
     - kingpin_wizard_ready
+
+sound_player:
+  slings_hit:
+    hb_bounce_2:
+      action: play
+      bus: effects
