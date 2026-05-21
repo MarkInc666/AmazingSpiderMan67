@@ -5,6 +5,15 @@ mode:
   priority: 100
 
 
+variable_player:
+  secondary_switch_hit:
+    score: 500
+
+  pops_hit:
+    score: 1000
+
+
+
 event_player:
   mode_base_started:
     - music_start_prowl|1s
@@ -40,7 +49,7 @@ event_player:
 
 slide_player:
   mode_base_started:
-    base:
+    main_game:
       action: play
     attract:
       action: remove
@@ -96,13 +105,3 @@ sound_player:
     hb_pot_1:
       action: play
       bus: effects
-
-
-
-
-variable_player:
-  secondary_switch_hit:
-    score: 500
-
-  pops_hit:
-    score: 1000
