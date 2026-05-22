@@ -53,7 +53,7 @@ sound_player:
       action: play
       bus: effects
 
-slide_player:
+widget_player:
   mode_qualify_villain_select_started:
     villain_select:
       priority: 1000

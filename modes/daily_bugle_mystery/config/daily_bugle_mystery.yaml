@@ -36,7 +36,7 @@ variable_player:
 
 
 random_event_player:
-  daily_bugle_rooftop_right_exit:
+  daily_bugle_rooftop_traversal_complete:
     - daily_bugle_rooftop_right_exit_1
     - daily_bugle_rooftop_right_exit_2
 

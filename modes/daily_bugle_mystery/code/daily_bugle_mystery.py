@@ -32,7 +32,7 @@ class DailyBugleMystery(Mode):
 
     """
 
-    EXTRA_BALL_LIGHT_AT = 2 #4
+    EXTRA_BALL_LIGHT_AT = 3
     EXTRA_BALL_AWARD_AT = 10
 
     PLACEHOLDER_AWARDS = [
@@ -149,6 +149,12 @@ class DailyBugleMystery(Mode):
         self.reset_cycle()
         self.update_player_vars()
 
+        self.delay.add(
+            name=f"vuk_delay_eject",
+            ms=7000,
+            callback=self.fire_VUK
+        )
+
     def award_psuedo_random_mystery(self):
         valid = False
 
@@ -167,11 +173,6 @@ class DailyBugleMystery(Mode):
                 valid = True
 
         self.machine.events.post(award_event)
-        self.delay.add(
-            name=f"vuk_delay_eject",
-            ms=8000,
-            callback=self.fire_VUK
-        )
 
     def fire_VUK(self):
         self.machine.events.post("up_kick")
