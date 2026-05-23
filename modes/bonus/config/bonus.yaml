@@ -12,6 +12,15 @@ mode:
 #* spidey bonus
 #* vulture bonus
 
+
+slide_player:
+  mode_bonus_started:
+    bonus:
+      action: play
+    main_game:
+      action: remove
+
+
 mode_settings:
   display_delay_ms: 500ms
   hurry_up_delay_ms: 50ms

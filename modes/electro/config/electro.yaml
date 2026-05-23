@@ -13,6 +13,16 @@ mode:
   priority: 500
 
 
+widget_player:
+  mode_electro_started:
+    electro:
+      action: play
+
+  electro_mode_complete:
+    sandmelectroan:
+      action: remove
+
+
 random_event_player:
   electro_jackpot_collected:
     - electro_jackpot_collected_1  

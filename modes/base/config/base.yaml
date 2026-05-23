@@ -12,11 +12,17 @@ variable_player:
   pops_hit:
     score: 1000
 
+random_event_player:
+  mode_base_started_delayed:
+    - play_song_1
+    - play_song_2
+    - play_song_3
+
 
 
 event_player:
   mode_base_started:
-    - music_start_prowl|1s
+    - mode_base_started_delayed|1s
 
   s_plunger_inactive:
     - start_my_default_ball_save

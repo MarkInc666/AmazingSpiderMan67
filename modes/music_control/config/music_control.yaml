@@ -6,9 +6,17 @@ mode:
 
 
 
-sound_player:
 
-  music_start_prowl: 
+sound_player:
+  play_song_1: 
     prowl_car:
+      bus: music
+
+  play_song_2: 
+    panic_patrol:
+      bus: music
+      
+  play_song_3: 
+    rat_race:
       bus: music
 #loop?
