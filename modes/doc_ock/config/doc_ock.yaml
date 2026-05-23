@@ -8,9 +8,11 @@ mode:
   code: doc_ock.doc_ock
   priority: 600
 
+
 variable_player:
   doc_ock_jackpot_award:
     score: current_player.doc_ock_last_jackpot
+
 
 widget_player:
   doc_ock_jackpot_award:
@@ -18,8 +20,16 @@ widget_player:
       action: play
       expire: 2s
 
-event_player:
+  mode_doc_ock_started:
+    doc_ock:
+      action: play
 
+  doc_ock_mode_complete:
+    doc_ock:
+      action: remove
+
+
+event_player:
   drop_target_bank_dt_bank_left_down:
     - drop_target_bank_dt_bank_left_reset
 

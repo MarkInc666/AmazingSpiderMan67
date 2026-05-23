@@ -8,6 +8,17 @@ mode:
   code: scorpion.Scorpion
   priority: 300
 
+
+widget_player:
+  mode_scorpion_started:
+    scorpion:
+      action: play
+
+  scorpion_mode_complete:
+    scorpion:
+      action: remove
+
+
 variable_player:
   mode_scorpion_started:
     scorpion_venom_value:

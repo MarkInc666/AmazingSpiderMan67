@@ -9,7 +9,14 @@ mode:
   priority: 300
 
 
+widget_player:
+  mode_lizard_started:
+    lizard:
+      action: play
 
+  lizard_mode_complete:
+    lizard:
+      action: remove
 
 
 sound_player:

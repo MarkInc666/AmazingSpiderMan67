@@ -8,6 +8,17 @@ mode:
   code: parafino.Parafino
   priority: 300
 
+
+widget_player:
+  mode_parafino_started:
+    parafino:
+      action: play
+
+  parafino_mode_complete:
+    parafino:
+      action: remove
+
+
 multiballs:
   parafino_add_a_ball_1:
     ball_count: 1

@@ -40,6 +40,15 @@ sound_player:
       action: play
       bus: voice
 
+widget_player:
+  mode_sandman_started:
+    sandman:
+      action: play
+
+  sandman_mode_complete:
+    sandman:
+      action: remove
+
 
 event_player:
 

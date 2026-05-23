@@ -61,15 +61,15 @@ variable_player:
     score: 710
 
 
-slide_player:
-  villain_started_set:
-    villain_active:
-      action: play
-      priority: 1000
+#slide_player:
+#  villain_started_set:
+#    villain_active:
+#      action: play
+#      priority: 1000
 
-  reset_villain_locate:
-    villain_active:
-      action: remove
+#  reset_villain_locate:
+#    villain_active:
+#      action: remove
 
 
 shots:

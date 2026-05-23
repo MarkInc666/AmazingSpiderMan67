@@ -8,6 +8,7 @@ mode:
   code: goblin.Goblin
   priority: 500
 
+
 multiballs:
   goblin_chaos_multiball:
     ball_count: 2
@@ -19,8 +20,18 @@ multiballs:
       - goblin_mode_ended
       - ball_ended
 
-shots:
 
+widget_player:
+  mode_goblin_started:
+    goblin:
+      action: play
+
+  goblin_mode_complete:
+    goblin:
+      action: remove
+
+
+shots:
   gob_right_drop_1:
     switch: s_right_drops_1
   gob_right_drop_2:

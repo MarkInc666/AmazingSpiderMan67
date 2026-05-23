@@ -7,6 +7,16 @@ mode:
   priority: 500
 
 
+widget_player:
+  mode_mysterio_started:
+    mysterio:
+      action: play
+
+  mysterio_mode_complete:
+    mysterio:
+      action: remove
+
+
 sound_player:
   mysterio_spidey_sense_left:
     sm_my_spidey_sense_left:
