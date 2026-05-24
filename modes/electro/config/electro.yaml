@@ -444,11 +444,9 @@ shows:
     - duration: 120ms
       lights:
         l_3bankbonus: white
-        l_extraball: white
     - duration: 120ms
       lights:
         l_3bankbonus: off
-        l_extraball: off
 
   electro_saucers_super_show:
     - duration: 150ms

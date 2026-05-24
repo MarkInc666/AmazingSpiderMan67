@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ccyftgpwyhn8i"
-path="res://.godot/imported/bugle.png-d2cd37f69cf1dc3b127c42a4487c6567.ctex"
+uid="uid://0qxr2y01jhsy"
+path="res://.godot/imported/bugle.png-453fe98d21b087ed08c9c24b419cbc96.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://slides/bugle.png"
-dest_files=["res://.godot/imported/bugle.png-d2cd37f69cf1dc3b127c42a4487c6567.ctex"]
+source_file="res://images/bugle.png"
+dest_files=["res://.godot/imported/bugle.png-453fe98d21b087ed08c9c24b419cbc96.ctex"]
 
 [params]
 

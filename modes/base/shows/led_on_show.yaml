@@ -2,7 +2,7 @@
 
 - duration: 2s
   lights:
-    (led): white 
-- duration: 1s
+    (led): (col) 
+- duration: 10ms
   lights:
     (led): off   

@@ -2,7 +2,7 @@ from mpf.core.mode import Mode
 import random
 
 # rollovers to lock arms (1 to 4)
-# spinner increases JP multiplier
+# spinner increases JP multiplier, enables jackpot
 # collect JP = base*spins*(5-locks) (resets spins)
 # JP collect adds breakout targets (to avoid)
 # breakout targets release an arm
@@ -99,7 +99,7 @@ class doc_ock(Mode):
         self.refresh_lane_lights()
         
         self.machine.events.post("doc_ock_arm_locked_score")
-        self.check_jackpot_lit()
+        #self.check_jackpot_lit()
 
     def check_jackpot_lit(self):
         if sum(self.locked_arms) > 0:

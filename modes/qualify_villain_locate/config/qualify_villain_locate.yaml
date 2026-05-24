@@ -29,6 +29,11 @@ sound_player:
       action: play
       bus: voice
 
+  villain_spinner_locate_progress:
+    short_click:
+      action: play
+      bus: effects
+
 
 
 event_player:
@@ -46,7 +51,6 @@ event_player:
   s_trispinner_opto_active{current_player.villain_mode_running == 0}:
     - villain_spinner_locate_progress
     - villain_spinner_locate_request    
-  
   #
   villain_spinner_locate_request{current_player.villain_start_ready == 0}:
     - villain_check_located

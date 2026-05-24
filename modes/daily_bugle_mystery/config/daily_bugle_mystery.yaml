@@ -29,6 +29,19 @@ event_player:
   s_vuk_switch_active:
     - daily_bugle_vuk_collect_request
 
+  daily_bugle_widget_update:
+    - daily_bugle_widget_remove
+    - daily_bugle_widget_readd|10ms
+
+widget_player:
+  daily_bugle_widget_remove:
+    daily_bugle_ready:
+      action: remove
+
+  daily_bugle_widget_readd:
+    daily_bugle_ready:
+      action: play
+
 
 variable_player:
   mystery_award_million_points:
@@ -36,7 +49,7 @@ variable_player:
 
 
 random_event_player:
-  daily_bugle_rooftop_traversal_complete:
+  daily_bugle_mystery_ready:
     - daily_bugle_rooftop_right_exit_1
     - daily_bugle_rooftop_right_exit_2
 

@@ -54,8 +54,7 @@ class DailyBugleMystery(Mode):
 
         self.a_hit = False
         self.b_hit = False
-        self.machine.game.player["mystery_ab_ready"] = False
-        self.rooftop_traversal_complete = False
+        self.mystery_ab_ready = False
         self.mystery_ready = False
 
         self.add_mode_event_handler("daily_bugle_a_hit", self.a_rollover_hit)
@@ -93,32 +92,32 @@ class DailyBugleMystery(Mode):
             self.update_player_vars()
             return
 
-        if self.machine.game.player["mystery_ab_ready"]:
+        if self.mystery_ab_ready:
             self.update_player_vars()
             return
 
         self.machine.events.post("daily_bugle_ab_complete")
-        self.machine.game.player["mystery_ab_ready"] = True
+        self.mystery_ab_ready = True
 
         self.machine.events.post("rooftop_diverter_open")
 
         self.update_player_vars()
 
     def rooftop_right_exit(self, **kwargs):
-        if not self.machine.game.player["mystery_ab_ready"]:
+        if not self.mystery_ab_ready:
             return
 
-        self.rooftop_traversal_complete = True
+        if not self.mystery_ready: 
+            self.machine.events.post("daily_bugle_mystery_ready")
+  
         self.mystery_ready = True
 
         # Open gate again so player can shoot back toward VUK/mystery collect.
         self.machine.events.post("rooftop_diverter_open")
-        self.machine.events.post("daily_bugle_rooftop_traversal_complete")
 
         self.update_player_vars()
 
     def vuk_collect_request(self, **kwargs):
-
         if not self.mystery_ready:
             # kick up for all others
             self.delay.add(
@@ -151,7 +150,7 @@ class DailyBugleMystery(Mode):
 
         self.delay.add(
             name=f"vuk_delay_eject",
-            ms=7000,
+            ms=5000,
             callback=self.fire_VUK
         )
 
@@ -186,8 +185,7 @@ class DailyBugleMystery(Mode):
     def reset_cycle(self):
         self.a_hit = False
         self.b_hit = False
-        self.machine.game.player["mystery_ab_ready"] = False
-        self.rooftop_traversal_complete = False
+        self.mystery_ab_ready = False
         self.mystery_ready = False
 
     def update_player_vars(self):
@@ -195,5 +193,7 @@ class DailyBugleMystery(Mode):
 
         player["daily_bugle_a_hit"] = int(self.a_hit)
         player["daily_bugle_b_hit"] = int(self.b_hit)
-        player["daily_bugle_rooftop_traversal_complete"] = int(self.rooftop_traversal_complete)
+        player["daily_bugle_ab_ready"] = int(self.mystery_ab_ready)
         player["daily_bugle_mystery_ready"] = int(self.mystery_ready)
+
+        self.machine.events.post("daily_bugle_widget_update")
