@@ -51,6 +51,25 @@ event_player:
   s_pop_left_active:
     - pops_hit
 
+  player_added{num == 2}: show_player_2_added
+  player_added{num == 3}: show_player_3_added
+  player_added{num == 4}: show_player_4_added
+
+widget_player:
+  show_player_2_added:
+    player_2_added_widget:
+      action: play
+      expire: 2s
+
+  show_player_3_added:
+    player_3_added_widget:
+      action: play
+      expire: 2s
+
+  show_player_4_added:
+    player_4_added_widget:
+      action: play
+      expire: 2s
 
 
 slide_player:

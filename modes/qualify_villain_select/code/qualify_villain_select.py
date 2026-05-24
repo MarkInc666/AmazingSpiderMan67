@@ -38,6 +38,8 @@ class QualifyVillainSelect(Carousel):
         played_var = f"{item}_played"
         played_state = self.machine.game.player[played_var]
 
+        self.machine.events.post(f"carousel_{item}_highlighted")
+
         if played_state == 1:
             self.machine.events.post(f"villain_select_{item}_played")
         else:

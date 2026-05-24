@@ -144,43 +144,43 @@ show_player:
 
   carousel_rhino_highlighted:
     villain_select_rhino_show:
-      loops: 1
+      loops: 3
 
   carousel_sandman_highlighted:
     villain_select_sandman_show:
-      loops: 1
+      loops: 3
 
   carousel_vulture_highlighted:
     villain_select_vulture_show:
-      loops: 1
+      loops: 3
 
   carousel_electro_highlighted:
     villain_select_electro_show:
-      loops: 1
+      loops: 3
 
   carousel_goblin_highlighted:
     villain_select_goblin_show:
-      loops: 1
+      loops: 3
 
   carousel_mysterio_highlighted:
     villain_select_mysterio_show:
-      loops: 1
+      loops: 3
 
   carousel_scorpion_highlighted:
     villain_select_scorpion_show:
-      loops: 1
+      loops: 3
 
   carousel_doc_ock_highlighted:
     villain_select_doc_ock_show:
-      loops: 1
+      loops: 3
 
   carousel_parafino_highlighted:
     villain_select_parafino_show:
-      loops: 1
+      loops: 3
 
   carousel_lizard_highlighted:
     villain_select_lizard_show:
-      loops: 1
+      loops: 3
 
 #todo - change these - vulture, scorpion, electro, mysterio will do their own
   s_upper_target_left_active:
@@ -216,25 +216,58 @@ shows:
   villain_spinner_progress_show:
     - duration: 100ms
       lights:
-        l_spinner: white
+        gi: white
     - duration: 100ms
       lights:
-        l_spinner: blue
+        gi: blue
+    - duration: 100ms
+      lights:
+        gi: off
 
   villain_select_rhino_show:
     - duration: 250ms
       lights:
         l_left_b: red
+        l_pop_1_1: red
+        l_pop_1_2: red
+        l_pop_1_3: red
+        l_pop_1_4: red
+        l_pop_1_5: red
+        l_pop_1_6: red
+        l_pop_1_7: red
+        l_pop_1_8: red
+        l_pop_1_9: red
+        l_pop_1_10: red
+        l_pop_1_11: red
+        l_pop_1_12: red
+        l_pop_2_1: red
+        l_pop_2_2: red
+        l_pop_2_3: red
+        l_pop_2_4: red
+        l_pop_2_5: red
+        l_pop_2_6: red
+        l_pop_2_7: red
+        l_pop_2_8: red
+        l_pop_2_9: red
+        l_pop_2_10: red
+        l_pop_2_11: red
+        l_pop_2_12: red
 
   villain_select_sandman_show:
     - duration: 250ms
       lights:
-        l_spinner: yellow
+        l_5bank_1: yellow
+        l_5bank_2: yellow
+        l_5bank_3: yellow
+        l_5bank_4: yellow
+        l_5bank_5: yellow
 
   villain_select_vulture_show:
     - duration: 250ms
       lights:
-        l_upper_middle: white
+        l_upper_middle: D030D0
+        l_upper_left: D030D0
+        l_upper_right: D030D0
 
   villain_select_electro_show:
     - duration: 250ms
@@ -245,7 +278,9 @@ shows:
   villain_select_goblin_show:
     - duration: 250ms
       lights:
-        l_3_hole_l: green
+        l_1: green
+        l_2: green
+        l_3: green
 
   villain_select_mysterio_show:
     - duration: 250ms
@@ -255,23 +290,69 @@ shows:
   villain_select_scorpion_show:
     - duration: 250ms
       lights:
-        l_right_a: orange
+        l_spinner: orange
+        l_3bankbonus: yellow
+        l_5bank_1: yellow
+        l_5bank_2: yellow
+        l_5bank_3: yellow
+        l_5bank_4: yellow
+        l_5bank_5: yellow
 
   villain_select_doc_ock_show:
     - duration: 250ms
       lights:
         l_left_web_target: white
         l_mid_spider_target: white
+        l_left_inlane: white
+        l_left_outlane: white
+        l_right_inlane: white
+        l_right_outlane: white
 
   villain_select_parafino_show:
     - duration: 250ms
       lights:
-        l_5bank_3: yellow
+        l_spinner: blue
+        l_3bankbonus: blue
+        l_5bank_1: blue
+        l_5bank_2: blue
+        l_5bank_3: blue
+        l_5bank_4: blue
+        l_5bank_5: blue
+        l_1: blue
+        l_2: blue
+        l_3: blue
+        l_pop_1_1: blue
+        l_pop_1_2: blue
+        l_pop_1_3: blue
+        l_pop_1_4: blue
+        l_pop_1_5: blue
+        l_pop_1_6: blue
+        l_pop_1_7: blue
+        l_pop_1_8: blue
+        l_pop_1_9: blue
+        l_pop_1_10: blue
+        l_pop_1_11: blue
+        l_pop_1_12: blue
+        l_pop_2_1: blue
+        l_pop_2_2: blue
+        l_pop_2_3: blue
+        l_pop_2_4: blue
+        l_pop_2_5: blue
+        l_pop_2_6: blue
+        l_pop_2_7: blue
+        l_pop_2_8: blue
+        l_pop_2_9: blue
+        l_pop_2_10: blue
+        l_pop_2_11: blue
+        l_pop_2_12: blue
 
   villain_select_lizard_show:
     - duration: 250ms
       lights:
-        l_1_hole_l: green
+        l_star: purple
+        l_left_web_target: purple
+        l_mid_spider_target: purple
+
 
   villain_saucer_1_flash:
     - duration: 250ms

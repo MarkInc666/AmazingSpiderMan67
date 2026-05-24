@@ -46,7 +46,7 @@ class Mysterio(Mode):
 
         clue_shots = random.sample(
             [s for s in self.shots if not s.is_jackpot],
-            3
+            5
         )
 
         for clue in clue_shots:

@@ -30,7 +30,7 @@ class Sandman(Mode):
                 target=target
             )
         
-        self.start_bank()
+        #self.start_bank()
         self.add_mode_event_handler("sandman_start_bank", self.start_bank)
         self.add_mode_event_handler("sandman_rubber_hit", self.schedule_next_shift)  #reset current flash timer      
 

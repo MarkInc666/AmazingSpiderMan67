@@ -265,11 +265,9 @@ shows:
     - duration: 120ms
       lights:
         l_3bankbonus: yellow
-        l_extraball: yellow
     - duration: 120ms
       lights:
         l_3bankbonus: blue
-        l_extraball: blue
 
   mysterio_lite_right_drops_show:
     - duration: 120ms
