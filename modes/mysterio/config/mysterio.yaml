@@ -2,7 +2,9 @@
 
 mode:
   start_events: start_mode_mysterio
-  stop_events: mysterio_mode_complete, ball_ended
+  stop_events: 
+    - mysterio_mode_complete
+    - ball_ended
   code: mysterio.Mysterio
   priority: 500
 
@@ -35,7 +37,9 @@ sound_player:
 
 event_player:
   mysterio_mode_complete:
-    - reset_villain_locate
+    villain_bookend_summary_request:
+      villain: mysterio
+      done_event: mysterio_mode_completed_summary
 
   mode_mysterio_started:
     - reset_drops

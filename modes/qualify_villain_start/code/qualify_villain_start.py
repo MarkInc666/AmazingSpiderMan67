@@ -85,7 +85,12 @@ class QualifyVillainStart(Mode):
         player["saucer_3_select_ready"] = 0
         
         self.machine.events.post("villain_started_set")
-        self.machine.events.post(start_event)
+#        self.machine.events.post(start_event)
+        self.machine.events.post(
+            "villain_bookend_intro_request",
+            villain=name,
+            start_event=start_event
+        )
 
     def advance_current_villain(self, **kwargs):
         current = self.machine.game.player["villain_current_index"]

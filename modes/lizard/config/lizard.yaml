@@ -3,7 +3,7 @@
 mode:
   start_events: start_mode_lizard
   stop_events:
-    - lizard_mode_complete
+    - lizard_mode_completed_summary
     - ball_ended
   code: lizard.Lizard
   priority: 300
@@ -132,7 +132,9 @@ event_player:
     - clear_saucers    
 
   lizard_mode_complete:
-    - reset_villain_locate
+    villain_bookend_summary_request:
+      villain: lizard
+      done_event: lizard_mode_completed_summary
 
   timer_lizard_delivery_timer_tick:
     - lizard_delivery_tick_check

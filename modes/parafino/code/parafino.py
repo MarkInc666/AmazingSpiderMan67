@@ -151,7 +151,7 @@ class Parafino(Mode):
         player["parafino_meltdown_jackpot"] = jackpot
 
         self.machine.events.post("parafino_meltdown_collected")
-        self.machine.events.post("parafino_mode_complete")
+        #self.machine.events.post("parafino_mode_complete")
 
     def post_heat_event(self, zone):
         zheat = self.heat[zone]

@@ -3,7 +3,7 @@
 mode:
   start_events: start_mode_rhino_bash
   stop_events:
-    - rhino_bash_complete
+    - rhino_mode_completed_summary
     - ball_ended
   code: rhino.RhinoBash
   priority: 300
@@ -28,7 +28,9 @@ event_player:
     - drop_target_bank_dt_bank_right_reset
 
   rhino_bash_complete:
-    - reset_villain_locate
+    villain_bookend_summary_request:
+      villain: rhino
+      done_event: rhino_mode_completed_summary
 
   mode_rhino_started:
     - rhino_start

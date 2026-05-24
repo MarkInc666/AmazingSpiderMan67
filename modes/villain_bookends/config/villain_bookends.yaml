@@ -1,0 +1,24 @@
+#config_version=6
+
+mode:
+  start_events: ball_started
+  stop_events: ball_ending
+  priority: 10000
+  code: villain_bookends.VillainBookends
+
+widget_player:
+  villain_bookend_intro_show:
+    villain_intro:
+      action: play
+
+  villain_bookend_intro_hide:
+    villain_intro:
+      action: remove
+
+  villain_bookend_summary_show:
+    villain_summary:
+      action: play
+
+  villain_bookend_summary_hide:
+    villain_summary:
+      action: remove

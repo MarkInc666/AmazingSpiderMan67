@@ -3,7 +3,7 @@
 mode:
   start_events: start_mode_parafino
   stop_events:
-    - parafino_mode_complete
+    - parafino_mode_completed_summary
     - ball_ended
   code: parafino.Parafino
   priority: 300
@@ -50,8 +50,6 @@ variable_player:
       action: set
       int: 0
 
-
-
 event_player:
   mode_parafino_started:
     - reset_drops
@@ -65,6 +63,11 @@ event_player:
     - drop_target_bank_dt_bank_right_reset
 
   parafino_mode_complete:
+    villain_bookend_summary_request:
+      villain: parafino
+      done_event: parafino_mode_completed_summary
+
+  parafino_mode_completed_summary:
     - reset_villain_locate
     - drop_target_bank_dt_bank_left_reset
     - drop_target_bank_dt_bank_right_reset

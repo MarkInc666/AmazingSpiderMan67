@@ -6,8 +6,7 @@
 mode:
   start_events: start_mode_electro
   stop_events:
-    - electro_mode_complete
-    - electro_mode_failed
+    - electro_mode_completed_summary
     - ball_ended
   code: electro.Electro
   priority: 500
@@ -74,7 +73,9 @@ sound_player:
 
 event_player:
   electro_mode_complete:
-    - reset_villain_locate
+    villain_bookend_summary_request:
+      villain: electro
+      done_event: electro_mode_completed_summary
 
   electro_mode_started:
     - reset_drops
@@ -319,10 +320,6 @@ show_player:
     electro_mode_complete_show:
       loops: 0
 
-  electro_mode_failed:
-    electro_mode_failed_show:
-      loops: 0
-
 shows:
   electro_mode_start_show:
     - duration: 200ms
@@ -534,8 +531,5 @@ shows:
       lights:
         gi: green
 
-  electro_mode_failed_show:
-    - duration: 500ms
-      lights:
-        gi: red
+
 

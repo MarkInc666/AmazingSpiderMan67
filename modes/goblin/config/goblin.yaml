@@ -3,7 +3,7 @@
 mode:
   start_events: start_mode_goblin
   stop_events:
-    - goblin_mode_ended
+    - goblin_mode_completed_summary
     - ball_ended
   code: goblin.Goblin
   priority: 500
@@ -16,8 +16,7 @@ multiballs:
     shoot_again: 10s
     start_events: goblin_start_multiball
     stop_events:
-      - goblin_stop_multiball
-      - goblin_mode_ended
+      - goblin_mode_completed_summary
       - ball_ended
 
 
@@ -78,12 +77,12 @@ event_player:
     - goblin_mode_ended
 
   goblin_mode_ended:
-    - goblin_stop_all_shows
-    - reset_villain_locate
+    villain_bookend_summary_request:
+      villain: goblin
+      done_event: goblin_mode_completed_summary
 
   goblin_hold_ended:
     - clear_saucers
-
 
 
   # real playfield input -> Python shot events
@@ -298,7 +297,7 @@ show_player:
     goblin_upper_target_solid_show:
       action: stop
 
-  goblin_stop_all_shows:
+  goblin_mode_ended:
     goblin_left_web_flash_show:
       action: stop
     goblin_right_web_flash_show:

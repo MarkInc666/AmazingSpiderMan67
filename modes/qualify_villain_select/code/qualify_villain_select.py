@@ -77,7 +77,13 @@ class QualifyVillainSelect(Carousel):
         player["saucer_3_select_ready"] = 0
 
         self.machine.events.post("villain_started_set")
-        self.machine.events.post(self.VILLAINS[item])
+        #self.machine.events.post(self.VILLAINS[item])
+        start_event = self.VILLAINS[item]
+        self.machine.events.post(
+            "villain_bookend_intro_request",
+             villain=item,
+             start_event=start_event
+        )
         self.machine.events.post("villain_carousel_accept_selection")
         self.machine.events.post("stop_carousel_select")
         
