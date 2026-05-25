@@ -11,16 +11,16 @@ extra_balls:
     group: main_extra_ball_group
 
 
-slide_player:
+widget_player:
   mystery_extra_ball_lit:
-    extra_ball:
-      expire: 4s
+    extra_ball_lit:
+      expire: 3s
       priority: 1000
       action: play
 
   mystery_extra_ball_award:
     extra_ball:
-      expire: 5s
+      expire: 7s
       priority: 1000
       action: play
 
@@ -37,6 +37,10 @@ sound_player:
       action: play
       bus: voice
 
+  mystery_right_extra_ball_lit:
+    sm_extra_ball_is_lit: 
+      action: play
+      bus: voice
 
 event_player:
  
@@ -48,10 +52,19 @@ event_player:
   mystery_award_light_extra_ball:
     - mystery_extra_ball_lit
 
+  #light the eb at right bank
+  mystery_award_light_right_extra_ball:
+    - mystery_right_extra_ball_lit
+
   #left bank complete when lit
-  drop_target_bank_dt_bank_left_down{current_player.extra_ball_text == "IS LIT"}:
+  drop_target_bank_dt_bank_left_down{current_player.extra_ball_is_lit == 1}:
+    - mystery_left_extra_ball_award
     - mystery_extra_ball_award
 
+  #right bank complete when lit
+  drop_target_bank_dt_bank_right_down{current_player.extra_ball_right_is_lit == 1}:
+    - mystery_right_extra_ball_award
+    - mystery_extra_ball_award
 
   ball_save_default_ball_save_enabled:
     - increase_ballsave_count
@@ -82,21 +95,25 @@ variable_player:
   extra_ball_award_million_points:
     score: 1000000
 
-  mystery_award_award_extra_ball:  
-    extra_ball_text:
+  mystery_extra_ball_lit:
+    extra_ball_is_lit:
       action: set
-      string: "COLLECTED"
+      int: 1
 
-  mystery_award_light_extra_ball:
-    extra_ball_text:
+  mystery_right_extra_ball_lit:
+    extra_ball_right_is_lit:
       action: set
-      string: "IS LIT"
+      int: 1
 
-  mystery_extra_ball_award:
-    extra_ball_text:
+  mystery_left_extra_ball_award:
+    extra_ball_is_lit:
       action: set
-      string: "COLLECTED"
+      int: 0
 
+  mystery_right_extra_ball_award:
+    extra_ball_right_is_lit:
+      action: set
+      int: 0
 
 
 show_player:
@@ -105,12 +122,24 @@ show_player:
     extra_ball_lit_show:
       loops: -1
 
+  mystery_right_extra_ball_lit:
+    extra_ball_right_lit_show:
+      loops: -1
+
   mystery_extra_ball_award:
     extra_ball_lit_show:
       action: stop
     extra_ball_collect_gi_show:
-      loops: 4
+      loops: 6
     extra_ball_award_show:
+      loops: 1
+
+  mystery_right_extra_ball_award:
+    extra_ball_right_lit_show:
+      action: stop
+    extra_ball_collect_gi_show:
+      loops: 4
+    extra_ball_right_award_show:
       loops: 1
 
 #todo:  flash shoot again light during goblin, vulture, parafino MBs  - find events from logs
@@ -175,7 +204,7 @@ shows:
         l_extraball: white
     - duration: 200ms
       lights:
-        l_extraball: blue
+        l_extraball: red
 
   extra_ball_award_show:
     - duration: -1
@@ -183,3 +212,16 @@ shows:
         l_shoot_again: white
         gi: white
         
+  extra_ball_right_lit_show:
+    - duration: 200ms
+      lights:
+        l_right_extraball: white
+    - duration: 200ms
+      lights:
+        l_right_extraball: red
+
+  extra_ball_right_award_show:
+    - duration: -1
+      lights:
+        l_shoot_again: white
+        gi: white

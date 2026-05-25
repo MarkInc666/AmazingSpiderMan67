@@ -3,20 +3,50 @@
 mode:
   start_events: ball_started
   priority: 100
-
-
-
+  code: music_control.MusicControl
 
 sound_player:
-  play_song_1: 
+  play_music_song_1: 
     prowl_car:
       bus: music
+      loops: -1
 
-  play_song_2: 
+  play_music_song_2: 
     panic_patrol:
       bus: music
-      
-  play_song_3: 
+      loops: -1
+
+  play_music_song_3: 
     rat_race:
       bus: music
-#loop?
+      loops: -1
+
+  play_music_song_4: 
+    ticking:
+      bus: music
+      loops: -1
+
+  play_music_song_5: 
+    start_loop:
+      bus: music
+      loops: -1
+
+
+
+  stop_music_song_4: 
+    ticking:
+      action: stop
+
+  stop_music_song_1: 
+    prowl_car:
+      action: stop
+
+  stop_music_song_2: 
+    panic_patrol:
+      action: stop
+
+  stop_music_song_3: 
+    rat_race:
+      action: stop
+
+

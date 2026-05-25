@@ -6,6 +6,13 @@ mode:
   priority: 10000
   code: villain_bookends.VillainBookends
 
+
+random_event_player:
+  villain_bookend_summary_done:
+    - play_song_1
+    - play_song_2
+    - play_song_3
+
 widget_player:
   villain_bookend_intro_show:
     villain_intro:

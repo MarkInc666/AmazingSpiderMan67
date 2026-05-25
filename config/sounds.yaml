@@ -1,1 +1,12 @@
 #config_version=6
+sounds:
+  prowl_car:
+    file: prowl_car.ogg
+  panic_patrol:
+    file: panic_patrol.ogg
+  rat_race:
+    file: rat_race.ogg
+
+  ticking:
+    file: ticking.wav
+      

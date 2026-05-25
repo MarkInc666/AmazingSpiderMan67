@@ -353,11 +353,9 @@ shows:
     - duration: 120ms
       lights:
         l_3bankbonus: yellow
-        l_extraball: yellow
     - duration: 120ms
       lights:
         l_3bankbonus: blue
-        l_extraball: blue
 
   electro_saucers_lit_show:
     - duration: 150ms

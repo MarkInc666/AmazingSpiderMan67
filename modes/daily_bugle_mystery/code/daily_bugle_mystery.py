@@ -15,13 +15,14 @@ class DailyBugleMystery(Mode):
     6. VUK collects Mystery.
 
     Progression:
-    - 1st, 2nd, 3rd awards = placeholder mystery awards
-    - 4th award = light Extra Ball
-    - 10th award = award Extra Ball
-
+    - 1st, 2nd,  mystery awards
+    - 3rd award = light Extra Ball
+    - 7th award = award Extra Ball
+    - 10th award = light right Extra Ball
+    
     # Mystery Awards Ideas
-    + light extra ball (at 3)
-    + extra ball (at 10)
+    + light extra ball (at 3, 10)
+    + extra ball (at 7)
     + ball save (20s)
     + super spinners 20s
     + collect bonus
@@ -33,7 +34,8 @@ class DailyBugleMystery(Mode):
     """
 
     EXTRA_BALL_LIGHT_AT = 3
-    EXTRA_BALL_AWARD_AT = 10
+    EXTRA_BALL_AWARD_AT = 7
+    EXTRA_BALL_RIGHT_LIGHT_AT = 10
 
     PLACEHOLDER_AWARDS = [
         "mystery_award_ball_save",
@@ -48,6 +50,7 @@ class DailyBugleMystery(Mode):
 
 #        "mystery_award_light_extra_ball"
 #        "mystery_award_award_extra_ball"
+#        "mystery_award_light_right_extra_ball"
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
@@ -142,6 +145,8 @@ class DailyBugleMystery(Mode):
             self.light_extra_ball()
         elif count == self.EXTRA_BALL_AWARD_AT:
             self.award_extra_ball()
+        elif count == self.EXTRA_BALL_RIGHT_LIGHT_AT:            
+            self.light_right_extra_ball()
         else:
             self.award_psuedo_random_mystery()
 
@@ -178,6 +183,9 @@ class DailyBugleMystery(Mode):
 
     def light_extra_ball(self):
         self.machine.events.post("mystery_award_light_extra_ball")
+
+    def light_right_extra_ball(self):
+        self.machine.events.post("mystery_award_light_right_extra_ball")
 
     def award_extra_ball(self):
         self.machine.events.post("mystery_award_award_extra_ball")

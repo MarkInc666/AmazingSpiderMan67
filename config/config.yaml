@@ -51,7 +51,7 @@ config:
   - coils.yaml
   - switches.yaml
   - devices.yaml
-  - sounds.yaml
+  #- sounds.yaml
   - images.yaml
   - videos.yaml
 

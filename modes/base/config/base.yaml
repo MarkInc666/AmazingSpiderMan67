@@ -12,17 +12,20 @@ variable_player:
   pops_hit:
     score: 1000
 
+
 random_event_player:
-  mode_base_started_delayed:
+  skillshot_clear_lit_shot:
     - play_song_1
     - play_song_2
     - play_song_3
 
 
-
 event_player:
   mode_base_started:
     - mode_base_started_delayed|1s
+
+  mode_base_started_delayed:
+    - play_song_5
 
   s_plunger_inactive:
     - start_my_default_ball_save

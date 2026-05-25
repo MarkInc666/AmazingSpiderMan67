@@ -362,11 +362,9 @@ shows:
     - duration: 120ms
       lights:
         l_3bankbonus: yellow
-        l_extraball: yellow
     - duration: 120ms
       lights:
         l_3bankbonus: green
-        l_extraball: green
 
   goblin_right_drops_flash_show:
     - duration: 120ms

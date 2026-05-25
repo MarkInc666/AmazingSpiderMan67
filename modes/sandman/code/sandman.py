@@ -40,7 +40,7 @@ class Sandman(Mode):
         self.hit_order = []
         self.current_flash = 1
 
-        self.machine.coils["c_right_bank_reset"].pulse()
+        self.machine.events.post("reset_5bank")
 
         self.delay.add(
             ms=self.RESET_SETTLE_MS,

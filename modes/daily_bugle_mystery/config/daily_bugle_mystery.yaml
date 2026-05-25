@@ -117,8 +117,6 @@ show_player:
       action: stop
     daily_bugle_ab_ready_show:
       loops: 3
-
-  mystery_ab_ready:
     daily_bugle_spinner_ready_show:
       loops: -1
 
