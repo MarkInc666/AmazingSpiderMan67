@@ -14,7 +14,7 @@ variable_player:
 
 
 random_event_player:
-  skillshot_clear_lit_shot:
+  finish_skillshot:
     - play_song_1
     - play_song_2
     - play_song_3

@@ -31,6 +31,10 @@ sound_player:
       bus: music
       loops: -1
 
+  play_music_song_6: 
+    maintheme_no_lyrics:
+      bus: music
+      loops: -1
 
 
   stop_music_song_4: 

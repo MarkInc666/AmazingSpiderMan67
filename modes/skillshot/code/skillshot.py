@@ -71,6 +71,12 @@ class SkillShot(Mode):
                 shot_key=shot["key"]
             )
 
+        self.add_mode_event_handler("s_pop_left_active", self.skillshot_switch_hit_disable)
+        self.add_mode_event_handler("s_pop_right_active", self.skillshot_switch_hit_disable)
+        self.add_mode_event_handler("s_spinner_active", self.skillshot_switch_hit_disable)
+        self.add_mode_event_handler("s_inlane_m_r_active", self.skillshot_switch_hit_disable)
+        self.add_mode_event_handler("s_inlane_m_l_active", self.skillshot_switch_hit_disable)
+
         self.light_current_shot()
 
     def move_left(self, **kwargs):
@@ -123,6 +129,14 @@ class SkillShot(Mode):
                 hit=shot_key,
                 lit=lit_key
             )
+
+    def skillshot_switch_hit_disable(self, **kwargs):
+        if not self.skillshot_active:
+            return
+
+        self.skillshot_active = False
+        self.machine.game.player["skillshot_collected_value"] = 0
+        self.machine.events.post("skillshot_missed")
 
     def award_skillshot(self):
         

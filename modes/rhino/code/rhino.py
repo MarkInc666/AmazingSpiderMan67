@@ -1,5 +1,19 @@
 from mpf.core.mode import Mode
 
+"""
+    "title": "RHINO BASH",
+    "intro_1": "Build RAGE value with pop bumpers.",
+    "intro_2": "Bash everything to add RAGE to Jackpot.",
+    "intro_3": "Collect all 5 JACKPOTS at B rollover.",
+    "summary_title_complete": "RHINO DEFEATED",
+    "summary_title_failed": "RHINO ESCAPED",
+    "stat_1_label": "BIGGEST JACKPOT",
+    "stat_1_var": "rhino_best_jackpot_value",
+    "stat_2_label": "BEST RAGE",
+    "stat_2_var": "rhino_best_rage_stage",
+    "points_var": "rhino_mode_points",
+    "completed_var": "rhino_completed",
+"""
 
 class RhinoBash(Mode):
 
@@ -30,6 +44,11 @@ class RhinoBash(Mode):
         super().mode_start(**kwargs)
 
         self.rage_stage = 1
+
+        self.rhino_best_rage_stage = 0
+        self.rhino_best_jackpot_value = 0
+        self.rhino_mode_points = 0
+    
         self.pops = 0
         self.jackpots = 0
         self.jackpot_base = self.BASE_VALUES[0]
@@ -64,6 +83,7 @@ class RhinoBash(Mode):
             return
 
         self.award_score(self.SMASH_SCORE)
+        self.rhino_mode_points += self.SMASH_SCORE
         self.jackpot_value += self.add_value
 
         self.update_player_vars()
@@ -76,6 +96,11 @@ class RhinoBash(Mode):
 
         self.award_score(self.jackpot_value)
         self.jackpots += 1
+
+        self.rhino_mode_points += self.jackpot_value
+
+        if self.jackpot_value > self.rhino_best_jackpot_value:
+            self.rhino_best_jackpot_value = self.jackpot_value
 
         self.machine.game.player["rhino_last_jackpot"] = self.jackpot_value
         self.machine.events.post("rhino_jackpot_collected")
@@ -117,6 +142,10 @@ class RhinoBash(Mode):
     def set_rage_stage(self, stage):
         self.rage_stage = stage
         self.add_value = self.STAGE_ADD_VALUES[stage]
+
+        if self.rage_stage > self.rhino_best_rage_stage:
+            self.rhino_best_rage_stage = self.rage_stage
+
         self.post_rage_show()
         self.update_player_vars()
 
@@ -187,6 +216,7 @@ class RhinoBash(Mode):
         self.mode_done = True
         self.stop_berserk()
         self.machine.events.post("rhino_bash_complete")
+        self.machine.game.player["rhino_completed"] = True
 
     def award_score(self, value):
         self.machine.game.player["score"] += value
@@ -203,3 +233,8 @@ class RhinoBash(Mode):
         player["rhino_stage_5_required_pops"] = self.stage_5_required_pops()
         player["rhino_berserk_running"] = int(self.berserk_running)
         player["rhino_berserk_time_ms"] = self.berserk_time_ms()
+
+        player["rhino_best_rage_stage"]=  self.rhino_best_rage_stage
+        player["rhino_best_jackpot_value"] = self.rhino_best_jackpot_value
+        player["rhino_mode_points"] = self.rhino_mode_points
+        

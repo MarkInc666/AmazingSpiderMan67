@@ -1,0 +1,51 @@
+#config_version=6
+
+high_score:
+  _overwrite: true
+  enter_initials_timeout: 60s
+
+  categories:
+    score:
+      - GRAND CHAMPION
+      - HIGH SCORE 1
+      - HIGH SCORE 2
+      - HIGH SCORE 3
+      - HIGH SCORE 4
+      - HIGH SCORE 5
+      - HIGH SCORE 6
+      - HIGH SCORE 7
+      - HIGH SCORE 8
+      - HIGH SCORE 9
+      - HIGH SCORE 10
+
+  defaults:
+    score:
+      - AAA: 1000000
+      - BBB: 750000
+      - CCC: 500000
+      - DDD: 250000
+      - EEE: 100000
+      - FFF: 75000
+      - GGG: 50000
+      - HHH: 25000
+      - III: 10000
+      - JJJ: 5000
+      - KKK: 1000
+
+event_player:
+  mode_high_score_started:
+    - start_gi_highscore
+    - play_music_song_6
+
+show_player:
+  start_gi_highscore:
+    led_on_show:
+      show_tokens:
+        lights: l_gi
+        color: orange
+
+sound_player:
+  play_music_song_6: 
+    maintheme_no_lyrics:
+      bus: music
+      loops: -1

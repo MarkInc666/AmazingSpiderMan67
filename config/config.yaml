@@ -64,7 +64,7 @@ machine:
   balls_installed: 4
 
 game:
-  balls_per_game: 3
+  balls_per_game: 1
   max_players: 4
 
 
@@ -171,7 +171,6 @@ player_vars:
   ball_save_count:
     initial_value: 0
     value_type: int
-
 
 
 
