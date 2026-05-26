@@ -4,27 +4,32 @@
 
 * 2-ball multiball begins
 * Chaos Bonus = 0
-* Chaos Lock = 0
+* Chaos Bonus Banked = 0
 
 ### During Chaos:
 
+* 3 random shots solid
 * 3 random shots flashing
-* after 5 sec flashing → solid
-* after 3 sec solid → off/new random flashing set
+* shots becomes active
+* after 6 sec all off
+* pause for 2 sec
+* repeat
 
 ### Shot scoring:
 
 #### flashing hit:
 
 * 50K live score
-* +50K Chaos Bonus
+* +100K Chaos Bonus
+* shot becomes inactive
 
 #### solid hit:
 
 * penalty shot
 * only 2K live score
-* deduct 50K from Chaos Bonus
-* but never below Chaos Lock
+* deduct 100K from Chaos Bonus
+* but never below Chaos Bonus Banked
+* shot becomes inactive
 
 ---
 
@@ -32,10 +37,11 @@
 
 When either ball enters saucer:
 
-* current Chaos Bonus becomes `Chaos Lock`
+* if current Chaos Bonus is greater than bank, set Chaos Bonus Bank
+* else set Chaos Bonus to Chaos Bonus Bank 
 * held ball stays for 10 sec
-* all currently active scoring shots flash safely
 * no penalty shots during hold window
+* all currently active flashing shots stay flashing, solid shots turn off
 * player gets controlled single-ball harvest time
 
 Then:
@@ -46,9 +52,6 @@ Then:
 Each time saucer lock occurs:
 
 * next hold time decreases by 1 second down to min 5 seconds
-* flashing duration shrinks from 5 sec to 4 sec to 3 sec
-
-> Goblin momentarily cornered, then escapes.
 
 Players understand:
 “I secured my gains, now I can push higher.”
@@ -57,8 +60,7 @@ Players understand:
 
 ### Chaos Bonus:
 
-* continuously vulnerable above Chaos Lock
-* paid at end of ball
+* banked bonus is paid out at end of ball
 
 ---
 

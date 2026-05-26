@@ -3,6 +3,20 @@ from mpf.core.delays import DelayManager
 
 #possible bug when 2 targets hit, flash doesn't move
 
+"""
+    "title": "SANDMAN",
+    "intro_1": "Shoot the flashing drop target.",
+    "intro_2": "Hit drops in sequence for big points.",
+    "intro_3": "5 in a row for Super Jackpot.",
+    "summary_title_complete": "SANDMAN DEFEATED",
+    "summary_title_failed": "SANDMAN ESCAPED",
+    "stat_1_label": "DROPS HIT",
+    "stat_1_var": "sandman_total_drops",
+    "stat_2_label": "BEST RUNS",
+    "stat_2_var": "sandman_best_run",
+    "points_var": "sandman_mode_points",
+    "completed_var": "sandman_completed",
+"""
 class Sandman(Mode):
 
     BANK_TARGETS = [1, 2, 3, 4, 5]
@@ -18,10 +32,12 @@ class Sandman(Mode):
         self.current_flash = 1
         self.first_target = 0
         self.down_targets = set()
-        self.flash_hits = 0
         self.banks_completed = 0
         self.hit_order = []
         self.direction = 0 # 0 = L to R, 1 = R to L
+        self.sandman_mode_points = 0
+        self.sandman_best_run = 0
+        self.flash_hits = 0
 
         for target in self.BANK_TARGETS:
             self.add_mode_event_handler(
@@ -34,6 +50,7 @@ class Sandman(Mode):
         self.add_mode_event_handler("sandman_start_bank", self.start_bank)
         self.add_mode_event_handler("sandman_rubber_hit", self.schedule_next_shift)  #reset current flash timer      
 
+        self.update_player_vars()
 
     def start_bank(self, **kwargs):
         self.down_targets = set()
@@ -120,6 +137,7 @@ class Sandman(Mode):
             self.machine.events.post("sandman_regular_hit")
 
         self.award_points()
+        self.update_player_vars()
 
         if target == self.current_flash:
             next_target = self.find_next_standing_target(self.current_flash)
@@ -149,27 +167,37 @@ class Sandman(Mode):
 
         if self.hit_order == [1, 2, 3, 4, 5]:
             self.machine.events.post("sandman_5_in_a_row_jackpot")
+            if self.sandman_best_run < 5: self.sandman_best_run = 5
             
         if self.hit_order == [1, 2, 3, 4]:
             self.machine.events.post("sandman_4_in_a_row_jackpot")
+            if self.sandman_best_run < 4: self.sandman_best_run = 4
         if self.hit_order == [2, 3, 4, 5]:
             self.machine.events.post("sandman_4_in_a_row_jackpot")
-            
+            if self.sandman_best_run < 4: self.sandman_best_run = 4
+           
         if self.hit_order == [1, 2, 3]:
             self.machine.events.post("sandman_3_in_a_row_jackpot")
+            if self.sandman_best_run < 3: self.sandman_best_run = 3
         if self.hit_order == [2, 3, 4]:
             self.machine.events.post("sandman_3_in_a_row_jackpot")
+            if self.sandman_best_run < 3: self.sandman_best_run = 3
         if self.hit_order == [3, 4, 5]:
             self.machine.events.post("sandman_3_in_a_row_jackpot")
+            if self.sandman_best_run < 3: self.sandman_best_run = 3
 
         if self.hit_order == [1, 2]:
             self.machine.events.post("sandman_2_in_a_row_jackpot")
+            if self.sandman_best_run < 2: self.sandman_best_run = 2
         if self.hit_order == [2, 3]:
             self.machine.events.post("sandman_2_in_a_row_jackpot")
+            if self.sandman_best_run < 2: self.sandman_best_run = 2
         if self.hit_order == [3, 4]:
             self.machine.events.post("sandman_2_in_a_row_jackpot")
+            if self.sandman_best_run < 2: self.sandman_best_run = 2
         if self.hit_order == [4, 5]:
             self.machine.events.post("sandman_2_in_a_row_jackpot")
+            if self.sandman_best_run < 2: self.sandman_best_run = 2
 
 
     def complete_bank(self):
@@ -179,8 +207,11 @@ class Sandman(Mode):
         self.banks_completed += 1
         self.machine.events.post("sandman_bank_complete")
 
+        self.update_player_vars()
+
         if self.banks_completed >= self.MAX_BANKS:
             self.machine.events.post("sandman_mode_complete")
+            self.machine.game.player["sandman_completed"] = True
             self.machine.events.post("reset_5bank_delayed")
             return
 
@@ -188,4 +219,12 @@ class Sandman(Mode):
             ms=750,
             callback=self.start_bank
         )
+
+    def update_player_vars(self):
+        player = self.machine.game.player
+
+        player["sandman_banks_completed"] = self.banks_completed
+        player["sandman_total_drops"] = self.flash_hits
+        player["sandman_best_run"] = self.sandman_best_run
+    
 

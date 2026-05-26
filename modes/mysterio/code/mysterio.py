@@ -2,18 +2,34 @@ from mpf.core.mode import Mode
 from modes.common.shot_registry import Shot
 import random
 
-
+"""
+    "title": "MYSTERIO",
+    "intro_1": "Find the real Mysterio.",
+    "intro_2": "Shoot lit illusions to reveal him.",
+    "intro_3": "Choose carefully for Jackpot.",
+    "summary_title_complete": "MYSTERIO DEFEATED",
+    "summary_title_failed": "MYSTERIO ESCAPED",
+    "stat_1_label": "REVEALS USED",
+    "stat_1_var": "mysterio_illusions_cleared",
+    "stat_2_label": "JACKPOT",
+    "stat_2_var": "mysterio_jackpot_value",
+    "points_var": "mysterio_mode_points",
+    "completed_var": "mysterio_completed",
+"""
 class Mysterio(Mode):
 
     STARTING_SUPER = 1000000
     SUPER_FLOOR = 300000
     WRONG_DEDUCT = 100000
-    CLUE_DEDUCT = 25000
+    CLUE_DEDUCT = 10000
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
 
         self.super_value = self.STARTING_SUPER
+        self.mysterio_illusions_cleared = 0
+        self.mysterio_jackpot_value = 0
+        self.mysterio_mode_points = 0
 
         self.shots = [
             Shot("left_web", 10, 70, "mysterio_left_web_hit", group="left"),
@@ -72,6 +88,9 @@ class Mysterio(Mode):
         if not shot or shot.disabled:
             return
 
+        self.mysterio_illusions_cleared += 1
+        self.machine.game.player["mysterio_illusions_cleared"] = self.mysterio_illusions_cleared
+
         if shot.is_jackpot:
             self.collect_super(shot)
             return
@@ -84,6 +103,10 @@ class Mysterio(Mode):
     def handle_wrong_shot(self, shot):
         self.machine.events.post("mysterio_wrong_shot")
         self.machine.events.post("mysterio_score_wrong_shot")
+        
+        self.mysterio_mode_points += 10000
+        self.machine.game.player["mysterio_mode_points"] = self.mysterio_mode_points
+        self.machine.game.player["score"] += 10000
 
         self.reduce_super(self.WRONG_DEDUCT)
 
@@ -94,6 +117,10 @@ class Mysterio(Mode):
     def handle_clue_shot(self, shot):
         self.machine.events.post("mysterio_clue_shot")
         self.machine.events.post("mysterio_score_wrong_shot")
+
+        self.mysterio_mode_points += 5000
+        self.machine.game.player["mysterio_mode_points"] = self.mysterio_mode_points
+        self.machine.game.player["score"] += 5000
 
         self.reduce_super(self.CLUE_DEDUCT)
 
@@ -116,7 +143,11 @@ class Mysterio(Mode):
         self.machine.events.post("mysterio_super_changed")
 
     def collect_super(self, shot):
-        self.machine.game.player["mysterio_award_value"] = self.super_value
+        self.machine.game.player["mysterio_jackpot_value"] = self.super_value
+        self.mysterio_mode_points += self.super_value
+
+        self.machine.game.player["mysterio_mode_points"] = self.mysterio_mode_points
+        self.machine.game.player["score"] += self.super_value
+
         self.machine.events.post("mysterio_super_collected")
-        self.machine.events.post(f"mysterio_{shot.name}_super_collected")
         self.machine.events.post("mysterio_mode_complete")

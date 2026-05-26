@@ -138,16 +138,6 @@ shots:
   left_drop_3:
     switch: s_left_drops_3
 
-variable_player:
-  mysterio_score_wrong_shot:
-    score:
-      action: add
-      int: 50000
-
-  mysterio_super_collected:
-    score:
-      action: add
-      int: current_player.mysterio_award_value
 
 show_player:
 #  mysterio_trial_started:

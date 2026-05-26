@@ -1,6 +1,20 @@
 from mpf.core.mode import Mode
 
+"""
+    "title": "VULTURE",
+    "intro_1": "Get to the rooftop.",
+    "intro_2": "Hit targets to raise spinner value.",
+    "intro_3": "Spin fast before the targets decay.",
+    "summary_title_complete": "VULTURE DEFEATED",
+    "summary_title_failed": "VULTURE ESCAPED",
+    "stat_1_label": "SPINS",
+    "stat_1_var": "vulture_spins",
+    "stat_2_label": "BONUS BANKED",
+    "stat_2_var": "vulture_banked_bonus",
+    "points_var": "vulture_mode_points",
+    "completed_var": "vulture_completed",
 
+"""
 class Vulture(Mode):
 
     STAGE_VALUES = {
@@ -15,6 +29,10 @@ class Vulture(Mode):
         self.started = False
         self.upper_balls = 0
         self.add_a_ball_awarded = False
+
+        self.vulture_spins = 0 
+        self.vulture_banked_bonus = 0
+        self.vulture_mode_points = 0
 
         self.stages = {
             "left": 1,
@@ -34,6 +52,7 @@ class Vulture(Mode):
         self.add_mode_event_handler("vulture_show_targets", self.show_targets)
 
         self.update_player_vars()
+        self.show_targets()
 
     def upper_entered(self, **kwargs):
         self.upper_balls += 1
@@ -60,6 +79,7 @@ class Vulture(Mode):
         if self.stages[target] < 3:
             self.stages[target] += 1
 
+        self.award_score(20000)
         self.show_targets()
         self.check_add_a_ball()
         self.update_player_vars()
@@ -84,6 +104,13 @@ class Vulture(Mode):
         self.award_score(total)
         self.bank_bonus(total)
         
+        self.vulture_spins += 1 
+        self.vulture_banked_bonus += total
+
+        self.machine.game.player["vulture_spins"] = self.vulture_spins        
+        self.machine.game.player["vulture_banked_bonus"] = self.vulture_banked_bonus  
+
+        self.machine.game.player["vulture_last_spinner_score"] = total        
 
     def bank_bonus(self, value):
         player = self.machine.game.player
@@ -123,4 +150,5 @@ class Vulture(Mode):
 
     def award_score(self, value):
         self.machine.game.player["score"] += value
-        self.machine.game.player["vulture_last_spinner_score"] = value        
+        self.vulture_mode_points += value
+        self.machine.game.player["vulture_mode_points"] = self.vulture_mode_points 

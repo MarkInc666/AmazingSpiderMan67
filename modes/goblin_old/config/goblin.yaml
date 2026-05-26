@@ -25,11 +25,7 @@ widget_player:
     goblin:
       action: play
 
-  goblin_mode_ended:
-    goblin:
-      action: remove
-
-  mode_goblin_stopping:
+  goblin_mode_complete:
     goblin:
       action: remove
 
@@ -72,6 +68,23 @@ shot_groups:
 
 
 event_player:
+  mode_goblin_started:
+    - reset_drops
+    - goblin_start_multiball
+    - clear_saucers
+
+  multiball_goblin_chaos_multiball_ended:
+    - goblin_mode_ended
+
+  goblin_mode_ended:
+    villain_bookend_summary_request:
+      villain: goblin
+      done_event: goblin_mode_completed_summary
+
+  goblin_hold_ended:
+    - clear_saucers
+
+
   # real playfield input -> Python shot events
   s_left_web_target_active: goblin_left_web_hit
   s_web_target_top_active: goblin_right_web_hit
@@ -80,12 +93,106 @@ event_player:
   gob_right_drops_hit: goblin_right_drops_hit
   s_trispinner_opto_active: goblin_upper_spinner_hit
   gob_upper_targets_hit: goblin_upper_target_hit
+  # saucers also stabilize chaos
+  s_saucer_1_active: 
+    goblin_saucer_hit:
+      saucer: 1
+  s_saucer_2_active: 
+    goblin_saucer_hit:
+      saucer: 2
+  s_saucer_3_active: 
+    goblin_saucer_hit:
+      saucer: 3
 
-  # Saucers stabilize chaos and hold/eject from Python.
-  # These use separate events to avoid relying on parameterized event_player syntax.
-  s_saucer_1_active: goblin_saucer_1_hit
-  s_saucer_2_active: goblin_saucer_2_hit
-  s_saucer_3_active: goblin_saucer_3_hit
+  # timers -> Python
+  timer_goblin_flash_timer_complete:
+    - goblin_flash_timer_complete
+
+  timer_goblin_solid_timer_complete:
+    - goblin_solid_timer_complete
+
+  timer_goblin_hold_timer_complete:
+    - goblin_hold_timer_complete
+
+  ball_ending:
+    - goblin_collect_bonus
+
+variable_player:
+  mode_goblin_started:
+    goblin_chaos_bonus:
+      action: set
+      int: 0
+    goblin_chaos_lock:
+      action: set
+      int: 0
+    goblin_hold_count:
+      action: set
+      int: 0
+    goblin_hold_active:
+      action: set
+      int: 0
+
+  goblin_flashing_shot_score:
+    score:
+      action: add
+      int: 50000
+    goblin_chaos_bonus:
+      action: add
+      int: 50000
+
+  goblin_solid_shot_score:
+    score:
+      action: add
+      int: 2000
+
+  goblin_collect_bonus:
+    score:
+      action: add
+      int: current_player.goblin_chaos_bonus
+
+  multiball_goblin_chaos_multiball_started:
+    multiball_autoplunge_active:
+      action: set
+      int: 1
+
+  multiball_goblin_chaos_multiball_ended:
+    multiball_autoplunge_active:
+      action: set
+      int: 0
+
+timers:
+  goblin_flash_timer:
+    start_value: 5
+    end_value: 0
+    direction: down
+    tick_interval: 1s
+    control_events:
+      - event: goblin_flash_timer_start
+        action: restart
+      - event: goblin_flash_timer_stop
+        action: stop
+
+  goblin_solid_timer:
+    start_value: 3
+    end_value: 0
+    direction: down
+    tick_interval: 1s
+    control_events:
+      - event: goblin_solid_timer_start
+        action: restart
+      - event: goblin_solid_timer_stop
+        action: stop
+
+  goblin_hold_timer:
+    start_value: 10
+    end_value: 0
+    direction: down
+    tick_interval: 1s
+    control_events:
+      - event: goblin_hold_timer_start
+        action: restart
+      - event: goblin_hold_timer_stop
+        action: stop
 
 show_player:
   mode_goblin_started:
@@ -286,26 +393,26 @@ shows:
   goblin_saucers_flash_show:
     - duration: 120ms
       lights:
-        l_1_hole_l: D08080
-        l_1: D08080
-        l_1_hole_r: D08080
-        l_2_hole_l: D08080
-        l_2: D08080
-        l_2_hole_r: D08080
-        l_3_hole_l: D08080
-        l_3: D08080
-        l_3_hole_r: D08080
+        l_1_hole_l: yellow
+        l_1: yellow
+        l_1_hole_r: yellow
+        l_2_hole_l: yellow
+        l_2: yellow
+        l_2_hole_r: yellow
+        l_3_hole_l: yellow
+        l_3: yellow
+        l_3_hole_r: yellow
     - duration: 120ms
       lights:
-        l_1_hole_l: red
-        l_1: red
-        l_1_hole_r: red
-        l_2_hole_l: red
-        l_2: red
-        l_2_hole_r: red
-        l_3_hole_l: red
-        l_3: red
-        l_3_hole_r: red
+        l_1_hole_l: green
+        l_1: green
+        l_1_hole_r: green
+        l_2_hole_l: green
+        l_2: green
+        l_2_hole_r: green
+        l_3_hole_l: green
+        l_3: green
+        l_3_hole_r: green
 
   goblin_upper_target_flash_show:
     - duration: 120ms
@@ -338,6 +445,7 @@ shows:
     - duration: -1
       lights:
         l_3bankbonus: green
+        l_extraball: green
 
   goblin_right_drops_solid_show:
     - duration: -1

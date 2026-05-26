@@ -19,22 +19,6 @@ widget_player:
       action: remove
 
 
-variable_player:
-  mode_scorpion_started:
-    scorpion_venom_value:
-      action: set
-      int: 0
-
-  scorpion_spinner_build:
-    score: 25000
-    scorpion_venom_value: 50000
-
-  scorpion_safe_jackpot:
-    score: current_player.scorpion_venom_value * 2
-
-  scorpion_hard_jackpot:
-    score: current_player.scorpion_venom_value * 4
-
 event_player:
 
   scorpion_mode_completed_summary:

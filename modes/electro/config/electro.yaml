@@ -9,7 +9,7 @@ mode:
     - electro_mode_completed_summary
     - ball_ended
   code: electro.Electro
-  priority: 500
+  priority: 300
 
 
 widget_player:
@@ -168,17 +168,6 @@ shots:
     switch: s_left_drops_3
 
 
-variable_player:
-  electro_jackpot_collected:
-    score:
-      action: add
-      int: current_player.electro_jackpot_value
-
-  electro_super_collected:
-    score:
-      action: add
-      int: current_player.electro_super_jackpot_value
-
 timers:
   electro_shot_timer:
     start_value: 5
@@ -200,6 +189,17 @@ timers:
       - event: electro_super_timer_start
         action: restart
       - event: electro_super_timer_stop
+        action: stop
+
+  electro_value_timer:
+    start_value: 100
+    end_value: 0
+    direction: down
+    tick_interval: 1s
+    control_events:
+      - event: electro_value_timer_start
+        action: restart
+      - event: electro_value_timer_stop
         action: stop
 
 show_player:

@@ -4,19 +4,39 @@ from mpf.core.delays import DelayManager
 
 import random
 
+"""
+    "title": "ELECTRO",
+    "intro_1": "Follow the moving spark.",
+    "intro_2": "Hit each charged shot before time runs out.",
+    "intro_3": "The eigth spark awards Super Jackpot.",
+    "summary_title_complete": "ELECTRO DEFEATED",
+    "summary_title_failed": "ELECTRO ESCAPED",
+    "stat_1_label": "BEST SPARK",
+    "stat_1_var": "electro_best_spark",
+    "stat_2_label": "SUPER JACKPOT",
+    "stat_2_var": "electro_super_jackpot",
+    "points_var": "electro_mode_points",
+    "completed_var": "electro_completed",
+"""
 
 class Electro(Mode):
 
-    NORMAL_JACKPOT_VALUE = 100000
-    SUPER_JACKPOT_VALUE = 1000000
+    NORMAL_JACKPOT_VALUE = 250000
+    SUPER_JACKPOT_VALUE = 1000000    
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
 
         self.delay = DelayManager(self.machine)
 
+        self.value_deduct = 0
+
         self.super_active = False
         self.current_shot = None
+
+        self.electro_super_jackpot = 0
+        self.electro_best_spark = 0
+        self.electro_mode_points = 0
 
         self.shots = [
             Shot("left_web", 10, 70, "electro_left_web_hit", group="left"),
@@ -36,6 +56,7 @@ class Electro(Mode):
 
         self.add_mode_event_handler("electro_lit_shot_timeout", self.lit_shot_timeout)
         self.add_mode_event_handler("electro_super_timeout", self.super_timeout)
+        self.add_mode_event_handler("timer_electro_value_timer_tick", self.value_tick)
 
         self.begin_power_surge()
 
@@ -50,6 +71,11 @@ class Electro(Mode):
 
         self.machine.events.post("electro_mode_started")
         self.pick_next_lit_shot()
+
+    def value_tick(self, **kwargs):
+        #250,000 - 20 X 10,000 = 50,000 base
+        if self.value_deduct < 20:
+            self.value_deduct += 1 
 
     def active_shots(self):
         return [shot for shot in self.shots if not shot.disabled]
@@ -83,6 +109,8 @@ class Electro(Mode):
         if previous_location != "upper" and self.current_shot.group == "upper":
             self.machine.events.post("rooftop_diverter_open")
 
+        self.machine.events.post("electro_value_timer_start")
+
     def stop_current_lit_shot(self):
         if self.current_shot:
             self.current_shot.is_lit = False
@@ -100,11 +128,13 @@ class Electro(Mode):
     def shot_hit(self, shot_name=None, **kwargs):
         if not shot_name:
             return
-
+        
         shot = self.shots_by_name.get(shot_name)
 
         if not shot or shot.disabled:
             return
+
+        self.machine.events.post("electro_value_timer_stop")
 
         if self.super_active:
             if shot == self.current_shot:
@@ -117,10 +147,17 @@ class Electro(Mode):
         self.collect_normal_jackpot(shot)
 
     def collect_normal_jackpot(self, shot):
-        self.machine.game.player["electro_jackpot_value"] = self.NORMAL_JACKPOT_VALUE
+        jackpot_value = self.NORMAL_JACKPOT_VALUE - 10000 * self.value_deduct
+        self.machine.game.player["score"] += jackpot_value
+        self.electro_mode_points += jackpot_value
+        self.machine.game.player["electro_mode_points"] = self.electro_mode_points
+
+        if jackpot_value > self.electro_best_spark:
+            self.electro_best_spark = jackpot_value
+        self.machine.game.player["electro_best_spark"] = self.electro_best_spark
 
         self.machine.events.post("electro_jackpot_collected")
-        self.machine.events.post(f"electro_{shot.name}_collected")
+        self.value_deduct = 0
 
         shot.disabled = True
         shot.is_lit = False
@@ -147,6 +184,7 @@ class Electro(Mode):
         self.current_shot.is_lit = True
         self.current_shot.is_jackpot = True
 
+        #for the "GET THE SUPER JACKPOT FOR XXXX" widget
         self.machine.game.player["electro_super_jackpot_value"] = self.SUPER_JACKPOT_VALUE
 
         self.machine.events.post("electro_super_lit")
@@ -154,8 +192,15 @@ class Electro(Mode):
         self.machine.events.post("electro_super_timer_start")
 
     def collect_super(self):
+        self.electro_super_jackpot = self.machine.game.player["electro_super_jackpot_value"]
+        self.electro_mode_points += self.electro_super_jackpot
+
+        self.machine.game.player["electro_super_jackpot"] = self.electro_super_jackpot
+        self.machine.game.player["electro_mode_points"] = self.electro_mode_points
+
+        self.machine.game.player["score"] += self.electro_super_jackpot
+
         self.machine.events.post("electro_super_collected")
-        self.machine.events.post(f"electro_{self.current_shot.name}_super_collected")
         self.machine.events.post("electro_super_timer_stop")
         self.machine.events.post("electro_mode_complete")
 

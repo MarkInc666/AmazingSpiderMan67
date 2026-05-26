@@ -8,7 +8,20 @@ import random
 # breakout targets release an arm
 # after 2 jackpots, timed arm release starts
 # all arms released, mode ends
-
+"""
+    "title": "DOC OCK",
+    "intro_1": "Lock tentacle arms with rollovers.",
+    "intro_2": "Shoot web targets for Jackpot.",
+    "intro_3": "Spinner increases the multiplier.",
+    "summary_title_complete": "DOC OCK DEFEATED",
+    "summary_title_failed": "DOC OCK ESCAPED",
+    "stat_1_label": "ARMS LOCKED",
+    "stat_1_var": "doc_ock_max_arms_locked",
+    "stat_2_label": "JACKPOTS",
+    "stat_2_var": "doc_ock_jackpots",
+    "points_var": "doc_ock_mode_points",
+    "completed_var": "doc_ock_completed",
+"""
 class doc_ock(Mode):
 
     MAX_BREAKOUT_TARGETS = 6
@@ -37,6 +50,9 @@ class doc_ock(Mode):
         self.jackpot_lit = 1
         self.jackpots_collected = 0
         self.active_breakouts = set()
+        self.doc_ock_max_arms_locked = 1
+        self.doc_ock_jackpots = 0
+        self.doc_ock_mode_points = 0
 
         self.add_mode_event_handler("doc_ock_spinner_hit", self.doc_ock_spinner)
         self.add_mode_event_handler("doc_ock_start_arms", self.doc_ock_start_arms)
@@ -92,12 +108,18 @@ class doc_ock(Mode):
         #already locked
         if self.locked_arms[arm-1]:
             self.machine.game.player["score"] += self.doc_ock_arm_relocked_score
+            self.doc_ock_mode_points += self.doc_ock_arm_relocked_score
             return
 
         self.machine.game.player["score"] += self.doc_ock_arm_locked_score
+        self.doc_ock_mode_points += self.doc_ock_arm_locked_score
+
         self.locked_arms[arm-1] = True
         self.refresh_lane_lights()
-        
+
+        self.doc_ock_max_arms_locked += 1
+        self.machine.game.player["doc_ock_max_arms_locked"] = self.doc_ock_max_arms_locked
+
         self.machine.events.post("doc_ock_arm_locked_score")
         #self.check_jackpot_lit()
 
@@ -109,6 +131,7 @@ class doc_ock(Mode):
         if self.jackpot_lit == 0:
             self.machine.events.post("doc_ock_jackpot_not_lit")
             self.machine.game.player["score"] += self.doc_ock_jackpot_unlit_value
+            self.doc_ock_mode_points += self.doc_ock_jackpot_unlit_value
             return
             
         locked = sum(self.locked_arms)
@@ -119,7 +142,12 @@ class doc_ock(Mode):
 
         self.machine.game.player["score"] += jp_value
         self.machine.game.player["doc_ock_last_jackpot"] = jp_value
-        
+        self.doc_ock_mode_points += jp_value
+        self.machine.game.player["doc_ock_mode_points"] = self.doc_ock_mode_points
+
+        self.doc_ock_jackpots += 1
+        self.machine.game.player["doc_ock_jackpots"] = self.doc_ock_jackpots
+    
         self.machine.events.post("doc_ock_jackpot_award")
         #self.machine.events.post("doc_ock_jackpot_collected")
 
