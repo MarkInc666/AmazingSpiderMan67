@@ -3,10 +3,22 @@
 mode:
   start_events: start_mode_kingpin
   stop_events:
-    - kingpin_mode_done
+    - kingpin_mode_completed_summary
     - ball_ended
   priority: 1000
   code: kingpin.Kingpin
+
+variable_player:
+
+  multiball_kingpin_multiball_started:
+    multiball_autoplunge_active:
+      action: set
+      int: 1
+
+  multiball_kingpin_multiball_ended:
+    multiball_autoplunge_active:
+      action: set
+      int: 0
 
 
 multiballs:
@@ -26,22 +38,36 @@ multiballs:
 
 
 event_player:
-  mode_kingpin_started:
-    - kingpin_start_multiball
-    - kingpin_mode_intro
-    - kingpin_disable_daily_bugle_mystery
-    - kingpin_reset_banks
-    - clear_saucers
-    - play_song_7
 
-  kingpin_reset_banks:
-    - drop_target_bank_dt_bank_left_reset|100ms
-    - drop_target_bank_dt_bank_right_reset|200ms
+  multiball_kingpin_multiball_started:
+    - kingpin_choose_first_area
+
+  kingpin_mode_complete:
+    villain_bookend_summary_request:
+      villain: kingpin
+      done_event: kingpin_mode_completed_summary
 
   mode_kingpin_stopping:
     - kingpin_enable_daily_bugle_mystery
     - kingpin_close_upper_gate
     - kingpin_release_all_saucers
+    - clear_saucers
+    - kingpin_clear_all_kingpin_lights
+
+  mode_kingpin_started:
+    - kingpin_setup
+    - kingpin_start_multiball|1s
+
+  kingpin_setup:
+    - kingpin_reset_banks
+    - clear_saucers
+    - kingpin_disable_daily_bugle_mystery
+    - kingpin_mode_intro
+    - play_song_7
+
+  kingpin_reset_banks:
+    - drop_target_bank_dt_bank_left_reset|100ms
+    - drop_target_bank_dt_bank_right_reset|200ms
 
   multiball_kingpin_multiball_ended:
     - kingpin_multiball_ended
@@ -93,3 +119,240 @@ widget_player:
     kingpin_failed:
       action: play
       expire: 5s
+
+
+show_player:
+
+  kingpin_clear_area_lights:
+    kingpin_pops_lit_show:
+      action: stop
+    kingpin_spinner_lit_show:
+      action: stop
+    kingpin_star_lit_show:
+      action: stop
+    kingpin_upper_targets_lit_show:
+      action: stop
+    kingpin_drops_lit_show:
+      action: stop
+
+  kingpin_area_pops_lit:
+    kingpin_pops_lit_show:
+      action: play
+      loops: -1
+      speed: 2
+
+  kingpin_area_spinner_lit:
+    kingpin_spinner_lit_show:
+      action: play
+      loops: -1
+      speed: 2
+
+  kingpin_area_star_lit:
+    kingpin_star_lit_show:
+      action: play
+      loops: -1
+      speed: 2
+
+  kingpin_area_upper_targets_lit:
+    kingpin_upper_targets_lit_show:
+      action: play
+      loops: -1
+      speed: 2
+
+  kingpin_area_drops_lit:
+    kingpin_drops_lit_show:
+      action: play
+      loops: -1
+      speed: 2
+
+  kingpin_jackpot_lit_show:
+    kingpin_daily_bugle_jackpot_show:
+      action: play
+      loops: -1
+      speed: 4
+
+  kingpin_ab_ready_show:
+    kingpin_ab_ready_show:
+      action: play
+      loops: -1
+      speed: 3
+
+  kingpin_ab_clear_show:
+    kingpin_ab_ready_show:
+      action: stop
+
+  kingpin_victory_laps_show:
+    kingpin_victory_laps_show:
+      action: play
+      loops: -1
+      speed: 5
+
+  kingpin_super_jackpot_lit_show:
+    kingpin_super_jackpot_show:
+      action: play
+      loops: -1
+      speed: 6
+
+  kingpin_clear_all_kingpin_lights:
+    kingpin_pops_lit_show:
+      action: stop
+    kingpin_spinner_lit_show:
+      action: stop
+    kingpin_star_lit_show:
+      action: stop
+    kingpin_upper_targets_lit_show:
+      action: stop
+    kingpin_drops_lit_show:
+      action: stop
+    kingpin_daily_bugle_jackpot_show:
+      action: stop
+    kingpin_ab_ready_show:
+      action: stop
+    kingpin_victory_laps_show:
+      action: stop
+    kingpin_super_jackpot_show:
+      action: stop
+
+shows:
+
+  kingpin_pops_lit_show:
+    - duration: 500ms
+      lights:
+        l_pop_1_1: orange
+        l_pop_1_2: orange
+        l_pop_1_3: orange
+        l_pop_1_4: orange
+        l_pop_1_5: orange
+        l_pop_1_6: orange
+        l_pop_1_7: orange
+        l_pop_1_8: orange
+        l_pop_1_9: orange
+        l_pop_1_10: orange
+        l_pop_1_11: orange
+        l_pop_1_12: orange
+        l_pop_2_1: orange
+        l_pop_2_2: orange
+        l_pop_2_3: orange
+        l_pop_2_4: orange
+        l_pop_2_5: orange
+        l_pop_2_6: orange
+        l_pop_2_7: orange
+        l_pop_2_8: orange
+        l_pop_2_9: orange
+        l_pop_2_10: orange
+        l_pop_2_11: orange
+        l_pop_2_12: orange
+    - duration: 500ms
+      lights:
+        l_pop_1_1: F09010
+        l_pop_1_2: F09010
+        l_pop_1_3: F09010
+        l_pop_1_4: F09010
+        l_pop_1_5: F09010
+        l_pop_1_6: F09010
+        l_pop_1_7: F09010
+        l_pop_1_8: F09010
+        l_pop_1_9: F09010
+        l_pop_1_10: F09010
+        l_pop_1_11: F09010
+        l_pop_1_12: F09010
+        l_pop_2_1: F09010
+        l_pop_2_2: F09010
+        l_pop_2_3: F09010
+        l_pop_2_4: F09010
+        l_pop_2_5: F09010
+        l_pop_2_6: F09010
+        l_pop_2_7: F09010
+        l_pop_2_8: F09010
+        l_pop_2_9: F09010
+        l_pop_2_10: F09010
+        l_pop_2_11: F09010
+        l_pop_2_12: F09010
+
+  kingpin_spinner_lit_show:
+    - duration: 200ms
+      lights:
+        l_gi_a: orange
+        l_spinner: orange
+    - duration: 200ms
+      lights:
+        l_gi_a: off
+        l_spinner: off
+
+  kingpin_star_lit_show:
+    - duration: 250ms
+      lights:
+        l_star: yellow
+    - duration: 250ms
+      lights:
+        l_star: off
+
+  kingpin_upper_targets_lit_show:
+    - duration: 120ms
+      lights:
+        l_upper_left: yellow
+        l_upper_middle: yellow
+        l_upper_right: yellow
+    - duration: 120ms
+      lights:
+        l_upper_left: blue
+        l_upper_middle: blue
+        l_upper_right: blue
+
+  kingpin_drops_lit_show:
+    - duration: 250ms
+      lights:
+        l_3bankbonus: yellow
+        l_5bank_1: yellow
+        l_5bank_2: yellow
+        l_5bank_3: yellow
+        l_5bank_4: yellow
+        l_5bank_5: yellow
+    - duration: 120ms
+      lights:
+        l_3bankbonus: blue
+        l_5bank_1: blue
+        l_5bank_2: blue
+        l_5bank_3: blue
+        l_5bank_4: blue
+        l_5bank_5: blue
+
+  kingpin_daily_bugle_jackpot_show:
+    - duration: 150ms
+      lights:
+        l_gi_top_1: white
+    - duration: 150ms
+      lights:
+        l_gi_top_1: off
+
+  kingpin_ab_ready_show:
+    - duration: 200ms
+      lights:
+        l_a_rollover: purple
+        l_b_rollover: purple
+        l_right_a: purple
+        l_left_b: purple
+    - duration: 200ms
+      lights:
+        l_a_rollover: off
+        l_b_rollover: off
+        l_right_a: off
+        l_left_b: off
+
+  kingpin_victory_laps_show:
+    - duration: 150ms
+      lights:
+        gi: white
+    - duration: 150ms
+      lights:
+        gi: off
+
+  kingpin_super_jackpot_show:
+    - duration: 100ms
+      lights:
+        l_gi_top_1: red
+        gi: red
+    - duration: 100ms
+      lights:
+        l_gi_top_1: white
+        gi: white      

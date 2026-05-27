@@ -74,6 +74,9 @@ class DailyBugleMystery(Mode):
 
     def disable_db(self, **kwargs):
         self.isEnabled = False
+        self.reset_cycle()
+        self.machine.events.post("daily_bugle_mystery_stop_all")        
+        self.update_player_vars()
 
     def enable_db(self, **kwargs):
         self.isEnabled = True
