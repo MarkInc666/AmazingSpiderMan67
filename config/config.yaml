@@ -39,8 +39,8 @@ virtual_platform_start_active_switches:
   - s_trough2
   - s_trough3
   - s_trough4
-#  - s_trough5
-#  - s_trough6
+  - s_trough5
+  - s_trough6
 
 
 
@@ -61,10 +61,10 @@ playfields:
     tags: default
 
 machine:
-  balls_installed: 4
+  balls_installed: 6
 
 game:
-  balls_per_game: 1
+  balls_per_game: 3
   max_players: 4
 
 

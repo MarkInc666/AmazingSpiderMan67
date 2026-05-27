@@ -30,7 +30,7 @@ class QualifyVillainStart(Mode):
         for saucer in [1, 2, 3]:
             self.add_mode_event_handler("eject_saucer", self.eject_saucer, saucer=saucer)
 
-        self.debug_set_all_played()
+        #self.debug_set_all_played()
         
     def start_current_villain(self, **kwargs):
         player = self.machine.game.player
@@ -49,6 +49,7 @@ class QualifyVillainStart(Mode):
             return
 
         name, start_event = villain
+        player["villain_current_name"] = name
         self.start_villain(name, start_event)
 
     def find_next_unplayed_villain(self):

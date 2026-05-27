@@ -68,7 +68,7 @@ class QualifyVillainSelect(Carousel):
         player = self.machine.game.player
 
         player[f"{item}_played"] = 1
-        player["current_villain"] = item
+        player["villain_current_name"] = item
         player["villain_mode_running"] = 1
         player["villain_mode_running_name"] = item
 

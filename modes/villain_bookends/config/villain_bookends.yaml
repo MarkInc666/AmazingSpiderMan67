@@ -6,6 +6,16 @@ mode:
   priority: 10000
   code: villain_bookends.VillainBookends
 
+event_player:
+  flipper_cradle{current_player.villain_mode_running == 1}:
+    - villain_bookend_intro_hold_request
+
+  flipper_cradle_release:
+    - villain_bookend_intro_hold_release
+
+  villain_mode_ended:  #todo - generate this on mode ends?
+    - villain_bookend_intro_hold_release
+
 
 random_event_player:
   villain_bookend_summary_done:

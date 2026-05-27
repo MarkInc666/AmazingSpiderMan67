@@ -74,7 +74,7 @@ event_player:
 
   kingpin_open_upper_gate: rooftop_diverter_open
 
-  kingpin_close_upper_gat: rooftop_diverter_close
+  kingpin_close_upper_gate: rooftop_diverter_close
 
   kingpin_disable_daily_bugle_mystery: disable_daily_bugle_mystery
 

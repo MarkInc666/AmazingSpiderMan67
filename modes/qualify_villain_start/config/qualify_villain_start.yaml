@@ -12,7 +12,7 @@ variable_player:
       int: 1
     villain_current_name:
       action: set
-      string: "Lizard"
+      string: "lizard"
     villain_mode_running:
       action: set
       int: 0
@@ -62,16 +62,6 @@ variable_player:
     score: 710
 
 
-#slide_player:
-#  villain_started_set:
-#    villain_active:
-#      action: play
-#      priority: 1000
-
-#  reset_villain_locate:
-#    villain_active:
-#      action: remove
-
 
 shots:
   sling_left:
@@ -90,7 +80,6 @@ event_player:
 
   slings_hit:
     - advance_current_villain
-    - kingpin_ready_set
 
   s_saucer_1_active: saucer_1_villain_start_request
   s_saucer_2_active: saucer_2_villain_start_request

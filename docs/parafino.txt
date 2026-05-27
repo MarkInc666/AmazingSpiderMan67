@@ -1,75 +1,37 @@
-🎭 Parafino Mode: “Melt the Wax”
-Core Theme
+PARAFINO: MELT THE WAX
 
-Parafino has trapped the city in a frozen wax museum atmosphere.
+Start 2-ball multiball.
 
-GI turns ice blue
-playfield feels cold / lifeless
-need to raise heat and melt him
-Core Rules
-Start Mode
-GI = light blue / white
-inserts dim
-“Everything is frozen…”
-Build Heat
+Raise Heat in three city zones:
+- Left Drops
+- Pop Bumpers
+- Right Drops
 
-Hit heat shots:
+Each hit scores 20K and raises that zone’s Heat by 1.
 
-left drops
-right drops
-spinner
-pops
-upper targets
+If a zone is not hit for 4 seconds, its Heat drops by 1.
 
-Each hit adds Heat Meter
+Heat Levels:
+0 Icy Blue
+1 Blue-White
+2 White
+3 Warm White
+4 Orange
+5 Red
 
-Visual Progression
-Heat Level	GI Color
-0	icy blue
-1	blue-white
-2	white
-3	warm white
-4	orange
-5	red
+When a zone reaches Heat Level 5, its saucer Jackpot lights:
+- Saucer 1 = Left Drops
+- Saucer 2 = Pops
+- Saucer 3 = Right Drops
 
-This would look incredible.
+Lit saucer Jackpot = 200K × balls in play.
 
-Final Objective
+The first Jackpot collected at each saucer also adds a ball.
+Each saucer can add a ball only once.
 
-At max heat:
+Unlit saucers score 50K.
 
-Parafino begins melting
-Jackpot lit at center web / saucer
+After all 3 saucer Jackpots are collected, all Heat zones reset to 0.
+Jackpots can be built again, but add-a-balls do not reset.
 
-Shoot it to defeat him.
-
-Optional Twist (great one)
-
-If no shots for 4 seconds:
-
-heat drops one level
-
-So player must keep attacking.
-
-Why this mode is strong
-Different from all your others
-
-Not just “hit lit shots.”
-
-It’s:
-
-build environment state
-maintain pressure
-dramatic payoff
-Sound package
-cold wind at start
-cracking wax
-dripping sounds
-final scream / melt
-My blunt opinion
-
-This is one of the best villain modes you've discussed.
-
-Because it has a real story arc:
-
-cold → warm → burning → melt → finish
+Mode ends when multiball ends.

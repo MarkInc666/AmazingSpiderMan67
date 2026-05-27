@@ -130,7 +130,7 @@ class VillainBookends(Mode):
         "lizard": {
             "title": "THE LIZARD MAN",
             "intro_1": "Create the antidote at the star rollover.",
-            "intro_2": "Get it to Lizard Man at the lit web targets.",
+            "intro_2": "Get it to Lizard Man lit web targets.",
             "intro_3": "Move fast before the value drains.",
             "summary_title_complete": "LIZARD MAN CURED",
             "summary_title_failed": "LIZARD MAN ESCAPED",
@@ -146,21 +146,21 @@ class VillainBookends(Mode):
             "title": "PARAFINO",
             "intro_1": "Parafino has sealed the city.",
             "intro_2": "Shoot pops and drops to break his control.",
-            "intro_3": "Lit saucers add balls. Spinner for Jackpot.",
+            "intro_3": "Lit SAUCERS for JACKPOTS. Flashing add-a-ball.",
             "summary_title_complete": "PARAFINO DEFEATED",
             "summary_title_failed": "PARAFINO ESCAPED",
-            "stat_1_label": "SEQUENCES",
-            "stat_1_var": "parafino_sequences",
+            "stat_1_label": "HEAT BLASTS",
+            "stat_1_var": "parafino_heat_hits",
             "stat_2_label": "JACKPOTS",
-            "stat_2_var": "parafino_jackpots",
+            "stat_2_var": "parafino_total_jackpots",
             "points_var": "parafino_mode_points",
             "completed_var": "parafino_completed",
         },
         "kingpin": {
             "title": "KINGPIN",
             "intro_1": "Kingpin is terrorizing the city.",
-            "intro_2": "Chase him out of every area. JACKPOTS at Daily Bugle.",
-            "intro_3": "Complete A+B for Add-a-ball at the Daily Bugle.",
+            "intro_2": "Clear every area. JACKPOTS at Daily Bugle.",
+            "intro_3": "A+B lights Add-a-ball at the Daily Bugle.",
             "summary_title_complete": "KINGPIN DEFEATED",
             "summary_title_failed": "KINGPIN ESCAPED",
             "stat_1_label": "AREAS CLEARED",
@@ -184,6 +184,16 @@ class VillainBookends(Mode):
 
         #both flippers held and released
         self.add_mode_event_handler("flipper_cancel", self._skip_current_bookend)
+
+        self.add_mode_event_handler(
+            "villain_bookend_intro_hold_request",
+            self._intro_hold_request
+        )
+
+        self.add_mode_event_handler(
+            "villain_bookend_intro_hold_release",
+            self._intro_hold_release
+        )
 
     def _intro_request(self, villain=None, start_event=None, **kwargs):
         if villain not in self.VILLAINS:
@@ -254,6 +264,37 @@ class VillainBookends(Mode):
             ms=self.SUMMARY_MS,
             callback=self._finish_current_bookend
         )
+    def _intro_hold_request(self, **kwargs):
+        player = self.machine.game.player if self.machine.game else None
+
+        if not player:
+            return
+
+        try:
+            villain = player["villain_current_name"]
+        except KeyError:
+            return
+
+        if not villain:
+            return
+
+        if villain not in self.VILLAINS:
+            self.warning_log("No bookend intro found for current villain: %s", villain)
+            return
+
+        data = self.VILLAINS[villain]
+
+        self._set_machine_var("villain_bookend_title", data["title"])
+        self._set_machine_var("villain_bookend_line_1", data["intro_1"])
+        self._set_machine_var("villain_bookend_line_2", data["intro_2"])
+        self._set_machine_var("villain_bookend_line_3", data["intro_3"])
+        self._set_machine_var("villain_bookend_footer", "RELEASE FLIPPER TO RETURN")
+
+        self.machine.events.post("villain_bookend_intro_show")
+
+
+    def _intro_hold_release(self, **kwargs):
+        self.machine.events.post("villain_bookend_intro_hide")
 
     def _skip_current_bookend(self, **kwargs):
         if self.current_stage in ("intro", "summary"):
