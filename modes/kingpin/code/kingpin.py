@@ -120,8 +120,8 @@ class Kingpin(Mode):
         self._reset_player_vars()
 
         self._add_switch_handlers()
-        self._add_mode_event_handler("kingpin_multiball_ended", self._multiball_ended)
-        self._add_mode_event_handler("kingpin_release_all_saucers", self._release_all_held_saucers)
+        self.add_mode_event_handler("kingpin_multiball_ended", self._multiball_ended)
+        self.add_mode_event_handler("kingpin_release_all_saucers", self._release_all_held_saucers)
 
         # Make sure Kingpin starts clean.
         self.machine.events.post("kingpin_reset_drop_banks")
@@ -135,33 +135,33 @@ class Kingpin(Mode):
 
     def _add_switch_handlers(self):
         # A/B rollovers
-        self._add_mode_event_handler("s_inlane_a_active", self._a_hit)
-        self._add_mode_event_handler("s_inlane_m_r_active", self._a_hit)
-        self._add_mode_event_handler("s_inlane_b_active", self._b_hit)
+        self.add_mode_event_handler("s_inlane_a_active", self._a_hit)
+        self.add_mode_event_handler("s_inlane_m_r_active", self._a_hit)
+        self.add_mode_event_handler("s_inlane_b_active", self._b_hit)
 
         # Daily Bugle / VUK jackpot
-        self._add_mode_event_handler("s_vuk_switch_active", self._daily_bugle_hit)
+        self.add_mode_event_handler("s_vuk_switch_active", self._daily_bugle_hit)
 
         # Area switches
-        self._add_mode_event_handler("s_pop_left_active", self._pop_hit)
-        self._add_mode_event_handler("s_pop_right_active", self._pop_hit)
+        self.add_mode_event_handler("s_pop_left_active", self._pop_hit)
+        self.add_mode_event_handler("s_pop_right_active", self._pop_hit)
 
-        self._add_mode_event_handler("s_trispinner_opto_active", self._spinner_hit)
-        self._add_mode_event_handler("s_spinner_active", self._spinner_hit)
+        self.add_mode_event_handler("s_trispinner_opto_active", self._spinner_hit)
+        self.add_mode_event_handler("s_spinner_active", self._spinner_hit)
 
-        self._add_mode_event_handler("s_star_rollover_active", self._star_hit)
+        self.add_mode_event_handler("s_star_rollover_active", self._star_hit)
 
-        self._add_mode_event_handler("s_upper_target_left_active", self._upper_target_left_hit)
-        self._add_mode_event_handler("s_upper_target_center_active", self._upper_target_center_hit)
-        self._add_mode_event_handler("s_upper_target_right_active", self._upper_target_right_hit)
+        self.add_mode_event_handler("s_upper_target_left_active", self._upper_target_left_hit)
+        self.add_mode_event_handler("s_upper_target_center_active", self._upper_target_center_hit)
+        self.add_mode_event_handler("s_upper_target_right_active", self._upper_target_right_hit)
 
-        self._add_mode_event_handler("drop_target_bank_dt_bank_left_down", self._left_drops_complete)
-        self._add_mode_event_handler("drop_target_bank_dt_bank_right_down", self._right_drops_complete)
+        self.add_mode_event_handler("drop_target_bank_dt_bank_left_down", self._left_drops_complete)
+        self.add_mode_event_handler("drop_target_bank_dt_bank_right_down", self._right_drops_complete)
 
         # Saucers
-        self._add_mode_event_handler("s_saucer_1_active", self._saucer_1_hit)
-        self._add_mode_event_handler("s_saucer_2_active", self._saucer_2_hit)
-        self._add_mode_event_handler("s_saucer_3_active", self._saucer_3_hit)
+        self.add_mode_event_handler("s_saucer_1_active", self._saucer_1_hit)
+        self.add_mode_event_handler("s_saucer_2_active", self._saucer_2_hit)
+        self.add_mode_event_handler("s_saucer_3_active", self._saucer_3_hit)
 
     def _reset_player_vars(self):
         self._set("kingpin_mode_points", 0)
