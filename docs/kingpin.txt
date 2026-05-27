@@ -1,0 +1,40 @@
+KINGPIN: CLEAR THE CITY
+
+A+B Daily Bugle mystery mode disabled during wizrd mode
+
+Start 2-ball multiball with 20s ball save.
+
+One random city area is active at a time:
+- Pops: 10 hits
+- Spinner: 10 spins
+- Star: 3 hits
+- Upper Targets: 2 hits each
+- Drops: complete both banks
+
+Active area hits score 50K.
+Inactive area hits score 20K.
+
+Completing the active area lights Daily Bugle Jackpot at the VUK, opens the gate.
+Jackpot = 100K × (balls in play + cleared areas)
+
+Complete A+B before collecting Jackpot to add-a-ball on Jackpot collect.
+Max 5 balls in play.
+10 second ball save when ball added 
+A+B resets after each Jackpot.
+
+Saucers score 50K.
+If more than 1 ball is active, saucers hold the ball for 10s, then eject.
+If only 1 ball remains, saucers eject immediately.
+
+Upper gate opens only when:
+- Daily Bugle Jackpot is ready
+- Spinner area is active
+- Upper Target area is active
+
+After all city areas are cleared:
+Victory Laps begin.
+All areas are lit for 50K per hit.
+A+B opens gate and Daily Bugle Super Jackpot is lit for 1M × balls in play.
+
+Mode ends when only 1 ball remains.
+If a ball is held in a saucer when the mode ends, eject it.

@@ -100,7 +100,7 @@ modes:
   - sandman
   - scorpion
   - vulture
- # - kingpin
+  - kingpin
 
 
 player_vars:

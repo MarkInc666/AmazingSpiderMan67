@@ -37,17 +37,17 @@ variable_player:
       action: set
       int: 0
 
-  saucer_1_select_ready_set:
+  saucer_1_select_ready_set{current_player.kingpin_ready == 0}:
     saucer_1_select_ready:
       action: set
       int: 1
 
-  saucer_2_select_ready_set:
+  saucer_2_select_ready_set{current_player.kingpin_ready == 0}:
     saucer_2_select_ready:
       action: set
       int: 1
 
-  saucer_3_select_ready_set:
+  saucer_3_select_ready_set{current_player.kingpin_ready == 0}:
     saucer_3_select_ready:
       action: set
       int: 1
@@ -56,6 +56,7 @@ variable_player:
     kingpin_ready:
       action: set
       int: 1
+
 
   slings_hit:
     score: 710
@@ -89,18 +90,19 @@ event_player:
 
   slings_hit:
     - advance_current_villain
+    - kingpin_ready_set
 
   s_saucer_1_active: saucer_1_villain_start_request
   s_saucer_2_active: saucer_2_villain_start_request
   s_saucer_3_active: saucer_3_villain_start_request
 
-  saucer_1_villain_start_request{current_player.saucer_1_select_ready == 1}: start_mode_villain_select
+  saucer_1_villain_start_request{current_player.kingpin_ready == 0 and current_player.saucer_1_select_ready == 1}: start_mode_villain_select
   saucer_1_villain_start_request{current_player.villain_start_ready == 1 and current_player.saucer_1_select_ready == 0}: start_current_villain
 
-  saucer_2_villain_start_request{current_player.saucer_2_select_ready == 1}: start_mode_villain_select
+  saucer_2_villain_start_request{current_player.kingpin_ready == 0 and current_player.saucer_2_select_ready == 1}: start_mode_villain_select
   saucer_2_villain_start_request{current_player.villain_start_ready == 1 and current_player.saucer_2_select_ready == 0}: start_current_villain
 
-  saucer_3_villain_start_request{current_player.saucer_3_select_ready == 1}: start_mode_villain_select
+  saucer_3_villain_start_request{current_player.kingpin_ready == 0 and current_player.saucer_3_select_ready == 1}: start_mode_villain_select
   saucer_3_villain_start_request{current_player.villain_start_ready == 1 and current_player.saucer_3_select_ready == 0}: start_current_villain
 
   check_kingpin_ready{current_player.villains_completed_total >= 10}:

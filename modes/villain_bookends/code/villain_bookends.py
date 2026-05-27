@@ -156,6 +156,20 @@ class VillainBookends(Mode):
             "points_var": "parafino_mode_points",
             "completed_var": "parafino_completed",
         },
+        "kingpin": {
+            "title": "KINGPIN",
+            "intro_1": "Kingpin is terrorizing the city.",
+            "intro_2": "Chase him out of every area. JACKPOTS at Daily Bugle.",
+            "intro_3": "Complete A+B for Add-a-ball at the Daily Bugle.",
+            "summary_title_complete": "KINGPIN DEFEATED",
+            "summary_title_failed": "KINGPIN ESCAPED",
+            "stat_1_label": "AREAS CLEARED",
+            "stat_1_var": "kingpin_areas_cleared",
+            "stat_2_label": "MEGABALLS",
+            "stat_2_var": "kingpin_max_balls",
+            "points_var": "kingpin_mode_points",
+            "completed_var": "kingpin_completed",
+        },
     }
 
     def mode_start(self, **kwargs):

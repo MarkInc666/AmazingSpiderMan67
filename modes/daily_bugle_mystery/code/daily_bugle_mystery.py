@@ -59,13 +59,24 @@ class DailyBugleMystery(Mode):
         self.b_hit = False
         self.mystery_ab_ready = False
         self.mystery_ready = False
+        self.isEnabled = True
 
         self.add_mode_event_handler("daily_bugle_a_hit", self.a_rollover_hit)
         self.add_mode_event_handler("daily_bugle_b_hit", self.b_rollover_hit)
         self.add_mode_event_handler("daily_bugle_rooftop_right_exit", self.rooftop_right_exit)
         self.add_mode_event_handler("daily_bugle_vuk_collect_request", self.vuk_collect_request)
 
+        self.add_mode_event_handler("disable_daily_bugle_mystery", self.disable_db)
+        self.add_mode_event_handler("enable_daily_bugle_mystery", self.enable_db)
+
         self.ensure_player_vars()
+
+
+    def disable_db(self, **kwargs):
+        self.isEnabled = False
+
+    def enable_db(self, **kwargs):
+        self.isEnabled = True
 
     def ensure_player_vars(self):
         player = self.machine.game.player
@@ -79,12 +90,14 @@ class DailyBugleMystery(Mode):
         self.update_player_vars()
 
     def a_rollover_hit(self, **kwargs):
+        if not self.isEnabled: return
         if self.a_hit == False:
             self.machine.events.post("daily_bugle_a_complete")
             self.a_hit = True
             self.check_ab_complete()
 
     def b_rollover_hit(self, **kwargs):
+        if not self.isEnabled: return
         if self.b_hit == False:
             self.machine.events.post("daily_bugle_b_complete")
             self.b_hit = True
@@ -107,6 +120,7 @@ class DailyBugleMystery(Mode):
         self.update_player_vars()
 
     def rooftop_right_exit(self, **kwargs):
+        if not self.isEnabled: return
         if not self.mystery_ab_ready:
             return
 
@@ -121,6 +135,7 @@ class DailyBugleMystery(Mode):
         self.update_player_vars()
 
     def vuk_collect_request(self, **kwargs):
+        if not self.isEnabled: return
         if not self.mystery_ready:
             # kick up for all others
             self.delay.add(

@@ -14,6 +14,7 @@ class QualifyVillainStart(Mode):
         ("scorpion", "start_mode_scorpion"),
         ("doc_ock", "start_mode_doc_ock"),        
         ("parafino", "start_mode_parafino"),
+#        ("kingpin", "start_mode_kingpin"),
      ]
 
     def mode_start(self, **kwargs):
@@ -28,23 +29,23 @@ class QualifyVillainStart(Mode):
         self.add_mode_event_handler("clear_saucers_delayed", self.clear_saucers2)
         for saucer in [1, 2, 3]:
             self.add_mode_event_handler("eject_saucer", self.eject_saucer, saucer=saucer)
-        
 
+        self.debug_set_all_played()
+        
     def start_current_villain(self, **kwargs):
         player = self.machine.game.player
-
-        self.info_log(f"current villain: {player["villain_current_name"]}")
-
+ 
         if player["kingpin_ready"] == 1:
+            player["villain_current_name"] = "kingpin"
+            self.info_log(f"current villain: {player["villain_current_name"]}")
             self.start_villain("kingpin", "start_mode_kingpin")
             return
+
+        self.info_log(f"current villain: {player["villain_current_name"]}")
 
         villain = self.find_next_unplayed_villain()
 
         if not villain:
-            self.machine.events.post("all_villains_played")
-            self.machine.events.post("kingpin_ready_set")
-            self.machine.events.post("kingpin_wizard_ready")
             return
 
         name, start_event = villain
@@ -69,6 +70,16 @@ class QualifyVillainStart(Mode):
 
         return None
 
+    def debug_set_all_played(self):
+        start_pos = 0
+
+        for offset in range(len(self.VILLAINS)):
+            pos = (start_pos + offset) % len(self.VILLAINS)
+            name, start_event = self.VILLAINS[pos]
+
+            played_var = f"{name}_played"
+            self.machine.game.player[played_var] = 1
+
     def start_villain(self, name, start_event):
         player = self.machine.game.player
 
@@ -85,7 +96,6 @@ class QualifyVillainStart(Mode):
         player["saucer_3_select_ready"] = 0
         
         self.machine.events.post("villain_started_set")
-#        self.machine.events.post(start_event)
         self.machine.events.post(
             "villain_bookend_intro_request",
             villain=name,
@@ -93,6 +103,13 @@ class QualifyVillainStart(Mode):
         )
 
     def advance_current_villain(self, **kwargs):
+        if not self.find_next_unplayed_villain():
+            self.machine.events.post("all_villains_played")
+            self.machine.events.post("kingpin_ready_set")
+            self.machine.events.post("kingpin_wizard_ready")
+            self.machine.game.player["villain_current_name"] = "kingpin"
+            return
+
         current = self.machine.game.player["villain_current_index"]
         current += 1
 

@@ -36,6 +36,10 @@ sound_player:
       bus: music
       loops: -1
 
+  play_music_song_7: 
+    dash_to_safety:
+      bus: music
+      loops: -1
 
   stop_music_song_4: 
     ticking:

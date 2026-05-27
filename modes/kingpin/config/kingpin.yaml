@@ -1,6 +1,95 @@
 #config_version=6
-#kingpin mode config file
+
 mode:
   start_events: start_mode_kingpin
-  stop_events: stop_mode_kingpin
-  priority: 500
+  stop_events:
+    - kingpin_mode_done
+    - ball_ended
+  priority: 1000
+  code: kingpin.Kingpin
+
+
+multiballs:
+  kingpin_multiball:
+    ball_count: 2
+    ball_count_type: total
+    shoot_again: 20s
+    start_events: kingpin_start_multiball
+    stop_events:
+      - kingpin_stop_multiball
+
+  kingpin_add_a_ball:
+    ball_count: 1
+    ball_count_type: add
+    shoot_again: 10s
+    start_events: kingpin_add_a_ball
+
+
+event_player:
+  mode_kingpin_started:
+    - kingpin_start_multiball
+    - kingpin_mode_intro
+    - kingpin_disable_daily_bugle_mystery
+    - kingpin_reset_banks
+    - clear_saucers
+    - play_song_7
+
+  kingpin_reset_banks:
+    - drop_target_bank_dt_bank_left_reset|100ms
+    - drop_target_bank_dt_bank_right_reset|200ms
+
+  mode_kingpin_stopping:
+    - kingpin_enable_daily_bugle_mystery
+    - kingpin_close_upper_gate
+    - kingpin_release_all_saucers
+
+  multiball_kingpin_multiball_ended:
+    - kingpin_multiball_ended
+
+  kingpin_open_upper_gate: rooftop_diverter_open
+
+  kingpin_close_upper_gat: rooftop_diverter_close
+
+  kingpin_disable_daily_bugle_mystery: disable_daily_bugle_mystery
+
+  kingpin_enable_daily_bugle_mystery: enable_daily_bugle_mystery
+
+
+widget_player:
+  mode_kingpin_started:
+    kingpin:
+      action: play
+
+  kingpin_mode_ended:
+    kingpin:
+      action: remove
+
+  xkingpin_mode_intro:
+    kingpin_intro:
+      action: play
+      expire: 5s
+
+  kingpin_area_changed:
+    kingpin_area_status:
+      action: play
+      expire: 3s
+
+  xkingpin_jackpot_lit:
+    kingpin_jackpot_lit:
+      action: play
+      expire: 3s
+
+  xkingpin_victory_laps_started:
+    kingpin_victory_laps:
+      action: play
+      expire: 4s
+
+  xkingpin_mode_complete:
+    kingpin_complete:
+      action: play
+      expire: 5s
+
+  xkingpin_mode_failed:
+    kingpin_failed:
+      action: play
+      expire: 5s
