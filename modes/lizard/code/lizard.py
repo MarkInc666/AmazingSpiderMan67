@@ -113,6 +113,8 @@ class Lizard(Mode):
         return self.DELIVERY_SEQUENCE[deliveries]
 
     def a_rollover(self, **kwargs):
+        if self.machine.game.player["villain_mode_in_summary"] == True: return
+
         self._set_player_var("lizard_a_hit", 1)
         self.machine.events.post("lizard_a_complete")
 
@@ -120,6 +122,8 @@ class Lizard(Mode):
             self._ab_complete()
 
     def b_rollover(self, **kwargs):
+        if self.machine.game.player["villain_mode_in_summary"] == True: return
+
         self._set_player_var("lizard_b_hit", 1)
         self.machine.events.post("lizard_b_complete")
 
@@ -144,6 +148,8 @@ class Lizard(Mode):
         self.machine.events.post("lizard_clear_ab")
 
     def serum_collect_request(self, **kwargs):
+        if self.machine.game.player["villain_mode_in_summary"] == True: return
+
         if self._get_player_var("lizard_serum_ready", 0) == 1:
             return
 
@@ -196,6 +202,8 @@ class Lizard(Mode):
         self.machine.events.post("lizard_light_serum_location")
 
     def delivery_request(self, target=None, **kwargs):
+        if self.machine.game.player["villain_mode_in_summary"] == True: return
+
         if self._get_player_var("lizard_serum_ready", 0) == 0:
             return
 

@@ -1,6 +1,5 @@
 from mpf.core.mode import Mode
 
-
 class QualifyVillainStart(Mode):
 
     VILLAINS = [
@@ -123,11 +122,14 @@ class QualifyVillainStart(Mode):
         self.machine.game.player["villain_current_index"] = current
         self.machine.game.player["villain_current_name"] = name
 
-        self.info_log(f"current villain: {self.machine.game.player["villain_current_name"]}")
+        self.info_log(f"villain_current_name: {self.machine.game.player["villain_current_name"]}")
     
 
     def reset_villain_locate(self, **kwargs):
         player = self.machine.game.player
+
+        if player["villain_current_name"] == "kingpin":
+            player["kingpin_ready"] = 0
 
         player["villain_mode_running"] = 0
         player["villain_start_ready"] = 0
@@ -140,6 +142,10 @@ class QualifyVillainStart(Mode):
             player["villain_locate_spins_needed"] = 3
 
         self.advance_current_villain()
+        
+        if  player["villain_current_name"] == "kingpin":
+            player["villain_locate_spins_needed"] = 1
+
 
 # called after villain mode starts have given the signal
 # can wait until they are done their instruction intros

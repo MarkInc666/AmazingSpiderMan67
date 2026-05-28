@@ -140,7 +140,7 @@ shots:
 
 
 show_player:
-#  mysterio_trial_started:
+#  mysterio_startup_complete:
 #    mysterio_start_show:
 #      loops: 0
 #

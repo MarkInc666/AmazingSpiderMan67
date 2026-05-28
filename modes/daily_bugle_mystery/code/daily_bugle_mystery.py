@@ -69,6 +69,8 @@ class DailyBugleMystery(Mode):
         self.add_mode_event_handler("disable_daily_bugle_mystery", self.disable_db)
         self.add_mode_event_handler("enable_daily_bugle_mystery", self.enable_db)
 
+        self.add_mode_event_handler("reset_daily_bugle_state", self.reset_cycle)
+    
         self.ensure_player_vars()
 
 

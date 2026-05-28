@@ -84,7 +84,7 @@ event_player:
       villain: sandman
       done_event: sandman_mode_completed_summary
 
-  mode_sandman_started:
+  sandman_startup_complete:
     - sandman_start_bank
     - clear_saucers
     

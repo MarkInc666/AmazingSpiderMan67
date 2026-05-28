@@ -76,7 +76,9 @@ class doc_ock(Mode):
             )
             
         self.update_player_vars()
+
         self.machine.events.post("rooftop_diverter_close")
+        self.machine.events.post("doc_ock_startup_complete")
 
 
     def doc_ock_start_arms(self, **kwargs):
@@ -84,15 +86,18 @@ class doc_ock(Mode):
         self.check_jackpot_lit()
 
     def doc_ock_spinner(self, **kwargs):
+        if self.machine.game.player["villain_mode_in_summary"] == True: return
         self.jackpot_lit = 1
         self.check_jackpot_lit()
         self.doc_ock_jackpot_spinner_multi = self.doc_ock_jackpot_spinner_multi + 1
 
     def rotate_left(self, **kwargs):
+        if self.machine.game.player["villain_mode_in_summary"] == True: return
         self.locked_arms = self.locked_arms[1:] + self.locked_arms[:1]
         self.refresh_lane_lights()
 
     def rotate_right(self, **kwargs):
+        if self.machine.game.player["villain_mode_in_summary"] == True: return
         self.locked_arms = self.locked_arms[-1:] + self.locked_arms[:-1]
         self.refresh_lane_lights()
 
@@ -104,6 +109,7 @@ class doc_ock(Mode):
                 self.machine.events.post(f"doc_ock_arm_{arm}_pulse")
 
     def arm_hit(self, arm, **kwargs):
+        if self.machine.game.player["villain_mode_in_summary"] == True: return
         self.jackpot_lit = 1        
         #already locked
         if self.locked_arms[arm-1]:
@@ -128,6 +134,7 @@ class doc_ock(Mode):
             self.machine.events.post("doc_ock_jackpot_lit")
 
     def jackpot_request(self, **kwargs):
+        if self.machine.game.player["villain_mode_in_summary"] == True: return
         if self.jackpot_lit == 0:
             self.machine.events.post("doc_ock_jackpot_not_lit")
             self.machine.game.player["score"] += self.doc_ock_jackpot_unlit_value
@@ -176,6 +183,8 @@ class doc_ock(Mode):
                 return
 
     def breakout_hit(self, breakout, **kwargs):
+        if self.machine.game.player["villain_mode_in_summary"] == True: return
+
         if breakout not in self.active_breakouts:
             return
 

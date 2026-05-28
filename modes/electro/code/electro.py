@@ -60,6 +60,7 @@ class Electro(Mode):
 
         self.begin_power_surge()
 
+
     def begin_power_surge(self):
         self.super_active = False
         self.current_shot = None
@@ -69,7 +70,7 @@ class Electro(Mode):
             shot.disabled = False
             shot.is_jackpot = False
 
-        self.machine.events.post("electro_mode_started")
+        self.machine.events.post("electro_startup_complete")
         self.pick_next_lit_shot()
 
     def value_tick(self, **kwargs):
@@ -126,6 +127,8 @@ class Electro(Mode):
         self.pick_next_lit_shot()
 
     def shot_hit(self, shot_name=None, **kwargs):
+        if self.machine.game.player["villain_mode_in_summary"] == True: return
+       
         if not shot_name:
             return
         

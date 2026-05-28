@@ -32,10 +32,12 @@ event_player:
       villain: rhino
       done_event: rhino_mode_completed_summary
 
-  mode_rhino_started:
+  rhino_startup_complete:
     - rhino_start
     - rhino_light_jackpot_collect
     - clear_saucers
+    - drop_target_bank_dt_bank_left_reset|100ms
+    - drop_target_bank_dt_bank_right_reset|200ms  
 
   # Pops build rage
   s_pop_left_active:

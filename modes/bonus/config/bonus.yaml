@@ -11,8 +11,6 @@ mode:
 #* mystery awards collected
 #* spidey bonus
 #* vulture bonus
-
-
 slide_player:
   mode_bonus_started:
     bonus:
@@ -20,99 +18,123 @@ slide_player:
     main_game:
       action: remove
 
+  bonus_start:
+      bonus:
+        action: update
+        tokens:
+          entry: initial
+
+  bonus_entry:
+    bonus:
+      action: update
+
+
 
 mode_settings:
-  display_delay_ms: 500ms
+  display_delay_ms: 1000ms
   hurry_up_delay_ms: 50ms
 
   keep_multiplier: false
 
   bonus_entries:
 
-    - entry: bonus_1k
-      text: "1K"
-      player_score_entry: bonus_1k_lit
-      score: 1000
+    - entry: bonus_count
+      text: "BONUS LIGHTS"
+      player_score_entry: bonus_count
+      score: 1
+      reset_player_score_entry: true
       skip_if_zero: true
 
-    - entry: bonus_2k
-      text: "2K"
-      player_score_entry: bonus_2k_lit
-      score: 2000
-      skip_if_zero: true
+    # - entry: bonus_1k
+    #   text: "1K"
+    #   player_score_entry: bonus_1k_lit
+    #   score: 1000
+    #   reset_player_score_entry: true
+    #   skip_if_zero: true
 
-    - entry: bonus_3k
-      text: "3K"
-      player_score_entry: bonus_3k_lit
-      score: 3000
-      skip_if_zero: true
+    # - entry: bonus_2k
+    #   text: "2K"
+    #   player_score_entry: bonus_2k_lit
+    #   score: 2000
+    #   reset_player_score_entry: true
+    #   skip_if_zero: true
 
-    - entry: bonus_4k
-      text: "4K"
-      player_score_entry: bonus_4k_lit
-      score: 4000
-      skip_if_zero: true
+    # - entry: bonus_3k
+    #   text: "3K"
+    #   player_score_entry: bonus_3k_lit
+    #   score: 3000
+    #   reset_player_score_entry: true
+    #   skip_if_zero: true
 
-    - entry: bonus_5k
-      text: "5K"
-      player_score_entry: bonus_5k_lit
-      score: 5000
-      skip_if_zero: true
+    # - entry: bonus_4k
+    #   text: "4K"
+    #   player_score_entry: bonus_4k_lit
+    #   score: 4000
+    #   reset_player_score_entry: true
+    #   skip_if_zero: true
 
-    - entry: bonus_6k
-      text: "6K"
-      player_score_entry: bonus_6k_lit
-      score: 6000
-      skip_if_zero: true
+    # - entry: bonus_5k
+    #   text: "5K"
+    #   player_score_entry: bonus_5k_lit
+    #   score: 5000
+    #   reset_player_score_entry: true
+    #   skip_if_zero: true
 
-    - entry: bonus_7k
-      text: "7K"
-      player_score_entry: bonus_7k_lit
-      score: 7000
-      skip_if_zero: true
+    # - entry: bonus_6k
+    #   text: "6K"
+    #   player_score_entry: bonus_6k_lit
+    #   score: 6000
+    #   reset_player_score_entry: true
+    #   skip_if_zero: true
 
-    - entry: bonus_8k
-      text: "8K"
-      player_score_entry: bonus_8k_lit
-      score: 8000
-      skip_if_zero: true
+    # - entry: bonus_7k
+    #   text: "7K"
+    #   player_score_entry: bonus_7k_lit
+    #   score: 7000
+    #   reset_player_score_entry: true
+    #   skip_if_zero: true
 
-    - entry: bonus_9k
-      text: "9K"
-      player_score_entry: bonus_9k_lit
-      score: 9000
-      skip_if_zero: true
+    # - entry: bonus_8k
+    #   text: "8K"
+    #   player_score_entry: bonus_8k_lit
+    #   score: 8000
+    #   reset_player_score_entry: true
+    #   skip_if_zero: true
 
-    - entry: bonus_10k
-      text: "10K"
-      player_score_entry: bonus_10k_lit
-      score: 10000
-      skip_if_zero: true
+    # - entry: bonus_9k
+    #   text: "9K"
+    #   player_score_entry: bonus_9k_lit
+    #   score: 9000
+    #   reset_player_score_entry: true
+    #   skip_if_zero: true
 
-    - entry: bonus_20k
-      text: "20K"
-      player_score_entry: bonus_20k_lit
-      score: 20000
-      skip_if_zero: true
+    # - entry: bonus_10k
+    #   text: "10K"
+    #   player_score_entry: bonus_10k_lit
+    #   score: 10000
+    #   reset_player_score_entry: true
+    #   skip_if_zero: true
+
+    # - entry: bonus_20k
+    #   text: "20K"
+    #   player_score_entry: bonus_20k_lit
+    #   score: 20000
+    #   reset_player_score_entry: true
+    #   skip_if_zero: true
 
     - entry: vulture_bonus
       text: "VULTURE FLIGHT"
       player_score_entry: vulture_bonus_total
       score: 1
+      reset_player_score_entry: true
       skip_if_zero: true
 
-
-#event_player:
-#  bonus_start:
-#    - bonus_music_start
-
-#  bonus_complete:
-#    - bonus_music_stop
-
-
-#slide_player:
-#  bonus_entry: bonus_entry_slide
-#  bonus_total: bonus_total_slide
+    - entry: goblin_bonus
+      text: "CHAOS BONUS"
+      player_score_entry: goblin_chaos_bonus
+      score: 1
+      reset_player_score_entry: true
+      skip_if_zero: true
 
 
 #light_player:

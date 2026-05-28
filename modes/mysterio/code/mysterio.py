@@ -70,7 +70,7 @@ class Mysterio(Mode):
             clue.hint = self.build_hint(jackpot)
 
         self.machine.game.player["mysterio_super_value"] = self.super_value
-        self.machine.events.post("mysterio_trial_started")
+        self.machine.events.post("mysterio_startup_complete")
         self.machine.events.post("mysterio_all_shots_lit")
 
     def build_hint(self, jackpot_shot):
@@ -81,6 +81,8 @@ class Mysterio(Mode):
         return "right"     
 
     def shot_hit(self, shot_name=None, **kwargs):
+        if self.machine.game.player["villain_mode_in_summary"] == True: return
+
         if not shot_name:
             return
 
@@ -99,6 +101,20 @@ class Mysterio(Mode):
             self.handle_clue_shot(shot)
         else:
             self.handle_wrong_shot(shot)
+
+        self.check_gate_status()
+
+
+    def check_gate_status(self):
+        upper_lit = False
+        for shot in self.shots:
+            if shot.disabled == False and shot.hint == "Upper":
+                upper_lit = True
+        if upper_lit:
+            self.machine.events.post("rooftop_diverter_open")
+        else:
+            self.machine.events.post("rooftop_diverter_close")
+
 
     def handle_wrong_shot(self, shot):
         self.machine.events.post("mysterio_wrong_shot")

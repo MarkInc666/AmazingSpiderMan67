@@ -41,7 +41,8 @@ event_player:
       villain: doc_ock
       done_event: doc_ock_mode_completed_summary
 
-  mode_doc_ock_started:
+
+  doc_ock_startup_complete:
     - doc_ock_start_arms
     - reset_drops|1s
     - clear_saucers

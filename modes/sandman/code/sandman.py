@@ -51,6 +51,7 @@ class Sandman(Mode):
         self.add_mode_event_handler("sandman_rubber_hit", self.schedule_next_shift)  #reset current flash timer      
 
         self.update_player_vars()
+        self.machine.events.post("sandman_startup_complete")
 
     def start_bank(self, **kwargs):
         self.down_targets = set()

@@ -107,6 +107,18 @@ class Goblin(Mode):
     CHAOS_BONUS_ADD = 100000
     CHAOS_BONUS_LOSS = 100000
 
+    UPPER_GATE_SHOTS = {"upper_targets", "upper_spinner"}
+
+    def _update_upper_gate_from_lit_shots(self):
+        upper_lit = bool(
+            (self.current_flashing | self.current_solid) & self.UPPER_GATE_SHOTS
+        )
+
+        if upper_lit:
+            self.machine.events.post("rooftop_diverter_open")
+        else:
+            self.machine.events.post("rooftop_diverter_close")
+
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
 
@@ -215,12 +227,14 @@ class Goblin(Mode):
             ms=self.CHAOS_WINDOW_MS,
             callback=self.chaos_window_complete
         )
+        self._update_upper_gate_from_lit_shots()
 
     def chaos_window_complete(self):
         if self.mode_finishing or self.hold_active:
             return
 
         self.clear_current_shows()
+        self._update_upper_gate_from_lit_shots()
 
         self.delay.remove("goblin_chaos_pause")
         self.delay.add(
@@ -234,6 +248,7 @@ class Goblin(Mode):
     # -------------------------------------------------------------------------
 
     def shot_hit(self, shot_name=None, **kwargs):
+        if self.machine.game.player["villain_mode_in_summary"] == True: return        
         if self.mode_finishing or not shot_name:
             return
 
@@ -261,6 +276,7 @@ class Goblin(Mode):
 
         self.deactivate_shot(shot_name)
         self.machine.events.post("goblin_flashing_shot_score", shot=shot_name)
+        self._update_upper_gate_from_lit_shots()
 
     def collect_solid_shot(self, shot_name):
         self.info_log("Goblin solid penalty shot hit: %s", shot_name)
@@ -274,6 +290,7 @@ class Goblin(Mode):
 
         self.deactivate_shot(shot_name)
         self.machine.events.post("goblin_solid_shot_score", shot=shot_name)
+        self._update_upper_gate_from_lit_shots()
 
     def deactivate_shot(self, shot_name):
         self.active_shots.discard(shot_name)
@@ -323,8 +340,12 @@ class Goblin(Mode):
 
         for shot_name in list(self.current_solid):
             self.machine.events.post(f"goblin_stop_{shot_name}")
-        self.current_solid.clear()
+            self.current_flashing.add(shot_name)
+            self.machine.events.post(f"goblin_flash_{shot_name}")
 
+        self.current_solid.clear()
+        self._update_upper_gate_from_lit_shots()
+        
         self.machine.events.post("goblin_hold_started", saucer=saucer)
 
         hold_time_ms = self.get_current_hold_time_ms()

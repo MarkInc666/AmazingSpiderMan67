@@ -79,7 +79,7 @@ event_player:
     
 timers:
   scorpion_sting_timer:
-    start_value: 5
+    start_value: 7
     end_value: 0
     direction: down
     tick_interval: 1s

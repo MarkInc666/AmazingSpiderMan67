@@ -77,7 +77,7 @@ event_player:
       villain: electro
       done_event: electro_mode_completed_summary
 
-  electro_mode_started:
+  electro_startup_complete:
     - reset_drops
     - clear_saucers
 

@@ -220,6 +220,8 @@ class Kingpin(Mode):
         self._set("kingpin_current_area_display", area_data["display"])
         self._set("kingpin_area_progress", 0)
         self._set("kingpin_area_required", area_data["required"])
+        self._set("kingpin_hits_still_needed", area_data["required"])
+
         self._set("kingpin_jackpot_ready", 0)
 
         self._reset_area_specific_progress()
@@ -258,6 +260,13 @@ class Kingpin(Mode):
         if area == self.current_area:
             self._score(self.ACTIVE_AREA_SCORE)
             self._add("kingpin_area_progress", amount)
+
+            kingpin_hits_still_needed = self._get("kingpin_area_required") - self._get("kingpin_area_progress")
+
+            self._set("kingpin_hits_still_needed", kingpin_hits_still_needed)
+
+            if kingpin_hits_still_needed > 0:
+                self.machine.events.post("kingpin_area_changed", area=self.current_area)
 
             if self._get("kingpin_area_progress") >= self._get("kingpin_area_required"):
                 self._area_complete()
@@ -299,6 +308,16 @@ class Kingpin(Mode):
             return
 
         self._collect_jackpot()
+
+        self.delay.add(
+            name="kingpin_vuk_delay_eject",
+            ms=1000,
+            callback=self.fire_VUK
+        )
+
+    def fire_VUK(self):
+        self.machine.events.post("up_kick")
+
 
     def _collect_jackpot(self):
         jackpot_value = self._update_jackpot_value()

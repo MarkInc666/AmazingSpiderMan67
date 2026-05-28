@@ -63,6 +63,7 @@ class RhinoBash(Mode):
         self.add_mode_event_handler("rhino_jackpot_collect_request", self.collect_jackpot)
 
         self.update_player_vars()
+        self.machine.events.post("rhino_startup_complete")
 
     def start_rh(self, **kwargs):
         self.post_rage_show()

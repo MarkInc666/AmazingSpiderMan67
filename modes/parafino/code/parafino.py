@@ -104,6 +104,8 @@ class Parafino(Mode):
         self.add_mode_event_handler("parafino_reset_heat_cycle", self._reset_heat_cycle)
 
         self.machine.events.post("parafino_gi_set_heat_0")
+        self.machine.events.post("parafino_startup_complete")
+        
 
     def mode_stop(self, **kwargs):
         self.mode_exiting = True
@@ -192,6 +194,7 @@ class Parafino(Mode):
     def _heat_hit(self, zone):
         if self.mode_exiting:
             return
+        if self.machine.game.player["villain_mode_in_summary"] == True: return
 
         data = self.ZONES[zone]
 

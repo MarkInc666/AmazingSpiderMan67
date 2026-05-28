@@ -200,6 +200,8 @@ class VillainBookends(Mode):
             self.warning_log("Unknown villain intro requested: %s", villain)
             return
 
+        self.machine.game.player["villain_mode_in_summary"] = False
+
         data = self.VILLAINS[villain]
 
         self.current_stage = "intro"
@@ -226,6 +228,8 @@ class VillainBookends(Mode):
         if villain not in self.VILLAINS:
             self.warning_log("Unknown villain summary requested: %s", villain)
             return
+        
+        self.machine.game.player["villain_mode_in_summary"] = True
 
         data = self.VILLAINS[villain]
         completed = self._get_player_value(data["completed_var"], 0)
@@ -315,9 +319,10 @@ class VillainBookends(Mode):
 
         elif stage == "summary":
             self.machine.events.post("reset_villain_locate")
+            self.machine.events.post("reset_daily_bugle_state")
             self.machine.events.post("villain_bookend_summary_hide")
             self.machine.events.post("villain_bookend_summary_done", villain=villain)
-
+            
         self.current_stage = None
         self.current_villain = None
         self.current_done_event = None
