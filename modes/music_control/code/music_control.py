@@ -9,7 +9,7 @@ class MusicControl(Mode):
 
         self.current_song = None
 
-        for song_number in range(1, 11):
+        for song_number in range(1, 20):
             self.add_mode_event_handler(
                 f"play_song_{song_number}",
                 partial(self.play_song, song_number=song_number)

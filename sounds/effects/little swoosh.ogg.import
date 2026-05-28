@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://m4sosad1mye8"
+path="res://.godot/imported/little swoosh.ogg-8721b67190ec0310210b0fd83891645d.oggvorbisstr"
+
+[deps]
+
+source_file="res://sounds/effects/little swoosh.ogg"
+dest_files=["res://.godot/imported/little swoosh.ogg-8721b67190ec0310210b0fd83891645d.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

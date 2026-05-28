@@ -32,7 +32,8 @@ class DailyBugleMystery(Mode):
     + mystery multiball  ?
 
     """
-
+    AB_DAILY_POINTS = 10000
+    AB_DAILY_POINTS_UNLIT = 2000
     EXTRA_BALL_LIGHT_AT = 3
     EXTRA_BALL_AWARD_AT = 7
     EXTRA_BALL_RIGHT_LIGHT_AT = 10
@@ -97,16 +98,25 @@ class DailyBugleMystery(Mode):
     def a_rollover_hit(self, **kwargs):
         if not self.isEnabled: return
         if self.a_hit == False:
-            self.machine.events.post("daily_bugle_a_complete")
+            self.machine.game.player["score"] += self.AB_DAILY_POINTS
             self.a_hit = True
+            self.machine.events.post("daily_bugle_a_complete")
             self.check_ab_complete()
+        else:
+            self.machine.game.player["score"] += self.AB_DAILY_POINTS_UNLIT
+            self.machine.events.post("ab_rolledover_sfx")
+
 
     def b_rollover_hit(self, **kwargs):
         if not self.isEnabled: return
         if self.b_hit == False:
-            self.machine.events.post("daily_bugle_b_complete")
+            self.machine.game.player["score"] += self.AB_DAILY_POINTS
             self.b_hit = True
+            self.machine.events.post("daily_bugle_b_complete")
             self.check_ab_complete()
+        else:
+            self.machine.game.player["score"] += self.AB_DAILY_POINTS_UNLIT
+            self.machine.events.post("ab_rolledover_sfx")
 
     def check_ab_complete(self):
         if not self.a_hit or not self.b_hit:
@@ -117,12 +127,12 @@ class DailyBugleMystery(Mode):
             self.update_player_vars()
             return
 
-        self.machine.events.post("daily_bugle_ab_complete")
         self.mystery_ab_ready = True
 
         self.machine.events.post("rooftop_diverter_open")
 
         self.update_player_vars()
+        self.machine.events.post("daily_bugle_ab_complete")
 
     def rooftop_right_exit(self, **kwargs):
         if not self.isEnabled: return
@@ -210,7 +220,7 @@ class DailyBugleMystery(Mode):
     def award_extra_ball(self):
         self.machine.events.post("mystery_award_award_extra_ball")
 
-    def reset_cycle(self):
+    def reset_cycle(self, **kwargs):
         self.a_hit = False
         self.b_hit = False
         self.mystery_ab_ready = False

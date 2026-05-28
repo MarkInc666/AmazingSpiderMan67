@@ -54,6 +54,20 @@ random_event_player:
     - daily_bugle_rooftop_right_exit_2
 
 sound_player:
+  daily_bugle_a_complete{current_player.daily_bugle_b_hit == 0}:
+    hub_create_gem:
+      action: play
+      bus: effects
+  daily_bugle_b_complete{current_player.daily_bugle_a_hit == 0}:
+    hub_create_gem:
+      action: play
+      bus: effects
+
+  ab_rolledover_sfx:
+    le_hit:
+      action: play
+      bus: effects
+
   daily_bugle_ab_complete:
     sm_i_better_take_some_photos:
       action: play

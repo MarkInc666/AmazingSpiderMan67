@@ -10,8 +10,10 @@ variable_player:
     score: 500
 
   pops_hit:
-    score: 1000
+    score: 1100
 
+  drop_hit_no_mode:
+    score: 2000
 
 random_event_player:
   finish_skillshot:
@@ -57,6 +59,60 @@ event_player:
   player_added{num == 2}: show_player_2_added
   player_added{num == 3}: show_player_3_added
   player_added{num == 4}: show_player_4_added
+
+  s_left_drops_1_active{current_player.villain_mode_running != 1}:
+    - drop_hit_no_mode
+  s_left_drops_2_active{current_player.villain_mode_running != 1}:
+    - drop_hit_no_mode
+  s_left_drops_3_active{current_player.villain_mode_running != 1}:
+    - drop_hit_no_mode
+
+  s_right_drops_1_active{current_player.villain_mode_running != 1}:
+    - drop_hit_no_mode
+  s_right_drops_2_active{current_player.villain_mode_running != 1}:
+    - drop_hit_no_mode
+  s_right_drops_3_active{current_player.villain_mode_running != 1}:
+    - drop_hit_no_mode
+  s_right_drops_4_active{current_player.villain_mode_running != 1}:
+    - drop_hit_no_mode
+  s_right_drops_5_active{current_player.villain_mode_running != 1}:
+    - drop_hit_no_mode
+
+
+
+sound_player:
+  s_web_spinner_active{mode.super_spinner.active == False}:
+    rope_1:
+      action: play
+      bus: effects
+
+  s_outlane_r_active{current_player.ball_save_count == 0}:
+    jj_end_of_the_line:
+      action: play
+      bus: voice
+
+  s_outlane_l_active{current_player.ball_save_count == 0}:
+    jj_spiderman_caught:
+      action: play
+      bus: voice
+
+  secondary_switch_hit:
+    hb_blip_1:
+      action: play
+      bus: effects
+
+  pops_hit:
+    hb_pot_1:
+      action: play
+      bus: effects
+
+  drop_hit_no_mode:
+    throwing_star:
+      action: play
+      bus: effects
+
+
+
 
 widget_player:
   show_player_2_added:
@@ -108,28 +164,3 @@ light_player:
     gi:
       color: E0E0E0        
       
-sound_player:
-  s_web_spinner_active{mode.super_spinner.active == False}:
-    rope_1:
-      action: play
-      bus: effects
-
-  s_outlane_r_active{current_player.ball_save_count == 0}:
-    jj_end_of_the_line:
-      action: play
-      bus: voice
-
-  s_outlane_l_active{current_player.ball_save_count == 0}:
-    jj_spiderman_caught:
-      action: play
-      bus: voice
-
-  secondary_switch_hit:
-    hb_blip_1:
-      action: play
-      bus: effects
-
-  pops_hit:
-    hb_pot_1:
-      action: play
-      bus: effects
