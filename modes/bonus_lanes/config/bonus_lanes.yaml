@@ -15,7 +15,19 @@ variable_player:
       action: set
       int: 0
 
+
 sound_player:
+
+  in_out_lane_rolled_over_unlit:
+    minesound1:
+      action: play
+      bus: effects
+
+  in_out_lane_rolled_over_lit:
+    bump_sfx_2:
+      action: play
+      bus: effects
+
   #bonus 1K
   bonus_count_add:
     hb_pot_1:

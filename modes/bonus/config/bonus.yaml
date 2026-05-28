@@ -41,7 +41,7 @@ mode_settings:
     - entry: bonus_count
       text: "BONUS LIGHTS"
       player_score_entry: bonus_count
-      score: 1
+      score: 1000
       reset_player_score_entry: true
       skip_if_zero: true
 

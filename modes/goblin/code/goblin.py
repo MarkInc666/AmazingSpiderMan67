@@ -341,7 +341,7 @@ class Goblin(Mode):
         for shot_name in list(self.current_solid):
             self.machine.events.post(f"goblin_stop_{shot_name}")
             self.current_flashing.add(shot_name)
-            self.machine.events.post(f"goblin_flash_{shot_name}")
+            self.machine.events.post(f"goblin_lite_{shot_name}")
 
         self.current_solid.clear()
         self._update_upper_gate_from_lit_shots()

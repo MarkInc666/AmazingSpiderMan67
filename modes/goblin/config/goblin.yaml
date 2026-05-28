@@ -19,6 +19,22 @@ multiballs:
       - goblin_mode_completed_summary
       - ball_ended
 
+sound_player:
+  goblin_flashing_shot_score:
+    flockaway:
+      action: play
+      bus: effects
+
+  goblin_solid_shot_score:
+    quark_lose_petal:
+      action: play
+      bus: effects
+
+  goblin_hold_started:
+    phew2:
+      action: play
+      bus: voice
+
 
 widget_player:
   mode_goblin_started:
@@ -94,6 +110,15 @@ event_player:
   s_saucer_3_active: goblin_saucer_3_hit
 
 show_player:
+
+  goblin_flashing_shot_score:
+    goblin_gi_red_flash_show:
+      loops: 2
+
+  goblin_solid_shot_score:
+    goblin_gi_green_flash_show:
+      loops: 2
+
   mode_goblin_started:
     goblin_mode_start_show:
       loops: 0
@@ -383,3 +408,19 @@ shows:
     - duration: -1
       lights:
         gi: green
+
+  goblin_gi_red_flash_show:
+    - duration: 200ms
+      lights:
+        gi: red
+    - duration: 200ms
+      lights:
+        gi: yellow
+
+  goblin_gi_green_flash_show:
+    - duration: 200ms
+      lights:
+        gi: green
+    - duration: 200ms
+      lights:
+        gi: yellow

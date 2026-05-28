@@ -2,13 +2,13 @@
 
 importer="wav"
 type="AudioStreamWAV"
-uid="uid://do6cpho7r5jmw"
-path="res://.godot/imported/bell.wav-f86776db81e2048a97d1530940aa5870.sample"
+uid="uid://jkhin3obagem"
+path="res://.godot/imported/bell1.wav-7ecca27977e729bf83ccc06614a099e7.sample"
 
 [deps]
 
-source_file="res://sounds/effects/bell.wav"
-dest_files=["res://.godot/imported/bell.wav-f86776db81e2048a97d1530940aa5870.sample"]
+source_file="res://sounds/effects/bell1.wav"
+dest_files=["res://.godot/imported/bell1.wav-7ecca27977e729bf83ccc06614a099e7.sample"]
 
 [params]
 

@@ -15,6 +15,7 @@ variable_player:
   drop_hit_no_mode:
     score: 2000
 
+
 random_event_player:
   finish_skillshot:
     - play_song_1

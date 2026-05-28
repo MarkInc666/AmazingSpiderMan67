@@ -21,6 +21,16 @@ variable_player:
       action: set
       int: 1
 
+  s_upper_target_left_active: 
+    score: 3300
+
+  s_upper_target_center_active: 
+    score: 3300
+
+  s_upper_target_right_active: 
+    score: 3300
+
+
 
 sound_player:
 
@@ -34,6 +44,18 @@ sound_player:
       action: play
       bus: effects
 
+  s_upper_target_left_active: 
+    bell1:
+      action: play
+      bus: effects
+  s_upper_target_center_active: 
+    bell2:
+      action: play
+      bus: effects
+  s_upper_target_right_active: 
+    bell3:
+      action: play
+      bus: effects
 
 
 event_player:
