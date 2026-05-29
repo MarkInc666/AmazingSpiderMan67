@@ -95,7 +95,7 @@ event_player:
     - drop_target_bank_dt_bank_right_reset
 
   # real playfield input -> Python shot events
-  s_left_web_target_active: goblin_left_web_hit
+  s_web_target_left_active: goblin_left_web_hit
   s_web_target_top_active: goblin_right_web_hit
   s_web_spinner_active: goblin_spinner_hit
   gob_left_drops_hit: goblin_left_drops_hit

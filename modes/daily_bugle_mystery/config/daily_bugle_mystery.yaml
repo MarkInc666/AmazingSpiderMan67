@@ -144,7 +144,7 @@ show_player:
     daily_bugle_spinner_ready_show:
       loops: -1
 
-  daily_bugle_rooftop_traversal_complete:
+  daily_bugle_mystery_ready:
     daily_bugle_ab_ready_show:
       action: stop
     daily_bugle_ab_off_show:
