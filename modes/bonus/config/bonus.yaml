@@ -124,7 +124,7 @@ mode_settings:
 
     - entry: vulture_bonus
       text: "VULTURE FLIGHT"
-      player_score_entry: vulture_bonus_total
+      player_score_entry: vulture_bonus
       score: 1
       reset_player_score_entry: true
       skip_if_zero: true

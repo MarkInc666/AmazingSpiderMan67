@@ -19,8 +19,8 @@ class Lizard(Mode):
     DELIVERY_SEQUENCE = [
         "left",
         "center",
-        "left",
-        "center",
+#        "left",
+#        "center",
     ]
 
     TARGET_LIGHT_EVENTS = {
