@@ -20,6 +20,7 @@ class VillainBookends(Mode):
             "stat_2_var": "rhino_best_rage_stage",
             "points_var": "rhino_mode_points",
             "completed_var": "rhino_completed",
+            "song": "play_song_22",
         },
 
         "sandman": {
@@ -35,6 +36,7 @@ class VillainBookends(Mode):
             "stat_2_var": "sandman_best_run",
             "points_var": "sandman_mode_points",
             "completed_var": "sandman_completed",
+            "song": "play_song_8",
         },
 
         "vulture": {
@@ -50,6 +52,7 @@ class VillainBookends(Mode):
             "stat_2_var": "vulture_banked_bonus",
             "points_var": "vulture_mode_points",
             "completed_var": "vulture_completed",
+            "song": "play_song_10",
         },
 
         "electro": {
@@ -65,6 +68,7 @@ class VillainBookends(Mode):
             "stat_2_var": "electro_super_jackpot",
             "points_var": "electro_mode_points",
             "completed_var": "electro_completed",
+            "song": "play_song_23",
         },
 
         "goblin": {
@@ -80,6 +84,7 @@ class VillainBookends(Mode):
             "stat_2_var": "goblin_bonus_banked",
             "points_var": "goblin_mode_points",
             "completed_var": "goblin_completed",
+            "song": "play_song_7",
         },
 
         "mysterio": {
@@ -95,6 +100,7 @@ class VillainBookends(Mode):
             "stat_2_var": "mysterio_jackpot_value",
             "points_var": "mysterio_mode_points",
             "completed_var": "mysterio_completed",
+            "song": "play_song_24",
         },
 
         "scorpion": {
@@ -110,6 +116,7 @@ class VillainBookends(Mode):
             "stat_2_var": "scorpion_biggest_jackpot",
             "points_var": "scorpion_mode_points",
             "completed_var": "scorpion_completed",
+            "song": "play_song_25",
         },
 
         "doc_ock": {
@@ -125,6 +132,7 @@ class VillainBookends(Mode):
             "stat_2_var": "doc_ock_jackpots",
             "points_var": "doc_ock_mode_points",
             "completed_var": "doc_ock_completed",
+            "song": "play_song_18",
         },
 
         "lizard": {
@@ -140,6 +148,7 @@ class VillainBookends(Mode):
             "stat_2_var": "lizard_best_delivery_value",
             "points_var": "lizard_mode_points",
             "completed_var": "lizard_completed",
+            "song": "play_song_4",
         },
 
         "parafino": {
@@ -155,6 +164,7 @@ class VillainBookends(Mode):
             "stat_2_var": "parafino_total_jackpots",
             "points_var": "parafino_mode_points",
             "completed_var": "parafino_completed",
+            "song": "play_song_19",
         },
         "kingpin": {
             "title": "KINGPIN",
@@ -169,6 +179,7 @@ class VillainBookends(Mode):
             "stat_2_var": "kingpin_max_balls",
             "points_var": "kingpin_mode_points",
             "completed_var": "kingpin_completed",
+            "song": "play_song_3",
         },
     }
 
@@ -199,6 +210,8 @@ class VillainBookends(Mode):
         if villain not in self.VILLAINS:
             self.warning_log("Unknown villain intro requested: %s", villain)
             return
+        
+        self.machine.events.post("play_song_14")
 
         self.machine.game.player["villain_mode_in_summary"] = False
 
@@ -314,6 +327,9 @@ class VillainBookends(Mode):
         stage = self.current_stage
 
         if stage == "intro":
+            data = self.VILLAINS[villain]
+            song = data["song"]
+            self.machine.events.post(f"{song}")
             self.machine.events.post("villain_bookend_intro_hide")
             self.machine.events.post("villain_bookend_intro_done", villain=villain)
 

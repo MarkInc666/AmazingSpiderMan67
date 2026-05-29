@@ -12,6 +12,8 @@ variable_player:
     villain_start_ready:
       action: set
       int: 0
+  saucer_base_score:
+    score: 25000
 
 event_player:
 
@@ -28,6 +30,7 @@ event_player:
   rooftop_access_request{current_player.villain_mode_running == 0 and current_player.villain_start_ready == 0}:
     - rooftop_access_open
     - clear_saucers|1s
+    - saucer_base_score
 
   rooftop_access_open:
     - rooftop_diverter_open

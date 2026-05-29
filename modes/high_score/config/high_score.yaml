@@ -36,6 +36,7 @@ event_player:
   mode_high_score_started:
     - start_gi_highscore
     - play_music_song_6
+    - play_congrats
 
 show_player:
   start_gi_highscore:
@@ -47,5 +48,11 @@ show_player:
 sound_player:
   play_music_song_6: 
     maintheme_no_lyrics:
+      action: replace    
       bus: music
       loops: -1
+
+  play_congrats: 
+    sm_congratulations_fine_shooting:
+      action: play
+      bus: voice

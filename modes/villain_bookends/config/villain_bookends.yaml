@@ -19,9 +19,7 @@ event_player:
 
 random_event_player:
   villain_bookend_summary_done:
-    - play_song_1
-    - play_song_2
-    - play_song_3
+    - play_random_main_song
 
 widget_player:
   villain_bookend_intro_show:

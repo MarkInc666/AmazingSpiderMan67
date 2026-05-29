@@ -41,20 +41,107 @@ sound_player:
       bus: music
       loops: -1
 
-  stop_music_song_4: 
-    ticking:
-      action: stop
+  play_music_song_8: 
+    cloak:
+      bus: music
+      loops: -1
 
-  stop_music_song_1: 
-    prowl_car:
-      action: stop
+  play_music_song_9: 
+    fright:
+      bus: music
+      loops: -1
 
-  stop_music_song_2: 
-    panic_patrol:
-      action: stop
+  play_music_song_10: 
+    fromthebird:
+      bus: music
+      loops: -1
 
-  stop_music_song_3: 
-    rat_race:
-      action: stop
+  play_music_song_11: 
+    intro_loop_2:
+      bus: music
+      loops: -1
 
+  play_music_song_12: 
+    intro_mild:
+      bus: music
+      loops: -1
 
+  play_music_song_13: 
+    loopy1:
+      bus: music
+      loops: -1
+
+  play_music_song_14: 
+    loopystart:
+      bus: music
+      loops: -1
+
+  play_music_song_15: 
+    loop_123:
+      bus: music
+      loops: -1
+
+  play_music_song_16: 
+    loop_123456:
+      bus: music
+      loops: -1
+
+  play_music_song_17: 
+    maintheme:
+      bus: music
+      loops: -1
+
+  play_music_song_18: 
+    paroxism:
+      bus: music
+      loops: -1
+
+  play_music_song_19: 
+    shakeandstone:
+      bus: music
+      loops: -1
+
+  play_music_song_20: 
+    somethings_up:
+      bus: music
+      loops: -1
+
+  play_music_song_21: 
+    spider_intro_strong:
+      bus: music
+      loops: -1
+
+  play_music_song_22: 
+    street_beat:
+      bus: music
+      loops: -1
+
+  play_music_song_23: 
+    tautwalk:
+      bus: music
+      loops: -1
+
+  play_music_song_24: 
+    twilight_guitar:
+      bus: music
+      loops: -1
+
+  play_music_song_25: 
+    waiting:
+      bus: music
+      loops: -1
+
+  play_music_song_26: 
+    intro_mild:
+      bus: music
+      loops: -1
+
+  play_music_song_27: 
+    dash_to_safety_2:
+      bus: music
+      loops: -1
+
+  play_music_song_28: 
+    dash_to_safety_3:
+      bus: music
+      loops: -1

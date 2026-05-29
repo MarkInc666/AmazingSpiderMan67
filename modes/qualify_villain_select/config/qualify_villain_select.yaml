@@ -25,6 +25,9 @@ mode_settings:
 
 
 event_player:
+  mode_qualify_villain_select_started:
+    - play_song_20
+
   s_right_flipper_inactive{device.switches.s_left_flipper.state == 0}:
     villain_carousel_next
 

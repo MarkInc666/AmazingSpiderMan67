@@ -299,6 +299,12 @@ class Kingpin(Mode):
         self.machine.events.post("kingpin_jackpot_lit_show")
 
     def _daily_bugle_hit(self, **kwargs):
+        self.delay.add(
+            name="kingpin_vuk_delay_eject",
+            ms=2000,
+            callback=self.fire_VUK
+        )
+
         if self.victory_laps:
             self._collect_super_jackpot()
             return
@@ -309,11 +315,6 @@ class Kingpin(Mode):
 
         self._collect_jackpot()
 
-        self.delay.add(
-            name="kingpin_vuk_delay_eject",
-            ms=1000,
-            callback=self.fire_VUK
-        )
 
     def fire_VUK(self):
         self.machine.events.post("up_kick")

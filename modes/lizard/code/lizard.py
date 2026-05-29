@@ -60,7 +60,7 @@ class Lizard(Mode):
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("lizard_light_serum_location")
         self.machine.events.post("clear_saucers")
-        self.machine.events.post("play_song_4")
+#        self.machine.events.post("play_song_4")
 
     def _player(self):
         if not self.machine.game:

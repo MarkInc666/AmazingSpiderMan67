@@ -19,19 +19,35 @@ widget_player:
       action: remove
 
 
-sound_player:
+random_event_player:
   lizard_serum_collected:
+    - lizard_serum_collected_1
+    - lizard_serum_collected_2
+    - lizard_serum_collected_3
+
+sound_player:
+  lizard_serum_collected_1:
     sm_i_have_to_hurry:
       action: play
       bus: voice
 
+  lizard_serum_collected_2:
+    sm_I_need_to_get_this_to_the_lizard_man:
+      action: play
+      bus: voice
+
+  lizard_serum_collected_3:
+    sm_I_need_to_deliver:
+      action: play
+      bus: voice
+
   lizard_light_serum_location{current_player.lizard_deliveries == 0}:
-    sm_i_need_to_pick_up_the_serum:
+    sm_i_need_to_get_the_antidote:
       action: play
       bus: voice
 
   lizard_light_serum_location{current_player.lizard_deliveries > 0}:
-    sm_i_need_to_pick_up_more_serum:
+    sm_i_need_to_get_more_antidote:
       action: play
       bus: voice
 

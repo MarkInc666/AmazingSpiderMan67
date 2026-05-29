@@ -17,13 +17,17 @@ variable_player:
 
 
 random_event_player:
-  finish_skillshot:
+  play_random_main_song:
     - play_song_1
     - play_song_2
-    - play_song_3
+    - play_song_9
+    - play_song_16
 
 
 event_player:
+  finish_skillshot:
+    - play_random_main_song
+
   mode_base_started:
     - mode_base_started_delayed|1s
 
