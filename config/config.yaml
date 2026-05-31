@@ -312,7 +312,7 @@ ball_saves:
 
 
   default_ball_save:
-    active_time: 10s
+    active_time: 16s
     hurry_up_time: 3s
     grace_period: 2s
     enable_events:
