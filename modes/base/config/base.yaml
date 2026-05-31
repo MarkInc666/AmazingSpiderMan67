@@ -15,6 +15,10 @@ variable_player:
   drop_hit_no_mode:
     score: 2000
 
+  s_web_spinner_active{mode.super_spinner.active == False}:
+    score: 2000
+
+
 
 random_event_player:
   play_random_main_song:

@@ -13,7 +13,7 @@ multiballs:
   goblin_chaos_multiball:
     ball_count: 2
     ball_count_type: total
-    shoot_again: 10s
+    shoot_again: 20s
     start_events: goblin_start_multiball
     stop_events:
       - goblin_mode_completed_summary

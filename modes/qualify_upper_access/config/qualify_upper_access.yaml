@@ -32,6 +32,7 @@ event_player:
     - clear_saucers|1s
     - saucer_base_score
 
+
   rooftop_access_open:
     - rooftop_diverter_open
     - rooftop_access_lit
@@ -48,7 +49,7 @@ event_player:
     - rooftop_vuk_entered
 
 #may need to add another condition - if we need another mode to handle it
-  rooftop_vuk_entered{current_player.villain_mode_running == 0 and current_player.villain_start_ready == 0}:
+  rooftop_vuk_entered{current_player.villain_mode_running == 0 and current_player.villain_start_ready == 0 and current_player.mystery_ab_ready == 0}:
     - rooftop_diverter_close
     - rooftop_access_unlit
 #    - up_kick|2s
@@ -59,7 +60,7 @@ event_player:
 
 timers:
   rooftop_access_timer:
-    start_value: 12
+    start_value: 24
     end_value: 0
     direction: down
     tick_interval: 1s

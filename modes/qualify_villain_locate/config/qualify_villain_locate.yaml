@@ -85,6 +85,16 @@ event_player:
     - villain_start_ready_set
     - villain_start_ready
 
+  drop_target_bank_dt_bank_left_down{current_player.villain_mode_running == 0 and current_player.villain_start_ready == 0}:
+    - villain_start_ready_set
+    - villain_start_ready
+
+  s_left_drops_1_active{current_player.villain_start_ready == 1}:
+    - saucer_1_flash_request
+  s_left_drops_2_active{current_player.villain_start_ready == 1}:
+    - saucer_2_flash_request
+  s_left_drops_3_active{current_player.villain_start_ready == 1}:
+    - saucer_3_flash_request
 
   villain_start_ready:
     - villain_saucers_solid_lit
