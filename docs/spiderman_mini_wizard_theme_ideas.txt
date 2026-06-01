@@ -1,0 +1,413 @@
+Spider-Man Pinball - Mini-Wizard Mode Theme Ideas
+
+Core Theme
+-----------
+
+Each mini-wizard should not just mean “after X villains.” It should feel like Spider-Man dealing with the larger consequences of all the villain chaos.
+
+Good overall structure:
+
+Villains cause trouble
+→ Spider-Man fights enough of them
+→ Their combined chaos triggers a bigger city-wide crisis
+→ Mini-wizard mode resolves that crisis
+→ Next chapter unlocks tougher villains
+
+This works whether the game ends up with 10 villains, 15 villains, or 25+ villains.
+
+
+Mini-Wizard Theme Ideas
+-----------------------
+
+1. Daily Bugle Special Report
+
+Theme:
+J. Jonah Jameson turns the villain chaos into a city-wide panic headline and blames Spider-Man.
+
+Player-facing callout:
+DAILY BUGLE SPECIAL REPORT!
+SPIDER-MAN BLAMED FOR CITY CHAOS!
+CLEAR SPIDER-MAN'S NAME!
+
+Mode idea:
+A multiball where the player has to clear Spider-Man's name by collecting evidence from major shots.
+
+Possible shot mapping:
+- Web targets = collect photos/evidence
+- Spinner = print presses / headline value
+- Saucers = deliver story to the Bugle
+- Rooftop = chase the real culprit
+- Daily Bugle VUK = publish the truth / major jackpot
+
+Why it works:
+This fits the Daily Bugle VUK and mystery award idea. It also gives the first mini-wizard a funny, very 1967 cartoon feeling instead of making it just another villain fight.
+
+
+2. Sinister Syndicate Attack
+
+Theme:
+The defeated villains regroup and launch a coordinated attack.
+
+Player-facing callout:
+THE SINISTER SYNDICATE STRIKES!
+
+Mode idea:
+A 2-ball or 3-ball multiball where previously played villains each relight one major shot. Each jackpot represents one defeated villain trying to get revenge.
+
+Possible shot mapping:
+- Rhino = drop targets
+- Vulture = upper spinner
+- Lizard = web targets
+- Sandman = right bank
+- Electro = flashing roving shot
+- Mysterio = mystery / fake-out awards
+- Doc Ock = rollovers or controlled arms
+
+Why it works:
+This is the cleanest “you played several villains, now they all come back at once” concept. It also lets the game reuse the villains the player actually chose, which makes the mode feel personalized.
+
+
+3. Rooftop Rescue
+
+Theme:
+The city is in danger and Spider-Man has to swing across rooftops rescuing civilians.
+
+Player-facing callout:
+ROOFTOP RESCUE!
+SAVE THE CITY!
+
+Mode idea:
+A fast multiball focused on the upper playfield.
+
+Possible shot mapping:
+- Upper spinner = swing across the skyline
+- Upper targets = rescue civilians
+- Left exit = return to danger zone
+- Right exit = save civilians / collect jackpot
+- Daily Bugle VUK = emergency rescue award
+
+Why it works:
+The upper playfield already represents sky/rooftops, so this mode makes the custom part of the machine feel important. This would be a great second mini-wizard once the player understands upper playfield flow.
+
+
+4. Web of Crime
+
+Theme:
+Spider-Man discovers that the villains are connected through a larger criminal network.
+
+Player-facing callout:
+THE WEB OF CRIME REVEALED!
+
+Mode idea:
+Each major shot lights as a clue. Collect enough clues to reveal the mastermind behind the chapter.
+
+Possible shot mapping:
+- Inlanes = trace the clue
+- Drops = break up the gang
+- Spinner = follow the trail
+- Saucers = interrogate informants
+- Web targets = web up the criminals
+- VUK = connect the evidence
+
+Why it works:
+This is a good bridge toward Kingpin. It makes the full game feel like it is building toward organized crime instead of being a random villain-of-the-week collection.
+
+
+5. Kingpin's Grip
+
+Theme:
+Kingpin is not the final wizard yet, but his influence starts showing up between chapters.
+
+Player-facing callout:
+KINGPIN'S GRIP TIGHTENS!
+
+Mode idea:
+A mini-wizard where Kingpin's men interfere while Spider-Man fights through the city.
+
+Possible shot mapping:
+- Drop banks = smash the gangs
+- Saucers = raid hideouts
+- Spinner = chase getaway cars
+- Web targets = collect evidence
+- Rooftop = escape ambush / super jackpot
+
+Why it works:
+This lets Kingpin slowly become the final threat. You can tease him over multiple mini-wizards before the final wizard.
+
+
+Recommended Progression
+-----------------------
+
+Mini-Wizard 1: Daily Bugle Special Report
+
+After the first batch of villains, J. Jonah Jameson blames Spider-Man.
+
+Callout:
+DAILY BUGLE SPECIAL REPORT!
+CLEAR SPIDER-MAN'S NAME!
+
+This should be lighter, funny, and very 1967 cartoon.
+
+
+Mini-Wizard 2: Rooftop Rescue
+
+After the next group of villains, the danger spreads across the city.
+
+Callout:
+ROOFTOP RESCUE!
+SAVE THE CITY!
+
+This should lean into the upper playfield, spinner, exits, and VUK.
+
+
+Mini-Wizard 3: Sinister Syndicate
+
+After more villains are played, several of them team up.
+
+Callout:
+THE SINISTER SYNDICATE STRIKES!
+
+This should feel like a bigger, more dangerous multiball using shots tied to previously played villains.
+
+
+Mini-Wizard 4: Kingpin's Grip
+
+The pattern behind the villain chaos is revealed.
+
+Callout:
+KINGPIN'S GRIP TIGHTENS!
+
+This should point directly toward the final wizard.
+
+
+Final Wizard: Kingpin
+
+Callout:
+KINGPIN'S EMPIRE FALLS!
+
+This is the final showdown and should use the whole playfield.
+
+
+Clean Story Escalation
+----------------------
+
+Public panic
+→ Rooftop rescue
+→ Villain team-up
+→ Organized crime reveal
+→ Final Kingpin showdown
+
+
+Best Fit With Current Layout
+----------------------------
+
+Daily Bugle Special Report:
+- Main theme: clear Spider-Man's name
+- Layout focus: VUK, saucers, web targets
+
+Rooftop Rescue:
+- Main theme: save the city
+- Layout focus: upper playfield, spinner, exits
+
+Sinister Syndicate:
+- Main theme: villains return together
+- Layout focus: all major villain shots
+
+Kingpin's Grip:
+- Main theme: organized crime
+- Layout focus: drops, saucers, web targets
+
+Final Wizard:
+- Main theme: Kingpin
+- Layout focus: whole playfield
+
+
+Strong Design Recommendation
+----------------------------
+
+The individual modes are already villain fights. The mini-wizards should be bigger city-level events:
+
+- Bugle scandal
+- Rooftop rescue
+- Sinister team-up
+- Crime wave
+- Kingpin takeover
+
+That gives the game better variety and makes each chapter feel like the story is escalating.
+
+Player-facing rule idea:
+
+Defeat enough villains to unlock the next crisis.
+Survive each crisis to reveal stronger villains.
+Clear all chapters to face Kingpin.
+
+
+
+
+
+Yes — here’s a **complete working list of 1967 Spider-Man animated-series villains/antagonists**. Caveat: the show has a mix of real Spider-Man rogues, one-off criminals, monsters, robots, and “villains” that are more like episode antagonists. The series had **52 episodes / 77 story segments**, and later seasons used more generic monsters and fantasy villains, not just comic-book rogues. ([Wikipedia][1])
+
+## Best “main villain mode” candidates
+
+These are the strongest picks for your pinball game:
+
+1. Doctor Octopus
+2. Electro
+3. Green Goblin
+4. Kingpin
+5. Lizard
+6. Mysterio
+7. Parafino
+8. Rhino
+9. Sandman
+10. Scorpion
+11. Vulture
+12. Fifth Avenue Phantom
+13. Doctor Noah Boddy
+14. The Fly Twins
+15. Doctor Magneto / Matto Magneto
+16. The Plotter
+17. Ox
+18. Cowboy
+19. Doctor Von Schlick
+20. Fantastic Fakir
+21. Miss Trubble
+22. Infinata
+23. Sky Master
+24. Doctor Atlantean
+25. Master Vine
+
+## Full 1967 villain / antagonist list
+
+This list is based mainly on the Marvel Animated Universe category for *Spider-Man (1967)* villains, which lists **81 villain-category entries**. Some are henchmen, robots, monsters, or temporary antagonists rather than “major rogues.” ([Marvel Animated Universe][2])
+
+### A / B
+
+1. Baron Von Rathenraven
+2. Blackbeard — robot version
+3. Blackwell
+4. Blotto
+5. Bolton
+6. Boomer
+
+### C
+
+7. Carol
+8. Cavemen
+9. Centaur
+10. Cerberus
+11. Charles Cameo
+12. Clive
+13. Cowboy
+14. Cyclops
+
+### D
+
+15. Desperado
+16. DeVargas
+17. Doctor Atlantean
+18. Doctor Cool
+19. Doctor Dumpty
+20. Doctor Manta
+21. Doctor Octopus
+22. Doctor Vespasian
+23. Doctor Zapp
+24. Doctor Von Schlick
+
+### E / F
+
+25. Electro
+26. Emily Thorndike
+27. Enforcers
+28. Executioner of Paris — robot version
+29. Fantastic Fakir
+30. Fiddler
+31. Fifth Avenue Phantom
+32. The Fly Twins
+33. Frederick Foswell
+
+### G / H / I / J
+
+34. Green Goblin
+35. Harley Clivendon
+36. Henry Smythe
+37. Igor
+38. Infinata
+39. J. Jonah Jameson — antagonist category, not really a villain mode pick
+40. James Boothe
+41. Jesse James — robot version
+42. Juan Ponce de León
+
+### K / L
+
+43. Kingpin
+44. Koga
+45. Kotep
+46. Lee Patterson
+47. Lizard
+
+### M / N / O
+
+48. Master Technician
+49. Master Vine
+50. Matto Magneto
+51. Metal-Eating Monster
+52. Miss Trubble
+53. Mole Man
+54. Mysterio
+55. Noah Boddy
+56. Ox
+
+### P / R
+
+57. Parafino
+58. Pardo
+59. Plotter
+60. Plutonians
+61. Pod
+62. Professor Pretoris
+63. Radiation Specialist
+64. Red Dog Melvin
+65. Reptilla
+66. Rhino
+
+### S
+
+67. Sandman
+68. Scarf
+69. Scorpion
+70. Shakespeare
+71. Sir Galahad
+72. Sky Master
+73. Snowman
+74. Snowmen
+75. South Pole Natives
+76. Spider-Slayer
+77. Stan Patterson
+
+### U / V / W
+
+78. Uncle Ben’s Killer
+79. Vulcan
+80. Vulture / Vulture Man
+81. Winkler
+
+## For your game, I’d rank them this way
+
+**Tier 1: must-use classic villains**
+Doc Ock, Green Goblin, Electro, Lizard, Mysterio, Rhino, Sandman, Scorpion, Vulture, Kingpin.
+
+**Tier 2: perfect 1967 weirdos**
+Parafino, Noah Boddy, Fifth Avenue Phantom, Fantastic Fakir, Matto Magneto, The Fly Twins, Miss Trubble.
+
+**Tier 3: great chapter/mini-wizard material**
+Infinata, Sky Master, Doctor Atlantean, Master Vine, Kotep, Spider-Slayer, Mole Man.
+
+**Tier 4: henchmen / minor mode fodder**
+Ox, Cowboy, Enforcers, Red Dog Melvin, Bolton, Boomer, Desperado, Pardo, Scarf.
+
+For your expandable chapter system, I’d use the classic rogues as full villain modes and use the weird 1967 originals as chapter bosses, mini-wizard themes, or mystery awards.
+
+[1]: https://en.wikipedia.org/wiki/Spider-Man_%281967_TV_series%29 "Spider-Man (1967 TV series) - Wikipedia"
+[2]: https://marvelanimated.fandom.com/wiki/Category%3AVillains_%28Spider-Man_%281967%29%29 "Category:Villains (Spider-Man (1967)) | Marvel Animated Universe Wiki | Fandom"
+
