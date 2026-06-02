@@ -1,0 +1,25 @@
+#config_version=6
+
+mode:
+  code: villain_start.VillainStart
+  start_events: ball_started
+  stop_events: ball_ending
+  priority: 116
+
+# Replace these switch names with your actual saucer switches.
+switch_player:
+  s_left_saucer_active:
+    left_villain_saucer_hit
+
+  s_center_saucer_active:
+    center_villain_saucer_hit
+
+  s_right_saucer_active:
+    right_villain_saucer_hit
+
+event_player:
+  villain_saucer_points_only:
+    - award_villain_saucer_points
+
+  mini_wizard_start_ready_at_daily_bugle:
+    - light_daily_bugle_vuk_for_mini_wizard

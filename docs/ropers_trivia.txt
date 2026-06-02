@@ -1,10 +1,10 @@
 Roper Romp Trivia - 2026
 Section 1
 1. Where is Jack found when he meets Janet and Chrissy for the first time?
-   A. Kitchen
-   B. Closet
-   C. Bathtub
-   D. Balcony
+   A. In the Kitchen
+   B. On the Balcony
+   C. In the Bathtub
+   D. In the Closet
 Answer: C. Bathtub
 2. What was the name of the girls’ roommate before Jack moved in?
    A. Cindy
@@ -52,7 +52,7 @@ Answer: C. Tinkerbell
    C. Larry Dallas
    D. Tom Jones
 Answer: C. Larry Dallas
-10. What nationality is Larry Dallas, and what is his real last name?
+10. What nationality is his best friend, and what is his real last name?
    A. Italian, Dallini
    B. Greek, Dalliapoulos
    C. Spanish, Delgado
@@ -123,13 +123,13 @@ Answer: C. Colorful caftans and bold jewelry
 
 Section 3
 21. Who became the landlord after the Ropers left?
-   A. Larry Dallas
+   A. Ralph Machio
    B. Mr. Angelino
    C. Ralph Furley
    D. Jack Tripper
 Answer: C. Ralph Furley
 22. Who owned the apartment building after the Ropers sold it?
-   A. Larry Dallas
+   A. Norman Fell
    B. Ralph Furley’s brother Bart
    C. Mr. Angelino
    D. Jack Tripper

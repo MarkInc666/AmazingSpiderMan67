@@ -1,0 +1,117 @@
+#config_version=6
+
+mode:
+  code: case_files.CaseFiles
+  start_events: ball_started
+  stop_events: ball_ending
+  priority: 120
+
+# Replace these switch names with your actual lower-spinner and right 5-bank switch names.
+switch_player:
+  s_lower_spinner_active:
+    case_file_spinner_hit
+
+  s_right_bank_drop_1_active:
+    case_file_drop_1_hit
+  s_right_bank_drop_2_active:
+    case_file_drop_2_hit
+  s_right_bank_drop_3_active:
+    case_file_drop_3_hit
+  s_right_bank_drop_4_active:
+    case_file_drop_4_hit
+  s_right_bank_drop_5_active:
+    case_file_drop_5_hit
+
+show_player:
+  case_file_selected_extra_jackpot:
+    case_file_extra_jackpot_flash:
+      key: case_file_selected
+
+  case_file_selected_more_time:
+    case_file_more_time_flash:
+      key: case_file_selected
+
+  case_file_selected_multiplier:
+    case_file_multiplier_flash:
+      key: case_file_selected
+
+  case_file_selected_safety:
+    case_file_safety_flash:
+      key: case_file_selected
+
+  case_file_selected_super_boost:
+    case_file_super_boost_flash:
+      key: case_file_selected
+
+  case_file_collected_extra_jackpot:
+    case_file_extra_jackpot_solid:
+      key: case_file_extra_jackpot
+
+  case_file_collected_more_time:
+    case_file_more_time_solid:
+      key: case_file_more_time
+
+  case_file_collected_multiplier:
+    case_file_multiplier_solid:
+      key: case_file_multiplier
+
+  case_file_collected_safety:
+    case_file_safety_solid:
+      key: case_file_safety
+
+  case_file_collected_super_boost:
+    case_file_super_boost_solid:
+      key: case_file_super_boost
+
+  case_files_cleared:
+    case_file_extra_jackpot_solid:
+      action: stop
+      key: case_file_extra_jackpot
+    case_file_more_time_solid:
+      action: stop
+      key: case_file_more_time
+    case_file_multiplier_solid:
+      action: stop
+      key: case_file_multiplier
+    case_file_safety_solid:
+      action: stop
+      key: case_file_safety
+    case_file_super_boost_solid:
+      action: stop
+      key: case_file_super_boost
+    case_file_extra_jackpot_flash:
+      action: stop
+      key: case_file_selected
+    case_file_more_time_flash:
+      action: stop
+      key: case_file_selected
+    case_file_multiplier_flash:
+      action: stop
+      key: case_file_selected
+    case_file_safety_flash:
+      action: stop
+      key: case_file_selected
+    case_file_super_boost_flash:
+      action: stop
+      key: case_file_selected
+
+sound_player:
+  case_file_collected:
+    case_file_found
+
+  case_files_complete:
+    case_file_complete
+
+  wizard_prep_added:
+    wizard_prep_added
+
+widget_player:
+  case_file_collected:
+    case_file_collected_widget:
+      action: play
+      expire: 2s
+
+  case_files_complete:
+    case_file_complete_widget:
+      action: play
+      expire: 3s

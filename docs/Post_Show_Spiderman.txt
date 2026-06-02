@@ -1,0 +1,739 @@
+Yes — here’s the current **system summary** in one place.
+
+# Spider-Man Rule System Summary
+
+## Main Game Flow
+
+The game has several connected systems:
+
+```text
+A+B / Daily Bugle → opens gate → upper playfield/photos/rewards
+
+3-bank drops → build saucer states → start/select villains
+
+Lower spinner + right 5-bank → collect Case Files → enhance next villain
+
+Pops → build city chaos / chapter value
+
+Star rollover → upgrades saucers once all three are lit
+
+5 villains played → mini-wizard ready
+
+Complete chapters → final Kingpin wizard
+```
+
+---
+
+# A + B Rollovers / Daily Bugle System
+
+## Purpose
+
+The A+B rollovers are the **Daily Bugle / upper access system**.
+
+```text
+A = DAILY
+B = BUGLE
+```
+
+Completing A+B opens the gate to the upper playfield.
+
+## Flow
+
+```text
+Complete A+B
+→ open upper gate
+→ reach upper playfield
+→ spin upper spinner to take photos
+→ shoot Daily Bugle VUK to collect reward / mystery / start mini-wizard sequence
+```
+
+## State
+
+This should persist between balls:
+
+```text
+A completed
+B completed
+Daily Bugle progress
+Mystery/reward readiness
+photos collected
+```
+
+The physical gate should probably **not** stay open across balls, but the fact that the gate was qualified can persist.
+
+```text
+gate_qualified = persists
+gate_physically_open = resets safely
+```
+
+---
+
+# 3-Bank Drops / Saucer Villain Start System
+
+## Purpose
+
+The 3-bank drop targets control the three saucers.
+
+```text
+left drop → left saucer state
+middle drop → middle saucer state
+right drop → right saucer state
+```
+
+Drop targets physically reset:
+
+```text
+at start of each ball
+after each villain mode
+after completing all 3 drops
+```
+
+Saucer progress:
+
+```text
+carries between balls
+resets after each villain mode
+```
+
+## Saucer States
+
+Each saucer has a state from 0 to 5:
+
+```text
+0 - Unlit. Saucer awards points only.
+1 - Slow flash. Starts next available villain immediately.
+2 - Slow/medium flash. Starts villain select with up to 2 choices.
+3 - Medium flash. Starts villain select with up to 3 choices.
+4 - Medium/fast flash. Starts villain select with up to 4 choices.
+5 - Fast flash. Starts villain select with up to 5 choices.
+```
+
+## Bank Cycle
+
+During each drop-bank cycle:
+
+```text
+hit a drop target
+→ advance the corresponding saucer by 1 state
+```
+
+When all 3 drops are hit:
+
+```text
+bank complete
+→ score bank completion
+→ reset drops
+→ allow saucer states to be built again
+```
+
+After a saucer reaches state 5:
+
+```text
+further hits do not increase the state
+further hits only score points
+points increase based on bank completions
+```
+
+## Villain Start Logic
+
+If a saucer has one valid unplayed villain available:
+
+```text
+start that villain immediately
+```
+
+If it has two or more valid villains available:
+
+```text
+start villain select carousel
+```
+
+If the carousel would only have one playable choice:
+
+```text
+skip carousel
+start that villain directly
+```
+
+---
+
+# Villain Chapters
+
+Villains are grouped into chapters of 5.
+
+```text
+Play 5 villains
+→ chapter mini-wizard becomes available
+```
+
+Recommended rule:
+
+```text
+Starting/playing a villain counts toward chapter progress.
+Defeating the villain can give better scoring, bonuses, or final wizard value.
+```
+
+This keeps progression moving even if the player fails a mode.
+
+---
+
+# Star Rollover
+
+## Purpose
+
+The star rollover is a saucer upgrade shot.
+
+## Rule
+
+Once all three saucers are at state 1 or higher:
+
+```text
+star rollover advances all 3 saucers by 1 state
+```
+
+Example:
+
+```text
+Left saucer: 1
+Middle saucer: 1
+Right saucer: 1
+
+Star hit →
+
+Left saucer: 2
+Middle saucer: 2
+Right saucer: 2
+```
+
+The star should only work if all three saucers are already lit.
+
+If any saucer is still at 0:
+
+```text
+star scores points only
+or gives a minor award
+```
+
+This makes the star a reward for building the full saucer set, not a shortcut from nothing.
+
+---
+
+# Lower Spinner / Case File Selector
+
+## Purpose
+
+The lower spinner controls the lit Case File target on the right 5-bank.
+
+```text
+lower spinner = cycles selected Case File
+right 5-bank = collects the selected Case File
+```
+
+## Rule
+
+Suggested version:
+
+```text
+Every 3 lower-spinner spins advances the lit Case File target.
+```
+
+The spinner cycles through the five Case File types:
+
+```text
+1. Extra Jackpot
+2. More Time
+3. Multiplier Boost
+4. Safety / Retry
+5. Super Jackpot Boost
+```
+
+Player-facing idea:
+
+```text
+SPIN LOWER SPINNER TO SELECT CASE FILE
+HIT LIT RIGHT DROP TO COLLECT UPGRADE
+```
+
+---
+
+# Right 5-Bank Drops / Case Files
+
+## Purpose
+
+The right 5-bank is the **villain preparation system**.
+
+It lets the player improve the next villain mode before starting it.
+
+## Case File Types
+
+Each target represents one Case File:
+
+```text
+1. Extra Jackpot
+2. More Time
+3. Multiplier Boost
+4. Safety / Retry
+5. Super Jackpot Boost
+```
+
+## Collection Rule
+
+```text
+Hit the lit Case File target
+→ collect that Case File for the next villain
+```
+
+Each Case File type can be collected once before the next villain.
+
+When the next villain starts:
+
+```text
+collected Case Files apply to that villain
+individual Case Files clear
+```
+
+## Every villain supports all five Case File types
+
+Universal meanings:
+
+```text
+Extra Jackpot = more things to collect
+More Time = less time pressure
+Multiplier Boost = better scoring
+Safety / Retry = one mistake forgiven
+Super Jackpot Boost = better final award
+```
+
+Each villain interprets them thematically.
+
+Example:
+
+```text
+Rhino:
+Extra Jackpot = +1 Rhino Bash jackpot
+More Time = longer jackpot timer
+Multiplier = rage scoring starts higher
+Safety = first miss forgiven
+Super Boost = bigger final bash award
+
+Vulture:
+Extra Jackpot = +1 rooftop jackpot
+More Time = longer Sky Attack timer
+Multiplier = spinner starts stronger
+Safety = first decay ignored
+Super Boost = bigger max-color award
+```
+
+---
+
+# Complete Case File / Wizard Prep
+
+Collecting all 5 Case Files before a villain gives an extra bonus:
+
+```text
+Complete Case File
+→ Wizard Prep +1
+```
+
+Important:
+
+```text
+The five individual Case Files help the next villain.
+The all-5 completion bonus does not further help that villain.
+The all-5 completion bonus is saved for the mini-wizard.
+```
+
+## Wizard Prep
+
+Wizard Prep is stored for the current chapter.
+
+```text
+wizard_prep_this_chapter += 1
+```
+
+At the mini-wizard, Wizard Prep can improve things like:
+
+```text
+mini-wizard jackpot value
+ball save time
+photos needed for add-a-ball
+add-a-ball timer
+super jackpot readiness
+```
+
+Example mini-wizard prep table:
+
+```text
+0 Prep - normal mini-wizard
+1 Prep - bigger starting jackpot
+2 Prep - longer ball save
+3 Prep - fewer photos needed for add-a-ball
+4 Prep - add-a-ball shot stays lit longer
+5 Prep - super jackpot or add-a-ball starts easier
+```
+
+---
+
+# Pop Bumpers / City Chaos
+
+## Purpose
+
+The pops should build a passive value/meter, not a precise required objective.
+
+Best theme:
+
+```text
+City Chaos
+```
+
+## Rule Concept
+
+Each pop increases City Chaos.
+
+```text
+pops build chaos
+chaos boosts values
+chaos feeds Bugle headlines / mini-wizard / chapter scoring
+```
+
+Possible thresholds:
+
+```text
+10 pops = Chaos Level 1
+25 pops = Chaos Level 2
+50 pops = Chaos Level 3
+```
+
+City Chaos can improve:
+
+```text
+Daily Bugle mystery value
+villain jackpot value
+mini-wizard starting value
+Kingpin final wizard value
+```
+
+Player-facing callouts:
+
+```text
+CITY CHAOS RISING!
+PUBLIC PANIC!
+BUGLE HEADLINE VALUE UP!
+```
+
+This fits the story:
+
+```text
+villains cause chaos
+→ Daily Bugle blames Spider-Man
+→ mini-wizard crisis
+```
+
+---
+
+# Upper Spinner / Photos
+
+## Purpose
+
+The upper spinner is separate from the lower spinner.
+
+```text
+lower spinner = Case File selector
+upper spinner = photos / rooftop / Daily Bugle
+```
+
+## Rule
+
+The upper spinner collects photos.
+
+Photos can feed:
+
+```text
+Daily Bugle mystery award
+mini-wizard sequence
+add-a-ball qualification
+chapter bonus
+```
+
+For the mini-wizard:
+
+```text
+After mini-wizard starts:
+ball is kicked to upper playfield
+upper spinner collects photos
+collect 5 photos
+→ left exit lights add-a-ball
+```
+
+---
+
+# Daily Bugle VUK
+
+## Purpose
+
+The Daily Bugle VUK is the collection/start point for Bugle-related rewards.
+
+It can be used for:
+
+```text
+Daily Bugle mystery
+photo reward
+mini-wizard start
+chapter headline award
+```
+
+## Mini-Wizard Flow
+
+After 5 villains:
+
+```text
+mini-wizard ready
+shoot Daily Bugle VUK
+pause in VUK for audio/video intro
+start multiball
+kick ball to upper playfield
+upper spinner collects photos
+left exit collects add-a-ball after enough photos
+```
+
+---
+
+# Mini-Wizard System
+
+## Qualification
+
+```text
+Play 5 villains in the chapter
+→ mini-wizard ready
+```
+
+## Start
+
+```text
+Shoot Daily Bugle VUK
+→ intro plays
+→ mini-wizard multiball starts
+```
+
+## Opening Phase
+
+```text
+ball goes to upper playfield
+upper spinner takes photos
+after 5 photos, left exit lights add-a-ball
+```
+
+Wizard Prep can reduce the number of photos required or improve the add-a-ball opportunity.
+
+---
+
+# Clean Playfield Purpose Map
+
+```text
+A+B rollovers:
+Daily Bugle letters, gate access, upper access
+
+3-bank drops:
+saucer states, villain start/select
+
+Saucers:
+start villains, open villain select carousel, collect points when unlit
+
+Star rollover:
+upgrades all saucers once all three are already lit
+
+Lower spinner:
+cycles selected Case File on the right 5-bank
+
+Right 5-bank:
+collects Case Files that improve the next villain
+
+Pop bumpers:
+build City Chaos and boost Bugle/chapter/mini-wizard values
+
+Upper spinner:
+takes photos for Daily Bugle and mini-wizard add-a-ball
+
+Daily Bugle VUK:
+collects Bugle rewards and starts mini-wizard sequence
+```
+
+---
+
+# Core Player Strategy
+
+The player has three main strategic paths:
+
+## 1. Start villains quickly
+
+```text
+3-bank drops
+→ light saucers
+→ start villain
+```
+
+## 2. Prepare before starting villains
+
+```text
+lower spinner
+→ select Case File
+→ right 5-bank
+→ collect upgrades
+→ start stronger villain mode
+```
+
+## 3. Build the chapter / Bugle / mini-wizard
+
+```text
+A+B
+→ gate
+→ upper photos
+→ Daily Bugle VUK
+→ mystery/reward/mini-wizard
+```
+
+Pops support everything by building chaos and value.
+
+---
+
+# Best One-Line Summary
+
+```text
+A+B opens the Bugle/rooftop path, the 3-bank lights villains at the saucers, the lower spinner and 5-bank prepare Case Files for the next villain, the star upgrades saucer choice depth, and the pops build City Chaos toward bigger chapter and wizard-mode rewards.
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+Case File System (spinner and right drops)
+
+The lower spinner controls the lit Case File target on the right 5-bank.
+
+Each of the five targets represents one Case File upgrade:
+
+1. Extra Jackpot
+2. More Time
+3. Multiplier Boost
+4. Safety / Retry
+5. Super Jackpot Boost
+
+Hitting the lit Case File target collects that upgrade for the next villain mode.
+
+Each Case File type can be collected once before the next villain.
+
+When the next villain mode starts, the collected Case Files are applied to that villain and then cleared.
+
+
+# Example table for your current villains
+
+| Villain  | Extra Jackpot  | More Time             | Multiplier                     | Safety / Retry            | Super Boost             |
+| -------- | -------------- | --------------------- | ------------------------------ | ------------------------- | ----------------------- |
+| Rhino    | +1 bash JP     | Longer JP timer       | Rage scoring starts higher     | First miss forgiven       | Bigger final bash       |
+| Vulture  | +1 rooftop JP  | +10 sec Sky Attack    | Spinner starts 2x              | First decay ignored       | Bigger max-color award  |
+| Lizard   | +1 delivery    | Serum holds longer    | Delivery multiplier            | One failed delivery saved | Bigger cure award       |
+| Sandman  | +1 flash JP    | Sweep slows           | Flash value boosted            | Wrong hit forgiven        | Bigger perfect-order JP |
+| Electro  | +1 spark       | Spark timer longer    | Spark JP doubled               | Expired spark saved       | Bigger Super JP         |
+| Doc Ock  | +1 lock JP     | Arm release delayed   | Locked-arm JP boosted          | Auto-relock once          | Bigger all-arms award   |
+| Scorpion | +1 Sting try   | More drop-shot time   | Venom multiplier starts higher | Failed Sting retries      | Bigger final Sting JP   |
+| Mysterio | +1 illusion JP | Illusion timer longer | Real-shot value boosted        | One fake-out ignored      | Bigger reveal award     |
+| Goblin   | +1 pumpkin JP  | Bomb timer longer     | Chaos value boosted            | One bomb miss saved       | Bigger Goblin finale    |
+| Parafino | +1 wax JP      | Melt timer longer     | Statue value boosted           | One wrong statue saved    | Bigger museum finale    |
+
+
+
+
+If the player collects all 5 Case Files before starting a villain, they also earn 1 Wizard Prep bonus.
+
+Wizard Prep does not affect the current villain. It is saved for the chapter mini-wizard and increases the value or strength of that mini-wizard.
+
+After the chapter mini-wizard starts, Wizard Prep for that chapter is cleared.
+
+Wizard Prep earned during chapter:
+
+0 - Normal mini-wizard
+1 - +250K mini-wizard jackpot
+2 - +10 seconds ball save
+3 - Add-a-ball requires fewer photos
+4 - Mini-wizard jackpots score 2x
+5 - Super jackpot starts lit
+
+
+
+
+
+
+
+
+Villain Start / Saucer System
+
+The 3-bank drop targets control the three saucers.
+
+Drop targets physically reset at the start of each ball and after each villain mode.
+
+Saucer progress is stored per player and carries between balls, but resets after each villain mode. 
+This means that after playing a villain, the player must hit drops again to qualify the next villain start.
+
+(As the chapter progresses, fewer villains remain unplayed. 
+By the 5th villain in a chapter, only one valid villain remains, 
+so lighting any saucer to state 1 is enough to start the final villain of that chapter.)
+
+Each saucer has a state from 0 to 5:
+
+0 - Unlit. Saucer awards points only.
+1 - Slow flash. Saucer starts the next available villain immediately.
+2 - Slow/medium flash. Saucer starts villain select with up to 2 choices.
+3 - Medium flash. Saucer starts villain select with up to 3 choices.
+4 - Medium/fast flash. Saucer starts villain select with up to 4 choices.
+5 - Fast flash. Saucer starts villain select with up to 5 choices.
+
+During each drop-bank cycle, hitting a drop target advances the corresponding saucer state by 1, up to a maximum of 5.
+
+When all 3 drops have been hit, the bank is complete and resets. The player may then build the saucer states again.
+
+After a saucer reaches state 5, further hits do not increase that saucer state. 
+They only score points, with value increasing based on bank completions.
+
+If a saucer has only one valid unplayed villain available, it starts that villain immediately.
+
+If a saucer has two or more valid unplayed villains available, it starts the villain select carousel.
+
+Villains are grouped into chapters of 5. After all 5 villains in the chapter have been played, the chapter mini-wizard becomes available.
+
+Once all three saucers are at state 1 or higher, the star rollover advances all three saucers by one state.
+
+
+
+
+Mini-Wizard Start
+
+After 5 villains have been played, the chapter mini-wizard becomes ready.
+
+Shoot the Daily Bugle VUK to start the mini-wizard sequence.
+
+The ball pauses in the VUK while the audio/video intro plays.
+
+The mini-wizard multiball starts.
+
+The ball is kicked to the upper playfield. 
+During the opening phase, the player can take pictures by spinning the upper spinner. 
+After collecting enough pictures, the left exit lights for add-a-ball.
+
+Left exit = add-a-ball
+
+
+
+
+A+B rollovers = Daily Bugle / gate / photos / mystery award
+
+
+
+

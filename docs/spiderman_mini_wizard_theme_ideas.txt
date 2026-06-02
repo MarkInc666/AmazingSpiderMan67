@@ -423,29 +423,1380 @@ Maintain state between balls:
 - villain progresses, chapter, number of spins, saucer states, etc
 - gate state
 
-- drop target banks all reset to up at start of each ball
-- but, before a villain mode starts, make note of up/down status of each target and restore them after villain ends
-
-Building towards villain mmodes:
+Building towards villain modes:
 
 3 bank drops:
-- hit a drop once, the coresponding saucer lights, next available villain is ready to start there
+- drop target banks all reset to up at start of each ball and after each villain mode 
+
+- hit a drop for first time that ball, the coresponding saucer lights solid, next available villain is ready to start there
 - hit all drops, all three saucers ready, drops reset
-- hit a drop again, it's saucer now flashes, 2 villain selection is now available
-- complete bank and hit a drop - 3 villains, etc.
-- every bank completing adds another (to max 5 choices)
 
-- The upper targets function similar to the drops for qualifying:
-  - first hit, saucer goes solid, subsequent target hits act like spins
+- hit a drop target, it's corresponding saucer state advances:
+  - first time - flashes (speed 1), 1 villain start is now available there
+  - all three are hit, completed the bank, the drops reset
+  - next hit - flash speed increases, another villain is available (2 in select carousel)
+  - all three are hit, completed the bank, the drops reset
+  - continue until all 5 villains available
 
-Upper Spinner:
-- the selection carousel can also depend on the number of spins: 
-  - 0-2 spins = 1 villain, no choice, it starts
-  - 3-5 spins = 2 villains to choose
-  - 6-8 spins = 3 villains to choose
-  - 9-11 spins = 4 villains to choose
-  - 12+ spins = all 5 villains to choose
-  so, spinning increases your selection choices 
+state 0 - unlit, saucer only awards points.
+state 1 - slow flash, saucer starts next available villain
+state 2 - slow/medium flash, saucer starts villain select with 2 villains
+state 3 - medium flash, saucer starts villain select with 3 villains
+state 4 - medium/fast flash, saucer starts villain select with 4 villains
+state 5 - fast flash, saucer starts villain select with 5 villains
+
+- subsequent drop hits and bank completions don't increase the state - only for points (increasing based on number of completions)
+
+Carousel will always have at least 2 playable villain (other items may have already been played)
+- if carousel only has one playable choice, we should just start it and not force them to select
 
 
+Villains are grouped into chapters of 5
+- after playing the 5 villains we have a mini-wizard Multiball mode available
+- mini wizard will require the gate to open, 
+then player hits daily bugle VUK, goes to roof, 
+upper spins 5+ times, exits left, 
+the pop up post goes up, the mini mode intro plays, the mini wizard mode starts
+
+
+
+
+
+
+Villain Start / Saucer System
+
+The 3-bank drop targets control the three saucers.
+
+Drop targets physically reset at the start of each ball and after each villain mode, 
+but saucer progress is stored per player and carries between balls, but resets after each villain mode.
+(so after you play a villain, you will need to hit some drops again to qualify the next villain modes.
+by the time they are at the 5th villain, only 1 drop will be needed to light a saucer to start the final villain)
+
+Each saucer has a state from 0 to 5:
+
+0 - Unlit. Saucer awards points only.
+1 - Slow flash. Saucer starts the next available villain immediately.
+2 - Slow/medium flash. Saucer starts villain select with up to 2 choices.
+3 - Medium flash. Saucer starts villain select with up to 3 choices.
+4 - Medium/fast flash. Saucer starts villain select with up to 4 choices.
+5 - Fast flash. Saucer starts villain select with up to 5 choices.
+
+During each drop-bank cycle, hitting a drop target advances the corresponding saucer state by 1, up to a maximum of 5.
+
+When all 3 drops have been hit, the bank is complete and resets. The player may then build the saucer states again.
+
+After a saucer reaches state 5, further hits do not increase that saucer state. They only score points, with value increasing based on bank completions.
+
+If a saucer has only one valid unplayed villain available, it starts that villain immediately. If it has two or more valid villains available, it starts the villain select carousel.
+
+Villains are grouped into chapters of 5. After all 5 villains in the chapter have been played, the chapter mini-wizard becomes available.
+
+Once all three saucers are at state 1 or higher, the star rollover will advance all 3 saucers one state
+
+
+Mini-Wizard 
+After 5 villains, mini-wizard is ready.
+Shoot Daily Bugle VUK to start the mini-wizard sequence. 
+Pause in the VUK for the audio/video intro to the mode.
+Start MB.
+Ball is kicked to upper where taking pictures(5?) with the upper spinner and then left-exit will add-a-ball.
+
+
+
+
+
+
+Yes — this is much clearer, and the reset-after-villain rule helps a lot.
+
+The system now has a good rhythm:
+
+```text
+Hit drops → light saucers → start/select villain
+Play villain → saucer progress resets
+Next villain gets easier because fewer unplayed villains remain
+After 5 villains → mini-wizard ready
+```
+
+That works.
+
+## Cleaned-up version
+
+Here’s how I’d write this as a rules/design section.
+
+---
+
+# Villain Start / Saucer System
+
+The 3-bank drop targets control the three saucers.
+
+Drop targets physically reset at the start of each ball and after each villain mode.
+
+Saucer progress is stored per player and carries between balls, but resets after each villain mode. This means that after playing a villain, the player must hit drops again to qualify the next villain start.
+
+As the chapter progresses, fewer villains remain unplayed. By the 5th villain in a chapter, only one valid villain remains, so lighting any saucer to state 1 is enough to start the final villain of that chapter.
+
+Each saucer has a state from 0 to 5:
+
+```text
+0 - Unlit. Saucer awards points only.
+1 - Slow flash. Saucer starts the next available villain immediately.
+2 - Slow/medium flash. Saucer starts villain select with up to 2 choices.
+3 - Medium flash. Saucer starts villain select with up to 3 choices.
+4 - Medium/fast flash. Saucer starts villain select with up to 4 choices.
+5 - Fast flash. Saucer starts villain select with up to 5 choices.
+```
+
+During each drop-bank cycle, hitting a drop target advances the corresponding saucer state by 1, up to a maximum of 5.
+
+When all 3 drops have been hit, the bank is complete and resets. The player may then build the saucer states again.
+
+After a saucer reaches state 5, further hits do not increase that saucer state. They only score points, with value increasing based on bank completions.
+
+If a saucer has only one valid unplayed villain available, it starts that villain immediately.
+
+If a saucer has two or more valid unplayed villains available, it starts the villain select carousel.
+
+Villains are grouped into chapters of 5. After all 5 villains in the chapter have been played, the chapter mini-wizard becomes available.
+
+Once all three saucers are at state 1 or higher, the star rollover advances all three saucers by one state.
+
+---
+
+# Mini-Wizard Start
+
+After 5 villains have been played, the chapter mini-wizard becomes ready.
+
+Shoot the Daily Bugle VUK to start the mini-wizard sequence.
+
+The ball pauses in the VUK while the audio/video intro plays.
+
+The mini-wizard multiball starts.
+
+The ball is kicked to the upper playfield. During the opening phase, the player can take pictures by spinning the upper spinner. After collecting enough pictures, the left exit lights for add-a-ball.
+
+Proposed rule:
+
+```text
+5 upper spinner spins = complete photo assignment
+Left exit = add-a-ball
+```
+
+---
+
+## One important design note
+
+Your star rollover rule is good, but I would add one guardrail:
+
+```text
+The star rollover only advances saucers that are already at state 1 or higher.
+```
+
+That matches your wording and keeps it from being too powerful. So if the saucers are:
+
+```text
+Left: 1
+Middle: 1
+Right: 0
+```
+
+the star does **nothing** or maybe scores points only.
+
+If the saucers are:
+
+```text
+Left: 1
+Middle: 1
+Right: 1
+```
+
+then star advances them to:
+
+```text
+Left: 2
+Middle: 2
+Right: 2
+```
+
+That makes the star a reward for building all three saucers first, not a shortcut from zero.
+
+## Recommended player variables
+
+This maps cleanly to Python/player vars:
+
+```text
+left_saucer_state
+middle_saucer_state
+right_saucer_state
+
+drop_left_hit_this_cycle
+drop_middle_hit_this_cycle
+drop_right_hit_this_cycle
+
+drop_bank_completions_this_ball
+drop_bank_completions_this_chapter
+
+villain_chapter
+villains_played_this_chapter
+chapter_mini_wizard_ready
+```
+
+Then after a villain starts or ends, reset only the saucer/drop qualification layer:
+
+```text
+left_saucer_state = 0
+middle_saucer_state = 0
+right_saucer_state = 0
+
+drop_left_hit_this_cycle = 0
+drop_middle_hit_this_cycle = 0
+drop_right_hit_this_cycle = 0
+```
+
+But keep chapter progress:
+
+```text
+villain_chapter
+villains_played_this_chapter
+played villain flags
+```
+
+That gives you exactly the behavior you described.
+
+
+
+Yes — that’s a **really good use for the 5-bank and lower spinner**, especially because it gives the player a reason to shoot them **before starting a villain**.
+
+I’d frame it as:
+
+```text
+Lower spinner = cycles the “Case File” light
+Right 5-bank = collects upgrades for the next villain mode
+```
+
+That gives the lower spinner a skill/strategy role, and the 5-bank becomes more than points.
+
+## Core rule
+
+```text
+Lower spinner cycles the lit target on the 5-bank.
+Hit the lit target to collect a Villain Upgrade.
+The upgrade applies to the next villain mode started.
+```
+
+You could call this:
+
+```text
+CASE FILES
+BUGLE EVIDENCE
+SPIDER-TRACERS
+ADVANTAGE
+PREP BONUS
+```
+
+My favorite for your theme is **Case Files**.
+
+---
+
+# Case File System
+
+The right 5-bank represents **Daily Bugle case files** or **Spider-Man preparing for the next villain**.
+
+Each target corresponds to an upgrade type:
+
+```text
+Target 1 - Extra Jackpot
+Target 2 - More Time
+Target 3 - Higher Multiplier
+Target 4 - Safer Mode / Ball Save / Hold
+Target 5 - Super Jackpot Boost
+```
+
+The lower spinner cycles which target is lit.
+
+When the player hits the lit target, they collect that upgrade for the next villain mode.
+
+---
+
+## Why this works
+
+It creates a nice player choice:
+
+```text
+Do I start the villain now?
+Or do I shoot spinner/5-bank first to make the villain mode stronger?
+```
+
+That is good pinball design because it creates risk/reward without blocking progression.
+
+You already have:
+
+```text
+3-bank drops = qualify/start villains
+A+B = Daily Bugle / gate / photos
+```
+
+So this gives:
+
+```text
+lower spinner + 5-bank = improve villain modes
+```
+
+That is a clean third lane of strategy.
+
+---
+
+# How upgrades could affect the 5 chapter villains
+
+For a chapter of 5 villains, each target could map to a specific villain **or** to a general upgrade.
+
+I prefer **general upgrades**, because it scales better when you add many villains.
+
+## General upgrade examples
+
+### Upgrade 1: Extra Jackpot
+
+```text
+Adds one additional jackpot opportunity to the next villain mode.
+```
+
+Examples:
+
+```text
+Rhino: one extra Rhino Bash jackpot
+Lizard: one extra serum delivery
+Sandman: one extra flashing target award
+Doc Ock: one extra jackpot before timer pressure increases
+```
+
+### Upgrade 2: More Time
+
+```text
+Adds extra time to the next timed villain mode.
+```
+
+Examples:
+
+```text
+Vulture: +10 seconds
+Lizard: +5 seconds before serum value starts falling
+Electro: +2 seconds per spark
+Scorpion: +2 seconds to hit the final drop
+```
+
+### Upgrade 3: Multiplier Boost
+
+```text
+Starts the next villain mode with a scoring multiplier or higher base value.
+```
+
+Examples:
+
+```text
+Rhino: rage scoring starts one level higher
+Vulture: spinner starts at 2x
+Sandman: flashing target starts at 75K instead of 50K
+Electro: first spark jackpot doubled
+```
+
+### Upgrade 4: Safety
+
+```text
+Makes the next villain mode easier or safer.
+```
+
+Examples:
+
+```text
+Short ball save at villain start
+One free miss on timed sequence
+Doc Ock timer delayed
+Scorpion gets one retry
+```
+
+### Upgrade 5: Super Jackpot Boost
+
+```text
+Adds or increases the mode’s big finish award.
+```
+
+Examples:
+
+```text
+Rhino: bigger final bash jackpot
+Vulture: bonus for max target colors
+Lizard: bigger final serum award
+Sandman: bigger order-completion jackpot
+```
+
+---
+
+# Better: let the player stack up to 3 Case Files
+
+I would not let every upgrade stack forever. That gets hard to balance.
+
+Use a cap:
+
+```text
+Player may carry up to 3 Case Files into the next villain mode.
+```
+
+Then when a villain starts:
+
+```text
+Apply collected Case Files.
+Clear Case Files.
+```
+
+That creates good pre-villain strategy without letting the player over-build one mode.
+
+Example:
+
+```text
+Collected:
+- Extra Jackpot
+- More Time
+- Multiplier Boost
+
+Start Vulture:
+- Vulture has +1 jackpot
+- Vulture timer +10 seconds
+- Spinner scoring starts at 2x
+```
+
+---
+
+# Spinner cycling behavior
+
+The lower spinner can cycle the lit 5-bank target one step per spin:
+
+```text
+Spin 1 → Target 1 lit
+Spin 2 → Target 2 lit
+Spin 3 → Target 3 lit
+Spin 4 → Target 4 lit
+Spin 5 → Target 5 lit
+Spin 6 → Target 1 lit again
+```
+
+Or, if that cycles too fast, use every 3 spins:
+
+```text
+Every 3 lower-spinner spins advances the lit Case File target.
+```
+
+I’d start with **every 3 spins**. One step per spin may be too twitchy.
+
+---
+
+# Target behavior
+
+When the lit 5-bank target is hit:
+
+```text
+Collect that Case File upgrade
+Turn off that target’s upgrade light
+Light/cycle to the next available Case File target
+```
+
+You have two choices:
+
+## Option A: Collected upgrade target stays unlit until villain starts
+
+This means each upgrade can only be collected once before the next villain.
+
+```text
+Clean and controlled.
+```
+
+## Option B: Target can relight after the bank resets
+
+This allows stacking duplicates.
+
+```text
+More exciting, but harder to balance.
+```
+
+I’d use **Option A**.
+
+---
+
+# Good player-facing wording
+
+```text
+SPIN LOWER SPINNER TO SELECT CASE FILE
+HIT LIT RIGHT DROP TO COLLECT UPGRADE
+CASE FILE ADDED TO NEXT VILLAIN
+```
+
+Callouts:
+
+```text
+CASE FILE FOUND!
+EXTRA JACKPOT READY!
+MORE TIME READY!
+SPIDER-TRACER PLANTED!
+VILLAIN WEAKNESS FOUND!
+```
+
+---
+
+# How this ties into specific villains
+
+You can keep the upgrade names generic, but each villain interprets them differently.
+
+## Rhino
+
+```text
+Extra Jackpot:
+Adds one extra Rhino jackpot before mode ends.
+
+More Time:
+Extends hurry-up / jackpot timer.
+
+Multiplier:
+Starts Rage one level higher or increases jackpot multiplier.
+
+Safety:
+First missed jackpot does not reduce value.
+
+Super Boost:
+Final Rhino Bash jackpot increased.
+```
+
+## Vulture
+
+```text
+Extra Jackpot:
+Adds one extra rooftop jackpot.
+
+More Time:
+Adds +10 seconds to Sky Attack.
+
+Multiplier:
+Spinner scoring starts at 2x.
+
+Safety:
+Target color decay waits longer before dropping.
+
+Super Boost:
+Max-color spinner jackpot boosted.
+```
+
+## Lizard
+
+```text
+Extra Jackpot:
+Adds a third serum delivery.
+
+More Time:
+Serum value holds at max longer.
+
+Multiplier:
+Delivery award multiplied.
+
+Safety:
+One wrong/late shot does not fail delivery.
+
+Super Boost:
+Final cure award boosted.
+```
+
+## Sandman
+
+```text
+Extra Jackpot:
+Adds another flashing target jackpot.
+
+More Time:
+Slows the sweeping lit target.
+
+Multiplier:
+Flashing drop award boosted.
+
+Safety:
+One non-flashing hit still counts for partial value.
+
+Super Boost:
+Perfect left-to-right order jackpot boosted.
+```
+
+## Electro
+
+```text
+Extra Jackpot:
+Adds one more spark before Super Jackpot.
+
+More Time:
+Spark timer increases.
+
+Multiplier:
+First spark starts doubled.
+
+Safety:
+One timed-out spark is saved.
+
+Super Boost:
+Super Jackpot value increased.
+```
+
+## Doc Ock
+
+```text
+Extra Jackpot:
+Adds one extra arm-lock jackpot.
+
+More Time:
+Delays timed arm release.
+
+Multiplier:
+Locked-arm jackpot starts higher.
+
+Safety:
+One released arm automatically relocks.
+
+Super Boost:
+All-arms-locked award boosted.
+```
+
+## Scorpion
+
+```text
+Extra Jackpot:
+Adds one extra Sting try.
+
+More Time:
+Adds time to hit the remaining drop.
+
+Multiplier:
+Venom jackpot multiplier starts higher.
+
+Safety:
+One failed Sting Sequence is retried.
+
+Super Boost:
+Final Sting jackpot boosted.
+```
+
+---
+
+# How it fits with chapters of 5
+
+This is the cleanest version:
+
+```text
+Each chapter has 5 villains.
+The right 5-bank collects Case Files.
+Each Case File improves the next villain mode.
+After 5 villains, unused Case Files convert into mini-wizard value.
+```
+
+That last rule is nice:
+
+```text
+Unused Case Files at chapter completion:
++ mini-wizard jackpot
++ ball-save time
++ add-a-ball progress
+```
+
+So even if the player collects upgrades late, they still matter.
+
+---
+
+# Suggested final rule set
+
+```text
+Case File System
+
+The lower spinner controls the lit Case File target on the right 5-bank.
+
+Every 3 lower-spinner spins advances the lit Case File target.
+
+Hitting the lit right-bank target collects a Case File upgrade for the next villain mode.
+
+The player may carry up to 3 Case Files.
+
+Collected Case Files apply when the next villain mode starts, then clear.
+
+The five Case File types are:
+
+1. Extra Jackpot
+2. More Time
+3. Multiplier Boost
+4. Safety / Retry
+5. Super Jackpot Boost
+
+If a Case File is not useful for a specific villain, that villain converts it into bonus scoring.
+
+If all 5 villains in a chapter are played, unused Case Files convert into mini-wizard value.
+```
+
+---
+
+
+3-bank drops = start/select villains
+A+B rollovers = Daily Bugle / gate / photos / mystery
+Right 5-bank + lower spinner = Case Files / villain upgrades
+Pops = city chaos / value building
+Upper spinner = photos / mini-wizard setup
+
+
+
+
+
+
+
+Yes — that is the better version.
+
+Instead of some villains only using one or two upgrades, make **all five Case File types meaningful in every villain mode**, but let each villain interpret them differently.
+
+The five Case File elements can be:
+
+```text
+1. Extra Jackpot
+2. More Time
+3. Multiplier Boost
+4. Safety / Retry
+5. Super Jackpot Boost
+```
+
+Then every villain mode has a small “upgrade adapter” that says what those five things do.
+
+---
+
+# Core rule
+
+```text
+Before starting a villain, the player can collect Case Files.
+
+Each collected Case File modifies the next villain mode.
+
+Every villain supports all five Case File types.
+
+Collected Case Files are consumed when the villain starts.
+```
+
+That is very clean.
+
+---
+
+# Best structure
+
+Use the same five upgrade types globally:
+
+```python
+CASE_FILE_EXTRA_JACKPOT = "extra_jackpot"
+CASE_FILE_MORE_TIME = "more_time"
+CASE_FILE_MULTIPLIER = "multiplier"
+CASE_FILE_SAFETY = "safety"
+CASE_FILE_SUPER_BOOST = "super_boost"
+```
+
+Then each villain can read:
+
+```python
+self.player["case_file_extra_jackpot"]
+self.player["case_file_more_time"]
+self.player["case_file_multiplier"]
+self.player["case_file_safety"]
+self.player["case_file_super_boost"]
+```
+
+or better, the qualify/progression mode posts them into the villain mode start event:
+
+```python
+self.machine.events.post(
+    "start_mode_rhino_bash",
+    extra_jackpot=case_files["extra_jackpot"],
+    more_time=case_files["more_time"],
+    multiplier=case_files["multiplier"],
+    safety=case_files["safety"],
+    super_boost=case_files["super_boost"],
+)
+```
+
+That lets each villain mode apply the same five concepts in its own way.
+
+---
+
+# How each Case File type should feel
+
+## 1. Extra Jackpot
+
+This should add **more opportunities**.
+
+```text
+“You get one more thing to collect.”
+```
+
+Examples:
+
+```text
+Rhino: +1 Rhino Bash jackpot
+Vulture: +1 rooftop jackpot
+Lizard: +1 serum delivery
+Sandman: +1 flashing target jackpot
+Electro: +1 spark before Super Jackpot
+Doc Ock: +1 arm-lock jackpot
+Scorpion: +1 Sting attempt
+```
+
+## 2. More Time
+
+This should make timed pressure easier.
+
+```text
+“You get more time before danger/value loss.”
+```
+
+Examples:
+
+```text
+Rhino: jackpot hurry-up timer extended
+Vulture: Sky Attack timer extended
+Lizard: serum value holds longer before counting down
+Sandman: sweeping drop target changes slower
+Electro: spark timer extended
+Doc Ock: arm-release timer delayed
+Scorpion: more time to hit the final drop
+```
+
+## 3. Multiplier Boost
+
+This should increase scoring throughout the mode.
+
+```text
+“Your mode scoring starts stronger.”
+```
+
+Examples:
+
+```text
+Rhino: Rage jackpot multiplier starts higher
+Vulture: spinner value starts at 2x
+Lizard: serum delivery award multiplied
+Sandman: flashing drop award boosted
+Electro: spark jackpot starts doubled
+Doc Ock: locked-arm jackpot multiplier increased
+Scorpion: venom jackpot multiplier starts higher
+```
+
+## 4. Safety / Retry
+
+This should forgive one mistake.
+
+```text
+“You get one free miss.”
+```
+
+Examples:
+
+```text
+Rhino: first failed jackpot shot does not end/reduce the jackpot
+Vulture: first target-color decay is ignored
+Lizard: one failed/late delivery is saved
+Sandman: one wrong drop hit does not break the streak
+Electro: one expired spark is rescued
+Doc Ock: one released arm automatically relocks
+Scorpion: one failed Sting Sequence retries
+```
+
+## 5. Super Jackpot Boost
+
+This should improve the big finish.
+
+```text
+“The final award is better.”
+```
+
+Examples:
+
+```text
+Rhino: final Rhino Bash jackpot boosted
+Vulture: max-rooftop jackpot boosted
+Lizard: final cure award boosted
+Sandman: perfect-order jackpot boosted
+Electro: Super Jackpot increased
+Doc Ock: all-arms-locked award increased
+Scorpion: final Sting jackpot boosted
+```
+
+---
+
+# Example table for your current villains
+
+| Villain  | Extra Jackpot  | More Time             | Multiplier                     | Safety / Retry            | Super Boost             |
+| -------- | -------------- | --------------------- | ------------------------------ | ------------------------- | ----------------------- |
+| Rhino    | +1 bash JP     | Longer JP timer       | Rage scoring starts higher     | First miss forgiven       | Bigger final bash       |
+| Vulture  | +1 rooftop JP  | +10 sec Sky Attack    | Spinner starts 2x              | First decay ignored       | Bigger max-color award  |
+| Lizard   | +1 delivery    | Serum holds longer    | Delivery multiplier            | One failed delivery saved | Bigger cure award       |
+| Sandman  | +1 flash JP    | Sweep slows           | Flash value boosted            | Wrong hit forgiven        | Bigger perfect-order JP |
+| Electro  | +1 spark       | Spark timer longer    | Spark JP doubled               | Expired spark saved       | Bigger Super JP         |
+| Doc Ock  | +1 lock JP     | Arm release delayed   | Locked-arm JP boosted          | Auto-relock once          | Bigger all-arms award   |
+| Scorpion | +1 Sting try   | More drop-shot time   | Venom multiplier starts higher | Failed Sting retries      | Bigger final Sting JP   |
+| Mysterio | +1 illusion JP | Illusion timer longer | Real-shot value boosted        | One fake-out ignored      | Bigger reveal award     |
+| Goblin   | +1 pumpkin JP  | Bomb timer longer     | Chaos value boosted            | One bomb miss saved       | Bigger Goblin finale    |
+| Parafino | +1 wax JP      | Melt timer longer     | Statue value boosted           | One wrong statue saved    | Bigger museum finale    |
+
+That is the pattern I’d use.
+
+---
+
+# How to make it scalable in code
+
+Do not hard-code the five upgrades differently in the qualify system.
+
+The qualify system should only know:
+
+```text
+Player collected:
+- extra_jackpot
+- more_time
+- multiplier
+- safety
+- super_boost
+```
+
+Then each villain mode applies them.
+
+Example in a villain mode:
+
+```python
+def mode_start(self, **kwargs):
+    super().mode_start(**kwargs)
+
+    self.extra_jackpot = int(kwargs.get("extra_jackpot", 0))
+    self.more_time = int(kwargs.get("more_time", 0))
+    self.multiplier_boost = int(kwargs.get("multiplier", 0))
+    self.safety = int(kwargs.get("safety", 0))
+    self.super_boost = int(kwargs.get("super_boost", 0))
+
+    self._apply_case_files()
+```
+
+Then:
+
+```python
+def _apply_case_files(self):
+    self.max_jackpots = self.base_max_jackpots + self.extra_jackpot
+    self.mode_timer_seconds = self.base_timer_seconds + (10 * self.more_time)
+    self.jackpot_multiplier = 1 + self.multiplier_boost
+    self.safety_available = self.safety > 0
+    self.super_jackpot_value = self.base_super_jackpot + (250000 * self.super_boost)
+```
+
+Some villains will override the exact meaning, but the shape stays the same.
+
+---
+
+# I’d allow stacking, but cap it
+
+Since you want all five types to come into each villain, I would allow each type to stack a little.
+
+Suggested cap:
+
+```text
+Each Case File type can be collected once.
+Maximum 5 Case Files total before the next villain.
+```
+
+That means a fully prepared villain gets all five bonuses.
+
+This is cleaner than “carry up to 3” if your goal is to bring all five elements into each mode.
+
+So:
+
+```text
+Case File target 1 = Extra Jackpot
+Case File target 2 = More Time
+Case File target 3 = Multiplier
+Case File target 4 = Safety / Retry
+Case File target 5 = Super Boost
+```
+
+The player can collect all five before starting a villain, but each one only once.
+
+That gives a great player choice:
+
+```text
+Start villain now with no prep
+or
+spend time collecting Case Files to make the mode stronger
+```
+
+---
+
+# Recommended rule wording
+
+```text
+Case File System
+
+The lower spinner controls the lit Case File target on the right 5-bank.
+
+Each Case File target represents one upgrade:
+
+1. Extra Jackpot
+2. More Time
+3. Multiplier Boost
+4. Safety / Retry
+5. Super Jackpot Boost
+
+Hitting the lit Case File target collects that upgrade for the next villain mode.
+
+Each Case File type can be collected once before the next villain.
+
+Collected Case Files are shown on the playfield/display and are consumed when the next villain mode starts.
+
+Every villain mode supports all five Case File upgrades, but each villain uses them in a thematic way.
+
+If all five Case Files are collected before starting a villain, the villain mode begins fully prepared.
+```
+
+---
+
+# Player-facing callouts
+
+```text
+CASE FILE FOUND!
+EXTRA JACKPOT READY!
+
+CASE FILE FOUND!
+MORE TIME READY!
+
+CASE FILE FOUND!
+MULTIPLIER BOOST READY!
+
+CASE FILE FOUND!
+SAFETY NET READY!
+
+CASE FILE FOUND!
+SUPER JACKPOT BOOST READY!
+
+ALL CASE FILES COMPLETE!
+VILLAIN WEAKNESS REVEALED!
+```
+
+That last one is a nice bonus if they collect all five.
+
+---
+
+# Optional bonus for collecting all five
+
+If the player gets all five before starting the villain, add a small universal award:
+
+```text
+All Case Files = Villain Weakness Revealed
+```
+
+Effect:
+
+```text
+Start the villain with all five upgrades
+and
+light an opening jackpot / add +1x to the first award / play a special intro
+```
+
+I would keep this modest. The five Case Files are already powerful.
+
+---
+
+## Final recommendation
+
+Yes: make every villain support all five Case File elements.
+
+Use this universal meaning:
+
+```text
+Extra Jackpot = more things to collect
+More Time = less pressure
+Multiplier = more scoring
+Safety = one mistake forgiven
+Super Boost = better final award
+```
+
+Then each villain translates those five ideas into its own rules.
+
+That gives you a really scalable system where every new villain can be designed by filling in the same five boxes.
+
+
+
+
+Yes — that’s even better.
+
+Make the **individual Case Files** help the **next villain**, but make the **full set bonus** feed the **chapter mini-wizard / final wizard**, not the current villain.
+
+That creates two layers of strategy:
+
+```text
+Collect some Case Files → make next villain easier/better
+Collect all 5 Case Files → bank a wizard-mode bonus
+```
+
+## Clean rule
+
+```text
+Each Case File type can be collected once before the next villain.
+
+Collected Case Files apply to the next villain mode and are consumed when that villain starts.
+
+If all 5 Case Files are collected before starting a villain, the player also earns one Wizard Prep bonus.
+
+The 5 individual Case Files still apply to the next villain, but the all-5 bonus is saved for the chapter mini-wizard or final wizard.
+```
+
+That avoids overloading the current villain while still rewarding the harder full-set completion.
+
+---
+
+## What the all-5 bonus could be called
+
+Best thematic names:
+
+```text
+Complete Case File
+Bugle Exclusive
+Villain Weakness Revealed
+Spider-Tracer Network
+Evidence Locked
+Kingpin Clue
+```
+
+My favorite for your structure:
+
+```text
+Complete Case File
+```
+
+Or, if you want it to point toward Kingpin:
+
+```text
+Kingpin Clue
+```
+
+That would make sense if the whole game builds toward Kingpin.
+
+---
+
+## How it works in chapter play
+
+Example:
+
+```text
+Before Rhino:
+Player collects Extra Jackpot, More Time, Multiplier
+→ Rhino gets those 3 upgrades
+
+Before Vulture:
+Player collects all 5 Case Files
+→ Vulture gets all 5 upgrades
+→ player also earns +1 Wizard Prep
+
+Before Lizard:
+Player collects 2 Case Files
+→ Lizard gets those 2 upgrades
+```
+
+After 5 villains:
+
+```text
+Mini-wizard starts with Wizard Prep = 1
+```
+
+or however many full sets they completed during the chapter.
+
+---
+
+## Wizard Prep bonus ideas
+
+Each time the player completes all 5 Case Files before a villain, add one `wizard_prep`.
+
+Then at the mini-wizard:
+
+```text
+0 Wizard Prep: normal mini-wizard
+1 Wizard Prep: +jackpot value
+2 Wizard Prep: longer ball save
+3 Wizard Prep: add-a-ball lit easier
+4 Wizard Prep: jackpot multiplier
+5 Wizard Prep: super jackpot starts lit
+```
+
+Since each chapter has 5 villains, the maximum would naturally be 5 Wizard Prep awards per chapter.
+
+That is clean and easy to explain.
+
+---
+
+## Suggested progression table
+
+```text
+Wizard Prep earned during chapter:
+
+0 - Normal mini-wizard
+1 - +250K mini-wizard jackpot
+2 - +5 seconds ball save
+3 - Add-a-ball requires fewer photos
+4 - Mini-wizard jackpots score 2x
+5 - Super jackpot starts lit
+```
+
+For your specific mini-wizard idea:
+
+```text
+0 Prep: normal start
+1 Prep: bigger starting jackpot
+2 Prep: longer ball save
+3 Prep: photos needed for add-a-ball reduced from 5 to 4
+4 Prep: add-a-ball shot stays lit longer
+5 Prep: left-exit add-a-ball starts lit after intro
+```
+
+That ties directly into:
+
+```text
+Daily Bugle VUK
+upper spinner photos
+left exit add-a-ball
+```
+
+---
+
+## Strong rule version
+
+I’d write it like this:
+
+```text
+Case File System
+
+The lower spinner controls the lit Case File target on the right 5-bank.
+
+Each of the five targets represents one Case File upgrade:
+
+1. Extra Jackpot
+2. More Time
+3. Multiplier Boost
+4. Safety / Retry
+5. Super Jackpot Boost
+
+Hitting the lit Case File target collects that upgrade for the next villain mode.
+
+Each Case File type can be collected once before the next villain.
+
+When the next villain mode starts, the collected Case Files are applied to that villain and then cleared.
+
+If the player collects all 5 Case Files before starting a villain, they also earn 1 Wizard Prep bonus.
+
+Wizard Prep does not affect the current villain. It is saved for the chapter mini-wizard and increases the value or strength of that mini-wizard.
+
+After the chapter mini-wizard starts, Wizard Prep for that chapter is cleared.
+```
+
+---
+
+## Player-facing callouts
+
+For individual Case Files:
+
+```text
+CASE FILE FOUND!
+EXTRA JACKPOT READY!
+
+CASE FILE FOUND!
+MORE TIME READY!
+
+CASE FILE FOUND!
+MULTIPLIER BOOST READY!
+
+CASE FILE FOUND!
+SAFETY NET READY!
+
+CASE FILE FOUND!
+SUPER BOOST READY!
+```
+
+For collecting all five:
+
+```text
+COMPLETE CASE FILE!
+WIZARD PREP ADDED!
+```
+
+Or more comic-book style:
+
+```text
+VILLAIN WEAKNESS REVEALED!
+WIZARD PREP ADDED!
+```
+
+Or Kingpin arc style:
+
+```text
+KINGPIN CLUE FOUND!
+WIZARD PREP ADDED!
+```
+
+---
+
+## Recommended variables
+
+```text
+case_file_extra_jackpot
+case_file_more_time
+case_file_multiplier
+case_file_safety
+case_file_super_boost
+
+case_files_collected_count
+case_files_complete_this_villain
+
+wizard_prep_this_chapter
+wizard_prep_total
+```
+
+When all five are collected:
+
+```text
+wizard_prep_this_chapter += 1
+case_files_complete_this_villain = 1
+```
+
+When villain starts:
+
+```text
+apply case files to villain
+clear individual case files
+case_files_collected_count = 0
+case_files_complete_this_villain = 0
+```
+
+Do **not** clear:
+
+```text
+wizard_prep_this_chapter
+```
+
+until the mini-wizard starts or completes.
+
+---
+
+## Final verdict
+
+This is the right rule:
+
+```text
+Case Files help the next villain.
+Complete Case Files help the mini-wizard.
+```
+
+That gives the player a strong choice:
+
+```text
+Start a villain quickly
+or
+prepare the villain mode
+or
+fully prepare and build the wizard mode too
+```
+
+That is exactly the kind of layered strategy your game needs.
 

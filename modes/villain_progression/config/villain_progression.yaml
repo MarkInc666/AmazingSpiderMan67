@@ -1,0 +1,21 @@
+#config_version=6
+
+mode:
+  code: villain_progression.VillainProgression
+  start_events: ball_started
+  stop_events: ball_ending
+  priority: 110
+
+# Other modes should post:
+#
+# villain_progression_start_default
+#   Starts the first valid available villain.
+#
+# villain_progression_start_selected with villain_key
+#   Starts a specific selected villain.
+#
+# villain_played with villain_key
+#   Marks villain as played and increments chapter progress.
+#
+# chapter_mini_wizard_completed
+#   Advances to the next chapter.
