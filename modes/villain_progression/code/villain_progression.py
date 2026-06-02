@@ -34,9 +34,7 @@ class VillainProgression(Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
-
         self.villain_progression_logic_active = True
-
         self._ensure_player_vars()
         self._add_handlers()
         self._restore_state()
@@ -51,6 +49,7 @@ class VillainProgression(Mode):
         self.add_mode_event_handler("villain_progression_restore_state", self._restore_state)
         self.add_mode_event_handler("villain_progression_start_default", self._start_default_villain)
         self.add_mode_event_handler("villain_progression_start_selected", self._start_selected_villain)
+        self.add_mode_event_handler("villain_progression_request_choices", self._post_available_choices)
 
     def _ensure_player_vars(self):
         defaults = {
@@ -63,25 +62,19 @@ class VillainProgression(Mode):
         }
 
         for name, value in defaults.items():
-            try:
-                self.player[name]
-            except Exception:
+            if name not in self.player:
                 self.player[name] = value
 
         for key in self.VILLAINS:
             var_name = f"{key}_played"
-            try:
-                self.player[var_name]
-            except Exception:
+            if var_name not in self.player:
                 self.player[var_name] = 0
 
     def _get_current_chapter(self):
         chapter_num = int(self.player["villain_chapter"])
         index = max(0, chapter_num - 1)
-
         if index >= len(self.CHAPTERS):
             return None
-
         return self.CHAPTERS[index]
 
     def _get_available_villains(self, limit=None):
@@ -91,39 +84,40 @@ class VillainProgression(Mode):
         for key, info in self.VILLAINS.items():
             if int(info.get("tier", 1)) > chapter_num:
                 continue
-
             if self.player[f"{key}_played"] == 1:
                 continue
-
             available.append(key)
 
         if limit is not None:
             return available[:int(limit)]
-
         return available
+
+    def _post_available_choices(self, max_choices=5, **kwargs):
+        available = self._get_available_villains(limit=max_choices)
+        self.machine.events.post(
+            "villain_progression_choices_ready",
+            max_choices=max_choices,
+            available_count=len(available),
+            villain_keys=",".join(available),
+        )
 
     def _start_default_villain(self, **kwargs):
         available = self._get_available_villains(limit=1)
-
         if not available:
             self.machine.events.post("no_villains_available")
             return
-
         self._start_villain(available[0])
 
     def _start_selected_villain(self, villain_key=None, **kwargs):
         if not villain_key:
             self.machine.events.post("villain_selection_missing")
             return
-
         if villain_key not in self.VILLAINS:
             self.machine.events.post("villain_selection_invalid", villain_key=villain_key)
             return
-
         if self.player[f"{villain_key}_played"] == 1:
             self.machine.events.post("villain_selection_already_played", villain_key=villain_key)
             return
-
         self._start_villain(villain_key)
 
     def _start_villain(self, villain_key):
@@ -169,14 +163,12 @@ class VillainProgression(Mode):
 
     def _check_chapter_complete(self):
         chapter = self._get_current_chapter()
-
         if chapter is None:
             self.player["final_wizard_ready"] = 1
             self.machine.events.post("final_wizard_ready")
             return
 
         required = int(chapter["villain_count_required"])
-
         if self.player["villains_played_this_chapter"] >= required:
             self.player["chapter_mini_wizard_ready"] = 1
             self.machine.events.post(

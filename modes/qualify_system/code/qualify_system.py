@@ -2,13 +2,16 @@ from mpf.core.mode import Mode
 
 
 class QualifySystem(Mode):
-    """3-bank drops + three saucer state system.
+    """Left 3-bank drops + three saucer state system.
 
-    Physical drops reset at ball start, bank completion, and after villain modes.
-    Saucer states persist between balls but reset after a villain starts/ends.
+    s_left_drops_1 -> saucer 1
+    s_left_drops_2 -> saucer 2
+    s_left_drops_3 -> saucer 3
+
+    MPF bank event drop_target_bank_dt_bank_left_down marks completion.
     """
 
-    SAUCERS = ["left", "center", "right"]
+    SAUCERS = ["saucer_1", "saucer_2", "saucer_3"]
     MAX_SAUCER_STATE = 5
 
     def mode_start(self, **kwargs):
@@ -23,10 +26,11 @@ class QualifySystem(Mode):
         super().mode_stop(**kwargs)
 
     def _add_handlers(self):
-        self.add_mode_event_handler("villain_qualify_drop_left_hit", self._drop_hit, saucer="left")
-        self.add_mode_event_handler("villain_qualify_drop_center_hit", self._drop_hit, saucer="center")
-        self.add_mode_event_handler("villain_qualify_drop_right_hit", self._drop_hit, saucer="right")
+        self.add_mode_event_handler("villain_qualify_drop_1_hit", self._drop_hit, saucer="saucer_1")
+        self.add_mode_event_handler("villain_qualify_drop_2_hit", self._drop_hit, saucer="saucer_2")
+        self.add_mode_event_handler("villain_qualify_drop_3_hit", self._drop_hit, saucer="saucer_3")
 
+        self.add_mode_event_handler("drop_target_bank_dt_bank_left_down", self._bank_completed)
         self.add_mode_event_handler("saucer_star_upgrade_hit", self._star_hit)
 
         self.add_mode_event_handler("ball_started", self._ball_started_restore)
@@ -36,27 +40,24 @@ class QualifySystem(Mode):
 
     def _ensure_player_vars(self):
         defaults = {
-            "left_saucer_state": 0,
-            "center_saucer_state": 0,
-            "right_saucer_state": 0,
+            "saucer_1_state": 0,
+            "saucer_2_state": 0,
+            "saucer_3_state": 0,
 
-            "left_drop_hit_this_cycle": 0,
-            "center_drop_hit_this_cycle": 0,
-            "right_drop_hit_this_cycle": 0,
+            "saucer_1_drop_hit_this_cycle": 0,
+            "saucer_2_drop_hit_this_cycle": 0,
+            "saucer_3_drop_hit_this_cycle": 0,
 
             "drop_bank_completions_this_ball": 0,
             "drop_bank_completions_this_chapter": 0,
         }
-
         for name, value in defaults.items():
-            try:
-                self.player[name]
-            except Exception:
+            if name not in self.player:
                 self.player[name] = value
 
     def _ball_started_restore(self, **kwargs):
         self._reset_drop_cycle()
-        self.machine.events.post("villain_qualify_drop_bank_reset")
+        self.machine.events.post("villain_qualify_drop_bank_reset_request")
         self._restore_state()
 
     def _drop_hit(self, saucer=None, **kwargs):
@@ -64,9 +65,8 @@ class QualifySystem(Mode):
             return
 
         hit_var = f"{saucer}_drop_hit_this_cycle"
-        state_var = f"{saucer}_saucer_state"
+        state_var = f"{saucer}_state"
 
-        # One saucer-state increase per physical drop per bank cycle.
         if self.player[hit_var] == 0:
             self.player[hit_var] = 1
 
@@ -77,29 +77,30 @@ class QualifySystem(Mode):
                     saucer=saucer,
                     state=self.player[state_var],
                 )
-                self.machine.events.post(
-                    f"{saucer}_saucer_state_{self.player[state_var]}"
-                )
+                self.machine.events.post(f"{saucer}_state_{self.player[state_var]}")
             else:
                 self.machine.events.post("saucer_already_maxed", saucer=saucer)
-
         else:
             self.machine.events.post("drop_already_hit_this_cycle", saucer=saucer)
 
-        self._check_bank_complete()
         self._restore_state()
 
-    def _check_bank_complete(self):
-        if all(self.player[f"{s}_drop_hit_this_cycle"] == 1 for s in self.SAUCERS):
-            self.player["drop_bank_completions_this_ball"] += 1
-            self.player["drop_bank_completions_this_chapter"] += 1
-            self.machine.events.post(
-                "villain_qualify_drop_bank_completed",
-                completions_this_ball=self.player["drop_bank_completions_this_ball"],
-                completions_this_chapter=self.player["drop_bank_completions_this_chapter"],
-            )
-            self._reset_drop_cycle()
-            self.machine.events.post("villain_qualify_drop_bank_reset")
+    def _bank_completed(self, **kwargs):
+        if not self.qualify_logic_active:
+            return
+
+        self.player["drop_bank_completions_this_ball"] += 1
+        self.player["drop_bank_completions_this_chapter"] += 1
+
+        self.machine.events.post(
+            "villain_qualify_drop_bank_completed",
+            completions_this_ball=self.player["drop_bank_completions_this_ball"],
+            completions_this_chapter=self.player["drop_bank_completions_this_chapter"],
+        )
+
+        self._reset_drop_cycle()
+        self.machine.events.post("villain_qualify_drop_bank_reset_request")
+        self._restore_state()
 
     def _reset_drop_cycle(self):
         for saucer in self.SAUCERS:
@@ -109,13 +110,13 @@ class QualifySystem(Mode):
         if not self.qualify_logic_active:
             return
 
-        if not all(self.player[f"{s}_saucer_state"] >= 1 for s in self.SAUCERS):
+        if not all(self.player[f"{s}_state"] >= 1 for s in self.SAUCERS):
             self.machine.events.post("saucer_star_not_ready")
             return
 
         advanced = False
         for saucer in self.SAUCERS:
-            state_var = f"{saucer}_saucer_state"
+            state_var = f"{saucer}_state"
             if self.player[state_var] < self.MAX_SAUCER_STATE:
                 self.player[state_var] += 1
                 advanced = True
@@ -134,12 +135,12 @@ class QualifySystem(Mode):
 
     def _reset_after_villain(self, **kwargs):
         for saucer in self.SAUCERS:
-            self.player[f"{saucer}_saucer_state"] = 0
+            self.player[f"{saucer}_state"] = 0
             self.player[f"{saucer}_drop_hit_this_cycle"] = 0
 
         self.player["drop_bank_completions_this_ball"] = 0
         self.machine.events.post("villain_qualify_reset_after_villain")
-        self.machine.events.post("villain_qualify_drop_bank_reset")
+        self.machine.events.post("villain_qualify_drop_bank_reset_request")
         self._restore_state()
 
     def _restore_state(self, **kwargs):
@@ -147,10 +148,10 @@ class QualifySystem(Mode):
             return
 
         for saucer in self.SAUCERS:
-            state = int(self.player[f"{saucer}_saucer_state"])
+            state = int(self.player[f"{saucer}_state"])
             self.machine.events.post(
                 "saucer_state_restore",
                 saucer=saucer,
                 state=state,
             )
-            self.machine.events.post(f"{saucer}_saucer_restore_state_{state}")
+            self.machine.events.post(f"{saucer}_restore_state_{state}")

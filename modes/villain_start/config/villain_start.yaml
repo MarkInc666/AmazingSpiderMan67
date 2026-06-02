@@ -6,18 +6,16 @@ mode:
   stop_events: ball_ending
   priority: 116
 
-# Replace these switch names with your actual saucer switches.
-switch_player:
-  s_left_saucer_active:
-    left_villain_saucer_hit
-
-  s_center_saucer_active:
-    center_villain_saucer_hit
-
-  s_right_saucer_active:
-    right_villain_saucer_hit
-
 event_player:
+  s_saucer_1_active:
+    - saucer_1_hit
+
+  s_saucer_2_active:
+    - saucer_2_hit
+
+  s_saucer_3_active:
+    - saucer_3_hit
+
   villain_saucer_points_only:
     - award_villain_saucer_points
 

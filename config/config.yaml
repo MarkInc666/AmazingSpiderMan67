@@ -86,10 +86,10 @@ modes:
   - super_spinner
   - super_pops
   - villain_bookends
-  - qualify_upper_access
-  - qualify_villain_locate
-  - qualify_villain_select
-  - qualify_villain_start
+#  - qualify_upper_access
+#  - qualify_villain_locate
+#  - qualify_villain_select
+#  - qualify_villain_start
   - doc_ock
   - electro
   - goblin 
@@ -101,6 +101,10 @@ modes:
   - scorpion
   - vulture
   - kingpin
+  - qualify_system
+  - villain_start
+  - case_files
+  - villain_progression
 
 
 player_vars:

@@ -2,7 +2,6 @@
 
 mode:
   start_events: ball_started
-  stop_events: ball_ending
   code: daily_bugle_mystery.DailyBugleMystery
   priority: 90
 
@@ -34,7 +33,6 @@ event_player:
     - daily_bugle_widget_remove
     - daily_bugle_widget_readd|10ms
 
-
 widget_player:
   daily_bugle_widget_remove:
     daily_bugle_ready:
@@ -51,6 +49,7 @@ variable_player:
 
   s_vuk_switch_active:
     score: 3000
+
 
 
 random_event_player:
@@ -84,52 +83,42 @@ sound_player:
     sm_i_better_take_some_photos:
       action: play
       bus: voice
-
   daily_bugle_rooftop_right_exit_1:
     sm_i_hope_mr_jameson_likes:
       action: play
       bus: voice
-
   daily_bugle_rooftop_right_exit_2:
     sm_i_wonder_what_mr_jameson:
       action: play
       bus: voice
-
   mystery_award_ball_save:
     sm_a_safety_net:
       action: play
       bus: voice
-
   mystery_award_start_super_spinner:
     sm_super_spinner:
       action: play
       bus: voice
-
   mystery_award_advance_bonus_multiplier:
     sm_a_bigger_reward:
       action: play
       bus: voice
-
   mystery_award_collect_bonus:
     sm_oh_i_love_bonus_points:
       action: play
       bus: voice
-
   mystery_award_hold_bonus:
     sm_ill_keep_these:
       action: play
       bus: voice
-
   mystery_award_start_super_pops:
     sm_super_pops:
       action: play
       bus: voice
-
-  mystery_award_million_points:
+  mystery_award_million_points:       
     sm_a_million_points:
       action: play
       bus: voice
-
   mystery_award_villain_start_ready:
     sm_i_wonder_what_mr_jameson:
       action: play
@@ -137,204 +126,78 @@ sound_player:
 
 
 show_player:
-
-  # Hit feedback: flash a couple times, then stay solid.
   daily_bugle_a_complete:
-    daily_bugle_a_hit_flash_then_solid:
-      key: daily_bugle_a
+    daily_bugle_a_complete_show:
+      loops: -1
 
   daily_bugle_b_complete:
-    daily_bugle_b_hit_flash_then_solid:
-      key: daily_bugle_b
+    daily_bugle_b_complete_show:
+      loops: -1
 
-  # Restore events: no old hit animation, just restore the correct state.
-  daily_bugle_a_restore_complete:
-    daily_bugle_a_solid:
-      key: daily_bugle_a
-
-  daily_bugle_a_restore_incomplete:
-    daily_bugle_a_off:
-      key: daily_bugle_a
-
-  daily_bugle_b_restore_complete:
-    daily_bugle_b_solid:
-      key: daily_bugle_b
-
-  daily_bugle_b_restore_incomplete:
-    daily_bugle_b_off:
-      key: daily_bugle_b
-
-  # A+B complete: stop the individual A/B shows and show the spinner/AB ready state.
   daily_bugle_ab_complete:
-    daily_bugle_a_hit_flash_then_solid:
+    daily_bugle_a_complete_show:
       action: stop
-      key: daily_bugle_a
-    daily_bugle_b_hit_flash_then_solid:
+    daily_bugle_b_complete_show:
       action: stop
-      key: daily_bugle_b
-    daily_bugle_a_solid:
-      action: stop
-      key: daily_bugle_a
-    daily_bugle_b_solid:
-      action: stop
-      key: daily_bugle_b
     daily_bugle_ab_ready_show:
       loops: 3
-      key: daily_bugle_ab
     daily_bugle_spinner_ready_show:
       loops: -1
-      key: daily_bugle_spinner
 
-  daily_bugle_restore_ab_ready:
-    daily_bugle_ab_ready_solid:
-      key: daily_bugle_ab
-    daily_bugle_spinner_ready_show:
-      loops: -1
-      key: daily_bugle_spinner
-
-  # Mystery ready: stop AB/spinner ready and flash mystery.
   daily_bugle_mystery_ready:
     daily_bugle_ab_ready_show:
       action: stop
-      key: daily_bugle_ab
-    daily_bugle_ab_ready_solid:
-      action: stop
-      key: daily_bugle_ab
+    daily_bugle_ab_off_show:
+      loops: 0
     daily_bugle_spinner_ready_show:
       action: stop
-      key: daily_bugle_spinner
-    daily_bugle_ab_off_show:
-      key: daily_bugle_ab
     daily_bugle_mystery_ready_show:
       loops: -1
-      key: daily_bugle_mystery
-
-  daily_bugle_restore_mystery_ready:
-    daily_bugle_ab_off_show:
-      key: daily_bugle_ab
-    daily_bugle_mystery_ready_show:
-      loops: -1
-      key: daily_bugle_mystery
 
   daily_bugle_mystery_collected:
     daily_bugle_mystery_ready_show:
       action: stop
-      key: daily_bugle_mystery
     daily_bugle_mystery_collect_show:
       loops: 4
-      key: daily_bugle_collect
 
   daily_bugle_mystery_stop_all:
-    daily_bugle_a_hit_flash_then_solid:
+    daily_bugle_a_complete_show:
       action: stop
-      key: daily_bugle_a
-    daily_bugle_b_hit_flash_then_solid:
+    daily_bugle_b_complete_show:
       action: stop
-      key: daily_bugle_b
-    daily_bugle_a_solid:
-      action: stop
-      key: daily_bugle_a
-    daily_bugle_b_solid:
-      action: stop
-      key: daily_bugle_b
-    daily_bugle_a_off:
-      action: stop
-      key: daily_bugle_a
-    daily_bugle_b_off:
-      action: stop
-      key: daily_bugle_b
     daily_bugle_ab_ready_show:
       action: stop
-      key: daily_bugle_ab
-    daily_bugle_ab_ready_solid:
-      action: stop
-      key: daily_bugle_ab
-    daily_bugle_ab_off_show:
-      action: stop
-      key: daily_bugle_ab
     daily_bugle_spinner_ready_show:
       action: stop
-      key: daily_bugle_spinner
     daily_bugle_mystery_ready_show:
       action: stop
-      key: daily_bugle_mystery
     daily_bugle_mystery_collect_show:
       action: stop
-      key: daily_bugle_collect
 
 
 shows:
-
-  daily_bugle_a_hit_flash_then_solid:
-    - duration: 120ms
+  daily_bugle_a_complete_show:
+    - duration: 300ms
       lights:
         l_a_rollover: white
         l_right_a: white
-    - duration: 120ms
-      lights:
-        l_a_rollover: off
-        l_right_a: off
-    - duration: 120ms
-      lights:
-        l_a_rollover: white
-        l_right_a: white
-    - duration: 120ms
-      lights:
-        l_a_rollover: off
-        l_right_a: off
-    - duration: -1
+    - duration: 300ms
       lights:
         l_a_rollover: blue
         l_right_a: blue
 
-  daily_bugle_b_hit_flash_then_solid:
-    - duration: 120ms
+  daily_bugle_b_complete_show:
+    - duration: 300ms
       lights:
         l_b_rollover: white
         l_left_b: white
-    - duration: 120ms
-      lights:
-        l_b_rollover: off
-        l_left_b: off
-    - duration: 120ms
-      lights:
-        l_b_rollover: white
-        l_left_b: white
-    - duration: 120ms
-      lights:
-        l_b_rollover: off
-        l_left_b: off
-    - duration: -1
+    - duration: 300ms
       lights:
         l_b_rollover: blue
         l_left_b: blue
-
-  daily_bugle_a_solid:
-    - duration: -1
-      lights:
-        l_a_rollover: blue
-        l_right_a: blue
-
-  daily_bugle_b_solid:
-    - duration: -1
-      lights:
-        l_b_rollover: blue
-        l_left_b: blue
-
-  daily_bugle_a_off:
-    - duration: -1
-      lights:
-        l_a_rollover: off
-        l_right_a: off
-
-  daily_bugle_b_off:
-    - duration: -1
-      lights:
-        l_b_rollover: off
-        l_left_b: off
 
   daily_bugle_ab_off_show:
-    - duration: -1
+    - duration: 300ms
       lights:
         l_a_rollover: off
         l_right_a: off
@@ -353,14 +216,6 @@ shows:
         l_a_rollover: blue
         l_b_rollover: blue
         l_right_a: blue
-        l_left_b: blue
-
-  daily_bugle_ab_ready_solid:
-    - duration: -1
-      lights:
-        l_a_rollover: blue
-        l_right_a: blue
-        l_b_rollover: blue
         l_left_b: blue
 
   daily_bugle_spinner_ready_show:
@@ -385,4 +240,5 @@ shows:
         gi: white
     - duration: 150ms
       lights:
-        gi: blue
+        gi: blue        
+        

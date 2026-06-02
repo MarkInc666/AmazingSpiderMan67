@@ -6,112 +6,229 @@ mode:
   stop_events: ball_ending
   priority: 120
 
-# Replace these switch names with your actual lower-spinner and right 5-bank switch names.
-switch_player:
-  s_lower_spinner_active:
-    case_file_spinner_hit
+event_player:
+  s_web_spinner_active:
+    - case_file_spinner_hit
 
-  s_right_bank_drop_1_active:
-    case_file_drop_1_hit
-  s_right_bank_drop_2_active:
-    case_file_drop_2_hit
-  s_right_bank_drop_3_active:
-    case_file_drop_3_hit
-  s_right_bank_drop_4_active:
-    case_file_drop_4_hit
-  s_right_bank_drop_5_active:
-    case_file_drop_5_hit
+  s_right_drops_1_active:
+    - case_file_drop_1_hit
+  s_right_drops_2_active:
+    - case_file_drop_2_hit
+  s_right_drops_3_active:
+    - case_file_drop_3_hit
+  s_right_drops_4_active:
+    - case_file_drop_4_hit
+  s_right_drops_5_active:
+    - case_file_drop_5_hit
+
 
 show_player:
-  case_file_selected_extra_jackpot:
+  # Any right 5-bank hit flashes the local GI.
+  case_file_any_drop_hit:
+    case_file_5bank_gi_flash:
+      loops: 2
+      key: case_file_5bank_gi
+
+  # Stop the currently flashing target before setting the collected target solid.
+  case_file_selected_stop:
     case_file_extra_jackpot_flash:
-      key: case_file_selected
+      action: stop
+    case_file_more_time_flash:
+      action: stop
+    case_file_multiplier_flash:
+      action: stop
+    case_file_safety_flash:
+      action: stop
+    case_file_super_boost_flash:
+      action: stop
+
+  # Selected/flashing Case File target.
+  case_file_selected_extra_jackpot:
+    case_file_more_time_flash:
+      action: stop
+    case_file_multiplier_flash:
+      action: stop
+    case_file_safety_flash:
+      action: stop
+    case_file_super_boost_flash:
+      action: stop
+    case_file_extra_jackpot_flash:
+      loops: -1
 
   case_file_selected_more_time:
-    case_file_more_time_flash:
-      key: case_file_selected
-
-  case_file_selected_multiplier:
-    case_file_multiplier_flash:
-      key: case_file_selected
-
-  case_file_selected_safety:
-    case_file_safety_flash:
-      key: case_file_selected
-
-  case_file_selected_super_boost:
-    case_file_super_boost_flash:
-      key: case_file_selected
-
-  case_file_collected_extra_jackpot:
-    case_file_extra_jackpot_solid:
-      key: case_file_extra_jackpot
-
-  case_file_collected_more_time:
-    case_file_more_time_solid:
-      key: case_file_more_time
-
-  case_file_collected_multiplier:
-    case_file_multiplier_solid:
-      key: case_file_multiplier
-
-  case_file_collected_safety:
-    case_file_safety_solid:
-      key: case_file_safety
-
-  case_file_collected_super_boost:
-    case_file_super_boost_solid:
-      key: case_file_super_boost
-
-  case_files_cleared:
-    case_file_extra_jackpot_solid:
-      action: stop
-      key: case_file_extra_jackpot
-    case_file_more_time_solid:
-      action: stop
-      key: case_file_more_time
-    case_file_multiplier_solid:
-      action: stop
-      key: case_file_multiplier
-    case_file_safety_solid:
-      action: stop
-      key: case_file_safety
-    case_file_super_boost_solid:
-      action: stop
-      key: case_file_super_boost
     case_file_extra_jackpot_flash:
       action: stop
-      key: case_file_selected
-    case_file_more_time_flash:
-      action: stop
-      key: case_file_selected
     case_file_multiplier_flash:
       action: stop
-      key: case_file_selected
     case_file_safety_flash:
       action: stop
-      key: case_file_selected
     case_file_super_boost_flash:
       action: stop
-      key: case_file_selected
+    case_file_more_time_flash:
+      loops: -1
 
-sound_player:
-  case_file_collected:
-    case_file_found
+  case_file_selected_multiplier:
+    case_file_extra_jackpot_flash:
+      action: stop
+    case_file_more_time_flash:
+      action: stop
+    case_file_safety_flash:
+      action: stop
+    case_file_super_boost_flash:
+      action: stop
+    case_file_multiplier_flash:
+      loops: -1
 
-  case_files_complete:
-    case_file_complete
+  case_file_selected_safety:
+    case_file_extra_jackpot_flash:
+      action: stop
+    case_file_more_time_flash:
+      action: stop
+    case_file_multiplier_flash:
+      action: stop
+    case_file_super_boost_flash:
+      action: stop
+    case_file_safety_flash:
+      loops: -1
 
-  wizard_prep_added:
-    wizard_prep_added
+  case_file_selected_super_boost:
+    case_file_extra_jackpot_flash:
+      action: stop
+    case_file_more_time_flash:
+      action: stop
+    case_file_multiplier_flash:
+      action: stop
+    case_file_safety_flash:
+      action: stop
+    case_file_super_boost_flash:
+      loops: -1
 
-widget_player:
-  case_file_collected:
-    case_file_collected_widget:
-      action: play
-      expire: 2s
+  # Collected Case File target goes solid.
+  case_file_collected_extra_jackpot:
+    case_file_extra_jackpot_flash:
+      action: stop
+    case_file_extra_jackpot_solid:
+      loops: -1
 
-  case_files_complete:
-    case_file_complete_widget:
-      action: play
-      expire: 3s
+  case_file_collected_more_time:
+    case_file_more_time_flash:
+      action: stop
+    case_file_more_time_solid:
+      loops: -1
+
+  case_file_collected_multiplier:
+    case_file_multiplier_flash:
+      action: stop
+    case_file_multiplier_solid:
+      loops: -1
+
+  case_file_collected_safety:
+    case_file_safety_flash:
+      action: stop
+    case_file_safety_solid:
+      loops: -1
+
+  case_file_collected_super_boost:
+    case_file_super_boost_flash:
+      action: stop
+    case_file_super_boost_solid:
+      loops: -1
+
+  # Clear all Case File shows when the next villain starts.
+  case_files_cleared:
+    case_file_extra_jackpot_flash:
+      action: stop
+    case_file_more_time_flash:
+      action: stop
+    case_file_multiplier_flash:
+      action: stop
+    case_file_safety_flash:
+      action: stop
+    case_file_super_boost_flash:
+      action: stop
+    case_file_extra_jackpot_solid:
+      action: stop
+    case_file_more_time_solid:
+      action: stop
+    case_file_multiplier_solid:
+      action: stop
+    case_file_safety_solid:
+      action: stop
+    case_file_super_boost_solid:
+      action: stop
+
+shows:
+  case_file_5bank_gi_flash:
+    - duration: 100ms
+      lights:
+        l_gi_5bank_lower: white
+        l_gi_5bank_upper: white
+    - duration: 100ms
+      lights:
+        l_gi_5bank_lower: off
+        l_gi_5bank_upper: off
+
+  case_file_extra_jackpot_flash:
+    - duration: 250ms
+      lights:
+        l_5bank_1: white
+    - duration: 250ms
+      lights:
+        l_5bank_1: off
+
+  case_file_more_time_flash:
+    - duration: 250ms
+      lights:
+        l_5bank_2: blue
+    - duration: 250ms
+      lights:
+        l_5bank_2: off
+
+  case_file_multiplier_flash:
+    - duration: 250ms
+      lights:
+        l_5bank_3: green
+    - duration: 250ms
+      lights:
+        l_5bank_3: off
+
+  case_file_safety_flash:
+    - duration: 250ms
+      lights:
+        l_5bank_4: yellow
+    - duration: 250ms
+      lights:
+        l_5bank_4: off
+
+  case_file_super_boost_flash:
+    - duration: 250ms
+      lights:
+        l_5bank_5: blue
+    - duration: 250ms
+      lights:
+        l_5bank_5: off
+
+  case_file_extra_jackpot_solid:
+    - duration: -1
+      lights:
+        l_5bank_1: white
+
+  case_file_more_time_solid:
+    - duration: -1
+      lights:
+        l_5bank_2: blue
+
+  case_file_multiplier_solid:
+    - duration: -1
+      lights:
+        l_5bank_3: green
+
+  case_file_safety_solid:
+    - duration: -1
+      lights:
+        l_5bank_4: yellow
+
+  case_file_super_boost_solid:
+    - duration: -1
+      lights:
+        l_5bank_5: blue

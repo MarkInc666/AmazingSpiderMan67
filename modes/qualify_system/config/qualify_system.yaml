@@ -6,89 +6,231 @@ mode:
   stop_events: ball_ending
   priority: 115
 
-# Replace these switch names with your actual 3-bank drop target and star rollover switches.
-switch_player:
-  s_left_3bank_drop_active:
-    villain_qualify_drop_left_hit
+event_player:
+  villain_qualify_drop_bank_reset_request:
+    - drop_target_bank_dt_bank_left_reset
 
-  s_center_3bank_drop_active:
-    villain_qualify_drop_center_hit
+  s_left_drops_1_active:
+    - villain_qualify_drop_1_hit
 
-  s_right_3bank_drop_active:
-    villain_qualify_drop_right_hit
+  s_left_drops_2_active:
+    - villain_qualify_drop_2_hit
 
-  s_star_active:
-    saucer_star_upgrade_hit
+  s_left_drops_3_active:
+    - villain_qualify_drop_3_hit
+
+  s_star_rollover_active:
+    - saucer_star_upgrade_hit
 
 show_player:
-  left_saucer_restore_state_0:
-    left_saucer_unlit_show:
-      key: left_saucer
+  saucer_1_restore_state_0:
+    saucer_cluster_state_0:
+      key: saucer_1
+      show_tokens:
+        main_light: l_1
+        hole_left: l_1_hole_l
+        hole_right: l_1_hole_r
 
-  left_saucer_restore_state_1:
-    left_saucer_slow_flash_show:
-      key: left_saucer
+  saucer_1_restore_state_1:
+    saucer_cluster_state_1:
+      key: saucer_1
+      show_tokens:
+        main_light: l_1
+        hole_left: l_1_hole_l
+        hole_right: l_1_hole_r
 
-  left_saucer_restore_state_2:
-    left_saucer_slow_medium_flash_show:
-      key: left_saucer
+  saucer_1_restore_state_2:
+    saucer_cluster_state_2:
+      key: saucer_1
+      show_tokens:
+        main_light: l_1
+        hole_left: l_1_hole_l
+        hole_right: l_1_hole_r
 
-  left_saucer_restore_state_3:
-    left_saucer_medium_flash_show:
-      key: left_saucer
+  saucer_1_restore_state_3:
+    saucer_cluster_state_3:
+      key: saucer_1
+      show_tokens:
+        main_light: l_1
+        hole_left: l_1_hole_l
+        hole_right: l_1_hole_r
 
-  left_saucer_restore_state_4:
-    left_saucer_medium_fast_flash_show:
-      key: left_saucer
+  saucer_1_restore_state_4:
+    saucer_cluster_state_4:
+      key: saucer_1
+      show_tokens:
+        main_light: l_1
+        hole_left: l_1_hole_l
+        hole_right: l_1_hole_r
 
-  left_saucer_restore_state_5:
-    left_saucer_fast_flash_show:
-      key: left_saucer
+  saucer_1_restore_state_5:
+    saucer_cluster_state_5:
+      key: saucer_1
+      show_tokens:
+        main_light: l_1
+        hole_left: l_1_hole_l
+        hole_right: l_1_hole_r
 
-  center_saucer_restore_state_0:
-    center_saucer_unlit_show:
-      key: center_saucer
+  saucer_2_restore_state_0:
+    saucer_cluster_state_0:
+      key: saucer_2
+      show_tokens:
+        main_light: l_2
+        hole_left: l_2_hole_l
+        hole_right: l_2_hole_r
 
-  center_saucer_restore_state_1:
-    center_saucer_slow_flash_show:
-      key: center_saucer
+  saucer_2_restore_state_1:
+    saucer_cluster_state_1:
+      key: saucer_2
+      show_tokens:
+        main_light: l_2
+        hole_left: l_2_hole_l
+        hole_right: l_2_hole_r
 
-  center_saucer_restore_state_2:
-    center_saucer_slow_medium_flash_show:
-      key: center_saucer
+  saucer_2_restore_state_2:
+    saucer_cluster_state_2:
+      key: saucer_2
+      show_tokens:
+        main_light: l_2
+        hole_left: l_2_hole_l
+        hole_right: l_2_hole_r
 
-  center_saucer_restore_state_3:
-    center_saucer_medium_flash_show:
-      key: center_saucer
+  saucer_2_restore_state_3:
+    saucer_cluster_state_3:
+      key: saucer_2
+      show_tokens:
+        main_light: l_2
+        hole_left: l_2_hole_l
+        hole_right: l_2_hole_r
 
-  center_saucer_restore_state_4:
-    center_saucer_medium_fast_flash_show:
-      key: center_saucer
+  saucer_2_restore_state_4:
+    saucer_cluster_state_4:
+      key: saucer_2
+      show_tokens:
+        main_light: l_2
+        hole_left: l_2_hole_l
+        hole_right: l_2_hole_r
 
-  center_saucer_restore_state_5:
-    center_saucer_fast_flash_show:
-      key: center_saucer
+  saucer_2_restore_state_5:
+    saucer_cluster_state_5:
+      key: saucer_2
+      show_tokens:
+        main_light: l_2
+        hole_left: l_2_hole_l
+        hole_right: l_2_hole_r
 
-  right_saucer_restore_state_0:
-    right_saucer_unlit_show:
-      key: right_saucer
+  saucer_3_restore_state_0:
+    saucer_cluster_state_0:
+      key: saucer_3
+      show_tokens:
+        main_light: l_3
+        hole_left: l_3_hole_l
+        hole_right: l_3_hole_r
 
-  right_saucer_restore_state_1:
-    right_saucer_slow_flash_show:
-      key: right_saucer
+  saucer_3_restore_state_1:
+    saucer_cluster_state_1:
+      key: saucer_3
+      show_tokens:
+        main_light: l_3
+        hole_left: l_3_hole_l
+        hole_right: l_3_hole_r
 
-  right_saucer_restore_state_2:
-    right_saucer_slow_medium_flash_show:
-      key: right_saucer
+  saucer_3_restore_state_2:
+    saucer_cluster_state_2:
+      key: saucer_3
+      show_tokens:
+        main_light: l_3
+        hole_left: l_3_hole_l
+        hole_right: l_3_hole_r
 
-  right_saucer_restore_state_3:
-    right_saucer_medium_flash_show:
-      key: right_saucer
+  saucer_3_restore_state_3:
+    saucer_cluster_state_3:
+      key: saucer_3
+      show_tokens:
+        main_light: l_3
+        hole_left: l_3_hole_l
+        hole_right: l_3_hole_r
 
-  right_saucer_restore_state_4:
-    right_saucer_medium_fast_flash_show:
-      key: right_saucer
+  saucer_3_restore_state_4:
+    saucer_cluster_state_4:
+      key: saucer_3
+      show_tokens:
+        main_light: l_3
+        hole_left: l_3_hole_l
+        hole_right: l_3_hole_r
 
-  right_saucer_restore_state_5:
-    right_saucer_fast_flash_show:
-      key: right_saucer
+  saucer_3_restore_state_5:
+    saucer_cluster_state_5:
+      key: saucer_3
+      show_tokens:
+        main_light: l_3
+        hole_left: l_3_hole_l
+        hole_right: l_3_hole_r
+
+shows:
+  saucer_cluster_state_0:
+    - duration: -1
+      lights:
+        (main_light): off
+        (hole_left): off
+        (hole_right): off
+
+  saucer_cluster_state_1:
+    - duration: 500ms
+      lights:
+        (main_light): blue
+        (hole_left): off
+        (hole_right): off
+    - duration: 500ms
+      lights:
+        (main_light): off
+        (hole_left): off
+        (hole_right): off
+
+  saucer_cluster_state_2:
+    - duration: 350ms
+      lights:
+        (main_light): blue
+        (hole_left): white
+        (hole_right): white
+    - duration: 350ms
+      lights:
+        (main_light): off
+        (hole_left): off
+        (hole_right): off
+
+  saucer_cluster_state_3:
+    - duration: 250ms
+      lights:
+        (main_light): green
+        (hole_left): white
+        (hole_right): white
+    - duration: 250ms
+      lights:
+        (main_light): off
+        (hole_left): off
+        (hole_right): off
+
+  saucer_cluster_state_4:
+    - duration: 180ms
+      lights:
+        (main_light): green
+        (hole_left): red
+        (hole_right): red
+    - duration: 180ms
+      lights:
+        (main_light): off
+        (hole_left): off
+        (hole_right): off
+
+  saucer_cluster_state_5:
+    - duration: 100ms
+      lights:
+        (main_light): white
+        (hole_left): red
+        (hole_right): red
+    - duration: 100ms
+      lights:
+        (main_light): green
+        (hole_left): off
+        (hole_right): off

@@ -4,18 +4,14 @@ from mpf.core.mode import Mode
 class VillainStart(Mode):
     """Saucer decision system.
 
-    Saucer state decides:
+    saucer state:
     0 = points only
-    1 = start default next villain
+    1 = start one available villain directly
     2-5 = start carousel/select unless only one valid villain remains
-
-    This mode also routes ready saucers to mini-wizard/final wizard when applicable.
     """
 
-    SAUCERS = ["left", "center", "right"]
+    SAUCERS = ["saucer_1", "saucer_2", "saucer_3"]
 
-    # Keep this list synchronized with villain_progression.py.
-    # This copy is used only to count available choices for saucer decisions.
     VILLAIN_KEYS = [
         "rhino",
         "vulture",
@@ -52,15 +48,15 @@ class VillainStart(Mode):
         super().mode_stop(**kwargs)
 
     def _add_handlers(self):
-        self.add_mode_event_handler("left_villain_saucer_hit", self._saucer_hit, saucer="left")
-        self.add_mode_event_handler("center_villain_saucer_hit", self._saucer_hit, saucer="center")
-        self.add_mode_event_handler("right_villain_saucer_hit", self._saucer_hit, saucer="right")
+        self.add_mode_event_handler("saucer_1_hit", self._saucer_hit, saucer="saucer_1")
+        self.add_mode_event_handler("saucer_2_hit", self._saucer_hit, saucer="saucer_2")
+        self.add_mode_event_handler("saucer_3_hit", self._saucer_hit, saucer="saucer_3")
 
     def _saucer_hit(self, saucer=None, **kwargs):
         if not self.villain_start_logic_active or saucer not in self.SAUCERS:
             return
 
-        state = int(self.player[f"{saucer}_saucer_state"])
+        state = int(self.player[f"{saucer}_state"])
 
         if self._player_var("final_wizard_ready") == 1:
             self.machine.events.post("villain_saucer_start_final_wizard", saucer=saucer)
@@ -100,7 +96,6 @@ class VillainStart(Mode):
             villain_keys=",".join(available),
         )
 
-        # Your carousel mode can use this event to build/display only these choices.
         self.machine.events.post(
             "start_mode_villain_select",
             max_choices=state,
@@ -114,15 +109,12 @@ class VillainStart(Mode):
         for key in self.VILLAIN_KEYS:
             if self.VILLAIN_TIERS.get(key, 1) > chapter:
                 continue
-
             if self._player_var(f"{key}_played") == 1:
                 continue
-
             available.append(key)
 
         if limit is not None:
             return available[:int(limit)]
-
         return available
 
     def _player_var(self, name, default=0):

@@ -2,7 +2,14 @@ from mpf.core.mode import Mode
 
 
 class CaseFiles(Mode):
-    """Lower spinner + right 5-bank Case File system."""
+    """Lower spinner + right 5-bank Case File system.
+
+    - Lower spinner cycles the selected/flashing Case File target every 3 spins.
+    - Any right 5-bank drop hit flashes l_gi_5bank_lower and l_gi_5bank_upper.
+    - Only the currently selected/flashing target awards a Case File.
+    - Awarded Case Files stay solid until the next villain starts.
+    - Completing all five Case Files adds Wizard Prep for the chapter.
+    """
 
     CASE_FILES = [
         "extra_jackpot",
@@ -22,9 +29,7 @@ class CaseFiles(Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
-
         self.case_files_logic_active = True
-
         self._ensure_player_vars()
         self._add_handlers()
         self._restore_state()
@@ -49,24 +54,35 @@ class CaseFiles(Mode):
     def _ensure_player_vars(self):
         defaults = {
             "case_file_selected_index": 0,
+            "case_file_spinner_count": 0,
+
             "case_file_extra_jackpot": 0,
             "case_file_more_time": 0,
             "case_file_multiplier": 0,
             "case_file_safety": 0,
             "case_file_super_boost": 0,
+
             "case_files_collected_count": 0,
             "case_files_complete_ready": 0,
             "wizard_prep_this_chapter": 0,
         }
 
         for name, value in defaults.items():
-            try:
-                self.player[name]
-            except Exception:
+            if name not in self.player:
                 self.player[name] = value
 
     def _spinner_hit(self, **kwargs):
         if not self.case_files_logic_active:
+            return
+
+        self.player["case_file_spinner_count"] += 1
+
+        # Every 3 lower-spinner spins advances the selected Case File.
+        if self.player["case_file_spinner_count"] % 3 != 0:
+            self.machine.events.post(
+                "case_file_spinner_progress",
+                spins=self.player["case_file_spinner_count"],
+            )
             return
 
         self._advance_selected_case_file()
@@ -89,8 +105,12 @@ class CaseFiles(Mode):
         if not self.case_files_logic_active:
             return
 
+        # Any right 5-bank drop hit flashes the local GI.
+        self.machine.events.post("case_file_any_drop_hit", hit_index=index + 1)
+
         selected_index = int(self.player["case_file_selected_index"])
 
+        # Wrong target: feedback only, no Case File.
         if index != selected_index:
             self.machine.events.post(
                 "case_file_wrong_drop_hit",
@@ -106,6 +126,9 @@ class CaseFiles(Mode):
             self.machine.events.post("case_file_already_collected", case_file=key)
             self._advance_selected_case_file()
             return
+
+        # Stop selected flashing show before making the target solid.
+        self.machine.events.post("case_file_selected_stop")
 
         self.player[var_name] = 1
         self.player["case_files_collected_count"] += 1
@@ -142,13 +165,6 @@ class CaseFiles(Mode):
         )
 
     def _consume_case_files(self, **kwargs):
-        """Clear individual Case Files when a villain starts.
-
-        The villain mode should read these player vars during its mode_start,
-        before this clears them, or the start mode can package them into the
-        villain start event.
-        """
-
         self.machine.events.post(
             "case_files_consumed",
             extra_jackpot=self.player["case_file_extra_jackpot"],
@@ -164,6 +180,7 @@ class CaseFiles(Mode):
         self.player["case_files_collected_count"] = 0
         self.player["case_files_complete_ready"] = 0
         self.player["case_file_selected_index"] = 0
+        self.player["case_file_spinner_count"] = 0
 
         self.machine.events.post("case_files_cleared")
         self._restore_state()
@@ -196,6 +213,11 @@ class CaseFiles(Mode):
     def _restore_selected_case_file(self):
         selected_index = int(self.player["case_file_selected_index"])
         key = self.CASE_FILES[selected_index]
+
+        # If selected target is already collected, move to the next uncollected one.
+        if self.player[f"case_file_{key}"] == 1:
+            self._advance_selected_case_file()
+            return
 
         self.machine.events.post(
             "case_file_selected",

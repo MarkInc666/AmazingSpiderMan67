@@ -1,0 +1,216 @@
+#config_version=6
+
+mode:
+  code: villain_select.VillainSelect
+  start_events: start_mode_villain_select
+  stop_events:
+    - stop_mode_villain_select
+    - ball_ending
+    - villain_mode_started
+  priority: 300
+
+event_player:
+  # Navigate with flipper release events.
+  s_right_flipper_inactive:
+    - villain_select_next
+
+  s_left_flipper_inactive:
+    - villain_select_previous
+
+  # Use your existing timed-switch/both-flippers-held event here.
+  both_flippers_held_1s:
+    - villain_select_confirm
+
+  # Optional cancel if you want a back/cancel event later.
+  villain_select_timeout:
+    - villain_select_cancel
+
+
+show_player:
+  villain_select_started:
+    villain_select_ready_show:
+      loops: -1
+
+  villain_select_stopped:
+    villain_select_ready_show:
+      action: stop
+
+  villain_select_highlighted_rhino:
+    villain_select_rhino_show:
+      loops: -1
+
+  villain_select_highlighted_vulture:
+    villain_select_vulture_show:
+      loops: -1
+
+  villain_select_highlighted_lizard:
+    villain_select_lizard_show:
+      loops: -1
+
+  villain_select_highlighted_sandman:
+    villain_select_sandman_show:
+      loops: -1
+
+  villain_select_highlighted_electro:
+    villain_select_electro_show:
+      loops: -1
+
+  villain_select_highlighted_doc_ock:
+    villain_select_doc_ock_show:
+      loops: -1
+
+  villain_select_highlighted_scorpion:
+    villain_select_scorpion_show:
+      loops: -1
+
+  villain_select_highlighted_mysterio:
+    villain_select_mysterio_show:
+      loops: -1
+
+  villain_select_highlighted_goblin:
+    villain_select_goblin_show:
+      loops: -1
+
+  villain_select_highlighted_parafino:
+    villain_select_parafino_show:
+      loops: -1
+
+  villain_select_selected:
+    villain_select_ready_show:
+      action: stop
+
+
+# These are placeholder shows. Replace with your actual GMC widgets/shows.
+shows:
+  villain_select_ready_show:
+    - duration: 500ms
+      lights:
+        gi: blue
+    - duration: 500ms
+      lights:
+        gi: off
+
+  villain_select_rhino_show:
+    - duration: 300ms
+      lights:
+        gi: white
+    - duration: 300ms
+      lights:
+        gi: blue
+
+  villain_select_vulture_show:
+    - duration: 300ms
+      lights:
+        gi: white
+    - duration: 300ms
+      lights:
+        gi: green
+
+  villain_select_lizard_show:
+    - duration: 300ms
+      lights:
+        gi: green
+    - duration: 300ms
+      lights:
+        gi: off
+
+  villain_select_sandman_show:
+    - duration: 300ms
+      lights:
+        gi: yellow
+    - duration: 300ms
+      lights:
+        gi: off
+
+  villain_select_electro_show:
+    - duration: 300ms
+      lights:
+        gi: blue
+    - duration: 300ms
+      lights:
+        gi: white
+
+  villain_select_doc_ock_show:
+    - duration: 300ms
+      lights:
+        gi: green
+    - duration: 300ms
+      lights:
+        gi: blue
+
+  villain_select_scorpion_show:
+    - duration: 300ms
+      lights:
+        gi: green
+    - duration: 300ms
+      lights:
+        gi: white
+
+  villain_select_mysterio_show:
+    - duration: 300ms
+      lights:
+        gi: blue
+    - duration: 300ms
+      lights:
+        gi: yellow
+
+  villain_select_goblin_show:
+    - duration: 300ms
+      lights:
+        gi: green
+    - duration: 300ms
+      lights:
+        gi: yellow
+
+  villain_select_parafino_show:
+    - duration: 300ms
+      lights:
+        gi: white
+    - duration: 300ms
+      lights:
+        gi: off
+
+
+widget_player:
+  villain_select_started:
+    villain_select_widget:
+      action: play
+
+  villain_select_highlighted:
+    villain_select_widget:
+      action: update
+
+  villain_select_stopped:
+    villain_select_widget:
+      action: remove
+
+  villain_select_selected:
+    villain_select_widget:
+      action: remove
+
+
+sound_player:
+  villain_select_started:
+    carousel_open:
+      action: play
+      bus: effects
+
+  villain_select_moved_next:
+    carousel_move:
+      action: play
+      bus: effects
+
+  villain_select_moved_previous:
+    carousel_move:
+      action: play
+      bus: effects
+
+  villain_select_selected:
+    carousel_select:
+      action: play
+      bus: effects
+
+  villain_select_only_one_choice:
+    carousel_select:
+      action: play
+      bus: effects
