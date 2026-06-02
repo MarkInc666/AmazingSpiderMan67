@@ -411,3 +411,41 @@ For your expandable chapter system, I’d use the classic rogues as full villain
 [1]: https://en.wikipedia.org/wiki/Spider-Man_%281967_TV_series%29 "Spider-Man (1967 TV series) - Wikipedia"
 [2]: https://marvelanimated.fandom.com/wiki/Category%3AVillains_%28Spider-Man_%281967%29%29 "Category:Villains (Spider-Man (1967)) | Marvel Animated Universe Wiki | Fandom"
 
+
+
+
+
+
+
+Maintain state between balls:
+- A, B rollovers and their lights, the progress towards Daily Bugle Mystery award
+- currently highlighted villain (next one that will start in qualify_start)
+- villain progresses, chapter, number of spins, saucer states, etc
+- gate state
+
+- drop target banks all reset to up at start of each ball
+- but, before a villain mode starts, make note of up/down status of each target and restore them after villain ends
+
+Building towards villain mmodes:
+
+3 bank drops:
+- hit a drop once, the coresponding saucer lights, next available villain is ready to start there
+- hit all drops, all three saucers ready, drops reset
+- hit a drop again, it's saucer now flashes, 2 villain selection is now available
+- complete bank and hit a drop - 3 villains, etc.
+- every bank completing adds another (to max 5 choices)
+
+- The upper targets function similar to the drops for qualifying:
+  - first hit, saucer goes solid, subsequent target hits act like spins
+
+Upper Spinner:
+- the selection carousel can also depend on the number of spins: 
+  - 0-2 spins = 1 villain, no choice, it starts
+  - 3-5 spins = 2 villains to choose
+  - 6-8 spins = 3 villains to choose
+  - 9-11 spins = 4 villains to choose
+  - 12+ spins = all 5 villains to choose
+  so, spinning increases your selection choices 
+
+
+
