@@ -170,12 +170,21 @@ class VillainSelect(Carousel):
         player["saucer_2_select_ready"] = 0
         player["saucer_3_select_ready"] = 0
 
-        self.machine.events.post("villain_started_set")
+        self.machine.events.post("villain_started_set", villain=item, villain_key=item)
 
         self.machine.events.post(
             "villain_select_selected",
             villain_key=item,
             display_name=self.DISPLAY_NAMES.get(item, item.upper())
+        )
+
+        # This event is required by qualify_system and villain_start.
+        # It resets saucer states/lights and prevents another saucer hit from
+        # launching a second select/start while the villain is active.
+        self.machine.events.post(
+            "villain_mode_started",
+            villain_key=item,
+            villain_name=self.DISPLAY_NAMES.get(item, item.upper())
         )
 
         start_event = self.VILLAINS[item]
@@ -186,6 +195,7 @@ class VillainSelect(Carousel):
             start_event=start_event
         )
         self.machine.events.post("clear_villain_saucer_lights")
+        self.machine.events.post("clear_saucers")
         
         self.machine.events.post("villain_carousel_accept_selection")
         self.machine.events.post("stop_mode_villain_select")

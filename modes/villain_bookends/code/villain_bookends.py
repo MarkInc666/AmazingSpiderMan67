@@ -334,6 +334,7 @@ class VillainBookends(Mode):
             self.machine.events.post("villain_bookend_intro_done", villain=villain)
 
         elif stage == "summary":
+            self.machine.events.post("villain_mode_ended", villain_key=villain)
             self.machine.events.post("reset_villain_locate")
             self.machine.events.post("reset_daily_bugle_state")
             self.machine.events.post("villain_bookend_summary_hide")

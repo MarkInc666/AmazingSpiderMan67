@@ -1,4 +1,5 @@
 Roper Romp Trivia - 2026
+
 Section 1
 1. Where is Jack found when he meets Janet and Chrissy for the first time?
    A. In the Kitchen
@@ -18,23 +19,23 @@ Answer: C. Eleanor
    C. Los Angeles
    D. San Bernardino
 Answer: B. Santa Monica
-4. What are the full names of the three main roommates?
-   A. Jack Tripper, Janet Wood, and Chrissy Snow
-   B. Jack Roper, Janet Dallas, and Chrissy Furley
-   C. Larry Dallas, Janet Wood, and Terri Alden
-   D. Jack Tripper, Cindy Snow, and Lana Shields
-Answer: A. Jack Tripper, Janet Wood, and Chrissy Snow
-5. What was Chrissy’s full first name on the show?
+4. What was Chrissy’s full first name on the show?
    A. Christina
    B. Christine
    C. Christmas
    D. Crystal
-Answer: C. Christmas
+Answer: C. Christmas Snow
+5. What did Chrissy's father do for a living?
+   A. A salesman
+   B. A banker
+   C. A truck driver
+   D. A reverend
+Answer: D. Reverend Luther Snow
 6. What did Mr. Roper think Jack was?
    A. Janet’s brother
    B. A married man
    C. A gay man
-   D. The new landlord
+   D. Chrissy's cousin
 Answer: C. A gay man
 7. Did Mrs. Roper ever find out that Jack wasn’t gay?
    A. Yes
@@ -46,20 +47,21 @@ Answer: A. Yes
    C. Tinkerbell
    D. Junior
 Answer: C. Tinkerbell
+
+
+Section 2
 9. What is the name of Jack’s best friend who lives upstairs?
    A. Dallas Lawrence
    B. Ralph Furley
    C. Larry Dallas
    D. Tom Jones
 Answer: C. Larry Dallas
-10. What nationality is his best friend, and what is his real last name?
-   A. Italian, Dallini
-   B. Greek, Dalliapoulos
-   C. Spanish, Delgado
-   D. French, Dallier
-Answer: B. Greek, Dalliapoulos
-
-Section 2
+10. Which character frequently confides in Mrs. Roper about her dating life and asks her for advice?
+   A. Janet Wood
+   B. Chrissy Snow
+   C. Terri Alden
+   D. Lana Shields
+Answer: B. Chrissy Snow
 11. What was Janet’s job?
    A. Nurse
    B. Florist
@@ -78,7 +80,7 @@ Answer: A. Receptionist
    C. Angelino’s
    D. The Santa Monica Lounge
 Answer: A. The Regal Beagle
-14. Who was the bartender at the Regal Beagle?
+14. Who was the bartender serving them drinks?
    A. Mike
    B. Jim
    C. George
@@ -90,80 +92,84 @@ Answer: B. Jim
    C. Angelino’s
    D. The Santa Monica Café
 Answer: A. Jack’s Bistro
-16. Which character frequently confides in Mrs. Roper about her dating life and asks her for advice?
-   A. Janet Wood
-   B. Chrissy Snow
-   C. Terri Alden
-   D. Lana Shields
-Answer: B. Chrissy Snow
-17. Mr. Roper had a pet. What was it?
-   A. A cat named Charlie
-   B. A dog named Spot
-   C. A mynah bird named Mildred
-   D. A parrot named Perry
-Answer: C. A mynah bird named Mildred
-18. Which actress played Helen Roper?
+16. What nationality is Jack's best friend, and what is his real last name?
+   A. Italian, Dallini
+   B. Greek, Dalliapoulos
+   C. Spanish, Delgado
+   D. French, Dallier
+Answer: B. Greek, Dalliapoulos
+
+
+Section 3
+17. Which actress played Helen Roper?
    A. Suzanne Somers
    B. Joyce DeWitt
    C. Audra Lindley
    D. Priscilla Barnes
 Answer: C. Audra Lindley
-19. Which actor played Stanley Roper?
+18. Which actor played Stanley Roper?
    A. Don Knotts
    B. Norman Fell
    C. Jeffrey Tambor
    D. Richard Kline
 Answer: B. Norman Fell
+19. Mr. Roper had a pet. What was it?
+   A. A cat named Charlie
+   B. A dog named Spot
+   C. A mynah bird named Mildred
+   D. A parrot named Perry
+Answer: C. A mynah bird named Mildred
 20. What was Helen Roper’s most recognizable fashion style?
    A. Business suits and pearls
    B. Tracksuits and sneakers
    C. Colorful caftans and bold jewelry
    D. Cowboy hats and denim jackets
 Answer: C. Colorful caftans and bold jewelry
-
-Section 3
-21. Who became the landlord after the Ropers left?
-   A. Ralph Machio
-   B. Mr. Angelino
-   C. Ralph Furley
-   D. Jack Tripper
-Answer: C. Ralph Furley
-22. Who owned the apartment building after the Ropers sold it?
-   A. Norman Fell
-   B. Ralph Furley’s brother Bart
-   C. Mr. Angelino
-   D. Jack Tripper
-Answer: B. Ralph Furley’s brother Bart
-23. When Mr. Furley was out of town, who was feeding his fish?
-   A. Cindy
-   B. Jack
-   C. Janet
-   D. Larry
-Answer: A. Cindy
-24. What was the name of Mr. Furley’s crush who only had eyes for Jack?
-   A. Lana Shields
-   B. Lucy Diamond
-   C. Terri Alden
-   D. Eleanor Garvey
-Answer: A. Lana Shields
-25. Which actress played Lana Shields?
-   A. Jenilee Harrison
-   B. Ann Wedgeworth
-   C. Priscilla Barnes
-   D. Joyce DeWitt
-Answer: B. Ann Wedgeworth
-26. What did Helen want from Stanley on their anniversary?
+21. What did Helen want from Stanley on their anniversary?
    A. A fancy dinner
    B. More romance and attention
    C. A new apartment
    D. Tickets to a bowling banquet
 Answer: B. More romance and attention
-27. What did Stanley get tickets to on their anniversary?
-   A. A Lakers game
-   B. A bowling banquet
-   C. A Dodgers game
-   D. A movie
-Answer: B. A bowling banquet
+22. What did Stanley get Helen on their anniversary?
+   A. Tickets to a Lakers game
+   B. Bowling banquet tickets
+   C. Tickets to a Dodgers game
+   D. Movie Tickets
+Answer: B. Bowling banquet tickets
+23. Who became the landlord after the Ropers left?
+   A. Ralph Machio
+   B. Mr. Angelino
+   C. Ralph Furley
+   D. Jack Tripper
+Answer: C. Ralph Furley
+24. Who owned the apartment building after the Ropers sold it?
+   A. Norman Fell
+   B. Ralph Furley’s brother Bart
+   C. Mr. Angelino
+   D. Jack Tripper
+Answer: B. Ralph Furley’s brother Bart
+
+
+Section 4
+25. Who had the biggest crush on Lana Shields?
+   A. Stanley Roper
+   B. Mr. Furley
+   C. Larry Dallas
+   D. Jack Tripper
+Answer: B. Mr Furley
+26. Which actress played Lana Shields?
+   A. Jenilee Harrison
+   B. Ann Wedgeworth
+   C. Priscilla Barnes
+   D. Joyce DeWitt
+Answer: B. Ann Wedgeworth
+27. When Mr. Furley was out of town, who was feeding his fish?
+   A. Cindy
+   B. Jack
+   C. Janet
+   D. Larry
+Answer: A. Cindy
 28. Who came up with the idea that Helen should try to make Stanley jealous?
    A. Janet
    B. Cindy
@@ -176,76 +182,78 @@ Answer: A. Janet
    C. Jack
    D. Larry
 Answer: B. Cindy
-30. What did Stanley want to drink for courage before talking to Helen?
+30. What did Stanley like to drink for courage before talking to Helen?
    A. Cocoa
    B. Brandy
    C. Wine
    D. Beer
 Answer: B. Brandy
-
-Section 4
-31. In the episode “Chrissy’s Hospitality,” what happened to Chrissy that made her go to the hospital?
-   A. She was in a car accident
-   B. She bumped her head
-   C. She broke a leg
-   D. She sprained her arm
-Answer: B. She bumped her head
-32. Who replaced Chrissy, and how was she related?
-   A. Andrea, her sister
-   B. Cindy, her cousin
-   C. Lana, her aunt
-   D. Mary, her cousin
-Answer: B. Cindy, her cousin
-33. Who moved in after Cindy left the show?
-   A. Lana Shields
-   B. Terri Alden
-   C. Eleanor Jones
-   D. Vicky Bradford
-Answer: B. Terri Alden
-34. What was Terri Alden’s job?
-   A. Nurse
-   B. Florist
-   C. Receptionist
-   D. Waitress
-Answer: A. Nurse
-35. What was the name of the restaurant Jack worked at, and who was his boss?
+31. What was the name of the restaurant Jack worked at, and who was his boss?
    A. Jack’s Bistro, Mr. Furley
-   B. The Regal Beagle, Larry Dallas
+   B. The Regal Beagle, Larry David
    C. Angelino’s, Mr. Angelino
    D. The Santa Monica Café, Mr. Roper
 Answer: C. Angelino’s, Mr. Angelino
-36. Jack and Janet never moved out of the apartment.
-   A. True
-   B. False
-Answer: B. False
-37. Did Janet ever get married?
-   A. Yes
-   B. No
-Answer: A. Yes
-38. Did Jack ever get married?
-   A. Yes
-   B. No
-Answer: B. No
-39. Who did Jack ask to marry him?
-   A. Vicky
-   B. Janet
-   C. Terri
-   D. Nobody
-Answer: A. Vicky
-40. What happens to Terri at the end of the series?
-   A. She moves to Hawaii
-   B. She opens a flower shop
-   C. She marries Larry
-   D. She buys the apartment building
-Answer: A. She moves to Hawaii
-
-Section 5
-41. How many seasons was Three’s Company on the air?
+32. How many seasons was Three’s Company on the air?
    A. 5
    B. 6
    C. 7
    D. 8
 Answer: D. 8
+
+
+Section 5
+33. In the episode “Chrissy’s Hospitality,” what happened to Chrissy that made her go to the hospital?
+   A. She was in a car accident
+   B. She bumped her head
+   C. She broke a leg
+   D. She sprained her arm
+Answer: B. She bumped her head
+34. Who replaced Chrissy, and how was she related?
+   A. Andrea, her sister
+   B. Cindy, her cousin
+   C. Lana, her aunt
+   D. Mary, her cousin
+Answer: B. Cindy, her cousin
+35. Who moved in after Cindy left the show?
+   A. Lana Shields
+   B. Terri Alden
+   C. Eleanor Jones
+   D. Vicky Bradford
+Answer: B. Terri Alden
+36. What was Terri Alden’s job?
+   A. Nurse
+   B. Florist
+   C. Receptionist
+   D. Waitress
+Answer: A. Nurse
+37. Jack and Janet never moved out of the apartment.
+   A. True
+   B. False
+Answer: B. False
+38. Did Janet ever get married?
+   A. Yes
+   B. No
+Answer: A. Yes
+39. Did Jack ever get married?
+   A. Yes
+   B. No
+Answer: B. No
+40. Who did Jack ask to marry him?
+   A. Vicky
+   B. Janet
+   C. Terri
+   D. Nobody
+Answer: A. Vicky
+
+
+Section 6
+41. What happens to Terri at the end of the series?
+   A. She moves to Hawaii
+   B. She opens a flower shop
+   C. She marries Larry
+   D. She buys the apartment building
+Answer: A. She moves to Hawaii
 42. Which character appeared in every episode of Three’s Company?
    A. Janet Wood
    B. Larry Dallas
@@ -258,24 +266,24 @@ Answer: C. Jack Tripper
    C. Mr. Angelino
    D. David Miller
 Answer: B. Phillip Dawson
-44. Which character starred in the spinoff Three’s a Crowd?
-   A. Jack Tripper
-   B. Janet Wood
-   C. Larry Dallas
-   D. Ralph Furley
-Answer: A. Jack Tripper
-45. What was the name of the British show that Three’s Company was based on?
+44. What was the name of the British show that Three’s Company was based on?
    A. Man About the House
    B. Fawlty Towers
    C. Are You Being Served?
    D. The Good Life
 Answer: A. Man About the House
-46. How many spinoffs were there of Three’s Company?
+45. How many spinoffs were there of Three’s Company?
    A. 1
    B. 2
    C. 3
    D. 4
 Answer: B. 2 — The Ropers and Three’s a Crowd
+46. Which character starred in the spinoff Three’s a Crowd?
+   A. Jack Tripper
+   B. Janet Wood
+   C. Larry Dallas
+   D. Ralph Furley
+Answer: A. Jack Tripper
 47. What was the first spinoff from Three’s Company?
    A. Three’s a Crowd
    B. Jack’s Bistro
@@ -288,6 +296,9 @@ Answer: C. The Ropers
    C. Santa Monica Pier
    D. Westwood
 Answer: B. Cheviot Hills
+
+
+Tie Breakers
 49. Who was the Ropers’ snobbish next-door neighbor in The Ropers?
    A. Larry Dallas
    B. Mr. Angelino
@@ -300,11 +311,6 @@ Answer: C. Jeffrey P. Brookes III
    C. Norman Fell
    D. Don Knotts
 Answer: A. Jeffrey Tambor
-
-
-
-
-
 
 
 

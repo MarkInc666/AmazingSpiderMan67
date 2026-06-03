@@ -7,13 +7,13 @@ mode:
   priority: 116
 
 event_player:
-  s_saucer_1_active:
+  s_saucer_1_active{current_player.villain_mode_running == 0}:
     - saucer_1_hit
 
-  s_saucer_2_active:
+  s_saucer_2_active{current_player.villain_mode_running == 0}:
     - saucer_2_hit
 
-  s_saucer_3_active:
+  s_saucer_3_active{current_player.villain_mode_running == 0}:
     - saucer_3_hit
 
   villain_saucer_points_only:

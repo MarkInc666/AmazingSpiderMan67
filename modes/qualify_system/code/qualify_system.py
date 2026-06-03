@@ -34,6 +34,7 @@ class QualifySystem(Mode):
         self.add_mode_event_handler("saucer_star_upgrade_hit", self._star_hit)
 
         self.add_mode_event_handler("ball_started", self._ball_started_restore)
+        self.add_mode_event_handler("villain_started_set", self._reset_after_villain)
         self.add_mode_event_handler("villain_mode_started", self._reset_after_villain)
         self.add_mode_event_handler("villain_mode_ended", self._reset_after_villain)
         self.add_mode_event_handler("qualify_system_restore_state", self._restore_state)
