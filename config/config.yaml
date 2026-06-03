@@ -102,6 +102,7 @@ modes:
   - vulture
   - kingpin
   - qualify_system
+  - villain_select
   - villain_start
   - case_files
   - villain_progression

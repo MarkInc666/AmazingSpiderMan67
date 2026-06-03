@@ -47,15 +47,24 @@ class VillainStart(Mode):
         self.villain_start_logic_active = False
         super().mode_stop(**kwargs)
 
+    def _villain_mode_ended(self, **kwargs):
+        self.villain_start_logic_active = True
+        self.player["villain_mode_running"] = 0
+        self.player["villain_current_name"] = ""
+
     def _add_handlers(self):
         self.add_mode_event_handler("saucer_1_hit", self._saucer_hit, saucer="saucer_1")
         self.add_mode_event_handler("saucer_2_hit", self._saucer_hit, saucer="saucer_2")
         self.add_mode_event_handler("saucer_3_hit", self._saucer_hit, saucer="saucer_3")
+        self.add_mode_event_handler("villain_mode_ended", self._villain_mode_ended)
 
     def _saucer_hit(self, saucer=None, **kwargs):
         if not self.villain_start_logic_active or saucer not in self.SAUCERS:
             return
 
+        if self._player_var("villain_mode_running") == 1:
+            return
+        
         state = int(self.player[f"{saucer}_state"])
 
         if self._player_var("final_wizard_ready") == 1:
@@ -79,6 +88,11 @@ class VillainStart(Mode):
             return
 
         if len(available) == 1:
+            self.player["villain_mode_running"] = 1
+            self.player["villain_current_name"] = available[0]
+
+            self.machine.events.post("clear_villain_saucer_lights")
+            self.machine.events.post("clear_saucers")
             self.machine.events.post(
                 "villain_saucer_start_default",
                 saucer=saucer,
@@ -88,6 +102,10 @@ class VillainStart(Mode):
             self.machine.events.post("villain_progression_start_selected", villain_key=available[0])
             return
 
+        self.villain_start_logic_active = False
+
+        self.machine.events.post("clear_villain_saucer_lights")
+        self.machine.events.post("clear_saucers")
         self.machine.events.post(
             "villain_saucer_start_select",
             saucer=saucer,

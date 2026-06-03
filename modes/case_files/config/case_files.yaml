@@ -179,7 +179,7 @@ shows:
   case_file_more_time_flash:
     - duration: 250ms
       lights:
-        l_5bank_2: blue
+        l_5bank_2: white
     - duration: 250ms
       lights:
         l_5bank_2: off
@@ -187,7 +187,7 @@ shows:
   case_file_multiplier_flash:
     - duration: 250ms
       lights:
-        l_5bank_3: green
+        l_5bank_3: white
     - duration: 250ms
       lights:
         l_5bank_3: off
@@ -195,7 +195,7 @@ shows:
   case_file_safety_flash:
     - duration: 250ms
       lights:
-        l_5bank_4: yellow
+        l_5bank_4: white
     - duration: 250ms
       lights:
         l_5bank_4: off
@@ -203,7 +203,7 @@ shows:
   case_file_super_boost_flash:
     - duration: 250ms
       lights:
-        l_5bank_5: blue
+        l_5bank_5: white
     - duration: 250ms
       lights:
         l_5bank_5: off
@@ -211,7 +211,7 @@ shows:
   case_file_extra_jackpot_solid:
     - duration: -1
       lights:
-        l_5bank_1: white
+        l_5bank_1: blue
 
   case_file_more_time_solid:
     - duration: -1
@@ -221,12 +221,12 @@ shows:
   case_file_multiplier_solid:
     - duration: -1
       lights:
-        l_5bank_3: green
+        l_5bank_3: blue
 
   case_file_safety_solid:
     - duration: -1
       lights:
-        l_5bank_4: yellow
+        l_5bank_4: blue
 
   case_file_super_boost_solid:
     - duration: -1

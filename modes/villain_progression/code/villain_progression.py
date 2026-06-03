@@ -124,11 +124,18 @@ class VillainProgression(Mode):
         info = self.VILLAINS[villain_key]
         self.player["villain_current_key"] = villain_key
 
+        self.machine.events.post("villain_started_set")
         self.machine.events.post(
-            "villain_about_to_start",
-            villain_key=villain_key,
-            villain_name=info["name"],
+            "villain_bookend_intro_request",
+            villain=villain_key,
+            start_event=info["start_event"]
         )
+
+#         self.machine.events.post(
+#            "villain_about_to_start",
+#            villain_key=villain_key,
+#            villain_name=info["name"],
+#        )
 
         self.machine.events.post(info["start_event"])
 

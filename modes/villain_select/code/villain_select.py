@@ -1,127 +1,204 @@
-from mpf.core.mode import Mode
+from mpf.modes.carousel.code.carousel import Carousel
 
 
-class VillainSelect(Mode):
+class VillainSelect(Carousel):
     """Dynamic villain select carousel.
 
-    This mode is intentionally not subclassing MPF's stock Carousel.
-    Reason: this game needs a dynamic list of villains based on saucer state,
-    chapter, already-played villains, and the event that started selection.
+    This version follows the same working pattern as qualify_villain_select:
+
+    - subclass MPF's stock Carousel so GMC MPFCarousel receives the normal
+      carousel_item_highlighted events
+    - keep the currently highlighted item in Python
+    - use flipper_cancel / both-flippers-held as the confirm event
+    - start the selected villain through the bookend intro
+    - stop the carousel after a valid selection
 
     Expected start event:
         start_mode_villain_select
 
-    Expected kwargs from villain_start.py:
+    Optional kwargs from villain_start.py:
         villain_keys="rhino,vulture,lizard"
         max_choices=3
-
-    Navigation:
-        villain_select_next
-        villain_select_previous
-        villain_select_confirm
-        villain_select_cancel
-
-    Output:
-        villain_select_highlighted
-        villain_select_highlighted_<villain_key>
-        villain_select_selected
-        villain_progression_start_selected
     """
 
     VILLAINS = {
-        "rhino": {
-            "name": "Rhino",
-            "display_name": "RHINO",
-        },
-        "vulture": {
-            "name": "Vulture",
-            "display_name": "VULTURE",
-        },
-        "lizard": {
-            "name": "Lizard",
-            "display_name": "LIZARD",
-        },
-        "sandman": {
-            "name": "Sandman",
-            "display_name": "SANDMAN",
-        },
-        "electro": {
-            "name": "Electro",
-            "display_name": "ELECTRO",
-        },
-        "doc_ock": {
-            "name": "Doctor Octopus",
-            "display_name": "DOC OCK",
-        },
-        "scorpion": {
-            "name": "Scorpion",
-            "display_name": "SCORPION",
-        },
-        "mysterio": {
-            "name": "Mysterio",
-            "display_name": "MYSTERIO",
-        },
-        "goblin": {
-            "name": "Green Goblin",
-            "display_name": "GOBLIN",
-        },
-        "parafino": {
-            "name": "Parafino",
-            "display_name": "PARAFINO",
-        },
+        "lizard": "start_mode_lizard",
+        "rhino": "start_mode_rhino_bash",
+        "sandman": "start_mode_sandman",
+        "vulture": "start_mode_vulture",
+        "electro": "start_mode_electro",
+        "goblin": "start_mode_goblin",
+        "mysterio": "start_mode_mysterio",
+        "scorpion": "start_mode_scorpion",
+        "doc_ock": "start_mode_doc_ock",
+        "parafino": "start_mode_parafino",
+    }
+
+    DISPLAY_NAMES = {
+        "lizard": "LIZARD",
+        "rhino": "RHINO",
+        "sandman": "SANDMAN",
+        "vulture": "VULTURE",
+        "electro": "ELECTRO",
+        "goblin": "GOBLIN",
+        "mysterio": "MYSTERIO",
+        "scorpion": "SCORPION",
+        "doc_ock": "DOC OCK",
+        "parafino": "PARAFINO",
     }
 
     def mode_start(self, **kwargs):
+        # Build the dynamic selectable list before Carousel starts.
+        # The stock Carousel reads mode_settings.selectable_items during start.
+        self.current_item = None
+        self.valid_villains = self._build_valid_list(**kwargs)
+
+        if not self.valid_villains:
+            self.machine.events.post("villain_select_no_valid_villains")
+            self.machine.events.post("stop_mode_villain_select")
+            return
+
+        self.config["mode_settings"]["selectable_items"] = self.valid_villains
+
         super().mode_start(**kwargs)
 
-        self.villain_select_logic_active = True
-        self.valid_villains = []
-        self.selected_index = 0
-        self.max_choices = 5
+        self.add_mode_event_handler(
+            "carousel_item_highlighted",
+            self.my_carousel_item_highlighted
+        )
 
-        self._add_handlers()
-        self._build_valid_list(**kwargs)
+        # Same working pattern as qualify_villain_select:
+        # both-flippers-held posts flipper_cancel, which confirms the current item.
+        self.add_mode_event_handler(
+            "flipper_cancel",
+            self.my_carousel_item_selected
+        )
 
-        if len(self.valid_villains) == 0:
-            self.machine.events.post("villain_select_no_valid_villains")
-            self._stop_self()
-            return
+        self.machine.events.post(
+            "villain_select_started",
+            available_count=len(self.valid_villains),
+            max_choices=self._safe_int(kwargs.get("max_choices", len(self.valid_villains)), len(self.valid_villains)),
+            villain_keys=",".join(self.valid_villains),
+        )
 
-        # If only one valid villain remains, do not force the player through a carousel.
+        # If only one valid villain remains, do not make the player carousel.
+        # Delay one tick so the widget has a chance to show/highlight first.
         if len(self.valid_villains) == 1:
-            villain_key = self.valid_villains[0]
-            self.machine.events.post(
-                "villain_select_only_one_choice",
-                villain_key=villain_key,
-                villain_name=self._villain_name(villain_key),
-                display_name=self._villain_display_name(villain_key),
+            self.delay.add(
+                name="villain_select_only_one_choice",
+                ms=250,
+                callback=self._select_only_choice
             )
-            self._select_villain(villain_key)
-            return
-
-        self._post_status()
-        self._highlight_current()
 
     def mode_stop(self, **kwargs):
-        self.villain_select_logic_active = False
         self.machine.events.post("villain_select_stopped")
         super().mode_stop(**kwargs)
 
-    def _add_handlers(self):
-        self.add_mode_event_handler("villain_select_next", self._next)
-        self.add_mode_event_handler("villain_select_previous", self._previous)
-        self.add_mode_event_handler("villain_select_confirm", self._confirm)
-        self.add_mode_event_handler("villain_select_cancel", self._cancel)
+    def _select_only_choice(self):
+        if not self.valid_villains:
+            return
+
+        villain = self.valid_villains[0]
+        self.machine.events.post(
+            "villain_select_only_one_choice",
+            villain_key=villain,
+            display_name=self.DISPLAY_NAMES.get(villain, villain.upper())
+        )
+        self.start_villain(villain)
+
+    def my_carousel_item_highlighted(self, item=None, **kwargs):
+        if not item:
+            return
+
+        self.current_item = item
+
+        # GMC MPFCarousel uses the stock carousel_item_highlighted event.
+        # These extra events are for your lights/sounds/widgets.
+        self.machine.events.post(f"carousel_{item}_highlighted")
+        self.machine.events.post(f"villain_select_highlighted_{item}")
+
+        self.machine.events.post(
+            "villain_select_highlighted",
+            villain_key=item,
+            display_name=self.DISPLAY_NAMES.get(item, item.upper()),
+            selected_index=self._current_index(item),
+            available_count=len(self.valid_villains),
+            villain_keys=",".join(self.valid_villains),
+        )
+
+        played_state = self._player_var(f"{item}_played", 0)
+
+        if played_state == 1:
+            self.machine.events.post(f"villain_select_{item}_played")
+        else:
+            self.machine.events.post(f"villain_select_{item}_available")
+
+    def my_carousel_item_selected(self, **kwargs):
+        if not self.current_item:
+            return
+
+        played_state = self._player_var(f"{self.current_item}_played", 0)
+
+        self.info_log("current villain: %s", self.current_item)
+        self.info_log("current villain played state: %s", played_state)
+
+        if played_state == 1:
+            self.machine.events.post("villain_select_already_played")
+            return
+
+        self.start_villain(self.current_item)
+
+    def start_villain(self, item):
+        if item not in self.VILLAINS:
+            self.warning_log("Unknown villain selected: %s", item)
+            self.machine.events.post("villain_select_unknown_villain", villain_key=item)
+            return
+
+        player = self.machine.game.player if self.machine.game else None
+
+        if not player:
+            return
+
+        player[f"{item}_played"] = 1
+        player["villain_current_name"] = item
+        player["villain_mode_running"] = 1
+        player["villain_mode_running_name"] = item
+
+        player["villain_start_ready"] = 0
+        player["villain_locate_spins"] = 0
+        player["saucer_1_select_ready"] = 0
+        player["saucer_2_select_ready"] = 0
+        player["saucer_3_select_ready"] = 0
+
+        self.machine.events.post("villain_started_set")
+
+        self.machine.events.post(
+            "villain_select_selected",
+            villain_key=item,
+            display_name=self.DISPLAY_NAMES.get(item, item.upper())
+        )
+
+        start_event = self.VILLAINS[item]
+
+        self.machine.events.post(
+            "villain_bookend_intro_request",
+            villain=item,
+            start_event=start_event
+        )
+        self.machine.events.post("clear_villain_saucer_lights")
+        
+        self.machine.events.post("villain_carousel_accept_selection")
+        self.machine.events.post("stop_mode_villain_select")
+        self.machine.events.post("stop_carousel_select")
 
     def _build_valid_list(self, villain_keys=None, max_choices=5, **kwargs):
-        self.max_choices = self._safe_int(max_choices, default=5)
-
         requested_keys = self._parse_villain_keys(villain_keys)
 
         if not requested_keys:
             requested_keys = self._fallback_available_villains()
 
         valid = []
+
         for key in requested_keys:
             if key not in self.VILLAINS:
                 self.machine.events.post("villain_select_ignored_unknown_villain", villain_key=key)
@@ -134,8 +211,12 @@ class VillainSelect(Mode):
             if key not in valid:
                 valid.append(key)
 
-        self.valid_villains = valid[:self.max_choices]
-        self.selected_index = 0
+        max_choices = self._safe_int(max_choices, default=len(valid))
+
+        if max_choices > 0:
+            valid = valid[:max_choices]
+
+        return valid
 
     def _parse_villain_keys(self, villain_keys):
         if not villain_keys:
@@ -149,97 +230,37 @@ class VillainSelect(Mode):
             ]
 
         if isinstance(villain_keys, (list, tuple)):
-            return [str(item).strip() for item in villain_keys if str(item).strip()]
+            return [
+                str(item).strip()
+                for item in villain_keys
+                if str(item).strip()
+            ]
 
         return []
 
     def _fallback_available_villains(self):
         available = []
+
         for key in self.VILLAINS:
             if self._player_var(f"{key}_played", 0) == 0:
                 available.append(key)
+
         return available
 
-    def _next(self, **kwargs):
-        if not self.villain_select_logic_active or not self.valid_villains:
-            return
-
-        self.selected_index = (self.selected_index + 1) % len(self.valid_villains)
-        self.machine.events.post("villain_select_moved_next")
-        self._highlight_current()
-
-    def _previous(self, **kwargs):
-        if not self.villain_select_logic_active or not self.valid_villains:
-            return
-
-        self.selected_index = (self.selected_index - 1) % len(self.valid_villains)
-        self.machine.events.post("villain_select_moved_previous")
-        self._highlight_current()
-
-    def _confirm(self, **kwargs):
-        if not self.villain_select_logic_active or not self.valid_villains:
-            return
-
-        villain_key = self.valid_villains[self.selected_index]
-        self._select_villain(villain_key)
-
-    def _cancel(self, **kwargs):
-        if not self.villain_select_logic_active:
-            return
-
-        self.machine.events.post("villain_select_cancelled")
-        self._stop_self()
-
-    def _highlight_current(self):
-        villain_key = self.valid_villains[self.selected_index]
-
-        self.machine.events.post(
-            "villain_select_highlighted",
-            villain_key=villain_key,
-            villain_name=self._villain_name(villain_key),
-            display_name=self._villain_display_name(villain_key),
-            selected_index=self.selected_index + 1,
-            available_count=len(self.valid_villains),
-            max_choices=self.max_choices,
-        )
-
-        self.machine.events.post(f"villain_select_highlighted_{villain_key}")
-
-    def _post_status(self):
-        self.machine.events.post(
-            "villain_select_started",
-            available_count=len(self.valid_villains),
-            max_choices=self.max_choices,
-            villain_keys=",".join(self.valid_villains),
-        )
-
-    def _select_villain(self, villain_key):
-        self.machine.events.post(
-            "villain_select_selected",
-            villain_key=villain_key,
-            villain_name=self._villain_name(villain_key),
-            display_name=self._villain_display_name(villain_key),
-        )
-
-        self.machine.events.post(
-            "villain_progression_start_selected",
-            villain_key=villain_key,
-        )
-
-        self._stop_self()
-
-    def _stop_self(self):
-        self.machine.events.post("stop_mode_villain_select")
-
-    def _villain_name(self, key):
-        return self.VILLAINS.get(key, {}).get("name", key)
-
-    def _villain_display_name(self, key):
-        return self.VILLAINS.get(key, {}).get("display_name", key.upper())
+    def _current_index(self, item):
+        try:
+            return self.valid_villains.index(item) + 1
+        except ValueError:
+            return 0
 
     def _player_var(self, name, default=0):
+        player = self.machine.game.player if self.machine.game else None
+
+        if not player:
+            return default
+
         try:
-            return self.player[name]
+            return player[name]
         except Exception:
             return default
 

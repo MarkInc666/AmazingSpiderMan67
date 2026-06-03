@@ -4,7 +4,7 @@ from mpf.core.mode import Mode
 class CaseFiles(Mode):
     """Lower spinner + right 5-bank Case File system.
 
-    - Lower spinner cycles the selected/flashing Case File target every 3 spins.
+    - Lower spinner cycles the selected/flashing Case File target every spin.
     - Any right 5-bank drop hit flashes l_gi_5bank_lower and l_gi_5bank_upper.
     - Only the currently selected/flashing target awards a Case File.
     - Awarded Case Files stay solid until the next villain starts.
@@ -54,7 +54,6 @@ class CaseFiles(Mode):
     def _ensure_player_vars(self):
         defaults = {
             "case_file_selected_index": 0,
-            "case_file_spinner_count": 0,
 
             "case_file_extra_jackpot": 0,
             "case_file_more_time": 0,
@@ -75,15 +74,7 @@ class CaseFiles(Mode):
         if not self.case_files_logic_active:
             return
 
-        self.player["case_file_spinner_count"] += 1
-
-        # Every 3 lower-spinner spins advances the selected Case File.
-        if self.player["case_file_spinner_count"] % 3 != 0:
-            self.machine.events.post(
-                "case_file_spinner_progress",
-                spins=self.player["case_file_spinner_count"],
-            )
-            return
+        self.machine.events.post("case_file_spinner_progress")
 
         self._advance_selected_case_file()
 
@@ -180,7 +171,6 @@ class CaseFiles(Mode):
         self.player["case_files_collected_count"] = 0
         self.player["case_files_complete_ready"] = 0
         self.player["case_file_selected_index"] = 0
-        self.player["case_file_spinner_count"] = 0
 
         self.machine.events.post("case_files_cleared")
         self._restore_state()

@@ -23,6 +23,17 @@ event_player:
     - saucer_star_upgrade_hit
 
 show_player:
+  clear_villain_saucer_lights:
+    saucer_cluster_state_0:
+      action: stop
+    saucer_cluster_state_1:
+      action: stop
+    saucer_cluster_state_2:
+      action: stop
+    saucer_cluster_state_3:
+      action: stop
+
+      
   saucer_1_restore_state_0:
     saucer_cluster_state_0:
       key: saucer_1
