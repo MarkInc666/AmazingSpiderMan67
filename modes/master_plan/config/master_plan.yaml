@@ -1,0 +1,52 @@
+#config_version=6
+
+# Master Plan placeholder mini-wizard.
+# Masterminds mini-wizard. 2-ball MB. Doc Ock arms, Mysterio hidden shot, Goblin chaos, Scorpion sting, Parafino heat. Complete all five schemes to light Master Plan Jackpot.
+
+mode:
+  start_events: start_mode_master_plan
+  stop_events:
+    - stop_mode_master_plan
+    - ball_ended
+  code: master_plan.MasterPlan
+  priority: 800
+
+multiballs:
+  master_plan_multiball:
+    ball_count: 2
+    ball_count_type: total
+    shoot_again: 15s
+    start_events: master_plan_start_multiball
+    stop_events:
+      - stop_mode_master_plan
+
+
+event_player:
+  s_pop_left_active: master_plan_shot_hit
+  s_pop_right_active: master_plan_shot_hit
+  s_trispinner_opto_active: master_plan_shot_hit
+  s_web_spinner_active: master_plan_shot_hit
+  s_star_rollover_active: master_plan_shot_hit
+  s_upper_target_left_active: master_plan_shot_hit
+  s_upper_target_center_active: master_plan_shot_hit
+  s_upper_target_right_active: master_plan_shot_hit
+  s_left_drops_1_active: master_plan_shot_hit
+  s_left_drops_2_active: master_plan_shot_hit
+  s_left_drops_3_active: master_plan_shot_hit
+  s_right_drops_1_active: master_plan_shot_hit
+  s_right_drops_2_active: master_plan_shot_hit
+  s_right_drops_3_active: master_plan_shot_hit
+  s_right_drops_4_active: master_plan_shot_hit
+  s_right_drops_5_active: master_plan_shot_hit
+
+  s_vuk_switch_active: master_plan_jackpot_hit
+
+  multiball_master_plan_multiball_ended: master_plan_failed
+
+  mode_master_plan_started:
+    - clear_saucers
+    - drop_target_bank_dt_bank_left_reset
+    - drop_target_bank_dt_bank_right_reset
+
+  mode_master_plan_stopping:
+    - clear_saucers

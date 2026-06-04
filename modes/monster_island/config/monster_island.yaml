@@ -1,0 +1,52 @@
+#config_version=6
+
+# Monster Island placeholder mini-wizard.
+# Monsters mini-wizard. 2-ball MB. Centaur=Spinner, Cerberus=3 saucers, Cyclops=moving single shot, Reptilla=upper targets, Mole Man=drop banks. Defeat all five monsters to light Monster Island Jackpot.
+
+mode:
+  start_events: start_mode_monster_island
+  stop_events:
+    - stop_mode_monster_island
+    - ball_ended
+  code: monster_island.MonsterIsland
+  priority: 800
+
+multiballs:
+  monster_island_multiball:
+    ball_count: 2
+    ball_count_type: total
+    shoot_again: 15s
+    start_events: monster_island_start_multiball
+    stop_events:
+      - stop_mode_monster_island
+
+
+event_player:
+  s_pop_left_active: monster_island_shot_hit
+  s_pop_right_active: monster_island_shot_hit
+  s_trispinner_opto_active: monster_island_shot_hit
+  s_web_spinner_active: monster_island_shot_hit
+  s_star_rollover_active: monster_island_shot_hit
+  s_upper_target_left_active: monster_island_shot_hit
+  s_upper_target_center_active: monster_island_shot_hit
+  s_upper_target_right_active: monster_island_shot_hit
+  s_left_drops_1_active: monster_island_shot_hit
+  s_left_drops_2_active: monster_island_shot_hit
+  s_left_drops_3_active: monster_island_shot_hit
+  s_right_drops_1_active: monster_island_shot_hit
+  s_right_drops_2_active: monster_island_shot_hit
+  s_right_drops_3_active: monster_island_shot_hit
+  s_right_drops_4_active: monster_island_shot_hit
+  s_right_drops_5_active: monster_island_shot_hit
+
+  s_vuk_switch_active: monster_island_jackpot_hit
+
+  multiball_monster_island_multiball_ended: monster_island_failed
+
+  mode_monster_island_started:
+    - clear_saucers
+    - drop_target_bank_dt_bank_left_reset
+    - drop_target_bank_dt_bank_right_reset
+
+  mode_monster_island_stopping:
+    - clear_saucers

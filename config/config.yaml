@@ -85,6 +85,7 @@ modes:
   - custom_bonus
   - super_spinner
   - super_pops
+  - chaos_pops
   - villain_bookends
 #  - qualify_upper_access
 #  - qualify_villain_locate
@@ -100,6 +101,20 @@ modes:
   - sandman
   - scorpion
   - vulture
+  - centaur
+  - cerberus
+  - cyclops
+  - reptilla
+  - mole_man
+  - enforcers
+  - ox
+  - fifth_avenue_phantom
+  - frederick_foswell
+  - blackwell
+  - sinister_surge
+  - master_plan
+  - monster_island
+  - crime_wave_mini
   - kingpin
   - qualify_system
   - villain_select
@@ -140,6 +155,60 @@ player_vars:
   lizard_played:
     initial_value: 0
     value_type: int
+  centaur_played:
+    initial_value: 0
+    value_type: int
+  cerberus_played:
+    initial_value: 0
+    value_type: int
+  cyclops_played:
+    initial_value: 0
+    value_type: int
+  reptilla_played:
+    initial_value: 0
+    value_type: int
+  mole_man_played:
+    initial_value: 0
+    value_type: int
+  enforcers_played:
+    initial_value: 0
+    value_type: int
+  ox_played:
+    initial_value: 0
+    value_type: int
+  fifth_avenue_phantom_played:
+    initial_value: 0
+    value_type: int
+  frederick_foswell_played:
+    initial_value: 0
+    value_type: int
+  blackwell_played:
+    initial_value: 0
+    value_type: int
+  villain_chapter:
+    initial_value: 1
+    value_type: int
+  villains_played_this_chapter:
+    initial_value: 0
+    value_type: int
+  villains_played_total:
+    initial_value: 0
+    value_type: int
+  chapter_mini_wizard_ready:
+    initial_value: 0
+    value_type: int
+  mini_wizard_daily_bugle_ready:
+    initial_value: 0
+    value_type: int
+  final_wizard_ready:
+    initial_value: 0
+    value_type: int
+  villain_current_key:
+    initial_value: ""
+    value_type: str
+  mini_wizard_current_key:
+    initial_value: ""
+    value_type: str
   villain_locate_spins_needed:
     initial_value: 0
     value_type: int
@@ -153,7 +222,7 @@ player_vars:
     initial_value: 0
     value_type: int
   villain_current_name:
-    initial_value: "Lizard"
+    initial_value: ""
     value_type: str 
   villain_current_index:
     initial_value: 1
@@ -163,6 +232,21 @@ player_vars:
     value_type: int
   villains_completed_total:
     initial_value: 0
+    value_type: int
+  chaos_pops_hits:
+    initial_value: 0
+    value_type: int
+  chaos_pops_level:
+    initial_value: 0
+    value_type: int
+  chaos_pops_bonus:
+    initial_value: 0
+    value_type: int
+  chaos_pops_points:
+    initial_value: 0
+    value_type: int
+  chaos_pops_next_level_hits:
+    initial_value: 5
     value_type: int
   extra_ball_text:
     initial_value: ""

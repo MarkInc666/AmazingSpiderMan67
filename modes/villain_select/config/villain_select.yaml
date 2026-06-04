@@ -14,16 +14,26 @@ mode_settings:
   # Fallback list. Python replaces this dynamically before Carousel starts
   # when start_mode_villain_select includes villain_keys/max_choices.
   selectable_items:
-    - lizard
     - rhino
-    - sandman
     - vulture
+    - lizard
+    - sandman
     - electro
-    - goblin
-    - mysterio
-    - scorpion
     - doc_ock
+    - mysterio
+    - goblin
+    - scorpion
     - parafino
+    - centaur
+    - cerberus
+    - cyclops
+    - reptilla
+    - mole_man
+    - enforcers
+    - ox
+    - fifth_avenue_phantom
+    - frederick_foswell
+    - blackwell
 
   next_item_events: villain_carousel_next
   previous_item_events: villain_carousel_previous

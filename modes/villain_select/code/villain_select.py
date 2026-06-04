@@ -22,29 +22,49 @@ class VillainSelect(Carousel):
     """
 
     VILLAINS = {
-        "lizard": "start_mode_lizard",
         "rhino": "start_mode_rhino_bash",
-        "sandman": "start_mode_sandman",
         "vulture": "start_mode_vulture",
+        "lizard": "start_mode_lizard",
+        "sandman": "start_mode_sandman",
         "electro": "start_mode_electro",
-        "goblin": "start_mode_goblin",
-        "mysterio": "start_mode_mysterio",
-        "scorpion": "start_mode_scorpion",
         "doc_ock": "start_mode_doc_ock",
+        "mysterio": "start_mode_mysterio",
+        "goblin": "start_mode_goblin",
+        "scorpion": "start_mode_scorpion",
         "parafino": "start_mode_parafino",
+        "centaur": "start_mode_centaur",
+        "cerberus": "start_mode_cerberus",
+        "cyclops": "start_mode_cyclops",
+        "reptilla": "start_mode_reptilla",
+        "mole_man": "start_mode_mole_man",
+        "enforcers": "start_mode_enforcers",
+        "ox": "start_mode_ox",
+        "fifth_avenue_phantom": "start_mode_fifth_avenue_phantom",
+        "frederick_foswell": "start_mode_frederick_foswell",
+        "blackwell": "start_mode_blackwell",
     }
 
     DISPLAY_NAMES = {
-        "lizard": "LIZARD",
         "rhino": "RHINO",
-        "sandman": "SANDMAN",
         "vulture": "VULTURE",
+        "lizard": "LIZARD",
+        "sandman": "SANDMAN",
         "electro": "ELECTRO",
-        "goblin": "GOBLIN",
+        "doc_ock": "DOCTOR OCTOPUS",
         "mysterio": "MYSTERIO",
+        "goblin": "GREEN GOBLIN",
         "scorpion": "SCORPION",
-        "doc_ock": "DOC OCK",
         "parafino": "PARAFINO",
+        "centaur": "CENTAUR",
+        "cerberus": "CERBERUS",
+        "cyclops": "CYCLOPS",
+        "reptilla": "REPTILLA",
+        "mole_man": "MOLE MAN",
+        "enforcers": "ENFORCERS",
+        "ox": "OX",
+        "fifth_avenue_phantom": "FIFTH AVENUE PHANTOM",
+        "frederick_foswell": "FREDERICK FOSWELL",
+        "blackwell": "BLACKWELL",
     }
 
     def mode_start(self, **kwargs):
@@ -166,7 +186,6 @@ class VillainSelect(Carousel):
         if not player:
             return
 
-        player[f"{item}_played"] = 1
         player["villain_current_name"] = item
         player["villain_mode_running"] = 1
         player["villain_mode_running_name"] = item

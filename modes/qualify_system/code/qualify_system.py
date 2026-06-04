@@ -37,6 +37,7 @@ class QualifySystem(Mode):
         self.add_mode_event_handler("villain_started_set", self._reset_after_villain)
         self.add_mode_event_handler("villain_mode_started", self._reset_after_villain)
         self.add_mode_event_handler("villain_mode_ended", self._reset_after_villain)
+        self.add_mode_event_handler("chapter_mini_wizard_completed", self._reset_after_villain)
         self.add_mode_event_handler("qualify_system_restore_state", self._restore_state)
 
     def _ensure_player_vars(self):
@@ -61,11 +62,26 @@ class QualifySystem(Mode):
         self.machine.events.post("villain_qualify_drop_bank_reset_request")
         self._restore_state()
 
+    def _qualify_blocked(self):
+        player = self.machine.game.player if self.machine.game else None
+        if not player:
+            return True
+        try:
+            if player["villain_mode_running"] == 1:
+                return True
+            if player["chapter_mini_wizard_ready"] == 1:
+                return True
+            if player["final_wizard_ready"] == 1:
+                return True
+        except KeyError:
+            pass
+        return False
+
     def _drop_hit(self, saucer=None, **kwargs):
         if not self.qualify_logic_active or saucer not in self.SAUCERS:
             return
 
-        if self.machine.game.player["villain_mode_running"] == 1:
+        if self._qualify_blocked():
             self.machine.events.post("villain_drop_ignored_mode_running", saucer=saucer)
             return
 
@@ -94,7 +110,7 @@ class QualifySystem(Mode):
         if not self.qualify_logic_active:
             return
 
-        if self.machine.game.player["villain_mode_running"] == 1:
+        if self._qualify_blocked():
             self.machine.events.post("villain_bank_complete_ignored_mode_running")
             return
 
@@ -119,7 +135,7 @@ class QualifySystem(Mode):
         if not self.qualify_logic_active:
             return
 
-        if self.machine.game.player["villain_mode_running"] == 1:
+        if self._qualify_blocked():
             self.machine.events.post("villain_star_ignored_mode_running")
             return
 

@@ -15,7 +15,7 @@ variable_player:
   drop_hit_no_mode:
     score: 2000
 
-  s_web_spinner_active{mode.super_spinner.active == False}:
+  default_spinner_hit:
     score: 2000
 
 
@@ -65,6 +65,10 @@ event_player:
   s_pop_left_active:
     - pops_hit
 
+
+  s_web_spinner_active{mode.super_spinner.active == False}:
+    - default_spinner_hit
+
   player_added{num == 2}: show_player_2_added
   player_added{num == 3}: show_player_3_added
   player_added{num == 4}: show_player_4_added
@@ -90,7 +94,7 @@ event_player:
 
 
 sound_player:
-  s_web_spinner_active{mode.super_spinner.active == False}:
+  default_spinner_hit:
     rope_1:
       action: play
       bus: effects

@@ -1,0 +1,61 @@
+#config_version=6
+
+# Fifth Avenue Phantom placeholder villain mode.
+# Gameplay notes:
+# Fifth Avenue Phantom Mode idea: Crime Wave chapter. Hidden/phantom crime scene. Placeholder: common shots build progress; later gameplay should hide the correct shot or make it appear briefly.
+#
+# This is intentionally simple for now. Hardware events are mapped to
+# generic Python events, and the Python mode handles score/state/summary.
+
+mode:
+  start_events: start_mode_fifth_avenue_phantom
+  stop_events:
+    - fifth_avenue_phantom_mode_completed_summary
+    - ball_ended
+  code: fifth_avenue_phantom.FifthAvenuePhantom
+  priority: 300
+
+
+event_player:
+  # Common playfield hits. Refine these later when the mode design is built out.
+  s_pop_left_active: fifth_avenue_phantom_shot_hit
+  s_pop_right_active: fifth_avenue_phantom_shot_hit
+  s_trispinner_opto_active: fifth_avenue_phantom_shot_hit
+  s_web_spinner_active: fifth_avenue_phantom_shot_hit
+  s_star_rollover_active: fifth_avenue_phantom_shot_hit
+  s_upper_target_left_active: fifth_avenue_phantom_shot_hit
+  s_upper_target_center_active: fifth_avenue_phantom_shot_hit
+  s_upper_target_right_active: fifth_avenue_phantom_shot_hit
+
+  s_left_drops_1_active: fifth_avenue_phantom_shot_hit
+  s_left_drops_2_active: fifth_avenue_phantom_shot_hit
+  s_left_drops_3_active: fifth_avenue_phantom_shot_hit
+  s_right_drops_1_active: fifth_avenue_phantom_shot_hit
+  s_right_drops_2_active: fifth_avenue_phantom_shot_hit
+  s_right_drops_3_active: fifth_avenue_phantom_shot_hit
+  s_right_drops_4_active: fifth_avenue_phantom_shot_hit
+  s_right_drops_5_active: fifth_avenue_phantom_shot_hit
+
+  s_saucer_1_active:
+    - fifth_avenue_phantom_major_hit
+    - clear_saucers
+  s_saucer_2_active:
+    - fifth_avenue_phantom_major_hit
+    - clear_saucers
+  s_saucer_3_active:
+    - fifth_avenue_phantom_major_hit
+    - clear_saucers
+  s_vuk_switch_active: fifth_avenue_phantom_major_hit
+
+  drop_target_bank_dt_bank_left_down:
+    - drop_target_bank_dt_bank_left_reset
+  drop_target_bank_dt_bank_right_down:
+    - drop_target_bank_dt_bank_right_reset
+
+  mode_fifth_avenue_phantom_started:
+    - clear_saucers
+    - drop_target_bank_dt_bank_left_reset
+    - drop_target_bank_dt_bank_right_reset
+
+  mode_fifth_avenue_phantom_stopping:
+    - clear_saucers

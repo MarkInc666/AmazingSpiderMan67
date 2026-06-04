@@ -1,0 +1,102 @@
+#config_version=6
+
+# Chaos Pops background mode.
+#
+# Rule idea:
+# - Pop hits build Chaos Level.
+# - Every 5 pop hits raises Chaos Level by 1.
+# - Max Chaos Level is 20.
+# - Each Chaos Level adds +100 points to default scoring events.
+#
+# This means a pop worth 1100 in base.yaml becomes:
+#   1100 + chaos_level * 100
+#
+# The Python mode does the actual scoring/variable work. This YAML just
+# starts the mode and provides optional display/sound/light hooks.
+
+mode:
+  start_events: ball_started
+  stop_events:
+    - ball_ending
+    - ball_ended
+  code: chaos_pops.ChaosPops
+  priority: 110
+
+
+widget_player:
+  xxx_chaos_pops_level_changed:
+    chaos_pops_level:
+      action: play
+      expire: 2s
+
+
+sound_player:
+  chaos_pops_level_changed:
+    gwbonus:
+      action: play
+      bus: effects
+
+
+# Optional lights. Replace/expand later if you want the pop inserts to show
+# Chaos Level progress.
+show_player:
+  chaos_pops_max_level:
+    chaos_pops_max_show:
+      action: play
+      loops: 3
+
+
+shows:
+  chaos_pops_max_show:
+    - duration: 100ms
+      lights:
+        l_pop_1_1: red
+        l_pop_1_2: red
+        l_pop_1_3: red
+        l_pop_1_4: red
+        l_pop_1_5: red
+        l_pop_1_6: red
+        l_pop_1_7: red
+        l_pop_1_8: red
+        l_pop_1_9: red
+        l_pop_1_10: red
+        l_pop_1_11: red
+        l_pop_1_12: red
+        l_pop_2_1: red
+        l_pop_2_2: red
+        l_pop_2_3: red
+        l_pop_2_4: red
+        l_pop_2_5: red
+        l_pop_2_6: red
+        l_pop_2_7: red
+        l_pop_2_8: red
+        l_pop_2_9: red
+        l_pop_2_10: red
+        l_pop_2_11: red
+        l_pop_2_12: red
+    - duration: 100ms
+      lights:
+        l_pop_1_1: white
+        l_pop_1_2: white
+        l_pop_1_3: white
+        l_pop_1_4: white
+        l_pop_1_5: white
+        l_pop_1_6: white
+        l_pop_1_7: white
+        l_pop_1_8: white
+        l_pop_1_9: white
+        l_pop_1_10: white
+        l_pop_1_11: white
+        l_pop_1_12: white
+        l_pop_2_1: white
+        l_pop_2_2: white
+        l_pop_2_3: white
+        l_pop_2_4: white
+        l_pop_2_5: white
+        l_pop_2_6: white
+        l_pop_2_7: white
+        l_pop_2_8: white
+        l_pop_2_9: white
+        l_pop_2_10: white
+        l_pop_2_11: white
+        l_pop_2_12: white

@@ -1,0 +1,61 @@
+#config_version=6
+
+# Blackwell placeholder villain mode.
+# Gameplay notes:
+# Blackwell Mode idea: Crime Wave chapter. Crime Wave setup villain. Placeholder: common shots build progress; later gameplay should combine spinner escape routes and saucer evidence.
+#
+# This is intentionally simple for now. Hardware events are mapped to
+# generic Python events, and the Python mode handles score/state/summary.
+
+mode:
+  start_events: start_mode_blackwell
+  stop_events:
+    - blackwell_mode_completed_summary
+    - ball_ended
+  code: blackwell.Blackwell
+  priority: 300
+
+
+event_player:
+  # Common playfield hits. Refine these later when the mode design is built out.
+  s_pop_left_active: blackwell_shot_hit
+  s_pop_right_active: blackwell_shot_hit
+  s_trispinner_opto_active: blackwell_shot_hit
+  s_web_spinner_active: blackwell_shot_hit
+  s_star_rollover_active: blackwell_shot_hit
+  s_upper_target_left_active: blackwell_shot_hit
+  s_upper_target_center_active: blackwell_shot_hit
+  s_upper_target_right_active: blackwell_shot_hit
+
+  s_left_drops_1_active: blackwell_shot_hit
+  s_left_drops_2_active: blackwell_shot_hit
+  s_left_drops_3_active: blackwell_shot_hit
+  s_right_drops_1_active: blackwell_shot_hit
+  s_right_drops_2_active: blackwell_shot_hit
+  s_right_drops_3_active: blackwell_shot_hit
+  s_right_drops_4_active: blackwell_shot_hit
+  s_right_drops_5_active: blackwell_shot_hit
+
+  s_saucer_1_active:
+    - blackwell_major_hit
+    - clear_saucers
+  s_saucer_2_active:
+    - blackwell_major_hit
+    - clear_saucers
+  s_saucer_3_active:
+    - blackwell_major_hit
+    - clear_saucers
+  s_vuk_switch_active: blackwell_major_hit
+
+  drop_target_bank_dt_bank_left_down:
+    - drop_target_bank_dt_bank_left_reset
+  drop_target_bank_dt_bank_right_down:
+    - drop_target_bank_dt_bank_right_reset
+
+  mode_blackwell_started:
+    - clear_saucers
+    - drop_target_bank_dt_bank_left_reset
+    - drop_target_bank_dt_bank_right_reset
+
+  mode_blackwell_stopping:
+    - clear_saucers
