@@ -393,12 +393,6 @@ class Parafino(Mode):
             self._set("parafino_completed", 0)
             self.machine.events.post("parafino_mode_failed")
 
-        self.machine.events.post(
-            "villain_bookend_summary_request",
-            villain="parafino",
-            done_event="parafino_mode_completed_summary"
-        )
-
     def _score(self, points):
         player = self.machine.game.player if self.machine.game else None
 

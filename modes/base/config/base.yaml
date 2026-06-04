@@ -128,6 +128,12 @@ sound_player:
 
 
 widget_player:
+  mode_base_started:
+    villain_chapter_status:
+      action: play
+    daily_bugle_ready:
+      action: play
+
   show_player_2_added:
     player_2_added_widget:
       action: play

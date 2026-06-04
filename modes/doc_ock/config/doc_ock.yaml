@@ -3,6 +3,7 @@
 mode:
   start_events: start_mode_doc_ock
   stop_events:
+    - doc_ock_mode_complete
     - doc_ock_mode_completed_summary
     - ball_ended
   code: doc_ock.doc_ock
@@ -35,12 +36,6 @@ event_player:
 
   drop_target_bank_dt_bank_right_down:
     - drop_target_bank_dt_bank_right_reset
-
-  doc_ock_mode_complete:
-    villain_bookend_summary_request:
-      villain: doc_ock
-      done_event: doc_ock_mode_completed_summary
-
 
   doc_ock_startup_complete:
     - doc_ock_start_arms

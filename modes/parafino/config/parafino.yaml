@@ -3,6 +3,8 @@
 mode:
   start_events: start_mode_parafino
   stop_events:
+    - parafino_mode_complete
+    - parafino_mode_failed
     - parafino_mode_completed_summary
     - ball_ended
   priority: 800

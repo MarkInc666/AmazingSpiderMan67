@@ -21,6 +21,27 @@ multiballs:
       - stop_mode_monster_island
 
 
+widget_player:
+  mode_monster_island_started:
+    monster_island:
+      action: play
+
+  monster_island_mode_complete:
+    monster_island:
+      action: remove
+
+  monster_island_mode_failed:
+    monster_island:
+      action: remove
+
+  mode_monster_island_stopping:
+    monster_island:
+      action: remove
+
+  stop_mode_monster_island:
+    monster_island:
+      action: remove
+
 event_player:
   s_pop_left_active: monster_island_shot_hit
   s_pop_right_active: monster_island_shot_hit

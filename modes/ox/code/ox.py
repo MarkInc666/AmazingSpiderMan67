@@ -65,11 +65,6 @@ class Ox(Mode):
         if player:
             player[f"{self.MODE_KEY}_completed"] = 1
         self.machine.events.post(f"{self.MODE_KEY}_mode_complete")
-        self.machine.events.post(
-            "villain_bookend_summary_request",
-            villain=self.MODE_KEY,
-            done_event=f"{self.MODE_KEY}_mode_completed_summary",
-        )
 
     def _fail_mode(self, **kwargs):
         if self.mode_done:
@@ -79,11 +74,6 @@ class Ox(Mode):
         if player:
             player[f"{self.MODE_KEY}_completed"] = 0
         self.machine.events.post(f"{self.MODE_KEY}_mode_failed")
-        self.machine.events.post(
-            "villain_bookend_summary_request",
-            villain=self.MODE_KEY,
-            done_event=f"{self.MODE_KEY}_mode_completed_summary",
-        )
 
     def _score(self, points):
         player = self.machine.game.player if self.machine.game else None

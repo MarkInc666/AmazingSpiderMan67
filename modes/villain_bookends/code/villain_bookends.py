@@ -495,9 +495,16 @@ class VillainBookends(Mode):
             self.machine.events.post("villain_bookend_intro_done", villain=villain)
 
         elif stage == "summary":
-            self.machine.events.post("villain_mode_ended", villain_key=villain)
+            # Gameplay has already stopped before the summary is shown. The
+            # summary finishing only does cleanup and releases the next qualify
+            # flow.
+            self.machine.game.player["villain_mode_in_summary"] = False
             self.machine.events.post("reset_villain_locate")
             self.machine.events.post("reset_daily_bugle_state")
+            self.machine.events.post("clear_saucers")
+            self.machine.events.post("reset_drops")
+            self.machine.events.post("drop_target_bank_dt_bank_left_reset")
+            self.machine.events.post("drop_target_bank_dt_bank_right_reset")
             self.machine.events.post("villain_bookend_summary_hide")
             self.machine.events.post("villain_bookend_summary_done", villain=villain)
             

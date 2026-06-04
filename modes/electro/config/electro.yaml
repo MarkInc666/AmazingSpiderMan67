@@ -6,6 +6,8 @@
 mode:
   start_events: start_mode_electro
   stop_events:
+    - electro_mode_complete
+    - electro_mode_failed
     - electro_mode_completed_summary
     - ball_ended
   code: electro.Electro
@@ -72,11 +74,6 @@ sound_player:
 
 
 event_player:
-  electro_mode_complete:
-    villain_bookend_summary_request:
-      villain: electro
-      done_event: electro_mode_completed_summary
-
   electro_startup_complete:
     - reset_drops
     - clear_saucers

@@ -31,83 +31,83 @@ show_player:
 
   # Stop the currently flashing target before setting the collected target solid.
   case_file_selected_stop:
-    case_file_extra_jackpot_flash:
+    case_file_more_jackpots_flash:
       action: stop
     case_file_more_time_flash:
       action: stop
-    case_file_multiplier_flash:
+    case_file_bigger_jackpots_flash:
       action: stop
-    case_file_safety_flash:
+    case_file_safety_net_flash:
       action: stop
-    case_file_super_boost_flash:
+    case_file_shot_assist_flash:
       action: stop
 
   # Selected/flashing Case File target.
-  case_file_selected_extra_jackpot:
+  case_file_selected_more_jackpots:
     case_file_more_time_flash:
       action: stop
-    case_file_multiplier_flash:
+    case_file_bigger_jackpots_flash:
       action: stop
-    case_file_safety_flash:
+    case_file_safety_net_flash:
       action: stop
-    case_file_super_boost_flash:
+    case_file_shot_assist_flash:
       action: stop
-    case_file_extra_jackpot_flash:
+    case_file_more_jackpots_flash:
       loops: -1
 
   case_file_selected_more_time:
-    case_file_extra_jackpot_flash:
+    case_file_more_jackpots_flash:
       action: stop
-    case_file_multiplier_flash:
+    case_file_bigger_jackpots_flash:
       action: stop
-    case_file_safety_flash:
+    case_file_safety_net_flash:
       action: stop
-    case_file_super_boost_flash:
+    case_file_shot_assist_flash:
       action: stop
     case_file_more_time_flash:
       loops: -1
 
-  case_file_selected_multiplier:
-    case_file_extra_jackpot_flash:
+  case_file_selected_bigger_jackpots:
+    case_file_more_jackpots_flash:
       action: stop
     case_file_more_time_flash:
       action: stop
-    case_file_safety_flash:
+    case_file_safety_net_flash:
       action: stop
-    case_file_super_boost_flash:
+    case_file_shot_assist_flash:
       action: stop
-    case_file_multiplier_flash:
+    case_file_bigger_jackpots_flash:
       loops: -1
 
-  case_file_selected_safety:
-    case_file_extra_jackpot_flash:
+  case_file_selected_safety_net:
+    case_file_more_jackpots_flash:
       action: stop
     case_file_more_time_flash:
       action: stop
-    case_file_multiplier_flash:
+    case_file_bigger_jackpots_flash:
       action: stop
-    case_file_super_boost_flash:
+    case_file_shot_assist_flash:
       action: stop
-    case_file_safety_flash:
+    case_file_safety_net_flash:
       loops: -1
 
-  case_file_selected_super_boost:
-    case_file_extra_jackpot_flash:
+  case_file_selected_shot_assist:
+    case_file_more_jackpots_flash:
       action: stop
     case_file_more_time_flash:
       action: stop
-    case_file_multiplier_flash:
+    case_file_bigger_jackpots_flash:
       action: stop
-    case_file_safety_flash:
+    case_file_safety_net_flash:
       action: stop
-    case_file_super_boost_flash:
+    case_file_shot_assist_flash:
       loops: -1
 
   # Collected Case File target goes solid.
-  case_file_collected_extra_jackpot:
-    case_file_extra_jackpot_flash:
+  case_file_collected_more_jackpots:
+    case_file_more_jackpots_flash:
       action: stop
-    case_file_extra_jackpot_solid:
+    case_file_more_jackpots_solid:
       loops: -1
 
   case_file_collected_more_time:
@@ -116,45 +116,45 @@ show_player:
     case_file_more_time_solid:
       loops: -1
 
-  case_file_collected_multiplier:
-    case_file_multiplier_flash:
+  case_file_collected_bigger_jackpots:
+    case_file_bigger_jackpots_flash:
       action: stop
-    case_file_multiplier_solid:
+    case_file_bigger_jackpots_solid:
       loops: -1
 
-  case_file_collected_safety:
-    case_file_safety_flash:
+  case_file_collected_safety_net:
+    case_file_safety_net_flash:
       action: stop
-    case_file_safety_solid:
+    case_file_safety_net_solid:
       loops: -1
 
-  case_file_collected_super_boost:
-    case_file_super_boost_flash:
+  case_file_collected_shot_assist:
+    case_file_shot_assist_flash:
       action: stop
-    case_file_super_boost_solid:
+    case_file_shot_assist_solid:
       loops: -1
 
-  # Clear all Case File shows when the next villain starts.
+  # Clear all Case File shows on a manual Case File reset.
   case_files_cleared:
-    case_file_extra_jackpot_flash:
+    case_file_more_jackpots_flash:
       action: stop
     case_file_more_time_flash:
       action: stop
-    case_file_multiplier_flash:
+    case_file_bigger_jackpots_flash:
       action: stop
-    case_file_safety_flash:
+    case_file_safety_net_flash:
       action: stop
-    case_file_super_boost_flash:
+    case_file_shot_assist_flash:
       action: stop
-    case_file_extra_jackpot_solid:
+    case_file_more_jackpots_solid:
       action: stop
     case_file_more_time_solid:
       action: stop
-    case_file_multiplier_solid:
+    case_file_bigger_jackpots_solid:
       action: stop
-    case_file_safety_solid:
+    case_file_safety_net_solid:
       action: stop
-    case_file_super_boost_solid:
+    case_file_shot_assist_solid:
       action: stop
 
 shows:
@@ -168,7 +168,7 @@ shows:
         l_gi_5bank_lower: off
         l_gi_5bank_upper: off
 
-  case_file_extra_jackpot_flash:
+  case_file_more_jackpots_flash:
     - duration: 250ms
       lights:
         l_5bank_1: white
@@ -184,7 +184,7 @@ shows:
       lights:
         l_5bank_2: off
 
-  case_file_multiplier_flash:
+  case_file_bigger_jackpots_flash:
     - duration: 250ms
       lights:
         l_5bank_3: white
@@ -192,7 +192,7 @@ shows:
       lights:
         l_5bank_3: off
 
-  case_file_safety_flash:
+  case_file_safety_net_flash:
     - duration: 250ms
       lights:
         l_5bank_4: white
@@ -200,7 +200,7 @@ shows:
       lights:
         l_5bank_4: off
 
-  case_file_super_boost_flash:
+  case_file_shot_assist_flash:
     - duration: 250ms
       lights:
         l_5bank_5: white
@@ -208,7 +208,7 @@ shows:
       lights:
         l_5bank_5: off
 
-  case_file_extra_jackpot_solid:
+  case_file_more_jackpots_solid:
     - duration: -1
       lights:
         l_5bank_1: blue
@@ -218,17 +218,17 @@ shows:
       lights:
         l_5bank_2: blue
 
-  case_file_multiplier_solid:
+  case_file_bigger_jackpots_solid:
     - duration: -1
       lights:
         l_5bank_3: blue
 
-  case_file_safety_solid:
+  case_file_safety_net_solid:
     - duration: -1
       lights:
         l_5bank_4: blue
 
-  case_file_super_boost_solid:
+  case_file_shot_assist_solid:
     - duration: -1
       lights:
         l_5bank_5: blue

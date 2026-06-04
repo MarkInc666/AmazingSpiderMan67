@@ -3,6 +3,7 @@
 mode:
   start_events: start_mode_scorpion
   stop_events:
+    - scorpion_mode_complete
     - scorpion_mode_completed_summary
     - ball_ended
   code: scorpion.Scorpion
@@ -23,11 +24,6 @@ event_player:
 
   scorpion_mode_completed_summary:
     - reset_drops
-
-  scorpion_mode_complete:
-    villain_bookend_summary_request:
-      villain: scorpion
-      done_event: scorpion_mode_completed_summary
 
   mode_scorpion_started:
     - rooftop_diverter_open

@@ -2,29 +2,54 @@ from mpf.core.mode import Mode
 
 
 class CaseFiles(Mode):
-    """Lower spinner + right 5-bank Case File system.
+    """Global Daily Bugle Case File system.
 
-    - Lower spinner cycles the selected/flashing Case File target every spin.
-    - Any right 5-bank drop hit flashes l_gi_5bank_lower and l_gi_5bank_upper.
-    - Only the currently selected/flashing target awards a Case File.
-    - Awarded Case Files stay solid until the next villain starts.
-    - Completing all five Case Files adds Wizard Prep for the chapter.
+    Case Files are global player-level modifiers. They stay collected for the
+    player and are not cleared when a villain starts. Villain modes should read
+    these five values at mode_start and decide how each bonus affects that mode.
+
+    Current Case Files:
+      - more_jackpots
+      - bigger_jackpots
+      - more_time
+      - safety_net
+      - shot_assist
+
+    Lower spinner cycles the selected/flashing right 5-bank Case File target.
+    The currently selected/flashing target awards that Case File when hit.
     """
 
     CASE_FILES = [
-        "extra_jackpot",
+        "more_jackpots",
+        "bigger_jackpots",
         "more_time",
-        "multiplier",
-        "safety",
-        "super_boost",
+        "safety_net",
+        "shot_assist",
     ]
 
     CASE_FILE_LABELS = {
-        "extra_jackpot": "Extra Jackpot",
+        "more_jackpots": "More Jackpots",
+        "bigger_jackpots": "Bigger Jackpots",
         "more_time": "More Time",
-        "multiplier": "Multiplier Boost",
-        "safety": "Safety / Retry",
-        "super_boost": "Super Jackpot Boost",
+        "safety_net": "Safety Net",
+        "shot_assist": "Shot Assist",
+    }
+
+    CASE_FILE_BENEFITS = {
+        "more_jackpots": "Adds extra jackpot chances in villain modes",
+        "bigger_jackpots": "Boosts jackpot values in villain modes",
+        "more_time": "Adds time or slows timers in villain modes",
+        "safety_net": "Adds ball save, retry, grace, or protection",
+        "shot_assist": "Spots progress or makes objectives easier",
+    }
+
+    # Compatibility aliases from the previous placeholder names. These let any
+    # older code/widgets keep working while the new names are adopted.
+    LEGACY_ALIASES = {
+        "extra_jackpot": "more_jackpots",
+        "multiplier": "bigger_jackpots",
+        "safety": "safety_net",
+        "super_boost": "shot_assist",
     }
 
     def mode_start(self, **kwargs):
@@ -47,35 +72,44 @@ class CaseFiles(Mode):
         self.add_mode_event_handler("case_file_drop_4_hit", self._case_file_drop_hit, index=3)
         self.add_mode_event_handler("case_file_drop_5_hit", self._case_file_drop_hit, index=4)
 
-        self.add_mode_event_handler("villain_mode_started", self._consume_case_files)
+        # Villain modes can listen for this event, or just read player vars at
+        # their own mode_start. We publish current values when a villain starts.
+        self.add_mode_event_handler("villain_mode_started", self._publish_case_file_bonuses)
+
         self.add_mode_event_handler("chapter_mini_wizard_started", self._clear_wizard_prep)
         self.add_mode_event_handler("case_files_restore_state", self._restore_state)
+        self.add_mode_event_handler("case_files_reset_all", self._reset_all_case_files)
 
     def _ensure_player_vars(self):
         defaults = {
             "case_file_selected_index": 0,
 
-            "case_file_extra_jackpot": 0,
-            "case_file_more_time": 0,
-            "case_file_multiplier": 0,
-            "case_file_safety": 0,
-            "case_file_super_boost": 0,
-
             "case_files_collected_count": 0,
             "case_files_complete_ready": 0,
             "wizard_prep_this_chapter": 0,
+            "wizard_prep_level": 0,
+            "wizard_prep_summary": "No Case Files collected",
+            "wizard_prep_next_award": "Collect More Jackpots",
         }
+
+        for key in self.CASE_FILES:
+            defaults[f"case_file_{key}"] = 0
+            defaults[f"case_file_{key}_collected"] = 0
+            defaults[f"case_file_{key}_state"] = "NOT COLLECTED"
 
         for name, value in defaults.items():
             if name not in self.player:
                 self.player[name] = value
+
+        self._sync_legacy_aliases()
+        self._refresh_counts()
+        self._publish_widget_vars()
 
     def _spinner_hit(self, **kwargs):
         if not self.case_files_logic_active:
             return
 
         self.machine.events.post("case_file_spinner_progress")
-
         self._advance_selected_case_file()
 
     def _advance_selected_case_file(self):
@@ -85,7 +119,7 @@ class CaseFiles(Mode):
             next_index = (start_index + step) % len(self.CASE_FILES)
             key = self.CASE_FILES[next_index]
 
-            if self.player[f"case_file_{key}"] == 0:
+            if self._case_file_value(key) == 0:
                 self.player["case_file_selected_index"] = next_index
                 self._restore_selected_case_file()
                 return
@@ -96,12 +130,10 @@ class CaseFiles(Mode):
         if not self.case_files_logic_active:
             return
 
-        # Any right 5-bank drop hit flashes the local GI.
         self.machine.events.post("case_file_any_drop_hit", hit_index=index + 1)
 
         selected_index = int(self.player["case_file_selected_index"])
 
-        # Wrong target: feedback only, no Case File.
         if index != selected_index:
             self.machine.events.post(
                 "case_file_wrong_drop_hit",
@@ -111,23 +143,23 @@ class CaseFiles(Mode):
             return
 
         key = self.CASE_FILES[selected_index]
-        var_name = f"case_file_{key}"
 
-        if self.player[var_name] == 1:
+        if self._case_file_value(key) == 1:
             self.machine.events.post("case_file_already_collected", case_file=key)
             self._advance_selected_case_file()
             return
 
-        # Stop selected flashing show before making the target solid.
         self.machine.events.post("case_file_selected_stop")
 
-        self.player[var_name] = 1
-        self.player["case_files_collected_count"] += 1
+        self._set_case_file_collected(key, 1)
+        self._refresh_counts()
+        self._publish_widget_vars()
 
         self.machine.events.post(
             "case_file_collected",
             case_file=key,
             label=self.CASE_FILE_LABELS[key],
+            benefit=self.CASE_FILE_BENEFITS[key],
             count=self.player["case_files_collected_count"],
         )
         self.machine.events.post(f"case_file_collected_{key}")
@@ -145,6 +177,9 @@ class CaseFiles(Mode):
 
         self.player["case_files_complete_ready"] = 1
         self.player["wizard_prep_this_chapter"] += 1
+        self.player["wizard_prep_level"] = int(self.player["case_files_collected_count"])
+        self.player["wizard_prep_summary"] = "All Case Files collected"
+        self.player["wizard_prep_next_award"] = "Wizard Prep complete"
 
         self.machine.events.post(
             "case_files_complete",
@@ -155,40 +190,57 @@ class CaseFiles(Mode):
             wizard_prep=self.player["wizard_prep_this_chapter"],
         )
 
-    def _consume_case_files(self, **kwargs):
-        self.machine.events.post(
-            "case_files_consumed",
-            extra_jackpot=self.player["case_file_extra_jackpot"],
-            more_time=self.player["case_file_more_time"],
-            multiplier=self.player["case_file_multiplier"],
-            safety=self.player["case_file_safety"],
-            super_boost=self.player["case_file_super_boost"],
-        )
+    def _publish_case_file_bonuses(self, **kwargs):
+        """Publish the global Case File state for the mode that just started."""
+        self._refresh_counts()
+        self._publish_widget_vars()
+
+        payload = {
+            "collected_count": self.player["case_files_collected_count"],
+            "complete": self.player["case_files_complete_ready"],
+            "wizard_prep_level": self.player["wizard_prep_level"],
+        }
 
         for key in self.CASE_FILES:
-            self.player[f"case_file_{key}"] = 0
+            payload[key] = self._case_file_value(key)
+            payload[f"{key}_collected"] = self._case_file_value(key)
 
-        self.player["case_files_collected_count"] = 0
-        self.player["case_files_complete_ready"] = 0
-        self.player["case_file_selected_index"] = 0
-
-        self.machine.events.post("case_files_cleared")
-        self._restore_state()
+        self.machine.events.post("case_files_available_for_villain", **payload)
 
     def _clear_wizard_prep(self, **kwargs):
         self.player["wizard_prep_this_chapter"] = 0
         self.machine.events.post("wizard_prep_cleared")
+        self._publish_widget_vars()
+
+    def _reset_all_case_files(self, **kwargs):
+        """Manual reset hook. Case Files are not cleared by villain starts."""
+        self.machine.events.post("case_file_selected_stop")
+
+        for key in self.CASE_FILES:
+            self._set_case_file_collected(key, 0)
+
+        self.player["case_file_selected_index"] = 0
+        self.player["case_files_complete_ready"] = 0
+        self.player["wizard_prep_this_chapter"] = 0
+        self._refresh_counts()
+        self._publish_widget_vars()
+        self.machine.events.post("case_files_cleared")
+        self._restore_state()
 
     def _restore_state(self, **kwargs):
         if not self.case_files_logic_active:
             return
 
+        self._refresh_counts()
+        self._publish_widget_vars()
+
         for index, key in enumerate(self.CASE_FILES):
-            collected = self.player[f"case_file_{key}"] == 1
+            collected = self._case_file_value(key) == 1
             self.machine.events.post(
                 f"case_file_{index + 1}_{'collected' if collected else 'uncollected'}",
                 case_file=key,
                 label=self.CASE_FILE_LABELS[key],
+                benefit=self.CASE_FILE_BENEFITS[key],
             )
 
         self._restore_selected_case_file()
@@ -198,14 +250,16 @@ class CaseFiles(Mode):
             selected_index=int(self.player["case_file_selected_index"]) + 1,
             collected_count=self.player["case_files_collected_count"],
             wizard_prep=self.player["wizard_prep_this_chapter"],
+            wizard_prep_level=self.player["wizard_prep_level"],
+            wizard_prep_summary=self.player["wizard_prep_summary"],
+            wizard_prep_next_award=self.player["wizard_prep_next_award"],
         )
 
     def _restore_selected_case_file(self):
         selected_index = int(self.player["case_file_selected_index"])
         key = self.CASE_FILES[selected_index]
 
-        # If selected target is already collected, move to the next uncollected one.
-        if self.player[f"case_file_{key}"] == 1:
+        if self._case_file_value(key) == 1:
             self._advance_selected_case_file()
             return
 
@@ -214,5 +268,62 @@ class CaseFiles(Mode):
             selected_index=selected_index + 1,
             case_file=key,
             label=self.CASE_FILE_LABELS[key],
+            benefit=self.CASE_FILE_BENEFITS[key],
         )
         self.machine.events.post(f"case_file_selected_{key}")
+
+    def _case_file_value(self, key):
+        return self._safe_int(self.player.get(f"case_file_{key}_collected", self.player.get(f"case_file_{key}", 0)))
+
+    def _set_case_file_collected(self, key, value):
+        value = 1 if self._safe_int(value) == 1 else 0
+        self.player[f"case_file_{key}"] = value
+        self.player[f"case_file_{key}_collected"] = value
+        self.player[f"case_file_{key}_state"] = "COLLECTED" if value else "NOT COLLECTED"
+        self._sync_legacy_aliases()
+
+    def _refresh_counts(self):
+        collected_count = sum(self._case_file_value(key) for key in self.CASE_FILES)
+        self.player["case_files_collected_count"] = collected_count
+        self.player["case_files_complete_ready"] = 1 if collected_count >= len(self.CASE_FILES) else 0
+        self.player["wizard_prep_level"] = collected_count
+
+        if collected_count >= len(self.CASE_FILES):
+            self.player["wizard_prep_summary"] = "All Case Files collected"
+            self.player["wizard_prep_next_award"] = "Wizard Prep complete"
+        else:
+            next_key = self._next_missing_case_file()
+            if next_key:
+                self.player["wizard_prep_summary"] = f"{collected_count} / {len(self.CASE_FILES)} Case Files collected"
+                self.player["wizard_prep_next_award"] = f"Collect {self.CASE_FILE_LABELS[next_key]}"
+            else:
+                self.player["wizard_prep_summary"] = "Case Files ready"
+                self.player["wizard_prep_next_award"] = "Wizard Prep complete"
+
+    def _next_missing_case_file(self):
+        for key in self.CASE_FILES:
+            if self._case_file_value(key) == 0:
+                return key
+        return None
+
+    def _publish_widget_vars(self):
+        for index, key in enumerate(self.CASE_FILES, start=1):
+            collected = self._case_file_value(key)
+            self.player[f"case_file_{index}_key"] = key
+            self.player[f"case_file_{index}_name"] = self.CASE_FILE_LABELS[key]
+            self.player[f"case_file_{index}_state"] = "COLLECTED" if collected else "NOT COLLECTED"
+            self.player[f"case_file_{index}_benefit"] = self.CASE_FILE_BENEFITS[key]
+
+        self.machine.events.post("case_files_status_changed")
+
+    def _sync_legacy_aliases(self):
+        for old_key, new_key in self.LEGACY_ALIASES.items():
+            value = self._safe_int(self.player.get(f"case_file_{new_key}_collected", self.player.get(f"case_file_{new_key}", 0)))
+            self.player[f"case_file_{old_key}"] = value
+            self.player[f"case_file_{old_key}_collected"] = value
+
+    def _safe_int(self, value, default=0):
+        try:
+            return int(value)
+        except Exception:
+            return default

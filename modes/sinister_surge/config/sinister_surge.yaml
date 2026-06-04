@@ -21,6 +21,27 @@ multiballs:
       - stop_mode_sinister_surge
 
 
+widget_player:
+  mode_sinister_surge_started:
+    sinister_surge:
+      action: play
+
+  sinister_surge_mode_complete:
+    sinister_surge:
+      action: remove
+
+  sinister_surge_mode_failed:
+    sinister_surge:
+      action: remove
+
+  mode_sinister_surge_stopping:
+    sinister_surge:
+      action: remove
+
+  stop_mode_sinister_surge:
+    sinister_surge:
+      action: remove
+
 event_player:
   s_pop_left_active: sinister_surge_shot_hit
   s_pop_right_active: sinister_surge_shot_hit

@@ -21,6 +21,27 @@ multiballs:
       - stop_mode_master_plan
 
 
+widget_player:
+  mode_master_plan_started:
+    master_plan:
+      action: play
+
+  master_plan_mode_complete:
+    master_plan:
+      action: remove
+
+  master_plan_mode_failed:
+    master_plan:
+      action: remove
+
+  mode_master_plan_stopping:
+    master_plan:
+      action: remove
+
+  stop_mode_master_plan:
+    master_plan:
+      action: remove
+
 event_player:
   s_pop_left_active: master_plan_shot_hit
   s_pop_right_active: master_plan_shot_hit

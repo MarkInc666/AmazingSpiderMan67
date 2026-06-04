@@ -3,6 +3,7 @@
 mode:
   start_events: start_mode_vulture
   stop_events:
+    - vulture_mode_complete
     - vulture_mode_completed_summary
     - ball_ended
   code: vulture.Vulture
@@ -75,11 +76,6 @@ event_player:
 
   timer_vulture_idle_timer_complete:
     - vulture_idle_decay
-
-  vulture_mode_complete:
-    villain_bookend_summary_request:
-      villain: vulture
-      done_event: vulture_mode_completed_summary
 
   s_upper_entrance_opto_active:
     - vulture_upper_entered

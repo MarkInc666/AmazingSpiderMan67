@@ -24,6 +24,12 @@ widget_player:
       priority: 1000
       action: play
 
+  show_ball_saved_widget:
+    ball_saved:
+      expire: 3s
+      priority: 1200
+      action: play
+
 
 
 sound_player:
@@ -70,6 +76,30 @@ event_player:
     - increase_ballsave_count
   ball_save_mystery_ball_save_enabled:
     - increase_ballsave_count
+
+  ball_save_default_ball_save_saving_ball:
+    show_ball_saved_widget:
+      save_type: default
+      title: BALL SAVED
+      subtitle: DEFAULT SAVE
+
+  ball_save_mystery_ball_save_saving_ball:
+    show_ball_saved_widget:
+      save_type: mystery
+      title: BALL SAVED
+      subtitle: DAILY BUGLE SAVE
+
+  show_ball_saved_safety_net:
+    show_ball_saved_widget:
+      save_type: safety_net
+      title: BALL SAVED
+      subtitle: SAFETY NET
+
+  show_ball_saved_multiball:
+    show_ball_saved_widget:
+      save_type: multiball
+      title: BALL SAVED
+      subtitle: MULTIBALL SAVE
 
   ball_save_default_ball_save_disabled:
     - decrease_ballsave_count

@@ -3,6 +3,7 @@
 mode:
   start_events: start_mode_sandman
   stop_events:
+    - sandman_mode_complete
     - sandman_mode_completed_summary
     - ball_ended
   code: sandman.Sandman
@@ -78,11 +79,6 @@ event_player:
 
   sandman_mode_completed_summary:
     - reset_drops
-
-  sandman_mode_complete:
-    villain_bookend_summary_request:
-      villain: sandman
-      done_event: sandman_mode_completed_summary
 
   sandman_startup_complete:
     - sandman_start_bank

@@ -455,12 +455,6 @@ class Goblin(Mode):
         else:
             self.machine.events.post("goblin_mode_failed")
 
-        self.machine.events.post(
-            "villain_bookend_summary_request",
-            villain="goblin",
-            done_event="goblin_mode_completed_summary"
-        )
-
     def mode_stop(self, **kwargs):
         self.clear_all_delays()
         self.clear_current_shows()

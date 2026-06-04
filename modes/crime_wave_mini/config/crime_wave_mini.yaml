@@ -21,6 +21,27 @@ multiballs:
       - stop_mode_crime_wave_mini
 
 
+widget_player:
+  mode_crime_wave_mini_started:
+    crime_wave_mini:
+      action: play
+
+  crime_wave_mini_mode_complete:
+    crime_wave_mini:
+      action: remove
+
+  crime_wave_mini_mode_failed:
+    crime_wave_mini:
+      action: remove
+
+  mode_crime_wave_mini_stopping:
+    crime_wave_mini:
+      action: remove
+
+  stop_mode_crime_wave_mini:
+    crime_wave_mini:
+      action: remove
+
 event_player:
   s_pop_left_active: crime_wave_mini_shot_hit
   s_pop_right_active: crime_wave_mini_shot_hit
