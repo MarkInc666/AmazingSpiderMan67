@@ -48,27 +48,32 @@ class VillainSelect(Carousel):
     }
 
     def mode_start(self, **kwargs):
-        # Build the dynamic selectable list before Carousel starts.
-        # The stock Carousel reads mode_settings.selectable_items during start.
+        self.info_log("Villain select start kwargs: %s", kwargs)
+
         self.current_item = None
-        self.valid_villains = self._build_valid_list(**kwargs)
+
+        self.valid_villains = self._build_valid_list(
+            villain_keys=kwargs.get("villain_keys", ""),
+            max_choices=kwargs.get("max_choices", 5)
+        )
 
         if not self.valid_villains:
             self.machine.events.post("villain_select_no_valid_villains")
             self.machine.events.post("stop_mode_villain_select")
             return
 
-        self.config["mode_settings"]["selectable_items"] = self.valid_villains
+        self._all_items = list(self.valid_villains)
+        self.config["mode_settings"]["selectable_items"] = list(self.valid_villains)
 
         super().mode_start(**kwargs)
+
+        self.info_log("Carousel items: %s", self._all_items)
 
         self.add_mode_event_handler(
             "carousel_item_highlighted",
             self.my_carousel_item_highlighted
         )
 
-        # Same working pattern as qualify_villain_select:
-        # both-flippers-held posts flipper_cancel, which confirms the current item.
         self.add_mode_event_handler(
             "flipper_cancel",
             self.my_carousel_item_selected
@@ -77,12 +82,13 @@ class VillainSelect(Carousel):
         self.machine.events.post(
             "villain_select_started",
             available_count=len(self.valid_villains),
-            max_choices=self._safe_int(kwargs.get("max_choices", len(self.valid_villains)), len(self.valid_villains)),
+            max_choices=self._safe_int(
+                kwargs.get("max_choices", len(self.valid_villains)),
+                len(self.valid_villains)
+            ),
             villain_keys=",".join(self.valid_villains),
         )
 
-        # If only one valid villain remains, do not make the player carousel.
-        # Delay one tick so the widget has a chance to show/highlight first.
         if len(self.valid_villains) == 1:
             self.delay.add(
                 name="villain_select_only_one_choice",
@@ -148,6 +154,7 @@ class VillainSelect(Carousel):
 
         self.start_villain(self.current_item)
 
+
     def start_villain(self, item):
         if item not in self.VILLAINS:
             self.warning_log("Unknown villain selected: %s", item)
@@ -170,21 +177,23 @@ class VillainSelect(Carousel):
         player["saucer_2_select_ready"] = 0
         player["saucer_3_select_ready"] = 0
 
+        # Shut down qualify/start visuals and saucers first.
+        self.machine.events.post("clear_villain_saucer_lights")
+        self.machine.events.post("clear_saucers")
+
+        # Tell the qualify/start system that a villain is now active.
+        self.machine.events.post(
+            "villain_mode_started",
+            villain_key=item,
+            villain_name=self.DISPLAY_NAMES.get(item, item.upper())
+        )
+
         self.machine.events.post("villain_started_set", villain=item, villain_key=item)
 
         self.machine.events.post(
             "villain_select_selected",
             villain_key=item,
             display_name=self.DISPLAY_NAMES.get(item, item.upper())
-        )
-
-        # This event is required by qualify_system and villain_start.
-        # It resets saucer states/lights and prevents another saucer hit from
-        # launching a second select/start while the villain is active.
-        self.machine.events.post(
-            "villain_mode_started",
-            villain_key=item,
-            villain_name=self.DISPLAY_NAMES.get(item, item.upper())
         )
 
         start_event = self.VILLAINS[item]
@@ -194,9 +203,7 @@ class VillainSelect(Carousel):
             villain=item,
             start_event=start_event
         )
-        self.machine.events.post("clear_villain_saucer_lights")
-        self.machine.events.post("clear_saucers")
-        
+
         self.machine.events.post("villain_carousel_accept_selection")
         self.machine.events.post("stop_mode_villain_select")
         self.machine.events.post("stop_carousel_select")

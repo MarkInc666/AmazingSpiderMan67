@@ -65,6 +65,10 @@ class QualifySystem(Mode):
         if not self.qualify_logic_active or saucer not in self.SAUCERS:
             return
 
+        if self.machine.game.player["villain_mode_running"] == 1:
+            self.machine.events.post("villain_drop_ignored_mode_running", saucer=saucer)
+            return
+
         hit_var = f"{saucer}_drop_hit_this_cycle"
         state_var = f"{saucer}_state"
 
@@ -90,6 +94,10 @@ class QualifySystem(Mode):
         if not self.qualify_logic_active:
             return
 
+        if self.machine.game.player["villain_mode_running"] == 1:
+            self.machine.events.post("villain_bank_complete_ignored_mode_running")
+            return
+
         self.player["drop_bank_completions_this_ball"] += 1
         self.player["drop_bank_completions_this_chapter"] += 1
 
@@ -109,6 +117,10 @@ class QualifySystem(Mode):
 
     def _star_hit(self, **kwargs):
         if not self.qualify_logic_active:
+            return
+
+        if self.machine.game.player["villain_mode_running"] == 1:
+            self.machine.events.post("villain_star_ignored_mode_running")
             return
 
         if not all(self.player[f"{s}_state"] >= 1 for s in self.SAUCERS):
