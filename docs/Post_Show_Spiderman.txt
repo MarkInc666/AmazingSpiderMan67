@@ -1,3 +1,172 @@
+Yes — that is the right screen hierarchy.
+
+You’d basically have **three persistent zones**:
+
+```text
+LEFT PANEL
+Villain / Chapter Progress
+
+CENTER PANEL
+Current action / active mode / priority messages
+
+RIGHT PANEL
+Daily Bugle / Case Files / Wizard Prep
+```
+
+The important rule should be:
+
+> Left and right panels are persistent status. Center panel is interrupt-driven gameplay messaging.
+
+That means the player can always glance left/right for progress, while the center gets used for whatever is urgent.
+
+## Left side: Villains
+
+This should show the current chapter and villain states:
+
+```text
+CHAPTER 1: MONSTERS
+
+RHINO        COMPLETED
+LIZARD       PLAYING
+SANDMAN      NOT PLAYED
+VULTURE      NOT PLAYED
+SCORPION     NOT PLAYED
+
+MINI WIZARD  LOCKED
+```
+
+States:
+
+```text
+NOT PLAYED
+READY
+PLAYING
+COMPLETED
+FAILED
+LOCKED
+```
+
+## Right side: Daily Bugle / Case Files
+
+This should show global power/prep:
+
+```text
+DAILY BUGLE
+
+CASE FILES
+MORE JACKPOTS      COLLECTED
+BIGGER JACKPOTS    MISSING
+MORE TIME          COLLECTED
+SAFETY NET         MISSING
+SHOT ASSIST        MISSING
+
+WIZARD PREP
+2 / 5 FILES
+NEXT: BIGGER JACKPOTS
+```
+
+## Center: active message layer
+
+The center should be where the game “talks” to the player:
+
+```text
+RHINO BASH
+RAGE LEVEL 3
+HIT FLASHING TARGETS
+```
+
+or:
+
+```text
+BALL SAVED
+```
+
+or:
+
+```text
+HIT B TO COLLECT BUGLE
+```
+
+or:
+
+```text
+SKILL SHOT
+SHOOT LIT SAUCER
+```
+
+I would treat this as a **priority stack**, because some messages matter more than others.
+
+Suggested priority order:
+
+```text
+1. Tilt / Ball Saved / Extra Ball / Match-level urgent alerts
+2. Skill Shot / Mode Start / Mode Complete / Bookend
+3. Active villain mode widget
+4. Timed callouts: Chaos Level 3, Jackpot Lit, Hit B to collect Bugle
+5. Idle/default center display
+```
+
+So a “Ball Saved” message can temporarily cover the Rhino mode widget, then expire and return to Rhino.
+
+## Best architecture
+
+In Godot, I’d make:
+
+```text
+MainDisplay.tscn
+  LeftStatusPanel
+    VillainChapterWidget
+
+  CenterStage
+    ActiveModeContainer
+    PopupMessageLayer
+
+  RightStatusPanel
+    DailyBugleWidget
+    CaseFilesWidget
+```
+
+The center should support temporary widgets with timed expiration:
+
+```text
+show_skillshot_widget
+show_ball_saved_popup
+show_extra_ball_popup
+show_chaos_level_popup
+show_bugle_prompt
+show_villain_mode_widget
+clear_center_popup
+```
+
+In MPF/GMC terms, the left and right widgets can stay loaded almost all the time. The center widgets should be event-driven and often use `expire`.
+
+Example concept:
+
+```yaml
+widget_player:
+  ball_save_default_saving_ball:
+    ball_saved_popup:
+      action: play
+      expire: 2s
+
+  chaos_level_3_reached:
+    chaos_level_3_popup:
+      action: play
+      expire: 2s
+
+  bugle_b_ready:
+    bugle_b_prompt:
+      action: play
+      expire: 4s
+```
+
+For the active villain mode widget, don’t expire it immediately. It should stay until the mode ends or the summary/bookend takes over.
+
+This is a strong layout. It gives you persistent strategy on the sides and immediate gameplay instruction in the middle, which is exactly what a complicated rule set needs.
+
+
+
+
 Yes — here’s the current **system summary** in one place.
 
 # Spider-Man Rule System Summary
