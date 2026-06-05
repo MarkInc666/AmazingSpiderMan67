@@ -10,8 +10,8 @@ class CaseFiles(Mode):
 
     Current Case Files:
       - more_jackpots
-      - bigger_jackpots
       - more_time
+      - bigger_jackpots
       - safety_net
       - shot_assist
 
@@ -21,24 +21,24 @@ class CaseFiles(Mode):
 
     CASE_FILES = [
         "more_jackpots",
-        "bigger_jackpots",
         "more_time",
+        "bigger_jackpots",
         "safety_net",
         "shot_assist",
     ]
 
     CASE_FILE_LABELS = {
         "more_jackpots": "More Jackpots",
-        "bigger_jackpots": "Bigger Jackpots",
         "more_time": "More Time",
+        "bigger_jackpots": "Bigger Jackpots",
         "safety_net": "Safety Net",
         "shot_assist": "Shot Assist",
     }
 
     CASE_FILE_BENEFITS = {
         "more_jackpots": "Adds extra jackpot chances in villain modes",
-        "bigger_jackpots": "Boosts jackpot values in villain modes",
         "more_time": "Adds time or slows timers in villain modes",
+        "bigger_jackpots": "Boosts jackpot values in villain modes",
         "safety_net": "Adds ball save, retry, grace, or protection",
         "shot_assist": "Spots progress or makes objectives easier",
     }
