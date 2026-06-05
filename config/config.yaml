@@ -51,6 +51,7 @@ config:
   - coils.yaml
   - switches.yaml
   - devices.yaml
+  - player_vars.yaml
   #- sounds.yaml
   - images.yaml
   - videos.yaml
@@ -87,10 +88,6 @@ modes:
   - super_pops
   - chaos_pops
   - villain_bookends
-#  - qualify_upper_access
-#  - qualify_villain_locate
-#  - qualify_villain_select
-#  - qualify_villain_start
   - doc_ock
   - electro
   - goblin 
@@ -121,145 +118,6 @@ modes:
   - villain_start
   - case_files
   - villain_progression
-
-
-player_vars:
-
-  rhino_played:
-    initial_value: 0
-    value_type: int
-  sandman_played:
-    initial_value: 0
-    value_type: int
-  vulture_played:
-    initial_value: 0
-    value_type: int
-  electro_played:
-    initial_value: 0
-    value_type: int
-  goblin_played:
-    initial_value: 0
-    value_type: int
-  mysterio_played:
-    initial_value: 0
-    value_type: int
-  scorpion_played:
-    initial_value: 0
-    value_type: int
-  doc_ock_played:
-    initial_value: 0
-    value_type: int
-  parafino_played:
-    initial_value: 0
-    value_type: int
-  lizard_played:
-    initial_value: 0
-    value_type: int
-  centaur_played:
-    initial_value: 0
-    value_type: int
-  cerberus_played:
-    initial_value: 0
-    value_type: int
-  cyclops_played:
-    initial_value: 0
-    value_type: int
-  reptilla_played:
-    initial_value: 0
-    value_type: int
-  mole_man_played:
-    initial_value: 0
-    value_type: int
-  enforcers_played:
-    initial_value: 0
-    value_type: int
-  ox_played:
-    initial_value: 0
-    value_type: int
-  fifth_avenue_phantom_played:
-    initial_value: 0
-    value_type: int
-  frederick_foswell_played:
-    initial_value: 0
-    value_type: int
-  blackwell_played:
-    initial_value: 0
-    value_type: int
-  villain_chapter:
-    initial_value: 1
-    value_type: int
-  villains_played_this_chapter:
-    initial_value: 0
-    value_type: int
-  villains_played_total:
-    initial_value: 0
-    value_type: int
-  chapter_mini_wizard_ready:
-    initial_value: 0
-    value_type: int
-  mini_wizard_daily_bugle_ready:
-    initial_value: 0
-    value_type: int
-  final_wizard_ready:
-    initial_value: 0
-    value_type: int
-  villain_current_key:
-    initial_value: ""
-    value_type: str
-  mini_wizard_current_key:
-    initial_value: ""
-    value_type: str
-  villain_locate_spins_needed:
-    initial_value: 0
-    value_type: int
-  villain_mode_running:
-    initial_value: 0
-    value_type: int
-  villain_mode_running_name:
-    initial_value: "No Villain"
-    value_type: str 
-  villain_start_ready:
-    initial_value: 0
-    value_type: int
-  villain_current_name:
-    initial_value: ""
-    value_type: str 
-  villain_current_index:
-    initial_value: 1
-    value_type: int
-  kingpin_ready:
-    initial_value: 0
-    value_type: int
-  villains_completed_total:
-    initial_value: 0
-    value_type: int
-  chaos_pops_hits:
-    initial_value: 0
-    value_type: int
-  chaos_pops_level:
-    initial_value: 0
-    value_type: int
-  chaos_pops_bonus:
-    initial_value: 0
-    value_type: int
-  chaos_pops_points:
-    initial_value: 0
-    value_type: int
-  chaos_pops_next_level_hits:
-    initial_value: 5
-    value_type: int
-  extra_ball_text:
-    initial_value: ""
-    value_type: str
-  skillshots_awarded:
-    initial_value: 0
-    value_type: int
-  skillshot_collected_value:
-    initial_value: 0
-    value_type: int
-  ball_save_count:
-    initial_value: 0
-    value_type: int
 
 
 
@@ -299,6 +157,17 @@ event_player:
   reset_drops:
     - reset_3bank
     - reset_5bank|300ms
+
+  clear_saucers:
+    - kickout_saucer_1
+    - kickout_saucer_2
+    - kickout_saucer_3
+
+  villain_full_cleanup:
+    - case_files_reset_all
+    - clear_villain_saucer_lights
+    - clear_saucers
+    - reset_drops
 
   reset_5bank_delayed:
     - reset_5bank|500ms

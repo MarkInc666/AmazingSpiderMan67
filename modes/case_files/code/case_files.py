@@ -43,21 +43,13 @@ class CaseFiles(Mode):
         "shot_assist": "Spots progress or makes objectives easier",
     }
 
-    # Compatibility aliases from the previous placeholder names. These let any
-    # older code/widgets keep working while the new names are adopted.
-    LEGACY_ALIASES = {
-        "extra_jackpot": "more_jackpots",
-        "multiplier": "bigger_jackpots",
-        "safety": "safety_net",
-        "super_boost": "shot_assist",
-    }
-
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
         self.case_files_logic_active = True
         self._ensure_player_vars()
         self._add_handlers()
         self._restore_state()
+        self._publish_widget_vars()
 
     def mode_stop(self, **kwargs):
         self.case_files_logic_active = False
@@ -98,10 +90,9 @@ class CaseFiles(Mode):
             defaults[f"case_file_{key}_state"] = "NOT COLLECTED"
 
         for name, value in defaults.items():
-            if name not in self.player:
-                self.player[name] = value
+            if name not in self.machine.game.player:
+                self.machine.game.player[name] = value
 
-        self._sync_legacy_aliases()
         self._refresh_counts()
         self._publish_widget_vars()
 
@@ -113,14 +104,14 @@ class CaseFiles(Mode):
         self._advance_selected_case_file()
 
     def _advance_selected_case_file(self):
-        start_index = int(self.player["case_file_selected_index"])
+        start_index = int(self.machine.game.player["case_file_selected_index"])
 
         for step in range(1, len(self.CASE_FILES) + 1):
             next_index = (start_index + step) % len(self.CASE_FILES)
             key = self.CASE_FILES[next_index]
 
             if self._case_file_value(key) == 0:
-                self.player["case_file_selected_index"] = next_index
+                self.machine.game.player["case_file_selected_index"] = next_index
                 self._restore_selected_case_file()
                 return
 
@@ -132,7 +123,7 @@ class CaseFiles(Mode):
 
         self.machine.events.post("case_file_any_drop_hit", hit_index=index + 1)
 
-        selected_index = int(self.player["case_file_selected_index"])
+        selected_index = int(self.machine.game.player["case_file_selected_index"])
 
         if index != selected_index:
             self.machine.events.post(
@@ -160,11 +151,11 @@ class CaseFiles(Mode):
             case_file=key,
             label=self.CASE_FILE_LABELS[key],
             benefit=self.CASE_FILE_BENEFITS[key],
-            count=self.player["case_files_collected_count"],
+            count=self.machine.game.player["case_files_collected_count"],
         )
         self.machine.events.post(f"case_file_collected_{key}")
 
-        if self.player["case_files_collected_count"] >= len(self.CASE_FILES):
+        if self.machine.game.player["case_files_collected_count"] >= len(self.CASE_FILES):
             self._complete_case_file_set()
         else:
             self._advance_selected_case_file()
@@ -172,22 +163,23 @@ class CaseFiles(Mode):
         self._restore_state()
 
     def _complete_case_file_set(self):
-        if self.player["case_files_complete_ready"] == 1:
+        self.machine.game.player = self.machine.game.player
+        if self.machine.game.player["case_files_complete_ready"] == 1:
             return
 
-        self.player["case_files_complete_ready"] = 1
-        self.player["wizard_prep_this_chapter"] += 1
-        self.player["wizard_prep_level"] = int(self.player["case_files_collected_count"])
-        self.player["wizard_prep_summary"] = "All Case Files collected"
-        self.player["wizard_prep_next_award"] = "Wizard Prep complete"
+        self.machine.game.player["case_files_complete_ready"] = 1
+        self.machine.game.player["wizard_prep_this_chapter"] += 1
+        self.machine.game.player["wizard_prep_level"] = int(self.machine.game.player["case_files_collected_count"])
+        self.machine.game.player["wizard_prep_summary"] = "All Case Files collected"
+        self.machine.game.player["wizard_prep_next_award"] = "Wizard Prep complete"
 
         self.machine.events.post(
             "case_files_complete",
-            wizard_prep=self.player["wizard_prep_this_chapter"],
+            wizard_prep=self.machine.game.player["wizard_prep_this_chapter"],
         )
         self.machine.events.post(
             "wizard_prep_added",
-            wizard_prep=self.player["wizard_prep_this_chapter"],
+            wizard_prep=self.machine.game.player["wizard_prep_this_chapter"],
         )
 
     def _publish_case_file_bonuses(self, **kwargs):
@@ -196,9 +188,9 @@ class CaseFiles(Mode):
         self._publish_widget_vars()
 
         payload = {
-            "collected_count": self.player["case_files_collected_count"],
-            "complete": self.player["case_files_complete_ready"],
-            "wizard_prep_level": self.player["wizard_prep_level"],
+            "collected_count": self.machine.game.player["case_files_collected_count"],
+            "complete": self.machine.game.player["case_files_complete_ready"],
+            "wizard_prep_level": self.machine.game.player["wizard_prep_level"],
         }
 
         for key in self.CASE_FILES:
@@ -208,7 +200,7 @@ class CaseFiles(Mode):
         self.machine.events.post("case_files_available_for_villain", **payload)
 
     def _clear_wizard_prep(self, **kwargs):
-        self.player["wizard_prep_this_chapter"] = 0
+        self.machine.game.player["wizard_prep_this_chapter"] = 0
         self.machine.events.post("wizard_prep_cleared")
         self._publish_widget_vars()
 
@@ -219,9 +211,9 @@ class CaseFiles(Mode):
         for key in self.CASE_FILES:
             self._set_case_file_collected(key, 0)
 
-        self.player["case_file_selected_index"] = 0
-        self.player["case_files_complete_ready"] = 0
-        self.player["wizard_prep_this_chapter"] = 0
+        self.machine.game.player["case_file_selected_index"] = 0
+        self.machine.game.player["case_files_complete_ready"] = 0
+        self.machine.game.player["wizard_prep_this_chapter"] = 0
         self._refresh_counts()
         self._publish_widget_vars()
         self.machine.events.post("case_files_cleared")
@@ -247,16 +239,16 @@ class CaseFiles(Mode):
 
         self.machine.events.post(
             "case_files_status",
-            selected_index=int(self.player["case_file_selected_index"]) + 1,
-            collected_count=self.player["case_files_collected_count"],
-            wizard_prep=self.player["wizard_prep_this_chapter"],
-            wizard_prep_level=self.player["wizard_prep_level"],
-            wizard_prep_summary=self.player["wizard_prep_summary"],
-            wizard_prep_next_award=self.player["wizard_prep_next_award"],
+            selected_index=int(self.machine.game.player["case_file_selected_index"]) + 1,
+            collected_count=self.machine.game.player["case_files_collected_count"],
+            wizard_prep=self.machine.game.player["wizard_prep_this_chapter"],
+            wizard_prep_level=self.machine.game.player["wizard_prep_level"],
+            wizard_prep_summary=self.machine.game.player["wizard_prep_summary"],
+            wizard_prep_next_award=self.machine.game.player["wizard_prep_next_award"],
         )
 
     def _restore_selected_case_file(self):
-        selected_index = int(self.player["case_file_selected_index"])
+        selected_index = int(self.machine.game.player["case_file_selected_index"])
         key = self.CASE_FILES[selected_index]
 
         if self._case_file_value(key) == 1:
@@ -273,32 +265,45 @@ class CaseFiles(Mode):
         self.machine.events.post(f"case_file_selected_{key}")
 
     def _case_file_value(self, key):
-        return self._safe_int(self.player.get(f"case_file_{key}_collected", self.player.get(f"case_file_{key}", 0)))
+        collected = self._player_var(f"case_file_{key}_collected", None)
+
+        if collected is None:
+            collected = self._player_var(f"case_file_{key}", 0)
+
+        return self._safe_int(collected)
+
+    def _player_var(self, name, default=0):
+        player = self.machine.game.player if self.machine.game else None
+        if not player:
+            return default
+        try:
+            return player[name]
+        except Exception:
+            return default
 
     def _set_case_file_collected(self, key, value):
         value = 1 if self._safe_int(value) == 1 else 0
-        self.player[f"case_file_{key}"] = value
-        self.player[f"case_file_{key}_collected"] = value
-        self.player[f"case_file_{key}_state"] = "COLLECTED" if value else "NOT COLLECTED"
-        self._sync_legacy_aliases()
+        self.machine.game.player[f"case_file_{key}"] = value
+        self.machine.game.player[f"case_file_{key}_collected"] = value
+        self.machine.game.player[f"case_file_{key}_state"] = "COLLECTED" if value else "NOT COLLECTED"
 
     def _refresh_counts(self):
         collected_count = sum(self._case_file_value(key) for key in self.CASE_FILES)
-        self.player["case_files_collected_count"] = collected_count
-        self.player["case_files_complete_ready"] = 1 if collected_count >= len(self.CASE_FILES) else 0
-        self.player["wizard_prep_level"] = collected_count
+        self.machine.game.player["case_files_collected_count"] = collected_count
+        self.machine.game.player["case_files_complete_ready"] = 1 if collected_count >= len(self.CASE_FILES) else 0
+        self.machine.game.player["wizard_prep_level"] = collected_count
 
         if collected_count >= len(self.CASE_FILES):
-            self.player["wizard_prep_summary"] = "All Case Files collected"
-            self.player["wizard_prep_next_award"] = "Wizard Prep complete"
+            self.machine.game.player["wizard_prep_summary"] = "All Case Files collected"
+            self.machine.game.player["wizard_prep_next_award"] = "Wizard Prep complete"
         else:
             next_key = self._next_missing_case_file()
             if next_key:
-                self.player["wizard_prep_summary"] = f"{collected_count} / {len(self.CASE_FILES)} Case Files collected"
-                self.player["wizard_prep_next_award"] = f"Collect {self.CASE_FILE_LABELS[next_key]}"
+                self.machine.game.player["wizard_prep_summary"] = f"{collected_count} / {len(self.CASE_FILES)} Case Files collected"
+                self.machine.game.player["wizard_prep_next_award"] = f"Collect {self.CASE_FILE_LABELS[next_key]}"
             else:
-                self.player["wizard_prep_summary"] = "Case Files ready"
-                self.player["wizard_prep_next_award"] = "Wizard Prep complete"
+                self.machine.game.player["wizard_prep_summary"] = "Case Files ready"
+                self.machine.game.player["wizard_prep_next_award"] = "Wizard Prep complete"
 
     def _next_missing_case_file(self):
         for key in self.CASE_FILES:
@@ -309,18 +314,12 @@ class CaseFiles(Mode):
     def _publish_widget_vars(self):
         for index, key in enumerate(self.CASE_FILES, start=1):
             collected = self._case_file_value(key)
-            self.player[f"case_file_{index}_key"] = key
-            self.player[f"case_file_{index}_name"] = self.CASE_FILE_LABELS[key]
-            self.player[f"case_file_{index}_state"] = "COLLECTED" if collected else "NOT COLLECTED"
-            self.player[f"case_file_{index}_benefit"] = self.CASE_FILE_BENEFITS[key]
+            self.machine.game.player[f"case_file_{index}_key"] = key
+            self.machine.game.player[f"case_file_{index}_name"] = self.CASE_FILE_LABELS[key]
+            self.machine.game.player[f"case_file_{index}_state"] = "COLLECTED" if collected else "NOT COLLECTED"
+            self.machine.game.player[f"case_file_{index}_benefit"] = self.CASE_FILE_BENEFITS[key]
 
         self.machine.events.post("case_files_status_changed")
-
-    def _sync_legacy_aliases(self):
-        for old_key, new_key in self.LEGACY_ALIASES.items():
-            value = self._safe_int(self.player.get(f"case_file_{new_key}_collected", self.player.get(f"case_file_{new_key}", 0)))
-            self.player[f"case_file_{old_key}"] = value
-            self.player[f"case_file_{old_key}_collected"] = value
 
     def _safe_int(self, value, default=0):
         try:

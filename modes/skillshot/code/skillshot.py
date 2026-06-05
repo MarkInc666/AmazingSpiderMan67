@@ -147,7 +147,7 @@ class SkillShot(Mode):
         if self.skillshot_moved == False:
             award = award * 2
 
-        self.player.score += award
+        self.machine.game.player["score"] += award
 
         self.machine.game.player["skillshot_collected_value"] = award
 

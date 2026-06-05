@@ -14,9 +14,9 @@ class CustomBonus(Mode):
     def collect_bonus(self, queue=None, **kwargs):
         player = self.machine.game.player
 
-        bonus_count = player.get("bonus_count", 0)
-        bonus_multiplier = player.get("bonus_multiplier", 1)
-        vulture_bonus = player.get("vulture_bonus", 0)
+        bonus_count = player["bonus_count"], 0
+        bonus_multiplier = player["bonus_multiplier"]
+        vulture_bonus = player["vulture_bonus"]
 
         self.base_bonus_total = bonus_count * self.BONUS_UNIT_VALUE
         self.multiplier_extra_total = self.base_bonus_total * max(0, bonus_multiplier - 1)

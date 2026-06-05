@@ -30,19 +30,15 @@ event_player:
   s_vuk_switch_active:
     - daily_bugle_vuk_collect_request
 
-  daily_bugle_widget_update:
-    - daily_bugle_widget_remove
-    - daily_bugle_widget_readd|10ms
-
 
 widget_player:
   daily_bugle_widget_remove:
     daily_bugle_ready:
       action: remove
 
-  daily_bugle_widget_readd:
+  daily_bugle_widget_update:
     daily_bugle_ready:
-      action: play
+      action: update
 
 
 variable_player:
@@ -134,6 +130,29 @@ sound_player:
     sm_i_wonder_what_mr_jameson:
       action: play
       bus: voice
+
+  say_sm_tingle:
+    sm_my_spidey_senses_are_starting_to_tingle:
+      action: play
+      bus: voice
+
+  s_trispinner_opto_active:
+    short_click:
+      action: play
+      bus: effects
+
+  s_upper_target_left_active: 
+    bell1:
+      action: play
+      bus: effects
+  s_upper_target_center_active: 
+    bell2:
+      action: play
+      bus: effects
+  s_upper_target_right_active: 
+    bell3:
+      action: play
+      bus: effects
 
 
 show_player:

@@ -18,6 +18,12 @@ variable_player:
   default_spinner_hit:
     score: 2000
 
+  upper_target_hit:
+    score: 5000
+
+  upper_spinner_hit:
+    score: 3000
+
 
 
 random_event_player:
@@ -64,6 +70,11 @@ event_player:
     - pops_hit
   s_pop_left_active:
     - pops_hit
+
+  s_upper_target_left_active: upper_target_hit
+  s_upper_target_center_active: upper_target_hit
+  s_upper_target_right_active: upper_target_hit
+  s_trispinner_opto_active: upper_spinner_hit
 
 
   s_web_spinner_active{mode.super_spinner.active == False}:

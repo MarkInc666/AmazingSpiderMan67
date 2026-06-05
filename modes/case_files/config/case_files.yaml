@@ -6,6 +6,11 @@ mode:
   stop_events: ball_ending
   priority: 120
 
+widget_player:
+  case_files_status_changed:
+    daily_bugle_ready:
+      action: update
+
 event_player:
   s_web_spinner_active:
     - case_file_spinner_hit

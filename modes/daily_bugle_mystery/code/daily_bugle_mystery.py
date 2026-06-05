@@ -217,14 +217,14 @@ class DailyBugleMystery(Mode):
             award_event = random.choice(valid_awards)
 
             if award_event == "mystery_award_villain_start_ready":
-                villain_mode_running = int(player.get("villain_mode_running", 0))
-                villain_start_ready = int(player.get("villain_start_ready", 0))
+                villain_mode_running = int(player["villain_mode_running"], 0)
+                villain_start_ready = int(player["villain_start_ready"], 0)
                 if villain_mode_running == 0 and villain_start_ready == 0:
                     self.machine.events.post(award_event)
                     return
 
             elif award_event == "mystery_award_hold_bonus":
-                hold_bonus = int(player.get("hold_bonus", 0))
+                hold_bonus = int(player["hold_bonus"], 0)
                 if hold_bonus == 0:
                     self.machine.events.post(award_event)
                     return

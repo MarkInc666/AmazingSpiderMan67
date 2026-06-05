@@ -31,8 +31,8 @@ class VillainStart(Mode):
             "final_wizard_ready": 0,
         }
         for name, value in defaults.items():
-            if name not in self.player:
-                self.player[name] = value
+            if name not in self.machine.game.player:
+                self.machine.game.player[name] = value
 
     def _add_handlers(self):
         self.add_mode_event_handler("saucer_1_hit", self._saucer_hit, saucer="saucer_1")
@@ -48,9 +48,9 @@ class VillainStart(Mode):
     def _villain_started(self, villain_key=None, villain_name=None, villain=None, **kwargs):
         key = villain_key or villain or villain_name or self._player_var("villain_current_name", "")
         self.villain_start_logic_active = False
-        self.player["villain_mode_running"] = 1
-        self.player["villain_current_name"] = key
-        self.player["villain_mode_running_name"] = key
+        self.machine.game.player["villain_mode_running"] = 1
+        self.machine.game.player["villain_current_name"] = key
+        self.machine.game.player["villain_mode_running_name"] = key
         self.machine.events.post("clear_villain_saucer_lights")
         self.machine.events.post("clear_saucers")
 
@@ -67,9 +67,9 @@ class VillainStart(Mode):
 
     def _unlock_start_logic(self):
         self.villain_start_logic_active = True
-        self.player["villain_mode_running"] = 0
-        self.player["villain_current_name"] = ""
-        self.player["villain_mode_running_name"] = ""
+        self.machine.game.player["villain_mode_running"] = 0
+        self.machine.game.player["villain_current_name"] = ""
+        self.machine.game.player["villain_mode_running_name"] = ""
 
     def _saucer_hit(self, saucer=None, **kwargs):
         if saucer not in self.SAUCERS:
@@ -101,15 +101,15 @@ class VillainStart(Mode):
 
     def _lock_saucers_for_start(self):
         self.villain_start_logic_active = False
-        self.player["villain_mode_running"] = 1
-        self.player["villain_current_name"] = "villain_select"
-        self.player["villain_mode_running_name"] = "villain_select"
+        self.machine.game.player["villain_mode_running"] = 1
+        self.machine.game.player["villain_current_name"] = "villain_select"
+        self.machine.game.player["villain_mode_running_name"] = "villain_select"
         self.machine.events.post("clear_villain_saucer_lights")
         self.machine.events.post("clear_saucers")
 
     def _player_var(self, name, default=0):
         try:
-            return self.player[name]
+            return self.machine.game.player[name]
         except Exception:
             return default
 

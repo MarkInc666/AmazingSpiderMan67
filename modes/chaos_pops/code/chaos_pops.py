@@ -46,6 +46,8 @@ class ChaosPops(Mode):
         self.add_mode_event_handler("drop_hit_no_mode", self._default_score_hit)
         self.add_mode_event_handler("secondary_switch_hit", self._default_score_hit)
         self.add_mode_event_handler("default_spinner_hit", self._default_score_hit)
+        self.add_mode_event_handler("upper_target_hit", self._default_score_hit)
+        self.add_mode_event_handler("upper_spinner_hit", self._default_score_hit)
 
         self.machine.events.post("chaos_pops_started")
 

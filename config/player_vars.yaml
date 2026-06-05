@@ -1,0 +1,941 @@
+#config_version=6
+#
+# Player variable declarations for ASM67 campaign/progression systems.
+#
+# Include this file from your main config.yaml, for example:
+#
+# config:
+#   - player_vars_campaign.yaml
+#
+# Or paste the player_vars: block into config.yaml.
+#
+# Notes:
+# - These are intentionally broad/default-safe.
+# - Declaring these prevents Godot/GMC MPFVariable nodes and Python f-string
+#   lookups from reading missing player vars.
+# - MPF Player objects should be read with player["var"] or helper methods,
+#   not player.get(...).
+
+player_vars:
+
+  # ---------------------------------------------------------------------------
+  # Villain campaign / progression
+  # ---------------------------------------------------------------------------
+
+  villain_chapter:
+    initial_value: 1
+    value_type: int
+
+  villain_chapter_name:
+    initial_value: ""
+    value_type: str
+
+  villains_played_this_chapter:
+    initial_value: 0
+    value_type: int
+
+  villains_played_total:
+    initial_value: 0
+    value_type: int
+
+  villains_completed_total:
+    initial_value: 0
+    value_type: int
+
+  villain_current_key:
+    initial_value: ""
+    value_type: str
+
+  villain_current_name:
+    initial_value: ""
+    value_type: str
+
+  villain_current_index:
+    initial_value: 0
+    value_type: int
+
+  villain_mode_running:
+    initial_value: 0
+    value_type: int
+
+  villain_mode_running_name:
+    initial_value: ""
+    value_type: str
+
+  villain_mode_in_summary:
+    initial_value: 0
+    value_type: int
+
+  villain_start_ready:
+    initial_value: 0
+    value_type: int
+
+  villain_select_active:
+    initial_value: 0
+    value_type: int
+
+  villain_locate_spins:
+    initial_value: 0
+    value_type: int
+
+  villain_locate_spins_needed:
+    initial_value: 0
+    value_type: int
+
+  chapter_mini_wizard_ready:
+    initial_value: 0
+    value_type: int
+
+  mini_wizard_daily_bugle_ready:
+    initial_value: 0
+    value_type: int
+
+  mini_wizard_current_key:
+    initial_value: ""
+    value_type: str
+
+  final_wizard_ready:
+    initial_value: 0
+    value_type: int
+
+  kingpin_ready:
+    initial_value: 0
+    value_type: int
+
+
+  # ---------------------------------------------------------------------------
+  # Villain saucer state / select state
+  # ---------------------------------------------------------------------------
+
+  saucer_1_state:
+    initial_value: 0
+    value_type: int
+
+  saucer_2_state:
+    initial_value: 0
+    value_type: int
+
+  saucer_3_state:
+    initial_value: 0
+    value_type: int
+
+  saucer_1_select_ready:
+    initial_value: 0
+    value_type: int
+
+  saucer_2_select_ready:
+    initial_value: 0
+    value_type: int
+
+  saucer_3_select_ready:
+    initial_value: 0
+    value_type: int
+
+
+  # ---------------------------------------------------------------------------
+  # Chapter display/widget slots
+  # ---------------------------------------------------------------------------
+
+  chapter_villain_1_key:
+    initial_value: ""
+    value_type: str
+  chapter_villain_1_name:
+    initial_value: ""
+    value_type: str
+  chapter_villain_1_state:
+    initial_value: "not_played"
+    value_type: str
+
+  chapter_villain_2_key:
+    initial_value: ""
+    value_type: str
+  chapter_villain_2_name:
+    initial_value: ""
+    value_type: str
+  chapter_villain_2_state:
+    initial_value: "not_played"
+    value_type: str
+
+  chapter_villain_3_key:
+    initial_value: ""
+    value_type: str
+  chapter_villain_3_name:
+    initial_value: ""
+    value_type: str
+  chapter_villain_3_state:
+    initial_value: "not_played"
+    value_type: str
+
+  chapter_villain_4_key:
+    initial_value: ""
+    value_type: str
+  chapter_villain_4_name:
+    initial_value: ""
+    value_type: str
+  chapter_villain_4_state:
+    initial_value: "not_played"
+    value_type: str
+
+  chapter_villain_5_key:
+    initial_value: ""
+    value_type: str
+  chapter_villain_5_name:
+    initial_value: ""
+    value_type: str
+  chapter_villain_5_state:
+    initial_value: "not_played"
+    value_type: str
+
+
+  # ---------------------------------------------------------------------------
+  # Chapter 1: Classic Rogues
+  # ---------------------------------------------------------------------------
+
+  rhino_played:
+    initial_value: 0
+    value_type: int
+  rhino_state:
+    initial_value: "not_played"
+    value_type: str
+  rhino_completed:
+    initial_value: 0
+    value_type: int
+  rhino_mode_points:
+    initial_value: 0
+    value_type: int
+  rhino_jackpots:
+    initial_value: 0
+    value_type: int
+  rhino_best_rage_stage:
+    initial_value: 0
+    value_type: int
+
+  vulture_played:
+    initial_value: 0
+    value_type: int
+  vulture_state:
+    initial_value: "not_played"
+    value_type: str
+  vulture_completed:
+    initial_value: 0
+    value_type: int
+  vulture_mode_points:
+    initial_value: 0
+    value_type: int
+  vulture_spins:
+    initial_value: 0
+    value_type: int
+  vulture_best_target_value:
+    initial_value: 0
+    value_type: int
+
+  lizard_played:
+    initial_value: 0
+    value_type: int
+  lizard_state:
+    initial_value: "not_played"
+    value_type: str
+  lizard_completed:
+    initial_value: 0
+    value_type: int
+  lizard_mode_points:
+    initial_value: 0
+    value_type: int
+  lizard_deliveries:
+    initial_value: 0
+    value_type: int
+  lizard_best_delivery_value:
+    initial_value: 0
+    value_type: int
+  lizard_serum_ready:
+    initial_value: 0
+    value_type: int
+  lizard_delivery_value:
+    initial_value: 0
+    value_type: int
+  lizard_a_hit:
+    initial_value: 0
+    value_type: int
+  lizard_b_hit:
+    initial_value: 0
+    value_type: int
+  lizard_ab_ready:
+    initial_value: 0
+    value_type: int
+
+  sandman_played:
+    initial_value: 0
+    value_type: int
+  sandman_state:
+    initial_value: "not_played"
+    value_type: str
+  sandman_completed:
+    initial_value: 0
+    value_type: int
+  sandman_mode_points:
+    initial_value: 0
+    value_type: int
+  sandman_jackpots:
+    initial_value: 0
+    value_type: int
+  sandman_perfect_runs:
+    initial_value: 0
+    value_type: int
+
+  electro_played:
+    initial_value: 0
+    value_type: int
+  electro_state:
+    initial_value: "not_played"
+    value_type: str
+  electro_completed:
+    initial_value: 0
+    value_type: int
+  electro_mode_points:
+    initial_value: 0
+    value_type: int
+  electro_sparks_hit:
+    initial_value: 0
+    value_type: int
+  electro_super_jackpots:
+    initial_value: 0
+    value_type: int
+
+
+  # ---------------------------------------------------------------------------
+  # Chapter 2: Masterminds
+  # ---------------------------------------------------------------------------
+
+  doc_ock_played:
+    initial_value: 0
+    value_type: int
+  doc_ock_state:
+    initial_value: "not_played"
+    value_type: str
+  doc_ock_completed:
+    initial_value: 0
+    value_type: int
+  doc_ock_mode_points:
+    initial_value: 0
+    value_type: int
+  doc_ock_jackpots:
+    initial_value: 0
+    value_type: int
+  doc_ock_max_arms_locked:
+    initial_value: 0
+    value_type: int
+
+  mysterio_played:
+    initial_value: 0
+    value_type: int
+  mysterio_state:
+    initial_value: "not_played"
+    value_type: str
+  mysterio_completed:
+    initial_value: 0
+    value_type: int
+  mysterio_mode_points:
+    initial_value: 0
+    value_type: int
+  mysterio_illusions_cleared:
+    initial_value: 0
+    value_type: int
+  mysterio_reveals:
+    initial_value: 0
+    value_type: int
+
+  goblin_played:
+    initial_value: 0
+    value_type: int
+  goblin_state:
+    initial_value: "not_played"
+    value_type: str
+  goblin_completed:
+    initial_value: 0
+    value_type: int
+  goblin_mode_points:
+    initial_value: 0
+    value_type: int
+  goblin_jackpots:
+    initial_value: 0
+    value_type: int
+  goblin_attacks_stopped:
+    initial_value: 0
+    value_type: int
+
+  scorpion_played:
+    initial_value: 0
+    value_type: int
+  scorpion_state:
+    initial_value: "not_played"
+    value_type: str
+  scorpion_completed:
+    initial_value: 0
+    value_type: int
+  scorpion_mode_points:
+    initial_value: 0
+    value_type: int
+  scorpion_stings:
+    initial_value: 0
+    value_type: int
+  scorpion_jackpots:
+    initial_value: 0
+    value_type: int
+
+  parafino_played:
+    initial_value: 0
+    value_type: int
+  parafino_state:
+    initial_value: "not_played"
+    value_type: str
+  parafino_completed:
+    initial_value: 0
+    value_type: int
+  parafino_mode_points:
+    initial_value: 0
+    value_type: int
+  parafino_sequences:
+    initial_value: 0
+    value_type: int
+  parafino_jackpots:
+    initial_value: 0
+    value_type: int
+  parafino_total_jackpots:
+    initial_value: 0
+    value_type: int
+  parafino_left_heat:
+    initial_value: 0
+    value_type: int
+  parafino_pops_heat:
+    initial_value: 0
+    value_type: int
+  parafino_right_heat:
+    initial_value: 0
+    value_type: int
+  parafino_left_jackpot_lit:
+    initial_value: 0
+    value_type: int
+  parafino_pops_jackpot_lit:
+    initial_value: 0
+    value_type: int
+  parafino_right_jackpot_lit:
+    initial_value: 0
+    value_type: int
+  parafino_left_jackpots:
+    initial_value: 0
+    value_type: int
+  parafino_pops_jackpots:
+    initial_value: 0
+    value_type: int
+  parafino_right_jackpots:
+    initial_value: 0
+    value_type: int
+  parafino_saucer_1_add_ball_used:
+    initial_value: 0
+    value_type: int
+  parafino_saucer_2_add_ball_used:
+    initial_value: 0
+    value_type: int
+  parafino_saucer_3_add_ball_used:
+    initial_value: 0
+    value_type: int
+
+
+  # ---------------------------------------------------------------------------
+  # Chapter 3: Monsters
+  # ---------------------------------------------------------------------------
+
+  centaur_played:
+    initial_value: 0
+    value_type: int
+  centaur_state:
+    initial_value: "not_played"
+    value_type: str
+  centaur_completed:
+    initial_value: 0
+    value_type: int
+  centaur_mode_points:
+    initial_value: 0
+    value_type: int
+
+  cerberus_played:
+    initial_value: 0
+    value_type: int
+  cerberus_state:
+    initial_value: "not_played"
+    value_type: str
+  cerberus_completed:
+    initial_value: 0
+    value_type: int
+  cerberus_mode_points:
+    initial_value: 0
+    value_type: int
+
+  cyclops_played:
+    initial_value: 0
+    value_type: int
+  cyclops_state:
+    initial_value: "not_played"
+    value_type: str
+  cyclops_completed:
+    initial_value: 0
+    value_type: int
+  cyclops_mode_points:
+    initial_value: 0
+    value_type: int
+
+  reptilla_played:
+    initial_value: 0
+    value_type: int
+  reptilla_state:
+    initial_value: "not_played"
+    value_type: str
+  reptilla_completed:
+    initial_value: 0
+    value_type: int
+  reptilla_mode_points:
+    initial_value: 0
+    value_type: int
+
+  mole_man_played:
+    initial_value: 0
+    value_type: int
+  mole_man_state:
+    initial_value: "not_played"
+    value_type: str
+  mole_man_completed:
+    initial_value: 0
+    value_type: int
+  mole_man_mode_points:
+    initial_value: 0
+    value_type: int
+
+
+  # ---------------------------------------------------------------------------
+  # Chapter 4: Crime Wave
+  # ---------------------------------------------------------------------------
+
+  enforcers_played:
+    initial_value: 0
+    value_type: int
+  enforcers_state:
+    initial_value: "not_played"
+    value_type: str
+  enforcers_completed:
+    initial_value: 0
+    value_type: int
+  enforcers_mode_points:
+    initial_value: 0
+    value_type: int
+
+  ox_played:
+    initial_value: 0
+    value_type: int
+  ox_state:
+    initial_value: "not_played"
+    value_type: str
+  ox_completed:
+    initial_value: 0
+    value_type: int
+  ox_mode_points:
+    initial_value: 0
+    value_type: int
+
+  fifth_avenue_phantom_played:
+    initial_value: 0
+    value_type: int
+  fifth_avenue_phantom_state:
+    initial_value: "not_played"
+    value_type: str
+  fifth_avenue_phantom_completed:
+    initial_value: 0
+    value_type: int
+  fifth_avenue_phantom_mode_points:
+    initial_value: 0
+    value_type: int
+
+  frederick_foswell_played:
+    initial_value: 0
+    value_type: int
+  frederick_foswell_state:
+    initial_value: "not_played"
+    value_type: str
+  frederick_foswell_completed:
+    initial_value: 0
+    value_type: int
+  frederick_foswell_mode_points:
+    initial_value: 0
+    value_type: int
+
+  blackwell_played:
+    initial_value: 0
+    value_type: int
+  blackwell_state:
+    initial_value: "not_played"
+    value_type: str
+  blackwell_completed:
+    initial_value: 0
+    value_type: int
+  blackwell_mode_points:
+    initial_value: 0
+    value_type: int
+
+
+  # ---------------------------------------------------------------------------
+  # Mini-wizards
+  # ---------------------------------------------------------------------------
+
+  sinister_surge_played:
+    initial_value: 0
+    value_type: int
+  sinister_surge_completed:
+    initial_value: 0
+    value_type: int
+  sinister_surge_mode_points:
+    initial_value: 0
+    value_type: int
+
+  master_plan_played:
+    initial_value: 0
+    value_type: int
+  master_plan_completed:
+    initial_value: 0
+    value_type: int
+  master_plan_mode_points:
+    initial_value: 0
+    value_type: int
+
+  monster_island_played:
+    initial_value: 0
+    value_type: int
+  monster_island_completed:
+    initial_value: 0
+    value_type: int
+  monster_island_mode_points:
+    initial_value: 0
+    value_type: int
+
+  crime_wave_mini_played:
+    initial_value: 0
+    value_type: int
+  crime_wave_mini_completed:
+    initial_value: 0
+    value_type: int
+  crime_wave_mini_mode_points:
+    initial_value: 0
+    value_type: int
+
+
+  # ---------------------------------------------------------------------------
+  # Final wizard: Kingpin
+  # ---------------------------------------------------------------------------
+
+  kingpin_played:
+    initial_value: 0
+    value_type: int
+  kingpin_state:
+    initial_value: "not_played"
+    value_type: str
+  kingpin_completed:
+    initial_value: 0
+    value_type: int
+  kingpin_mode_points:
+    initial_value: 0
+    value_type: int
+
+  kingpin_areas_cleared:
+    initial_value: 0
+    value_type: int
+  kingpin_jackpots:
+    initial_value: 0
+    value_type: int
+  kingpin_super_jackpots:
+    initial_value: 0
+    value_type: int
+
+  kingpin_current_area:
+    initial_value: ""
+    value_type: str
+  kingpin_current_area_display:
+    initial_value: ""
+    value_type: str
+  kingpin_area_progress:
+    initial_value: 0
+    value_type: int
+  kingpin_area_required:
+    initial_value: 0
+    value_type: int
+
+  kingpin_jackpot_ready:
+    initial_value: 0
+    value_type: int
+  kingpin_jackpot_value:
+    initial_value: 0
+    value_type: int
+  kingpin_super_jackpot_ready:
+    initial_value: 0
+    value_type: int
+  kingpin_super_jackpot_value:
+    initial_value: 0
+    value_type: int
+
+  kingpin_a_hit:
+    initial_value: 0
+    value_type: int
+  kingpin_b_hit:
+    initial_value: 0
+    value_type: int
+  kingpin_ab_ready:
+    initial_value: 0
+    value_type: int
+
+  kingpin_upper_left_hits:
+    initial_value: 0
+    value_type: int
+  kingpin_upper_center_hits:
+    initial_value: 0
+    value_type: int
+  kingpin_upper_right_hits:
+    initial_value: 0
+    value_type: int
+
+  kingpin_area_pops_cleared:
+    initial_value: 0
+    value_type: int
+  kingpin_area_spinner_cleared:
+    initial_value: 0
+    value_type: int
+  kingpin_area_star_cleared:
+    initial_value: 0
+    value_type: int
+  kingpin_area_upper_targets_cleared:
+    initial_value: 0
+    value_type: int
+  kingpin_area_drops_cleared:
+    initial_value: 0
+    value_type: int
+
+
+  # ---------------------------------------------------------------------------
+  # Villain bookend / intro-summary display vars
+  # ---------------------------------------------------------------------------
+
+  villain_bookend_title:
+    initial_value: ""
+    value_type: str
+  villain_bookend_line_1:
+    initial_value: ""
+    value_type: str
+  villain_bookend_line_2:
+    initial_value: ""
+    value_type: str
+  villain_bookend_line_3:
+    initial_value: ""
+    value_type: str
+  villain_bookend_footer:
+    initial_value: ""
+    value_type: str
+
+
+  # ---------------------------------------------------------------------------
+  # Case files
+  # ---------------------------------------------------------------------------
+
+  case_files_collected_count:
+    initial_value: 0
+    value_type: int
+
+  case_files_complete_ready:
+    initial_value: 0
+    value_type: int
+
+  case_file_selected_index:
+    initial_value: 0
+    value_type: int
+
+  case_file_current_key:
+    initial_value: ""
+    value_type: str
+
+  case_file_current_name:
+    initial_value: ""
+    value_type: str
+
+  case_file_current_description:
+    initial_value: ""
+    value_type: str
+
+  case_file_1_key:
+    initial_value: ""
+    value_type: str
+  case_file_1_name:
+    initial_value: ""
+    value_type: str
+  case_file_1_description:
+    initial_value: ""
+    value_type: str
+  case_file_1_collected:
+    initial_value: 0
+    value_type: int
+
+  case_file_2_key:
+    initial_value: ""
+    value_type: str
+  case_file_2_name:
+    initial_value: ""
+    value_type: str
+  case_file_2_description:
+    initial_value: ""
+    value_type: str
+  case_file_2_collected:
+    initial_value: 0
+    value_type: int
+
+  case_file_3_key:
+    initial_value: ""
+    value_type: str
+  case_file_3_name:
+    initial_value: ""
+    value_type: str
+  case_file_3_description:
+    initial_value: ""
+    value_type: str
+  case_file_3_collected:
+    initial_value: 0
+    value_type: int
+
+  case_file_4_key:
+    initial_value: ""
+    value_type: str
+  case_file_4_name:
+    initial_value: ""
+    value_type: str
+  case_file_4_description:
+    initial_value: ""
+    value_type: str
+  case_file_4_collected:
+    initial_value: 0
+    value_type: int
+
+  case_file_5_key:
+    initial_value: ""
+    value_type: str
+  case_file_5_name:
+    initial_value: ""
+    value_type: str
+  case_file_5_description:
+    initial_value: ""
+    value_type: str
+  case_file_5_collected:
+    initial_value: 0
+    value_type: int
+
+  case_file_extra_jackpot:
+    initial_value: 0
+    value_type: int
+  case_file_extra_jackpot_collected:
+    initial_value: 0
+    value_type: int
+
+  case_file_more_time:
+    initial_value: 0
+    value_type: int
+  case_file_more_time_collected:
+    initial_value: 0
+    value_type: int
+
+  case_file_multiplier:
+    initial_value: 0
+    value_type: int
+  case_file_multiplier_collected:
+    initial_value: 0
+    value_type: int
+
+  case_file_safety:
+    initial_value: 0
+    value_type: int
+  case_file_safety_collected:
+    initial_value: 0
+    value_type: int
+
+  case_file_super_boost:
+    initial_value: 0
+    value_type: int
+  case_file_super_boost_collected:
+    initial_value: 0
+    value_type: int
+
+
+  # ---------------------------------------------------------------------------
+  # Chaos Pops
+  # ---------------------------------------------------------------------------
+
+  chaos_pops_hits:
+    initial_value: 0
+    value_type: int
+
+  chaos_pops_level:
+    initial_value: 0
+    value_type: int
+
+  chaos_pops_bonus:
+    initial_value: 0
+    value_type: int
+
+  chaos_pops_points:
+    initial_value: 0
+    value_type: int
+
+  chaos_pops_next_level_hits:
+    initial_value: 5
+    value_type: int
+
+
+  # ---------------------------------------------------------------------------
+  # Bonus / general scoring
+  # ---------------------------------------------------------------------------
+
+  bonus_count:
+    initial_value: 0
+    value_type: int
+
+  bonus_multiplier:
+    initial_value: 1
+    value_type: int
+
+  hold_bonus:
+    initial_value: 0
+    value_type: int
+
+  drop_bank_completions_this_ball:
+    initial_value: 0
+    value_type: int
+
+  drop_bank_completions_this_chapter:
+    initial_value: 0
+    value_type: int
+
+  skillshots_awarded:
+    initial_value: 0
+    value_type: int
+
+  skillshot_collected_value:
+    initial_value: 0
+    value_type: int
+
+
+  # ---------------------------------------------------------------------------
+  # Ball save / multiball / misc display helpers
+  # ---------------------------------------------------------------------------
+
+  extra_ball_text:
+    initial_value: ""
+    value_type: str
+
+  ball_save_count:
+    initial_value: 0
+    value_type: int
+
+  multiball_autoplunge_active:
+    initial_value: 0
+    value_type: int
