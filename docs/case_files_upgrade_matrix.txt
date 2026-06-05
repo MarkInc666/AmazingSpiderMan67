@@ -1,0 +1,175 @@
+Case File Bonus Ideas by Villain
+
+Case File 1 = More Jackpots
+Case File 2 = Bigger Jackpots
+Case File 3 = More Time
+Case File 4 = Safety Net
+Case File 5 = Shot Assist
+
+Rhino
+Case File 1 (More Jackpots): Allow 1 extra jackpot collect
+Case File 2 (Bigger Jackpots): Increase rage jackpot base
+Case File 3 (More Time): Delay rage decay / hurry-up
+Case File 4 (Safety Net): One missed jackpot window is saved
+Case File 5 (Shot Assist): Spot one flashing rage target
+
+Sandman
+Case File 1 (More Jackpots): Add bonus jackpot after perfect bank
+Case File 2 (Bigger Jackpots): Increase flashing-target value
+Case File 3 (More Time): Slow moving target cycle
+Case File 4 (Safety Net): One missed flashing target does not break streak
+Case File 5 (Shot Assist): Start with first target already spotted
+
+Vulture
+Case File 1 (More Jackpots): Add one extra aerial jackpot stage
+Case File 2 (Bigger Jackpots): Boost spinner jackpot value
+Case File 3 (More Time): Add mode time
+Case File 4 (Safety Net): Brief roof / exit ball save
+Case File 5 (Shot Assist): Start one target color completed
+
+Electro
+Case File 1 (More Jackpots): Add one extra spark jackpot
+Case File 2 (Bigger Jackpots): Increase spark / super value
+Case File 3 (More Time): Extend spark timer
+Case File 4 (Safety Net): One timeout does not reset spark chain
+Case File 5 (Shot Assist): Show / hold next spark location longer
+
+Goblin
+Case File 1 (More Jackpots): Add one extra chaos jackpot chance
+Case File 2 (Bigger Jackpots): Increase flashing-shot bonus
+Case File 3 (More Time): Extend saucer lock / chaos window
+Case File 4 (Safety Net): One solid-shot penalty ignored
+Case File 5 (Shot Assist): Keep one flashing shot lit longer
+
+Mysterio
+Case File 1 (More Jackpots): Add one extra guess / award chance
+Case File 2 (Bigger Jackpots): Increase super jackpot
+Case File 3 (More Time): Add time to illusion trial
+Case File 4 (Safety Net): One wrong guess has no penalty
+Case File 5 (Shot Assist): Reveal one false shot / clue
+
+Scorpion
+Case File 1 (More Jackpots): Add one extra sting jackpot attempt
+Case File 2 (Bigger Jackpots): Increase sting jackpot value
+Case File 3 (More Time): Extend sting window
+Case File 4 (Safety Net): One failed sting sequence can retry
+Case File 5 (Shot Assist): Spot one remaining bank target
+
+Doc Ock
+Case File 1 (More Jackpots): Add one extra breakout jackpot
+Case File 2 (Bigger Jackpots): Increase locked-arm multiplier / base
+Case File 3 (More Time): Delay timed arm release
+Case File 4 (Safety Net): Block one forced arm release
+Case File 5 (Shot Assist): Start with one extra arm locked
+
+Parafino
+Case File 1 (More Jackpots): Add one extra saucer jackpot per area
+Case File 2 (Bigger Jackpots): Increase wax jackpot value
+Case File 3 (More Time): Slow heat decay / extend multiball timer
+Case File 4 (Safety Net): One add-a-ball / saucer safety save
+Case File 5 (Shot Assist): Start one area partially heated
+
+Lizard
+Case File 1 (More Jackpots): Add one extra serum delivery
+Case File 2 (Bigger Jackpots): Increase serum delivery value
+Case File 3 (More Time): Slow value decay / extend delivery timer
+Case File 4 (Safety Net): One failed delivery retry
+Case File 5 (Shot Assist): First delivery target starts lit
+
+Centaur
+Case File 1 (More Jackpots): Add one extra charge jackpot
+Case File 2 (Bigger Jackpots): Increase charge jackpot
+Case File 3 (More Time): Extend charge timer
+Case File 4 (Safety Net): One failed charge protected
+Case File 5 (Shot Assist): Spot one required target
+
+Cerberus
+Case File 1 (More Jackpots): Add one extra head jackpot
+Case File 2 (Bigger Jackpots): Increase completed-head value
+Case File 3 (More Time): Slow head relight / attack timer
+Case File 4 (Safety Net): One head reset prevented
+Case File 5 (Shot Assist): Start one head partially completed
+
+Cyclops
+Case File 1 (More Jackpots): Add one extra eye jackpot
+Case File 2 (Bigger Jackpots): Increase eye jackpot
+Case File 3 (More Time): Extend aim / shot timer
+Case File 4 (Safety Net): One missed eye shot protected
+Case File 5 (Shot Assist): Light / spot the eye shot early
+
+Reptilla
+Case File 1 (More Jackpots): Add one extra rampage jackpot
+Case File 2 (Bigger Jackpots): Increase rampage value
+Case File 3 (More Time): Extend rampage phase
+Case File 4 (Safety Net): One rampage drop protected
+Case File 5 (Shot Assist): Spot one required lane / target
+
+Mole Man
+Case File 1 (More Jackpots): Add extra underground jackpot
+Case File 2 (Bigger Jackpots): Increase tunnel jackpot
+Case File 3 (More Time): Extend tunnel search timer
+Case File 4 (Safety Net): One wrong tunnel ignored
+Case File 5 (Shot Assist): Reveal one correct tunnel / shot
+
+Enforcers
+Case File 1 (More Jackpots): Add one extra enforcer jackpot
+Case File 2 (Bigger Jackpots): Increase each enforcer value
+Case File 3 (More Time): Extend takedown timer
+Case File 4 (Safety Net): One enforcer escape blocked
+Case File 5 (Shot Assist): Spot one enforcer target
+
+Ox
+Case File 1 (More Jackpots): Add one extra strength jackpot
+Case File 2 (Bigger Jackpots): Increase smash jackpot
+Case File 3 (More Time): Extend smash window
+Case File 4 (Safety Net): One missed smash protected
+Case File 5 (Shot Assist): Spot one smash target
+
+Fifth Avenue Phantom
+Case File 1 (More Jackpots): Add one extra phantom jackpot
+Case File 2 (Bigger Jackpots): Increase phantom reveal value
+Case File 3 (More Time): Extend reveal / vanish timer
+Case File 4 (Safety Net): One vanish prevented
+Case File 5 (Shot Assist): Reveal phantom location briefly
+
+Frederick Foswell
+Case File 1 (More Jackpots): Add one extra evidence jackpot
+Case File 2 (Bigger Jackpots): Increase evidence value
+Case File 3 (More Time): Extend investigation timer
+Case File 4 (Safety Net): One bad lead ignored
+Case File 5 (Shot Assist): Spot one correct lead
+
+Blackwell
+Case File 1 (More Jackpots): Add one extra scheme jackpot
+Case File 2 (Bigger Jackpots): Increase scheme jackpot
+Case File 3 (More Time): Extend scheme timer
+Case File 4 (Safety Net): One failed scheme step protected
+Case File 5 (Shot Assist): Spot one required shot
+
+Sinister Surge
+Case File 1 (More Jackpots): Add one extra surge jackpot
+Case File 2 (Bigger Jackpots): Increase surge jackpot
+Case File 3 (More Time): Extend surge phase
+Case File 4 (Safety Net): One drain / save window
+Case File 5 (Shot Assist): Start one surge shot lit
+
+Master Plan
+Case File 1 (More Jackpots): Add one extra plan jackpot
+Case File 2 (Bigger Jackpots): Increase plan value
+Case File 3 (More Time): Extend planning timer
+Case File 4 (Safety Net): One failed step protected
+Case File 5 (Shot Assist): Spot one plan step
+
+Monster Island
+Case File 1 (More Jackpots): Add one extra monster jackpot
+Case File 2 (Bigger Jackpots): Increase monster jackpot
+Case File 3 (More Time): Extend island phase
+Case File 4 (Safety Net): One monster attack blocked
+Case File 5 (Shot Assist): Start one monster weakened
+
+Crime Wave Mini
+Case File 1 (More Jackpots): Add one extra crime jackpot
+Case File 2 (Bigger Jackpots): Increase crime jackpot
+Case File 3 (More Time): Extend crime-wave timer
+Case File 4 (Safety Net): One missed crime shot ignored
+Case File 5 (Shot Assist): Spot one active crime shot

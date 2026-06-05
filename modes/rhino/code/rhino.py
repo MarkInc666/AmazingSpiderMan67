@@ -1,4 +1,5 @@
 from mpf.core.mode import Mode
+from modes.common.code.case_file_mixin import CaseFileMixin
 
 """
     "title": "RHINO BASH",
@@ -15,12 +16,12 @@ from mpf.core.mode import Mode
     "completed_var": "rhino_completed",
 """
 
-class RhinoBash(Mode):
+class RhinoBash(CaseFileMixin, Mode):
 
-    MAX_JACKPOTS = 5
+    MAX_JACKPOTS_DEEFAULT = 5
 
-    BASE_VALUES = [50000, 100000, 150000, 200000, 250000]
-    BERSERK_TIMES_MS = [8000, 7000, 6000, 5000, 4000]
+    BASE_VALUES = [100000, 150000, 200000, 250000, 300000, 350000]
+    BERSERK_TIMES_MS = [8000, 7000, 6000, 5000, 4000, 4000]
 
     STAGE_POPS = {
         1: 0,
@@ -43,6 +44,10 @@ class RhinoBash(Mode):
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
 
+        self.case_files = self.get_case_file_bonuses()
+        self._apply_case_file_bonuses()
+        self.publish_case_file_bonus_events("rhino")
+
         self.rage_stage = 1
 
         self.rhino_best_rage_stage = 0
@@ -51,12 +56,16 @@ class RhinoBash(Mode):
     
         self.pops = 0
         self.jackpots = 0
+        self.bonus_mode_time = 0
+        self.max_jackpots = MAX_JACKPOTS_DEEFAULT
         self.jackpot_base = self.BASE_VALUES[0]
         self.jackpot_value = self.jackpot_base
         self.add_value = self.STAGE_ADD_VALUES[1]
         self.berserk_running = False
         self.mode_done = False
 
+        self. _apply_case_file_bonuses()
+        
         self.add_mode_event_handler("rhino_start", self.start_rh)
         self.add_mode_event_handler("rhino_pop_hit", self.pop_hit)
         self.add_mode_event_handler("rhino_smash_hit", self.smash_hit)
@@ -64,6 +73,29 @@ class RhinoBash(Mode):
 
         self.update_player_vars()
         self.machine.events.post("rhino_startup_complete")
+
+
+    def _apply_case_file_bonuses(self):
+        if self.has_case_file("more_jackpots"):
+            #one more jackpot
+            self.max_jackpots += 1
+
+        if self.has_case_file("bigger_jackpots"):
+            #bigger jackpots
+            self.jackpot_base += 100000
+
+        if self.has_case_file("more_time"):
+            #5 extra seconds before crash
+            self.bonus_mode_time = 5000
+
+        if self.has_case_file("safety_net"):
+            #start 10 sec ball save
+            self.machine.events.post("start_case_file_ball_save")
+
+        if self.has_case_file("shot_assist"):
+            #allows one crash jackpot
+            self.shot_assist_available = True
+
 
     def start_rh(self, **kwargs):
         self.post_rage_show()
@@ -106,7 +138,7 @@ class RhinoBash(Mode):
         self.machine.game.player["rhino_last_jackpot"] = self.jackpot_value
         self.machine.events.post("rhino_jackpot_collected")
 
-        if self.jackpots >= self.MAX_JACKPOTS:
+        if self.jackpots >= self.max_jackpots:
             self.complete_mode()
             return
 
@@ -174,12 +206,18 @@ class RhinoBash(Mode):
 
     def berserk_time_ms(self):
         index = min(self.jackpots, len(self.BERSERK_TIMES_MS) - 1)
-        return self.BERSERK_TIMES_MS[index]
+        return self.BERSERK_TIMES_MS[index] = self.bonus_mode_time  #0 or 5000 ms
 
     def crash(self):
         if self.mode_done:
             return
-
+        
+        if self.shot_assist_available == True:
+            #one free jackpot at timeout
+            self.collect_jackpot()
+            self.shot_assist_available = False
+            return
+        
         self.berserk_running = False
 
         self.jackpot_value = self.jackpot_base
@@ -190,8 +228,9 @@ class RhinoBash(Mode):
         self.machine.events.post("rhino_berserk_stopped")
         self.machine.events.post("rhino_crashed")
         self.post_rage_show()
-
         self.update_player_vars()
+
+        self.complete_mode()        
 
     def drop_rage_after_collect(self):
         if self.rage_stage >= 5:

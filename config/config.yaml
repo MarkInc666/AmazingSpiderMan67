@@ -279,6 +279,16 @@ ball_saves:
 #      - playfield_active      
 
 
+  case_file_ball_save:
+    active_time: 10s
+    hurry_up_time: 3s
+    grace_period: 2s
+    enable_events:
+      - start_case_file_ball_save
+
+
+
+
 
 #todo - when ball saved, use these events to trigger display
 #ball_save_default_ball_save_saving_ball
