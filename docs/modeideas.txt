@@ -1,3 +1,561 @@
+Yes — that’s a good place to focus. The first 10 have real identity now. The newer villains and mini-wizards need **clear gimmicks**, not just “hit flashing shots.”
+
+I’d design them around mechanics you still want to use more:
+
+```text
+Meteor mode
+limited flipper presses
+pop-up post
+Super Pops / Super Spinner / Chaos Pops
+case file bonuses
+```
+
+## Newly added villains
+
+### Centaur — “Charge the Trap”
+
+**Core idea:** Centaur charges across the playfield. You must set traps before he breaks through.
+
+```text
+Goal:
+Hit lit standups/drops to build TRAP.
+Then shoot a saucer to spring the trap for jackpot.
+
+Main mechanic:
+A moving lit shot advances every few seconds.
+Hit it to build charge control.
+Miss too long and Centaur “charges,” resetting one trap step.
+```
+
+Good use of case files:
+
+```text
+Case File 1 (More Jackpots): Add one extra trap jackpot.
+Case File 2 (Bigger Jackpots): Increase trap jackpot.
+Case File 3 (More Time): Slow Centaur charge movement.
+Case File 4 (Safety Net): One failed charge does not reset trap progress.
+Case File 5 (Shot Assist): Spot one trap shot.
+```
+
+Possible physical fit:
+
+* Left/right drops = trap pieces
+* Saucer = trap collect
+* Pop-up post = “trap gate” moment
+
+---
+
+### Cerberus — “Three Heads”
+
+**Core idea:** Three heads must be controlled separately.
+
+```text
+Goal:
+Defeat all 3 heads: LEFT, CENTER, RIGHT.
+
+Main mechanic:
+Each head is represented by a shot group:
+LEFT = left drops/saucer 1
+CENTER = pops/saucer 2
+RIGHT = right drops/saucer 3
+
+Completing a head lights its saucer jackpot.
+```
+
+Difficulty twist:
+
+```text
+If ignored too long, a head wakes back up.
+```
+
+This gives the mode a nice “keep plates spinning” feel.
+
+Good use of case files:
+
+```text
+Case File 1 (More Jackpots): Add one extra all-heads jackpot.
+Case File 2 (Bigger Jackpots): Increase completed-head value.
+Case File 3 (More Time): Slow head wake-up timer.
+Case File 4 (Safety Net): One head reset is blocked.
+Case File 5 (Shot Assist): Start one head partially completed.
+```
+
+---
+
+### Cyclops — “Eye of Doom”
+
+**Core idea:** One dangerous shot is lit at a time. You need to aim carefully.
+
+```text
+Goal:
+Shoot the lit “eye” shot several times.
+
+Main mechanic:
+The eye opens and closes.
+When open, jackpot is available.
+When closed, hits score small points only.
+```
+
+Best physical fit:
+
+* Spinner or upper target as “eye”
+* Star rollover can “focus the eye”
+* Saucer collects jackpot
+
+A good twist:
+
+```text
+Spinner builds FOCUS.
+At enough focus, the eye stays open longer.
+```
+
+Case files:
+
+```text
+Case File 1 (More Jackpots): Add one extra eye jackpot.
+Case File 2 (Bigger Jackpots): Increase eye jackpot.
+Case File 3 (More Time): Eye stays open longer.
+Case File 4 (Safety Net): One missed eye shot is protected.
+Case File 5 (Shot Assist): Light the first eye shot automatically.
+```
+
+---
+
+### Reptilla — “Rampage”
+
+**Core idea:** Reptilla stomps through areas of the city. You must stop the rampage before it spreads.
+
+```text
+Goal:
+Complete lit city zones before Rampage reaches max.
+
+Main mechanic:
+Pops build Rampage.
+Shots reduce Rampage / collect jackpots.
+If Rampage maxes out, mode fails or moves to hurry-up.
+```
+
+This is a good place for **Super Pops** or **Chaos Pops**.
+
+```text
+Pops are dangerous but valuable:
+- Pops build jackpot
+- Too many pops without a control shot increases danger
+```
+
+Case files:
+
+```text
+Case File 1 (More Jackpots): Add one extra rampage jackpot.
+Case File 2 (Bigger Jackpots): Increase rampage value.
+Case File 3 (More Time): Rampage builds slower.
+Case File 4 (Safety Net): One rampage overload is blocked.
+Case File 5 (Shot Assist): Spot one city-zone shot.
+```
+
+---
+
+### Mole Man — “Underground Maze”
+
+**Core idea:** Find the correct tunnel.
+
+```text
+Goal:
+Find Mole Man by choosing the correct saucer/tunnel.
+
+Main mechanic:
+Three saucers are tunnels.
+One is correct.
+Wrong tunnels give clues or move the correct tunnel.
+Spinner/targets reveal clues.
+```
+
+This is a good “mystery/puzzle” mode that is different from the others.
+
+Possible clue system:
+
+```text
+Left drop = eliminate one wrong saucer
+Spinner = reveal tunnel hint
+Star rollover = lock current correct tunnel briefly
+```
+
+Case files:
+
+```text
+Case File 1 (More Jackpots): Add extra underground jackpot.
+Case File 2 (Bigger Jackpots): Increase tunnel jackpot.
+Case File 3 (More Time): Correct tunnel stays revealed longer.
+Case File 4 (Safety Net): One wrong tunnel is ignored.
+Case File 5 (Shot Assist): Reveal one correct tunnel clue.
+```
+
+---
+
+### Enforcers — “Take Down the Crew”
+
+**Core idea:** Multiple enemies, each with a different shot.
+
+```text
+Goal:
+Defeat Fancy Dan, Montana, and Ox-style enforcers.
+
+Main mechanic:
+Three enforcers are lit.
+Each has a different shot type:
+- Drops
+- Spinner/upper
+- Pops/saucer
+
+Defeating all three lights crew jackpot.
+```
+
+This could become a nice “mini checklist” mode.
+
+Case files:
+
+```text
+Case File 1 (More Jackpots): Add one extra crew jackpot.
+Case File 2 (Bigger Jackpots): Increase each enforcer value.
+Case File 3 (More Time): Extend takedown timer.
+Case File 4 (Safety Net): One enforcer escape is blocked.
+Case File 5 (Shot Assist): Spot one enforcer target.
+```
+
+---
+
+### Ox — “Brute Force”
+
+**Core idea:** Heavy hits. Simple and satisfying.
+
+```text
+Goal:
+Build strength, then smash jackpot.
+
+Main mechanic:
+Right 5-bank represents Ox’s strength.
+Knock down targets to weaken him.
+Complete bank lights smash jackpot.
+```
+
+This could use the **pop-up post**:
+
+```text
+Pop-up post rises for “BRACE FOR IMPACT.”
+Shoot around/through the controlled path to collect smash.
+```
+
+Case files:
+
+```text
+Case File 1 (More Jackpots): Add one extra smash jackpot.
+Case File 2 (Bigger Jackpots): Increase smash jackpot.
+Case File 3 (More Time): Extend smash window.
+Case File 4 (Safety Net): One missed smash stays lit.
+Case File 5 (Shot Assist): Spot one smash target.
+```
+
+---
+
+### Fifth Avenue Phantom — “Vanish and Reveal”
+
+**Core idea:** Phantom appears briefly, then disappears.
+
+```text
+Goal:
+Reveal Phantom, then shoot him before he vanishes.
+
+Main mechanic:
+A lit shot appears for a few seconds.
+Hit clues to extend reveal time.
+If he vanishes, you must reveal again.
+```
+
+Good physical fit:
+
+* Upper targets = clues
+* Spinner = reveal meter
+* Saucer = capture
+
+Case files:
+
+```text
+Case File 1 (More Jackpots): Add one extra phantom jackpot.
+Case File 2 (Bigger Jackpots): Increase reveal jackpot.
+Case File 3 (More Time): Phantom stays visible longer.
+Case File 4 (Safety Net): One vanish is prevented.
+Case File 5 (Shot Assist): Reveal Phantom location briefly.
+```
+
+---
+
+### Frederick Foswell — “Crime Reporter”
+
+**Core idea:** Investigation mode.
+
+This is a perfect Daily Bugle-themed villain.
+
+```text
+Goal:
+Collect leads, expose Foswell, then collect jackpot.
+
+Main mechanic:
+Shots collect LEADS.
+Some leads are real, some are bad.
+Spinner/upper shots improve the odds.
+```
+
+This would connect well to **case files** and **Daily Bugle**.
+
+Case files:
+
+```text
+Case File 1 (More Jackpots): Add one extra evidence jackpot.
+Case File 2 (Bigger Jackpots): Increase evidence value.
+Case File 3 (More Time): Extend investigation timer.
+Case File 4 (Safety Net): One bad lead is ignored.
+Case File 5 (Shot Assist): Spot one correct lead.
+```
+
+---
+
+### Blackwell — “The Scheme”
+
+**Core idea:** Blackwell manipulates the board.
+
+```text
+Goal:
+Uncover and break the scheme.
+
+Main mechanic:
+Shots change meaning every few seconds:
+- SAFE
+- TRAP
+- JACKPOT
+- CLUE
+
+Hit clues to lock the layout.
+Hit traps and you lose progress.
+```
+
+This is a good candidate for **limited flipper presses** too:
+
+```text
+Blackwell predicts your moves.
+You only get X flipper presses to solve the scheme.
+```
+
+Case files:
+
+```text
+Case File 1 (More Jackpots): Add one extra scheme jackpot.
+Case File 2 (Bigger Jackpots): Increase scheme jackpot.
+Case File 3 (More Time): Extend scheme timer.
+Case File 4 (Safety Net): One failed scheme step is protected.
+Case File 5 (Shot Assist): Spot one required shot.
+```
+
+## Mini-wizards
+
+### Sinister Surge
+
+**Theme:** Fast chaos, probably Electro/Goblin/Mysterio energy.
+
+```text
+Core:
+Multiple villain shots are lit at once.
+Hit as many as possible during a timed surge.
+
+Best mechanic:
+Super Spinner + Chaos Pops + jackpots.
+```
+
+Flow:
+
+```text
+Start 2-ball or timed single-ball.
+Spinner builds surge multiplier.
+Pops build chaos.
+Lit shots collect surge jackpots.
+```
+
+Case file effects:
+
+```text
+More Jackpots: More lit surge shots.
+Bigger Jackpots: Higher surge base.
+More Time: Extend surge timer.
+Safety Net: Short ball save / drain protection.
+Shot Assist: Start one surge shot lit.
+```
+
+---
+
+### Master Plan
+
+**Theme:** Puzzle / strategy mini-wizard.
+
+```text
+Core:
+Complete a sequence of planned shots.
+Wrong shots shuffle the plan.
+```
+
+This is where **limited flipper presses** fits extremely well.
+
+```text
+MASTER PLAN
+FLIPS LEFT: 30
+COMPLETE THE SEQUENCE
+```
+
+Flow:
+
+```text
+The game lights 3 required shots.
+Each flipper press counts down.
+Complete the sequence before flips run out.
+```
+
+Case file effects:
+
+```text
+More Jackpots: Add one extra plan jackpot.
+Bigger Jackpots: Increase plan value.
+More Time: More flips or longer timer.
+Safety Net: One wrong shot ignored.
+Shot Assist: Spot one plan step.
+```
+
+This might be the best home for your **limited flipper button mode**.
+
+---
+
+### Monster Island
+
+**Theme:** big monster battle.
+
+```text
+Core:
+Fight multiple monster threats across the playfield.
+Each area is a monster zone.
+```
+
+Flow:
+
+```text
+Pops = monster attacks
+Drops = defenses
+Spinner = escape/energy
+Saucers = monster jackpots
+```
+
+This is a good home for **Meteor mode**.
+
+Meteor could become:
+
+```text
+METEOR STORM phase inside Monster Island
+Spinner cashes out falling meteors
+Drops multiply meteor value
+```
+
+Case file effects:
+
+```text
+More Jackpots: Add one extra monster jackpot.
+Bigger Jackpots: Increase monster jackpot.
+More Time: Extend island phase.
+Safety Net: One monster attack blocked.
+Shot Assist: Start one monster weakened.
+```
+
+---
+
+### Crime Wave Mini
+
+**Theme:** citywide chaos.
+
+```text
+Core:
+Crimes appear around the city. Stop as many as possible.
+```
+
+Flow:
+
+```text
+Random shots light as crimes.
+Hit flashing crimes for jackpots.
+If crimes expire, chaos increases.
+At Chaos Level 3, pops become high-value but dangerous.
+```
+
+This is a perfect place for a **Chaos Pops widget**.
+
+Case file effects:
+
+```text
+More Jackpots: Add one extra crime jackpot.
+Bigger Jackpots: Increase crime jackpot.
+More Time: Crimes stay lit longer.
+Safety Net: One missed crime ignored.
+Shot Assist: Spot one active crime shot.
+```
+
+## Best assignments for your unused ideas
+
+Here’s where I’d put the special ideas:
+
+```text
+Meteor mode:
+Monster Island or Kingpin
+
+Limited flipper presses:
+Master Plan or Blackwell
+
+Pop-up post:
+Ox, Centaur, Kingpin, or Daily Bugle return loop
+
+Super Pops:
+Reptilla or Crime Wave Mini
+
+Super Spinner:
+Sinister Surge or Cyclops
+
+Chaos Pops:
+Goblin already, but also Crime Wave Mini
+```
+
+## My strongest recommendation
+
+Make the new 10 villains **mechanically simpler** than the first 10.
+
+The first 10 are already rich. The second 10 should each have one clean identity:
+
+```text
+Centaur = charge/trap
+Cerberus = three heads
+Cyclops = eye opens/closes
+Reptilla = rampage meter
+Mole Man = tunnel search
+Enforcers = defeat crew
+Ox = brute smash
+Fifth Avenue Phantom = vanish/reveal
+Frederick Foswell = investigation/leads
+Blackwell = scheme/puzzle
+```
+
+That gives every new mode a reason to exist without overloading the code.
+
+
+
+
+
+
+
+
+
+
 # 🕷️ Villain Modes Summary
 
 ## 🦏 Rhino — “Rhino Bash”
