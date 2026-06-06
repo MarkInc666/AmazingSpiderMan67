@@ -1,5 +1,5 @@
 from mpf.core.mode import Mode
-from modes.common.code.case_file_mixin import CaseFileMixin
+from modes.common.case_file_mixin import CaseFileMixin
 
 """
     "title": "RHINO BASH",
@@ -44,10 +44,6 @@ class RhinoBash(CaseFileMixin, Mode):
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
 
-        self.case_files = self.get_case_file_bonuses()
-        self._apply_case_file_bonuses()
-        self.publish_case_file_bonus_events("rhino")
-
         self.rage_stage = 1
 
         self.rhino_best_rage_stage = 0
@@ -57,14 +53,17 @@ class RhinoBash(CaseFileMixin, Mode):
         self.pops = 0
         self.jackpots = 0
         self.bonus_mode_time = 0
-        self.max_jackpots = MAX_JACKPOTS_DEEFAULT
+        self.shot_assist_available = False
+        self.max_jackpots = self.MAX_JACKPOTS_DEEFAULT
         self.jackpot_base = self.BASE_VALUES[0]
         self.jackpot_value = self.jackpot_base
         self.add_value = self.STAGE_ADD_VALUES[1]
         self.berserk_running = False
         self.mode_done = False
 
-        self. _apply_case_file_bonuses()
+        self.case_files = self.get_case_file_bonuses()
+        self._apply_case_file_bonuses()
+        self.publish_case_file_bonus_events("rhino")
         
         self.add_mode_event_handler("rhino_start", self.start_rh)
         self.add_mode_event_handler("rhino_pop_hit", self.pop_hit)
@@ -206,7 +205,7 @@ class RhinoBash(CaseFileMixin, Mode):
 
     def berserk_time_ms(self):
         index = min(self.jackpots, len(self.BERSERK_TIMES_MS) - 1)
-        return self.BERSERK_TIMES_MS[index] = self.bonus_mode_time  #0 or 5000 ms
+        return (self.BERSERK_TIMES_MS[index] + self.bonus_mode_time)  #0 or 5000 ms
 
     def crash(self):
         if self.mode_done:

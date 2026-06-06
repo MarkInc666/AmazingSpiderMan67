@@ -164,6 +164,7 @@ event_player:
     - kickout_saucer_3
 
   villain_full_cleanup:
+    - case_files_clear_lights
     - case_files_reset_all
     - clear_villain_saucer_lights
     - clear_saucers

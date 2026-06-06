@@ -4,9 +4,9 @@ from mpf.core.mode import Mode
 class CaseFiles(Mode):
     """Global Daily Bugle Case File system.
 
-    Case Files are global player-level modifiers. They stay collected for the
-    player and are not cleared when a villain starts. Villain modes should read
-    these five values at mode_start and decide how each bonus affects that mode.
+    Case Files are global player-level modifiers. They are available before a
+    villain starts, then reset after the villain summary cleanup. Case file
+    switch handling is locked out during villain/mini-wizard/final-wizard flow.
 
     Current Case Files:
       - more_jackpots
@@ -71,6 +71,7 @@ class CaseFiles(Mode):
         self.add_mode_event_handler("chapter_mini_wizard_started", self._clear_wizard_prep)
         self.add_mode_event_handler("case_files_restore_state", self._restore_state)
         self.add_mode_event_handler("case_files_reset_all", self._reset_all_case_files)
+        self.add_mode_event_handler("case_files_clear_lights", self._clear_lights)
 
     def _ensure_player_vars(self):
         defaults = {
@@ -97,7 +98,7 @@ class CaseFiles(Mode):
         self._publish_widget_vars()
 
     def _spinner_hit(self, **kwargs):
-        if not self.case_files_logic_active:
+        if not self.case_files_logic_active or self._case_files_locked():
             return
 
         self.machine.events.post("case_file_spinner_progress")
@@ -118,7 +119,7 @@ class CaseFiles(Mode):
         self.machine.events.post("case_files_all_collected_already")
 
     def _case_file_drop_hit(self, index=None, **kwargs):
-        if not self.case_files_logic_active:
+        if not self.case_files_logic_active or self._case_files_locked():
             return
 
         self.machine.events.post("case_file_any_drop_hit", hit_index=index + 1)
@@ -223,6 +224,11 @@ class CaseFiles(Mode):
         if not self.case_files_logic_active:
             return
 
+        if self._case_files_locked():
+            self.machine.events.post("case_files_clear_lights")
+            self._publish_widget_vars()
+            return
+
         self._refresh_counts()
         self._publish_widget_vars()
 
@@ -320,6 +326,43 @@ class CaseFiles(Mode):
             self.machine.game.player[f"case_file_{index}_benefit"] = self.CASE_FILE_BENEFITS[key]
 
         self.machine.events.post("case_files_status_changed")
+
+    def _clear_lights(self, **kwargs):
+        """Public event hook for clearing all case file lights/shows.
+
+        The actual show stops live in case_files.yaml on the case_files_clear_lights
+        event. This method exists so Python callers can use the same event safely
+        without changing case-file data.
+        """
+        self.machine.events.post("case_files_cleared")
+
+    def _case_files_locked(self):
+        """Return True when case-file switch logic should be ignored.
+
+        Case files should not advance, collect, or relight during villain modes,
+        mini-wizard flow, or final-wizard flow. Reset/clear events still work.
+        """
+        player = self.machine.game.player if self.machine.game else None
+
+        if not player:
+            return True
+
+        lock_vars = (
+            "villain_mode_running",
+            "villain_mode_in_summary",
+            "chapter_mini_wizard_ready",
+            "mini_wizard_daily_bugle_ready",
+            "final_wizard_ready",
+        )
+
+        for var_name in lock_vars:
+            try:
+                if self._safe_int(player[var_name], 0) == 1:
+                    return True
+            except Exception:
+                pass
+
+        return False
 
     def _safe_int(self, value, default=0):
         try:

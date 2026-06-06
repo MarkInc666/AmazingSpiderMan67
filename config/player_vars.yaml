@@ -22,6 +22,26 @@ player_vars:
   # Villain campaign / progression
   # ---------------------------------------------------------------------------
 
+  chapter_current_key:
+    initial_value: ""
+    value_type: str
+
+  chapter_current_name:
+    initial_value: ""
+    value_type: str
+
+  chapter_mini_wizard_key:
+    initial_value: ""
+    value_type: str
+
+  chapter_mini_wizard_name:
+    initial_value: ""
+    value_type: str
+
+  chapter_mini_wizard_state:
+    initial_value: ""
+    value_type: str
+  
   villain_chapter:
     initial_value: 1
     value_type: int

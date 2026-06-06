@@ -12,18 +12,18 @@ widget_player:
       action: update
 
 event_player:
-  s_web_spinner_active:
+  s_web_spinner_active{current_player.villain_mode_running != 1}:
     - case_file_spinner_hit
 
-  s_right_drops_1_active:
+  s_right_drops_1_active{current_player.villain_mode_running != 1}:
     - case_file_drop_1_hit
-  s_right_drops_2_active:
+  s_right_drops_2_active{current_player.villain_mode_running != 1}:
     - case_file_drop_2_hit
-  s_right_drops_3_active:
+  s_right_drops_3_active{current_player.villain_mode_running != 1}:
     - case_file_drop_3_hit
-  s_right_drops_4_active:
+  s_right_drops_4_active{current_player.villain_mode_running != 1}:
     - case_file_drop_4_hit
-  s_right_drops_5_active:
+  s_right_drops_5_active{current_player.villain_mode_running != 1}:
     - case_file_drop_5_hit
 
 
@@ -161,6 +161,31 @@ show_player:
       action: stop
     case_file_shot_assist_solid:
       action: stop
+
+  # Clear all Case File lights/shows without changing collected data.
+  # Used when a villain/mini-wizard/final-wizard starts.
+  case_files_clear_lights:
+    case_file_more_jackpots_flash:
+      action: stop
+    case_file_more_time_flash:
+      action: stop
+    case_file_bigger_jackpots_flash:
+      action: stop
+    case_file_safety_net_flash:
+      action: stop
+    case_file_shot_assist_flash:
+      action: stop
+    case_file_more_jackpots_solid:
+      action: stop
+    case_file_more_time_solid:
+      action: stop
+    case_file_bigger_jackpots_solid:
+      action: stop
+    case_file_safety_net_solid:
+      action: stop
+    case_file_shot_assist_solid:
+      action: stop
+
 
 shows:
   case_file_5bank_gi_flash:
