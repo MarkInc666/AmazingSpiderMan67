@@ -260,22 +260,22 @@ class VillainProgression(Mode):
             "final_wizard_state": self.NOT_PLAYED,
         }
         for name, value in defaults.items():
-            if name not in self.machine.game.player:
+            if self._get_player_var(name, None) is None:
                 self.machine.game.player[name] = value
 
         for key in self.VILLAINS:
-            if f"{key}_played" not in self.machine.game.player:
+            if self._get_player_var(f"{key}_played", None) is None:
                 self.machine.game.player[f"{key}_played"] = 0
-            if f"{key}_completed" not in self.machine.game.player:
+            if self._get_player_var(f"{key}_completed", None) is None:
                 self.machine.game.player[f"{key}_completed"] = 0
-            if f"{key}_state" not in self.machine.game.player:
+            if self._get_player_var(f"{key}_state", None) is None:
                 self.machine.game.player[f"{key}_state"] = self.NOT_PLAYED
 
         for chapter in self.CHAPTERS:
             mini_key = chapter["mini_wizard_key"]
-            if f"{mini_key}_completed" not in self.machine.game.player:
+            if self._get_player_var(f"{mini_key}_completed", None) is None:
                 self.machine.game.player[f"{mini_key}_completed"] = 0
-            if f"{mini_key}_state" not in self.machine.game.player:
+            if self._get_player_var(f"{mini_key}_state", None) is None:
                 self.machine.game.player[f"{mini_key}_state"] = self.NOT_PLAYED
 
     def _request_start(self, saucer=None, state=0, max_choices=None, source="", **kwargs):
@@ -297,6 +297,9 @@ class VillainProgression(Mode):
         if self._safe_int(self.machine.game.player["chapter_mini_wizard_ready"], 0) == 1:
             self.machine.events.post("villain_saucer_lights_daily_bugle_for_mini_wizard", saucer=saucer, source=source)
             self._mini_wizard_ready_at_daily_bugle()
+            # Saucer has done its job: light Daily Bugle and release the ball
+            # so the player can shoot the VUK to start the mini-wizard.
+            self.machine.events.post("clear_saucers")
             return
 
         if state <= 0:
@@ -308,6 +311,14 @@ class VillainProgression(Mode):
             self.machine.events.post("villain_saucer_no_valid_villains", saucer=saucer, state=state, source=source)
             self.machine.events.post("villain_start_request_failed", saucer=saucer, reason="no_valid_villains")
             self._check_chapter_complete()
+
+            # If the missing-villain condition just readied the mini-wizard,
+            # use this same saucer hit to light Daily Bugle and release the ball.
+            if self._safe_int(self.machine.game.player["chapter_mini_wizard_ready"], 0) == 1:
+                self.machine.events.post("villain_saucer_lights_daily_bugle_for_mini_wizard", saucer=saucer, source=source)
+                self._mini_wizard_ready_at_daily_bugle()
+
+            self.machine.events.post("clear_saucers")
             return
 
         if len(available) == 1:
@@ -406,7 +417,6 @@ class VillainProgression(Mode):
         self.info_log("VILLAIN START: %s state=%s played=%s", villain_key, self.machine.game.player[f"{villain_key}_state"], self.machine.game.player[f"{villain_key}_played"])
 
         self.machine.events.post("clear_villain_saucer_lights")
-        self.machine.events.post("case_files_clear_lights")
         self.machine.events.post("clear_saucers")
         self.machine.events.post("villain_started_set", villain_key=villain_key, villain=villain_key)
         self.machine.events.post(
@@ -568,7 +578,6 @@ class VillainProgression(Mode):
         self.machine.game.player["villain_mode_running"] = 1
         self.machine.game.player["villain_current_name"] = mini_key
         self.machine.game.player["villain_mode_running_name"] = mini_key
-        self.machine.events.post("case_files_clear_lights")
         self.machine.events.post(
             "chapter_mini_wizard_starting",
             chapter=chapter["key"],
@@ -636,7 +645,6 @@ class VillainProgression(Mode):
         self.machine.game.player["villain_current_name"] = self.FINAL_WIZARD_KEY
         self.machine.game.player["villain_mode_running"] = 1
         self.machine.game.player["villain_mode_running_name"] = self.FINAL_WIZARD_KEY
-        self.machine.events.post("case_files_clear_lights")
         self.machine.events.post("villain_started_set", villain_key=self.FINAL_WIZARD_KEY, villain=self.FINAL_WIZARD_KEY)
         self.machine.events.post(
             "villain_bookend_intro_request",

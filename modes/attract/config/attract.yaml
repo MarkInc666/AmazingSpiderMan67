@@ -45,7 +45,7 @@ sound_player:
     maintheme:
       action: play
       bus: music
-      loops: -1
+      loops: 1
 
 
 show_player:
