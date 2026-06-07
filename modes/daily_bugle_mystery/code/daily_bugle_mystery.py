@@ -207,6 +207,8 @@ class DailyBugleMystery(Mode):
             ms=5000,
             callback=self.fire_vuk,
         )
+        self.machine.events.post("rooftop_diverter_close")
+
 
     def award_pseudo_random_mystery(self):
         player = self.machine.game.player
