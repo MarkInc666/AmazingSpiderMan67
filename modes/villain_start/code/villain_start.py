@@ -52,7 +52,6 @@ class VillainStart(Mode):
         self.machine.game.player["villain_current_name"] = key
         self.machine.game.player["villain_mode_running_name"] = key
         self.machine.events.post("clear_villain_saucer_lights")
-        self.machine.events.post("clear_saucers")
 
     def _villain_mode_ended(self, **kwargs):
         self._unlock_start_logic()
@@ -105,7 +104,6 @@ class VillainStart(Mode):
         self.machine.game.player["villain_current_name"] = "villain_select"
         self.machine.game.player["villain_mode_running_name"] = "villain_select"
         self.machine.events.post("clear_villain_saucer_lights")
-        self.machine.events.post("clear_saucers")
 
     def _player_var(self, name, default=0):
         try:

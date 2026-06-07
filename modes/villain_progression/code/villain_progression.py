@@ -131,11 +131,94 @@ class VillainProgression(Mode):
         self.villain_progression_logic_active = True
         self._ensure_player_vars()
         self._add_handlers()
+
+        # Central saucer clearing lives here because villain_progression is
+        # active during normal gameplay. This lets clear_saucers only pulse
+        # saucer kickout coils when the matching saucer switch is actually active.
+        self.add_mode_event_handler("clear_saucers", self._clear_saucers)
+        self.add_mode_event_handler("clear_saucers_delayed", self._clear_saucers_delayed)
+
         self._restore_state()
 
     def mode_stop(self, **kwargs):
+        # If the ball ends while a villain/mini-wizard flow is active, do not
+        # leave the current item stuck in PLAYING. Mark it failed/resolved and
+        # clear the lock so the next ball restores the correct chapter state.
+        self._finalize_active_flow_on_mode_stop()
         self.villain_progression_logic_active = False
         super().mode_stop(**kwargs)
+
+    def _finalize_active_flow_on_mode_stop(self):
+        player = self.machine.game.player if self.machine.game else None
+        if not player:
+            return
+
+        current_key = self._get_player_var("villain_current_key", "") or self._get_player_var("villain_current_name", "")
+
+        if current_key in self.VILLAINS:
+            if self._villain_state(current_key) == self.PLAYING:
+                player[f"{current_key}_completed"] = 0
+                player[f"{current_key}_played"] = 1
+                player[f"{current_key}_state"] = self.FAILED
+                self.machine.events.post(
+                    "villain_gameplay_abandoned",
+                    villain_key=current_key,
+                    villain_name=self.VILLAINS[current_key]["name"],
+                )
+                self._check_chapter_complete()
+
+        mini_key = self._get_player_var("mini_wizard_current_key", "")
+        if mini_key:
+            state = self._get_player_var(f"{mini_key}_state", self.NOT_PLAYED)
+            if state in (self.PLAYING, self.LIT, self.READY):
+                player[f"{mini_key}_completed"] = 0
+                player[f"{mini_key}_state"] = self.FAILED
+                self.machine.events.post("chapter_mini_wizard_abandoned", mini_wizard=mini_key)
+
+        player["villain_mode_running"] = 0
+        player["villain_mode_in_summary"] = 0
+        player["villain_current_key"] = ""
+        player["villain_current_name"] = ""
+        player["villain_mode_running_name"] = ""
+        player["mini_wizard_current_key"] = ""
+        player["mini_wizard_daily_bugle_ready"] = 0
+
+    def _clear_saucers_delayed(self, **kwargs):
+        """Delay normal saucer kickout so saucer awards feel intentional.
+
+        Use clear_saucers for immediate cleanup/release. Use
+        clear_saucers_delayed for normal points-only / no-start saucer exits.
+        """
+        self.delay.remove("clear_saucers_delayed")
+        self.delay.add(
+            name="clear_saucers_delayed",
+            ms=1000,
+            callback=self._clear_saucers,
+        )
+
+    def _clear_saucers(self, **kwargs):
+        """Kick out only saucers that currently contain a ball.
+
+        The saucers are not MPF ball devices, so a raw YAML mapping from
+        clear_saucers to all three kickout coils can fire empty saucers. This
+        checks the physical saucer switches first and only posts the matching
+        kickout event when a ball is actually sitting there.
+        """
+        saucers = {
+            "s_saucer_1": "kickout_saucer_1",
+            "s_saucer_2": "kickout_saucer_2",
+            "s_saucer_3": "kickout_saucer_3",
+        }
+
+        for switch_name, kickout_event in saucers.items():
+            try:
+                switch = self.machine.switches[switch_name]
+            except KeyError:
+                self.warning_log("Unknown saucer switch for clear_saucers: %s", switch_name)
+                continue
+
+            if self.machine.switch_controller.is_active(switch):
+                self.machine.events.post(kickout_event)
 
     def _add_handlers(self):
         # Public API for the rest of the game.
@@ -299,11 +382,14 @@ class VillainProgression(Mode):
             self._mini_wizard_ready_at_daily_bugle()
             # Saucer has done its job: light Daily Bugle and release the ball
             # so the player can shoot the VUK to start the mini-wizard.
-            self.machine.events.post("clear_saucers")
+            self.machine.events.post("clear_saucers_delayed")
             return
 
         if state <= 0:
             self.machine.events.post("villain_saucer_points_only", saucer=saucer, source=source)
+            # Points-only saucer hits should eject immediately. Only villain
+            # select/intro starts should hold the ball.
+            self.machine.events.post("clear_saucers_delayed")
             return
 
         available = self._get_available_villains(limit=max_choices)
@@ -318,7 +404,7 @@ class VillainProgression(Mode):
                 self.machine.events.post("villain_saucer_lights_daily_bugle_for_mini_wizard", saucer=saucer, source=source)
                 self._mini_wizard_ready_at_daily_bugle()
 
-            self.machine.events.post("clear_saucers")
+            self.machine.events.post("clear_saucers_delayed")
             return
 
         if len(available) == 1:
@@ -417,7 +503,9 @@ class VillainProgression(Mode):
         self.info_log("VILLAIN START: %s state=%s played=%s", villain_key, self.machine.game.player[f"{villain_key}_state"], self.machine.game.player[f"{villain_key}_played"])
 
         self.machine.events.post("clear_villain_saucer_lights")
-        self.machine.events.post("clear_saucers")
+        # Do not clear/eject saucers here. The ball that started the villain
+        # should stay held during the bookend intro. villain_bookends posts
+        # clear_saucers when the intro finishes, right before the start_event.
         self.machine.events.post("villain_started_set", villain_key=villain_key, villain=villain_key)
         self.machine.events.post(
             "villain_mode_started",

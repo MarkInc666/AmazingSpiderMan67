@@ -134,10 +134,19 @@ event_player:
     - cmd_flippers_disable
     - cmd_autofire_coils_disable
     - timer_timer_up_post_hold_complete
+    - case_files_clear_lights
+    - clear_villain_saucer_lights
+    - reset_drops
+    - clear_saucers
+
   slam_tilt:
     - cmd_flippers_disable
     - cmd_autofire_coils_disable
     - timer_timer_up_post_hold_complete
+    - case_files_clear_lights
+    - clear_villain_saucer_lights
+    - reset_drops
+    - clear_saucers
     
   rooftop_diverter_open{device.switches.s_diverter_open.state == 1}:
     - fire_rooftop_diverter_open
@@ -157,11 +166,6 @@ event_player:
   reset_drops:
     - reset_3bank
     - reset_5bank|300ms
-
-  clear_saucers:
-    - kickout_saucer_1
-    - kickout_saucer_2
-    - kickout_saucer_3
 
   villain_full_cleanup:
     - case_files_clear_lights
