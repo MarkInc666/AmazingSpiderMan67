@@ -1,3 +1,380 @@
+Yes. Since your current 4 chapters are:
+
+```text
+Classic Rogues
+Masterminds
+Monsters
+Crime Wave
+```
+
+I’d add 3 more chapters that feel distinct and very 1967-cartoon:
+
+```text
+Mad Doctors
+Robots & Time Bandits
+Cosmic / Strange Science
+```
+
+## Chapter 5 — Mad Doctors
+
+```text
+Doctor Atlantean
+Doctor Cool
+Doctor Dumpty
+Doctor Manta
+Doctor Zapp
+```
+
+### Mini-Wizard: **The Doctor’s Orders**
+
+Theme: five mad experiments are running at once.
+
+Mode idea:
+
+```text
+2-ball multiball.
+
+Each doctor controls one lab station:
+- Doctor Atlantean = saucers / water trap
+- Doctor Cool = freeze timer / cold GI
+- Doctor Dumpty = drop target chaos
+- Doctor Manta = upper playfield or spinner
+- Doctor Zapp = electrical moving shot
+
+Complete all 5 lab stations to light Daily Bugle Lab Jackpot.
+Jackpot = 500K × completed experiments.
+```
+
+Good reason to include it: very cohesive naming, easy to theme with “experiments,” and it gives you a second science-based arc before Kingpin.
+
+---
+
+## Chapter 6 — Robots & Time Bandits
+
+```text
+Blackbeard Robot
+Executioner of Paris Robot
+Jesse James Robot
+Sir Galahad
+Juan Ponce de León
+```
+
+### Mini-Wizard: **Time Trap**
+
+Theme: historical figures and robots are attacking from different eras.
+
+Mode idea:
+
+```text
+Timed mode or 2-ball multiball.
+
+Five eras are lit.
+Complete eras in sequence for full value.
+Complete them out of order for smaller value.
+
+Era shots:
+- Blackbeard = left drops
+- Executioner = right drops
+- Jesse James = pops
+- Sir Galahad = upper targets
+- Ponce de León = saucer/VUK
+
+Complete all 5 to light Time Machine Jackpot at the Daily Bugle.
+```
+
+Good reason to include it: this is a very Spider-Man 1967 style chapter. Weird, colorful, and not too similar to your classic villains.
+
+---
+
+## Chapter 7 — Cosmic / Strange Science
+
+```text
+Plutonians
+Infinata
+Vulcan
+Matto Magneto
+Metal-Eating Monster
+```
+
+### Mini-Wizard: **Invasion from Beyond**
+
+Theme: alien and strange-science threats invade the city.
+
+Mode idea:
+
+```text
+2-ball multiball.
+
+The invasion meter rises with spinner and target hits.
+Each villain controls a different energy zone:
+- Plutonians = saucers
+- Infinata = moving shot
+- Vulcan = fire/heat shots
+- Matto Magneto = magnetized/randomized shots
+- Metal-Eating Monster = drop banks
+
+Complete all 5 zones to light Cosmic Jackpot.
+Victory lap: all major shots lit for 50K.
+```
+
+Good reason to include it: this chapter can be flashy and high-energy, with GI color changes, moving lights, and chaotic scoring.
+
+---
+
+## Clean expanded campaign structure
+
+```text
+Chapter 1 — Classic Rogues
+Rhino
+Vulture
+Lizard
+Sandman
+Electro
+Mini-Wizard: Sinister Surge
+
+Chapter 2 — Masterminds
+Doctor Octopus
+Mysterio
+Green Goblin
+Scorpion
+Parafino
+Mini-Wizard: Master Plan
+
+Chapter 3 — Monsters
+Centaur
+Cerberus
+Cyclops
+Reptilla
+Mole Man
+Mini-Wizard: Monster Island
+
+Chapter 4 — Crime Wave
+Enforcers
+Ox
+Fifth Avenue Phantom
+Frederick Foswell
+Blackwell
+Mini-Wizard: Crime Wave
+
+Chapter 5 — Mad Doctors
+Doctor Atlantean
+Doctor Cool
+Doctor Dumpty
+Doctor Manta
+Doctor Zapp
+Mini-Wizard: The Doctor’s Orders
+
+Chapter 6 — Robots & Time Bandits
+Blackbeard Robot
+Executioner of Paris Robot
+Jesse James Robot
+Sir Galahad
+Juan Ponce de León
+Mini-Wizard: Time Trap
+
+Chapter 7 — Cosmic / Strange Science
+Plutonians
+Infinata
+Vulcan
+Matto Magneto
+Metal-Eating Monster
+Mini-Wizard: Invasion from Beyond
+
+Final Wizard
+Kingpin — Clear the City
+```
+
+I’d keep **Kingpin as the final wizard** rather than making a new final after chapter 7. The longer campaign makes Kingpin feel even more like the citywide boss.
+
+
+
+Yes — **Snowman** and **Snowmen** probably overlap too much to justify separate chapter villains.
+
+I’d treat them as one combined villain/mode:
+
+```text
+Snowman / Snowmen
+```
+
+or cleaner:
+
+```text
+The Snowmen
+```
+
+Then replace the extra slot in Chapter 10 with another nature/survival-ish villain.
+
+Better Chapter 10:
+
+```text
+Nature, Ice & Survival
+- Master Vine
+- Pod
+- Snowman / Snowmen
+- Koga
+- Reptilla
+```
+
+But Reptilla is already in Monsters, so if you want no repeats:
+
+```text
+Nature, Ice & Survival
+- Master Vine
+- Pod
+- Snowman / Snowmen
+- Koga
+- South Pole Natives
+```
+
+That works better. Koga gives it a survival/adventure feel, and South Pole Natives fit the ice/survival side.
+
+Or, if you want the chapter tighter:
+
+```text
+Frozen Jungle
+- Master Vine
+- Pod
+- Snowman / Snowmen
+- South Pole Natives
+- Doctor Cool
+```
+
+But Doctor Cool is probably better in Mad Doctors.
+
+My pick:
+
+```text
+Chapter 10 — Nature, Ice & Survival
+Master Vine
+Pod
+Snowman / Snowmen
+Koga
+South Pole Natives
+
+Mini-Wizard: Frozen Jungle
+```
+
+So yes: combine Snowman/Snowmen into one mode.
+
+
+
+Mostly yes — the **50-villain / 10-chapter list can be made from 1967-series characters**, but a few names should be cleaned up or merged.
+
+The ones I’d be cautious about:
+
+| Name                   | Status                                     | What I’d do                                                                                                   |
+| ---------------------- | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------- |
+| **Snowman / Snowmen**  | Overlap                                    | Combine into **Snowman / The Snowmen**. There is definitely a Snowman episode in Season 3. ([SpiderFan][1])   |
+| **South Pole Natives** | More like episode characters than villains | Usable as a mode theme, but not a strong “villain.”                                                           |
+| **Koga**               | Needs confirmation                         | I would verify before locking him into a 50-villain campaign.                                                 |
+| **Pardo**              | Needs confirmation                         | I believe he’s from the series context, but I’d verify the exact episode before making him a chapter villain. |
+| **Bolton**             | Needs confirmation                         | Same: likely usable, but confirm episode/source.                                                              |
+| **Pod**                | Needs confirmation                         | Could be a character/creature from the series, but I’d verify.                                                |
+
+The strongest confirmed groups from available episode references are:
+
+```text
+Parafino / Blackbeard Robot / Jesse James Robot / Executioner Robot
+```
+
+from **“The Night of the Villains”**, where Parafino’s wax/robot historical figures are used in robberies. ([Wikipedia][2])
+
+```text
+Centaur / Cerberus / Cyclops / Miss Trubble
+```
+
+from **“Here Comes Trubble”**, which involves classical/mythological creatures. ([Bava Tuesdays][3])
+
+```text
+Fantastic Fakir / Fiddler / Fifth Avenue Phantom / Frederick Foswell / Green Goblin / Enforcers / Ox / Infinata / Jesse James Robot / Juan Ponce de León
+```
+
+are listed in a 1967 Spider-Man villains category source. ([Marvel Animated Universe][4])
+
+```text
+Noah Boddy
+```
+
+is definitely from the 1967 show; he frees Green Goblin, Vulture, and Electro in one episode. ([The Robot's Voice][5])
+
+So my recommendation: keep the 10-chapter framework, but before adding the last few obscure names to code, verify **Koga, Pardo, Bolton, Pod, and South Pole Natives** against the episode list or a character source. If any are weak, swap in stronger confirmed names like **Harley Clivendon, Emily Thorndike, Igor, James Boothe, Doctor Von Schlick, Doctor Vespasian, Sky Master, or The Fly Twins**.
+
+[1]: https://spiderfan.org/review/shows/spiderman_tv_1960s/s03e02.html?utm_source=chatgpt.com "Spider-Man TV (1967) - Season 3, Episode 2 (Story 1)"
+[2]: https://en.wikipedia.org/wiki/List_of_Spider-Man_%281967_TV_series%29_episodes?utm_source=chatgpt.com "List of Spider-Man (1967 TV series) episodes"
+[3]: https://bavatuesdays.com/spider-man-1967-episode-11/?utm_source=chatgpt.com "Spider-man 1967, Episode 11"
+[4]: https://marvelanimated.fandom.com/wiki/Category%3AVillains_%28Spider-Man_%281967%29%29?utm_source=chatgpt.com "Villains (Spider-Man (1967)) - Marvel Animated Universe Wiki"
+[5]: https://www.therobotsvoice.com/2011/10/10_best_episodes_of_the_67_spider-man_cartoon.php?utm_source=chatgpt.com "10 Best Episodes of the '67 Spider-Man Cartoon"
+
+
+
+
+Here are the **remaining villains/antagonists from your larger list** after the 10-chapter structure we discussed.
+
+## Remaining stronger candidates
+
+| Villain                   | Short note                                                                               |
+| ------------------------- | ---------------------------------------------------------------------------------------- |
+| **Baron Von Rathenraven** | Weird noble/aristocrat-style threat; could fit a gothic/castle chapter.                  |
+| **Blackwell**             | Already in Crime Wave in our current structure, so only “remaining” if you swap him out. |
+| **Boomer**                | Street-crime type villain; could work as a fast “explosive shots” mode.                  |
+| **Carol**                 | More of a supporting/episode character than a major villain mode pick.                   |
+| **Cavemen**               | Fits the time-travel/primitive threat idea; could replace a weaker Time Bandits pick.    |
+| **Charles Cameo**         | Trickster/identity-style character; fits Shadow Schemes or Tricksters.                   |
+| **Cowboy**                | Western/time-bandit style; could pair with Jesse James Robot.                            |
+| **Desperado**             | Crime/western-style villain; probably better as a minor mode or Crime Wave swap.         |
+| **Doctor Von Schlick**    | Mad Doctor candidate; good replacement if one Doctor chapter pick is weak.               |
+| **Doctor Vespasian**      | Another Mad Doctor candidate; could be a lab/ancient science mode.                       |
+| **Emily Thorndike**       | More Daily Bugle/social antagonist flavor than full villain.                             |
+| **Harley Clivendon**      | Good for a rich schemer/plotter role; likely a Shadow Schemes candidate.                 |
+| **Henry Smythe**          | Strong tech villain candidate because of Spider-Slayer connection.                       |
+| **Igor**                  | Assistant/henchman type; better as part of a Mad Doctors mini-wizard than solo.          |
+| **James Boothe**          | Crime/schemer type; could fit Crime Wave or Shadow Schemes.                              |
+| **Koga**                  | Adventure/survival-style candidate; useful if you want a jungle/foreign intrigue mode.   |
+| **Kotep**                 | Ancient/mystic-themed villain; could fit a mythology chapter.                            |
+| **Master Technician**     | Strong tech-mode candidate; pairs well with Smythe/Spider-Slayer.                        |
+| **Plotter**               | Crime planner; fits Crime Wave, but maybe not distinct enough for a full mode.           |
+| **Professor Pretoris**    | Science villain; could fit Mad Doctors or Strange Science.                               |
+| **Radiation Specialist**  | Good science hazard mode candidate; spinner/energy meter idea.                           |
+| **Red Dog Melvin**        | Crime/gangster flavor; likely minor Crime Wave candidate.                                |
+| **Scarf**                 | Street-crime or gimmick villain; probably a short/simple mode.                           |
+| **Shakespeare**           | Weird time/robot/performance gimmick; could fit Time Bandits or Tricksters.              |
+| **Sky Master**            | Strong aerial/upper-playfield candidate; good for spinner/rooftop mode.                  |
+| **Spider-Slayer**         | Very strong future mode pick; pairs with Henry Smythe.                                   |
+| **Stan Patterson**        | Pairs naturally with Lee Patterson if you ever use a Patterson subplot.                  |
+| **Uncle Ben’s Killer**    | Important story antagonist, but maybe too serious for a normal villain mode.             |
+| **The Fly Twins**         | Good monster/weird science candidate; could replace a weaker Monster pick.               |
+
+## Less ideal as standalone villain modes
+
+| Name                      | Short note                                                                               |
+| ------------------------- | ---------------------------------------------------------------------------------------- |
+| **J. Jonah Jameson**      | Great for callouts, Daily Bugle features, and mystery awards; not really a villain mode. |
+| **Lee Patterson**         | Better paired with Stan Patterson than used alone.                                       |
+| **South Pole Natives**    | More of a setting/group obstacle than a clean villain.                                   |
+| **Snowman / Snowmen**     | Should be combined into one mode, not separate villains.                                 |
+| **Vulture / Vulture Man** | Should be one combined Vulture slot, not separate modes.                                 |
+
+## Best “next 5” if you expand beyond 50
+
+If you want one more high-quality chapter, I’d pick:
+
+```text
+Henry Smythe
+Spider-Slayer
+Master Technician
+Radiation Specialist
+Professor Pretoris
+```
+
+Mini-wizard: **Techno-Terror**
+
+That gives you a strong tech/science chapter without dipping too far into weaker one-off characters.
+
+
+
+
+
+
 VILLAINS (1967 SERIES ONLY)
 (see villian mode docs)
 
