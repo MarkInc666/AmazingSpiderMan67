@@ -15,7 +15,22 @@ variable_player:
     score: current_player.doc_ock_last_jackpot
 
 
+
 widget_player:
+  xxx_doc_ock_next_jackpot_changed:
+    doc_ock_next_jackpot:
+      action: play
+
+  xxx_doc_ock_spinner_multiplier_increased:
+    doc_ock_next_jackpot:
+      action: play
+      expire: 2s
+
+  xxx_doc_ock_arm_locked_score:
+    doc_ock_next_jackpot:
+      action: play
+      expire: 2s
+
   doc_ock_jackpot_award:
     jackpot_collected:
       action: play

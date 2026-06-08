@@ -90,6 +90,12 @@ class doc_ock(Mode):
         self.jackpot_lit = 1
         self.check_jackpot_lit()
         self.doc_ock_jackpot_spinner_multi = self.doc_ock_jackpot_spinner_multi + 1
+        self.update_player_vars()
+        
+        self.machine.events.post(
+            "doc_ock_spinner_multiplier_increased",
+            multiplier=self.doc_ock_jackpot_spinner_multi
+        )
 
     def rotate_left(self, **kwargs):
         if self.machine.game.player["villain_mode_in_summary"] == True: return
@@ -128,6 +134,7 @@ class doc_ock(Mode):
 
         self.machine.events.post("doc_ock_arm_locked_score")
         #self.check_jackpot_lit()
+        self.update_player_vars()        
 
     def check_jackpot_lit(self):
         if sum(self.locked_arms) > 0:
@@ -163,6 +170,7 @@ class doc_ock(Mode):
         self.jackpot_lit = 0
 
         self.spawn_breakout_target()
+        self.update_player_vars()        
 
         if self.jackpots_collected >= 2:
             self.machine.events.post("doc_ock_start_timed_release")
@@ -189,6 +197,7 @@ class doc_ock(Mode):
             return
 
         self.release_random_locked_arm()
+        self.update_player_vars()                
         self.machine.events.post("doc_ock_breakout_hit")
         self.check_mode_over()
 
@@ -197,6 +206,7 @@ class doc_ock(Mode):
             return
 
         self.release_random_locked_arm()
+        self.update_player_vars()                
         self.machine.events.post("doc_ock_breakout_hit")
 
         if self.check_mode_over():
@@ -229,3 +239,27 @@ class doc_ock(Mode):
         player["doc_ock_jackpots_collected"] = self.jackpots_collected
         player["doc_ock_active_breakouts"] = len(self.active_breakouts)
 
+        player["doc_ock_next_jackpot"] = self.calculate_next_jackpot()
+
+        self.machine.events.post(
+            "doc_ock_next_jackpot_changed",
+            value=player["doc_ock_next_jackpot"],
+            locked_arms=player["doc_ock_locked_arms"],
+            multiplier=player["doc_ock_spinner_multi"],
+            jackpot_lit=self.jackpot_lit,
+        )
+    
+    def calculate_next_jackpot(self):
+        locked = sum(self.locked_arms)
+
+        if locked <= 0:
+            return 0
+
+        if self.jackpot_lit == 0:
+            return 0
+
+        return (
+            self.doc_ock_jackpot_base_value
+            * (5 - locked)
+            * self.doc_ock_jackpot_spinner_multi
+        )
