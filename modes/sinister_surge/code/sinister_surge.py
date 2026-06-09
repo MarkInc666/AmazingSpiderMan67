@@ -22,6 +22,7 @@ class SinisterSurge(Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.jackpot_lit = False
         self.mode_done = False
         self.hits = 0
         self.mode_points = 0
@@ -59,11 +60,17 @@ class SinisterSurge(Mode):
         self._sync_vars()
         self.machine.events.post(f"{self.MODE_KEY}_progress", hits=self.hits)
         if self.hits >= self.HITS_TO_COMPLETE:
-            self._complete_mode()
+            self.jackpot_lit = True
+            self.machine.events.post(f"{self.MODE_KEY}_jackpot_lit")
 
     def _jackpot_hit(self, **kwargs):
         if self.mode_done:
             return
+
+        if not self.jackpot_lit:
+            self.machine.events.post(f"{self.MODE_KEY}_jackpot_not_lit")
+            return
+
         self._score(self.JACKPOT_SCORE)
         self._complete_mode()
 
