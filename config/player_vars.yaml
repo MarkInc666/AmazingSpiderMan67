@@ -886,6 +886,28 @@ player_vars:
     value_type: int
 
 
+  # Active case file helper text shown during villain modes
+  active_case_file_helper_count:
+    initial_value: 0
+    value_type: int
+
+  active_case_file_helper_1:
+    initial_value: ""
+    value_type: str
+  active_case_file_helper_2:
+    initial_value: ""
+    value_type: str
+  active_case_file_helper_3:
+    initial_value: ""
+    value_type: str
+  active_case_file_helper_4:
+    initial_value: ""
+    value_type: str
+  active_case_file_helper_5:
+    initial_value: ""
+    value_type: str
+
+
   # ---------------------------------------------------------------------------
   # Chaos Pops
   # ---------------------------------------------------------------------------

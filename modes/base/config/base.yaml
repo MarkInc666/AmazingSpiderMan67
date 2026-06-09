@@ -102,6 +102,10 @@ event_player:
   s_right_drops_5_active{current_player.villain_mode_running != 1}:
     - drop_hit_no_mode
 
+  daily_bugle_left_exit_hold_cancelled:
+    - drop_the_up_post
+
+
 
 
 sound_player:
@@ -171,11 +175,15 @@ slide_player:
 timers:
   timer_up_post_hold:
     start_value: 0
-    end_value: 6
+    end_value: 8
     tick_interval: 1s
     control_events:
-      - action: restart
-        event: enable_up_post_event
+      - event: enable_up_post_event
+        action: restart        
+      - event: drop_the_up_post
+        action: stop        
+
+
         
 light_player:
   mode_base_started:

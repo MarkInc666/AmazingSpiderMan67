@@ -30,6 +30,12 @@ class QualifySystem(Mode):
         self.add_mode_event_handler("villain_qualify_drop_2_hit", self._drop_hit, saucer="saucer_2")
         self.add_mode_event_handler("villain_qualify_drop_3_hit", self._drop_hit, saucer="saucer_3")
 
+        # Rooftop targets act like the lower drops, but every hit advances
+        # the associated saucer state. No per-bank cycle lockout.
+        self.add_mode_event_handler("villain_qualify_rooftop_target_1_hit", self._rooftop_target_hit, saucer="saucer_1")
+        self.add_mode_event_handler("villain_qualify_rooftop_target_2_hit", self._rooftop_target_hit, saucer="saucer_2")
+        self.add_mode_event_handler("villain_qualify_rooftop_target_3_hit", self._rooftop_target_hit, saucer="saucer_3")
+
         self.add_mode_event_handler("drop_target_bank_dt_bank_left_down", self._bank_completed)
         self.add_mode_event_handler("saucer_star_upgrade_hit", self._star_hit)
 
@@ -112,6 +118,41 @@ class QualifySystem(Mode):
             self.machine.events.post("drop_already_hit_this_cycle", saucer=saucer)
 
         self._restore_state()
+
+    def _rooftop_target_hit(self, saucer=None, **kwargs):
+        if not self.qualify_logic_active or saucer not in self.SAUCERS:
+            return
+
+        if self._qualify_blocked():
+            self.machine.events.post("villain_rooftop_target_ignored_mode_running", saucer=saucer)
+            return
+
+        self._advance_saucer_state(saucer=saucer, source="rooftop_target")
+        self._restore_state()
+
+    def _advance_saucer_state(self, saucer=None, source="unknown"):
+        state_var = f"{saucer}_state"
+
+        if self.machine.game.player[state_var] < self.MAX_SAUCER_STATE:
+            self.machine.game.player[state_var] += 1
+            state = self.machine.game.player[state_var]
+            self.machine.events.post(
+                "saucer_state_advanced",
+                saucer=saucer,
+                state=state,
+                source=source,
+            )
+            self.machine.events.post(f"{saucer}_state_{state}")
+
+            if source == "rooftop_target":
+                self.machine.events.post(
+                    "saucer_state_advanced_by_rooftop_target",
+                    saucer=saucer,
+                    state=state,
+                )
+                self.machine.events.post(f"{saucer}_advanced_by_rooftop_target")
+        else:
+            self.machine.events.post("saucer_already_maxed", saucer=saucer)
 
     def _bank_completed(self, **kwargs):
         if not self.qualify_logic_active:

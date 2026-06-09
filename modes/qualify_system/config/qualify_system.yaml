@@ -19,6 +19,16 @@ event_player:
   s_left_drops_3_active:
     - villain_qualify_drop_3_hit
 
+  # Rooftop targets also build villain readiness at the associated saucer.
+  s_upper_target_left_active:
+    - villain_qualify_rooftop_target_1_hit
+
+  s_upper_target_center_active:
+    - villain_qualify_rooftop_target_2_hit
+
+  s_upper_target_right_active:
+    - villain_qualify_rooftop_target_3_hit
+
   s_star_rollover_active:
     - saucer_star_upgrade_hit
 

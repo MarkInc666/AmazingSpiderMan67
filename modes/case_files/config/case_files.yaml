@@ -11,6 +11,10 @@ widget_player:
     daily_bugle_ready:
       action: update
 
+  case_files_active_helpers_changed:
+    daily_bugle_ready:
+      action: update
+
 event_player:
   s_web_spinner_active{current_player.villain_mode_running != 1}:
     - case_file_spinner_hit

@@ -64,6 +64,13 @@ class RhinoBash(CaseFileMixin, Mode):
         self.case_files = self.get_case_file_bonuses()
         self._apply_case_file_bonuses()
         self.publish_case_file_bonus_events("rhino")
+        self.publish_active_case_file_helpers([
+            ("more_jackpots", "EXTRA RHINO JACKPOT AVAILABLE"),
+            ("bigger_jackpots", "BIGGER RHINO JACKPOTS"),
+            ("more_time", "RAGE TIMER EXTENDED 5s"),
+            ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
+            ("shot_assist", "RAGE CRASH SAVE AVAILABLE"),
+        ])
         
         self.add_mode_event_handler("rhino_start", self.start_rh)
         self.add_mode_event_handler("rhino_pop_hit", self.pop_hit)
@@ -72,6 +79,11 @@ class RhinoBash(CaseFileMixin, Mode):
 
         self.update_player_vars()
         self.machine.events.post("rhino_startup_complete")
+
+
+    def mode_stop(self, **kwargs):
+        self.clear_active_case_file_helpers()
+        super().mode_stop(**kwargs)
 
 
     def _apply_case_file_bonuses(self):

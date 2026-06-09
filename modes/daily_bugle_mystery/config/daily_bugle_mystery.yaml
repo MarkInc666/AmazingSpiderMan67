@@ -22,9 +22,24 @@ event_player:
   s_inlane_m_l_active:
     - daily_bugle_b_hit
 
-  # Successful rooftop traversal
+  # Rooftop spinner collects Daily Bugle photos. 3 photos lights Mystery.
+  s_trispinner_opto_active:
+    - daily_bugle_rooftop_spinner_hit
+
+  # Left exit uses the pop-up post hold and instruction.
+  s_upper_exit_left_opto_active:
+    - daily_bugle_rooftop_left_exit
+
+  # Right exit only plays the instruction/callout. No post hold.
   s_upper_exit_right_opto_active:
     - daily_bugle_rooftop_right_exit
+
+  # Holding both flippers while the post is holding the ball drops it early.
+  s_left_flipper_active{device.switches.s_right_flipper.state == 1}:
+    - daily_bugle_left_exit_hold_cancel
+
+  s_right_flipper_active{device.switches.s_left_flipper.state == 1}:
+    - daily_bugle_left_exit_hold_cancel
 
   # VUK collects mystery when ready
   s_vuk_switch_active:
@@ -80,6 +95,26 @@ sound_player:
     sm_i_better_take_some_photos:
       action: play
       bus: voice
+
+  daily_bugle_rooftop_instruction_more_pics:
+    sm_i_better_take_some_photos:
+      action: play
+      bus: voice
+
+  daily_bugle_rooftop_instruction_bring_pics:
+    sm_i_hope_mr_jameson_likes:
+      action: play
+      bus: voice
+
+  daily_bugle_rooftop_instruction_villain_ready:
+    sm_i_wonder_what_mr_jameson:
+      action: play
+      bus: voice
+
+  daily_bugle_left_exit_hold_cancelled:
+    zip_out:
+      action: play
+      bus: effects
 
   daily_bugle_rooftop_right_exit_1:
     sm_i_hope_mr_jameson_likes:
@@ -156,11 +191,10 @@ sound_player:
 
 
 show_player:
-
   s_trispinner_opto_active:
     upper_spinner_pic_show:
       loops: 1
-      
+
   # Hit feedback: flash a couple times, then stay solid.
   daily_bugle_a_complete:
     daily_bugle_a_hit_flash_then_solid:
@@ -287,7 +321,6 @@ show_player:
 
 
 shows:
-
   upper_spinner_pic_show:
     - duration: 100ms
       lights:

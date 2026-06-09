@@ -64,6 +64,60 @@ class CaseFileMixin:
             active_count=len(active),
         )
 
+
+    def publish_active_case_file_helpers(self, helpers, empty_text="NO CASE FILE HELP ACTIVE"):
+        """Publish player-facing active helper lines for the Case Files widget.
+
+        helpers should be an ordered list of (case_file_key, message) tuples.
+        Only messages for collected case files are shown.
+
+        Example:
+            self.publish_active_case_file_helpers([
+                ("more_jackpots", "EXTRA RHINO JACKPOT AVAILABLE"),
+                ("more_time", "RAGE TIMER EXTENDED 5s"),
+            ])
+        """
+        player = self.machine.game.player if self.machine.game else None
+
+        if not player:
+            return
+
+        active_lines = []
+
+        for key, message in helpers:
+            if self.has_case_file(key) and message:
+                active_lines.append(str(message))
+
+        if not active_lines and empty_text:
+            active_lines.append(str(empty_text))
+
+        for index in range(5):
+            var_name = f"active_case_file_helper_{index + 1}"
+            if index < len(active_lines):
+                player[var_name] = active_lines[index]
+            else:
+                player[var_name] = ""
+
+        player["active_case_file_helper_count"] = len(active_lines)
+
+        self.machine.events.post(
+            "case_files_active_helpers_changed",
+            helper_count=len(active_lines),
+        )
+
+    def clear_active_case_file_helpers(self):
+        """Clear active helper lines when a villain mode ends."""
+        player = self.machine.game.player if self.machine.game else None
+
+        if not player:
+            return
+
+        for index in range(5):
+            player[f"active_case_file_helper_{index + 1}"] = ""
+
+        player["active_case_file_helper_count"] = 0
+        self.machine.events.post("case_files_active_helpers_changed", helper_count=0)
+
     def _player_var(self, name, default=0):
         """Read an MPF player variable safely without using player.get()."""
         player = self.machine.game.player if self.machine.game else None

@@ -8,10 +8,11 @@ class DailyBugleMystery(Mode):
     Flow:
       1. Complete A+B.
       2. Rooftop gate opens.
-      3. Enter rooftop.
-      4. Exit rooftop right.
-      5. Gate opens again.
-      6. VUK collects Mystery.
+      3. Shoot VUK to the rooftop.
+      4. Rooftop spinner takes photos. Three photos lights Mystery.
+      5. Left exit can hold the ball on the pop-up post for JJJ instructions.
+      6. Right exit only plays the same instruction/callout, without the post.
+      7. VUK collects Mystery when ready.
 
     Important change from the older version:
       A/B/mystery progress is restored from player vars when the mode starts,
@@ -20,6 +21,9 @@ class DailyBugleMystery(Mode):
 
     AB_DAILY_POINTS = 10000
     AB_DAILY_POINTS_UNLIT = 2000
+
+    PHOTOS_NEEDED = 3
+    LEFT_EXIT_HOLD_MS = 8000
 
     EXTRA_BALL_LIGHT_AT = 3
     EXTRA_BALL_AWARD_AT = 7
@@ -40,6 +44,7 @@ class DailyBugleMystery(Mode):
         super().mode_start(**kwargs)
 
         self.daily_bugle_enabled = True
+        self.left_exit_hold_active = False
 
         self._ensure_player_vars()
         self._restore_runtime_state_from_player()
@@ -48,13 +53,18 @@ class DailyBugleMystery(Mode):
 
     def mode_stop(self, **kwargs):
         self.daily_bugle_enabled = False
+        self._release_left_exit_hold(cancel_delay=True, reason="mode_stop")
         super().mode_stop(**kwargs)
 
     def _add_handlers(self):
         self.add_mode_event_handler("daily_bugle_a_hit", self.a_rollover_hit)
         self.add_mode_event_handler("daily_bugle_b_hit", self.b_rollover_hit)
+        self.add_mode_event_handler("daily_bugle_rooftop_spinner_hit", self.rooftop_spinner_hit)
+        self.add_mode_event_handler("daily_bugle_rooftop_left_exit", self.rooftop_left_exit)
         self.add_mode_event_handler("daily_bugle_rooftop_right_exit", self.rooftop_right_exit)
         self.add_mode_event_handler("daily_bugle_vuk_collect_request", self.vuk_collect_request)
+        self.add_mode_event_handler("daily_bugle_left_exit_hold_cancel", self.cancel_left_exit_hold)
+        self.add_mode_event_handler("flipper_cancel", self.cancel_left_exit_hold)
 
         self.add_mode_event_handler("disable_daily_bugle_mystery", self.disable_db)
         self.add_mode_event_handler("enable_daily_bugle_mystery", self.enable_db)
@@ -73,6 +83,11 @@ class DailyBugleMystery(Mode):
             "daily_bugle_b_hit": 0,
             "daily_bugle_ab_ready": 0,
             "daily_bugle_mystery_ready": 0,
+            "daily_bugle_rooftop_photos": 0,
+            "daily_bugle_rooftop_photos_needed": self.PHOTOS_NEEDED,
+            "daily_bugle_last_instruction_key": "",
+            "daily_bugle_last_instruction_text": "",
+            "daily_bugle_left_exit_hold_active": 0,
         }
 
         for name, value in defaults.items():
@@ -86,6 +101,7 @@ class DailyBugleMystery(Mode):
         self.b_hit = bool(player["daily_bugle_b_hit"])
         self.mystery_ab_ready = bool(player["daily_bugle_ab_ready"])
         self.mystery_ready = bool(player["daily_bugle_mystery_ready"])
+        self.rooftop_photos = self._safe_int(player["daily_bugle_rooftop_photos"], 0)
 
     def disable_db(self, **kwargs):
         self.daily_bugle_enabled = False
@@ -148,6 +164,52 @@ class DailyBugleMystery(Mode):
         self.machine.events.post("daily_bugle_ab_complete")
         self.machine.events.post("daily_bugle_widget_update")
 
+    def rooftop_spinner_hit(self, **kwargs):
+        if not self.daily_bugle_enabled:
+            return
+
+        if not self.mystery_ab_ready:
+            return
+
+        if self.mystery_ready:
+            self.update_player_vars()
+            self.machine.events.post("daily_bugle_photo_hit_after_mystery_ready")
+            return
+
+        if self.rooftop_photos < self.PHOTOS_NEEDED:
+            self.rooftop_photos += 1
+
+        self.update_player_vars(post_widget_update=False)
+
+        self.machine.events.post(
+            "daily_bugle_photo_collected",
+            photos=self.rooftop_photos,
+            photos_needed=self.PHOTOS_NEEDED,
+        )
+        self.machine.events.post(f"daily_bugle_photo_{self.rooftop_photos}")
+
+        if self.rooftop_photos >= self.PHOTOS_NEEDED:
+            self.mystery_ready = True
+            self.update_player_vars(post_widget_update=False)
+            self.machine.events.post("daily_bugle_photos_complete")
+            self.machine.events.post("daily_bugle_mystery_ready")
+        else:
+            self.update_player_vars(post_widget_update=False)            
+
+        # Open gate again so player can shoot back toward VUK/mystery collect.
+        self.machine.events.post("rooftop_diverter_open")
+        self.machine.events.post("daily_bugle_widget_update")
+
+    def rooftop_left_exit(self, **kwargs):
+        if not self.daily_bugle_enabled:
+            return
+
+        if not self.mystery_ab_ready:
+            return
+
+        instruction_key, instruction_text = self._post_rooftop_instruction(exit_side="left")
+        self._start_left_exit_hold(instruction_key=instruction_key, instruction_text=instruction_text)
+
     def rooftop_right_exit(self, **kwargs):
         if not self.daily_bugle_enabled:
             return
@@ -155,16 +217,98 @@ class DailyBugleMystery(Mode):
         if not self.mystery_ab_ready:
             return
 
-        if not self.mystery_ready:
-            self.mystery_ready = True
-            self.update_player_vars(post_widget_update=False)
-            self.machine.events.post("daily_bugle_mystery_ready")
-        else:
-            self.update_player_vars(post_widget_update=False)
+        # Right exit is only a callout/SFX route. It does not raise the post.
+        self._post_rooftop_instruction(exit_side="right")
 
-        # Open gate again so player can shoot back toward VUK/mystery collect.
-        self.machine.events.post("rooftop_diverter_open")
+    def _post_rooftop_instruction(self, exit_side="unknown"):
+        instruction_key, instruction_text = self._current_rooftop_instruction()
+
+        player = self.machine.game.player
+        player["daily_bugle_last_instruction_key"] = instruction_key
+        player["daily_bugle_last_instruction_text"] = instruction_text
+
+        self.machine.events.post(
+            "daily_bugle_rooftop_instruction",
+            instruction_key=instruction_key,
+            instruction_text=instruction_text,
+            exit_side=exit_side,
+        )
+        self.machine.events.post(f"daily_bugle_rooftop_instruction_{instruction_key}")
+        self.machine.events.post(f"daily_bugle_rooftop_{exit_side}_instruction_{instruction_key}")
         self.machine.events.post("daily_bugle_widget_update")
+
+        return instruction_key, instruction_text
+
+    def _current_rooftop_instruction(self):
+        if self._any_saucer_ready():
+            return (
+                "villain_ready",
+                "Get to the saucers to fight your next villain.",
+            )
+
+        if self.mystery_ready:
+            return (
+                "bring_pics",
+                "Let me see those pics. Bring them to my office.",
+            )
+
+        return (
+            "more_pics",
+            "Get back out there and take more pics.",
+        )
+
+    def _any_saucer_ready(self):
+        player = self.machine.game.player
+
+        for num in (1, 2, 3):
+            try:
+                state = player[f"saucer_{num}_state"]
+            except Exception:
+                state = 0
+
+            if self._safe_int(state, 0) > 0:
+                return True
+
+        return False
+
+    def _start_left_exit_hold(self, instruction_key=None, instruction_text=None):
+        if self.left_exit_hold_active:
+            self.delay.remove("daily_bugle_left_exit_hold_release")
+        else:
+            self.left_exit_hold_active = True
+            self.machine.game.player["daily_bugle_left_exit_hold_active"] = 1
+            self.machine.events.post("enable_up_post_event")
+            self.machine.events.post(
+                "daily_bugle_left_exit_hold_started",
+                instruction_key=instruction_key,
+                instruction_text=instruction_text,
+            )
+
+        self.delay.add(
+            name="daily_bugle_left_exit_hold_release",
+            ms=self.LEFT_EXIT_HOLD_MS,
+            callback=self._release_left_exit_hold,
+        )
+
+    def cancel_left_exit_hold(self, **kwargs):
+        if not self.left_exit_hold_active:
+            return
+
+        self.machine.events.post("daily_bugle_left_exit_hold_cancelled")
+        self._release_left_exit_hold(cancel_delay=True, reason="flipper_cancel")
+
+    def _release_left_exit_hold(self, cancel_delay=False, reason="timer"):
+        if cancel_delay:
+            self.delay.remove("daily_bugle_left_exit_hold_release")
+
+        if not self.left_exit_hold_active:
+            return
+
+        self.left_exit_hold_active = False
+        if self.machine.game:
+            self.machine.game.player["daily_bugle_left_exit_hold_active"] = 0
+        self.machine.events.post("timer_timer_up_post_hold_complete")
+        self.machine.events.post("daily_bugle_left_exit_hold_released", reason=reason)
 
     def vuk_collect_request(self, **kwargs):
         if not self.daily_bugle_enabled:
@@ -255,6 +399,7 @@ class DailyBugleMystery(Mode):
         self.b_hit = False
         self.mystery_ab_ready = False
         self.mystery_ready = False
+        self.rooftop_photos = 0
         self.update_player_vars()
 
         if post_restore:
@@ -267,6 +412,8 @@ class DailyBugleMystery(Mode):
         player["daily_bugle_b_hit"] = int(self.b_hit)
         player["daily_bugle_ab_ready"] = int(self.mystery_ab_ready)
         player["daily_bugle_mystery_ready"] = int(self.mystery_ready)
+        player["daily_bugle_rooftop_photos"] = int(self.rooftop_photos)
+        player["daily_bugle_rooftop_photos_needed"] = self.PHOTOS_NEEDED
 
         if post_widget_update:
             self.machine.events.post("daily_bugle_widget_update")
@@ -292,3 +439,9 @@ class DailyBugleMystery(Mode):
                 self.machine.events.post("daily_bugle_b_restore_incomplete")
 
         self.machine.events.post("daily_bugle_widget_update")
+
+    def _safe_int(self, value, default=0):
+        try:
+            return int(value)
+        except Exception:
+            return default
