@@ -442,8 +442,10 @@ class VillainBookends(Mode):
             ms=self.SUMMARY_MS,
             callback=self._finish_current_bookend
         )
-
     def _intro_hold_request(self, **kwargs):
+        if self.current_stage in ("intro", "summary"):
+            return
+
         player = self.machine.game.player if self.machine.game else None
 
         if not player:
@@ -494,7 +496,6 @@ class VillainBookends(Mode):
             self.machine.events.post(f"{song}")
             self.machine.events.post("villain_bookend_intro_hide")
             self.machine.events.post("villain_bookend_intro_done", villain=villain)
-            self.machine.events.post("clear_saucers")
         elif stage == "summary":
             # Gameplay has already stopped before the summary is shown. The
             # summary finishing only does cleanup and releases the next qualify
@@ -502,13 +503,13 @@ class VillainBookends(Mode):
             self.machine.game.player["villain_mode_in_summary"] = False
             self.machine.events.post("reset_villain_locate")
             self.machine.events.post("reset_daily_bugle_state")
-            self.machine.events.post("clear_saucers")
             self.machine.events.post("reset_drops")
             self.machine.events.post("drop_target_bank_dt_bank_left_reset")
             self.machine.events.post("drop_target_bank_dt_bank_right_reset")
             self.machine.events.post("villain_bookend_summary_hide")
             self.machine.events.post("villain_bookend_summary_done", villain=villain)
             
+        self.machine.events.post("clear_saucers")
         self.current_stage = None
         self.current_villain = None
         self.current_done_event = None

@@ -81,8 +81,15 @@ class QualifySystem(Mode):
         if not self.qualify_logic_active or saucer not in self.SAUCERS:
             return
 
-        if self._qualify_blocked():
+        player = self.machine.game.player
+
+        if player["villain_mode_running"] == 1:
             self.machine.events.post("villain_drop_ignored_mode_running", saucer=saucer)
+            return
+
+        if player["chapter_mini_wizard_ready"] == 1:
+            self.machine.events.post("mini_wizard_start_ready_at_daily_bugle")
+            self.machine.events.post("villain_mini_wizard_gate_opened")
             return
 
         hit_var = f"{saucer}_drop_hit_this_cycle"

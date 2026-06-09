@@ -196,7 +196,7 @@ class VillainProgression(Mode):
             callback=self._clear_saucers,
         )
 
-    def _clear_saucers(self, **kwargs):
+    def clear_saucers(self, **kwargs):
         """Kick out only saucers that currently contain a ball.
 
         The saucers are not MPF ball devices, so a raw YAML mapping from
@@ -204,6 +204,8 @@ class VillainProgression(Mode):
         checks the physical saucer switches first and only posts the matching
         kickout event when a ball is actually sitting there.
         """
+        self.info_log("CLEAR SAUCERS called. kwargs=%s", kwargs)
+
         saucers = {
             "s_saucer_1": "kickout_saucer_1",
             "s_saucer_2": "kickout_saucer_2",
@@ -211,13 +213,11 @@ class VillainProgression(Mode):
         }
 
         for switch_name, kickout_event in saucers.items():
-            try:
-                switch = self.machine.switches[switch_name]
-            except KeyError:
-                self.warning_log("Unknown saucer switch for clear_saucers: %s", switch_name)
-                continue
+            active = self.machine.switch_controller.is_active(self.machine.switches[switch_name])
+            self.info_log("Saucer check %s active=%s", switch_name, active)
 
-            if self.machine.switch_controller.is_active(switch):
+            if active:
+                self.info_log("Posting %s from clear_saucers", kickout_event)
                 self.machine.events.post(kickout_event)
 
     def _add_handlers(self):
@@ -638,12 +638,19 @@ class VillainProgression(Mode):
     def _mini_wizard_ready_at_daily_bugle(self, **kwargs):
         if self._safe_int(self.machine.game.player["chapter_mini_wizard_ready"], 0) != 1:
             return
+
         chapter = self._get_current_chapter()
         if not chapter:
             return
+
         mini_key = chapter["mini_wizard_key"]
+
         self.machine.game.player["mini_wizard_daily_bugle_ready"] = 1
         self.machine.game.player[f"{mini_key}_state"] = self.LIT
+
+        self.machine.events.post("rooftop_diverter_open")
+        self.machine.events.post("villain_mini_wizard_gate_opened")
+
         self.machine.events.post(
             "chapter_mini_wizard_lit_at_daily_bugle",
             chapter=chapter["key"],
@@ -651,6 +658,7 @@ class VillainProgression(Mode):
             mini_wizard_key=mini_key,
             mini_wizard_name=chapter["mini_wizard_name"],
         )
+
         self._restore_state()
 
     def _daily_bugle_hit(self, **kwargs):
