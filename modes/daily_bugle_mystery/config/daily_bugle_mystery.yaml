@@ -4,7 +4,7 @@ mode:
   start_events: ball_started
   stop_events: ball_ending
   code: daily_bugle_mystery.DailyBugleMystery
-  priority: 90
+  priority: 300
 
 event_player:
 
@@ -157,6 +157,10 @@ sound_player:
 
 show_player:
 
+  s_trispinner_opto_active:
+    upper_spinner_pic_show:
+      loops: 1
+      
   # Hit feedback: flash a couple times, then stay solid.
   daily_bugle_a_complete:
     daily_bugle_a_hit_flash_then_solid:
@@ -283,6 +287,17 @@ show_player:
 
 
 shows:
+
+  upper_spinner_pic_show:
+    - duration: 100ms
+      lights:
+        gi: white
+    - duration: 100ms
+      lights:
+        gi: blue
+    - duration: 100ms
+      lights:
+        gi: off
 
   daily_bugle_a_hit_flash_then_solid:
     - duration: 120ms

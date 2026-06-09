@@ -509,7 +509,7 @@ class VillainBookends(Mode):
             self.machine.events.post("villain_bookend_summary_hide")
             self.machine.events.post("villain_bookend_summary_done", villain=villain)
             
-        self.machine.events.post("clear_saucers")
+        self.machine.events.post("clear_saucers_delayed")
         self.current_stage = None
         self.current_villain = None
         self.current_done_event = None

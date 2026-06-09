@@ -196,7 +196,7 @@ class VillainProgression(Mode):
             callback=self._clear_saucers,
         )
 
-    def clear_saucers(self, **kwargs):
+    def _clear_saucers(self, **kwargs):
         """Kick out only saucers that currently contain a ball.
 
         The saucers are not MPF ball devices, so a raw YAML mapping from
