@@ -499,9 +499,10 @@ class VillainProgression(Mode):
         self.machine.game.player["villain_current_name"] = villain_key
         self.machine.game.player["villain_mode_running"] = 1
         self.machine.game.player["villain_mode_running_name"] = villain_key
-
+        
         self.info_log("VILLAIN START: %s state=%s played=%s", villain_key, self.machine.game.player[f"{villain_key}_state"], self.machine.game.player[f"{villain_key}_played"])
 
+        self.machine.events.post("case_files_clear_lights")
         self.machine.events.post("clear_villain_saucer_lights")
         # Do not clear/eject saucers here. The ball that started the villain
         # should stay held during the bookend intro. villain_bookends posts

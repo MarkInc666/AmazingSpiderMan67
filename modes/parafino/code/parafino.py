@@ -49,6 +49,7 @@ class Parafino(CaseFileMixin, Mode):
     MAX_HEAT = 5
     HEAT_DECAY_MS = 4_000
     GI_FLASH_MS = 1_000
+    SAUCER_EJECT_DELAY_MS = 2_000
 
     ZONES = {
         "left": {
@@ -415,8 +416,16 @@ class Parafino(CaseFileMixin, Mode):
     def _eject_saucer(self, saucer):
         event = self.SAUCER_EJECT_EVENTS.get(saucer)
 
-        if event:
-            self.machine.events.post(event)
+        if not event:
+            return
+
+        self.delay.remove(f"parafino_eject_{saucer}")
+        self.delay.add(
+            name=f"parafino_eject_{saucer}",
+            ms=self.SAUCER_EJECT_DELAY_MS,
+            callback=self.machine.events.post,
+            event=event,
+        )
 
     def _multiball_ended(self, **kwargs):
         self.info_log("Parafino multiball ended.")
