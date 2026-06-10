@@ -83,11 +83,12 @@ class DailyBugleMystery(Mode):
             "daily_bugle_b_hit": 0,
             "daily_bugle_ab_ready": 0,
             "daily_bugle_mystery_ready": 0,
-            "daily_bugle_rooftop_photos": 0,
-            "daily_bugle_rooftop_photos_needed": self.PHOTOS_NEEDED,
             "daily_bugle_last_instruction_key": "",
             "daily_bugle_last_instruction_text": "",
             "daily_bugle_left_exit_hold_active": 0,
+            "daily_bugle_pictures_taken": 0,
+            "daily_bugle_pictures_needed": 3,
+            "daily_bugle_pictures_taken_text": "PICS: 0/3",
         }
 
         for name, value in defaults.items():
@@ -178,6 +179,7 @@ class DailyBugleMystery(Mode):
 
         if self.rooftop_photos < self.PHOTOS_NEEDED:
             self.rooftop_photos += 1
+            self._update_pictures_taken_text()
 
         self.update_player_vars(post_widget_update=False)
 
@@ -198,6 +200,20 @@ class DailyBugleMystery(Mode):
 
         # Open gate again so player can shoot back toward VUK/mystery collect.
         self.machine.events.post("rooftop_diverter_open")
+        self.machine.events.post("daily_bugle_widget_update")
+
+    def _update_pictures_taken_text(self):
+        player = self.machine.game.player if self.machine.game else None
+
+        if not player:
+            return
+
+        pictures = self.rooftop_photos 
+        #self._safe_int(player["daily_bugle_pictures_taken"], 0)
+        needed = self._safe_int(player["daily_bugle_pictures_needed"], 3)
+
+        player["daily_bugle_pictures_taken_text"] = f"PICS: {pictures}/{needed}"
+
         self.machine.events.post("daily_bugle_widget_update")
 
     def rooftop_left_exit(self, **kwargs):
@@ -412,8 +428,6 @@ class DailyBugleMystery(Mode):
         player["daily_bugle_b_hit"] = int(self.b_hit)
         player["daily_bugle_ab_ready"] = int(self.mystery_ab_ready)
         player["daily_bugle_mystery_ready"] = int(self.mystery_ready)
-        player["daily_bugle_rooftop_photos"] = int(self.rooftop_photos)
-        player["daily_bugle_rooftop_photos_needed"] = self.PHOTOS_NEEDED
 
         if post_widget_update:
             self.machine.events.post("daily_bugle_widget_update")

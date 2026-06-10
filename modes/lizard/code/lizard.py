@@ -1,4 +1,5 @@
 from mpf.core.mode import Mode
+from modes.common.case_file_mixin import CaseFileMixin
 
 """
     "title": "THE LIZARD MAN",
@@ -14,7 +15,7 @@ from mpf.core.mode import Mode
     "points_var": "lizard_mode_points",
     "completed_var": "lizard_completed",
 """
-class Lizard(Mode):
+class Lizard(CaseFileMixin, Mode):
 
     DELIVERY_SEQUENCE = [
         "left",
@@ -56,11 +57,44 @@ class Lizard(Mode):
         self.add_mode_event_handler("timer_lizard_delivery_timer_complete", self.serum_expired)
         self.add_mode_event_handler("lizard_light_delivery_target", self.light_next_target)
 
+        self.case_files = self.get_case_file_bonuses()
+        self._apply_case_file_bonuses()
+        self.publish_case_file_bonus_events("lizard")
+        self.publish_active_case_file_helpers([
+            ("more_jackpots", "EXTRA SERUM DELIVERY AVAILABLE"),
+            ("bigger_jackpots", "SERUM VALUE BOOSTED"),
+            ("more_time", "SERUM VALUE DECAY SLOWED"),
+            ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
+            ("shot_assist", "SERUM STARTS READY"),
+        ])
+
         # Startup actions formerly handled by event_player/variable_player.
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("lizard_light_serum_location")
         self.machine.events.post("clear_saucers")
 #        self.machine.events.post("play_song_4")
+
+    def mode_stop(self, **kwargs):
+        self.clear_active_case_file_helpers()
+        super().mode_stop(**kwargs)
+
+    def _apply_case_file_bonuses(self):
+        if self.has_case_file("more_jackpots"):
+            self.DELIVERY_SEQUENCE = list(self.DELIVERY_SEQUENCE) + ["left"]
+
+        if self.has_case_file("bigger_jackpots"):
+            self.START_DELIVERY_VALUE += 250000
+
+        if self.has_case_file("more_time"):
+            self.DELIVERY_TICK_VALUE = max(25000, int(self.DELIVERY_TICK_VALUE / 2))
+
+        if self.has_case_file("safety_net"):
+            self.machine.events.post("start_case_file_ball_save")
+
+        if self.has_case_file("shot_assist"):
+            self._set_player_var("lizard_serum_ready", 1)
+            self.machine.events.post("lizard_light_delivery_target")
+            self.machine.events.post("lizard_delivery_timer_start")
 
     def _player(self):
         if not self.machine.game:

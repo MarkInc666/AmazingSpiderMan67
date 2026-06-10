@@ -981,3 +981,17 @@ player_vars:
   multiball_autoplunge_active:
     initial_value: 0
     value_type: int
+
+
+
+  daily_bugle_pictures_taken_text:
+    initial_value: ""
+    value_type: str
+
+  daily_bugle_pictures_taken:
+    initial_value: 0
+    value_type: int
+
+  daily_bugle_pictures_needed:
+    initial_value: 3
+    value_type: int

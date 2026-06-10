@@ -1,4 +1,5 @@
 from mpf.core.mode import Mode
+from modes.common.case_file_mixin import CaseFileMixin
 import random
 
 # rollovers to lock arms (1 to 4)
@@ -22,7 +23,7 @@ import random
     "points_var": "doc_ock_mode_points",
     "completed_var": "doc_ock_completed",
 """
-class doc_ock(Mode):
+class doc_ock(CaseFileMixin, Mode):
 
     MAX_BREAKOUT_TARGETS = 6
     
@@ -54,6 +55,17 @@ class doc_ock(Mode):
         self.doc_ock_jackpots = 0
         self.doc_ock_mode_points = 0
 
+        self.case_files = self.get_case_file_bonuses()
+        self._apply_case_file_bonuses()
+        self.publish_case_file_bonus_events("doc_ock")
+        self.publish_active_case_file_helpers([
+            ("more_jackpots", "EXTRA BREAKOUT JACKPOT AVAILABLE"),
+            ("bigger_jackpots", "BIGGER DOC OCK JACKPOTS"),
+            ("more_time", "ARM RELEASE DELAYED"),
+            ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
+            ("shot_assist", "EXTRA ARM LOCKED"),
+        ])
+
         self.add_mode_event_handler("doc_ock_spinner_hit", self.doc_ock_spinner)
         self.add_mode_event_handler("doc_ock_start_arms", self.doc_ock_start_arms)
         self.add_mode_event_handler("doc_ock_rotate_left", self.rotate_left)
@@ -80,6 +92,28 @@ class doc_ock(Mode):
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("doc_ock_startup_complete")
 
+
+    def mode_stop(self, **kwargs):
+        self.clear_active_case_file_helpers()
+        super().mode_stop(**kwargs)
+
+    def _apply_case_file_bonuses(self):
+        if self.has_case_file("more_jackpots"):
+            self.MAX_BREAKOUT_TARGETS += 1
+
+        if self.has_case_file("bigger_jackpots"):
+            self.doc_ock_jackpot_base_value += 50000
+
+        if self.has_case_file("more_time"):
+            self.machine.events.post("doc_ock_case_file_arm_release_delayed")
+
+        if self.has_case_file("safety_net"):
+            self.machine.events.post("start_case_file_ball_save")
+
+        if self.has_case_file("shot_assist"):
+            if len(self.locked_arms) >= 2:
+                self.locked_arms[1] = True
+            self.doc_ock_max_arms_locked = max(self.doc_ock_max_arms_locked, sum(self.locked_arms))
 
     def doc_ock_start_arms(self, **kwargs):
         self.refresh_lane_lights()

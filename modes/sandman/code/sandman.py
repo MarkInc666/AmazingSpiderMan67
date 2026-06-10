@@ -1,4 +1,5 @@
 from mpf.core.mode import Mode
+from modes.common.case_file_mixin import CaseFileMixin
 from mpf.core.delays import DelayManager
 
 #possible bug when 2 targets hit, flash doesn't move
@@ -17,7 +18,7 @@ from mpf.core.delays import DelayManager
     "points_var": "sandman_mode_points",
     "completed_var": "sandman_completed",
 """
-class Sandman(Mode):
+class Sandman(CaseFileMixin, Mode):
 
     BANK_TARGETS = [1, 2, 3, 4, 5]
     MAX_BANKS = 3
@@ -39,6 +40,17 @@ class Sandman(Mode):
         self.sandman_best_run = 0
         self.flash_hits = 0
 
+        self.case_files = self.get_case_file_bonuses()
+        self._apply_case_file_bonuses()
+        self.publish_case_file_bonus_events("sandman")
+        self.publish_active_case_file_helpers([
+            ("more_jackpots", "EXTRA SANDMAN BANK AVAILABLE"),
+            ("bigger_jackpots", "FLASHING TARGETS SCORE MORE"),
+            ("more_time", "TARGET SHIFT SLOWED"),
+            ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
+            ("shot_assist", "FIRST TARGET SPOTTED"),
+        ])
+
         for target in self.BANK_TARGETS:
             self.add_mode_event_handler(
                 f"sandman_drop_{target}_hit",
@@ -52,6 +64,28 @@ class Sandman(Mode):
 
         self.update_player_vars()
         self.machine.events.post("sandman_startup_complete")
+
+    def mode_stop(self, **kwargs):
+        self.clear_active_case_file_helpers()
+        super().mode_stop(**kwargs)
+
+    def _apply_case_file_bonuses(self):
+        self.case_file_bigger_jackpots = False
+
+        if self.has_case_file("more_jackpots"):
+            self.MAX_BANKS += 1
+
+        if self.has_case_file("bigger_jackpots"):
+            self.case_file_bigger_jackpots = True
+
+        if self.has_case_file("more_time"):
+            self.MOVE_INTERVAL_MS += 1500
+
+        if self.has_case_file("safety_net"):
+            self.machine.events.post("start_case_file_ball_save")
+
+        if self.has_case_file("shot_assist"):
+            self.machine.events.post("sandman_case_file_first_target_spotted")
 
     def start_bank(self, **kwargs):
         self.down_targets = set()
@@ -134,6 +168,10 @@ class Sandman(Mode):
             self.hit_order.append(target)
             self.flash_hits += 1
             self.machine.events.post("sandman_flashing_hit")
+            if getattr(self, "case_file_bigger_jackpots", False):
+                self.machine.game.player["score"] += 25000
+                self.machine.game.player["sandman_mode_points"] += 25000
+                self.machine.events.post("sandman_case_file_bonus_score")
         else:
             self.machine.events.post("sandman_regular_hit")
 

@@ -1,4 +1,5 @@
 from mpf.core.mode import Mode
+from modes.common.case_file_mixin import CaseFileMixin
 from modes.common.shot_registry import Shot
 import random
 
@@ -16,7 +17,7 @@ import random
     "points_var": "mysterio_mode_points",
     "completed_var": "mysterio_completed",
 """
-class Mysterio(Mode):
+class Mysterio(CaseFileMixin, Mode):
 
     STARTING_SUPER = 1000000
     SUPER_FLOOR = 300000
@@ -30,6 +31,17 @@ class Mysterio(Mode):
         self.mysterio_illusions_cleared = 0
         self.mysterio_jackpot_value = 0
         self.mysterio_mode_points = 0
+
+        self.case_files = self.get_case_file_bonuses()
+        self._apply_case_file_bonuses()
+        self.publish_case_file_bonus_events("mysterio")
+        self.publish_active_case_file_helpers([
+            ("more_jackpots", "EXTRA ILLUSION CHANCE AVAILABLE"),
+            ("bigger_jackpots", "SUPER JACKPOT BOOSTED"),
+            ("more_time", "ILLUSION VALUE PROTECTED"),
+            ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
+            ("shot_assist", "FALSE SHOT REVEALED"),
+        ])
 
         self.shots = [
             Shot("left_web", 10, 70, "mysterio_left_web_hit", group="left"),
@@ -48,6 +60,31 @@ class Mysterio(Mode):
             self.add_mode_event_handler(shot.event, self.shot_hit, shot_name=shot.name)
 
         self.start_trial()
+
+    def mode_stop(self, **kwargs):
+        self.clear_active_case_file_helpers()
+        super().mode_stop(**kwargs)
+
+    def _apply_case_file_bonuses(self):
+        self.case_file_extra_chance_available = False
+        self.case_file_reveal_false_shot = False
+
+        if self.has_case_file("more_jackpots"):
+            self.case_file_extra_chance_available = True
+
+        if self.has_case_file("bigger_jackpots"):
+            self.STARTING_SUPER += 250000
+            self.super_value = self.STARTING_SUPER
+
+        if self.has_case_file("more_time"):
+            self.WRONG_DEDUCT = max(25000, int(self.WRONG_DEDUCT / 2))
+            self.CLUE_DEDUCT = max(5000, int(self.CLUE_DEDUCT / 2))
+
+        if self.has_case_file("safety_net"):
+            self.machine.events.post("start_case_file_ball_save")
+
+        if self.has_case_file("shot_assist"):
+            self.case_file_reveal_false_shot = True
 
     def start_trial(self):
         for shot in self.shots:
@@ -68,6 +105,15 @@ class Mysterio(Mode):
         for clue in clue_shots:
             clue.is_clue = True
             clue.hint = self.build_hint(jackpot)
+
+        if getattr(self, "case_file_reveal_false_shot", False):
+            false_shots = [s for s in self.shots if not s.is_jackpot and not s.is_clue]
+            if false_shots:
+                revealed = random.choice(false_shots)
+                revealed.disabled = True
+                revealed.is_lit = False
+                self.machine.events.post(f"mysterio_stop_{revealed.name}")
+                self.machine.events.post("mysterio_case_file_false_shot_revealed", shot=revealed.name)
 
         self.machine.game.player["mysterio_super_value"] = self.super_value
         self.machine.events.post("mysterio_startup_complete")
@@ -117,6 +163,14 @@ class Mysterio(Mode):
 
 
     def handle_wrong_shot(self, shot):
+        if getattr(self, "case_file_extra_chance_available", False):
+            self.case_file_extra_chance_available = False
+            self.machine.events.post("mysterio_case_file_extra_chance_used", shot=shot.name)
+            shot.disabled = True
+            shot.is_lit = False
+            self.machine.events.post(f"mysterio_stop_{shot.name}")
+            return
+
         self.machine.events.post("mysterio_wrong_shot")
         self.machine.events.post("mysterio_score_wrong_shot")
         

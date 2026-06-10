@@ -1,6 +1,7 @@
 import random
 from mpf.core.delays import DelayManager
 from mpf.core.mode import Mode
+from modes.common.case_file_mixin import CaseFileMixin
 
 """
     "title": "SCORPION",
@@ -16,7 +17,7 @@ from mpf.core.mode import Mode
     "points_var": "scorpion_mode_points",
     "completed_var": "scorpion_completed",
 """
-class Scorpion(Mode):
+class Scorpion(CaseFileMixin, Mode):
 
     VENOM_READY_HITS = 4
     MAX_TRIES = 3
@@ -25,6 +26,17 @@ class Scorpion(Mode):
         super().mode_start(**kwargs)
 
         self.delay = DelayManager(self.machine)
+        self.case_files = self.get_case_file_bonuses()
+        self._apply_case_file_bonuses()
+        self.publish_case_file_bonus_events("scorpion")
+        self.publish_active_case_file_helpers([
+            ("more_jackpots", "EXTRA STING ATTEMPT AVAILABLE"),
+            ("bigger_jackpots", "STING JACKPOTS BOOSTED"),
+            ("more_time", "STING WINDOW EXTENDED"),
+            ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
+            ("shot_assist", "STING TARGET SPOTTED"),
+        ])
+
 
         self.scorpion_venom_value = 0
 
@@ -52,6 +64,28 @@ class Scorpion(Mode):
         self.add_mode_event_handler("s_left_drops_rubber_active", self.sting_miss_left)
         self.add_mode_event_handler("s_right_drops_rubber_active", self.sting_miss_right)
 
+
+    def mode_stop(self, **kwargs):
+        self.clear_active_case_file_helpers()
+        super().mode_stop(**kwargs)
+
+    def _apply_case_file_bonuses(self):
+        self.case_file_sting_multiplier_bonus = 0
+
+        if self.has_case_file("more_jackpots"):
+            self.MAX_TRIES += 1
+
+        if self.has_case_file("bigger_jackpots"):
+            self.case_file_sting_multiplier_bonus = 1
+
+        if self.has_case_file("more_time"):
+            self.machine.events.post("scorpion_case_file_sting_window_extended")
+
+        if self.has_case_file("safety_net"):
+            self.machine.events.post("start_case_file_ball_save")
+
+        if self.has_case_file("shot_assist"):
+            self.machine.events.post("scorpion_case_file_target_spotted")
 
     def spinner_hit(self, **kwargs):
         if self.state != "build":
@@ -145,10 +179,10 @@ class Scorpion(Mode):
         self.machine.game.player["scorpion_stings"] = self.scorpion_stings
 
         if safe:
-            self.jpval = self.scorpion_venom_value*2
+            self.jpval = self.scorpion_venom_value * (2 + self.case_file_sting_multiplier_bonus)
             self.machine.events.post("scorpion_safe_jackpot")
         else:
-            self.jpval = self.scorpion_venom_value*4
+            self.jpval = self.scorpion_venom_value * (4 + self.case_file_sting_multiplier_bonus)
             self.machine.events.post("scorpion_hard_jackpot")
 
         self.machine.game.player["score"] += self.jpval

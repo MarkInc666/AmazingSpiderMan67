@@ -1,4 +1,5 @@
 from mpf.core.mode import Mode
+from modes.common.case_file_mixin import CaseFileMixin
 from modes.common.shot_registry import Shot
 from mpf.core.delays import DelayManager
 
@@ -19,7 +20,7 @@ import random
     "completed_var": "electro_completed",
 """
 
-class Electro(Mode):
+class Electro(CaseFileMixin, Mode):
 
     NORMAL_JACKPOT_VALUE = 250000
     SUPER_JACKPOT_VALUE = 1000000    
@@ -28,6 +29,17 @@ class Electro(Mode):
         super().mode_start(**kwargs)
 
         self.delay = DelayManager(self.machine)
+        self.case_files = self.get_case_file_bonuses()
+        self._apply_case_file_bonuses()
+        self.publish_case_file_bonus_events("electro")
+        self.publish_active_case_file_helpers([
+            ("more_jackpots", "EXTRA SPARK JACKPOT AVAILABLE"),
+            ("bigger_jackpots", "SPARK JACKPOTS BOOSTED"),
+            ("more_time", "SPARK VALUE DRAINS SLOWER"),
+            ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
+            ("shot_assist", "NEXT SPARK HELD LONGER"),
+        ])
+
 
         self.value_deduct = 0
 
@@ -61,6 +73,31 @@ class Electro(Mode):
         self.begin_power_surge()
 
 
+    def mode_stop(self, **kwargs):
+        self.clear_active_case_file_helpers()
+        super().mode_stop(**kwargs)
+
+    def _apply_case_file_bonuses(self):
+        self.case_file_extra_spark_available = False
+        self.case_file_slow_value_drain = False
+        self.case_file_value_tick_toggle = False
+
+        if self.has_case_file("more_jackpots"):
+            self.case_file_extra_spark_available = True
+
+        if self.has_case_file("bigger_jackpots"):
+            self.NORMAL_JACKPOT_VALUE += 50000
+            self.SUPER_JACKPOT_VALUE += 250000
+
+        if self.has_case_file("more_time"):
+            self.case_file_slow_value_drain = True
+
+        if self.has_case_file("safety_net"):
+            self.machine.events.post("start_case_file_ball_save")
+
+        if self.has_case_file("shot_assist"):
+            self.machine.events.post("electro_case_file_next_spark_held")
+
     def begin_power_surge(self):
         self.super_active = False
         self.current_shot = None
@@ -75,6 +112,11 @@ class Electro(Mode):
 
     def value_tick(self, **kwargs):
         #250,000 - 20 X 10,000 = 50,000 base
+        if getattr(self, "case_file_slow_value_drain", False):
+            self.case_file_value_tick_toggle = not self.case_file_value_tick_toggle
+            if self.case_file_value_tick_toggle:
+                return
+
         if self.value_deduct < 20:
             self.value_deduct += 1 
 
@@ -162,7 +204,11 @@ class Electro(Mode):
         self.machine.events.post("electro_jackpot_collected")
         self.value_deduct = 0
 
-        shot.disabled = True
+        if getattr(self, "case_file_extra_spark_available", False):
+            self.case_file_extra_spark_available = False
+            self.machine.events.post("electro_case_file_extra_spark_used")
+        else:
+            shot.disabled = True
         shot.is_lit = False
 
         self.machine.events.post(f"electro_stop_{shot.name}")

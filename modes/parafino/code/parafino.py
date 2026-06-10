@@ -1,7 +1,8 @@
 from mpf.core.mode import Mode
+from modes.common.case_file_mixin import CaseFileMixin
 
 
-class Parafino(Mode):
+class Parafino(CaseFileMixin, Mode):
 
     """
     PARAFINO: MELT THE WAX
@@ -94,8 +95,22 @@ class Parafino(Mode):
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
 
+        self.case_files = self.get_case_file_bonuses()
+        self._apply_case_file_bonuses()
+        self.publish_case_file_bonus_events("parafino")
+        self.publish_active_case_file_helpers([
+            ("more_jackpots", "EXTRA WAX JACKPOT AVAILABLE"),
+            ("bigger_jackpots", "WAX JACKPOTS BOOSTED"),
+            ("more_time", "HEAT DECAY SLOWED"),
+            ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
+            ("shot_assist", "ZONE STARTS HEATED"),
+        ])
+
         self.mode_exiting = False
         self._reset_player_vars()
+        if getattr(self, "case_file_start_zone_heated", False):
+            self._set("parafino_left_heat", 2)
+            self.machine.events.post("parafino_case_file_zone_starts_heated")
         self._add_switch_handlers()
 
         self.add_mode_event_handler("parafino_multiball_ended", self._multiball_ended)
@@ -108,6 +123,7 @@ class Parafino(Mode):
         
 
     def mode_stop(self, **kwargs):
+        self.clear_active_case_file_helpers()
         self.mode_exiting = True
 
         for zone in self.ZONES:
@@ -119,6 +135,25 @@ class Parafino(Mode):
         self.machine.events.post("clear_saucers")
 
         super().mode_stop(**kwargs)
+
+    def _apply_case_file_bonuses(self):
+        self.case_file_extra_wax_jackpot = False
+        self.case_file_start_zone_heated = False
+
+        if self.has_case_file("more_jackpots"):
+            self.case_file_extra_wax_jackpot = True
+
+        if self.has_case_file("bigger_jackpots"):
+            self.JACKPOT_BASE += 100000
+
+        if self.has_case_file("more_time"):
+            self.HEAT_DECAY_MS += 2000
+
+        if self.has_case_file("safety_net"):
+            self.machine.events.post("start_case_file_ball_save")
+
+        if self.has_case_file("shot_assist"):
+            self.case_file_start_zone_heated = True
 
     def _add_switch_handlers(self):
         # Pop bumper heat zone.
@@ -294,6 +329,10 @@ class Parafino(Mode):
     def _collect_jackpot(self, zone, saucer):
         data = self.ZONES[zone]
         value = self._update_jackpot_value()
+        if getattr(self, "case_file_extra_wax_jackpot", False):
+            value += 100000
+            self.case_file_extra_wax_jackpot = False
+            self.machine.events.post("parafino_case_file_extra_wax_jackpot")
 
         self._score(value)
         self._add(data["jackpots_var"], 1)

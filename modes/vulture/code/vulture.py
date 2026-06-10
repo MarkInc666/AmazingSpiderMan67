@@ -1,4 +1,5 @@
 from mpf.core.mode import Mode
+from modes.common.case_file_mixin import CaseFileMixin
 
 """
     "title": "VULTURE",
@@ -15,7 +16,7 @@ from mpf.core.mode import Mode
     "completed_var": "vulture_completed",
 
 """
-class Vulture(Mode):
+class Vulture(CaseFileMixin, Mode):
 
     STAGE_VALUES = {
         1: 5000,    # yellow
@@ -33,6 +34,17 @@ class Vulture(Mode):
         self.vulture_spins = 0 
         self.vulture_banked_bonus = 0
         self.vulture_mode_points = 0
+
+        self.case_files = self.get_case_file_bonuses()
+        self._apply_case_file_bonuses()
+        self.publish_case_file_bonus_events("vulture")
+        self.publish_active_case_file_helpers([
+            ("more_jackpots", "EXTRA AERIAL BONUS AVAILABLE"),
+            ("bigger_jackpots", "SPINNER VALUE BOOSTED"),
+            ("more_time", "TARGET DECAY SLOWED"),
+            ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
+            ("shot_assist", "TARGET COLOR SPOTTED"),
+        ])
 
         self.stages = {
             "left": 1,
@@ -53,6 +65,30 @@ class Vulture(Mode):
 
         self.update_player_vars()
         self.show_targets()
+
+    def mode_stop(self, **kwargs):
+        self.clear_active_case_file_helpers()
+        super().mode_stop(**kwargs)
+
+    def _apply_case_file_bonuses(self):
+        self.stage_values = dict(self.STAGE_VALUES)
+        self.case_file_extra_aerial_bonus = False
+        self.case_file_decay_skip_available = False
+
+        if self.has_case_file("more_jackpots"):
+            self.case_file_extra_aerial_bonus = True
+
+        if self.has_case_file("bigger_jackpots"):
+            self.stage_values = {stage: value + 5000 for stage, value in self.stage_values.items()}
+
+        if self.has_case_file("more_time"):
+            self.case_file_decay_skip_available = True
+
+        if self.has_case_file("safety_net"):
+            self.machine.events.post("start_case_file_ball_save")
+
+        if self.has_case_file("shot_assist"):
+            self.machine.events.post("vulture_case_file_target_color_spotted")
 
     def upper_entered(self, **kwargs):
         self.upper_balls += 1
@@ -96,10 +132,14 @@ class Vulture(Mode):
         total = 0
 
         for stage in self.stages.values():
-            total += self.STAGE_VALUES[stage]
+            total += self.stage_values[stage]
 
         if self.upper_balls >= 2:
             total *= 2
+
+        if getattr(self, "case_file_extra_aerial_bonus", False) and all(stage == 3 for stage in self.stages.values()):
+            total += 100000
+            self.machine.events.post("vulture_case_file_extra_aerial_bonus_awarded")
 
         self.award_score(total)
         self.bank_bonus(total)
@@ -118,6 +158,12 @@ class Vulture(Mode):
 
 
     def idle_decay(self, **kwargs):
+        if getattr(self, "case_file_decay_skip_available", False):
+            self.case_file_decay_skip_available = False
+            self.machine.events.post("vulture_case_file_decay_skipped")
+            self.machine.events.post("vulture_restart_idle_timer")
+            return
+
         for target in self.stages:
             if self.stages[target] > 1:
                 self.stages[target] -= 1

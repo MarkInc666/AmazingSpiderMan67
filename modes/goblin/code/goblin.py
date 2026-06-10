@@ -3,6 +3,7 @@ import random
 from functools import partial
 
 from mpf.core.mode import Mode
+from modes.common.case_file_mixin import CaseFileMixin
 
 """
     "title": "GREEN GOBLIN",
@@ -91,7 +92,7 @@ class GoblinShot:
     event: str
 
 
-class Goblin(Mode):
+class Goblin(CaseFileMixin, Mode):
 
     # Timing from the mode description.
     CHAOS_WINDOW_MS = 6000
@@ -121,6 +122,17 @@ class Goblin(Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+
+        self.case_files = self.get_case_file_bonuses()
+        self._apply_case_file_bonuses()
+        self.publish_case_file_bonus_events("goblin")
+        self.publish_active_case_file_helpers([
+            ("more_jackpots", "EXTRA CHAOS JACKPOT AVAILABLE"),
+            ("bigger_jackpots", "CHAOS BONUS BOOSTED"),
+            ("more_time", "CHAOS WINDOW EXTENDED"),
+            ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
+            ("shot_assist", "FLASHING SHOTS HELD LONGER"),
+        ])
 
         self.shots = [
             GoblinShot("left_web", "goblin_left_web_hit"),
@@ -164,6 +176,26 @@ class Goblin(Mode):
         )
 
         self.begin_mode()
+
+    def _apply_case_file_bonuses(self):
+        self.case_file_extra_chaos_jackpot = False
+
+        if self.has_case_file("more_jackpots"):
+            self.case_file_extra_chaos_jackpot = True
+
+        if self.has_case_file("bigger_jackpots"):
+            self.FLASHING_SCORE += 25000
+            self.CHAOS_BONUS_ADD += 50000
+
+        if self.has_case_file("more_time"):
+            self.CHAOS_WINDOW_MS += 2000
+            self.BASE_HOLD_TIME_MS += 2000
+
+        if self.has_case_file("safety_net"):
+            self.machine.events.post("start_case_file_ball_save")
+
+        if self.has_case_file("shot_assist"):
+            self.CHAOS_WINDOW_MS += 1000
 
     def begin_mode(self):
         self.info_log("Starting Goblin Chaos Multiball")
@@ -430,6 +462,11 @@ class Goblin(Mode):
         if banked <= 0:
             return
 
+        if getattr(self, "case_file_extra_chaos_jackpot", False):
+            banked += 250000
+            self.case_file_extra_chaos_jackpot = False
+            self.machine.events.post("goblin_case_file_extra_chaos_jackpot")
+
         self.bonus_paid = True
         self._award_points(banked)
         self.machine.events.post("goblin_bonus_collected", value=banked)
@@ -456,6 +493,7 @@ class Goblin(Mode):
             self.machine.events.post("goblin_mode_failed")
 
     def mode_stop(self, **kwargs):
+        self.clear_active_case_file_helpers()
         self.clear_all_delays()
         self.clear_current_shows()
         self.machine.events.post("goblin_mode_ended")
