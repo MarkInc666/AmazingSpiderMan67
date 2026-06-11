@@ -25,8 +25,9 @@ import random
 """
 class doc_ock(CaseFileMixin, Mode):
 
+    JACKPOTS_BEFORE_TIMED_RELEASE = 2
     MAX_BREAKOUT_TARGETS = 6
-    
+
     LANE_LIGHTS = {
         1: "l_left_outlane",
         2: "l_left_inlane",
@@ -99,21 +100,21 @@ class doc_ock(CaseFileMixin, Mode):
 
     def _apply_case_file_bonuses(self):
         if self.has_case_file("more_jackpots"):
-            self.MAX_BREAKOUT_TARGETS += 1
+            self.JACKPOTS_BEFORE_TIMED_RELEASE += 2
 
         if self.has_case_file("bigger_jackpots"):
-            self.doc_ock_jackpot_base_value += 50000
+            self.doc_ock_jackpot_base_value += 100000
 
         if self.has_case_file("more_time"):
-            self.machine.events.post("doc_ock_case_file_arm_release_delayed")
+            #TODO - change to python timer and extend the delay between arm release by 2 seconds 
+            self.doc_ock_jackpot_base_value += 100
 
         if self.has_case_file("safety_net"):
             self.machine.events.post("start_case_file_ball_save")
 
         if self.has_case_file("shot_assist"):
-            if len(self.locked_arms) >= 2:
-                self.locked_arms[1] = True
-            self.doc_ock_max_arms_locked = max(self.doc_ock_max_arms_locked, sum(self.locked_arms))
+            #TODO - first shot maximized
+            self.doc_ock_jackpot_base_value += 100
 
     def doc_ock_start_arms(self, **kwargs):
         self.refresh_lane_lights()
@@ -206,7 +207,7 @@ class doc_ock(CaseFileMixin, Mode):
         self.spawn_breakout_target()
         self.update_player_vars()        
 
-        if self.jackpots_collected >= 2:
+        if self.jackpots_collected >= self.JACKPOTS_BEFORE_TIMED_RELEASE:
             self.machine.events.post("doc_ock_start_timed_release")
 
         self.check_mode_over()

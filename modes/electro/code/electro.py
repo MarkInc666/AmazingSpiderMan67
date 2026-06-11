@@ -249,9 +249,12 @@ class Electro(CaseFileMixin, Mode):
 
         self.machine.game.player["score"] += self.electro_super_jackpot
 
+        self.current_shot.is_lit = False
+        self.current_shot.is_jackpot = False
+
         self.machine.events.post("electro_super_collected")
         self.machine.events.post("electro_super_timer_stop")
-        self.machine.events.post("electro_mode_complete")
+        self.machine.events.post("electro_mode_almost_complete")
 
     def super_timeout(self, **kwargs):
         self.machine.events.post("electro_super_missed")

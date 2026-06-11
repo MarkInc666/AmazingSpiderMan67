@@ -73,7 +73,11 @@ sound_player:
       bus: effects
 
 
+
 event_player:
+  electro_mode_almost_complete:
+    - electro_mode_complete|1s
+
   electro_startup_complete:
     - reset_drops
     - clear_saucers
