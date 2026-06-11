@@ -9,7 +9,7 @@ import random
     "title": "ELECTRO",
     "intro_1": "Follow the moving spark.",
     "intro_2": "Hit each charged shot before time runs out.",
-    "intro_3": "The eigth spark awards Super Jackpot.",
+    "intro_3": "The eighth spark awards Super Jackpot.",
     "summary_title_complete": "ELECTRO DEFEATED",
     "summary_title_failed": "ELECTRO ESCAPED",
     "stat_1_label": "BEST SPARK",

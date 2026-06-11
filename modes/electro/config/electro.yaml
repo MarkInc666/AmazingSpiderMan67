@@ -20,7 +20,7 @@ widget_player:
       action: play
 
   electro_mode_complete:
-    sandmelectroan:
+    electro:
       action: remove
 
 

@@ -1,11 +1,17 @@
 #config_version=6
 
-# Blackwell placeholder villain mode.
-# Gameplay notes:
-# Blackwell Mode idea: Crime Wave chapter. Crime Wave setup villain. Placeholder: common shots build progress; later gameplay should combine spinner escape routes and saucer evidence.
+# Blackwell - Prediction Panic
 #
-# This is intentionally simple for now. Hardware events are mapped to
-# generic Python events, and the Python mode handles score/state/summary.
+# 6-shot timed sequence:
+# - left web
+# - center web
+# - upper spinner
+# - upper target left
+# - upper target center
+# - upper target right
+#
+# Case File: More Jackpots adds a 7th "pops" shot.
+# Either pop hit awards that shot.
 
 mode:
   start_events: start_mode_blackwell
@@ -35,46 +41,275 @@ widget_player:
     blackwell:
       action: remove
 
+
 event_player:
-  # Common playfield hits. Refine these later when the mode design is built out.
-  s_pop_left_active: blackwell_shot_hit
-  s_pop_right_active: blackwell_shot_hit
-  s_trispinner_opto_active: blackwell_shot_hit
-  s_web_spinner_active: blackwell_shot_hit
-  s_star_rollover_active: blackwell_shot_hit
-  s_upper_target_left_active: blackwell_shot_hit
-  s_upper_target_center_active: blackwell_shot_hit
-  s_upper_target_right_active: blackwell_shot_hit
+  blackwell_startup_complete:
+    - clear_saucers
+    - reset_drops
 
-  s_left_drops_1_active: blackwell_shot_hit
-  s_left_drops_2_active: blackwell_shot_hit
-  s_left_drops_3_active: blackwell_shot_hit
-  s_right_drops_1_active: blackwell_shot_hit
-  s_right_drops_2_active: blackwell_shot_hit
-  s_right_drops_3_active: blackwell_shot_hit
-  s_right_drops_4_active: blackwell_shot_hit
-  s_right_drops_5_active: blackwell_shot_hit
+  # Main sequence shots.
+  s_web_target_left_active: blackwell_left_web_hit
+  s_web_target_top_active: blackwell_center_web_hit
+  s_trispinner_opto_active: blackwell_upper_spinner_hit
+  s_upper_target_left_active: blackwell_upper_target_left_hit
+  s_upper_target_center_active: blackwell_upper_target_center_hit
+  s_upper_target_right_active: blackwell_upper_target_right_hit
 
-  s_saucer_1_active:
-    - blackwell_major_hit
-    - clear_saucers
-  s_saucer_2_active:
-    - blackwell_major_hit
-    - clear_saucers
-  s_saucer_3_active:
-    - blackwell_major_hit
-    - clear_saucers
-  s_vuk_switch_active: blackwell_major_hit
+  # Spinner time add. The upper spinner is also one of the lit sequence shots;
+  # Python ignores the time-add if the mode is already done.
+  s_web_spinner_active: blackwell_spinner_time_add
+
+  # Case File 1 extra shot. Either pop completes the logical "pops" shot.
+  s_pop_left_active: blackwell_pops_hit
+  s_pop_right_active: blackwell_pops_hit
+
+  # Physical cleanup while the villain mode is active.
+  s_saucer_1_active: clear_saucers
+  s_saucer_2_active: clear_saucers
+  s_saucer_3_active: clear_saucers
 
   drop_target_bank_dt_bank_left_down:
     - drop_target_bank_dt_bank_left_reset
   drop_target_bank_dt_bank_right_down:
     - drop_target_bank_dt_bank_right_reset
 
-  mode_blackwell_started:
-    - clear_saucers
-    - drop_target_bank_dt_bank_left_reset
-    - drop_target_bank_dt_bank_right_reset
-
   mode_blackwell_stopping:
     - clear_saucers
+
+
+random_event_player:
+  blackwell_jackpot_collected:
+    - blackwell_jackpot_collected_1
+    - blackwell_jackpot_collected_2
+    - blackwell_jackpot_collected_3
+
+  blackwell_shot_missed:
+    - blackwell_prediction_missed_1
+    - blackwell_prediction_missed_2
+
+
+sound_player:
+  blackwell_jackpot_collected_1:
+    jackpot:
+      action: play
+      bus: effects
+
+  blackwell_jackpot_collected_2:
+    light_smash_1:
+      action: play
+      bus: effects
+
+  blackwell_jackpot_collected_3:
+    light_smash_2:
+      action: play
+      bus: effects
+
+  blackwell_prediction_missed_1:
+    spark_1:
+      action: play
+      bus: effects
+
+  blackwell_prediction_missed_2:
+    electro_zap:
+      action: play
+      bus: effects
+
+  blackwell_time_added:
+    ticking:
+      action: play
+      bus: effects
+
+
+show_player:
+  blackwell_lite_left_web:
+    blackwell_left_web_lit_show:
+      loops: -1
+
+  blackwell_lite_center_web:
+    blackwell_center_web_lit_show:
+      loops: -1
+
+  blackwell_lite_upper_spinner:
+    blackwell_upper_spinner_lit_show:
+      loops: -1
+
+  blackwell_lite_upper_target_left:
+    blackwell_upper_target_left_lit_show:
+      loops: -1
+
+  blackwell_lite_upper_target_center:
+    blackwell_upper_target_center_lit_show:
+      loops: -1
+
+  blackwell_lite_upper_target_right:
+    blackwell_upper_target_right_lit_show:
+      loops: -1
+
+  blackwell_lite_pops:
+    blackwell_pops_lit_show:
+      loops: -1
+
+  blackwell_stop_left_web:
+    blackwell_left_web_lit_show:
+      action: stop
+
+  blackwell_stop_center_web:
+    blackwell_center_web_lit_show:
+      action: stop
+
+  blackwell_stop_upper_spinner:
+    blackwell_upper_spinner_lit_show:
+      action: stop
+
+  blackwell_stop_upper_target_left:
+    blackwell_upper_target_left_lit_show:
+      action: stop
+
+  blackwell_stop_upper_target_center:
+    blackwell_upper_target_center_lit_show:
+      action: stop
+
+  blackwell_stop_upper_target_right:
+    blackwell_upper_target_right_lit_show:
+      action: stop
+
+  blackwell_stop_pops:
+    blackwell_pops_lit_show:
+      action: stop
+
+  blackwell_jackpot_collected:
+    blackwell_jackpot_collected_show:
+      loops: 0
+
+  blackwell_shot_assist_used:
+    blackwell_shot_assist_show:
+      loops: 0
+
+  blackwell_mode_complete:
+    blackwell_mode_complete_show:
+      loops: 0
+
+
+shows:
+  blackwell_left_web_lit_show:
+    - duration: 150ms
+      lights:
+        l_left_web_target: yellow
+    - duration: 150ms
+      lights:
+        l_left_web_target: off
+
+  blackwell_center_web_lit_show:
+    - duration: 150ms
+      lights:
+        l_mid_spider_target: yellow
+    - duration: 150ms
+      lights:
+        l_mid_spider_target: off
+
+  blackwell_upper_spinner_lit_show:
+    - duration: 120ms
+      lights:
+        l_gi_a: yellow
+    - duration: 120ms
+      lights:
+        l_gi_a: blue
+
+  blackwell_upper_target_left_lit_show:
+    - duration: 120ms
+      lights:
+        l_upper_left: yellow
+    - duration: 120ms
+      lights:
+        l_upper_left: blue
+
+  blackwell_upper_target_center_lit_show:
+    - duration: 120ms
+      lights:
+        l_upper_middle: yellow
+    - duration: 120ms
+      lights:
+        l_upper_middle: blue
+
+  blackwell_upper_target_right_lit_show:
+    - duration: 120ms
+      lights:
+        l_upper_right: yellow
+    - duration: 120ms
+      lights:
+        l_upper_right: blue
+
+  blackwell_pops_lit_show:
+    - duration: 120ms
+      lights:
+        l_pop_1_1: yellow
+        l_pop_1_2: yellow
+        l_pop_1_3: yellow
+        l_pop_1_4: yellow
+        l_pop_1_5: yellow
+        l_pop_1_6: yellow
+        l_pop_1_7: yellow
+        l_pop_1_8: yellow
+        l_pop_1_9: yellow
+        l_pop_1_10: yellow
+        l_pop_1_11: yellow
+        l_pop_1_12: yellow
+        l_pop_2_1: yellow
+        l_pop_2_2: yellow
+        l_pop_2_3: yellow
+        l_pop_2_4: yellow
+        l_pop_2_5: yellow
+        l_pop_2_6: yellow
+        l_pop_2_7: yellow
+        l_pop_2_8: yellow
+        l_pop_2_9: yellow
+        l_pop_2_10: yellow
+        l_pop_2_11: yellow
+        l_pop_2_12: yellow
+    - duration: 120ms
+      lights:
+        l_pop_1_1: blue
+        l_pop_1_2: blue
+        l_pop_1_3: blue
+        l_pop_1_4: blue
+        l_pop_1_5: blue
+        l_pop_1_6: blue
+        l_pop_1_7: blue
+        l_pop_1_8: blue
+        l_pop_1_9: blue
+        l_pop_1_10: blue
+        l_pop_1_11: blue
+        l_pop_1_12: blue
+        l_pop_2_1: blue
+        l_pop_2_2: blue
+        l_pop_2_3: blue
+        l_pop_2_4: blue
+        l_pop_2_5: blue
+        l_pop_2_6: blue
+        l_pop_2_7: blue
+        l_pop_2_8: blue
+        l_pop_2_9: blue
+        l_pop_2_10: blue
+        l_pop_2_11: blue
+        l_pop_2_12: blue
+
+  blackwell_jackpot_collected_show:
+    - duration: 200ms
+      lights:
+        gi: white
+    - duration: 200ms
+      lights:
+        gi: green
+
+  blackwell_shot_assist_show:
+    - duration: 200ms
+      lights:
+        gi: yellow
+    - duration: 200ms
+      lights:
+        gi: white
+
+  blackwell_mode_complete_show:
+    - duration: 500ms
+      lights:
+        gi: green
