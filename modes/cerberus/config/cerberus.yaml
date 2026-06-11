@@ -1,12 +1,5 @@
 #config_version=6
 
-# Cerberus placeholder villain mode.
-# Gameplay notes:
-# Cerberus Mode idea: Monster Island chapter. Three-headed monster mapped to the three saucers. Placeholder: common shots build progress; later gameplay should require lighting/collecting all three saucer heads.
-#
-# This is intentionally simple for now. Hardware events are mapped to
-# generic Python events, and the Python mode handles score/state/summary.
-
 mode:
   start_events: start_mode_cerberus
   stop_events:
@@ -16,7 +9,6 @@ mode:
     - ball_ended
   code: cerberus.Cerberus
   priority: 300
-
 
 widget_player:
   mode_cerberus_started:
@@ -36,45 +28,94 @@ widget_player:
       action: remove
 
 event_player:
-  # Common playfield hits. Refine these later when the mode design is built out.
-  s_pop_left_active: cerberus_shot_hit
-  s_pop_right_active: cerberus_shot_hit
-  s_trispinner_opto_active: cerberus_shot_hit
-  s_web_spinner_active: cerberus_shot_hit
-  s_star_rollover_active: cerberus_shot_hit
-  s_upper_target_left_active: cerberus_shot_hit
-  s_upper_target_center_active: cerberus_shot_hit
-  s_upper_target_right_active: cerberus_shot_hit
+  s_upper_target_left_active:
+    - cerberus_upper_target_1_hit
 
-  s_left_drops_1_active: cerberus_shot_hit
-  s_left_drops_2_active: cerberus_shot_hit
-  s_left_drops_3_active: cerberus_shot_hit
-  s_right_drops_1_active: cerberus_shot_hit
-  s_right_drops_2_active: cerberus_shot_hit
-  s_right_drops_3_active: cerberus_shot_hit
-  s_right_drops_4_active: cerberus_shot_hit
-  s_right_drops_5_active: cerberus_shot_hit
+  s_upper_target_center_active:
+    - cerberus_upper_target_2_hit
+
+  s_upper_target_right_active:
+    - cerberus_upper_target_3_hit
+
+  s_trispinner_opto_active:
+    - cerberus_spinner_hit
 
   s_saucer_1_active:
-    - cerberus_major_hit
+    - cerberus_saucer_1_hit
     - clear_saucers
+
   s_saucer_2_active:
-    - cerberus_major_hit
+    - cerberus_saucer_2_hit
     - clear_saucers
+
   s_saucer_3_active:
-    - cerberus_major_hit
+    - cerberus_saucer_3_hit
     - clear_saucers
-  s_vuk_switch_active: cerberus_major_hit
 
   drop_target_bank_dt_bank_left_down:
     - drop_target_bank_dt_bank_left_reset
+
   drop_target_bank_dt_bank_right_down:
     - drop_target_bank_dt_bank_right_reset
 
   mode_cerberus_started:
     - clear_saucers
-    - drop_target_bank_dt_bank_left_reset
-    - drop_target_bank_dt_bank_right_reset
+    - reset_drops
 
   mode_cerberus_stopping:
     - clear_saucers
+    - cerberus_clear_all_lights
+
+light_player:
+  cerberus_saucer_1_jackpot_lit:
+    l_1_hole_l: yellow
+    l_1_hole_r: yellow
+
+  cerberus_saucer_2_jackpot_lit:
+    l_2_hole_l: yellow
+    l_2_hole_r: yellow
+
+  cerberus_saucer_3_jackpot_lit:
+    l_3_hole_l: yellow
+    l_3_hole_r: yellow
+
+  cerberus_saucer_1_jackpot_off:
+    l_1_hole_l: off
+    l_1_hole_r: off
+
+  cerberus_saucer_2_jackpot_off:
+    l_2_hole_l: off
+    l_2_hole_r: off
+
+  cerberus_saucer_3_jackpot_off:
+    l_3_hole_l: off
+    l_3_hole_r: off
+
+  cerberus_saucer_1_double_lit:
+    l_1: white
+
+  cerberus_saucer_2_double_lit:
+    l_2: white
+
+  cerberus_saucer_3_double_lit:
+    l_3: white
+
+  cerberus_saucer_1_double_off:
+    l_1: off
+
+  cerberus_saucer_2_double_off:
+    l_2: off
+
+  cerberus_saucer_3_double_off:
+    l_3: off
+
+  cerberus_clear_all_lights:
+    l_1: off
+    l_2: off
+    l_3: off
+    l_1_hole_l: off
+    l_1_hole_r: off
+    l_2_hole_l: off
+    l_2_hole_r: off
+    l_3_hole_l: off
+    l_3_hole_r: off
