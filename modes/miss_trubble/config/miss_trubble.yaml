@@ -1,0 +1,246 @@
+#config_version=6
+
+# Miss Trubble: Double Trouble.
+# Three shots look identical. Spinner reveals which shot is good.
+
+mode:
+  start_events: start_mode_miss_trubble
+  stop_events:
+    - miss_trubble_mode_complete
+    - miss_trubble_mode_failed
+    - miss_trubble_completed_summary
+    - ball_ended
+  code: miss_trubble.MissTrubble
+  priority: 300
+
+
+event_player:
+  s_web_target_left_active: miss_trubble_left_web_hit
+  s_web_target_top_active: miss_trubble_center_web_hit
+
+  # Either spinner reveals the current answer. The upper spinner may also be
+  # one of the three hidden choices, so Python handles that special case.
+  s_web_spinner_active: miss_trubble_spinner_reveal
+  s_trispinner_opto_active: miss_trubble_spinner_switch
+
+  s_upper_target_left_active: miss_trubble_upper_target_left_hit
+  s_upper_target_center_active: miss_trubble_upper_target_center_hit
+  s_upper_target_right_active: miss_trubble_upper_target_right_hit
+
+  s_left_drops_1_active: miss_trubble_left_drops_hit
+  s_left_drops_2_active: miss_trubble_left_drops_hit
+  s_left_drops_3_active: miss_trubble_left_drops_hit
+
+  s_right_drops_1_active: miss_trubble_right_drops_hit
+  s_right_drops_2_active: miss_trubble_right_drops_hit
+  s_right_drops_3_active: miss_trubble_right_drops_hit
+  s_right_drops_4_active: miss_trubble_right_drops_hit
+  s_right_drops_5_active: miss_trubble_right_drops_hit
+
+  s_pop_left_active: miss_trubble_pops_hit
+  s_pop_right_active: miss_trubble_pops_hit
+
+  # Saucers are not Miss Trubble choices, but they must still kick out.
+  s_saucer_1_active: clear_saucers
+  s_saucer_2_active: clear_saucers
+  s_saucer_3_active: clear_saucers
+
+  drop_target_bank_dt_bank_left_down:
+    - drop_target_bank_dt_bank_left_reset
+  drop_target_bank_dt_bank_right_down:
+    - drop_target_bank_dt_bank_right_reset
+
+  miss_trubble_startup_complete:
+    - clear_saucers
+    - drop_target_bank_dt_bank_left_reset
+    - drop_target_bank_dt_bank_right_reset
+
+  mode_miss_trubble_stopping:
+    - miss_trubble_all_lights_off
+    - clear_saucers
+
+
+light_player:
+  miss_trubble_all_lights_off:
+    l_left_web_target: off
+    l_spinner: off
+    l_upper_left: off
+    l_upper_middle: off
+    l_upper_right: off
+    l_3bankbonus: off
+    l_5bank_1: off
+    l_5bank_2: off
+    l_5bank_3: off
+    l_5bank_4: off
+    l_5bank_5: off
+    l_pop_1_1: off
+    l_pop_1_2: off
+    l_pop_1_3: off
+    l_pop_1_4: off
+    l_pop_1_5: off
+    l_pop_1_6: off
+    l_pop_1_7: off
+    l_pop_1_8: off
+    l_pop_1_9: off
+    l_pop_1_10: off
+    l_pop_1_11: off
+    l_pop_1_12: off
+    l_pop_2_1: off
+    l_pop_2_2: off
+    l_pop_2_3: off
+    l_pop_2_4: off
+    l_pop_2_5: off
+    l_pop_2_6: off
+    l_pop_2_7: off
+    l_pop_2_8: off
+    l_pop_2_9: off
+    l_pop_2_10: off
+    l_pop_2_11: off
+    l_pop_2_12: off
+
+  # Hidden state: all current choices look the same.
+  miss_trubble_hidden_left_web:
+    l_left_web_target: white
+  miss_trubble_hidden_center_web:
+    l_left_web_target: white
+  miss_trubble_hidden_upper_spinner:
+    l_spinner: white
+  miss_trubble_hidden_upper_target_left:
+    l_upper_left: white
+  miss_trubble_hidden_upper_target_center:
+    l_upper_middle: white
+  miss_trubble_hidden_upper_target_right:
+    l_upper_right: white
+  miss_trubble_hidden_left_drops:
+    l_3bankbonus: white
+  miss_trubble_hidden_right_drops:
+    l_5bank_1: white
+    l_5bank_2: white
+    l_5bank_3: white
+    l_5bank_4: white
+    l_5bank_5: white
+  miss_trubble_hidden_pops:
+    l_pop_1_1: white
+    l_pop_1_2: white
+    l_pop_1_3: white
+    l_pop_1_4: white
+    l_pop_1_5: white
+    l_pop_1_6: white
+    l_pop_1_7: white
+    l_pop_1_8: white
+    l_pop_1_9: white
+    l_pop_1_10: white
+    l_pop_1_11: white
+    l_pop_1_12: white
+    l_pop_2_1: white
+    l_pop_2_2: white
+    l_pop_2_3: white
+    l_pop_2_4: white
+    l_pop_2_5: white
+    l_pop_2_6: white
+    l_pop_2_7: white
+    l_pop_2_8: white
+    l_pop_2_9: white
+    l_pop_2_10: white
+    l_pop_2_11: white
+    l_pop_2_12: white
+
+  # Correct reveal: bright green.
+  miss_trubble_reveal_good_left_web:
+    l_left_web_target: green
+  miss_trubble_reveal_good_center_web:
+    l_left_web_target: green
+  miss_trubble_reveal_good_upper_spinner:
+    l_spinner: green
+  miss_trubble_reveal_good_upper_target_left:
+    l_upper_left: green
+  miss_trubble_reveal_good_upper_target_center:
+    l_upper_middle: green
+  miss_trubble_reveal_good_upper_target_right:
+    l_upper_right: green
+  miss_trubble_reveal_good_left_drops:
+    l_3bankbonus: green
+  miss_trubble_reveal_good_right_drops:
+    l_5bank_1: green
+    l_5bank_2: green
+    l_5bank_3: green
+    l_5bank_4: green
+    l_5bank_5: green
+  miss_trubble_reveal_good_pops:
+    l_pop_1_1: green
+    l_pop_1_2: green
+    l_pop_1_3: green
+    l_pop_1_4: green
+    l_pop_1_5: green
+    l_pop_1_6: green
+    l_pop_1_7: green
+    l_pop_1_8: green
+    l_pop_1_9: green
+    l_pop_1_10: green
+    l_pop_1_11: green
+    l_pop_1_12: green
+    l_pop_2_1: green
+    l_pop_2_2: green
+    l_pop_2_3: green
+    l_pop_2_4: green
+    l_pop_2_5: green
+    l_pop_2_6: green
+    l_pop_2_7: green
+    l_pop_2_8: green
+    l_pop_2_9: green
+    l_pop_2_10: green
+    l_pop_2_11: green
+    l_pop_2_12: green
+
+  # Wrong reveal: dim red.
+  miss_trubble_reveal_bad_left_web:
+    l_left_web_target: 500000
+  miss_trubble_reveal_bad_center_web:
+    l_left_web_target: 500000
+  miss_trubble_reveal_bad_upper_spinner:
+    l_spinner: 500000
+  miss_trubble_reveal_bad_upper_target_left:
+    l_upper_left: 500000
+  miss_trubble_reveal_bad_upper_target_center:
+    l_upper_middle: 500000
+  miss_trubble_reveal_bad_upper_target_right:
+    l_upper_right: 500000
+  miss_trubble_reveal_bad_left_drops:
+    l_3bankbonus: 500000
+  miss_trubble_reveal_bad_right_drops:
+    l_5bank_1: 500000
+    l_5bank_2: 500000
+    l_5bank_3: 500000
+    l_5bank_4: 500000
+    l_5bank_5: 500000
+  miss_trubble_reveal_bad_pops:
+    l_pop_1_1: 500000
+    l_pop_1_2: 500000
+    l_pop_1_3: 500000
+    l_pop_1_4: 500000
+    l_pop_1_5: 500000
+    l_pop_1_6: 500000
+    l_pop_1_7: 500000
+    l_pop_1_8: 500000
+    l_pop_1_9: 500000
+    l_pop_1_10: 500000
+    l_pop_1_11: 500000
+    l_pop_1_12: 500000
+    l_pop_2_1: 500000
+    l_pop_2_2: 500000
+    l_pop_2_3: 500000
+    l_pop_2_4: 500000
+    l_pop_2_5: 500000
+    l_pop_2_6: 500000
+    l_pop_2_7: 500000
+    l_pop_2_8: 500000
+    l_pop_2_9: 500000
+    l_pop_2_10: 500000
+    l_pop_2_11: 500000
+    l_pop_2_12: 500000
+
+  # Brief hit confirmation. Python immediately starts the next round after this.
+  miss_trubble_correct_shot:
+    l_gi_bright: green
+  miss_trubble_incorrect_shot:
+    l_gi_bright: red

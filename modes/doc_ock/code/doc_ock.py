@@ -1,5 +1,6 @@
 from mpf.core.mode import Mode
 from modes.common.case_file_mixin import CaseFileMixin
+from mpf.core.delays import DelayManager
 import random
 
 # rollovers to lock arms (1 to 4)
@@ -26,6 +27,9 @@ import random
 class doc_ock(CaseFileMixin, Mode):
 
     JACKPOTS_BEFORE_TIMED_RELEASE = 2
+    DEFAULT_ARM_RELEASE_DELAY_MS = 10_000
+    MORE_TIME_ARM_RELEASE_DELAY_ADD_MS = 2_000
+    TIMED_RELEASE_DELAY_NAME = "doc_ock_timed_release"
     MAX_BREAKOUT_TARGETS = 6
 
     LANE_LIGHTS = {
@@ -38,6 +42,10 @@ class doc_ock(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+
+        self.delay = DelayManager(self.machine)
+        self.doc_ock_arm_release_delay_ms = self.DEFAULT_ARM_RELEASE_DELAY_MS
+        self.timed_release_running = False
 
         self.doc_ock_jackpot_unlit_value = 25000       
         self.doc_ock_jackpot_base_value = 100000
@@ -55,7 +63,8 @@ class doc_ock(CaseFileMixin, Mode):
         self.doc_ock_max_arms_locked = 1
         self.doc_ock_jackpots = 0
         self.doc_ock_mode_points = 0
-
+        self.first_jackpot_maxed = False
+        
         self.case_files = self.get_case_file_bonuses()
         self._apply_case_file_bonuses()
         self.publish_case_file_bonus_events("doc_ock")
@@ -72,7 +81,8 @@ class doc_ock(CaseFileMixin, Mode):
         self.add_mode_event_handler("doc_ock_rotate_left", self.rotate_left)
         self.add_mode_event_handler("doc_ock_rotate_right", self.rotate_right)
         self.add_mode_event_handler("doc_ock_jackpot_request", self.jackpot_request)
-        self.add_mode_event_handler("timer_doc_ock_timed_release_complete", self.timed_release)
+        self.add_mode_event_handler("doc_ock_start_timed_release", self.start_timed_release)
+        self.add_mode_event_handler("doc_ock_stop_timed_release", self.stop_timed_release)
 
         for arm in [1, 2, 3, 4]:
             self.add_mode_event_handler(
@@ -95,6 +105,7 @@ class doc_ock(CaseFileMixin, Mode):
 
 
     def mode_stop(self, **kwargs):
+        self.stop_timed_release()
         self.clear_active_case_file_helpers()
         super().mode_stop(**kwargs)
 
@@ -106,15 +117,13 @@ class doc_ock(CaseFileMixin, Mode):
             self.doc_ock_jackpot_base_value += 100000
 
         if self.has_case_file("more_time"):
-            #TODO - change to python timer and extend the delay between arm release by 2 seconds 
-            self.doc_ock_jackpot_base_value += 100
+            self.doc_ock_arm_release_delay_ms += self.MORE_TIME_ARM_RELEASE_DELAY_ADD_MS
 
         if self.has_case_file("safety_net"):
             self.machine.events.post("start_case_file_ball_save")
 
         if self.has_case_file("shot_assist"):
-            #TODO - first shot maximized
-            self.doc_ock_jackpot_base_value += 100
+            self.first_jackpot_maxed = True
 
     def doc_ock_start_arms(self, **kwargs):
         self.refresh_lane_lights()
@@ -188,6 +197,10 @@ class doc_ock(CaseFileMixin, Mode):
             return
 
         jp_value = self.doc_ock_jackpot_base_value * (5-locked) * self.doc_ock_jackpot_spinner_multi
+        
+        if self.first_jackpot_maxed == True:
+            self.first_jackpot_maxed = False
+            jp_value = self.doc_ock_jackpot_base_value * 100  #maxed value 
 
         self.machine.game.player["score"] += jp_value
         self.machine.game.player["doc_ock_last_jackpot"] = jp_value
@@ -236,28 +249,75 @@ class doc_ock(CaseFileMixin, Mode):
         self.machine.events.post("doc_ock_breakout_hit")
         self.check_mode_over()
 
-    def timed_release(self, **kwargs):
-        if self.jackpots_collected < 2:
+    def start_timed_release(self, **kwargs):
+        if self.machine.game.player["villain_mode_in_summary"] == True:
             return
 
-        self.release_random_locked_arm()
-        self.update_player_vars()                
+        if self.jackpots_collected < self.JACKPOTS_BEFORE_TIMED_RELEASE:
+            return
+
+        if sum(self.locked_arms) <= 0:
+            return
+
+        self.timed_release_running = True
+        self.machine.game.player["doc_ock_arm_release_delay_ms"] = self.doc_ock_arm_release_delay_ms
+        self.machine.game.player["doc_ock_arm_release_delay_seconds"] = self.doc_ock_arm_release_delay_ms / 1000
+        self.machine.events.post(
+            "doc_ock_timed_release_started",
+            delay_ms=self.doc_ock_arm_release_delay_ms,
+            delay_seconds=self.doc_ock_arm_release_delay_ms / 1000,
+        )
+        self.delay.remove(self.TIMED_RELEASE_DELAY_NAME)
+        self.delay.add(
+            name=self.TIMED_RELEASE_DELAY_NAME,
+            ms=self.doc_ock_arm_release_delay_ms,
+            callback=self.timed_release,
+        )
+
+    def stop_timed_release(self, **kwargs):
+        self.timed_release_running = False
+        if hasattr(self, "delay"):
+            self.delay.remove(self.TIMED_RELEASE_DELAY_NAME)
+
+    def timed_release(self, **kwargs):
+        if self.machine.game.player["villain_mode_in_summary"] == True:
+            self.stop_timed_release()
+            return
+
+        if self.jackpots_collected < self.JACKPOTS_BEFORE_TIMED_RELEASE:
+            self.stop_timed_release()
+            return
+
+        if not self.timed_release_running:
+            return
+
+        released = self.release_random_locked_arm()
+
+        if not released:
+            self.stop_timed_release()
+            self.check_mode_over()
+            return
+
+        self.update_player_vars()
+        self.machine.events.post("doc_ock_timed_release_complete")
         self.machine.events.post("doc_ock_breakout_hit")
 
         if self.check_mode_over():
+            self.stop_timed_release()
             return
 
-        self.machine.events.post("doc_ock_start_timed_release")
+        self.start_timed_release()
 
     def release_random_locked_arm(self):
         locked = [i for i, val in enumerate(self.locked_arms) if val]
 
         if not locked:
-            return
+            return False
 
         arm = random.choice(locked)
         self.locked_arms[arm] = False
-        self.refresh_lane_lights()        
+        self.refresh_lane_lights()
+        return True
 
     def check_mode_over(self):
         if sum(self.locked_arms) <= 0:

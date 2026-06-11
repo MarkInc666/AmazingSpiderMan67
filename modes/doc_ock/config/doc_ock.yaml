@@ -105,9 +105,6 @@ event_player:
   s_inlane_b_active:
     - doc_ock_breakout_6_request
 
-  doc_ock_timed_release_complete:
-    - doc_ock_timed_release_complete
-  
 
 sound_player:
   doc_ock_breakout_hit:
@@ -130,20 +127,6 @@ sound_player:
       action: play
       bus: effects
 
-
-timers:
-  doc_ock_timed_release:
-    start_value: 10
-    end_value: 0
-    direction: down
-    tick_interval: 1s
-    control_events:
-      - event: doc_ock_start_timed_release
-        action: restart
-      - event: doc_ock_stop_timed_release
-        action: stop
-      - event: doc_ock_mode_complete
-        action: stop
 
 show_player:
   doc_ock_arm_1_pulse:

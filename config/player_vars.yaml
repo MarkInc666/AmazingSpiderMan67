@@ -548,16 +548,31 @@ player_vars:
     initial_value: 0
     value_type: int
 
-  ox_played:
+  miss_trubble_played:
     initial_value: 0
     value_type: int
-  ox_state:
+  miss_trubble_state:
     initial_value: "not_played"
     value_type: str
-  ox_completed:
+  miss_trubble_completed:
     initial_value: 0
     value_type: int
-  ox_mode_points:
+  miss_trubble_mode_points:
+    initial_value: 0
+    value_type: int
+  miss_trubble_round:
+    initial_value: 0
+    value_type: int
+  miss_trubble_total_rounds:
+    initial_value: 0
+    value_type: int
+  miss_trubble_correct_shots:
+    initial_value: 0
+    value_type: int
+  miss_trubble_incorrect_shots:
+    initial_value: 0
+    value_type: int
+  miss_trubble_next_jackpot:
     initial_value: 0
     value_type: int
 

@@ -51,7 +51,7 @@ class VillainProgression(Mode):
         {
             "key": "crime_wave",
             "name": "Crime Wave",
-            "villains": ["enforcers", "ox", "fifth_avenue_phantom", "frederick_foswell", "blackwell"],
+            "villains": ["enforcers", "miss_trubble", "fifth_avenue_phantom", "frederick_foswell", "blackwell"],
             "mini_wizard_key": "crime_wave_mini",
             "mini_wizard_name": "Crime Wave",
             "mini_wizard_event": "start_mode_crime_wave_mini",
@@ -75,7 +75,7 @@ class VillainProgression(Mode):
         "reptilla": {"name": "Reptilla", "chapter": 3, "start_event": "start_mode_reptilla"},
         "mole_man": {"name": "Mole Man", "chapter": 3, "start_event": "start_mode_mole_man"},
         "enforcers": {"name": "Enforcers", "chapter": 4, "start_event": "start_mode_enforcers"},
-        "ox": {"name": "Ox", "chapter": 4, "start_event": "start_mode_ox"},
+        "miss_trubble": {"name": "Miss Trubble", "chapter": 4, "start_event": "start_mode_miss_trubble"},
         "fifth_avenue_phantom": {"name": "Fifth Avenue Phantom", "chapter": 4, "start_event": "start_mode_fifth_avenue_phantom"},
         "frederick_foswell": {"name": "Frederick Foswell", "chapter": 4, "start_event": "start_mode_frederick_foswell"},
         "blackwell": {"name": "Blackwell", "chapter": 4, "start_event": "start_mode_blackwell"},
@@ -116,8 +116,8 @@ class VillainProgression(Mode):
         "mole_man_mode_failed": ("mole_man", False),
         "enforcers_mode_complete": ("enforcers", True),
         "enforcers_mode_failed": ("enforcers", False),
-        "ox_mode_complete": ("ox", True),
-        "ox_mode_failed": ("ox", False),
+        "miss_trubble_mode_complete": ("miss_trubble", True),
+        "miss_trubble_mode_failed": ("miss_trubble", False),
         "fifth_avenue_phantom_mode_complete": ("fifth_avenue_phantom", True),
         "fifth_avenue_phantom_mode_failed": ("fifth_avenue_phantom", False),
         "frederick_foswell_mode_complete": ("frederick_foswell", True),
@@ -499,10 +499,9 @@ class VillainProgression(Mode):
         self.machine.game.player["villain_current_name"] = villain_key
         self.machine.game.player["villain_mode_running"] = 1
         self.machine.game.player["villain_mode_running_name"] = villain_key
-        
+
         self.info_log("VILLAIN START: %s state=%s played=%s", villain_key, self.machine.game.player[f"{villain_key}_state"], self.machine.game.player[f"{villain_key}_played"])
 
-        self.machine.events.post("case_files_clear_lights")
         self.machine.events.post("clear_villain_saucer_lights")
         # Do not clear/eject saucers here. The ball that started the villain
         # should stay held during the bookend intro. villain_bookends posts
