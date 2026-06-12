@@ -16,10 +16,9 @@ event_player:
   villain_mode_ended:  #todo - generate this on mode ends?
     - villain_bookend_intro_hold_release
 
-
-random_event_player:
   villain_bookend_summary_done:
     - play_random_main_song
+
 
 widget_player:
   villain_bookend_intro_show:

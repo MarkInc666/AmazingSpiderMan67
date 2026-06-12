@@ -884,6 +884,8 @@ class VillainBookends(Mode):
             self.warning_log("Unknown villain summary requested: %s", villain)
             return
         
+        self.machine.events.post("play_song_21")
+
         self.machine.game.player["villain_mode_in_summary"] = True
 
         data = self.VILLAINS[villain]
