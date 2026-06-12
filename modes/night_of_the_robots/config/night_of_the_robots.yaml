@@ -7,11 +7,32 @@ mode:
   start_events: start_mode_night_of_the_robots
   stop_events:
     - stop_mode_night_of_the_robots
-    - night_of_the_robots_mode_complete
-    - night_of_the_robots_mode_failed
     - ball_ended
   code: night_of_the_robots.NightOfTheRobots
   priority: 800
+
+multiballs:
+  night_of_the_robots_multiball:
+    ball_count: 2
+    ball_count_type: total
+    shoot_again: 15s
+    start_events: night_of_the_robots_start_multiball
+    stop_events:
+      - stop_mode_night_of_the_robots
+
+
+variable_player:
+
+  multiball_night_of_the_robots_multiball_started:
+    multiball_autoplunge_active:
+      action: set
+      int: 1
+
+  multiball_night_of_the_robots_multiball_ended:
+    multiball_autoplunge_active:
+      action: set
+      int: 0
+
 
 widget_player:
   mode_night_of_the_robots_started:
@@ -53,6 +74,8 @@ event_player:
   s_right_drops_5_active: night_of_the_robots_shot_hit
 
   s_vuk_switch_active: night_of_the_robots_jackpot_hit
+
+  multiball_night_of_the_robots_multiball_ended: night_of_the_robots_failed
 
   mode_night_of_the_robots_started:
     - clear_saucers

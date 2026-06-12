@@ -7,11 +7,32 @@ mode:
   start_events: start_mode_monster_island_breakout
   stop_events:
     - stop_mode_monster_island_breakout
-    - monster_island_breakout_mode_complete
-    - monster_island_breakout_mode_failed
     - ball_ended
   code: monster_island_breakout.MonsterIslandBreakout
   priority: 800
+
+multiballs:
+  monster_island_breakout_multiball:
+    ball_count: 2
+    ball_count_type: total
+    shoot_again: 15s
+    start_events: monster_island_breakout_start_multiball
+    stop_events:
+      - stop_mode_monster_island_breakout
+
+
+variable_player:
+
+  multiball_monster_island_breakout_multiball_started:
+    multiball_autoplunge_active:
+      action: set
+      int: 1
+
+  multiball_monster_island_breakout_multiball_ended:
+    multiball_autoplunge_active:
+      action: set
+      int: 0
+
 
 widget_player:
   mode_monster_island_breakout_started:
@@ -53,6 +74,8 @@ event_player:
   s_right_drops_5_active: monster_island_breakout_shot_hit
 
   s_vuk_switch_active: monster_island_breakout_jackpot_hit
+
+  multiball_monster_island_breakout_multiball_ended: monster_island_breakout_failed
 
   mode_monster_island_breakout_started:
     - clear_saucers

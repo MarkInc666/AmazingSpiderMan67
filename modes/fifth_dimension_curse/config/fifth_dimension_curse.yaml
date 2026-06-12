@@ -7,11 +7,32 @@ mode:
   start_events: start_mode_fifth_dimension_curse
   stop_events:
     - stop_mode_fifth_dimension_curse
-    - fifth_dimension_curse_mode_complete
-    - fifth_dimension_curse_mode_failed
     - ball_ended
   code: fifth_dimension_curse.FifthDimensionCurse
   priority: 800
+
+multiballs:
+  fifth_dimension_curse_multiball:
+    ball_count: 2
+    ball_count_type: total
+    shoot_again: 15s
+    start_events: fifth_dimension_curse_start_multiball
+    stop_events:
+      - stop_mode_fifth_dimension_curse
+
+
+variable_player:
+
+  multiball_fifth_dimension_curse_multiball_started:
+    multiball_autoplunge_active:
+      action: set
+      int: 1
+
+  multiball_fifth_dimension_curse_multiball_ended:
+    multiball_autoplunge_active:
+      action: set
+      int: 0
+
 
 widget_player:
   mode_fifth_dimension_curse_started:
@@ -53,6 +74,8 @@ event_player:
   s_right_drops_5_active: fifth_dimension_curse_shot_hit
 
   s_vuk_switch_active: fifth_dimension_curse_jackpot_hit
+
+  multiball_fifth_dimension_curse_multiball_ended: fifth_dimension_curse_failed
 
   mode_fifth_dimension_curse_started:
     - clear_saucers

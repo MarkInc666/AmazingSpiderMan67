@@ -32,8 +32,10 @@ class MastermindTrap(Mode):
         self.add_mode_event_handler(f"{self.MODE_KEY}_jackpot_hit", self._jackpot_hit)
         self.add_mode_event_handler(f"{self.MODE_KEY}_complete_request", self._complete_mode)
         self.add_mode_event_handler(f"{self.MODE_KEY}_fail_request", self._fail_mode)
+        self.add_mode_event_handler(f"{self.MODE_KEY}_failed", self._fail_mode)
 
         self.machine.events.post("chapter_mini_wizard_started", mini_wizard=self.MODE_KEY)
+        self.machine.events.post(f"{self.MODE_KEY}_start_multiball")
 
     def mode_stop(self, **kwargs):
         player = self.machine.game.player

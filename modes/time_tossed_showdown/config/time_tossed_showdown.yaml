@@ -7,11 +7,32 @@ mode:
   start_events: start_mode_time_tossed_showdown
   stop_events:
     - stop_mode_time_tossed_showdown
-    - time_tossed_showdown_mode_complete
-    - time_tossed_showdown_mode_failed
     - ball_ended
   code: time_tossed_showdown.TimeTossedShowdown
   priority: 800
+
+multiballs:
+  time_tossed_showdown_multiball:
+    ball_count: 2
+    ball_count_type: total
+    shoot_again: 15s
+    start_events: time_tossed_showdown_start_multiball
+    stop_events:
+      - stop_mode_time_tossed_showdown
+
+
+variable_player:
+
+  multiball_time_tossed_showdown_multiball_started:
+    multiball_autoplunge_active:
+      action: set
+      int: 1
+
+  multiball_time_tossed_showdown_multiball_ended:
+    multiball_autoplunge_active:
+      action: set
+      int: 0
+
 
 widget_player:
   mode_time_tossed_showdown_started:
@@ -53,6 +74,8 @@ event_player:
   s_right_drops_5_active: time_tossed_showdown_shot_hit
 
   s_vuk_switch_active: time_tossed_showdown_jackpot_hit
+
+  multiball_time_tossed_showdown_multiball_ended: time_tossed_showdown_failed
 
   mode_time_tossed_showdown_started:
     - clear_saucers

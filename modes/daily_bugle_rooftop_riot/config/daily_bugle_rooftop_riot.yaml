@@ -7,11 +7,32 @@ mode:
   start_events: start_mode_daily_bugle_rooftop_riot
   stop_events:
     - stop_mode_daily_bugle_rooftop_riot
-    - daily_bugle_rooftop_riot_mode_complete
-    - daily_bugle_rooftop_riot_mode_failed
     - ball_ended
   code: daily_bugle_rooftop_riot.DailyBugleRooftopRiot
   priority: 800
+
+multiballs:
+  daily_bugle_rooftop_riot_multiball:
+    ball_count: 2
+    ball_count_type: total
+    shoot_again: 15s
+    start_events: daily_bugle_rooftop_riot_start_multiball
+    stop_events:
+      - stop_mode_daily_bugle_rooftop_riot
+
+
+variable_player:
+
+  multiball_daily_bugle_rooftop_riot_multiball_started:
+    multiball_autoplunge_active:
+      action: set
+      int: 1
+
+  multiball_daily_bugle_rooftop_riot_multiball_ended:
+    multiball_autoplunge_active:
+      action: set
+      int: 0
+
 
 widget_player:
   mode_daily_bugle_rooftop_riot_started:
@@ -53,6 +74,8 @@ event_player:
   s_right_drops_5_active: daily_bugle_rooftop_riot_shot_hit
 
   s_vuk_switch_active: daily_bugle_rooftop_riot_jackpot_hit
+
+  multiball_daily_bugle_rooftop_riot_multiball_ended: daily_bugle_rooftop_riot_failed
 
   mode_daily_bugle_rooftop_riot_started:
     - clear_saucers

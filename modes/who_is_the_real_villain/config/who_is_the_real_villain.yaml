@@ -7,11 +7,32 @@ mode:
   start_events: start_mode_who_is_the_real_villain
   stop_events:
     - stop_mode_who_is_the_real_villain
-    - who_is_the_real_villain_mode_complete
-    - who_is_the_real_villain_mode_failed
     - ball_ended
   code: who_is_the_real_villain.WhoIsTheRealVillain
   priority: 800
+
+multiballs:
+  who_is_the_real_villain_multiball:
+    ball_count: 2
+    ball_count_type: total
+    shoot_again: 15s
+    start_events: who_is_the_real_villain_start_multiball
+    stop_events:
+      - stop_mode_who_is_the_real_villain
+
+
+variable_player:
+
+  multiball_who_is_the_real_villain_multiball_started:
+    multiball_autoplunge_active:
+      action: set
+      int: 1
+
+  multiball_who_is_the_real_villain_multiball_ended:
+    multiball_autoplunge_active:
+      action: set
+      int: 0
+
 
 widget_player:
   mode_who_is_the_real_villain_started:
@@ -53,6 +74,8 @@ event_player:
   s_right_drops_5_active: who_is_the_real_villain_shot_hit
 
   s_vuk_switch_active: who_is_the_real_villain_jackpot_hit
+
+  multiball_who_is_the_real_villain_multiball_ended: who_is_the_real_villain_failed
 
   mode_who_is_the_real_villain_started:
     - clear_saucers

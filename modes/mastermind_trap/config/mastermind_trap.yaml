@@ -7,11 +7,32 @@ mode:
   start_events: start_mode_mastermind_trap
   stop_events:
     - stop_mode_mastermind_trap
-    - mastermind_trap_mode_complete
-    - mastermind_trap_mode_failed
     - ball_ended
   code: mastermind_trap.MastermindTrap
   priority: 800
+
+multiballs:
+  mastermind_trap_multiball:
+    ball_count: 2
+    ball_count_type: total
+    shoot_again: 15s
+    start_events: mastermind_trap_start_multiball
+    stop_events:
+      - stop_mode_mastermind_trap
+
+
+variable_player:
+
+  multiball_mastermind_trap_multiball_started:
+    multiball_autoplunge_active:
+      action: set
+      int: 1
+
+  multiball_mastermind_trap_multiball_ended:
+    multiball_autoplunge_active:
+      action: set
+      int: 0
+
 
 widget_player:
   mode_mastermind_trap_started:
@@ -53,6 +74,8 @@ event_player:
   s_right_drops_5_active: mastermind_trap_shot_hit
 
   s_vuk_switch_active: mastermind_trap_jackpot_hit
+
+  multiball_mastermind_trap_multiball_ended: mastermind_trap_failed
 
   mode_mastermind_trap_started:
     - clear_saucers
