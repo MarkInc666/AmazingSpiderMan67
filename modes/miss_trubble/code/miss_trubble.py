@@ -275,7 +275,6 @@ class MissTrubble(CaseFileMixin, Mode):
     def _inactive(self):
         if self.mode_done:
             return True
-        player = self.machine.game.player if self.machine.game else None
-        if player and player.get("villain_mode_in_summary") is True:
+        if self.machine.game.player["villain_mode_in_summary"] is True:
             return True
         return False
