@@ -660,6 +660,775 @@ player_vars:
     initial_value: 0
     value_type: int
 
+  # Matto Magneto (Weird Science)
+  matto_magneto_played:
+    initial_value: 0
+    value_type: int
+  matto_magneto_state:
+    initial_value: "not_played"
+    value_type: str
+  matto_magneto_completed:
+    initial_value: 0
+    value_type: int
+  matto_magneto_mode_points:
+    initial_value: 0
+    value_type: int
+  matto_magneto_hits:
+    initial_value: 0
+    value_type: int
+  matto_magneto_major_hits:
+    initial_value: 0
+    value_type: int
+
+  # Doctor Manta (Weird Science)
+  doctor_manta_played:
+    initial_value: 0
+    value_type: int
+  doctor_manta_state:
+    initial_value: "not_played"
+    value_type: str
+  doctor_manta_completed:
+    initial_value: 0
+    value_type: int
+  doctor_manta_mode_points:
+    initial_value: 0
+    value_type: int
+  doctor_manta_hits:
+    initial_value: 0
+    value_type: int
+  doctor_manta_major_hits:
+    initial_value: 0
+    value_type: int
+
+  # Doctor Dumpty (Weird Science)
+  doctor_dumpty_played:
+    initial_value: 0
+    value_type: int
+  doctor_dumpty_state:
+    initial_value: "not_played"
+    value_type: str
+  doctor_dumpty_completed:
+    initial_value: 0
+    value_type: int
+  doctor_dumpty_mode_points:
+    initial_value: 0
+    value_type: int
+  doctor_dumpty_hits:
+    initial_value: 0
+    value_type: int
+  doctor_dumpty_major_hits:
+    initial_value: 0
+    value_type: int
+
+  # Doctor Cool (Weird Science)
+  doctor_cool_played:
+    initial_value: 0
+    value_type: int
+  doctor_cool_state:
+    initial_value: "not_played"
+    value_type: str
+  doctor_cool_completed:
+    initial_value: 0
+    value_type: int
+  doctor_cool_mode_points:
+    initial_value: 0
+    value_type: int
+  doctor_cool_hits:
+    initial_value: 0
+    value_type: int
+  doctor_cool_major_hits:
+    initial_value: 0
+    value_type: int
+
+  # Doctor Zapp (Weird Science)
+  doctor_zapp_played:
+    initial_value: 0
+    value_type: int
+  doctor_zapp_state:
+    initial_value: "not_played"
+    value_type: str
+  doctor_zapp_completed:
+    initial_value: 0
+    value_type: int
+  doctor_zapp_mode_points:
+    initial_value: 0
+    value_type: int
+  doctor_zapp_hits:
+    initial_value: 0
+    value_type: int
+  doctor_zapp_major_hits:
+    initial_value: 0
+    value_type: int
+
+  # Fantastic Fakir (Mystic Menace)
+  fantastic_fakir_played:
+    initial_value: 0
+    value_type: int
+  fantastic_fakir_state:
+    initial_value: "not_played"
+    value_type: str
+  fantastic_fakir_completed:
+    initial_value: 0
+    value_type: int
+  fantastic_fakir_mode_points:
+    initial_value: 0
+    value_type: int
+  fantastic_fakir_hits:
+    initial_value: 0
+    value_type: int
+  fantastic_fakir_major_hits:
+    initial_value: 0
+    value_type: int
+
+  # Kotep (Mystic Menace)
+  kotep_played:
+    initial_value: 0
+    value_type: int
+  kotep_state:
+    initial_value: "not_played"
+    value_type: str
+  kotep_completed:
+    initial_value: 0
+    value_type: int
+  kotep_mode_points:
+    initial_value: 0
+    value_type: int
+  kotep_hits:
+    initial_value: 0
+    value_type: int
+  kotep_major_hits:
+    initial_value: 0
+    value_type: int
+
+  # Infinata (Mystic Menace)
+  infinata_played:
+    initial_value: 0
+    value_type: int
+  infinata_state:
+    initial_value: "not_played"
+    value_type: str
+  infinata_completed:
+    initial_value: 0
+    value_type: int
+  infinata_mode_points:
+    initial_value: 0
+    value_type: int
+  infinata_hits:
+    initial_value: 0
+    value_type: int
+  infinata_major_hits:
+    initial_value: 0
+    value_type: int
+
+  # Pardo (Mystic Menace)
+  pardo_played:
+    initial_value: 0
+    value_type: int
+  pardo_state:
+    initial_value: "not_played"
+    value_type: str
+  pardo_completed:
+    initial_value: 0
+    value_type: int
+  pardo_mode_points:
+    initial_value: 0
+    value_type: int
+  pardo_hits:
+    initial_value: 0
+    value_type: int
+  pardo_major_hits:
+    initial_value: 0
+    value_type: int
+
+  # Vulcan (Mystic Menace)
+  vulcan_played:
+    initial_value: 0
+    value_type: int
+  vulcan_state:
+    initial_value: "not_played"
+    value_type: str
+  vulcan_completed:
+    initial_value: 0
+    value_type: int
+  vulcan_mode_points:
+    initial_value: 0
+    value_type: int
+  vulcan_hits:
+    initial_value: 0
+    value_type: int
+  vulcan_major_hits:
+    initial_value: 0
+    value_type: int
+
+  # Spider-Slayer (Robot Rampage)
+  spider_slayer_played:
+    initial_value: 0
+    value_type: int
+  spider_slayer_state:
+    initial_value: "not_played"
+    value_type: str
+  spider_slayer_completed:
+    initial_value: 0
+    value_type: int
+  spider_slayer_mode_points:
+    initial_value: 0
+    value_type: int
+  spider_slayer_hits:
+    initial_value: 0
+    value_type: int
+  spider_slayer_major_hits:
+    initial_value: 0
+    value_type: int
+
+  # Henry Smythe (Robot Rampage)
+  henry_smythe_played:
+    initial_value: 0
+    value_type: int
+  henry_smythe_state:
+    initial_value: "not_played"
+    value_type: str
+  henry_smythe_completed:
+    initial_value: 0
+    value_type: int
+  henry_smythe_mode_points:
+    initial_value: 0
+    value_type: int
+  henry_smythe_hits:
+    initial_value: 0
+    value_type: int
+  henry_smythe_major_hits:
+    initial_value: 0
+    value_type: int
+
+  # Blackbeard Robot (Robot Rampage)
+  blackbeard_robot_played:
+    initial_value: 0
+    value_type: int
+  blackbeard_robot_state:
+    initial_value: "not_played"
+    value_type: str
+  blackbeard_robot_completed:
+    initial_value: 0
+    value_type: int
+  blackbeard_robot_mode_points:
+    initial_value: 0
+    value_type: int
+  blackbeard_robot_hits:
+    initial_value: 0
+    value_type: int
+  blackbeard_robot_major_hits:
+    initial_value: 0
+    value_type: int
+
+  # Executioner of Paris Robot (Robot Rampage)
+  executioner_of_paris_robot_played:
+    initial_value: 0
+    value_type: int
+  executioner_of_paris_robot_state:
+    initial_value: "not_played"
+    value_type: str
+  executioner_of_paris_robot_completed:
+    initial_value: 0
+    value_type: int
+  executioner_of_paris_robot_mode_points:
+    initial_value: 0
+    value_type: int
+  executioner_of_paris_robot_hits:
+    initial_value: 0
+    value_type: int
+  executioner_of_paris_robot_major_hits:
+    initial_value: 0
+    value_type: int
+
+  # Jesse James Robot (Robot Rampage)
+  jesse_james_robot_played:
+    initial_value: 0
+    value_type: int
+  jesse_james_robot_state:
+    initial_value: "not_played"
+    value_type: str
+  jesse_james_robot_completed:
+    initial_value: 0
+    value_type: int
+  jesse_james_robot_mode_points:
+    initial_value: 0
+    value_type: int
+  jesse_james_robot_hits:
+    initial_value: 0
+    value_type: int
+  jesse_james_robot_major_hits:
+    initial_value: 0
+    value_type: int
+
+  # Snowman / The Snowmen (Frozen / Monster Oddities)
+  snowman_the_snowmen_played:
+    initial_value: 0
+    value_type: int
+  snowman_the_snowmen_state:
+    initial_value: "not_played"
+    value_type: str
+  snowman_the_snowmen_completed:
+    initial_value: 0
+    value_type: int
+  snowman_the_snowmen_mode_points:
+    initial_value: 0
+    value_type: int
+  snowman_the_snowmen_hits:
+    initial_value: 0
+    value_type: int
+  snowman_the_snowmen_major_hits:
+    initial_value: 0
+    value_type: int
+
+  # Metal-Eating Monster (Frozen / Monster Oddities)
+  metal_eating_monster_played:
+    initial_value: 0
+    value_type: int
+  metal_eating_monster_state:
+    initial_value: "not_played"
+    value_type: str
+  metal_eating_monster_completed:
+    initial_value: 0
+    value_type: int
+  metal_eating_monster_mode_points:
+    initial_value: 0
+    value_type: int
+  metal_eating_monster_hits:
+    initial_value: 0
+    value_type: int
+  metal_eating_monster_major_hits:
+    initial_value: 0
+    value_type: int
+
+  # Master Vine (Frozen / Monster Oddities)
+  master_vine_played:
+    initial_value: 0
+    value_type: int
+  master_vine_state:
+    initial_value: "not_played"
+    value_type: str
+  master_vine_completed:
+    initial_value: 0
+    value_type: int
+  master_vine_mode_points:
+    initial_value: 0
+    value_type: int
+  master_vine_hits:
+    initial_value: 0
+    value_type: int
+  master_vine_major_hits:
+    initial_value: 0
+    value_type: int
+
+  # Blotto (Frozen / Monster Oddities)
+  blotto_played:
+    initial_value: 0
+    value_type: int
+  blotto_state:
+    initial_value: "not_played"
+    value_type: str
+  blotto_completed:
+    initial_value: 0
+    value_type: int
+  blotto_mode_points:
+    initial_value: 0
+    value_type: int
+  blotto_hits:
+    initial_value: 0
+    value_type: int
+  blotto_major_hits:
+    initial_value: 0
+    value_type: int
+
+  # Pod (Frozen / Monster Oddities)
+  pod_played:
+    initial_value: 0
+    value_type: int
+  pod_state:
+    initial_value: "not_played"
+    value_type: str
+  pod_completed:
+    initial_value: 0
+    value_type: int
+  pod_mode_points:
+    initial_value: 0
+    value_type: int
+  pod_hits:
+    initial_value: 0
+    value_type: int
+  pod_major_hits:
+    initial_value: 0
+    value_type: int
+
+  # Noah Boddy (Crime & Disguise)
+  noah_boddy_played:
+    initial_value: 0
+    value_type: int
+  noah_boddy_state:
+    initial_value: "not_played"
+    value_type: str
+  noah_boddy_completed:
+    initial_value: 0
+    value_type: int
+  noah_boddy_mode_points:
+    initial_value: 0
+    value_type: int
+  noah_boddy_hits:
+    initial_value: 0
+    value_type: int
+  noah_boddy_major_hits:
+    initial_value: 0
+    value_type: int
+
+  # Fiddler (Crime & Disguise)
+  fiddler_played:
+    initial_value: 0
+    value_type: int
+  fiddler_state:
+    initial_value: "not_played"
+    value_type: str
+  fiddler_completed:
+    initial_value: 0
+    value_type: int
+  fiddler_mode_points:
+    initial_value: 0
+    value_type: int
+  fiddler_hits:
+    initial_value: 0
+    value_type: int
+  fiddler_major_hits:
+    initial_value: 0
+    value_type: int
+
+  # Fly Twins (Crime & Disguise)
+  fly_twins_played:
+    initial_value: 0
+    value_type: int
+  fly_twins_state:
+    initial_value: "not_played"
+    value_type: str
+  fly_twins_completed:
+    initial_value: 0
+    value_type: int
+  fly_twins_mode_points:
+    initial_value: 0
+    value_type: int
+  fly_twins_hits:
+    initial_value: 0
+    value_type: int
+  fly_twins_major_hits:
+    initial_value: 0
+    value_type: int
+
+  # Charles Cameo (Crime & Disguise)
+  charles_cameo_played:
+    initial_value: 0
+    value_type: int
+  charles_cameo_state:
+    initial_value: "not_played"
+    value_type: str
+  charles_cameo_completed:
+    initial_value: 0
+    value_type: int
+  charles_cameo_mode_points:
+    initial_value: 0
+    value_type: int
+  charles_cameo_hits:
+    initial_value: 0
+    value_type: int
+  charles_cameo_major_hits:
+    initial_value: 0
+    value_type: int
+
+  # Plotter (Crime & Disguise)
+  plotter_played:
+    initial_value: 0
+    value_type: int
+  plotter_state:
+    initial_value: "not_played"
+    value_type: str
+  plotter_completed:
+    initial_value: 0
+    value_type: int
+  plotter_mode_points:
+    initial_value: 0
+    value_type: int
+  plotter_hits:
+    initial_value: 0
+    value_type: int
+  plotter_major_hits:
+    initial_value: 0
+    value_type: int
+
+  # Juan Ponce de León (Time / History / Outlaws)
+  juan_ponce_de_leon_played:
+    initial_value: 0
+    value_type: int
+  juan_ponce_de_leon_state:
+    initial_value: "not_played"
+    value_type: str
+  juan_ponce_de_leon_completed:
+    initial_value: 0
+    value_type: int
+  juan_ponce_de_leon_mode_points:
+    initial_value: 0
+    value_type: int
+  juan_ponce_de_leon_hits:
+    initial_value: 0
+    value_type: int
+  juan_ponce_de_leon_major_hits:
+    initial_value: 0
+    value_type: int
+
+  # DeVargas (Time / History / Outlaws)
+  devargas_played:
+    initial_value: 0
+    value_type: int
+  devargas_state:
+    initial_value: "not_played"
+    value_type: str
+  devargas_completed:
+    initial_value: 0
+    value_type: int
+  devargas_mode_points:
+    initial_value: 0
+    value_type: int
+  devargas_hits:
+    initial_value: 0
+    value_type: int
+  devargas_major_hits:
+    initial_value: 0
+    value_type: int
+
+  # Koga (Time / History / Outlaws)
+  koga_played:
+    initial_value: 0
+    value_type: int
+  koga_state:
+    initial_value: "not_played"
+    value_type: str
+  koga_completed:
+    initial_value: 0
+    value_type: int
+  koga_mode_points:
+    initial_value: 0
+    value_type: int
+  koga_hits:
+    initial_value: 0
+    value_type: int
+  koga_major_hits:
+    initial_value: 0
+    value_type: int
+
+  # Cowboy (Time / History / Outlaws)
+  cowboy_played:
+    initial_value: 0
+    value_type: int
+  cowboy_state:
+    initial_value: "not_played"
+    value_type: str
+  cowboy_completed:
+    initial_value: 0
+    value_type: int
+  cowboy_mode_points:
+    initial_value: 0
+    value_type: int
+  cowboy_hits:
+    initial_value: 0
+    value_type: int
+  cowboy_major_hits:
+    initial_value: 0
+    value_type: int
+
+  # Desperado (Time / History / Outlaws)
+  desperado_played:
+    initial_value: 0
+    value_type: int
+  desperado_state:
+    initial_value: "not_played"
+    value_type: str
+  desperado_completed:
+    initial_value: 0
+    value_type: int
+  desperado_mode_points:
+    initial_value: 0
+    value_type: int
+  desperado_hits:
+    initial_value: 0
+    value_type: int
+  desperado_major_hits:
+    initial_value: 0
+    value_type: int
+
+  # Daily Bugle Rooftop Riot mini-wizard
+  daily_bugle_rooftop_riot_played:
+    initial_value: 0
+    value_type: int
+  daily_bugle_rooftop_riot_state:
+    initial_value: "not_played"
+    value_type: str
+  daily_bugle_rooftop_riot_completed:
+    initial_value: 0
+    value_type: int
+  daily_bugle_rooftop_riot_mode_points:
+    initial_value: 0
+    value_type: int
+  daily_bugle_rooftop_riot_hits:
+    initial_value: 0
+    value_type: int
+
+  # Mastermind Trap mini-wizard
+  mastermind_trap_played:
+    initial_value: 0
+    value_type: int
+  mastermind_trap_state:
+    initial_value: "not_played"
+    value_type: str
+  mastermind_trap_completed:
+    initial_value: 0
+    value_type: int
+  mastermind_trap_mode_points:
+    initial_value: 0
+    value_type: int
+  mastermind_trap_hits:
+    initial_value: 0
+    value_type: int
+
+  # Monster Island Breakout mini-wizard
+  monster_island_breakout_played:
+    initial_value: 0
+    value_type: int
+  monster_island_breakout_state:
+    initial_value: "not_played"
+    value_type: str
+  monster_island_breakout_completed:
+    initial_value: 0
+    value_type: int
+  monster_island_breakout_mode_points:
+    initial_value: 0
+    value_type: int
+  monster_island_breakout_hits:
+    initial_value: 0
+    value_type: int
+
+  # Crime Wave Crackdown mini-wizard
+  crime_wave_crackdown_played:
+    initial_value: 0
+    value_type: int
+  crime_wave_crackdown_state:
+    initial_value: "not_played"
+    value_type: str
+  crime_wave_crackdown_completed:
+    initial_value: 0
+    value_type: int
+  crime_wave_crackdown_mode_points:
+    initial_value: 0
+    value_type: int
+  crime_wave_crackdown_hits:
+    initial_value: 0
+    value_type: int
+
+  # Mad Science Meltdown mini-wizard
+  mad_science_meltdown_played:
+    initial_value: 0
+    value_type: int
+  mad_science_meltdown_state:
+    initial_value: "not_played"
+    value_type: str
+  mad_science_meltdown_completed:
+    initial_value: 0
+    value_type: int
+  mad_science_meltdown_mode_points:
+    initial_value: 0
+    value_type: int
+  mad_science_meltdown_hits:
+    initial_value: 0
+    value_type: int
+
+  # Fifth Dimension Curse mini-wizard
+  fifth_dimension_curse_played:
+    initial_value: 0
+    value_type: int
+  fifth_dimension_curse_state:
+    initial_value: "not_played"
+    value_type: str
+  fifth_dimension_curse_completed:
+    initial_value: 0
+    value_type: int
+  fifth_dimension_curse_mode_points:
+    initial_value: 0
+    value_type: int
+  fifth_dimension_curse_hits:
+    initial_value: 0
+    value_type: int
+
+  # Night of the Robots mini-wizard
+  night_of_the_robots_played:
+    initial_value: 0
+    value_type: int
+  night_of_the_robots_state:
+    initial_value: "not_played"
+    value_type: str
+  night_of_the_robots_completed:
+    initial_value: 0
+    value_type: int
+  night_of_the_robots_mode_points:
+    initial_value: 0
+    value_type: int
+  night_of_the_robots_hits:
+    initial_value: 0
+    value_type: int
+
+  # Nature Strikes Back mini-wizard
+  nature_strikes_back_played:
+    initial_value: 0
+    value_type: int
+  nature_strikes_back_state:
+    initial_value: "not_played"
+    value_type: str
+  nature_strikes_back_completed:
+    initial_value: 0
+    value_type: int
+  nature_strikes_back_mode_points:
+    initial_value: 0
+    value_type: int
+  nature_strikes_back_hits:
+    initial_value: 0
+    value_type: int
+
+  # Who Is the Real Villain? mini-wizard
+  who_is_the_real_villain_played:
+    initial_value: 0
+    value_type: int
+  who_is_the_real_villain_state:
+    initial_value: "not_played"
+    value_type: str
+  who_is_the_real_villain_completed:
+    initial_value: 0
+    value_type: int
+  who_is_the_real_villain_mode_points:
+    initial_value: 0
+    value_type: int
+  who_is_the_real_villain_hits:
+    initial_value: 0
+    value_type: int
+
+  # Time-Tossed Showdown mini-wizard
+  time_tossed_showdown_played:
+    initial_value: 0
+    value_type: int
+  time_tossed_showdown_state:
+    initial_value: "not_played"
+    value_type: str
+  time_tossed_showdown_completed:
+    initial_value: 0
+    value_type: int
+  time_tossed_showdown_mode_points:
+    initial_value: 0
+    value_type: int
+  time_tossed_showdown_hits:
+    initial_value: 0
+    value_type: int
 
   # ---------------------------------------------------------------------------
   # Final wizard: Kingpin
@@ -990,6 +1759,10 @@ player_vars:
     value_type: str
 
   ball_save_count:
+    initial_value: 0
+    value_type: int
+
+  outlane_add_a_ball_available:
     initial_value: 0
     value_type: int
 

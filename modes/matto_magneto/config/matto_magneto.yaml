@@ -1,0 +1,75 @@
+#config_version=6
+
+# Matto Magneto placeholder villain mode.
+# Mode idea: Magnet beam pulls lit shot around playfield; spinner stabilizes beam for a jackpot.
+
+mode:
+  start_events: start_mode_matto_magneto
+  stop_events:
+    - matto_magneto_mode_complete
+    - matto_magneto_mode_failed
+    - matto_magneto_mode_completed_summary
+    - ball_ended
+  code: matto_magneto.MattoMagneto
+  priority: 300
+
+widget_player:
+  mode_matto_magneto_started:
+    matto_magneto:
+      action: play
+
+  matto_magneto_mode_complete:
+    matto_magneto:
+      action: remove
+
+  matto_magneto_mode_failed:
+    matto_magneto:
+      action: remove
+
+  mode_matto_magneto_stopping:
+    matto_magneto:
+      action: remove
+
+event_player:
+  # Common playfield hits. Refine these later when the mode design is built out.
+  s_pop_left_active: matto_magneto_shot_hit
+  s_pop_right_active: matto_magneto_shot_hit
+  s_trispinner_opto_active: matto_magneto_shot_hit
+  s_web_spinner_active: matto_magneto_shot_hit
+  s_star_rollover_active: matto_magneto_shot_hit
+  s_upper_target_left_active: matto_magneto_shot_hit
+  s_upper_target_center_active: matto_magneto_shot_hit
+  s_upper_target_right_active: matto_magneto_shot_hit
+
+  s_left_drops_1_active: matto_magneto_shot_hit
+  s_left_drops_2_active: matto_magneto_shot_hit
+  s_left_drops_3_active: matto_magneto_shot_hit
+  s_right_drops_1_active: matto_magneto_shot_hit
+  s_right_drops_2_active: matto_magneto_shot_hit
+  s_right_drops_3_active: matto_magneto_shot_hit
+  s_right_drops_4_active: matto_magneto_shot_hit
+  s_right_drops_5_active: matto_magneto_shot_hit
+
+  s_saucer_1_active:
+    - matto_magneto_major_hit
+    - clear_saucers
+  s_saucer_2_active:
+    - matto_magneto_major_hit
+    - clear_saucers
+  s_saucer_3_active:
+    - matto_magneto_major_hit
+    - clear_saucers
+  s_vuk_switch_active: matto_magneto_major_hit
+
+  drop_target_bank_dt_bank_left_down:
+    - drop_target_bank_dt_bank_left_reset
+  drop_target_bank_dt_bank_right_down:
+    - drop_target_bank_dt_bank_right_reset
+
+  mode_matto_magneto_started:
+    - clear_saucers
+    - drop_target_bank_dt_bank_left_reset
+    - drop_target_bank_dt_bank_right_reset
+
+  mode_matto_magneto_stopping:
+    - clear_saucers

@@ -34,6 +34,36 @@ mode_settings:
     - fifth_avenue_phantom
     - frederick_foswell
     - blackwell
+    - matto_magneto
+    - doctor_manta
+    - doctor_dumpty
+    - doctor_cool
+    - doctor_zapp
+    - fantastic_fakir
+    - kotep
+    - infinata
+    - pardo
+    - vulcan
+    - spider_slayer
+    - henry_smythe
+    - blackbeard_robot
+    - executioner_of_paris_robot
+    - jesse_james_robot
+    - snowman_the_snowmen
+    - metal_eating_monster
+    - master_vine
+    - blotto
+    - pod
+    - noah_boddy
+    - fiddler
+    - fly_twins
+    - charles_cameo
+    - plotter
+    - juan_ponce_de_leon
+    - devargas
+    - koga
+    - cowboy
+    - desperado
 
   next_item_events: villain_carousel_next
   previous_item_events: villain_carousel_previous
@@ -178,6 +208,206 @@ show_player:
       action: play
       loops: -1
 
+  villain_select_highlighted_centaur:
+    villain_select_centaur_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_cerberus:
+    villain_select_cerberus_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_cyclops:
+    villain_select_cyclops_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_reptilla:
+    villain_select_reptilla_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_mole_man:
+    villain_select_mole_man_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_enforcers:
+    villain_select_enforcers_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_miss_trubble:
+    villain_select_miss_trubble_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_fifth_avenue_phantom:
+    villain_select_fifth_avenue_phantom_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_frederick_foswell:
+    villain_select_frederick_foswell_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_blackwell:
+    villain_select_blackwell_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_matto_magneto:
+    villain_select_matto_magneto_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_doctor_manta:
+    villain_select_doctor_manta_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_doctor_dumpty:
+    villain_select_doctor_dumpty_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_doctor_cool:
+    villain_select_doctor_cool_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_doctor_zapp:
+    villain_select_doctor_zapp_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_fantastic_fakir:
+    villain_select_fantastic_fakir_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_kotep:
+    villain_select_kotep_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_infinata:
+    villain_select_infinata_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_pardo:
+    villain_select_pardo_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_vulcan:
+    villain_select_vulcan_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_spider_slayer:
+    villain_select_spider_slayer_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_henry_smythe:
+    villain_select_henry_smythe_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_blackbeard_robot:
+    villain_select_blackbeard_robot_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_executioner_of_paris_robot:
+    villain_select_executioner_of_paris_robot_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_jesse_james_robot:
+    villain_select_jesse_james_robot_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_snowman_the_snowmen:
+    villain_select_snowman_the_snowmen_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_metal_eating_monster:
+    villain_select_metal_eating_monster_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_master_vine:
+    villain_select_master_vine_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_blotto:
+    villain_select_blotto_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_pod:
+    villain_select_pod_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_noah_boddy:
+    villain_select_noah_boddy_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_fiddler:
+    villain_select_fiddler_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_fly_twins:
+    villain_select_fly_twins_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_charles_cameo:
+    villain_select_charles_cameo_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_plotter:
+    villain_select_plotter_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_juan_ponce_de_leon:
+    villain_select_juan_ponce_de_leon_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_devargas:
+    villain_select_devargas_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_koga:
+    villain_select_koga_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_cowboy:
+    villain_select_cowboy_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_desperado:
+    villain_select_desperado_show:
+      action: play
+      loops: -1
+
 
 # Placeholder shows. Replace/merge with your real light shows if needed.
 shows:
@@ -268,3 +498,323 @@ shows:
     - duration: 300ms
       lights:
         gi: off
+  villain_select_centaur_show:
+    - duration: 300ms
+      lights:
+        gi: white
+    - duration: 300ms
+      lights:
+        gi: blue
+
+  villain_select_cerberus_show:
+    - duration: 300ms
+      lights:
+        gi: green
+    - duration: 300ms
+      lights:
+        gi: off
+
+  villain_select_cyclops_show:
+    - duration: 300ms
+      lights:
+        gi: yellow
+    - duration: 300ms
+      lights:
+        gi: off
+
+  villain_select_reptilla_show:
+    - duration: 300ms
+      lights:
+        gi: blue
+    - duration: 300ms
+      lights:
+        gi: white
+
+  villain_select_mole_man_show:
+    - duration: 300ms
+      lights:
+        gi: green
+    - duration: 300ms
+      lights:
+        gi: yellow
+
+  villain_select_enforcers_show:
+    - duration: 300ms
+      lights:
+        gi: white
+    - duration: 300ms
+      lights:
+        gi: blue
+
+  villain_select_miss_trubble_show:
+    - duration: 300ms
+      lights:
+        gi: green
+    - duration: 300ms
+      lights:
+        gi: off
+
+  villain_select_fifth_avenue_phantom_show:
+    - duration: 300ms
+      lights:
+        gi: yellow
+    - duration: 300ms
+      lights:
+        gi: off
+
+  villain_select_frederick_foswell_show:
+    - duration: 300ms
+      lights:
+        gi: blue
+    - duration: 300ms
+      lights:
+        gi: white
+
+  villain_select_blackwell_show:
+    - duration: 300ms
+      lights:
+        gi: green
+    - duration: 300ms
+      lights:
+        gi: yellow
+
+  villain_select_matto_magneto_show:
+    - duration: 300ms
+      lights:
+        gi: white
+    - duration: 300ms
+      lights:
+        gi: blue
+
+  villain_select_doctor_manta_show:
+    - duration: 300ms
+      lights:
+        gi: green
+    - duration: 300ms
+      lights:
+        gi: off
+
+  villain_select_doctor_dumpty_show:
+    - duration: 300ms
+      lights:
+        gi: yellow
+    - duration: 300ms
+      lights:
+        gi: off
+
+  villain_select_doctor_cool_show:
+    - duration: 300ms
+      lights:
+        gi: blue
+    - duration: 300ms
+      lights:
+        gi: white
+
+  villain_select_doctor_zapp_show:
+    - duration: 300ms
+      lights:
+        gi: green
+    - duration: 300ms
+      lights:
+        gi: yellow
+
+  villain_select_fantastic_fakir_show:
+    - duration: 300ms
+      lights:
+        gi: white
+    - duration: 300ms
+      lights:
+        gi: blue
+
+  villain_select_kotep_show:
+    - duration: 300ms
+      lights:
+        gi: green
+    - duration: 300ms
+      lights:
+        gi: off
+
+  villain_select_infinata_show:
+    - duration: 300ms
+      lights:
+        gi: yellow
+    - duration: 300ms
+      lights:
+        gi: off
+
+  villain_select_pardo_show:
+    - duration: 300ms
+      lights:
+        gi: blue
+    - duration: 300ms
+      lights:
+        gi: white
+
+  villain_select_vulcan_show:
+    - duration: 300ms
+      lights:
+        gi: green
+    - duration: 300ms
+      lights:
+        gi: yellow
+
+  villain_select_spider_slayer_show:
+    - duration: 300ms
+      lights:
+        gi: white
+    - duration: 300ms
+      lights:
+        gi: blue
+
+  villain_select_henry_smythe_show:
+    - duration: 300ms
+      lights:
+        gi: green
+    - duration: 300ms
+      lights:
+        gi: off
+
+  villain_select_blackbeard_robot_show:
+    - duration: 300ms
+      lights:
+        gi: yellow
+    - duration: 300ms
+      lights:
+        gi: off
+
+  villain_select_executioner_of_paris_robot_show:
+    - duration: 300ms
+      lights:
+        gi: blue
+    - duration: 300ms
+      lights:
+        gi: white
+
+  villain_select_jesse_james_robot_show:
+    - duration: 300ms
+      lights:
+        gi: green
+    - duration: 300ms
+      lights:
+        gi: yellow
+
+  villain_select_snowman_the_snowmen_show:
+    - duration: 300ms
+      lights:
+        gi: white
+    - duration: 300ms
+      lights:
+        gi: blue
+
+  villain_select_metal_eating_monster_show:
+    - duration: 300ms
+      lights:
+        gi: green
+    - duration: 300ms
+      lights:
+        gi: off
+
+  villain_select_master_vine_show:
+    - duration: 300ms
+      lights:
+        gi: yellow
+    - duration: 300ms
+      lights:
+        gi: off
+
+  villain_select_blotto_show:
+    - duration: 300ms
+      lights:
+        gi: blue
+    - duration: 300ms
+      lights:
+        gi: white
+
+  villain_select_pod_show:
+    - duration: 300ms
+      lights:
+        gi: green
+    - duration: 300ms
+      lights:
+        gi: yellow
+
+  villain_select_noah_boddy_show:
+    - duration: 300ms
+      lights:
+        gi: white
+    - duration: 300ms
+      lights:
+        gi: blue
+
+  villain_select_fiddler_show:
+    - duration: 300ms
+      lights:
+        gi: green
+    - duration: 300ms
+      lights:
+        gi: off
+
+  villain_select_fly_twins_show:
+    - duration: 300ms
+      lights:
+        gi: yellow
+    - duration: 300ms
+      lights:
+        gi: off
+
+  villain_select_charles_cameo_show:
+    - duration: 300ms
+      lights:
+        gi: blue
+    - duration: 300ms
+      lights:
+        gi: white
+
+  villain_select_plotter_show:
+    - duration: 300ms
+      lights:
+        gi: green
+    - duration: 300ms
+      lights:
+        gi: yellow
+
+  villain_select_juan_ponce_de_leon_show:
+    - duration: 300ms
+      lights:
+        gi: white
+    - duration: 300ms
+      lights:
+        gi: blue
+
+  villain_select_devargas_show:
+    - duration: 300ms
+      lights:
+        gi: green
+    - duration: 300ms
+      lights:
+        gi: off
+
+  villain_select_koga_show:
+    - duration: 300ms
+      lights:
+        gi: yellow
+    - duration: 300ms
+      lights:
+        gi: off
+
+  villain_select_cowboy_show:
+    - duration: 300ms
+      lights:
+        gi: blue
+    - duration: 300ms
+      lights:
+        gi: white
+
+  villain_select_desperado_show:
+    - duration: 300ms
+      lights:
+        gi: green
+    - duration: 300ms
+      lights:
+        gi: yellow
+

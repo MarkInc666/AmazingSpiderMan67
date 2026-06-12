@@ -4,6 +4,12 @@ mode:
   start_events: ball_started
   priority: 100
 
+multiballs:
+  outlane_add_a_ball:
+    ball_count: 1
+    ball_count_type: add
+    shoot_again: 10s
+    start_events: start_outlane_add_a_ball
 
 variable_player:
   secondary_switch_hit:
@@ -23,6 +29,29 @@ variable_player:
 
   upper_spinner_hit:
     score: 3000
+
+  consume_outlane_add_a_ball:
+    outlane_add_a_ball_available:
+      action: add
+      int: -1
+      
+  increase_outlane_add_a_ball:
+    outlane_add_a_ball_available:
+      action: add
+      int: 1
+
+  enable_outlane_autoplunge:
+    multiball_autoplunge_active:
+      action: set
+      int: 1
+
+  disable_outlane_autoplunge:
+    multiball_autoplunge_active:
+      action: set
+      int: 0
+
+
+
 
 
 
@@ -46,6 +75,16 @@ event_player:
 
   s_plunger_inactive:
     - start_my_default_ball_save
+
+  s_outlane_r_active{current_player.outlane_add_a_ball_available == 1 and current_player.ball_save_count == 0}:
+    - consume_outlane_add_a_ball
+    - start_outlane_add_a_ball
+    - enable_outlane_autoplunge
+
+  s_outlane_l_active{current_player.outlane_add_a_ball_available == 1 and current_player.ball_save_count == 0}:
+    - consume_outlane_add_a_ball
+    - start_outlane_add_a_ball
+    - enable_outlane_autoplunge
 
   s_leaf_next_to_1_active:
     - secondary_switch_hit
@@ -138,8 +177,6 @@ sound_player:
     throwing_star:
       action: play
       bus: effects
-
-
 
 
 widget_player:

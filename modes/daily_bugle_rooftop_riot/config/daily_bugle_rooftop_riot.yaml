@@ -1,0 +1,63 @@
+#config_version=6
+
+# Daily Bugle Rooftop Riot placeholder mini-wizard.
+# Mode idea: Timed 2-ball or single-ball challenge: complete one objective from each classic villain, then cash Daily Bugle jackpot.
+
+mode:
+  start_events: start_mode_daily_bugle_rooftop_riot
+  stop_events:
+    - stop_mode_daily_bugle_rooftop_riot
+    - daily_bugle_rooftop_riot_mode_complete
+    - daily_bugle_rooftop_riot_mode_failed
+    - ball_ended
+  code: daily_bugle_rooftop_riot.DailyBugleRooftopRiot
+  priority: 800
+
+widget_player:
+  mode_daily_bugle_rooftop_riot_started:
+    daily_bugle_rooftop_riot:
+      action: play
+
+  daily_bugle_rooftop_riot_mode_complete:
+    daily_bugle_rooftop_riot:
+      action: remove
+
+  daily_bugle_rooftop_riot_mode_failed:
+    daily_bugle_rooftop_riot:
+      action: remove
+
+  mode_daily_bugle_rooftop_riot_stopping:
+    daily_bugle_rooftop_riot:
+      action: remove
+
+  stop_mode_daily_bugle_rooftop_riot:
+    daily_bugle_rooftop_riot:
+      action: remove
+
+event_player:
+  s_pop_left_active: daily_bugle_rooftop_riot_shot_hit
+  s_pop_right_active: daily_bugle_rooftop_riot_shot_hit
+  s_trispinner_opto_active: daily_bugle_rooftop_riot_shot_hit
+  s_web_spinner_active: daily_bugle_rooftop_riot_shot_hit
+  s_star_rollover_active: daily_bugle_rooftop_riot_shot_hit
+  s_upper_target_left_active: daily_bugle_rooftop_riot_shot_hit
+  s_upper_target_center_active: daily_bugle_rooftop_riot_shot_hit
+  s_upper_target_right_active: daily_bugle_rooftop_riot_shot_hit
+  s_left_drops_1_active: daily_bugle_rooftop_riot_shot_hit
+  s_left_drops_2_active: daily_bugle_rooftop_riot_shot_hit
+  s_left_drops_3_active: daily_bugle_rooftop_riot_shot_hit
+  s_right_drops_1_active: daily_bugle_rooftop_riot_shot_hit
+  s_right_drops_2_active: daily_bugle_rooftop_riot_shot_hit
+  s_right_drops_3_active: daily_bugle_rooftop_riot_shot_hit
+  s_right_drops_4_active: daily_bugle_rooftop_riot_shot_hit
+  s_right_drops_5_active: daily_bugle_rooftop_riot_shot_hit
+
+  s_vuk_switch_active: daily_bugle_rooftop_riot_jackpot_hit
+
+  mode_daily_bugle_rooftop_riot_started:
+    - clear_saucers
+    - drop_target_bank_dt_bank_left_reset
+    - drop_target_bank_dt_bank_right_reset
+
+  mode_daily_bugle_rooftop_riot_stopping:
+    - clear_saucers

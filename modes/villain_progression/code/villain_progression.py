@@ -27,34 +27,83 @@ class VillainProgression(Mode):
         {
             "key": "classic_rogues",
             "name": "Classic Rogues",
-            "villains": ["rhino", "vulture", "lizard", "sandman", "electro"],
-            "mini_wizard_key": "sinister_surge",
-            "mini_wizard_name": "Sinister Surge",
-            "mini_wizard_event": "start_mode_sinister_surge",
+            #"villains": ['rhino', 'vulture', 'lizard', 'sandman', 'electro'],
+            "villains": ['cerberus', 'miss_trubble', 'blackwell', 'doc_ock', 'electro'],
+            "mini_wizard_key": "daily_bugle_rooftop_riot",
+            "mini_wizard_name": "Daily Bugle Rooftop Riot",
+            "mini_wizard_event": "start_mode_daily_bugle_rooftop_riot",
         },
         {
             "key": "masterminds",
             "name": "Masterminds",
-            "villains": ["doc_ock", "mysterio", "goblin", "scorpion", "parafino"],
-            "mini_wizard_key": "master_plan",
-            "mini_wizard_name": "Master Plan",
-            "mini_wizard_event": "start_mode_master_plan",
+            "villains": ['doc_ock', 'mysterio', 'goblin', 'scorpion', 'parafino'],
+            "mini_wizard_key": "mastermind_trap",
+            "mini_wizard_name": "Mastermind Trap",
+            "mini_wizard_event": "start_mode_mastermind_trap",
         },
         {
             "key": "monsters",
             "name": "Monsters",
-            "villains": ["centaur", "cerberus", "cyclops", "reptilla", "mole_man"],
-            "mini_wizard_key": "monster_island",
-            "mini_wizard_name": "Monster Island",
-            "mini_wizard_event": "start_mode_monster_island",
+            "villains": ['centaur', 'cerberus', 'cyclops', 'reptilla', 'mole_man'],
+            "mini_wizard_key": "monster_island_breakout",
+            "mini_wizard_name": "Monster Island Breakout",
+            "mini_wizard_event": "start_mode_monster_island_breakout",
         },
         {
             "key": "crime_wave",
             "name": "Crime Wave",
-            "villains": ["enforcers", "miss_trubble", "fifth_avenue_phantom", "frederick_foswell", "blackwell"],
-            "mini_wizard_key": "crime_wave_mini",
-            "mini_wizard_name": "Crime Wave",
-            "mini_wizard_event": "start_mode_crime_wave_mini",
+            "villains": ['enforcers', 'miss_trubble', 'fifth_avenue_phantom', 'frederick_foswell', 'blackwell'],
+            "mini_wizard_key": "crime_wave_crackdown",
+            "mini_wizard_name": "Crime Wave Crackdown",
+            "mini_wizard_event": "start_mode_crime_wave_crackdown",
+        },
+        {
+            "key": "weird_science",
+            "name": "Weird Science",
+            "villains": ['matto_magneto', 'doctor_manta', 'doctor_dumpty', 'doctor_cool', 'doctor_zapp'],
+            "mini_wizard_key": "mad_science_meltdown",
+            "mini_wizard_name": "Mad Science Meltdown",
+            "mini_wizard_event": "start_mode_mad_science_meltdown",
+        },
+        {
+            "key": "mystic_menace",
+            "name": "Mystic Menace",
+            "villains": ['fantastic_fakir', 'kotep', 'infinata', 'pardo', 'vulcan'],
+            "mini_wizard_key": "fifth_dimension_curse",
+            "mini_wizard_name": "Fifth Dimension Curse",
+            "mini_wizard_event": "start_mode_fifth_dimension_curse",
+        },
+        {
+            "key": "robot_rampage",
+            "name": "Robot Rampage",
+            "villains": ['spider_slayer', 'henry_smythe', 'blackbeard_robot', 'executioner_of_paris_robot', 'jesse_james_robot'],
+            "mini_wizard_key": "night_of_the_robots",
+            "mini_wizard_name": "Night of the Robots",
+            "mini_wizard_event": "start_mode_night_of_the_robots",
+        },
+        {
+            "key": "frozen_monster_oddities",
+            "name": "Frozen / Monster Oddities",
+            "villains": ['snowman_the_snowmen', 'metal_eating_monster', 'master_vine', 'blotto', 'pod'],
+            "mini_wizard_key": "nature_strikes_back",
+            "mini_wizard_name": "Nature Strikes Back",
+            "mini_wizard_event": "start_mode_nature_strikes_back",
+        },
+        {
+            "key": "crime_and_disguise",
+            "name": "Crime & Disguise",
+            "villains": ['noah_boddy', 'fiddler', 'fly_twins', 'charles_cameo', 'plotter'],
+            "mini_wizard_key": "who_is_the_real_villain",
+            "mini_wizard_name": "Who Is the Real Villain?",
+            "mini_wizard_event": "start_mode_who_is_the_real_villain",
+        },
+        {
+            "key": "time_history_outlaws",
+            "name": "Time / History / Outlaws",
+            "villains": ['juan_ponce_de_leon', 'devargas', 'koga', 'cowboy', 'desperado'],
+            "mini_wizard_key": "time_tossed_showdown",
+            "mini_wizard_name": "Time-Tossed Showdown",
+            "mini_wizard_event": "start_mode_time_tossed_showdown",
         },
     ]
 
@@ -79,6 +128,36 @@ class VillainProgression(Mode):
         "fifth_avenue_phantom": {"name": "Fifth Avenue Phantom", "chapter": 4, "start_event": "start_mode_fifth_avenue_phantom"},
         "frederick_foswell": {"name": "Frederick Foswell", "chapter": 4, "start_event": "start_mode_frederick_foswell"},
         "blackwell": {"name": "Blackwell", "chapter": 4, "start_event": "start_mode_blackwell"},
+        "matto_magneto": {"name": "Matto Magneto", "chapter": 5, "start_event": "start_mode_matto_magneto"},
+        "doctor_manta": {"name": "Doctor Manta", "chapter": 5, "start_event": "start_mode_doctor_manta"},
+        "doctor_dumpty": {"name": "Doctor Dumpty", "chapter": 5, "start_event": "start_mode_doctor_dumpty"},
+        "doctor_cool": {"name": "Doctor Cool", "chapter": 5, "start_event": "start_mode_doctor_cool"},
+        "doctor_zapp": {"name": "Doctor Zapp", "chapter": 5, "start_event": "start_mode_doctor_zapp"},
+        "fantastic_fakir": {"name": "Fantastic Fakir", "chapter": 6, "start_event": "start_mode_fantastic_fakir"},
+        "kotep": {"name": "Kotep", "chapter": 6, "start_event": "start_mode_kotep"},
+        "infinata": {"name": "Infinata", "chapter": 6, "start_event": "start_mode_infinata"},
+        "pardo": {"name": "Pardo", "chapter": 6, "start_event": "start_mode_pardo"},
+        "vulcan": {"name": "Vulcan", "chapter": 6, "start_event": "start_mode_vulcan"},
+        "spider_slayer": {"name": "Spider-Slayer", "chapter": 7, "start_event": "start_mode_spider_slayer"},
+        "henry_smythe": {"name": "Henry Smythe", "chapter": 7, "start_event": "start_mode_henry_smythe"},
+        "blackbeard_robot": {"name": "Blackbeard Robot", "chapter": 7, "start_event": "start_mode_blackbeard_robot"},
+        "executioner_of_paris_robot": {"name": "Executioner of Paris Robot", "chapter": 7, "start_event": "start_mode_executioner_of_paris_robot"},
+        "jesse_james_robot": {"name": "Jesse James Robot", "chapter": 7, "start_event": "start_mode_jesse_james_robot"},
+        "snowman_the_snowmen": {"name": "Snowman / The Snowmen", "chapter": 8, "start_event": "start_mode_snowman_the_snowmen"},
+        "metal_eating_monster": {"name": "Metal-Eating Monster", "chapter": 8, "start_event": "start_mode_metal_eating_monster"},
+        "master_vine": {"name": "Master Vine", "chapter": 8, "start_event": "start_mode_master_vine"},
+        "blotto": {"name": "Blotto", "chapter": 8, "start_event": "start_mode_blotto"},
+        "pod": {"name": "Pod", "chapter": 8, "start_event": "start_mode_pod"},
+        "noah_boddy": {"name": "Noah Boddy", "chapter": 9, "start_event": "start_mode_noah_boddy"},
+        "fiddler": {"name": "Fiddler", "chapter": 9, "start_event": "start_mode_fiddler"},
+        "fly_twins": {"name": "Fly Twins", "chapter": 9, "start_event": "start_mode_fly_twins"},
+        "charles_cameo": {"name": "Charles Cameo", "chapter": 9, "start_event": "start_mode_charles_cameo"},
+        "plotter": {"name": "Plotter", "chapter": 9, "start_event": "start_mode_plotter"},
+        "juan_ponce_de_leon": {"name": "Juan Ponce de León", "chapter": 10, "start_event": "start_mode_juan_ponce_de_leon"},
+        "devargas": {"name": "DeVargas", "chapter": 10, "start_event": "start_mode_devargas"},
+        "koga": {"name": "Koga", "chapter": 10, "start_event": "start_mode_koga"},
+        "cowboy": {"name": "Cowboy", "chapter": 10, "start_event": "start_mode_cowboy"},
+        "desperado": {"name": "Desperado", "chapter": 10, "start_event": "start_mode_desperado"},
     }
 
     FINAL_WIZARD_KEY = "kingpin"
@@ -91,17 +170,23 @@ class VillainProgression(Mode):
     COMPLETION_EVENTS = {
         "rhino_bash_complete": ("rhino", True),
         "rhino_mode_complete": ("rhino", True),
-        "sandman_mode_complete": ("sandman", True),
+        "rhino_mode_failed": ("rhino", False),
         "vulture_mode_complete": ("vulture", True),
+        "vulture_mode_failed": ("vulture", False),
         "lizard_mode_complete": ("lizard", True),
         "lizard_mode_failed": ("lizard", False),
+        "sandman_mode_complete": ("sandman", True),
+        "sandman_mode_failed": ("sandman", False),
         "electro_mode_complete": ("electro", True),
         "electro_mode_failed": ("electro", False),
         "doc_ock_mode_complete": ("doc_ock", True),
+        "doc_ock_mode_failed": ("doc_ock", False),
         "mysterio_mode_complete": ("mysterio", True),
+        "mysterio_mode_failed": ("mysterio", False),
         "goblin_mode_complete": ("goblin", True),
         "goblin_mode_failed": ("goblin", False),
         "scorpion_mode_complete": ("scorpion", True),
+        "scorpion_mode_failed": ("scorpion", False),
         "parafino_mode_complete": ("parafino", True),
         "parafino_mode_failed": ("parafino", False),
         "centaur_mode_complete": ("centaur", True),
@@ -124,6 +209,66 @@ class VillainProgression(Mode):
         "frederick_foswell_mode_failed": ("frederick_foswell", False),
         "blackwell_mode_complete": ("blackwell", True),
         "blackwell_mode_failed": ("blackwell", False),
+        "matto_magneto_mode_complete": ("matto_magneto", True),
+        "matto_magneto_mode_failed": ("matto_magneto", False),
+        "doctor_manta_mode_complete": ("doctor_manta", True),
+        "doctor_manta_mode_failed": ("doctor_manta", False),
+        "doctor_dumpty_mode_complete": ("doctor_dumpty", True),
+        "doctor_dumpty_mode_failed": ("doctor_dumpty", False),
+        "doctor_cool_mode_complete": ("doctor_cool", True),
+        "doctor_cool_mode_failed": ("doctor_cool", False),
+        "doctor_zapp_mode_complete": ("doctor_zapp", True),
+        "doctor_zapp_mode_failed": ("doctor_zapp", False),
+        "fantastic_fakir_mode_complete": ("fantastic_fakir", True),
+        "fantastic_fakir_mode_failed": ("fantastic_fakir", False),
+        "kotep_mode_complete": ("kotep", True),
+        "kotep_mode_failed": ("kotep", False),
+        "infinata_mode_complete": ("infinata", True),
+        "infinata_mode_failed": ("infinata", False),
+        "pardo_mode_complete": ("pardo", True),
+        "pardo_mode_failed": ("pardo", False),
+        "vulcan_mode_complete": ("vulcan", True),
+        "vulcan_mode_failed": ("vulcan", False),
+        "spider_slayer_mode_complete": ("spider_slayer", True),
+        "spider_slayer_mode_failed": ("spider_slayer", False),
+        "henry_smythe_mode_complete": ("henry_smythe", True),
+        "henry_smythe_mode_failed": ("henry_smythe", False),
+        "blackbeard_robot_mode_complete": ("blackbeard_robot", True),
+        "blackbeard_robot_mode_failed": ("blackbeard_robot", False),
+        "executioner_of_paris_robot_mode_complete": ("executioner_of_paris_robot", True),
+        "executioner_of_paris_robot_mode_failed": ("executioner_of_paris_robot", False),
+        "jesse_james_robot_mode_complete": ("jesse_james_robot", True),
+        "jesse_james_robot_mode_failed": ("jesse_james_robot", False),
+        "snowman_the_snowmen_mode_complete": ("snowman_the_snowmen", True),
+        "snowman_the_snowmen_mode_failed": ("snowman_the_snowmen", False),
+        "metal_eating_monster_mode_complete": ("metal_eating_monster", True),
+        "metal_eating_monster_mode_failed": ("metal_eating_monster", False),
+        "master_vine_mode_complete": ("master_vine", True),
+        "master_vine_mode_failed": ("master_vine", False),
+        "blotto_mode_complete": ("blotto", True),
+        "blotto_mode_failed": ("blotto", False),
+        "pod_mode_complete": ("pod", True),
+        "pod_mode_failed": ("pod", False),
+        "noah_boddy_mode_complete": ("noah_boddy", True),
+        "noah_boddy_mode_failed": ("noah_boddy", False),
+        "fiddler_mode_complete": ("fiddler", True),
+        "fiddler_mode_failed": ("fiddler", False),
+        "fly_twins_mode_complete": ("fly_twins", True),
+        "fly_twins_mode_failed": ("fly_twins", False),
+        "charles_cameo_mode_complete": ("charles_cameo", True),
+        "charles_cameo_mode_failed": ("charles_cameo", False),
+        "plotter_mode_complete": ("plotter", True),
+        "plotter_mode_failed": ("plotter", False),
+        "juan_ponce_de_leon_mode_complete": ("juan_ponce_de_leon", True),
+        "juan_ponce_de_leon_mode_failed": ("juan_ponce_de_leon", False),
+        "devargas_mode_complete": ("devargas", True),
+        "devargas_mode_failed": ("devargas", False),
+        "koga_mode_complete": ("koga", True),
+        "koga_mode_failed": ("koga", False),
+        "cowboy_mode_complete": ("cowboy", True),
+        "cowboy_mode_failed": ("cowboy", False),
+        "desperado_mode_complete": ("desperado", True),
+        "desperado_mode_failed": ("desperado", False),
     }
 
     def mode_start(self, **kwargs):
@@ -248,48 +393,19 @@ class VillainProgression(Mode):
         self.add_mode_event_handler("chapter_mini_wizard_failed", self._mini_wizard_failed)
 
         # Defensive direct hooks for placeholder / simple mini-wizard modes.
-        # These let each mini-wizard post its own mode_complete/mode_failed event
-        # without needing to know the shared progression event names.
-        self.add_mode_event_handler(
-            "sinister_surge_mode_complete",
-            self._mini_wizard_completed,
-            mini_wizard="sinister_surge",
-        )
-        self.add_mode_event_handler(
-            "sinister_surge_mode_failed",
-            self._mini_wizard_failed,
-            mini_wizard="sinister_surge",
-        )
-        self.add_mode_event_handler(
-            "master_plan_mode_complete",
-            self._mini_wizard_completed,
-            mini_wizard="master_plan",
-        )
-        self.add_mode_event_handler(
-            "master_plan_mode_failed",
-            self._mini_wizard_failed,
-            mini_wizard="master_plan",
-        )
-        self.add_mode_event_handler(
-            "monster_island_mode_complete",
-            self._mini_wizard_completed,
-            mini_wizard="monster_island",
-        )
-        self.add_mode_event_handler(
-            "monster_island_mode_failed",
-            self._mini_wizard_failed,
-            mini_wizard="monster_island",
-        )
-        self.add_mode_event_handler(
-            "crime_wave_mini_mode_complete",
-            self._mini_wizard_completed,
-            mini_wizard="crime_wave_mini",
-        )
-        self.add_mode_event_handler(
-            "crime_wave_mini_mode_failed",
-            self._mini_wizard_failed,
-            mini_wizard="crime_wave_mini",
-        )
+        # Each chapter mini-wizard can post <key>_mode_complete / <key>_mode_failed.
+        for chapter in self.CHAPTERS:
+            mini_key = chapter["mini_wizard_key"]
+            self.add_mode_event_handler(
+                f"{mini_key}_mode_complete",
+                self._mini_wizard_completed,
+                mini_wizard=mini_key,
+            )
+            self.add_mode_event_handler(
+                f"{mini_key}_mode_failed",
+                self._mini_wizard_failed,
+                mini_wizard=mini_key,
+            )
 
         self.add_mode_event_handler("mini_wizard_start_ready_at_daily_bugle", self._mini_wizard_ready_at_daily_bugle)
         self.add_mode_event_handler("s_vuk_switch_active", self._daily_bugle_hit)
@@ -503,6 +619,7 @@ class VillainProgression(Mode):
         self.info_log("VILLAIN START: %s state=%s played=%s", villain_key, self.machine.game.player[f"{villain_key}_state"], self.machine.game.player[f"{villain_key}_played"])
 
         self.machine.events.post("clear_villain_saucer_lights")
+        self.machine.events.post("case_files_clear_lights")
         # Do not clear/eject saucers here. The ball that started the villain
         # should stay held during the bookend intro. villain_bookends posts
         # clear_saucers when the intro finishes, right before the start_event.
@@ -674,6 +791,7 @@ class VillainProgression(Mode):
         self.machine.game.player["villain_mode_running"] = 1
         self.machine.game.player["villain_current_name"] = mini_key
         self.machine.game.player["villain_mode_running_name"] = mini_key
+        self.machine.events.post("case_files_clear_lights")
         self.machine.events.post(
             "chapter_mini_wizard_starting",
             chapter=chapter["key"],
@@ -742,6 +860,7 @@ class VillainProgression(Mode):
         self.machine.game.player["villain_mode_running"] = 1
         self.machine.game.player["villain_mode_running_name"] = self.FINAL_WIZARD_KEY
         self.machine.events.post("villain_started_set", villain_key=self.FINAL_WIZARD_KEY, villain=self.FINAL_WIZARD_KEY)
+        self.machine.events.post("case_files_clear_lights")
         self.machine.events.post(
             "villain_bookend_intro_request",
             villain=self.FINAL_WIZARD_KEY,

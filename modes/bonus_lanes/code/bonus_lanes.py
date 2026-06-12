@@ -1,3 +1,5 @@
+import random
+
 from mpf.core.mode import Mode
 
 
@@ -110,24 +112,37 @@ class BonusLanes(Mode):
         self.machine.events.post("bonus_lane_lit_sfx")
 
         if all(self.completed):
-            self.light_center_web()
+            self.light_random_web()
+            # Grant an outlane add-a-ball when all lanes complete
+            self.machine.events.post("increase_outlane_add_a_ball")
 
-    def light_center_web(self):
-        self.center_web_lit = True
-        self.left_web_lit = False
-        self.machine.events.post("bonus_center_web_lit")
+    def light_random_web(self):
+        # Randomly light either the center web or the left web when all lanes
+        # are complete. Hitting the lit target will grant the bonus multiplier.
+        if random.choice([True, False]):
+            self.center_web_lit = True
+            self.left_web_lit = False
+            self.machine.events.post("bonus_center_web_lit")
+        else:
+            self.left_web_lit = True
+            self.center_web_lit = False
+            self.machine.events.post("bonus_left_web_lit")
+
         self.machine.events.post("bonus_show_lanes")
 
     def center_web_hit(self, **kwargs):
         if not self.center_web_lit:
             self.add_bonus_count()
             return
-
+        # Award the bonus multiplier directly when the center web was lit.
         self.center_web_lit = False
-        self.left_web_lit = True
+        self.advance_bonus_multiplier()
+
+        # Reset lanes and lights
+        self.completed = [False, False, False, False]
+        self.refresh_lane_lights()
 
         self.machine.events.post("bonus_center_web_collected")
-        self.machine.events.post("bonus_left_web_lit")
 
     def left_web_hit(self, **kwargs):
         if not self.left_web_lit:
@@ -145,7 +160,6 @@ class BonusLanes(Mode):
     def advance_bonus_multiplier(self, **kwargs):
         player = self.machine.game.player
         current = player["bonus_multiplier"]
-
 
         if current < self.MAX_MULTIPLIER:
             player["bonus_multiplier"] = current + 1

@@ -1,0 +1,75 @@
+#config_version=6
+
+# Plotter placeholder villain mode.
+# Mode idea: Plotter lays out a 3-shot plan; follow it exactly to collect blueprint jackpot.
+
+mode:
+  start_events: start_mode_plotter
+  stop_events:
+    - plotter_mode_complete
+    - plotter_mode_failed
+    - plotter_mode_completed_summary
+    - ball_ended
+  code: plotter.Plotter
+  priority: 300
+
+widget_player:
+  mode_plotter_started:
+    plotter:
+      action: play
+
+  plotter_mode_complete:
+    plotter:
+      action: remove
+
+  plotter_mode_failed:
+    plotter:
+      action: remove
+
+  mode_plotter_stopping:
+    plotter:
+      action: remove
+
+event_player:
+  # Common playfield hits. Refine these later when the mode design is built out.
+  s_pop_left_active: plotter_shot_hit
+  s_pop_right_active: plotter_shot_hit
+  s_trispinner_opto_active: plotter_shot_hit
+  s_web_spinner_active: plotter_shot_hit
+  s_star_rollover_active: plotter_shot_hit
+  s_upper_target_left_active: plotter_shot_hit
+  s_upper_target_center_active: plotter_shot_hit
+  s_upper_target_right_active: plotter_shot_hit
+
+  s_left_drops_1_active: plotter_shot_hit
+  s_left_drops_2_active: plotter_shot_hit
+  s_left_drops_3_active: plotter_shot_hit
+  s_right_drops_1_active: plotter_shot_hit
+  s_right_drops_2_active: plotter_shot_hit
+  s_right_drops_3_active: plotter_shot_hit
+  s_right_drops_4_active: plotter_shot_hit
+  s_right_drops_5_active: plotter_shot_hit
+
+  s_saucer_1_active:
+    - plotter_major_hit
+    - clear_saucers
+  s_saucer_2_active:
+    - plotter_major_hit
+    - clear_saucers
+  s_saucer_3_active:
+    - plotter_major_hit
+    - clear_saucers
+  s_vuk_switch_active: plotter_major_hit
+
+  drop_target_bank_dt_bank_left_down:
+    - drop_target_bank_dt_bank_left_reset
+  drop_target_bank_dt_bank_right_down:
+    - drop_target_bank_dt_bank_right_reset
+
+  mode_plotter_started:
+    - clear_saucers
+    - drop_target_bank_dt_bank_left_reset
+    - drop_target_bank_dt_bank_right_reset
+
+  mode_plotter_stopping:
+    - clear_saucers

@@ -113,6 +113,46 @@ modes:
   - monster_island
   - crime_wave_mini
   - kingpin
+  - matto_magneto
+  - doctor_manta
+  - doctor_dumpty
+  - doctor_cool
+  - doctor_zapp
+  - fantastic_fakir
+  - kotep
+  - infinata
+  - pardo
+  - vulcan
+  - spider_slayer
+  - henry_smythe
+  - blackbeard_robot
+  - executioner_of_paris_robot
+  - jesse_james_robot
+  - snowman_the_snowmen
+  - metal_eating_monster
+  - master_vine
+  - blotto
+  - pod
+  - noah_boddy
+  - fiddler
+  - fly_twins
+  - charles_cameo
+  - plotter
+  - juan_ponce_de_leon
+  - devargas
+  - koga
+  - cowboy
+  - desperado
+  - daily_bugle_rooftop_riot
+  - mastermind_trap
+  - monster_island_breakout
+  - crime_wave_crackdown
+  - mad_science_meltdown
+  - fifth_dimension_curse
+  - night_of_the_robots
+  - nature_strikes_back
+  - who_is_the_real_villain
+  - time_tossed_showdown
   - qualify_system
   - villain_select
   - villain_start
@@ -156,6 +196,9 @@ event_player:
 
   s_plunger_active{current_player.multiball_autoplunge_active == 1}:
     - plunger_auto_fire|2s
+
+  ball_started{current_player.multiball_autoplunge_active == 1}:
+    - disable_outlane_autoplunge
 
   drop_target_bank_dt_bank_left_down{current_player.villain_mode_running == 0}:
     - drop_target_bank_dt_bank_left_reset

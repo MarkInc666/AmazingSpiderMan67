@@ -1,0 +1,63 @@
+#config_version=6
+
+# Who Is the Real Villain? placeholder mini-wizard.
+# Mode idea: Reveal identity clues, then complete the correct shot pattern. Wrong patterns cost value but give hints.
+
+mode:
+  start_events: start_mode_who_is_the_real_villain
+  stop_events:
+    - stop_mode_who_is_the_real_villain
+    - who_is_the_real_villain_mode_complete
+    - who_is_the_real_villain_mode_failed
+    - ball_ended
+  code: who_is_the_real_villain.WhoIsTheRealVillain
+  priority: 800
+
+widget_player:
+  mode_who_is_the_real_villain_started:
+    who_is_the_real_villain:
+      action: play
+
+  who_is_the_real_villain_mode_complete:
+    who_is_the_real_villain:
+      action: remove
+
+  who_is_the_real_villain_mode_failed:
+    who_is_the_real_villain:
+      action: remove
+
+  mode_who_is_the_real_villain_stopping:
+    who_is_the_real_villain:
+      action: remove
+
+  stop_mode_who_is_the_real_villain:
+    who_is_the_real_villain:
+      action: remove
+
+event_player:
+  s_pop_left_active: who_is_the_real_villain_shot_hit
+  s_pop_right_active: who_is_the_real_villain_shot_hit
+  s_trispinner_opto_active: who_is_the_real_villain_shot_hit
+  s_web_spinner_active: who_is_the_real_villain_shot_hit
+  s_star_rollover_active: who_is_the_real_villain_shot_hit
+  s_upper_target_left_active: who_is_the_real_villain_shot_hit
+  s_upper_target_center_active: who_is_the_real_villain_shot_hit
+  s_upper_target_right_active: who_is_the_real_villain_shot_hit
+  s_left_drops_1_active: who_is_the_real_villain_shot_hit
+  s_left_drops_2_active: who_is_the_real_villain_shot_hit
+  s_left_drops_3_active: who_is_the_real_villain_shot_hit
+  s_right_drops_1_active: who_is_the_real_villain_shot_hit
+  s_right_drops_2_active: who_is_the_real_villain_shot_hit
+  s_right_drops_3_active: who_is_the_real_villain_shot_hit
+  s_right_drops_4_active: who_is_the_real_villain_shot_hit
+  s_right_drops_5_active: who_is_the_real_villain_shot_hit
+
+  s_vuk_switch_active: who_is_the_real_villain_jackpot_hit
+
+  mode_who_is_the_real_villain_started:
+    - clear_saucers
+    - drop_target_bank_dt_bank_left_reset
+    - drop_target_bank_dt_bank_right_reset
+
+  mode_who_is_the_real_villain_stopping:
+    - clear_saucers

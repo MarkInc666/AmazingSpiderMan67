@@ -1,0 +1,75 @@
+#config_version=6
+
+# Juan Ponce de León placeholder villain mode.
+# Mode idea: Value drains until fountain shot is hit; fountain resets timer and raises jackpot.
+
+mode:
+  start_events: start_mode_juan_ponce_de_leon
+  stop_events:
+    - juan_ponce_de_leon_mode_complete
+    - juan_ponce_de_leon_mode_failed
+    - juan_ponce_de_leon_mode_completed_summary
+    - ball_ended
+  code: juan_ponce_de_leon.JuanPonceDeLeon
+  priority: 300
+
+widget_player:
+  mode_juan_ponce_de_leon_started:
+    juan_ponce_de_leon:
+      action: play
+
+  juan_ponce_de_leon_mode_complete:
+    juan_ponce_de_leon:
+      action: remove
+
+  juan_ponce_de_leon_mode_failed:
+    juan_ponce_de_leon:
+      action: remove
+
+  mode_juan_ponce_de_leon_stopping:
+    juan_ponce_de_leon:
+      action: remove
+
+event_player:
+  # Common playfield hits. Refine these later when the mode design is built out.
+  s_pop_left_active: juan_ponce_de_leon_shot_hit
+  s_pop_right_active: juan_ponce_de_leon_shot_hit
+  s_trispinner_opto_active: juan_ponce_de_leon_shot_hit
+  s_web_spinner_active: juan_ponce_de_leon_shot_hit
+  s_star_rollover_active: juan_ponce_de_leon_shot_hit
+  s_upper_target_left_active: juan_ponce_de_leon_shot_hit
+  s_upper_target_center_active: juan_ponce_de_leon_shot_hit
+  s_upper_target_right_active: juan_ponce_de_leon_shot_hit
+
+  s_left_drops_1_active: juan_ponce_de_leon_shot_hit
+  s_left_drops_2_active: juan_ponce_de_leon_shot_hit
+  s_left_drops_3_active: juan_ponce_de_leon_shot_hit
+  s_right_drops_1_active: juan_ponce_de_leon_shot_hit
+  s_right_drops_2_active: juan_ponce_de_leon_shot_hit
+  s_right_drops_3_active: juan_ponce_de_leon_shot_hit
+  s_right_drops_4_active: juan_ponce_de_leon_shot_hit
+  s_right_drops_5_active: juan_ponce_de_leon_shot_hit
+
+  s_saucer_1_active:
+    - juan_ponce_de_leon_major_hit
+    - clear_saucers
+  s_saucer_2_active:
+    - juan_ponce_de_leon_major_hit
+    - clear_saucers
+  s_saucer_3_active:
+    - juan_ponce_de_leon_major_hit
+    - clear_saucers
+  s_vuk_switch_active: juan_ponce_de_leon_major_hit
+
+  drop_target_bank_dt_bank_left_down:
+    - drop_target_bank_dt_bank_left_reset
+  drop_target_bank_dt_bank_right_down:
+    - drop_target_bank_dt_bank_right_reset
+
+  mode_juan_ponce_de_leon_started:
+    - clear_saucers
+    - drop_target_bank_dt_bank_left_reset
+    - drop_target_bank_dt_bank_right_reset
+
+  mode_juan_ponce_de_leon_stopping:
+    - clear_saucers
