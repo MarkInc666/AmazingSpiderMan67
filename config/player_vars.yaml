@@ -477,6 +477,37 @@ player_vars:
   centaur_mode_points:
     initial_value: 0
     value_type: int
+  centaur_drops_down:
+    initial_value: 0
+    value_type: int
+  centaur_jackpot_value:
+    initial_value: 0
+    value_type: int
+  centaur_best_jackpot:
+    initial_value: 0
+    value_type: int
+  centaur_jackpots:
+    initial_value: 0
+    value_type: int
+  centaur_secret_jackpots:
+    initial_value: 0
+    value_type: int
+  centaur_consolation_awarded:
+    initial_value: 0
+    value_type: int
+  centaur_final_seconds:
+    initial_value: 0
+    value_type: int
+  centaur_phase:
+    initial_value: "idle"
+    value_type: str
+  centaur_gate_open:
+    initial_value: 0
+    value_type: int
+  centaur_final_active:
+    initial_value: 0
+    value_type: int
+
 
   cerberus_played:
     initial_value: 0
@@ -531,6 +562,7 @@ player_vars:
     initial_value: 0
     value_type: int
 
+
   reptilla_played:
     initial_value: 0
     value_type: int
@@ -543,6 +575,34 @@ player_vars:
   reptilla_mode_points:
     initial_value: 0
     value_type: int
+  reptilla_pop_hits:
+    initial_value: 0
+    value_type: int
+  reptilla_rampage_level:
+    initial_value: 0
+    value_type: int
+  reptilla_current_jackpot:
+    initial_value: 0
+    value_type: int
+  reptilla_super_jackpot:
+    initial_value: 0
+    value_type: int
+  reptilla_jackpots_collected:
+    initial_value: 0
+    value_type: int
+  reptilla_jackpots_required:
+    initial_value: 3
+    value_type: int
+  reptilla_pop_score_value:
+    initial_value: 20000
+    value_type: int
+  reptilla_super_lit:
+    initial_value: 0
+    value_type: int
+  reptilla_super_timer_seconds:
+    initial_value: 10
+    value_type: int
+
 
   mole_man_played:
     initial_value: 0
@@ -556,7 +616,39 @@ player_vars:
   mole_man_mode_points:
     initial_value: 0
     value_type: int
+  mole_man_upper_target_hits:
+    initial_value: 0
+    value_type: int
+  mole_man_spinner_hits:
+    initial_value: 0
+    value_type: int
+  mole_man_jackpots:
+    initial_value: 0
+    value_type: int
+  mole_man_best_jackpot:
+    initial_value: 0
+    value_type: int
+  mole_man_jackpot_value:
+    initial_value: 0
+    value_type: int
+  mole_man_hurryup_seconds:
+    initial_value: 0
+    value_type: int
+  mole_man_secret_target:
+    initial_value: ""
+    value_type: str
+  mole_man_phase:
+    initial_value: "get_to_upper"
+    value_type: str
+  mole_man_remaining_targets:
+    initial_value: 0
+    value_type: int
+  mole_man_secret_revealed:
+    initial_value: 0
+    value_type: int
 
+
+  
 
   # ---------------------------------------------------------------------------
   # Chapter 4: Crime Wave

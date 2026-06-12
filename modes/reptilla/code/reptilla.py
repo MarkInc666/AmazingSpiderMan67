@@ -1,92 +1,366 @@
 from mpf.core.mode import Mode
+from mpf.core.delays import DelayManager
+from modes.common.case_file_mixin import CaseFileMixin
 
 """
-Reptilla Mode idea: Monster Island chapter.
-Upper target monster. Placeholder: common shots build progress; later gameplay should focus on upper targets and rooftop access.
+Reptilla — City Rampage
 
-PLACEHOLDER IMPLEMENTATION
-- Python owns scoring, mode state, player variables, and completion/failure.
-- YAML only maps hardware events into generic mode events.
-- Replace the generic hit/progress rules later when this villain gets full gameplay.
+- Pops build Rampage and light jackpot shots, one new shot every 3 pops.
+- Lit jackpot shots are added in order: left-bank middle drop, upper middle target,
+  right-bank middle drop, and center web target if More Jackpots is active.
+- Lit jackpot shots may be collected in any order.
+- Each pop scores an increasing value and increases the current Rampage Jackpot.
+- Each Rampage Jackpot collect scores the current jackpot value and adds that
+  value into the Super Jackpot total.
+- After the 3rd jackpot collect, or 4th with More Jackpots, saucer 2 lights for
+  the Super Jackpot. Pops reset the Super timer.
 """
 
 
-class Reptilla(Mode):
+class Reptilla(CaseFileMixin, Mode):
     MODE_KEY = "reptilla"
-    DISPLAY_NAME = "Reptilla"
-    HIT_SCORE = 25_000
-    MAJOR_SCORE = 75_000
-    HITS_TO_COMPLETE = 10
+
+    POP_SCORE_START = 20_000
+    POP_SCORE_ADD = 1_000
+    POP_SCORE_MAX = 50_000
+
+    JACKPOT_ADD_PER_POP = 25_000
+    JACKPOT_MAX = 500_000
+
+    SUPER_TIMER_SECONDS = 10
+    MORE_TIME_SUPER_TIMER_SECONDS = 16
+
+    LEFT_BANK_SHOT = "left_bank"
+    UPPER_MIDDLE_SHOT = "upper_middle"
+    RIGHT_BANK_SHOT = "right_bank"
+    CENTER_WEB_SHOT = "center_web"
+
+    BASE_SHOT_ORDER = [LEFT_BANK_SHOT, UPPER_MIDDLE_SHOT, RIGHT_BANK_SHOT]
+    MORE_JACKPOTS_SHOT_ORDER = [
+        LEFT_BANK_SHOT,
+        UPPER_MIDDLE_SHOT,
+        RIGHT_BANK_SHOT,
+        CENTER_WEB_SHOT,
+    ]
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+
+        self.delay = DelayManager(self.machine)
         self.mode_done = False
-        self.hits = 0
-        self.major_hits = 0
+        self.super_lit = False
+        self.super_collected = False
+
+        self.case_files = self.get_case_file_bonuses()
+        self.more_jackpots_active = self.has_case_file("more_jackpots")
+        self.bigger_jackpots_active = self.has_case_file("bigger_jackpots")
+        self.more_time_active = self.has_case_file("more_time")
+        self.shot_assist_active = self.has_case_file("shot_assist")
+
+        self.shot_order = (
+            list(self.MORE_JACKPOTS_SHOT_ORDER)
+            if self.more_jackpots_active
+            else list(self.BASE_SHOT_ORDER)
+        )
+        self.required_jackpots = len(self.shot_order)
+
+        self.pop_hits = 0
+        self.pop_score_value = self.POP_SCORE_START
+        self.current_jackpot_value = 0
+        self.super_jackpot_value = 0
+        self.jackpots_collected = 0
         self.mode_points = 0
+        self.rampage_level = 0
 
-        player = self.machine.game.player if self.machine.game else None
-        if player:
-            player[f"{self.MODE_KEY}_mode_points"] = 0
-            player[f"{self.MODE_KEY}_hits"] = 0
-            player[f"{self.MODE_KEY}_major_hits"] = 0
-            player[f"{self.MODE_KEY}_completed"] = 0
+        self.lit_shots = set()
+        self.collected_shots = set()
+        self.shots_activated = 0
 
-        self.add_mode_event_handler(f"{self.MODE_KEY}_shot_hit", self._shot_hit)
-        self.add_mode_event_handler(f"{self.MODE_KEY}_major_hit", self._major_hit)
-        self.add_mode_event_handler(f"{self.MODE_KEY}_complete_request", self._complete_mode)
-        self.add_mode_event_handler(f"{self.MODE_KEY}_fail_request", self._fail_mode)
+        self.publish_case_file_bonus_events("reptilla")
+        self.publish_active_case_file_helpers([
+            ("more_jackpots", "CENTER WEB RAMPAGE JACKPOT ADDED"),
+            ("bigger_jackpots", "REPTILLA JACKPOTS 2X"),
+            ("more_time", "SUPER TIMER EXTENDED TO 16s"),
+            ("safety_net", "BALL SAVE DURING RAMPAGE"),
+            ("shot_assist", "LEFT BANK ASSIST AVAILABLE"),
+        ])
 
-        self.machine.events.post(f"{self.MODE_KEY}_placeholder_started")
-
-    def _shot_hit(self, **kwargs):
-        if self.mode_done:
-            return
-        self.hits += 1
-        self._score(self.HIT_SCORE)
+        player = self.machine.game.player
+        player["reptilla_completed"] = 0
         self._sync_vars()
-        self.machine.events.post(f"{self.MODE_KEY}_progress", hits=self.hits)
-        if self.hits >= self.HITS_TO_COMPLETE:
-            self._complete_mode()
 
-    def _major_hit(self, **kwargs):
-        if self.mode_done:
-            return
-        self.major_hits += 1
-        self._score(self.MAJOR_SCORE)
+        self.add_mode_event_handler("reptilla_pop_hit", self._pop_hit)
+        for target in [1, 2, 3]:
+            self.add_mode_event_handler(
+                f"reptilla_left_drop_{target}_hit",
+                self._left_drop_hit,
+                target=target,
+            )
+
+        for target in [1, 2, 3, 4, 5]:
+            self.add_mode_event_handler(
+                f"reptilla_right_drop_{target}_hit",
+                self._right_drop_hit,
+                target=target,
+            )
+        self.add_mode_event_handler("reptilla_upper_middle_hit", self._upper_middle_hit)
+        self.add_mode_event_handler("reptilla_center_web_hit", self._center_web_hit)
+        self.add_mode_event_handler("reptilla_saucer_2_hit", self._saucer_2_hit)
+        self.add_mode_event_handler("reptilla_fail_request", self._fail_mode)
+
+        if self.has_case_file("safety_net"):
+            self.machine.events.post("start_case_file_ball_save")
+
+        self.machine.events.post("reptilla_startup_complete")
+        self.machine.events.post("reptilla_clear_all_lights")
+        self.machine.events.post("clear_saucers")
         self._sync_vars()
-        self.machine.events.post(f"{self.MODE_KEY}_major_progress", major_hits=self.major_hits)
+
+    def mode_stop(self, **kwargs):
+        self.delay.remove("reptilla_super_timer")
+        self.clear_active_case_file_helpers()
+        self.machine.events.post("reptilla_clear_all_lights")
+        self.machine.events.post("clear_saucers")
+        super().mode_stop(**kwargs)
+
+    def _pop_hit(self, **kwargs):
+        if self._in_summary_or_done():
+            return
+
+        self.pop_hits += 1
+        self._score(self.pop_score_value)
+        self.pop_score_value = min(
+            self.POP_SCORE_MAX,
+            self.pop_score_value + self.POP_SCORE_ADD,
+        )
+
+        if not self.super_lit:
+            self.current_jackpot_value = min(
+                self.JACKPOT_MAX,
+                self.current_jackpot_value + self.JACKPOT_ADD_PER_POP,
+            )
+            self._maybe_light_next_rampage_shot()
+        else:
+            self._restart_super_timer()
+
+        self._sync_vars()
+        self.machine.events.post(
+            "reptilla_pop_scored",
+            pop_hits=self.pop_hits,
+            jackpot_value=self._display_jackpot_value(),
+        )
+
+    def _maybe_light_next_rampage_shot(self):
+        shots_to_light = min(self.required_jackpots, self.pop_hits // 3)
+        self.rampage_level = shots_to_light
+
+        while self.shots_activated < shots_to_light:
+            next_shot = self.shot_order[self.shots_activated]
+            self.shots_activated += 1
+            self._light_rampage_shot(next_shot)
+
+    def _light_rampage_shot(self, shot):
+        if shot in self.collected_shots:
+            return
+
+        self.lit_shots.add(shot)
+        self.machine.events.post(f"reptilla_{shot}_lit")
+        self.machine.events.post("reptilla_rampage_shot_lit", shot=shot)
+
+        if shot == self.LEFT_BANK_SHOT:
+            self._stage_left_bank()
+        elif shot == self.RIGHT_BANK_SHOT:
+            self._stage_right_bank()
+
+    def _stage_left_bank(self):
+        self.machine.events.post("drop_target_bank_dt_bank_left_reset")
+
+        # Normal rule: leave only the middle drop standing.
+        # Shot Assist: leave all three standing; any left-bank drop can collect.
+        if not self.shot_assist_active:
+            self.delay.add(
+                ms=350,
+                callback=self._drop_left_outer_targets,
+                name="reptilla_stage_left_bank",
+            )
+
+    def _stage_right_bank(self):
+        self.machine.events.post("drop_target_bank_dt_bank_right_reset")
+        self.delay.add(
+            ms=350,
+            callback=self._drop_right_non_middle_targets,
+            name="reptilla_stage_right_bank",
+        )
+
+    def _drop_left_outer_targets(self):
+        if self._in_summary_or_done() or self.LEFT_BANK_SHOT not in self.lit_shots:
+            return
+        self.machine.coils["c_left_bank_drop_1"].pulse()
+        self.machine.coils["c_left_bank_drop_3"].pulse()
+
+    def _drop_right_non_middle_targets(self):
+        if self._in_summary_or_done() or self.RIGHT_BANK_SHOT not in self.lit_shots:
+            return
+        for target in [1, 2, 4, 5]:
+            self.machine.coils[f"c_right_bank_drop_{target}"].pulse()
+
+    def _left_drop_hit(self, target=None, **kwargs):
+        if self._in_summary_or_done() or self.super_lit:
+            return
+        if self.LEFT_BANK_SHOT not in self.lit_shots:
+            return
+        if target == 2 or self.shot_assist_active:
+            self._collect_rampage_jackpot(self.LEFT_BANK_SHOT)
+
+    def _right_drop_hit(self, target=None, **kwargs):
+        if self._in_summary_or_done() or self.super_lit:
+            return
+        if self.RIGHT_BANK_SHOT not in self.lit_shots:
+            return
+        if target == 3:
+            self._collect_rampage_jackpot(self.RIGHT_BANK_SHOT)
+
+    def _upper_middle_hit(self, **kwargs):
+        if self._in_summary_or_done() or self.super_lit:
+            return
+        if self.UPPER_MIDDLE_SHOT in self.lit_shots:
+            self._collect_rampage_jackpot(self.UPPER_MIDDLE_SHOT)
+
+    def _center_web_hit(self, **kwargs):
+        if self._in_summary_or_done() or self.super_lit:
+            return
+        if self.CENTER_WEB_SHOT in self.lit_shots:
+            self._collect_rampage_jackpot(self.CENTER_WEB_SHOT)
+
+    def _collect_rampage_jackpot(self, shot):
+        if shot in self.collected_shots:
+            return
+
+        jackpot_value = self._display_jackpot_value()
+        self.collected_shots.add(shot)
+        self.lit_shots.discard(shot)
+        self.jackpots_collected += 1
+        self.super_jackpot_value += jackpot_value
+        self._score(jackpot_value)
+
+        self.machine.events.post(f"reptilla_{shot}_collected")
+        self.machine.events.post(
+            "reptilla_rampage_jackpot_collected",
+            shot=shot,
+            value=jackpot_value,
+            collected=self.jackpots_collected,
+            required=self.required_jackpots,
+        )
+
+        if self.jackpots_collected >= self.required_jackpots:
+            self._light_super_jackpot()
+
+        self._sync_vars()
+        self._refresh_lights()
+
+    def _light_super_jackpot(self):
+        if self.super_lit:
+            return
+
+        self.super_lit = True
+        self.machine.events.post("reptilla_clear_rampage_lights")
+        self.machine.events.post("reptilla_super_jackpot_lit")
+        self.machine.events.post("reset_drops")
+        self._restart_super_timer()
+
+    def _restart_super_timer(self):
+        if self._in_summary_or_done() or not self.super_lit:
+            return
+
+        seconds = self._super_timer_seconds()
+        self.delay.remove("reptilla_super_timer")
+        self.delay.add(
+            ms=seconds * 1000,
+            callback=self._super_timer_expired,
+            name="reptilla_super_timer",
+        )
+        self.machine.events.post("reptilla_super_timer_started", seconds=seconds)
+        self._sync_vars()
+
+    def _super_timer_expired(self):
+        if self._in_summary_or_done():
+            return
+        self.machine.events.post("reptilla_super_timer_expired")
+        self._fail_mode()
+
+    def _saucer_2_hit(self, **kwargs):
+        if self._in_summary_or_done():
+            return
+        if not self.super_lit:
+            self.machine.events.post("reptilla_saucer_unlit")
+            return
+
+        self.super_collected = True
+        self._score(self.super_jackpot_value)
+        self.machine.events.post(
+            "reptilla_super_jackpot_collected",
+            value=self.super_jackpot_value,
+        )
+        self._complete_mode()
 
     def _complete_mode(self, **kwargs):
         if self.mode_done:
             return
         self.mode_done = True
-        player = self.machine.game.player if self.machine.game else None
-        if player:
-            player[f"{self.MODE_KEY}_completed"] = 1
-        self.machine.events.post(f"{self.MODE_KEY}_mode_complete")
+        self.delay.remove("reptilla_super_timer")
+        player = self.machine.game.player
+        player["reptilla_completed"] = 1
+        self._sync_vars()
+        self.machine.events.post("reptilla_mode_complete")
 
     def _fail_mode(self, **kwargs):
         if self.mode_done:
             return
         self.mode_done = True
-        player = self.machine.game.player if self.machine.game else None
-        if player:
-            player[f"{self.MODE_KEY}_completed"] = 0
-        self.machine.events.post(f"{self.MODE_KEY}_mode_failed")
+        self.delay.remove("reptilla_super_timer")
+        player = self.machine.game.player
+        player["reptilla_completed"] = 0
+        self._sync_vars()
+        self.machine.events.post("reptilla_mode_failed")
 
     def _score(self, points):
-        player = self.machine.game.player if self.machine.game else None
-        if not player:
-            return
+        player = self.machine.game.player
         player["score"] += points
         self.mode_points += points
-        self._sync_vars()
+
+    def _display_jackpot_value(self):
+        value = self.current_jackpot_value
+        if self.bigger_jackpots_active:
+            value *= 2
+        return value
+
+    def _super_timer_seconds(self):
+        if self.more_time_active:
+            return self.MORE_TIME_SUPER_TIMER_SECONDS
+        return self.SUPER_TIMER_SECONDS
+
+    def _refresh_lights(self):
+        self.machine.events.post("reptilla_clear_rampage_lights")
+        for shot in self.lit_shots:
+            self.machine.events.post(f"reptilla_{shot}_lit")
+        if self.super_lit:
+            self.machine.events.post("reptilla_super_jackpot_lit")
 
     def _sync_vars(self):
-        player = self.machine.game.player if self.machine.game else None
-        if not player:
-            return
-        player[f"{self.MODE_KEY}_mode_points"] = self.mode_points
-        player[f"{self.MODE_KEY}_hits"] = self.hits
-        player[f"{self.MODE_KEY}_major_hits"] = self.major_hits
+        player = self.machine.game.player
+        player["reptilla_mode_points"] = self.mode_points
+        player["reptilla_pop_hits"] = self.pop_hits
+        player["reptilla_rampage_level"] = self.rampage_level
+        player["reptilla_current_jackpot"] = self._display_jackpot_value()
+        player["reptilla_super_jackpot"] = self.super_jackpot_value
+        player["reptilla_jackpots_collected"] = self.jackpots_collected
+        player["reptilla_jackpots_required"] = self.required_jackpots
+        player["reptilla_pop_score_value"] = self.pop_score_value
+        player["reptilla_super_lit"] = 1 if self.super_lit else 0
+        player["reptilla_super_timer_seconds"] = self._super_timer_seconds()
+
+    def _in_summary_or_done(self):
+        if self.mode_done:
+            return True
+        player = self.machine.game.player
+        return player["villain_mode_in_summary"] is True
