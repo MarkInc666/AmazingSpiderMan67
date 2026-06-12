@@ -29,9 +29,9 @@ class VillainProgression(Mode):
             "name": "Classic Rogues",
             #"villains": ['rhino', 'vulture', 'lizard', 'sandman', 'electro'],
             "villains": ['cerberus', 'miss_trubble', 'blackwell', 'doc_ock', 'electro'],
-            "mini_wizard_key": "daily_bugle_rooftop_riot",
-            "mini_wizard_name": "Daily Bugle Rooftop Riot",
-            "mini_wizard_event": "start_mode_daily_bugle_rooftop_riot",
+            "mini_wizard_key": "sinister_surge",
+            "mini_wizard_name": "Sinister Surge",
+            "mini_wizard_event": "start_mode_sinister_surge",            
         },
         {
             "key": "masterminds",

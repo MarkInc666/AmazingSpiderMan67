@@ -503,6 +503,33 @@ player_vars:
   cyclops_mode_points:
     initial_value: 0
     value_type: int
+  cyclops_flips_remaining:
+    initial_value: 0
+    value_type: int
+  cyclops_flips_used:
+    initial_value: 0
+    value_type: int
+  cyclops_drops_hit:
+    initial_value: 0
+    value_type: int
+  cyclops_eye_jackpots:
+    initial_value: 0
+    value_type: int
+  cyclops_best_jackpot:
+    initial_value: 0
+    value_type: int
+  cyclops_last_jackpot:
+    initial_value: 0
+    value_type: int
+  cyclops_jackpot_value:
+    initial_value: 0
+    value_type: int
+  cyclops_jackpot_cap:
+    initial_value: 2000000
+    value_type: int
+  cyclops_safety_net_used:
+    initial_value: 0
+    value_type: int
 
   reptilla_played:
     initial_value: 0
