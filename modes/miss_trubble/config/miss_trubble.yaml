@@ -8,7 +8,7 @@ mode:
   stop_events:
     - miss_trubble_mode_complete
     - miss_trubble_mode_failed
-    - miss_trubble_completed_summary
+    - miss_trubble_mode_completed_summary
     - ball_ended
   code: miss_trubble.MissTrubble
   priority: 300
@@ -102,7 +102,7 @@ light_player:
   miss_trubble_hidden_left_web:
     l_left_web_target: white
   miss_trubble_hidden_center_web:
-    l_left_web_target: white
+    l_mid_spider_target: white
   miss_trubble_hidden_upper_spinner:
     l_gi_a: white
   miss_trubble_hidden_upper_target_left:
@@ -149,7 +149,7 @@ light_player:
   miss_trubble_reveal_good_left_web:
     l_left_web_target: green
   miss_trubble_reveal_good_center_web:
-    l_left_web_target: green
+    l_mid_spider_target: green
   miss_trubble_reveal_good_upper_spinner:
     l_gi_a: green
   miss_trubble_reveal_good_upper_target_left:
@@ -196,7 +196,7 @@ light_player:
   miss_trubble_reveal_bad_left_web:
     l_left_web_target: 800000
   miss_trubble_reveal_bad_center_web:
-    l_left_web_target: 800000
+    l_mid_spider_target: 800000
   miss_trubble_reveal_bad_upper_spinner:
     l_gi_a: 800000
   miss_trubble_reveal_bad_upper_target_left:

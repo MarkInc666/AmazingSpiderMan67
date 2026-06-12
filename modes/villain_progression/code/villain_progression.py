@@ -27,8 +27,7 @@ class VillainProgression(Mode):
         {
             "key": "classic_rogues",
             "name": "Classic Rogues",
-            #"villains": ['rhino', 'vulture', 'lizard', 'sandman', 'electro'],
-            "villains": ['cerberus', 'miss_trubble', 'blackwell', 'doc_ock', 'electro'],
+            "villains": ['rhino', 'vulture', 'lizard', 'sandman', 'electro'],
             "mini_wizard_key": "sinister_surge",
             "mini_wizard_name": "Sinister Surge",
             "mini_wizard_event": "start_mode_sinister_surge",            
