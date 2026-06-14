@@ -99,7 +99,7 @@ event_player:
   s_web_spinner_active: electro_spinner_hit
   elect_left_drops_hit: electro_left_drops_hit
   elect_saucers_hit: electro_saucers_hit
-  s_web_target_top_active: electro_right_web_hit
+  s_web_target_mid_active: electro_right_web_hit
   s_trispinner_opto_active: electro_upper_spinner_hit
   elect_upper_targets_hit: electro_upper_target_hit
   elect_right_drops_hit: electro_right_drops_hit
@@ -379,10 +379,10 @@ shows:
   electro_right_web_lit_show:
     - duration: 150ms
       lights:
-        l_mid_spider_target: yellow
+        l_mid_web_target: yellow
     - duration: 150ms
       lights:
-        l_mid_spider_target: off
+        l_mid_web_target: off
 
   electro_upper_spinner_lit_show:
     - duration: 120ms
@@ -468,10 +468,10 @@ shows:
   electro_right_web_super_show:
     - duration: 150ms
       lights:
-        l_mid_spider_target: white
+        l_mid_web_target: white
     - duration: 150ms
       lights:
-        l_mid_spider_target: off
+        l_mid_web_target: off
 
   electro_upper_spinner_super_show:
     - duration: 120ms

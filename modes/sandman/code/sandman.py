@@ -92,9 +92,14 @@ class Sandman(CaseFileMixin, Mode):
         self.hit_order = []
         self.current_flash = 1
 
-        self.machine.events.post("reset_5bank")
+        # Use the MPF drop target bank reset event instead of only pulsing the
+        # reset coil. This keeps the physical bank and MPF device state in sync,
+        # and is more reliable when the intro is skipped quickly.
+        self.machine.events.post("drop_target_bank_dt_bank_right_reset")
 
+        self.delay.remove("sandman_after_bank_reset")
         self.delay.add(
+            name="sandman_after_bank_reset",
             ms=self.RESET_SETTLE_MS,
             callback=self.after_bank_reset
         )

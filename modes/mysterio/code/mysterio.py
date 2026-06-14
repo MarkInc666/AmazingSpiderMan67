@@ -48,7 +48,7 @@ class Mysterio(CaseFileMixin, Mode):
             Shot("spinner", 20, 50, "mysterio_spinner_hit", group="center"),
             Shot("left_drops", 40, 60, "mysterio_left_drops_hit", group="left"),
             Shot("saucers", 50, 30, "mysterio_saucers_hit", group="left"),
-            Shot("right_web", 80, 30, "mysterio_right_web_hit", group="right"),
+            Shot("center_web", 60, 30, "mysterio_center_web_hit", group="center"),
             Shot("upper_spinner", 90, 30, "mysterio_upper_spinner_hit", group="upper"),
             Shot("upper_targets", 95, 20, "mysterio_upper_targets_hit", group="upper"),
             Shot("right_drops", 100, 80, "mysterio_right_drops_hit", group="right"),
@@ -122,6 +122,8 @@ class Mysterio(CaseFileMixin, Mode):
     def build_hint(self, jackpot_shot):
         if jackpot_shot.group == "upper":
             return "upper"
+        if jackpot_shot.group == "center":
+            return "center"
         if jackpot_shot.x < 60:
             return "left"
         return "right"     
@@ -154,7 +156,7 @@ class Mysterio(CaseFileMixin, Mode):
     def check_gate_status(self):
         upper_lit = False
         for shot in self.shots:
-            if shot.disabled == False and shot.hint == "Upper":
+            if shot.disabled == False and shot.hint == "upper":
                 upper_lit = True
         if upper_lit:
             self.machine.events.post("rooftop_diverter_open")

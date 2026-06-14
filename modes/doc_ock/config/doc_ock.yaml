@@ -81,7 +81,7 @@ event_player:
   s_web_target_left_active:
     - doc_ock_jackpot_request
 
-  s_web_target_top_active:
+  s_web_target_mid_active:
     - doc_ock_jackpot_request
 
   s_saucer_1_active:
@@ -309,11 +309,11 @@ shows:
     - duration: 250ms
       lights:
         l_left_web_target: purple
-        l_mid_spider_target: purple
+        l_mid_web_target: purple
     - duration: 250ms
       lights:
         l_left_web_target: white
-        l_mid_spider_target: white
+        l_mid_web_target: white
 
   doc_ock_jackpot_collect_show:
     - duration: 150ms

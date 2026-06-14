@@ -224,7 +224,7 @@ lights:
     number: playfield-4-10
   l_mid_multibonus:
     number: playfield-4-11
-  l_mid_spider_target:
+  l_mid_web_target:
     number: playfield-4-12
   l_gi_mid_spider:
     number: playfield-4-13

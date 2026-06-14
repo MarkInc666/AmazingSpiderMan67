@@ -47,7 +47,7 @@ sound_player:
       bus: voice
 
   #almost bonus x
-  bonus_center_web_collected:
+  bonus_left_web_lit:
     sm_hit_the_left_web:
       action: play
       bus: voice
@@ -103,7 +103,7 @@ event_player:
   s_outlane_r_active:
     - bonus_lane_4_hit
 
-  s_web_target_top_active:
+  s_web_target_mid_active:
     - bonus_center_web_request
 #    - bonus_count_add
 
@@ -349,10 +349,10 @@ shows:
   bonus_center_web_show:
     - duration: 250ms
       lights:
-        l_mid_spider_target: white
+        l_mid_web_target: white
     - duration: 250ms
       lights:
-        l_mid_spider_target: blue
+        l_mid_web_target: blue
 
   bonus_left_web_show:
     - duration: 250ms

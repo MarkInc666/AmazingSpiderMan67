@@ -154,6 +154,12 @@ class Electro(CaseFileMixin, Mode):
 
         self.machine.events.post("electro_value_timer_start")
 
+    def _set_gate_for_shot(self, shot):
+        if shot and shot.group == "upper":
+            self.machine.events.post("rooftop_diverter_open")
+        else:
+            self.machine.events.post("rooftop_diverter_close")
+
     def stop_current_lit_shot(self):
         if self.current_shot:
             self.current_shot.is_lit = False
@@ -235,6 +241,8 @@ class Electro(CaseFileMixin, Mode):
 
         #for the "GET THE SUPER JACKPOT FOR XXXX" widget
         self.machine.game.player["electro_super_jackpot_value"] = self.SUPER_JACKPOT_VALUE
+
+        self._set_gate_for_shot(shot)
 
         self.machine.events.post("electro_super_lit")
         self.machine.events.post(f"electro_super_lite_{shot.name}")

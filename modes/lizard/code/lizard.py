@@ -42,7 +42,7 @@ class Lizard(CaseFileMixin, Mode):
         # Switch/event handlers.
         self.add_mode_event_handler("s_star_rollover_active", self.serum_collect_request)
         self.add_mode_event_handler("s_web_target_left_active", self.delivery_request, target="left")
-        self.add_mode_event_handler("s_web_target_top_active", self.delivery_request, target="center")
+        self.add_mode_event_handler("s_web_target_mid_active", self.delivery_request, target="center")
 
         # A rollovers.
         self.add_mode_event_handler("s_inlane_a_active", self.a_rollover)

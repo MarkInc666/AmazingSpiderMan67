@@ -54,7 +54,7 @@ event_player:
   s_upper_target_center_active:
     - reptilla_upper_middle_hit
 
-  s_web_target_top_active:
+  s_web_target_mid_active:
     - reptilla_center_web_hit
 
   s_saucer_1_active:
@@ -85,7 +85,7 @@ light_player:
     l_5bank_3: orange
 
   reptilla_center_web_lit:
-    l_mid_spider_target: orange
+    l_mid_web_target: orange
 
   reptilla_super_jackpot_lit:
     l_2: red
@@ -96,13 +96,13 @@ light_player:
     l_3bankbonus: off
     l_upper_middle: off
     l_5bank_3: off
-    l_mid_spider_target: off
+    l_mid_web_target: off
 
   reptilla_clear_all_lights:
     l_3bankbonus: off
     l_upper_middle: off
     l_5bank_3: off
-    l_mid_spider_target: off
+    l_mid_web_target: off
     l_2: off
     l_2_hole_l: off
     l_2_hole_r: off

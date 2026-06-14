@@ -42,6 +42,8 @@ class VillainStart(Mode):
         self.add_mode_event_handler("villain_mode_started", self._villain_started)
         self.add_mode_event_handler("villain_mode_ended", self._villain_mode_ended)
         self.add_mode_event_handler("chapter_mini_wizard_completed", self._villain_mode_ended)
+        self.add_mode_event_handler("chapter_mini_wizard_ended", self._villain_mode_ended)
+        self.add_mode_event_handler("villain_chapter_started", self._villain_mode_ended)
         self.add_mode_event_handler("villain_select_cancelled", self._villain_select_cancelled)
         self.add_mode_event_handler("villain_start_request_failed", self._villain_start_request_failed)
 
@@ -77,8 +79,17 @@ class VillainStart(Mode):
             self.machine.events.post("villain_saucer_ignored_mode_running", saucer=saucer)
             return
         if not self.villain_start_logic_active:
-            self.machine.events.post("villain_saucer_ignored_start_locked", saucer=saucer)
-            return
+            # Defensive recovery: after mini-wizard/chapter transitions the
+            # physical qualification system may be active again while this
+            # local lock is still stale. If no real mode is running, unlock
+            # and let this saucer hit proceed instead of swallowing it.
+            player = self.machine.game.player
+            if player["villain_mode_running"] == 0:
+                self.machine.events.post("villain_start_lock_self_healed", saucer=saucer)
+                self.villain_start_logic_active = True
+            else:
+                self.machine.events.post("villain_saucer_ignored_start_locked", saucer=saucer)
+                return
 
         state = self._safe_int(self._player_var(f"{saucer}_state", 0), 0)
         should_lock = (

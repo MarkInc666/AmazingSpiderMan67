@@ -25,6 +25,22 @@ class DailyBugleMystery(Mode):
     PHOTOS_NEEDED = 3
     LEFT_EXIT_HOLD_MS = 8000
 
+    # Daily Bugle should not take over the rooftop gate while one of
+    # these villain modes owns upper/VUK/gate access.
+    GATE_PROTECTED_VILLAIN_MODES = {
+        "vulture",
+        "lizard",
+        "electro",
+        "doc_ock",
+        "mysterio",
+        "scorpion",
+        "parafino",
+        "centaur",
+        "cerberus",
+        "mole_man",
+        "fifth_avenue_phantom",
+    }
+
     EXTRA_BALL_LIGHT_AT = 3
     EXTRA_BALL_AWARD_AT = 7
     EXTRA_BALL_RIGHT_LIGHT_AT = 10
@@ -161,7 +177,7 @@ class DailyBugleMystery(Mode):
         self.mystery_ab_ready = True
         self.update_player_vars(post_widget_update=False)
 
-        self.machine.events.post("rooftop_diverter_open")
+        self._post_rooftop_gate_open(reason="ab_complete")
         self.machine.events.post("daily_bugle_ab_complete")
         self.machine.events.post("daily_bugle_widget_update")
 
@@ -198,8 +214,9 @@ class DailyBugleMystery(Mode):
         else:
             self.update_player_vars(post_widget_update=False)            
 
-        # Open gate again so player can shoot back toward VUK/mystery collect.
-        self.machine.events.post("rooftop_diverter_open")
+        # Open gate again so player can shoot back toward VUK/mystery collect,
+        # unless a gate-protected villain mode owns upper/VUK access.
+        self._post_rooftop_gate_open(reason="photo_collected")
         self.machine.events.post("daily_bugle_widget_update")
 
     def _update_pictures_taken_text(self):
@@ -367,8 +384,40 @@ class DailyBugleMystery(Mode):
             ms=5000,
             callback=self.fire_vuk,
         )
-        self.machine.events.post("rooftop_diverter_close")
+        self._post_rooftop_gate_close(reason="mystery_collected")
 
+    def _gate_control_blocked_by_villain(self):
+        player = self.machine.game.player
+
+        if player["villain_mode_running"] != 1:
+            return False
+
+        running_name = player["villain_mode_running_name"]
+        return running_name in self.GATE_PROTECTED_VILLAIN_MODES
+
+    def _post_rooftop_gate_open(self, reason="unknown"):
+        if self._gate_control_blocked_by_villain():
+            player = self.machine.game.player
+            self.machine.events.post(
+                "daily_bugle_gate_open_deferred",
+                reason=reason,
+                villain_mode=player["villain_mode_running_name"],
+            )
+            return
+
+        self.machine.events.post("rooftop_diverter_open")
+
+    def _post_rooftop_gate_close(self, reason="unknown"):
+        if self._gate_control_blocked_by_villain():
+            player = self.machine.game.player
+            self.machine.events.post(
+                "daily_bugle_gate_close_deferred",
+                reason=reason,
+                villain_mode=player["villain_mode_running_name"],
+            )
+            return
+
+        self.machine.events.post("rooftop_diverter_close")
 
     def award_pseudo_random_mystery(self):
         player = self.machine.game.player

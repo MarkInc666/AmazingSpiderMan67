@@ -19,7 +19,7 @@ from modes.common.case_file_mixin import CaseFileMixin
 """
 class Scorpion(CaseFileMixin, Mode):
 
-    VENOM_READY_HITS = 4
+    VENOM_READY_HITS = 2
     MAX_TRIES = 3
 
     def mode_start(self, **kwargs):
@@ -88,17 +88,17 @@ class Scorpion(CaseFileMixin, Mode):
             self.machine.events.post("scorpion_case_file_target_spotted")
 
     def spinner_hit(self, **kwargs):
-        if self.state != "build":
-            return
-
-        self.venom_hits += 1
-        self.machine.events.post("scorpion_spinner_build")
-
         self.machine.game.player["score"] += 25000
         self.scorpion_venom_value += 50000
 
         self.scorpion_mode_points += 25000
         self.machine.game.player["scorpion_mode_points"] = self.scorpion_mode_points
+
+        if self.state != "build":
+            return
+
+        self.venom_hits += 1
+        self.machine.events.post("scorpion_spinner_build")
 
         if self.venom_hits >= self.VENOM_READY_HITS:
             self.state = "ready"

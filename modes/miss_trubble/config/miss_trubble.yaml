@@ -16,7 +16,7 @@ mode:
 
 event_player:
   s_web_target_left_active: miss_trubble_left_web_hit
-  s_web_target_top_active: miss_trubble_center_web_hit
+  s_web_target_mid_active: miss_trubble_center_web_hit
 
   # Either spinner reveals the current answer. The upper spinner may also be
   # one of the three hidden choices, so Python handles that special case.
@@ -102,7 +102,7 @@ light_player:
   miss_trubble_hidden_left_web:
     l_left_web_target: white
   miss_trubble_hidden_center_web:
-    l_mid_spider_target: white
+    l_mid_web_target: white
   miss_trubble_hidden_upper_spinner:
     l_gi_a: white
   miss_trubble_hidden_upper_target_left:
@@ -149,7 +149,7 @@ light_player:
   miss_trubble_reveal_good_left_web:
     l_left_web_target: green
   miss_trubble_reveal_good_center_web:
-    l_mid_spider_target: green
+    l_mid_web_target: green
   miss_trubble_reveal_good_upper_spinner:
     l_gi_a: green
   miss_trubble_reveal_good_upper_target_left:
@@ -196,7 +196,7 @@ light_player:
   miss_trubble_reveal_bad_left_web:
     l_left_web_target: 800000
   miss_trubble_reveal_bad_center_web:
-    l_mid_spider_target: 800000
+    l_mid_web_target: 800000
   miss_trubble_reveal_bad_upper_spinner:
     l_gi_a: 800000
   miss_trubble_reveal_bad_upper_target_left:

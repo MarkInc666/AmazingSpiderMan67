@@ -210,32 +210,32 @@ shows:
   lizard_center_web_show:
     - duration: 250ms
       lights:
-        l_mid_spider_target: green
+        l_mid_web_target: green
     - duration: 250ms
       lights:
-        l_mid_spider_target: white
+        l_mid_web_target: white
 
   lizard_delivery_success_show:
     - duration: 150ms
       lights:
         l_left_web_target: white
-        l_mid_spider_target: white
+        l_mid_web_target: white
     - duration: 150ms
       lights:
         l_left_web_target: green
-        l_mid_spider_target: green
+        l_mid_web_target: green
 
   lizard_serum_expired_lights:
     - duration: 150ms
       lights:
         l_star: red
         l_left_web_target: red
-        l_mid_spider_target: red
+        l_mid_web_target: red
     - duration: 150ms
       lights:
         l_star: off
         l_left_web_target: off
-        l_mid_spider_target: off
+        l_mid_web_target: off
 
   lizard_complete_show:
     - duration: 200ms

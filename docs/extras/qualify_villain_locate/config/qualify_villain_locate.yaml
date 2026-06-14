@@ -338,7 +338,7 @@ shows:
     - duration: 250ms
       lights:
         l_left_web_target: white
-        l_mid_spider_target: white
+        l_mid_web_target: white
         l_left_inlane: white
         l_left_outlane: white
         l_right_inlane: white
@@ -387,7 +387,7 @@ shows:
       lights:
         l_star: purple
         l_left_web_target: purple
-        l_mid_spider_target: purple
+        l_mid_web_target: purple
 
 
   villain_saucer_1_flash:

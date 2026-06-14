@@ -37,7 +37,7 @@ widget_player:
 
 event_player:
   # The center web target is the Cyclops Eye.
-  s_web_target_top_active:
+  s_web_target_mid_active:
     - cyclops_eye_hit
 
   # Drop targets add flips. Python tracks unique drops and case-file assist.
@@ -96,7 +96,7 @@ shows:
   cyclops_eye_lit_show:
     - duration: 250ms
       lights:
-        l_mid_spider_target: yellow
+        l_mid_web_target: yellow
     - duration: 250ms
       lights:
-        l_mid_spider_target: off
+        l_mid_web_target: off

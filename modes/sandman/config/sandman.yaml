@@ -82,7 +82,7 @@ event_player:
 
   sandman_startup_complete:
     - sandman_start_bank
-    - clear_saucers
+    - clear_saucers_delayed
     
   drop_target_bank_dt_bank_left_down:
     - drop_target_bank_dt_bank_left_reset

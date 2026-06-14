@@ -211,7 +211,7 @@ variable_player:
   s_web_target_left_active:
     rhino_jackpot: current_player.rhino_add_value
 
-  s_web_target_top_active:
+  s_web_target_mid_active:
     rhino_jackpot: current_player.rhino_add_value
 
   s_saucer_1_active:

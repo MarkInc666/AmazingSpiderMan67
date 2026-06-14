@@ -49,7 +49,7 @@ event_player:
 
   # Main sequence shots.
   s_web_target_left_active: blackwell_left_web_hit
-  s_web_target_top_active: blackwell_center_web_hit
+  s_web_target_mid_active: blackwell_center_web_hit
   s_trispinner_opto_active: blackwell_upper_spinner_hit
   s_upper_target_left_active: blackwell_upper_target_left_hit
   s_upper_target_center_active: blackwell_upper_target_center_hit
@@ -202,10 +202,10 @@ shows:
   blackwell_center_web_lit_show:
     - duration: 150ms
       lights:
-        l_mid_spider_target: yellow
+        l_mid_web_target: yellow
     - duration: 150ms
       lights:
-        l_mid_spider_target: off
+        l_mid_web_target: off
 
   blackwell_upper_spinner_lit_show:
     - duration: 120ms

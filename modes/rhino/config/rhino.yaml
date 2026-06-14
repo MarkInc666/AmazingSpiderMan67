@@ -64,7 +64,7 @@ event_player:
 
   s_web_target_left_active:
     - rhino_smash_hit
-  s_web_target_top_active:
+  s_web_target_mid_active:
     - rhino_smash_hit
 
   s_saucer_1_active:

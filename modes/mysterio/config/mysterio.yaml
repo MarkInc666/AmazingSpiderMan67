@@ -58,7 +58,7 @@ event_player:
     
 
   s_web_target_left_active: mysterio_left_web_hit
-  s_web_target_top_active: mysterio_right_web_hit
+  s_web_target_mid_active: mysterio_center_web_hit
   s_web_spinner_active: mysterio_spinner_hit
   left_drops_hit: mysterio_left_drops_hit
   right_drops_hit: mysterio_right_drops_hit
@@ -68,7 +68,7 @@ event_player:
 
   mysterio_all_shots_lit:
     - mysterio_lite_left_web
-    - mysterio_lite_right_web
+    - mysterio_lite_center_web
     - mysterio_lite_spinner
     - mysterio_lite_left_drops
     - mysterio_lite_right_drops
@@ -160,8 +160,8 @@ show_player:
     mysterio_lite_left_web_show:
       loops: -1
 
-  mysterio_lite_right_web:
-    mysterio_lite_right_web_show:
+  mysterio_lite_center_web:
+    mysterio_lite_center_web_show:
       loops: -1
 
   mysterio_lite_spinner:
@@ -192,8 +192,8 @@ show_player:
     mysterio_lite_left_web_show:
       action: stop
 
-  mysterio_stop_right_web:
-    mysterio_lite_right_web_show:
+  mysterio_stop_center_web:
+    mysterio_lite_center_web_show:
       action: stop
 
   mysterio_stop_spinner:
@@ -231,13 +231,13 @@ shows:
       lights:
         l_left_web_target: blue
 
-  mysterio_lite_right_web_show:
+  mysterio_lite_center_web_show:
     - duration: 120ms
       lights:
-        l_mid_spider_target: yellow
+        l_mid_web_target: yellow
     - duration: 120ms
       lights:
-        l_mid_spider_target: blue
+        l_mid_web_target: blue
 
   mysterio_lite_spinner_show:
     - duration: 120ms

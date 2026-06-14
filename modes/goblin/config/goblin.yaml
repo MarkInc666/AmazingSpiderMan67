@@ -98,7 +98,7 @@ event_player:
 
   # real playfield input -> Python shot events
   s_web_target_left_active: goblin_left_web_hit
-  s_web_target_top_active: goblin_right_web_hit
+  s_web_target_mid_active: goblin_right_web_hit
   s_web_spinner_active: goblin_spinner_hit
   gob_left_drops_hit: goblin_left_drops_hit
   gob_right_drops_hit: goblin_right_drops_hit
@@ -271,10 +271,10 @@ shows:
   goblin_right_web_flash_show:
     - duration: 120ms
       lights:
-        l_mid_spider_target: yellow
+        l_mid_web_target: yellow
     - duration: 120ms
       lights:
-        l_mid_spider_target: green
+        l_mid_web_target: green
 
   goblin_spinner_flash_show:
     - duration: 120ms
@@ -360,7 +360,7 @@ shows:
   goblin_right_web_solid_show:
     - duration: -1
       lights:
-        l_mid_spider_target: green
+        l_mid_web_target: green
 
   goblin_spinner_solid_show:
     - duration: -1

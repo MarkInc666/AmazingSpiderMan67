@@ -300,7 +300,7 @@ sequences:
   reset_right_bank_after_hit:
     events:
       - drop_target_bank_dt_bank_right_down
-      - xxxs_web_target_top_active
+      - xxxs_web_target_mid_active
     reset_on_complete: true
     disable_on_complete: false
     events_when_complete: drop_target_bank_dt_bank_right_reset
