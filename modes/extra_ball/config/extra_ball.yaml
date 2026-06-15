@@ -80,25 +80,25 @@ event_player:
     - increase_ballsave_count
 
   ball_save_default_ball_save_saving_ball:
-    - saved_ball_pending_plunger
-    - show_ball_saved_widget:
-        save_type: default
-        title: BALL SAVED
-        subtitle: DEFAULT SAVE
+    saved_ball_pending_plunger:
+    show_ball_saved_widget:
+      save_type: default
+      title: BALL SAVED
+      subtitle: DEFAULT SAVE
 
   ball_save_mystery_ball_save_saving_ball:
-    - saved_ball_pending_plunger
-    - show_ball_saved_widget:
-        save_type: mystery
-        title: BALL SAVED
-        subtitle: DAILY BUGLE SAVE
+    saved_ball_pending_plunger:
+    show_ball_saved_widget:
+      save_type: mystery
+      title: BALL SAVED
+      subtitle: DAILY BUGLE SAVE
 
   ball_save_case_file_ball_save_saving_ball:
-    - saved_ball_pending_plunger
-    - show_ball_saved_widget:
-        save_type: safety_net
-        title: BALL SAVED
-        subtitle: SAFETY NET
+    saved_ball_pending_plunger:
+    show_ball_saved_widget:
+      save_type: safety_net
+      title: BALL SAVED
+      subtitle: SAFETY NET
 
   show_ball_saved_safety_net:
     show_ball_saved_widget:
@@ -170,7 +170,7 @@ variable_player:
       action: set
       int: 0
 
-  ball_started:
+  mode_extra_ball_started:
     saved_ball_pending_plunger:
       action: set
       int: 0
