@@ -76,18 +76,29 @@ event_player:
     - increase_ballsave_count
   ball_save_mystery_ball_save_enabled:
     - increase_ballsave_count
+  ball_save_case_file_ball_save_enabled:
+    - increase_ballsave_count
 
   ball_save_default_ball_save_saving_ball:
-    show_ball_saved_widget:
-      save_type: default
-      title: BALL SAVED
-      subtitle: DEFAULT SAVE
+    - saved_ball_pending_plunger
+    - show_ball_saved_widget:
+        save_type: default
+        title: BALL SAVED
+        subtitle: DEFAULT SAVE
 
   ball_save_mystery_ball_save_saving_ball:
-    show_ball_saved_widget:
-      save_type: mystery
-      title: BALL SAVED
-      subtitle: DAILY BUGLE SAVE
+    - saved_ball_pending_plunger
+    - show_ball_saved_widget:
+        save_type: mystery
+        title: BALL SAVED
+        subtitle: DAILY BUGLE SAVE
+
+  ball_save_case_file_ball_save_saving_ball:
+    - saved_ball_pending_plunger
+    - show_ball_saved_widget:
+        save_type: safety_net
+        title: BALL SAVED
+        subtitle: SAFETY NET
 
   show_ball_saved_safety_net:
     show_ball_saved_widget:
@@ -101,9 +112,11 @@ event_player:
       title: BALL SAVED
       subtitle: MULTIBALL SAVE
 
-  ball_save_default_ball_save_disabled:
+  ball_save_default_ball_save_disabled{current_player.ball_save_count > 0}:
     - decrease_ballsave_count
-  ball_save_mystery_ball_save_disabled:
+  ball_save_mystery_ball_save_disabled{current_player.ball_save_count > 0}:
+    - decrease_ballsave_count
+  ball_save_case_file_ball_save_disabled{current_player.ball_save_count > 0}:
     - decrease_ballsave_count
 
 
@@ -120,6 +133,56 @@ variable_player:
     ball_save_count:
       action: set
       int: current_player.ball_save_count-1
+
+  saved_ball_pending_plunger:
+    saved_ball_pending_plunger:
+      action: set
+      int: 1
+
+  saved_ball_arrived_at_plunger:
+    saved_ball_pending_plunger:
+      action: set
+      int: 0
+    saved_ball_in_plunger:
+      action: set
+      int: 1
+
+  clear_saved_ball_in_plunger:
+    saved_ball_in_plunger:
+      action: set
+      int: 0
+
+  outlane_add_a_ball_pending_plunger:
+    outlane_add_a_ball_pending_plunger:
+      action: set
+      int: 1
+
+  outlane_add_a_ball_arrived_at_plunger:
+    outlane_add_a_ball_pending_plunger:
+      action: set
+      int: 0
+    outlane_add_a_ball_in_plunger:
+      action: set
+      int: 1
+
+  clear_outlane_add_a_ball_in_plunger:
+    outlane_add_a_ball_in_plunger:
+      action: set
+      int: 0
+
+  ball_started:
+    saved_ball_pending_plunger:
+      action: set
+      int: 0
+    saved_ball_in_plunger:
+      action: set
+      int: 0
+    outlane_add_a_ball_pending_plunger:
+      action: set
+      int: 0
+    outlane_add_a_ball_in_plunger:
+      action: set
+      int: 0
 
   #if points instead of eb - TODO - call this from somewhere else
   extra_ball_award_million_points:
@@ -197,6 +260,20 @@ show_player:
       loops: -1
 
   ball_save_mystery_ball_save_disabled:
+    shoot_again_flash:
+      action: stop
+    shoot_again_fast_flash:
+      action: stop
+
+  ball_save_case_file_ball_save_enabled:
+    shoot_again_flash:
+      loops: -1
+
+  ball_save_case_file_ball_save_hurry_up:
+    shoot_again_fast_flash:
+      loops: -1
+
+  ball_save_case_file_ball_save_disabled:
     shoot_again_flash:
       action: stop
     shoot_again_fast_flash:

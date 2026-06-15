@@ -73,15 +73,32 @@ event_player:
   mode_base_started_delayed:
     - play_song_5
 
-  s_plunger_inactive:
+  s_plunger_active{current_player.saved_ball_pending_plunger == 1}:
+    - saved_ball_arrived_at_plunger
+
+  s_plunger_active{current_player.outlane_add_a_ball_pending_plunger == 1}:
+    - outlane_add_a_ball_arrived_at_plunger
+
+  s_plunger_inactive{current_player.saved_ball_in_plunger != 1}:
     - start_my_default_ball_save
 
+  s_plunger_inactive{current_player.saved_ball_in_plunger == 1}:
+    - clear_saved_ball_in_plunger
+
+  s_plunger_inactive{current_player.outlane_add_a_ball_in_plunger == 1}:
+    - clear_outlane_add_a_ball_in_plunger
+    - disable_outlane_autoplunge
+
   s_outlane_r_active{current_player.outlane_add_a_ball_available == 1 and current_player.ball_save_count == 0}:
+    - saved_ball_pending_plunger
+    - outlane_add_a_ball_pending_plunger
     - consume_outlane_add_a_ball
     - start_outlane_add_a_ball
     - enable_outlane_autoplunge
 
   s_outlane_l_active{current_player.outlane_add_a_ball_available == 1 and current_player.ball_save_count == 0}:
+    - saved_ball_pending_plunger
+    - outlane_add_a_ball_pending_plunger
     - consume_outlane_add_a_ball
     - start_outlane_add_a_ball
     - enable_outlane_autoplunge

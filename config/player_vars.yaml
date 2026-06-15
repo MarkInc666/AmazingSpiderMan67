@@ -110,10 +110,6 @@ player_vars:
     initial_value: 0
     value_type: int
 
-  mini_wizard_vuk_hold_active:
-    initial_value: 0
-    value_type: int
-
   mini_wizard_current_key:
     initial_value: ""
     value_type: str
@@ -746,16 +742,10 @@ player_vars:
   sinister_surge_played:
     initial_value: 0
     value_type: int
-  sinister_surge_state:
-    initial_value: NOT PLAYED
-    value_type: str
   sinister_surge_completed:
     initial_value: 0
     value_type: int
   sinister_surge_mode_points:
-    initial_value: 0
-    value_type: int
-  sinister_surge_hits:
     initial_value: 0
     value_type: int
 
@@ -1891,6 +1881,14 @@ player_vars:
     initial_value: 0
     value_type: int
 
+  saved_ball_pending_plunger:
+    initial_value: 0
+    value_type: int
+
+  saved_ball_in_plunger:
+    initial_value: 0
+    value_type: int
+
   outlane_add_a_ball_available:
     initial_value: 0
     value_type: int
@@ -1898,6 +1896,11 @@ player_vars:
   multiball_autoplunge_active:
     initial_value: 0
     value_type: int
+  outlane_add_a_ball_pending_plunger:
+    initial_value: 0
+
+  outlane_add_a_ball_in_plunger:
+    initial_value: 0
 
 
 
