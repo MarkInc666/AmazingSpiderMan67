@@ -1,7 +1,8 @@
 #config_version=6
 
 # Fifth Dimension Curse placeholder mini-wizard.
-# Mode idea: Complete mystic acts to collect relics. Relics unlock final dimension escape jackpot.
+# Mystic Menace mini-wizard multiball.
+# Temporary flow: intro -> 2-ball multiball -> MB end -> summary -> next chapter.
 
 mode:
   start_events: start_mode_fifth_dimension_curse
@@ -20,9 +21,7 @@ multiballs:
     stop_events:
       - stop_mode_fifth_dimension_curse
 
-
 variable_player:
-
   multiball_fifth_dimension_curse_multiball_started:
     multiball_autoplunge_active:
       action: set
@@ -32,7 +31,6 @@ variable_player:
     multiball_autoplunge_active:
       action: set
       int: 0
-
 
 widget_player:
   mode_fifth_dimension_curse_started:
@@ -72,10 +70,12 @@ event_player:
   s_right_drops_3_active: fifth_dimension_curse_shot_hit
   s_right_drops_4_active: fifth_dimension_curse_shot_hit
   s_right_drops_5_active: fifth_dimension_curse_shot_hit
+  s_saucer_1_active: fifth_dimension_curse_shot_hit
+  s_saucer_2_active: fifth_dimension_curse_shot_hit
+  s_saucer_3_active: fifth_dimension_curse_shot_hit
+  s_vuk_switch_active: fifth_dimension_curse_shot_hit
 
-  s_vuk_switch_active: fifth_dimension_curse_jackpot_hit
-
-  multiball_fifth_dimension_curse_multiball_ended: fifth_dimension_curse_failed
+  multiball_fifth_dimension_curse_multiball_ended: fifth_dimension_curse_complete_request
 
   mode_fifth_dimension_curse_started:
     - clear_saucers

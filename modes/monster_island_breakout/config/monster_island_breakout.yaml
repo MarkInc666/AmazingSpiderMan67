@@ -1,7 +1,8 @@
 #config_version=6
 
 # Monster Island Breakout placeholder mini-wizard.
-# Mode idea: Survive monster attacks by completing short monster tasks. Each complete task reduces Monster Meter.
+# Monsters mini-wizard multiball.
+# Temporary flow: intro -> 2-ball multiball -> MB end -> summary -> next chapter.
 
 mode:
   start_events: start_mode_monster_island_breakout
@@ -20,9 +21,7 @@ multiballs:
     stop_events:
       - stop_mode_monster_island_breakout
 
-
 variable_player:
-
   multiball_monster_island_breakout_multiball_started:
     multiball_autoplunge_active:
       action: set
@@ -32,7 +31,6 @@ variable_player:
     multiball_autoplunge_active:
       action: set
       int: 0
-
 
 widget_player:
   mode_monster_island_breakout_started:
@@ -72,10 +70,12 @@ event_player:
   s_right_drops_3_active: monster_island_breakout_shot_hit
   s_right_drops_4_active: monster_island_breakout_shot_hit
   s_right_drops_5_active: monster_island_breakout_shot_hit
+  s_saucer_1_active: monster_island_breakout_shot_hit
+  s_saucer_2_active: monster_island_breakout_shot_hit
+  s_saucer_3_active: monster_island_breakout_shot_hit
+  s_vuk_switch_active: monster_island_breakout_shot_hit
 
-  s_vuk_switch_active: monster_island_breakout_jackpot_hit
-
-  multiball_monster_island_breakout_multiball_ended: monster_island_breakout_failed
+  multiball_monster_island_breakout_multiball_ended: monster_island_breakout_complete_request
 
   mode_monster_island_breakout_started:
     - clear_saucers

@@ -1,7 +1,8 @@
 #config_version=6
 
 # Who Is the Real Villain? placeholder mini-wizard.
-# Mode idea: Reveal identity clues, then complete the correct shot pattern. Wrong patterns cost value but give hints.
+# Crime & Disguise mini-wizard multiball.
+# Temporary flow: intro -> 2-ball multiball -> MB end -> summary -> next chapter.
 
 mode:
   start_events: start_mode_who_is_the_real_villain
@@ -20,9 +21,7 @@ multiballs:
     stop_events:
       - stop_mode_who_is_the_real_villain
 
-
 variable_player:
-
   multiball_who_is_the_real_villain_multiball_started:
     multiball_autoplunge_active:
       action: set
@@ -32,7 +31,6 @@ variable_player:
     multiball_autoplunge_active:
       action: set
       int: 0
-
 
 widget_player:
   mode_who_is_the_real_villain_started:
@@ -72,10 +70,12 @@ event_player:
   s_right_drops_3_active: who_is_the_real_villain_shot_hit
   s_right_drops_4_active: who_is_the_real_villain_shot_hit
   s_right_drops_5_active: who_is_the_real_villain_shot_hit
+  s_saucer_1_active: who_is_the_real_villain_shot_hit
+  s_saucer_2_active: who_is_the_real_villain_shot_hit
+  s_saucer_3_active: who_is_the_real_villain_shot_hit
+  s_vuk_switch_active: who_is_the_real_villain_shot_hit
 
-  s_vuk_switch_active: who_is_the_real_villain_jackpot_hit
-
-  multiball_who_is_the_real_villain_multiball_ended: who_is_the_real_villain_failed
+  multiball_who_is_the_real_villain_multiball_ended: who_is_the_real_villain_complete_request
 
   mode_who_is_the_real_villain_started:
     - clear_saucers

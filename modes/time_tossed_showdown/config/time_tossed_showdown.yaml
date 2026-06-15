@@ -1,7 +1,8 @@
 #config_version=6
 
 # Time-Tossed Showdown placeholder mini-wizard.
-# Mode idea: Complete time/outlaw trials to light final showdown. Limited flips make choices matter.
+# Time / History / Outlaws mini-wizard multiball.
+# Temporary flow: intro -> 2-ball multiball -> MB end -> summary -> next chapter.
 
 mode:
   start_events: start_mode_time_tossed_showdown
@@ -20,9 +21,7 @@ multiballs:
     stop_events:
       - stop_mode_time_tossed_showdown
 
-
 variable_player:
-
   multiball_time_tossed_showdown_multiball_started:
     multiball_autoplunge_active:
       action: set
@@ -32,7 +31,6 @@ variable_player:
     multiball_autoplunge_active:
       action: set
       int: 0
-
 
 widget_player:
   mode_time_tossed_showdown_started:
@@ -72,10 +70,12 @@ event_player:
   s_right_drops_3_active: time_tossed_showdown_shot_hit
   s_right_drops_4_active: time_tossed_showdown_shot_hit
   s_right_drops_5_active: time_tossed_showdown_shot_hit
+  s_saucer_1_active: time_tossed_showdown_shot_hit
+  s_saucer_2_active: time_tossed_showdown_shot_hit
+  s_saucer_3_active: time_tossed_showdown_shot_hit
+  s_vuk_switch_active: time_tossed_showdown_shot_hit
 
-  s_vuk_switch_active: time_tossed_showdown_jackpot_hit
-
-  multiball_time_tossed_showdown_multiball_ended: time_tossed_showdown_failed
+  multiball_time_tossed_showdown_multiball_ended: time_tossed_showdown_complete_request
 
   mode_time_tossed_showdown_started:
     - clear_saucers

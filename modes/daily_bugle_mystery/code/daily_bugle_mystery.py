@@ -348,6 +348,12 @@ class DailyBugleMystery(Mode):
         if not self.daily_bugle_enabled:
             return
 
+        player = self.machine.game.player
+        if player["mini_wizard_daily_bugle_ready"] == 1 or player["mini_wizard_vuk_hold_active"] == 1:
+            # Progression owns this VUK hit. Leave the ball held until the
+            # mini-wizard bookend intro finishes or the player skips it.
+            return
+
         if not self.mystery_ready:
             # VUK was hit but mystery is not ready. Kick up quickly for other uses.
             self.delay.add(

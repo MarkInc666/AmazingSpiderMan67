@@ -384,6 +384,7 @@ class VillainProgression(Mode):
 
         player["mini_wizard_current_key"] = ""
         player["mini_wizard_daily_bugle_ready"] = 0
+        player["mini_wizard_vuk_hold_active"] = 0
 
     def _clear_active_case_file_helpers(self):
         player = self.machine.game.player
@@ -544,23 +545,31 @@ class VillainProgression(Mode):
         self.add_mode_event_handler("chapter_mini_wizard_completed", self._mini_wizard_completed)
         self.add_mode_event_handler("chapter_mini_wizard_failed", self._mini_wizard_failed)
 
-        # Defensive direct hooks for placeholder / simple mini-wizard modes.
-        # Each chapter mini-wizard can post <key>_mode_complete / <key>_mode_failed.
+        # Mini-wizard gameplay ends first, then bookends shows the summary,
+        # then progression advances to the next chapter.
         for chapter in self.CHAPTERS:
             mini_key = chapter["mini_wizard_key"]
             self.add_mode_event_handler(
                 f"{mini_key}_mode_complete",
-                self._mini_wizard_completed,
+                self._mini_wizard_gameplay_finished,
                 mini_wizard=mini_key,
+                completed=True,
             )
             self.add_mode_event_handler(
                 f"{mini_key}_mode_failed",
-                self._mini_wizard_failed,
+                self._mini_wizard_gameplay_finished,
+                mini_wizard=mini_key,
+                completed=False,
+            )
+            self.add_mode_event_handler(
+                f"{mini_key}_summary_done",
+                self._mini_wizard_summary_done,
                 mini_wizard=mini_key,
             )
 
         self.add_mode_event_handler("mini_wizard_start_ready_at_daily_bugle", self._mini_wizard_ready_at_daily_bugle)
         self.add_mode_event_handler("s_vuk_switch_active", self._daily_bugle_hit)
+        self.add_mode_event_handler("villain_bookend_intro_done", self._mini_wizard_intro_done)
 
         # Delayed saucer eject API. Raw kickout_saucer_* events still exist for
         # explicit immediate coil tests/manual use, but gameplay modes should use
@@ -570,6 +579,71 @@ class VillainProgression(Mode):
         self.add_mode_event_handler("delayed_kickout_saucer_3", self._delayed_kickout_saucer, saucer_number="3")
         self.add_mode_event_handler("clear_saucers_now", self._clear_saucers_now)
 
+
+    def _mini_wizard_gameplay_finished(self, mini_wizard=None, completed=True, **kwargs):
+        """Stop mini-wizard gameplay, show summary, then advance/fail chapter flow.
+
+        Placeholder mini-wizards are intentionally simple right now: they start
+        a multiball and complete when that multiball ends. This method keeps the
+        chapter flow consistent with villain modes by inserting the bookend
+        summary before changing chapters.
+        """
+        player = self.machine.game.player
+        mini_key = mini_wizard or player["mini_wizard_current_key"]
+
+        if not mini_key:
+            self.machine.events.post("chapter_mini_wizard_finish_ignored_no_key")
+            return
+
+        chapter_number, chapter = self._chapter_for_mini_wizard(mini_key)
+        if not chapter:
+            self.machine.events.post("chapter_mini_wizard_finish_unknown", mini_wizard=mini_key)
+            return
+
+        completed = bool(completed)
+        player[f"{mini_key}_completed"] = 1 if completed else 0
+        player[f"{mini_key}_state"] = self.COMPLETED if completed else self.FAILED
+
+        player["mini_wizard_current_key"] = mini_key
+        player["villain_mode_running"] = 1
+        player["villain_mode_in_summary"] = 1
+        player["villain_current_key"] = mini_key
+        player["villain_current_name"] = mini_key
+        player["villain_mode_running_name"] = mini_key
+
+        self.machine.events.post(
+            "chapter_mini_wizard_gameplay_finished",
+            mini_wizard=mini_key,
+            completed=1 if completed else 0,
+        )
+
+        self.machine.events.post(f"stop_mode_{mini_key}")
+
+        self.delay.add(
+            name=f"{mini_key}_summary_after_mode_stop",
+            ms=100,
+            callback=lambda: self._request_mini_wizard_summary(mini_key),
+        )
+
+        self._restore_state()
+
+    def _request_mini_wizard_summary(self, mini_key):
+        self.machine.events.post(
+            "villain_bookend_summary_request",
+            villain=mini_key,
+            done_event=f"{mini_key}_summary_done",
+        )
+
+    def _mini_wizard_summary_done(self, mini_wizard=None, **kwargs):
+        mini_key = mini_wizard or self.machine.game.player["mini_wizard_current_key"]
+        if not mini_key:
+            self.machine.events.post("chapter_mini_wizard_summary_ignored_no_key")
+            return
+
+        if self.machine.game.player[f"{mini_key}_completed"] == 1:
+            self._mini_wizard_completed(mini_wizard=mini_key, **kwargs)
+        else:
+            self._mini_wizard_failed(mini_wizard=mini_key, **kwargs)
 
     def _mini_wizard_failed(self, mini_wizard=None, **kwargs):
         player = self.machine.game.player
@@ -610,6 +684,7 @@ class VillainProgression(Mode):
             "villain_mode_running_name": "",
             "villain_mode_in_summary": 0,
             "mini_wizard_current_key": "",
+            "mini_wizard_vuk_hold_active": 0,
             "mini_wizards_completed": 0,
             "villain_select_active": 0,
             "active_case_file_helper_count": 0,
@@ -884,6 +959,15 @@ class VillainProgression(Mode):
         self.machine.events.post("villain_full_cleanup", villain_key=villain, villain=villain)
         self.machine.events.post("villain_summary_cleanup_complete", villain_key=villain, villain=villain)
         self.machine.events.post("villain_mode_ended", villain_key=villain, villain=villain)
+
+        # If that summary finished the fifth villain in the chapter, make the
+        # chapter mini-wizard immediately available at the Daily Bugle VUK.
+        # Do this after villain_bookends has posted reset_daily_bugle_state so
+        # the gate/open state is not immediately wiped out by summary cleanup.
+        self._check_chapter_complete()
+        if self.machine.game.player["chapter_mini_wizard_ready"] == 1:
+            self._mini_wizard_ready_at_daily_bugle()
+
         self._restore_state()
 
     def _villain_completed(self, villain_key=None, **kwargs):
@@ -927,6 +1011,7 @@ class VillainProgression(Mode):
             return
         mini_key = chapter["mini_wizard_key"]
         self.machine.game.player["mini_wizard_daily_bugle_ready"] = 0
+        self.machine.game.player["mini_wizard_vuk_hold_active"] = 1
         self.machine.game.player["mini_wizard_current_key"] = mini_key
         self.machine.game.player[f"{mini_key}_state"] = self.PLAYING
         self.machine.game.player["villain_mode_running"] = 1
@@ -941,8 +1026,27 @@ class VillainProgression(Mode):
             mini_wizard_key=mini_key,
             mini_wizard_name=chapter["mini_wizard_name"],
         )
-        self.machine.events.post(chapter["mini_wizard_event"])
+        self.machine.events.post(
+            "villain_bookend_intro_request",
+            villain=mini_key,
+            start_event=chapter["mini_wizard_event"],
+        )
         self._restore_state()
+
+    def _mini_wizard_intro_done(self, villain=None, **kwargs):
+        """Release the VUK only after a mini-wizard intro is finished or skipped."""
+        player = self.machine.game.player
+
+        if player["mini_wizard_vuk_hold_active"] != 1:
+            return
+
+        mini_key = player["mini_wizard_current_key"]
+        if not mini_key or villain != mini_key:
+            return
+
+        player["mini_wizard_vuk_hold_active"] = 0
+        self.machine.events.post("mini_wizard_vuk_intro_done_release", mini_wizard=mini_key)
+        self.machine.events.post("up_kick")
 
     def _mini_wizard_completed(self, mini_wizard=None, **kwargs):
         player = self.machine.game.player

@@ -1,7 +1,8 @@
 #config_version=6
 
 # Mastermind Trap placeholder mini-wizard.
-# Mode idea: Rotate through five villain traps. Completing a trap locks in a letter/area; final jackpot at saucer/VUK.
+# Masterminds mini-wizard multiball.
+# Temporary flow: intro -> 2-ball multiball -> MB end -> summary -> next chapter.
 
 mode:
   start_events: start_mode_mastermind_trap
@@ -20,9 +21,7 @@ multiballs:
     stop_events:
       - stop_mode_mastermind_trap
 
-
 variable_player:
-
   multiball_mastermind_trap_multiball_started:
     multiball_autoplunge_active:
       action: set
@@ -32,7 +31,6 @@ variable_player:
     multiball_autoplunge_active:
       action: set
       int: 0
-
 
 widget_player:
   mode_mastermind_trap_started:
@@ -72,10 +70,12 @@ event_player:
   s_right_drops_3_active: mastermind_trap_shot_hit
   s_right_drops_4_active: mastermind_trap_shot_hit
   s_right_drops_5_active: mastermind_trap_shot_hit
+  s_saucer_1_active: mastermind_trap_shot_hit
+  s_saucer_2_active: mastermind_trap_shot_hit
+  s_saucer_3_active: mastermind_trap_shot_hit
+  s_vuk_switch_active: mastermind_trap_shot_hit
 
-  s_vuk_switch_active: mastermind_trap_jackpot_hit
-
-  multiball_mastermind_trap_multiball_ended: mastermind_trap_failed
+  multiball_mastermind_trap_multiball_ended: mastermind_trap_complete_request
 
   mode_mastermind_trap_started:
     - clear_saucers
