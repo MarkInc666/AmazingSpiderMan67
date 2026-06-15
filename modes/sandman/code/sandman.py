@@ -39,6 +39,7 @@ class Sandman(CaseFileMixin, Mode):
         self.sandman_mode_points = 0
         self.sandman_best_run = 0
         self.flash_hits = 0
+        self.shot_assist = False
 
         self.case_files = self.get_case_file_bonuses()
         self._apply_case_file_bonuses()
@@ -85,7 +86,7 @@ class Sandman(CaseFileMixin, Mode):
             self.machine.events.post("start_case_file_ball_save")
 
         if self.has_case_file("shot_assist"):
-            self.machine.events.post("sandman_case_file_first_target_spotted")
+            self.shot_assist = True
 
     def start_bank(self, **kwargs):
         self.down_targets = set()
@@ -119,6 +120,11 @@ class Sandman(CaseFileMixin, Mode):
         )
 
     def shift_flash(self):
+        if self.shot_assist == True:
+            self.shot_assist = False
+            self.drop_hit(target=self.current_flash)
+            return
+        
         self.hit_order = []
 
         if self.current_flash not in self.down_targets:

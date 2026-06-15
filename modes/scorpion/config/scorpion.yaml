@@ -101,19 +101,47 @@ show_player:
   scorpion_safe_sting_started:
     scorpion_ready_show:
       action: stop
+
+  scorpion_left_sting_target_lit:
     scorpion_safe_sting_show:
       loops: -1
 
   scorpion_hard_sting_started:
     scorpion_ready_show:
       action: stop
-    scorpion_hard_sting_show:
+
+  scorpion_right_sting_target_1_lit:
+    scorpion_right_sting_target_1_show:
+      loops: -1
+
+  scorpion_right_sting_target_2_lit:
+    scorpion_right_sting_target_2_show:
+      loops: -1
+
+  scorpion_right_sting_target_3_lit:
+    scorpion_right_sting_target_3_show:
+      loops: -1
+
+  scorpion_right_sting_target_4_lit:
+    scorpion_right_sting_target_4_show:
+      loops: -1
+
+  scorpion_right_sting_target_5_lit:
+    scorpion_right_sting_target_5_show:
       loops: -1
 
   scorpion_sting_success:
     scorpion_safe_sting_show:
       action: stop
-    scorpion_hard_sting_show:
+    scorpion_right_sting_target_1_show:
+      action: stop
+    scorpion_right_sting_target_2_show:
+      action: stop
+    scorpion_right_sting_target_3_show:
+      action: stop
+    scorpion_right_sting_target_4_show:
+      action: stop
+    scorpion_right_sting_target_5_show:
       action: stop
     scorpion_success_show:
       loops: 1
@@ -121,7 +149,15 @@ show_player:
   scorpion_sting_failed:
     scorpion_safe_sting_show:
       action: stop
-    scorpion_hard_sting_show:
+    scorpion_right_sting_target_1_show:
+      action: stop
+    scorpion_right_sting_target_2_show:
+      action: stop
+    scorpion_right_sting_target_3_show:
+      action: stop
+    scorpion_right_sting_target_4_show:
+      action: stop
+    scorpion_right_sting_target_5_show:
       action: stop
     scorpion_fail_show:
       loops: 1
@@ -133,7 +169,15 @@ show_player:
       action: stop
     scorpion_safe_sting_show:
       action: stop
-    scorpion_hard_sting_show:
+    scorpion_right_sting_target_1_show:
+      action: stop
+    scorpion_right_sting_target_2_show:
+      action: stop
+    scorpion_right_sting_target_3_show:
+      action: stop
+    scorpion_right_sting_target_4_show:
+      action: stop
+    scorpion_right_sting_target_5_show:
       action: stop
     scorpion_complete_show:
       loops: 1
@@ -167,20 +211,44 @@ shows:
       lights:
         l_3bankbonus: off
 
-  scorpion_hard_sting_show:
+  scorpion_right_sting_target_1_show:
     - duration: 200ms
       lights:
         l_5bank_1: green
-        l_5bank_2: green
-        l_5bank_3: green
-        l_5bank_4: green
-        l_5bank_5: green
     - duration: 200ms
       lights:
         l_5bank_1: off
+
+  scorpion_right_sting_target_2_show:
+    - duration: 200ms
+      lights:
+        l_5bank_2: green
+    - duration: 200ms
+      lights:
         l_5bank_2: off
+
+  scorpion_right_sting_target_3_show:
+    - duration: 200ms
+      lights:
+        l_5bank_3: green
+    - duration: 200ms
+      lights:
         l_5bank_3: off
+
+  scorpion_right_sting_target_4_show:
+    - duration: 200ms
+      lights:
+        l_5bank_4: green
+    - duration: 200ms
+      lights:
         l_5bank_4: off
+
+  scorpion_right_sting_target_5_show:
+    - duration: 200ms
+      lights:
+        l_5bank_5: green
+    - duration: 200ms
+      lights:
         l_5bank_5: off
 
   scorpion_success_show:

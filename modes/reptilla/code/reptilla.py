@@ -50,6 +50,7 @@ class Reptilla(CaseFileMixin, Mode):
         self.mode_done = False
         self.super_lit = False
         self.super_collected = False
+        self.rooftop_gate_open = False
 
         self.case_files = self.get_case_file_bonuses()
         self.more_jackpots_active = self.has_case_file("more_jackpots")
@@ -114,10 +115,12 @@ class Reptilla(CaseFileMixin, Mode):
         self.machine.events.post("reptilla_startup_complete")
         self.machine.events.post("reptilla_clear_all_lights")
         self.machine.events.post("clear_saucers")
+        self._update_rooftop_gate()
         self._sync_vars()
 
     def mode_stop(self, **kwargs):
         self.delay.remove("reptilla_super_timer")
+        self._close_rooftop_gate()
         self.clear_active_case_file_helpers()
         self.machine.events.post("reptilla_clear_all_lights")
         self.machine.events.post("clear_saucers")
@@ -171,6 +174,8 @@ class Reptilla(CaseFileMixin, Mode):
             self._stage_left_bank()
         elif shot == self.RIGHT_BANK_SHOT:
             self._stage_right_bank()
+
+        self._update_rooftop_gate()
 
     def _stage_left_bank(self):
         self.machine.events.post("drop_target_bank_dt_bank_left_reset")
@@ -254,6 +259,8 @@ class Reptilla(CaseFileMixin, Mode):
 
         if self.jackpots_collected >= self.required_jackpots:
             self._light_super_jackpot()
+        else:
+            self._update_rooftop_gate()
 
         self._sync_vars()
         self._refresh_lights()
@@ -263,6 +270,7 @@ class Reptilla(CaseFileMixin, Mode):
             return
 
         self.super_lit = True
+        self._close_rooftop_gate()
         self.machine.events.post("reptilla_clear_rampage_lights")
         self.machine.events.post("reptilla_super_jackpot_lit")
         self.machine.events.post("reset_drops")
@@ -308,6 +316,7 @@ class Reptilla(CaseFileMixin, Mode):
             return
         self.mode_done = True
         self.delay.remove("reptilla_super_timer")
+        self._close_rooftop_gate()
         player = self.machine.game.player
         player["reptilla_completed"] = 1
         self._sync_vars()
@@ -318,6 +327,7 @@ class Reptilla(CaseFileMixin, Mode):
             return
         self.mode_done = True
         self.delay.remove("reptilla_super_timer")
+        self._close_rooftop_gate()
         player = self.machine.game.player
         player["reptilla_completed"] = 0
         self._sync_vars()
@@ -345,6 +355,29 @@ class Reptilla(CaseFileMixin, Mode):
             self.machine.events.post(f"reptilla_{shot}_lit")
         if self.super_lit:
             self.machine.events.post("reptilla_super_jackpot_lit")
+        self._update_rooftop_gate()
+
+    def _update_rooftop_gate(self):
+        if self._in_summary_or_done():
+            return
+        if self.UPPER_MIDDLE_SHOT in self.lit_shots and not self.super_lit:
+            self._open_rooftop_gate()
+        else:
+            self._close_rooftop_gate()
+
+    def _open_rooftop_gate(self):
+        if self.rooftop_gate_open:
+            return
+        self.rooftop_gate_open = True
+        self.machine.events.post("rooftop_diverter_open")
+        self.machine.events.post("reptilla_rooftop_gate_opened")
+
+    def _close_rooftop_gate(self):
+        if not self.rooftop_gate_open:
+            return
+        self.rooftop_gate_open = False
+        self.machine.events.post("rooftop_diverter_close")
+        self.machine.events.post("reptilla_rooftop_gate_closed")
 
     def _sync_vars(self):
         player = self.machine.game.player

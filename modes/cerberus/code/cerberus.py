@@ -64,6 +64,7 @@ class Cerberus(CaseFileMixin, Mode):
         self.mode_points = 0
         self.timer_running = False
         self.timer_seconds = self.BASE_TIMER_SECONDS
+        self.timer_halfway_gate_opened = False
 
         self._sync_vars()
 
@@ -84,12 +85,13 @@ class Cerberus(CaseFileMixin, Mode):
         self.add_mode_event_handler("cerberus_spinner_hit", self._spinner_hit)
         self.add_mode_event_handler("cerberus_fail_request", self._fail_mode)
 
-        self.machine.events.post("rooftop_diverter_open")
+        self._update_gate_state()
         self.machine.events.post("cerberus_startup_complete")
         self._refresh_lights()
 
     def mode_stop(self, **kwargs):
         self.delay.remove("cerberus_mode_timer")
+        self.delay.remove("cerberus_halfway_gate_open")
         self.clear_active_case_file_helpers()
         self.machine.events.post("cerberus_clear_all_lights")
         self.machine.events.post("rooftop_diverter_close")
@@ -133,6 +135,7 @@ class Cerberus(CaseFileMixin, Mode):
         self._reset_timer_if_running()
         self._sync_vars()
         self._refresh_lights()
+        self._update_gate_state()
         self.machine.events.post("cerberus_target_hit", target=target)
 
     def _spinner_hit(self, **kwargs):
@@ -170,6 +173,7 @@ class Cerberus(CaseFileMixin, Mode):
         elif not self.saucer_jackpot_lit.get(saucer, False):
             self._score(self.UNLIT_SAUCER_SCORE)
             self._sync_vars()
+            self._update_gate_state()
             self.machine.events.post("cerberus_unlit_saucer_hit", saucer=saucer)
             return
         else:
@@ -191,6 +195,7 @@ class Cerberus(CaseFileMixin, Mode):
 
         self._sync_vars()
         self._refresh_lights()
+        self._update_gate_state()
         self.machine.events.post(
             "cerberus_jackpot_collected",
             saucer=collect_saucer,
@@ -217,15 +222,35 @@ class Cerberus(CaseFileMixin, Mode):
     def _restart_timer(self):
         if self.mode_done:
             return
+
         self.timer_running = True
         self.timer_seconds = self.BASE_TIMER_SECONDS
+        self.timer_halfway_gate_opened = False
         self._sync_vars()
         self.machine.events.post("cerberus_timer_started", seconds=self.timer_seconds)
+
         self.delay.remove("cerberus_mode_timer")
+        self.delay.remove("cerberus_halfway_gate_open")
         self.delay.add(
             name="cerberus_mode_timer",
             ms=self.timer_seconds * 1000,
             callback=self._timer_expired,
+        )
+        self.delay.add(
+            name="cerberus_halfway_gate_open",
+            ms=int(self.timer_seconds * 500),
+            callback=self._timer_halfway_open_gate,
+        )
+
+    def _timer_halfway_open_gate(self, **kwargs):
+        if self.mode_done or not self.timer_running:
+            return
+
+        self.timer_halfway_gate_opened = True
+        self.machine.events.post("rooftop_diverter_open")
+        self.machine.events.post(
+            "cerberus_gate_opened_timer_halfway",
+            seconds_remaining=int(self.timer_seconds / 2),
         )
 
     def _reset_timer_if_running(self):
@@ -235,6 +260,7 @@ class Cerberus(CaseFileMixin, Mode):
     def _timer_expired(self, **kwargs):
         if self.mode_done:
             return
+        self.delay.remove("cerberus_halfway_gate_open")
         self.machine.events.post("cerberus_timer_expired")
         self._fail_mode()
 
@@ -243,6 +269,7 @@ class Cerberus(CaseFileMixin, Mode):
             return
         self.mode_done = True
         self.delay.remove("cerberus_mode_timer")
+        self.delay.remove("cerberus_halfway_gate_open")
         player = self.machine.game.player if self.machine.game else None
         if player:
             player["cerberus_completed"] = int(self.jackpots_collected >= 3)
@@ -255,6 +282,30 @@ class Cerberus(CaseFileMixin, Mode):
             return
         player["score"] += points
         self.mode_points += points
+
+    def _update_gate_state(self):
+        """Keep the rooftop gate aligned with Cerberus shot state.
+
+        Cerberus starts by opening the gate so the player can get upstairs and
+        hit upper targets. Once an upper target has lit saucer jackpots, close
+        the gate to make the lower saucer shots reachable. When all saucer
+        jackpots are cleared, open the gate again so the player can return to
+        the upper targets and re-light jackpots.
+        """
+        if self._in_summary_or_done():
+            return
+
+        if self.timer_running and self.timer_halfway_gate_opened:
+            self.machine.events.post("rooftop_diverter_open")
+            self.machine.events.post("cerberus_gate_open_for_timer_halfway")
+            return
+
+        if any(self.saucer_jackpot_lit.get(saucer, False) for saucer in [1, 2, 3]):
+            self.machine.events.post("rooftop_diverter_close")
+            self.machine.events.post("cerberus_gate_closed_for_saucers")
+        else:
+            self.machine.events.post("rooftop_diverter_open")
+            self.machine.events.post("cerberus_gate_open_for_upper")
 
     def _refresh_lights(self):
         for saucer in [1, 2, 3]:

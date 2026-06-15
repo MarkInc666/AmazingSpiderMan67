@@ -101,6 +101,7 @@ class Goblin(CaseFileMixin, Mode):
     BASE_HOLD_TIME_MS = 10000
     MIN_HOLD_TIME_MS = 5000
     HOLD_REDUCTION_PER_LOCK_MS = 1000
+    MIN_HOLD_FLASHING_SHOTS = 4
 
     FLASHING_SCORE = 50000
     SOLID_SCORE = 2000
@@ -376,6 +377,7 @@ class Goblin(CaseFileMixin, Mode):
             self.machine.events.post(f"goblin_lite_{shot_name}")
 
         self.current_solid.clear()
+        self.ensure_minimum_hold_flashing_shots()
         self._update_upper_gate_from_lit_shots()
         
         self.machine.events.post("goblin_hold_started", saucer=saucer)
@@ -386,6 +388,37 @@ class Goblin(CaseFileMixin, Mode):
             name="goblin_hold_timer",
             ms=hold_time_ms,
             callback=self.end_hold
+        )
+
+
+    def ensure_minimum_hold_flashing_shots(self):
+        """Make sure saucer rest mode has enough safe flashing shots.
+
+        Entering a saucer can happen late in a chaos window after several
+        flashing shots have already been collected. Rest mode should not leave
+        the player with only one or two safe shots available. Re-enable random
+        non-flashing shots as flashing-only harvest shots until at least four
+        are available, or until every Goblin shot is already flashing.
+        """
+        needed = self.MIN_HOLD_FLASHING_SHOTS - len(self.current_flashing)
+        if needed <= 0:
+            return
+
+        candidates = [
+            shot.name for shot in self.shots
+            if shot.name not in self.current_flashing
+        ]
+        random.shuffle(candidates)
+
+        for shot_name in candidates[:needed]:
+            self.active_shots.add(shot_name)
+            self.current_flashing.add(shot_name)
+            self.machine.events.post(f"goblin_stop_{shot_name}")
+            self.machine.events.post(f"goblin_lite_{shot_name}")
+
+        self.machine.events.post(
+            "goblin_hold_flashing_shots_ensured",
+            count=len(self.current_flashing)
         )
 
     def get_current_hold_time_ms(self):

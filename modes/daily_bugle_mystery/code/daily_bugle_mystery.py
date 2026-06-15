@@ -37,6 +37,7 @@ class DailyBugleMystery(Mode):
         "parafino",
         "centaur",
         "cerberus",
+        "reptilla",
         "mole_man",
         "fifth_avenue_phantom",
     }

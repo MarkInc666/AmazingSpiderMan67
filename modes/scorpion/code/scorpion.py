@@ -149,10 +149,14 @@ class Scorpion(CaseFileMixin, Mode):
             if i != self.required_target:
                 self.machine.coils[f"c_left_bank_drop_{i}"].pulse()
 
+        self.machine.events.post("scorpion_left_sting_target_lit")
+
     def prepare_right_bank_after_reset(self):
         for i in range(1, 6):
             if i != self.required_target:
                 self.machine.coils[f"c_right_bank_drop_{i}"].pulse()
+
+        self.machine.events.post(f"scorpion_right_sting_target_{self.required_target}_lit")
 
     def left_drop_hit(self, target, **kwargs):
         if self.state == "sting" and self.active_target_side == "left":

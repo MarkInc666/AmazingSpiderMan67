@@ -88,9 +88,9 @@ class Parafino(CaseFileMixin, Mode):
     }
 
     SAUCER_EJECT_EVENTS = {
-        "saucer_1": "kickout_saucer_1",
-        "saucer_2": "kickout_saucer_2",
-        "saucer_3": "kickout_saucer_3",
+        "saucer_1": "delayed_kickout_saucer_1",
+        "saucer_2": "delayed_kickout_saucer_2",
+        "saucer_3": "delayed_kickout_saucer_3",
     }
 
     def mode_start(self, **kwargs):

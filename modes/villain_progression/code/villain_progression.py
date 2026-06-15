@@ -449,42 +449,73 @@ class VillainProgression(Mode):
         if player[f"{mini_key}_completed"] == 0 and player[f"{mini_key}_state"] in (self.READY, self.LIT):
             player[f"{mini_key}_state"] = self.NOT_PLAYED
 
-    def _clear_saucers_delayed(self, **kwargs):
-        """Delay normal saucer kickout so saucer awards feel intentional.
+    SAUCER_EJECT_DELAY_MS = 750
+    SAUCER_EJECTS = {
+        "1": ("s_saucer_1", "kickout_saucer_1"),
+        "2": ("s_saucer_2", "kickout_saucer_2"),
+        "3": ("s_saucer_3", "kickout_saucer_3"),
+    }
 
-        Use clear_saucers for immediate cleanup/release. Use
-        clear_saucers_delayed for normal points-only / no-start saucer exits.
-        """
+    def _clear_saucers_delayed(self, **kwargs):
+        """Delay normal saucer kickout so saucer awards feel intentional."""
         self.delay.remove("clear_saucers_delayed")
         self.delay.add(
             name="clear_saucers_delayed",
             ms=1000,
-            callback=self._clear_saucers,
+            callback=self._clear_saucers_now,
         )
 
     def _clear_saucers(self, **kwargs):
+        """Default saucer cleanup waits briefly before kicking balls out."""
+        self.info_log("CLEAR SAUCERS requested. kwargs=%s", kwargs)
+        self.delay.remove("clear_saucers")
+        self.delay.add(
+            name="clear_saucers",
+            ms=self.SAUCER_EJECT_DELAY_MS,
+            callback=self._clear_saucers_now,
+        )
+
+    def _clear_saucers_now(self, **kwargs):
         """Kick out only saucers that currently contain a ball.
 
-        The saucers are not MPF ball devices, so a raw YAML mapping from
-        clear_saucers to all three kickout coils can fire empty saucers. This
-        checks the physical saucer switches first and only posts the matching
-        kickout event when a ball is actually sitting there.
+        The saucers are not MPF ball devices, so this checks the physical
+        saucer switches first and only posts the matching raw kickout event
+        when a ball is actually sitting there.
         """
-        self.info_log("CLEAR SAUCERS called. kwargs=%s", kwargs)
+        self.info_log("CLEAR SAUCERS NOW called. kwargs=%s", kwargs)
 
-        saucers = {
-            "s_saucer_1": "kickout_saucer_1",
-            "s_saucer_2": "kickout_saucer_2",
-            "s_saucer_3": "kickout_saucer_3",
-        }
-
-        for switch_name, kickout_event in saucers.items():
+        for saucer_number, (switch_name, kickout_event) in self.SAUCER_EJECTS.items():
             active = self.machine.switch_controller.is_active(self.machine.switches[switch_name])
             self.info_log("Saucer check %s active=%s", switch_name, active)
 
             if active:
                 self.info_log("Posting %s from clear_saucers", kickout_event)
                 self.machine.events.post(kickout_event)
+
+    def _delayed_kickout_saucer(self, saucer_number, **kwargs):
+        """Public delayed kickout event for modes that hold/release saucers."""
+        if str(saucer_number) not in self.SAUCER_EJECTS:
+            self.warning_log("Unknown delayed saucer kickout requested: %s", saucer_number)
+            return
+
+        delay_name = f"delayed_kickout_saucer_{saucer_number}"
+        self.delay.remove(delay_name)
+        self.delay.add(
+            name=delay_name,
+            ms=self.SAUCER_EJECT_DELAY_MS,
+            callback=self._kickout_saucer_if_occupied,
+            saucer_number=str(saucer_number),
+        )
+
+    def _kickout_saucer_if_occupied(self, saucer_number, **kwargs):
+        switch_name, kickout_event = self.SAUCER_EJECTS[str(saucer_number)]
+        active = self.machine.switch_controller.is_active(self.machine.switches[switch_name])
+        self.info_log("Delayed saucer %s eject check %s active=%s", saucer_number, switch_name, active)
+
+        if active:
+            self.machine.events.post(kickout_event)
+        else:
+            self.machine.events.post("delayed_saucer_kickout_skipped_empty", saucer=saucer_number)
 
     def _add_handlers(self):
         # Public API for the rest of the game.
@@ -530,6 +561,14 @@ class VillainProgression(Mode):
 
         self.add_mode_event_handler("mini_wizard_start_ready_at_daily_bugle", self._mini_wizard_ready_at_daily_bugle)
         self.add_mode_event_handler("s_vuk_switch_active", self._daily_bugle_hit)
+
+        # Delayed saucer eject API. Raw kickout_saucer_* events still exist for
+        # explicit immediate coil tests/manual use, but gameplay modes should use
+        # these so saucer releases don't stack on top of other high-current events.
+        self.add_mode_event_handler("delayed_kickout_saucer_1", self._delayed_kickout_saucer, saucer_number="1")
+        self.add_mode_event_handler("delayed_kickout_saucer_2", self._delayed_kickout_saucer, saucer_number="2")
+        self.add_mode_event_handler("delayed_kickout_saucer_3", self._delayed_kickout_saucer, saucer_number="3")
+        self.add_mode_event_handler("clear_saucers_now", self._clear_saucers_now)
 
 
     def _mini_wizard_failed(self, mini_wizard=None, **kwargs):

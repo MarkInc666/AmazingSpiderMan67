@@ -92,6 +92,7 @@ class MoleMan(CaseFileMixin, Mode):
         self.phase = "get_to_upper"
         self.secret_target = None
         self.standing_targets = set()
+        self.programmatic_drops_pending = set()
         self.jackpot_value = self.BASE_JACKPOT
         self.jackpot_multiplier = 1
         self.hurryup_seconds = self.HURRYUP_SECONDS
@@ -187,6 +188,7 @@ class MoleMan(CaseFileMixin, Mode):
     def _start_search_cycle(self):
         self.delay.remove("mole_man_hurryup_tick")
         self.phase = "revealing"
+        self.programmatic_drops_pending.clear()
         self.secret_target = random.choice(list(self.TARGETS))
         self.standing_targets = set(self.TARGETS)
         self.hurryup_seconds_left = 0
@@ -265,6 +267,12 @@ class MoleMan(CaseFileMixin, Mode):
 
     def _drop_target_hit(self, target=None, **kwargs):
         if self._in_summary_or_done() or not target:
+            return
+
+        if target in self.programmatic_drops_pending:
+            self.programmatic_drops_pending.discard(target)
+            self.delay.remove(f"mole_man_programmatic_drop_{target}")
+            self.machine.events.post("mole_man_programmatic_drop_ignored", target=target)
             return
 
         if target in self.standing_targets:
@@ -379,10 +387,23 @@ class MoleMan(CaseFileMixin, Mode):
         if target not in self.TARGET_COILS:
             return
 
+        self.programmatic_drops_pending.add(target)
+        self.delay.remove(f"mole_man_programmatic_drop_{target}")
+        self.delay.add(
+            name=f"mole_man_programmatic_drop_{target}",
+            ms=1500,
+            callback=self._clear_programmatic_drop_pending,
+            target=target,
+        )
+
         self.machine.coils[self.TARGET_COILS[target]].pulse()
 
         if target in self.standing_targets:
             self.standing_targets.remove(target)
+
+    def _clear_programmatic_drop_pending(self, target=None, **kwargs):
+        if target:
+            self.programmatic_drops_pending.discard(target)
 
     def _award_secret_jackpot(self, source="drop_target"):
         if self.mode_done:
