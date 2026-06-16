@@ -98,6 +98,7 @@ class Centaur(CaseFileMixin, Mode):
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("centaur_startup_complete")
         self.machine.events.post("centaur_build_phase_started")
+        self._show_mode_message("BUILD THE CHARGE", "4 DROPS OPENS THE GATE")
 
     def mode_stop(self, **kwargs):
         self.delay.remove("centaur_post_hold_release")
@@ -109,6 +110,34 @@ class Centaur(CaseFileMixin, Mode):
         self.machine.events.post("rooftop_diverter_close")
         self.clear_active_case_file_helpers()
         super().mode_stop(**kwargs)
+
+
+    def _show_mode_message(self, title, subtitle="", value="", seconds=""):
+        self.machine.events.post(
+            "show_mode_message",
+            title=title,
+            subtitle=subtitle,
+            value=value,
+            seconds=seconds,
+        )
+
+    def _show_mode_jackpot(self, title, value, subtitle=""):
+        self.machine.events.post(
+            "show_mode_jackpot",
+            title=title,
+            subtitle=subtitle,
+            value=value,
+            seconds="",
+        )
+
+    def _show_mode_countdown(self, title, seconds, subtitle=""):
+        self.machine.events.post(
+            "show_mode_countdown",
+            title=title,
+            subtitle=subtitle,
+            value="",
+            seconds=seconds,
+        )
 
     def _apply_case_file_bonuses(self):
         if self.has_case_file("more_time"):
@@ -143,12 +172,18 @@ class Centaur(CaseFileMixin, Mode):
             drops_down=len(self.drops_down),
             jackpot=self._current_jackpot_value(),
         )
+        self._show_mode_jackpot(
+            "JACKPOT BUILDS",
+            self._current_jackpot_value(),
+            f"{len(self.drops_down)} DROPS DOWN",
+        )
 
         if not self.gate_open and len(self.drops_down) >= self.DROPS_TO_OPEN_GATE:
             self.gate_open = True
             self.phase = "roof_ready"
             self.machine.events.post("rooftop_diverter_open")
             self.machine.events.post("centaur_gate_open")
+            self._show_mode_message("GATE OPEN", "GET TO THE ROOF")
             self._sync_vars()
 
     def _bank_rubber_hit(self, **kwargs):
@@ -172,6 +207,7 @@ class Centaur(CaseFileMixin, Mode):
             self.secret_jackpots_collected += 1
             self._score(secret_value)
             self.machine.events.post("centaur_secret_half_jackpot_awarded", value=secret_value)
+            self._show_mode_jackpot("SECRET HALF JACKPOT", secret_value)
             self._sync_vars()
             return
 
@@ -197,6 +233,7 @@ class Centaur(CaseFileMixin, Mode):
         self.phase = "post_hold"
         self.post_hold_active = True
         self.machine.events.post("centaur_post_hold_started")
+        self._show_mode_message("POST HOLD", "RIGHT BANK IS STAGING")
         self.machine.events.post("enable_up_post_event")
         self._stage_right_bank()
 
@@ -259,6 +296,7 @@ class Centaur(CaseFileMixin, Mode):
             seconds=self.final_seconds_left,
             jackpot=self._current_jackpot_value(),
         )
+        self._show_mode_countdown("HIT RIGHT RUBBER", self.final_seconds_left, "CENTAUR JACKPOT")
         self._sync_vars()
         self._schedule_final_tick()
 
@@ -279,6 +317,7 @@ class Centaur(CaseFileMixin, Mode):
         self.final_seconds_left -= 1
         self._sync_vars()
         self.machine.events.post("centaur_final_timer_changed", seconds=self.final_seconds_left)
+        self._show_mode_countdown("HIT RIGHT RUBBER", self.final_seconds_left, "CENTAUR JACKPOT")
 
         if self.final_seconds_left <= 0:
             self._final_timer_expired()
@@ -292,6 +331,7 @@ class Centaur(CaseFileMixin, Mode):
 
         self.final_active = False
         self.machine.events.post("centaur_final_timer_expired")
+        self._show_mode_message("CENTAUR ESCAPED", "FINAL TIMER EXPIRED")
 
         if self.right_full_jackpot_collected:
             self._complete_mode()
@@ -323,6 +363,7 @@ class Centaur(CaseFileMixin, Mode):
             source=source,
             shot_assist=shot_assist,
         )
+        self._show_mode_jackpot("CENTAUR JACKPOT", jackpot_value)
         self._sync_vars()
 
         if not self.has_case_file("more_jackpots"):
@@ -336,6 +377,7 @@ class Centaur(CaseFileMixin, Mode):
         self.consolation_awarded = 1
         self._score(self.CONSOLATION_SCORE)
         self.machine.events.post("centaur_consolation_awarded", value=self.CONSOLATION_SCORE, source=source)
+        self._show_mode_jackpot("CONSOLATION", self.CONSOLATION_SCORE)
         self._sync_vars()
 
         if not self.has_case_file("more_jackpots"):

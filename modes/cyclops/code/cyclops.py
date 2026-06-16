@@ -84,8 +84,28 @@ class Cyclops(CaseFileMixin, Mode):
 
         self.machine.events.post("cyclops_mode_started")
         self.machine.events.post("cyclops_eye_lit")
+        self._show_mode_message("HIT THE EYE", f"{self.flips_remaining} FLIPS")
         self.machine.events.post("drop_target_bank_dt_bank_left_reset")
         self.machine.events.post("drop_target_bank_dt_bank_right_reset")
+
+
+    def _show_mode_message(self, title, subtitle="", value="", seconds=""):
+        self.machine.events.post(
+            "show_mode_message",
+            title=title,
+            subtitle=subtitle,
+            value=value,
+            seconds=seconds,
+        )
+
+    def _show_mode_jackpot(self, title, value, subtitle=""):
+        self.machine.events.post(
+            "show_mode_jackpot",
+            title=title,
+            subtitle=subtitle,
+            value=value,
+            seconds="",
+        )
 
     def mode_stop(self, **kwargs):
         self.clear_active_case_file_helpers()
@@ -98,12 +118,15 @@ class Cyclops(CaseFileMixin, Mode):
         self.flips_remaining -= 1
         self.flips_used += 1
         self.machine.events.post("cyclops_flip_used", flips_remaining=self.flips_remaining)
+        if self.flips_remaining > 0 and (self.flips_remaining <= 5 or self.flips_remaining % 5 == 0):
+            self._show_mode_message("FLIPS REMAINING", str(self.flips_remaining))
 
         if self.flips_remaining <= 0:
             if self.has_case_file("safety_net") and not self.safety_net_used:
                 self.safety_net_used = True
                 self.flips_remaining = self.SAFETY_NET_FLIPS
                 self.machine.events.post("cyclops_safety_net_used", flips_remaining=self.flips_remaining)
+                self._show_mode_message("SAFETY NET", "5 FLIPS RESTORED")
             else:
                 self.flips_remaining = 0
                 self._sync_vars()
@@ -122,6 +145,7 @@ class Cyclops(CaseFileMixin, Mode):
 
         self._award_drop_flip_bonus(target_key)
         self.machine.events.post("cyclops_drop_hit", bank=bank, number=number, flips_remaining=self.flips_remaining)
+        self._show_mode_message("+3 FLIPS", f"{self.flips_remaining} FLIPS LEFT")
 
         if self.has_case_file("shot_assist") and not self.bank_assist_used[bank]:
             self.bank_assist_used[bank] = True
@@ -145,6 +169,7 @@ class Cyclops(CaseFileMixin, Mode):
             self.machine.coils[coil_name].pulse()
 
         self.machine.events.post("cyclops_shot_assist_bank_dropped", bank=bank, flips_remaining=self.flips_remaining)
+        self._show_mode_message("SHOT ASSIST", f"{bank.upper()} BANK DROPPED")
 
     def _eye_hit(self, **kwargs):
         if self.mode_done:
@@ -165,11 +190,13 @@ class Cyclops(CaseFileMixin, Mode):
             eye_jackpots=self.eye_jackpots,
             flips_remaining=self.flips_remaining,
         )
+        self._show_mode_jackpot("CYCLOPS JACKPOT", jackpot, f"{self.flips_remaining} FLIPS")
 
         if self.eye_jackpots >= self.max_eye_jackpots:
             self._complete_mode()
         else:
             self.machine.events.post("cyclops_second_eye_lit")
+            self._show_mode_message("SECOND EYE JACKPOT", "HIT CENTER WEB AGAIN")
             self._sync_vars()
 
     def _current_jackpot_value(self):

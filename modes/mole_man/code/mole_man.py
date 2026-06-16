@@ -147,6 +147,35 @@ class MoleMan(CaseFileMixin, Mode):
         self.machine.events.post("rooftop_diverter_open")
         self.machine.events.post("mole_man_find_started")
         self.machine.events.post("mole_man_get_to_upper")
+        self._show_mode_message("FIND THE MOLE MAN", "GET TO THE ROOF")
+
+
+    def _show_mode_message(self, title, subtitle="", value="", seconds=""):
+        self.machine.events.post(
+            "show_mode_message",
+            title=title,
+            subtitle=subtitle,
+            value=value,
+            seconds=seconds,
+        )
+
+    def _show_mode_jackpot(self, title, value, subtitle=""):
+        self.machine.events.post(
+            "show_mode_jackpot",
+            title=title,
+            subtitle=subtitle,
+            value=value,
+            seconds="",
+        )
+
+    def _show_mode_countdown(self, title, seconds, subtitle=""):
+        self.machine.events.post(
+            "show_mode_countdown",
+            title=title,
+            subtitle=subtitle,
+            value="",
+            seconds=seconds,
+        )
 
     def mode_stop(self, **kwargs):
         self.delay.remove("mole_man_hurryup_tick")
@@ -201,6 +230,7 @@ class MoleMan(CaseFileMixin, Mode):
             secret_label=self.TARGET_LABELS[self.secret_target],
         )
         self.machine.events.post("mole_man_search_started")
+        self._show_mode_message("SEARCH STARTED", "HIT UPPER TARGETS")
         self._sync_vars()
 
     def _upper_target_hit(self, **kwargs):
@@ -238,6 +268,7 @@ class MoleMan(CaseFileMixin, Mode):
             score=self.upper_target_score,
             remaining=len(self.standing_targets),
         )
+        self._show_mode_message("SEARCHING", f"{len(self.standing_targets)} TARGETS LEFT")
 
         self._check_reveal_complete()
         self._sync_vars()
@@ -256,6 +287,7 @@ class MoleMan(CaseFileMixin, Mode):
             spinner_hits=self.spinner_hits,
             jackpot=self._current_jackpot_value(),
         )
+        self._show_mode_jackpot("JACKPOT BUILDS", self._current_jackpot_value())
         self._sync_vars()
 
     def _upper_exit(self, **kwargs):
@@ -323,6 +355,7 @@ class MoleMan(CaseFileMixin, Mode):
             jackpot=self._current_jackpot_value(),
         )
         self.machine.events.post("mole_man_secret_hurryup_started")
+        self._show_mode_countdown("SECRET TARGET FOUND", self.hurryup_seconds_left, self.TARGET_LABELS[self.secret_target])
 
         if self.has_case_file("safety_net"):
             self.machine.events.post("start_case_file_ball_save")
@@ -348,6 +381,7 @@ class MoleMan(CaseFileMixin, Mode):
             seconds=self.hurryup_seconds_left,
             jackpot=self._current_jackpot_value(),
         )
+        self._show_mode_countdown("HIT SECRET TARGET", self.hurryup_seconds_left, self.TARGET_LABELS[self.secret_target])
         self._sync_vars()
 
         if self.hurryup_seconds_left <= 0:
@@ -364,6 +398,7 @@ class MoleMan(CaseFileMixin, Mode):
             self._drop_programmatically(self.secret_target)
 
         self.machine.events.post("mole_man_secret_timer_failed")
+        self._show_mode_message("MOLE MAN ESCAPED", "SECRET TARGET LOST")
         self._fail_mode()
 
     def _collapse_search(self, reason):
@@ -377,6 +412,7 @@ class MoleMan(CaseFileMixin, Mode):
         self.hurryup_seconds_left = 0
         self.machine.events.post("mole_man_search_collapsed", reason=reason)
         self.machine.events.post("mole_man_return_to_upper")
+        self._show_mode_message("SEARCH LOST", "RETURN TO THE ROOF")
         self._sync_vars()
 
     def _drop_all_remaining_targets(self):
@@ -421,6 +457,7 @@ class MoleMan(CaseFileMixin, Mode):
             target_label=self.TARGET_LABELS[self.secret_target],
             jackpot=jackpot,
         )
+        self._show_mode_jackpot("MOLE MAN JACKPOT", jackpot, self.TARGET_LABELS[self.secret_target])
         self._sync_vars()
         self._complete_mode()
 

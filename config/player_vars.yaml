@@ -711,6 +711,99 @@ player_vars:
   enforcers_mode_points:
     initial_value: 0
     value_type: int
+  enforcers_base_jackpot:
+    initial_value: 100000
+    value_type: int
+  enforcers_upper_jackpots:
+    initial_value: 0
+    value_type: int
+  enforcers_saucer_bonus_jackpots:
+    initial_value: 0
+    value_type: int
+  enforcers_spinner_spins:
+    initial_value: 0
+    value_type: int
+  enforcers_ox_super_value:
+    initial_value: 0
+    value_type: int
+  enforcers_ox_lit:
+    initial_value: 0
+    value_type: int
+  enforcers_gate_open:
+    initial_value: 0
+    value_type: int
+  enforcers_left_hits:
+    initial_value: 0
+    value_type: int
+  enforcers_left_multiplier:
+    initial_value: 0
+    value_type: int
+  enforcers_left_jackpot_value:
+    initial_value: 100000
+    value_type: int
+  enforcers_left_upper_lit:
+    initial_value: 0
+    value_type: int
+  enforcers_left_upper_collected:
+    initial_value: 0
+    value_type: int
+  enforcers_left_saucer_lit:
+    initial_value: 0
+    value_type: int
+  enforcers_left_saucer_collected:
+    initial_value: 0
+    value_type: int
+  enforcers_left_award:
+    initial_value: 0
+    value_type: int
+  enforcers_pops_hits:
+    initial_value: 0
+    value_type: int
+  enforcers_pops_multiplier:
+    initial_value: 0
+    value_type: int
+  enforcers_pops_jackpot_value:
+    initial_value: 100000
+    value_type: int
+  enforcers_pops_upper_lit:
+    initial_value: 0
+    value_type: int
+  enforcers_pops_upper_collected:
+    initial_value: 0
+    value_type: int
+  enforcers_pops_saucer_lit:
+    initial_value: 0
+    value_type: int
+  enforcers_pops_saucer_collected:
+    initial_value: 0
+    value_type: int
+  enforcers_pops_award:
+    initial_value: 0
+    value_type: int
+  enforcers_right_hits:
+    initial_value: 0
+    value_type: int
+  enforcers_right_multiplier:
+    initial_value: 0
+    value_type: int
+  enforcers_right_jackpot_value:
+    initial_value: 100000
+    value_type: int
+  enforcers_right_upper_lit:
+    initial_value: 0
+    value_type: int
+  enforcers_right_upper_collected:
+    initial_value: 0
+    value_type: int
+  enforcers_right_saucer_lit:
+    initial_value: 0
+    value_type: int
+  enforcers_right_saucer_collected:
+    initial_value: 0
+    value_type: int
+  enforcers_right_award:
+    initial_value: 0
+    value_type: int
 
   miss_trubble_played:
     initial_value: 0
@@ -752,6 +845,36 @@ player_vars:
   fifth_avenue_phantom_mode_points:
     initial_value: 0
     value_type: int
+  fifth_avenue_phantom_jackpots:
+    initial_value: 0
+    value_type: int
+  fifth_avenue_phantom_escape_jackpots:
+    initial_value: 0
+    value_type: int
+  fifth_avenue_phantom_best_jackpot:
+    initial_value: 0
+    value_type: int
+  fifth_avenue_phantom_rounds:
+    initial_value: 0
+    value_type: int
+  fifth_avenue_phantom_reveals_used:
+    initial_value: 0
+    value_type: int
+  fifth_avenue_phantom_current_jackpot:
+    initial_value: 0
+    value_type: int
+  fifth_avenue_phantom_timer:
+    initial_value: 0
+    value_type: int
+  fifth_avenue_phantom_location:
+    initial_value: ""
+    value_type: str
+  fifth_avenue_phantom_phase:
+    initial_value: "build"
+    value_type: str
+  fifth_avenue_phantom_shot_assist_used:
+    initial_value: 0
+    value_type: int
 
   frederick_foswell_played:
     initial_value: 0
@@ -765,6 +888,40 @@ player_vars:
   frederick_foswell_mode_points:
     initial_value: 0
     value_type: int
+  frederick_foswell_rumours:
+    initial_value: 0
+    value_type: int
+  frederick_foswell_total_rumours:
+    initial_value: 0
+    value_type: int
+  frederick_foswell_conversions:
+    initial_value: 0
+    value_type: int
+  frederick_foswell_headlines_lit:
+    initial_value: 0
+    value_type: int
+  frederick_foswell_headlines_collected:
+    initial_value: 0
+    value_type: int
+  frederick_foswell_cycle_headlines:
+    initial_value: 0
+    value_type: int
+  frederick_foswell_super_value:
+    initial_value: 0
+    value_type: int
+  frederick_foswell_super_collected:
+    initial_value: 0
+    value_type: int
+  frederick_foswell_back_page_value:
+    initial_value: 0
+    value_type: int
+  frederick_foswell_back_page_collected:
+    initial_value: 0
+    value_type: int
+  frederick_foswell_drain_active:
+    initial_value: 0
+    value_type: int
+
 
   blackwell_played:
     initial_value: 0

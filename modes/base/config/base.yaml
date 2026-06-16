@@ -219,6 +219,35 @@ widget_player:
       expire: 2s
 
 
+  show_mode_message:
+    mode_message:
+      expire: 2s
+      priority: 4200
+      action: play
+
+  show_mode_message_long:
+    mode_message:
+      expire: 4s
+      priority: 4200
+      action: play
+
+  show_mode_jackpot:
+    mode_message:
+      expire: 2s
+      priority: 4300
+      action: play
+
+  show_mode_countdown:
+    mode_message:
+      expire: 2s
+      priority: 4250
+      action: play
+
+  hide_mode_message:
+    mode_message:
+      action: remove
+
+
 slide_player:
   mode_base_started:
     main_game:

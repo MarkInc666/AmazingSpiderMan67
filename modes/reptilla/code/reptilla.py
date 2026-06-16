@@ -113,10 +113,39 @@ class Reptilla(CaseFileMixin, Mode):
             self.machine.events.post("start_case_file_ball_save")
 
         self.machine.events.post("reptilla_startup_complete")
+        self._show_mode_message("CITY RAMPAGE", "HIT POPS TO LIGHT JACKPOTS")
         self.machine.events.post("reptilla_clear_all_lights")
         self.machine.events.post("clear_saucers")
         self._update_rooftop_gate()
         self._sync_vars()
+
+
+    def _show_mode_message(self, title, subtitle="", value="", seconds=""):
+        self.machine.events.post(
+            "show_mode_message",
+            title=title,
+            subtitle=subtitle,
+            value=value,
+            seconds=seconds,
+        )
+
+    def _show_mode_jackpot(self, title, value, subtitle=""):
+        self.machine.events.post(
+            "show_mode_jackpot",
+            title=title,
+            subtitle=subtitle,
+            value=value,
+            seconds="",
+        )
+
+    def _show_mode_countdown(self, title, seconds, subtitle=""):
+        self.machine.events.post(
+            "show_mode_countdown",
+            title=title,
+            subtitle=subtitle,
+            value="",
+            seconds=seconds,
+        )
 
     def mode_stop(self, **kwargs):
         self.delay.remove("reptilla_super_timer")
@@ -169,6 +198,7 @@ class Reptilla(CaseFileMixin, Mode):
         self.lit_shots.add(shot)
         self.machine.events.post(f"reptilla_{shot}_lit")
         self.machine.events.post("reptilla_rampage_shot_lit", shot=shot)
+        self._show_mode_message("RAMPAGE SHOT LIT", self._shot_display_name(shot))
 
         if shot == self.LEFT_BANK_SHOT:
             self._stage_left_bank()
@@ -256,6 +286,7 @@ class Reptilla(CaseFileMixin, Mode):
             collected=self.jackpots_collected,
             required=self.required_jackpots,
         )
+        self._show_mode_jackpot("RAMPAGE JACKPOT", jackpot_value, self._shot_display_name(shot))
 
         if self.jackpots_collected >= self.required_jackpots:
             self._light_super_jackpot()
@@ -273,6 +304,7 @@ class Reptilla(CaseFileMixin, Mode):
         self._close_rooftop_gate()
         self.machine.events.post("reptilla_clear_rampage_lights")
         self.machine.events.post("reptilla_super_jackpot_lit")
+        self._show_mode_jackpot("SUPER JACKPOT LIT", self.super_jackpot_value, "SAUCER 2")
         self.machine.events.post("reset_drops")
         self._restart_super_timer()
 
@@ -288,12 +320,14 @@ class Reptilla(CaseFileMixin, Mode):
             name="reptilla_super_timer",
         )
         self.machine.events.post("reptilla_super_timer_started", seconds=seconds)
+        self._show_mode_countdown("HIT SAUCER 2", seconds, "SUPER JACKPOT")
         self._sync_vars()
 
     def _super_timer_expired(self):
         if self._in_summary_or_done():
             return
         self.machine.events.post("reptilla_super_timer_expired")
+        self._show_mode_message("REPTILLA ESCAPED", "SUPER TIMER EXPIRED")
         self._fail_mode()
 
     def _saucer_2_hit(self, **kwargs):
@@ -309,6 +343,7 @@ class Reptilla(CaseFileMixin, Mode):
             "reptilla_super_jackpot_collected",
             value=self.super_jackpot_value,
         )
+        self._show_mode_jackpot("REPTILLA SUPER JACKPOT", self.super_jackpot_value)
         self._complete_mode()
 
     def _complete_mode(self, **kwargs):
@@ -348,6 +383,15 @@ class Reptilla(CaseFileMixin, Mode):
         if self.more_time_active:
             return self.MORE_TIME_SUPER_TIMER_SECONDS
         return self.SUPER_TIMER_SECONDS
+
+    def _shot_display_name(self, shot):
+        names = {
+            self.LEFT_BANK_SHOT: "LEFT DROP",
+            self.UPPER_MIDDLE_SHOT: "UPPER MIDDLE",
+            self.RIGHT_BANK_SHOT: "RIGHT DROP",
+            self.CENTER_WEB_SHOT: "CENTER WEB",
+        }
+        return names.get(shot, str(shot).upper())
 
     def _refresh_lights(self):
         self.machine.events.post("reptilla_clear_rampage_lights")
