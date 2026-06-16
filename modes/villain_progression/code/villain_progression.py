@@ -669,6 +669,7 @@ class VillainProgression(Mode):
         self.machine.events.post("villain_mode_ended", villain=mini_key, villain_key=mini_key)
 
         self._restore_state()
+        self._schedule_case_files_restore(reason="mini_wizard_failed")
 
     def _ensure_player_vars(self):
         defaults = {
@@ -791,6 +792,25 @@ class VillainProgression(Mode):
             if chapter["mini_wizard_key"] == mini_key:
                 return index, chapter
         return None, None
+
+    def _is_mini_wizard_key(self, key):
+        if not key:
+            return False
+        for chapter in self.CHAPTERS:
+            if chapter["mini_wizard_key"] == key:
+                return True
+        return False
+
+    def _schedule_case_files_restore(self, reason=""):
+        # Case-file lights can be cleared by summary cleanup/global cleanup.
+        # Restore them after the summary/mini-wizard flow has fully released
+        # its runtime locks so the CaseFiles mode no longer sees itself locked.
+        self.delay.remove("case_files_restore_after_progression_cleanup")
+        self.delay.add(
+            name="case_files_restore_after_progression_cleanup",
+            ms=250,
+            callback=lambda: self.machine.events.post("case_files_restore_state", reason=reason),
+        )
 
     def _get_current_chapter(self):
         chapter_num = self._safe_int(self.machine.game.player["villain_chapter"], 1)
@@ -947,6 +967,15 @@ class VillainProgression(Mode):
         the one official point where case files, saucers, drops, and qualify
         state are reset and the saucer/start system is unlocked again.
         """
+        # Mini-wizard summaries use their own concrete <mini>_summary_done
+        # event to advance chapters. The generic bookend summary event is
+        # posted before that concrete event, so handling it here would restore
+        # the old chapter/mini-wizard state and can leave case-file lights
+        # locked off when the summary is skipped with flipper cancel.
+        if self._is_mini_wizard_key(villain):
+            self.machine.events.post("villain_summary_generic_ignored_for_mini_wizard", mini_wizard=villain)
+            return
+
         player = self.machine.game.player if self.machine.game else None
 
         if player:
@@ -969,6 +998,7 @@ class VillainProgression(Mode):
             self._mini_wizard_ready_at_daily_bugle()
 
         self._restore_state()
+        self._schedule_case_files_restore(reason="villain_summary_done")
 
     def _villain_completed(self, villain_key=None, **kwargs):
         # Compatibility hook for anything that still posts villain_played.
@@ -1103,6 +1133,7 @@ class VillainProgression(Mode):
         self.machine.events.post("chapter_mini_wizard_ended", mini_wizard=mini_key)
         self.machine.events.post("villain_mode_ended", villain=mini_key, villain_key=mini_key)
         self._restore_state()
+        self._schedule_case_files_restore(reason="mini_wizard_completed")
 
     def _start_final_wizard(self, **kwargs):
         if self._safe_int(self.machine.game.player["final_wizard_ready"], 0) != 1:

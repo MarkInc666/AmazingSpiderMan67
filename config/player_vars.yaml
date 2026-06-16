@@ -423,6 +423,33 @@ player_vars:
   parafino_total_jackpots:
     initial_value: 0
     value_type: int
+  parafino_zone_hits:
+    initial_value: 0
+    value_type: int
+  parafino_jackpot_value:
+    initial_value: 0
+    value_type: int
+  parafino_last_jackpot_value:
+    initial_value: 0
+    value_type: int
+  parafino_left_hits:
+    initial_value: 0
+    value_type: int
+  parafino_pops_hits:
+    initial_value: 0
+    value_type: int
+  parafino_right_hits:
+    initial_value: 0
+    value_type: int
+  parafino_left_jackpot_value:
+    initial_value: 0
+    value_type: int
+  parafino_pops_jackpot_value:
+    initial_value: 0
+    value_type: int
+  parafino_right_jackpot_value:
+    initial_value: 0
+    value_type: int
   parafino_left_heat:
     initial_value: 0
     value_type: int
@@ -457,6 +484,24 @@ player_vars:
     initial_value: 0
     value_type: int
   parafino_saucer_3_add_ball_used:
+    initial_value: 0
+    value_type: int
+  parafino_saucer_1_add_ball_qualified:
+    initial_value: 0
+    value_type: int
+  parafino_saucer_2_add_ball_qualified:
+    initial_value: 0
+    value_type: int
+  parafino_saucer_3_add_ball_qualified:
+    initial_value: 0
+    value_type: int
+  parafino_saucer_1_extra_collect_used:
+    initial_value: 0
+    value_type: int
+  parafino_saucer_2_extra_collect_used:
+    initial_value: 0
+    value_type: int
+  parafino_saucer_3_extra_collect_used:
     initial_value: 0
     value_type: int
 

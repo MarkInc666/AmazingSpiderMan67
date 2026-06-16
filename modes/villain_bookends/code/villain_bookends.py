@@ -153,13 +153,13 @@ class VillainBookends(Mode):
 
         "parafino": {
             "title": "PARAFINO",
-            "intro_1": "Parafino has sealed the city.",
-            "intro_2": "Shoot pops and drops to break his control.",
-            "intro_3": "Lit SAUCERS for JACKPOTS. Flashing add-a-ball.",
+            "intro_1": "Parafino's wax traps the city.",
+            "intro_2": "Build zone jackpots with drops and pops.",
+            "intro_3": "Cash saucers. Three hits lights add-a-ball.",
             "summary_title_complete": "PARAFINO DEFEATED",
             "summary_title_failed": "PARAFINO ESCAPED",
-            "stat_1_label": "HEAT BLASTS",
-            "stat_1_var": "parafino_heat_hits",
+            "stat_1_label": "ZONE HITS",
+            "stat_1_var": "parafino_zone_hits",
             "stat_2_label": "JACKPOTS",
             "stat_2_var": "parafino_total_jackpots",
             "points_var": "parafino_mode_points",

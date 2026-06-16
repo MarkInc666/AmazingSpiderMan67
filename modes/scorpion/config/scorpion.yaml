@@ -110,6 +110,20 @@ show_player:
     scorpion_ready_show:
       action: stop
 
+  scorpion_sting_lights_off:
+    scorpion_safe_sting_show:
+      action: stop
+    scorpion_right_sting_target_1_show:
+      action: stop
+    scorpion_right_sting_target_2_show:
+      action: stop
+    scorpion_right_sting_target_3_show:
+      action: stop
+    scorpion_right_sting_target_4_show:
+      action: stop
+    scorpion_right_sting_target_5_show:
+      action: stop
+
   scorpion_right_sting_target_1_lit:
     scorpion_right_sting_target_1_show:
       loops: -1
@@ -145,6 +159,20 @@ show_player:
       action: stop
     scorpion_success_show:
       loops: 1
+
+  scorpion_sting_miss:
+    scorpion_safe_sting_show:
+      action: stop
+    scorpion_right_sting_target_1_show:
+      action: stop
+    scorpion_right_sting_target_2_show:
+      action: stop
+    scorpion_right_sting_target_3_show:
+      action: stop
+    scorpion_right_sting_target_4_show:
+      action: stop
+    scorpion_right_sting_target_5_show:
+      action: stop
 
   scorpion_sting_failed:
     scorpion_safe_sting_show:

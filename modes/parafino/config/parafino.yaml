@@ -22,21 +22,6 @@ variable_player:
       action: set
       int: 0
 
-#multiballs:
-#  parafino_multiball:
-#    ball_count: 2
-#    ball_count_type: total
-#    shoot_again: 20s
-#    start_events: parafino_start_multiball
-#    stop_events:
-#      - parafino_stop_multiball
-
-#  parafino_add_a_ball:
-#    ball_count: 1
-#    ball_count_type: add
-#    shoot_again: 10s
-#    start_events: parafino_add_a_ball
-
 multiballs:
   parafino_multiball:
     ball_count: 2
@@ -61,6 +46,7 @@ event_player:
     - drop_target_bank_dt_bank_right_reset
     - parafino_clear_all_lights
     - parafino_mode_intro
+    - rooftop_diverter_close
 
   multiball_parafino_multiball_ended:
     - parafino_multiball_ended
@@ -68,6 +54,7 @@ event_player:
   mode_parafino_stopping:
     - parafino_clear_all_lights
     - clear_saucers
+    - rooftop_diverter_close
 
 
 widget_player:
@@ -94,92 +81,21 @@ widget_player:
       action: play
       expire: 3s
 
-  xparafino_all_jackpots_collected:
-    parafino_heat_cycle_complete:
-      action: play
-      expire: 4s
-
 show_player:
 
   parafino_clear_all_lights:
-    parafino_gi_heat_0:
-      action: stop
-    parafino_gi_heat_1:
-      action: stop
-    parafino_gi_heat_2:
-      action: stop
-    parafino_gi_heat_3:
-      action: stop
-    parafino_gi_heat_4:
-      action: stop
-    parafino_gi_heat_5:
-      action: stop
     parafino_left_jackpot_show:
       action: stop
     parafino_pops_jackpot_show:
       action: stop
     parafino_right_jackpot_show:
       action: stop
-
-  parafino_gi_set_heat_0:
-    parafino_gi_heat_0:
-      action: play
-      loops: -1
-
-  parafino_gi_set_heat_1:
-    parafino_gi_heat_1:
-      action: play
-      loops: -1
-
-  parafino_gi_set_heat_2:
-    parafino_gi_heat_2:
-      action: play
-      loops: -1
-
-  parafino_gi_set_heat_3:
-    parafino_gi_heat_3:
-      action: play
-      loops: -1
-
-  parafino_gi_set_heat_4:
-    parafino_gi_heat_4:
-      action: play
-      loops: -1
-
-  parafino_gi_set_heat_5:
-    parafino_gi_heat_5:
-      action: play
-      loops: -1
-
-  parafino_gi_flash_heat_0:
-    parafino_gi_heat_0:
-      action: play
-      loops: 0
-
-  parafino_gi_flash_heat_1:
-    parafino_gi_heat_1:
-      action: play
-      loops: 0
-
-  parafino_gi_flash_heat_2:
-    parafino_gi_heat_2:
-      action: play
-      loops: 0
-
-  parafino_gi_flash_heat_3:
-    parafino_gi_heat_3:
-      action: play
-      loops: 0
-
-  parafino_gi_flash_heat_4:
-    parafino_gi_heat_4:
-      action: play
-      loops: 0
-
-  parafino_gi_flash_heat_5:
-    parafino_gi_heat_5:
-      action: play
-      loops: 0
+    parafino_saucer_1_add_ball_show:
+      action: stop
+    parafino_saucer_2_add_ball_show:
+      action: stop
+    parafino_saucer_3_add_ball_show:
+      action: stop
 
   parafino_left_jackpot_lit:
     parafino_left_jackpot_show:
@@ -199,6 +115,42 @@ show_player:
       loops: -1
       speed: 3
 
+  parafino_saucer_1_add_ball_lit:
+    parafino_saucer_1_add_ball_show:
+      action: play
+      loops: -1
+      speed: 4
+
+  parafino_saucer_2_add_ball_lit:
+    parafino_saucer_2_add_ball_show:
+      action: play
+      loops: -1
+      speed: 4
+
+  parafino_saucer_3_add_ball_lit:
+    parafino_saucer_3_add_ball_show:
+      action: play
+      loops: -1
+      speed: 4
+
+  parafino_saucer_1_reset:
+    parafino_left_jackpot_show:
+      action: stop
+    parafino_saucer_1_add_ball_show:
+      action: stop
+
+  parafino_saucer_2_reset:
+    parafino_pops_jackpot_show:
+      action: stop
+    parafino_saucer_2_add_ball_show:
+      action: stop
+
+  parafino_saucer_3_reset:
+    parafino_right_jackpot_show:
+      action: stop
+    parafino_saucer_3_add_ball_show:
+      action: stop
+
   parafino_clear_jackpot_lights:
     parafino_left_jackpot_show:
       action: stop
@@ -206,78 +158,26 @@ show_player:
       action: stop
     parafino_right_jackpot_show:
       action: stop
-
-  parafino_heat_cycle_reset:
-    parafino_left_jackpot_show:
+    parafino_saucer_1_add_ball_show:
       action: stop
-    parafino_pops_jackpot_show:
+    parafino_saucer_2_add_ball_show:
       action: stop
-    parafino_right_jackpot_show:
+    parafino_saucer_3_add_ball_show:
       action: stop
 
 shows:
-
-  parafino_gi_heat_0:
-    - duration: 500ms
-      lights:
-        gi: 6ecbff
-    - duration: 500ms
-      lights:
-        gi: 9edcff
-
-  parafino_gi_heat_1:
-    - duration: 500ms
-      lights:
-        gi: bfeeff
-    - duration: 500ms
-      lights:
-        gi: e6f9ff
-
-  parafino_gi_heat_2:
-    - duration: 500ms
-      lights:
-        gi: white
-    - duration: 500ms
-      lights:
-        gi: e8f8ff
-
-  parafino_gi_heat_3:
-    - duration: 500ms
-      lights:
-        gi: fff1cf
-    - duration: 500ms
-      lights:
-        gi: ffe6a3
-
-  parafino_gi_heat_4:
-    - duration: 500ms
-      lights:
-        gi: orange
-    - duration: 500ms
-      lights:
-        gi: ff8c00
-
-  parafino_gi_heat_5:
-    - duration: 500ms
-      lights:
-        gi: red
-    - duration: 500ms
-      lights:
-        gi: ff3300
 
   parafino_left_jackpot_show:
     - duration: 200ms
       lights:
         l_3bankbonus: red
+        l_1_hole_l: green
+        l_1_hole_r: green
     - duration: 200ms
       lights:
         l_3bankbonus: off
-    - duration: 200ms
-      lights:
-        l_1: green
-    - duration: 200ms
-      lights:
-        l_1: off
+        l_1_hole_l: green
+        l_1_hole_r: green
 
   parafino_pops_jackpot_show:
     - duration: 200ms
@@ -306,6 +206,8 @@ shows:
         l_pop_2_10: red
         l_pop_2_11: red
         l_pop_2_12: red
+        l_2_hole_l: green
+        l_2_hole_r: green
     - duration: 200ms
       lights:
         l_pop_1_1: off
@@ -332,12 +234,8 @@ shows:
         l_pop_2_10: off
         l_pop_2_11: off
         l_pop_2_12: off
-    - duration: 200ms
-      lights:
-        l_2: green
-    - duration: 200ms
-      lights:
-        l_2: off
+        l_2_hole_l: green
+        l_2_hole_r: green
 
   parafino_right_jackpot_show:
     - duration: 200ms
@@ -347,6 +245,8 @@ shows:
         l_5bank_3: red
         l_5bank_4: red
         l_5bank_5: red
+        l_3_hole_l: green
+        l_3_hole_r: green
     - duration: 200ms
       lights:
         l_5bank_1: off
@@ -354,9 +254,29 @@ shows:
         l_5bank_3: off
         l_5bank_4: off
         l_5bank_5: off
-    - duration: 200ms
+        l_3_hole_l: green
+        l_3_hole_r: green
+
+  parafino_saucer_1_add_ball_show:
+    - duration: 150ms
       lights:
-        l_3: green
-    - duration: 200ms
+        l_1: white
+    - duration: 150ms
+      lights:
+        l_1: off
+
+  parafino_saucer_2_add_ball_show:
+    - duration: 150ms
+      lights:
+        l_2: white
+    - duration: 150ms
+      lights:
+        l_2: off
+
+  parafino_saucer_3_add_ball_show:
+    - duration: 150ms
+      lights:
+        l_3: white
+    - duration: 150ms
       lights:
         l_3: off

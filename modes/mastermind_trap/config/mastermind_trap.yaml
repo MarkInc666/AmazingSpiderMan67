@@ -70,17 +70,27 @@ event_player:
   s_right_drops_3_active: mastermind_trap_shot_hit
   s_right_drops_4_active: mastermind_trap_shot_hit
   s_right_drops_5_active: mastermind_trap_shot_hit
-  s_saucer_1_active: mastermind_trap_shot_hit
-  s_saucer_2_active: mastermind_trap_shot_hit
-  s_saucer_3_active: mastermind_trap_shot_hit
+  s_saucer_1_active:
+    mastermind_trap_shot_hit:
+    delayed_kickout_saucer_1:
+  s_saucer_2_active:
+    mastermind_trap_shot_hit:
+    delayed_kickout_saucer_2:
+  s_saucer_3_active:
+    mastermind_trap_shot_hit:
+    delayed_kickout_saucer_3:
   s_vuk_switch_active: mastermind_trap_shot_hit
 
   multiball_mastermind_trap_multiball_ended: mastermind_trap_complete_request
 
   mode_mastermind_trap_started:
-    - clear_saucers
+    - clear_saucers_delayed
     - drop_target_bank_dt_bank_left_reset
     - drop_target_bank_dt_bank_right_reset
 
   mode_mastermind_trap_stopping:
-    - clear_saucers
+    - clear_saucers_delayed
+
+  # Keep mini-wizard drop banks playable after they are completed.
+  drop_target_bank_dt_bank_left_down: drop_target_bank_dt_bank_left_reset
+  drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset

@@ -454,7 +454,7 @@ class Goblin(CaseFileMixin, Mode):
 
     def delayed_eject(self, saucer=None, **kwargs):
         if saucer is not None:
-            self.machine.events.post("eject_saucer", saucer=saucer)
+            self.machine.events.post(f"delayed_kickout_saucer_{saucer}")
 
     def eject_held_saucer(self, reason=None):
         saucer = self.held_saucer
@@ -466,7 +466,6 @@ class Goblin(CaseFileMixin, Mode):
         self.hold_active = False
         self._set_player_var("goblin_hold_active", 0)
         self.machine.events.post("goblin_hold_ended", saucer=saucer)
-        self.machine.events.post("clear_saucers")
         self.delayed_eject(saucer=saucer)
 
     # -------------------------------------------------------------------------

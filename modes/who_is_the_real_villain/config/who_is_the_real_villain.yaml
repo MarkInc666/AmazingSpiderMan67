@@ -70,17 +70,27 @@ event_player:
   s_right_drops_3_active: who_is_the_real_villain_shot_hit
   s_right_drops_4_active: who_is_the_real_villain_shot_hit
   s_right_drops_5_active: who_is_the_real_villain_shot_hit
-  s_saucer_1_active: who_is_the_real_villain_shot_hit
-  s_saucer_2_active: who_is_the_real_villain_shot_hit
-  s_saucer_3_active: who_is_the_real_villain_shot_hit
+  s_saucer_1_active:
+    who_is_the_real_villain_shot_hit:
+    delayed_kickout_saucer_1:
+  s_saucer_2_active:
+    who_is_the_real_villain_shot_hit:
+    delayed_kickout_saucer_2:
+  s_saucer_3_active:
+    who_is_the_real_villain_shot_hit:
+    delayed_kickout_saucer_3:
   s_vuk_switch_active: who_is_the_real_villain_shot_hit
 
   multiball_who_is_the_real_villain_multiball_ended: who_is_the_real_villain_complete_request
 
   mode_who_is_the_real_villain_started:
-    - clear_saucers
+    - clear_saucers_delayed
     - drop_target_bank_dt_bank_left_reset
     - drop_target_bank_dt_bank_right_reset
 
   mode_who_is_the_real_villain_stopping:
-    - clear_saucers
+    - clear_saucers_delayed
+
+  # Keep mini-wizard drop banks playable after they are completed.
+  drop_target_bank_dt_bank_left_down: drop_target_bank_dt_bank_left_reset
+  drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset

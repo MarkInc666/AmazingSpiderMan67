@@ -78,9 +78,13 @@ event_player:
   multiball_daily_bugle_rooftop_riot_multiball_ended: daily_bugle_rooftop_riot_failed
 
   mode_daily_bugle_rooftop_riot_started:
-    - clear_saucers
+    - clear_saucers_delayed
     - drop_target_bank_dt_bank_left_reset
     - drop_target_bank_dt_bank_right_reset
 
   mode_daily_bugle_rooftop_riot_stopping:
-    - clear_saucers
+    - clear_saucers_delayed
+
+  # Keep mini-wizard drop banks playable after they are completed.
+  drop_target_bank_dt_bank_left_down: drop_target_bank_dt_bank_left_reset
+  drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset

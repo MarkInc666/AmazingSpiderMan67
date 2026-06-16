@@ -108,6 +108,7 @@ class Scorpion(CaseFileMixin, Mode):
         if self.state != "ready":
             return
 
+        self.machine.events.post("scorpion_sting_lights_off")
         self.state = "sting"
         self.active_target_side = "left"
 
@@ -129,6 +130,7 @@ class Scorpion(CaseFileMixin, Mode):
         if self.state != "ready":
             return
 
+        self.machine.events.post("scorpion_sting_lights_off")
         self.state = "sting"
         self.active_target_side = "right"
 
@@ -217,6 +219,7 @@ class Scorpion(CaseFileMixin, Mode):
         self.reset_for_next_try()
 
     def reset_for_next_try(self):
+        self.machine.events.post("scorpion_sting_lights_off")
         self.tries_used += 1
 
         if self.tries_used >= self.MAX_TRIES:

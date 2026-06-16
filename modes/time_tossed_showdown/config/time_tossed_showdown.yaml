@@ -70,17 +70,27 @@ event_player:
   s_right_drops_3_active: time_tossed_showdown_shot_hit
   s_right_drops_4_active: time_tossed_showdown_shot_hit
   s_right_drops_5_active: time_tossed_showdown_shot_hit
-  s_saucer_1_active: time_tossed_showdown_shot_hit
-  s_saucer_2_active: time_tossed_showdown_shot_hit
-  s_saucer_3_active: time_tossed_showdown_shot_hit
+  s_saucer_1_active:
+    time_tossed_showdown_shot_hit:
+    delayed_kickout_saucer_1:
+  s_saucer_2_active:
+    time_tossed_showdown_shot_hit:
+    delayed_kickout_saucer_2:
+  s_saucer_3_active:
+    time_tossed_showdown_shot_hit:
+    delayed_kickout_saucer_3:
   s_vuk_switch_active: time_tossed_showdown_shot_hit
 
   multiball_time_tossed_showdown_multiball_ended: time_tossed_showdown_complete_request
 
   mode_time_tossed_showdown_started:
-    - clear_saucers
+    - clear_saucers_delayed
     - drop_target_bank_dt_bank_left_reset
     - drop_target_bank_dt_bank_right_reset
 
   mode_time_tossed_showdown_stopping:
-    - clear_saucers
+    - clear_saucers_delayed
+
+  # Keep mini-wizard drop banks playable after they are completed.
+  drop_target_bank_dt_bank_left_down: drop_target_bank_dt_bank_left_reset
+  drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset
