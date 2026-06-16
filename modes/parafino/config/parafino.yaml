@@ -167,20 +167,20 @@ show_player:
 
 shows:
 
-  parafino_left_jackpot_show:
-    - duration: 200ms
+  parafino_left_jackpot_show:  
+    - duration: 250ms
       lights:
-        l_3bankbonus: red
-        l_1_hole_l: green
-        l_1_hole_r: green
-    - duration: 200ms
+        l_3bankbonus: green
+        l_1_hole_l: red
+        l_1_hole_r: red
+    - duration: 250ms
       lights:
         l_3bankbonus: off
-        l_1_hole_l: green
-        l_1_hole_r: green
+        l_1_hole_l: off
+        l_1_hole_r: off
 
   parafino_pops_jackpot_show:
-    - duration: 200ms
+    - duration: 250ms
       lights:
         l_pop_1_1: red
         l_pop_1_2: red
@@ -206,9 +206,9 @@ shows:
         l_pop_2_10: red
         l_pop_2_11: red
         l_pop_2_12: red
-        l_2_hole_l: green
-        l_2_hole_r: green
-    - duration: 200ms
+        l_2_hole_l: red
+        l_2_hole_r: red
+    - duration: 250ms
       lights:
         l_pop_1_1: off
         l_pop_1_2: off
@@ -234,49 +234,49 @@ shows:
         l_pop_2_10: off
         l_pop_2_11: off
         l_pop_2_12: off
-        l_2_hole_l: green
-        l_2_hole_r: green
+        l_2_hole_l: off
+        l_2_hole_r: off
 
   parafino_right_jackpot_show:
-    - duration: 200ms
+    - duration: 250ms
       lights:
         l_5bank_1: red
         l_5bank_2: red
         l_5bank_3: red
         l_5bank_4: red
         l_5bank_5: red
-        l_3_hole_l: green
-        l_3_hole_r: green
-    - duration: 200ms
+        l_3_hole_l: red
+        l_3_hole_r: red
+    - duration: 250ms
       lights:
         l_5bank_1: off
         l_5bank_2: off
         l_5bank_3: off
         l_5bank_4: off
         l_5bank_5: off
-        l_3_hole_l: green
-        l_3_hole_r: green
+        l_3_hole_l: off
+        l_3_hole_r: off
 
   parafino_saucer_1_add_ball_show:
-    - duration: 150ms
+    - duration: 250ms
       lights:
         l_1: white
-    - duration: 150ms
+    - duration: 250ms
       lights:
         l_1: off
 
   parafino_saucer_2_add_ball_show:
-    - duration: 150ms
+    - duration: 250ms
       lights:
         l_2: white
-    - duration: 150ms
+    - duration: 250ms
       lights:
         l_2: off
 
   parafino_saucer_3_add_ball_show:
-    - duration: 150ms
+    - duration: 250ms
       lights:
         l_3: white
-    - duration: 150ms
+    - duration: 250ms
       lights:
         l_3: off
