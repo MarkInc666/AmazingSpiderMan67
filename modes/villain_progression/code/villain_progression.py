@@ -343,6 +343,12 @@ class VillainProgression(Mode):
 
         This is deliberately progression-owned. It does not ask the gameplay
         mode to fail itself because that mode may already be stopped.
+
+        Villain attempts remain resolved by played state. Mini-wizards are
+        different: once a mini-wizard has actually started, it is consumed for
+        the game. If ball end stops it before its normal summary/completion
+        event chain, progression still marks that mini-wizard complete and
+        advances to the next chapter.
         """
         player = self.machine.game.player
 
@@ -357,20 +363,42 @@ class VillainProgression(Mode):
                     villain_name=info["name"],
                 )
 
-        for chapter in self.CHAPTERS:
+        for chapter_number, chapter in enumerate(self.CHAPTERS, start=1):
             mini_key = chapter["mini_wizard_key"]
             if player[f"{mini_key}_state"] == self.PLAYING:
-                player[f"{mini_key}_completed"] = 0
-                player[f"{mini_key}_state"] = self.FAILED
-                self.machine.events.post(
-                    "chapter_mini_wizard_abandoned",
-                    mini_wizard=mini_key,
-                )
+                self._consume_started_mini_wizard_on_ball_end(mini_key, chapter_number)
 
             # If the ball ended while Daily Bugle was lit for a mini-wizard,
-            # return it to READY. The player should re-light/start it cleanly.
+            # it was not yet played. Return it to READY so the player can still
+            # start the already-earned mini-wizard on the next ball.
             if player[f"{mini_key}_state"] == self.LIT:
                 player[f"{mini_key}_state"] = self.READY
+
+        if player["final_wizard_state"] == self.PLAYING:
+            player["final_wizard_state"] = self.COMPLETED
+            player["final_wizard_ready"] = 0
+            self.machine.events.post("final_wizard_abandoned_but_consumed")
+
+    def _consume_started_mini_wizard_on_ball_end(self, mini_key, chapter_number):
+        """Treat a started mini-wizard as completed if ball end stops it."""
+        player = self.machine.game.player
+
+        if player[f"{mini_key}_completed"] == 1 and player["villain_chapter"] > chapter_number:
+            return
+
+        player[f"{mini_key}_completed"] = 1
+        player[f"{mini_key}_state"] = self.COMPLETED
+        player["mini_wizards_completed"] += 1
+        player["villains_played_this_chapter"] = 0
+        player["chapter_mini_wizard_ready"] = 0
+        player["mini_wizard_daily_bugle_ready"] = 0
+        player["villain_chapter"] = max(player["villain_chapter"], chapter_number + 1)
+
+        self.machine.events.post(
+            "chapter_mini_wizard_abandoned_but_consumed",
+            mini_wizard=mini_key,
+            next_chapter=player["villain_chapter"],
+        )
 
     def _clear_runtime_flow_flags(self):
         player = self.machine.game.player
@@ -600,9 +628,12 @@ class VillainProgression(Mode):
             self.machine.events.post("chapter_mini_wizard_finish_unknown", mini_wizard=mini_key)
             return
 
+        # Mini-wizards are consumed once played. A failed/ended mini-wizard
+        # still counts as complete for progression and will not be replayed
+        # during the same game.
         completed = bool(completed)
-        player[f"{mini_key}_completed"] = 1 if completed else 0
-        player[f"{mini_key}_state"] = self.COMPLETED if completed else self.FAILED
+        player[f"{mini_key}_completed"] = 1
+        player[f"{mini_key}_state"] = self.COMPLETED
 
         player["mini_wizard_current_key"] = mini_key
         player["villain_mode_running"] = 1
@@ -640,12 +671,12 @@ class VillainProgression(Mode):
             self.machine.events.post("chapter_mini_wizard_summary_ignored_no_key")
             return
 
-        if self.machine.game.player[f"{mini_key}_completed"] == 1:
-            self._mini_wizard_completed(mini_wizard=mini_key, **kwargs)
-        else:
-            self._mini_wizard_failed(mini_wizard=mini_key, **kwargs)
+        # Once a mini-wizard has been played, it is consumed. The summary result
+        # does not decide whether progression advances.
+        self._mini_wizard_completed(mini_wizard=mini_key, **kwargs)
 
     def _mini_wizard_failed(self, mini_wizard=None, **kwargs):
+        """Compatibility path: a played mini-wizard is consumed either way."""
         player = self.machine.game.player
         mini_key = mini_wizard or player["mini_wizard_current_key"]
 
@@ -653,23 +684,8 @@ class VillainProgression(Mode):
             self.machine.events.post("chapter_mini_wizard_failure_ignored_no_key")
             return
 
-        chapter_number, chapter = self._chapter_for_mini_wizard(mini_key)
-        if not chapter:
-            self.machine.events.post("chapter_mini_wizard_failure_unknown", mini_wizard=mini_key)
-            return
-
-        player[f"{mini_key}_completed"] = 0
-        player[f"{mini_key}_state"] = self.FAILED
-
-        self._clear_runtime_flow_flags()
-        self._sync_chapter_ready_flags(post_events=False)
-        self._post_global_cleanup_events(reason="mini_wizard_failed")
-
-        self.machine.events.post("chapter_mini_wizard_ended", mini_wizard=mini_key)
-        self.machine.events.post("villain_mode_ended", villain=mini_key, villain_key=mini_key)
-
-        self._restore_state()
-        self._schedule_case_files_restore(reason="mini_wizard_failed")
+        self.machine.events.post("chapter_mini_wizard_failed_but_consumed", mini_wizard=mini_key)
+        self._mini_wizard_completed(mini_wizard=mini_key, **kwargs)
 
     def _ensure_player_vars(self):
         defaults = {
