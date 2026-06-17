@@ -14,7 +14,7 @@ class MonsterIslandBreakout(Mode):
 
     MODE_KEY = "monster_island_breakout"
     DISPLAY_NAME = "Monster Island Breakout"
-    HIT_SCORE = 50_000
+    BASE_JACKPOT = 50_000
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
@@ -23,10 +23,14 @@ class MonsterIslandBreakout(Mode):
         self.mode_points = 0
 
         player = self.machine.game.player
+        self.case_file_bonus = player["mini_wizard_case_file_bonus"]
+        self.jackpot_value = self.BASE_JACKPOT + self.case_file_bonus
         player["mini_wizard_current_key"] = self.MODE_KEY
         player[f"{self.MODE_KEY}_completed"] = 0
         player[f"{self.MODE_KEY}_mode_points"] = 0
         player[f"{self.MODE_KEY}_hits"] = 0
+        player[f"{self.MODE_KEY}_case_file_bonus"] = self.case_file_bonus
+        player[f"{self.MODE_KEY}_jackpot_value"] = self.jackpot_value
 
         self.add_mode_event_handler(f"{self.MODE_KEY}_shot_hit", self._shot_hit)
         self.add_mode_event_handler(f"{self.MODE_KEY}_complete_request", self._complete_mode)
@@ -47,9 +51,15 @@ class MonsterIslandBreakout(Mode):
             return
 
         self.hits += 1
-        self._score(self.HIT_SCORE)
+        self._score(self.jackpot_value)
         self._sync_vars()
-        self.machine.events.post(f"{self.MODE_KEY}_progress", hits=self.hits, points=self.mode_points)
+        self.machine.events.post(
+            f"{self.MODE_KEY}_progress",
+            hits=self.hits,
+            points=self.mode_points,
+            jackpot_value=self.jackpot_value,
+            case_file_bonus=self.case_file_bonus,
+        )
 
     def _complete_mode(self, **kwargs):
         if self.mode_done:
@@ -82,3 +92,5 @@ class MonsterIslandBreakout(Mode):
         player = self.machine.game.player
         player[f"{self.MODE_KEY}_mode_points"] = self.mode_points
         player[f"{self.MODE_KEY}_hits"] = self.hits
+        player[f"{self.MODE_KEY}_case_file_bonus"] = self.case_file_bonus
+        player[f"{self.MODE_KEY}_jackpot_value"] = self.jackpot_value

@@ -23,6 +23,16 @@ class VillainProgression(Mode):
     READY = "READY"
     LIT = "LIT"
 
+    CASE_FILE_KEYS = [
+        "more_jackpots",
+        "more_time",
+        "bigger_jackpots",
+        "safety_net",
+        "shot_assist",
+    ]
+    CASE_FILE_MINI_WIZARD_BONUS = 25_000
+    MINI_WIZARD_BASE_JACKPOT = 50_000
+
     CHAPTERS = [
         {
             "key": "classic_rogues",
@@ -393,6 +403,7 @@ class VillainProgression(Mode):
         player["chapter_mini_wizard_ready"] = 0
         player["mini_wizard_daily_bugle_ready"] = 0
         player["villain_chapter"] = max(player["villain_chapter"], chapter_number + 1)
+        self._reset_chapter_case_file_bonus()
 
         self.machine.events.post(
             "chapter_mini_wizard_abandoned_but_consumed",
@@ -703,6 +714,12 @@ class VillainProgression(Mode):
             "mini_wizard_current_key": "",
             "mini_wizard_vuk_hold_active": 0,
             "mini_wizards_completed": 0,
+            "chapter_case_files_collected": 0,
+            "current_villain_case_files_collected": 0,
+            "mini_wizard_case_file_bonus_per_file": self.CASE_FILE_MINI_WIZARD_BONUS,
+            "mini_wizard_case_file_bonus": 0,
+            "mini_wizard_base_jackpot": self.MINI_WIZARD_BASE_JACKPOT,
+            "mini_wizard_jackpot_value": self.MINI_WIZARD_BASE_JACKPOT,
             "villain_select_active": 0,
             "active_case_file_helper_count": 0,
             "active_case_file_helper_1": "",
@@ -723,6 +740,10 @@ class VillainProgression(Mode):
                 self.machine.game.player[f"{key}_completed"] = 0
             if self._get_player_var(f"{key}_state", None) is None:
                 self.machine.game.player[f"{key}_state"] = self.NOT_PLAYED
+            if self._get_player_var(f"{key}_case_files_counted_for_chapter", None) is None:
+                self.machine.game.player[f"{key}_case_files_counted_for_chapter"] = 0
+
+        self._sync_mini_wizard_case_file_bonus()
 
         for chapter in self.CHAPTERS:
             mini_key = chapter["mini_wizard_key"]
@@ -730,6 +751,81 @@ class VillainProgression(Mode):
                 self.machine.game.player[f"{mini_key}_completed"] = 0
             if self._get_player_var(f"{mini_key}_state", None) is None:
                 self.machine.game.player[f"{mini_key}_state"] = self.NOT_PLAYED
+
+    def _count_current_case_files(self):
+        """Return the number of currently collected Case Files for this villain attempt."""
+        player = self.machine.game.player
+        count = 0
+        for key in self.CASE_FILE_KEYS:
+            if self._safe_int(player[f"case_file_{key}_collected"], 0) == 1:
+                count += 1
+        return count
+
+    def _sync_mini_wizard_case_file_bonus(self):
+        """Publish the chapter-local Case File bonus used by mini-wizards."""
+        player = self.machine.game.player
+        collected = self._safe_int(player["chapter_case_files_collected"], 0)
+        if collected < 0:
+            collected = 0
+        if collected > 25:
+            collected = 25
+            player["chapter_case_files_collected"] = 25
+
+        bonus = collected * self.CASE_FILE_MINI_WIZARD_BONUS
+        player["mini_wizard_case_file_bonus_per_file"] = self.CASE_FILE_MINI_WIZARD_BONUS
+        player["mini_wizard_case_file_bonus"] = bonus
+        player["mini_wizard_base_jackpot"] = self.MINI_WIZARD_BASE_JACKPOT
+        player["mini_wizard_jackpot_value"] = self.MINI_WIZARD_BASE_JACKPOT + bonus
+
+    def _add_villain_case_files_to_chapter_total(self, villain_key):
+        """Bank this villain's Case Files into the current chapter mini-wizard bonus.
+
+        Case Files are locked once a villain starts, and villain_full_cleanup
+        resets the active Case File set later. So the correct accounting point
+        is the progression-owned villain start path.
+        """
+        player = self.machine.game.player
+        counted_var = f"{villain_key}_case_files_counted_for_chapter"
+
+        if player[counted_var] == 1:
+            self._sync_mini_wizard_case_file_bonus()
+            return
+
+        count = self._count_current_case_files()
+        player["current_villain_case_files_collected"] = count
+        player["chapter_case_files_collected"] = min(25, player["chapter_case_files_collected"] + count)
+        player[counted_var] = 1
+        self._sync_mini_wizard_case_file_bonus()
+
+        self.machine.events.post(
+            "chapter_case_files_bank_villain",
+            villain_key=villain_key,
+            case_files=count,
+            chapter_case_files=player["chapter_case_files_collected"],
+            bonus=player["mini_wizard_case_file_bonus"],
+            jackpot=player["mini_wizard_jackpot_value"],
+        )
+
+        if count > 0:
+            self.machine.events.post(
+                "show_mode_message",
+                title="CASE FILES BANKED",
+                subtitle=f"{player['chapter_case_files_collected']} / 25  +{player['mini_wizard_case_file_bonus']:,}",
+            )
+
+    def _reset_chapter_case_file_bonus(self):
+        """Reset the chapter-local Case File total after a mini-wizard/chapter ends."""
+        player = self.machine.game.player
+        player["chapter_case_files_collected"] = 0
+        player["current_villain_case_files_collected"] = 0
+        self._sync_mini_wizard_case_file_bonus()
+
+        chapter = self._get_current_chapter()
+        if chapter:
+            for villain_key in chapter["villains"]:
+                player[f"{villain_key}_case_files_counted_for_chapter"] = 0
+
+        self.machine.events.post("chapter_case_file_bonus_reset")
 
     def _request_start(self, saucer=None, state=0, max_choices=None, source="", **kwargs):
         """Handle a villain start request from a physical shot.
@@ -884,6 +980,8 @@ class VillainProgression(Mode):
 
     def _start_villain(self, villain_key):
         info = self.VILLAINS[villain_key]
+
+        self._add_villain_case_files_to_chapter_total(villain_key)
 
         # Set both the new state vars and the older *_played vars. The played
         # bit means "do not offer this villain again." Completion is tracked
@@ -1050,27 +1148,37 @@ class VillainProgression(Mode):
         self._restore_state()
 
     def _daily_bugle_hit(self, **kwargs):
-        if self._safe_int(self.machine.game.player["mini_wizard_daily_bugle_ready"], 0) != 1:
+        player = self.machine.game.player
+        if self._safe_int(player["mini_wizard_daily_bugle_ready"], 0) != 1:
             return
         chapter = self._get_current_chapter()
         if not chapter:
             return
         mini_key = chapter["mini_wizard_key"]
-        self.machine.game.player["mini_wizard_daily_bugle_ready"] = 0
-        self.machine.game.player["mini_wizard_vuk_hold_active"] = 1
-        self.machine.game.player["mini_wizard_current_key"] = mini_key
-        self.machine.game.player[f"{mini_key}_state"] = self.PLAYING
-        self.machine.game.player["villain_mode_running"] = 1
-        self.machine.game.player["villain_current_key"] = mini_key
-        self.machine.game.player["villain_current_name"] = mini_key
-        self.machine.game.player["villain_mode_running_name"] = mini_key
+        player["mini_wizard_daily_bugle_ready"] = 0
+        player["mini_wizard_vuk_hold_active"] = 1
+        player["mini_wizard_current_key"] = mini_key
+        player[f"{mini_key}_state"] = self.PLAYING
+        player["villain_mode_running"] = 1
+        player["villain_current_key"] = mini_key
+        player["villain_current_name"] = mini_key
+        player["villain_mode_running_name"] = mini_key
+        self._sync_mini_wizard_case_file_bonus()
         self.machine.events.post("case_files_clear_lights")
+        self.machine.events.post(
+            "show_mode_message",
+            title="CASE FILE BONUS",
+            subtitle=f"{player['chapter_case_files_collected']} / 25  +{player['mini_wizard_case_file_bonus']:,}",
+        )
         self.machine.events.post(
             "chapter_mini_wizard_starting",
             chapter=chapter["key"],
             chapter_name=chapter["name"],
             mini_wizard_key=mini_key,
             mini_wizard_name=chapter["mini_wizard_name"],
+            chapter_case_files_collected=player["chapter_case_files_collected"],
+            case_file_bonus=player["mini_wizard_case_file_bonus"],
+            jackpot_value=player["mini_wizard_jackpot_value"],
         )
         self.machine.events.post(
             "villain_bookend_intro_request",
@@ -1130,6 +1238,7 @@ class VillainProgression(Mode):
         player["chapter_mini_wizard_ready"] = 0
         player["mini_wizard_daily_bugle_ready"] = 0
         player["villain_chapter"] = chapter_number + 1
+        self._reset_chapter_case_file_bonus()
 
         next_chapter = self._get_current_chapter()
         if next_chapter is None:
@@ -1183,6 +1292,9 @@ class VillainProgression(Mode):
             mini_wizard_ready=self.machine.game.player["chapter_mini_wizard_ready"],
             mini_wizard_daily_bugle_ready=self.machine.game.player["mini_wizard_daily_bugle_ready"],
             final_wizard_ready=self.machine.game.player["final_wizard_ready"],
+            chapter_case_files_collected=self.machine.game.player["chapter_case_files_collected"],
+            mini_wizard_case_file_bonus=self.machine.game.player["mini_wizard_case_file_bonus"],
+            mini_wizard_jackpot_value=self.machine.game.player["mini_wizard_jackpot_value"],
         )
         self.machine.events.post("villain_chapter_status_changed")
 

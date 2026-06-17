@@ -114,6 +114,30 @@ player_vars:
     initial_value: ""
     value_type: str
 
+  chapter_case_files_collected:
+    initial_value: 0
+    value_type: int
+
+  current_villain_case_files_collected:
+    initial_value: 0
+    value_type: int
+
+  mini_wizard_case_file_bonus_per_file:
+    initial_value: 25000
+    value_type: int
+
+  mini_wizard_case_file_bonus:
+    initial_value: 0
+    value_type: int
+
+  mini_wizard_base_jackpot:
+    initial_value: 50000
+    value_type: int
+
+  mini_wizard_jackpot_value:
+    initial_value: 50000
+    value_type: int
+
   final_wizard_ready:
     initial_value: 0
     value_type: int
