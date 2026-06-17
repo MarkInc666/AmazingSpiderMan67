@@ -776,6 +776,12 @@ class VillainProgression(Mode):
         player["mini_wizard_case_file_bonus"] = bonus
         player["mini_wizard_base_jackpot"] = self.MINI_WIZARD_BASE_JACKPOT
         player["mini_wizard_jackpot_value"] = self.MINI_WIZARD_BASE_JACKPOT + bonus
+        self.machine.events.post(
+            "chapter_case_files_status_changed",
+            chapter_case_files_collected=player["chapter_case_files_collected"],
+            mini_wizard_case_file_bonus=player["mini_wizard_case_file_bonus"],
+            mini_wizard_jackpot_value=player["mini_wizard_jackpot_value"],
+        )
 
     def _add_villain_case_files_to_chapter_total(self, villain_key):
         """Bank this villain's Case Files into the current chapter mini-wizard bonus.

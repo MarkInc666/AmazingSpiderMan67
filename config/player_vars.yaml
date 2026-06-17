@@ -2141,3 +2141,80 @@ player_vars:
   daily_bugle_pictures_needed:
     initial_value: 3
     value_type: int
+
+  # ---------------------------------------------------------------------------
+  # Widget-bound variables added for GMC scene declarations
+  # ---------------------------------------------------------------------------
+
+  case_file_1_state:
+    initial_value: ""
+    value_type: str
+
+  case_file_2_state:
+    initial_value: ""
+    value_type: str
+
+  case_file_3_state:
+    initial_value: ""
+    value_type: str
+
+  case_file_4_state:
+    initial_value: ""
+    value_type: str
+
+  case_file_5_state:
+    initial_value: ""
+    value_type: str
+
+  daily_bugle_a_hit:
+    initial_value: 0
+    value_type: int
+
+  daily_bugle_ab_ready:
+    initial_value: 0
+    value_type: int
+
+  daily_bugle_b_hit:
+    initial_value: 0
+    value_type: int
+
+  daily_bugle_mystery_ready:
+    initial_value: 0
+    value_type: int
+
+  doc_ock_last_jackpot:
+    initial_value: 0
+    value_type: int
+
+  kingpin_hits_needed:
+    initial_value: 0
+    value_type: int
+
+  save_type:
+    initial_value: ""
+    value_type: str
+
+  seconds:
+    initial_value: 0
+    value_type: int
+
+  subtitle:
+    initial_value: ""
+    value_type: str
+
+  title:
+    initial_value: ""
+    value_type: str
+
+  value:
+    initial_value: ""
+    value_type: str
+
+  wizard_prep_next_award:
+    initial_value: ""
+    value_type: str
+
+  wizard_prep_summary:
+    initial_value: ""
+    value_type: str
+
