@@ -87,6 +87,7 @@ class Cerberus(CaseFileMixin, Mode):
 
         self._update_gate_state()
         self.machine.events.post("cerberus_startup_complete")
+        self.machine.events.post("show_mode_message_long", title="THREE HEADS", subtitle="HIT UPPER TARGETS")
         self._refresh_lights()
 
     def mode_stop(self, **kwargs):
@@ -137,6 +138,7 @@ class Cerberus(CaseFileMixin, Mode):
         self._refresh_lights()
         self._update_gate_state()
         self.machine.events.post("cerberus_target_hit", target=target)
+        self.machine.events.post("show_mode_message", title="HEAD STUNNED", subtitle=f"SAUCER {target} 2X")
 
     def _spinner_hit(self, **kwargs):
         if self._in_summary_or_done():
@@ -154,6 +156,7 @@ class Cerberus(CaseFileMixin, Mode):
             value=self.jackpot_value,
             spins=self.spinner_spins,
         )
+        self.machine.events.post("show_mode_message", title="JACKPOT BUILDS", subtitle="UPPER SPINNER", value=self.jackpot_value)
 
     def _saucer_hit(self, saucer=None, **kwargs):
         if self._in_summary_or_done():
@@ -175,6 +178,7 @@ class Cerberus(CaseFileMixin, Mode):
             self._sync_vars()
             self._update_gate_state()
             self.machine.events.post("cerberus_unlit_saucer_hit", saucer=saucer)
+            self.machine.events.post("show_mode_message", title="SAUCER UNLIT", subtitle="HIT UPPER TARGETS")
             return
         else:
             collect_saucer = saucer
@@ -205,6 +209,7 @@ class Cerberus(CaseFileMixin, Mode):
             jackpots=self.jackpots_collected,
             defeated=int(self.jackpots_collected >= 3),
         )
+        self.machine.events.post("show_mode_jackpot", title="CERBERUS JACKPOT", subtitle=f"SAUCER {collect_saucer} - {multiplier}X", value=award)
 
     def _best_available_saucer_or_default(self, default_saucer):
         # Prefer the best lit jackpot on the playfield, even if the entered saucer is unlit.
@@ -228,6 +233,7 @@ class Cerberus(CaseFileMixin, Mode):
         self.timer_halfway_gate_opened = False
         self._sync_vars()
         self.machine.events.post("cerberus_timer_started", seconds=self.timer_seconds)
+        self.machine.events.post("show_mode_countdown", title="CERBERUS TIMER", subtitle="KEEP ATTACKING", seconds=self.timer_seconds)
 
         self.delay.remove("cerberus_mode_timer")
         self.delay.remove("cerberus_halfway_gate_open")
@@ -262,6 +268,7 @@ class Cerberus(CaseFileMixin, Mode):
             return
         self.delay.remove("cerberus_halfway_gate_open")
         self.machine.events.post("cerberus_timer_expired")
+        self.machine.events.post("show_mode_message", title="CERBERUS ESCAPED", subtitle="TIME EXPIRED")
         self._fail_mode()
 
     def _fail_mode(self, **kwargs):

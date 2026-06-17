@@ -114,10 +114,12 @@ class Mysterio(CaseFileMixin, Mode):
                 revealed.is_lit = False
                 self.machine.events.post(f"mysterio_stop_{revealed.name}")
                 self.machine.events.post("mysterio_case_file_false_shot_revealed", shot=revealed.name)
+                self.machine.events.post("show_mode_message", title="FALSE SHOT REMOVED", subtitle=revealed.name.replace("_", " ").upper())
 
         self.machine.game.player["mysterio_super_value"] = self.super_value
         self.machine.events.post("mysterio_startup_complete")
         self.machine.events.post("mysterio_all_shots_lit")
+        self.machine.events.post("show_mode_message_long", title="ILLUSION TRIAL", subtitle="FIND THE REAL SHOT", value=self.super_value)
 
     def build_hint(self, jackpot_shot):
         if jackpot_shot.group == "upper":
@@ -168,12 +170,14 @@ class Mysterio(CaseFileMixin, Mode):
         if getattr(self, "case_file_extra_chance_available", False):
             self.case_file_extra_chance_available = False
             self.machine.events.post("mysterio_case_file_extra_chance_used", shot=shot.name)
+            self.machine.events.post("show_mode_message", title="EXTRA CHANCE", subtitle="BAD SHOT IGNORED")
             shot.disabled = True
             shot.is_lit = False
             self.machine.events.post(f"mysterio_stop_{shot.name}")
             return
 
         self.machine.events.post("mysterio_wrong_shot")
+        self.machine.events.post("show_mode_message", title="WRONG SHOT", subtitle="SUPER VALUE REDUCED", value=self.super_value)
         self.machine.events.post("mysterio_score_wrong_shot")
         
         self.mysterio_mode_points += 10000
@@ -188,6 +192,7 @@ class Mysterio(CaseFileMixin, Mode):
 
     def handle_clue_shot(self, shot):
         self.machine.events.post("mysterio_clue_shot")
+        self.machine.events.post("show_mode_message", title="CLUE FOUND", subtitle=f"SPIDEY SENSE: {shot.hint.upper()}")
         self.machine.events.post("mysterio_score_wrong_shot")
 
         self.mysterio_mode_points += 5000
@@ -213,6 +218,7 @@ class Mysterio(CaseFileMixin, Mode):
         self.super_value = max(self.SUPER_FLOOR, self.super_value - amount)
         self.machine.game.player["mysterio_super_value"] = self.super_value
         self.machine.events.post("mysterio_super_changed")
+        self.machine.events.post("show_mode_message", title="SUPER VALUE", subtitle="MYSTERIO JACKPOT", value=self.super_value)
 
     def collect_super(self, shot):
         self.machine.game.player["mysterio_jackpot_value"] = self.super_value
@@ -222,4 +228,5 @@ class Mysterio(CaseFileMixin, Mode):
         self.machine.game.player["score"] += self.super_value
 
         self.machine.events.post("mysterio_super_collected")
+        self.machine.events.post("show_mode_jackpot", title="MYSTERIO JACKPOT", subtitle=shot.name.replace("_", " ").upper(), value=self.super_value)
         self.machine.events.post("mysterio_mode_complete")

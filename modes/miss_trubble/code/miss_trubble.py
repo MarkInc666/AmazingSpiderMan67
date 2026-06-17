@@ -91,6 +91,7 @@ class MissTrubble(CaseFileMixin, Mode):
 
         self._sync_player_vars()
         self.machine.events.post("miss_trubble_startup_complete")
+        self.machine.events.post("show_mode_message_long", title="MISS TRUBBLE", subtitle="FIND THE CORRECT SHOT")
         self._start_next_round()
 
     def mode_stop(self, **kwargs):
@@ -148,6 +149,7 @@ class MissTrubble(CaseFileMixin, Mode):
             jackpot=self.jackpot_value,
             incorrect=self.incorrect_shots,
         )
+        self.machine.events.post("show_mode_message", title="TROUBLE ROUND", subtitle=f"{self.round_number} OF {self.rounds_to_play}", value=self.jackpot_value)
         self._show_hidden_round()
         self._update_rooftop_diverter()
 
@@ -181,6 +183,7 @@ class MissTrubble(CaseFileMixin, Mode):
             correct_shots=self.correct_shots,
         )
         self.machine.events.post(f"miss_trubble_correct_{group}")
+        self.machine.events.post("show_mode_jackpot", title="CORRECT SHOT", subtitle=group.replace("_", " ").upper(), value=self.jackpot_value)
         self.jackpot_value += self.jackpot_step
         self._sync_player_vars()
 
@@ -194,6 +197,7 @@ class MissTrubble(CaseFileMixin, Mode):
             max_incorrect=self.MAX_INCORRECT_SHOTS,
         )
         self.machine.events.post(f"miss_trubble_incorrect_{group}")
+        self.machine.events.post("show_mode_message", title="WRONG SHOT", subtitle=f"TROUBLE {self.incorrect_shots} / {self.MAX_INCORRECT_SHOTS}")
         self._sync_player_vars()
 
         if self.incorrect_shots >= self.MAX_INCORRECT_SHOTS:
@@ -204,6 +208,7 @@ class MissTrubble(CaseFileMixin, Mode):
             return
 
         self.machine.events.post("miss_trubble_all_lights_off")
+        self.machine.events.post("show_mode_message", title="SPINNER REVEAL", subtitle="WATCH CLOSELY")
 
         all_good = self.first_round_all_good and self.round_number == 1
         for group in self.current_groups:
@@ -241,6 +246,7 @@ class MissTrubble(CaseFileMixin, Mode):
         if player:
             player["miss_trubble_completed"] = 1
         self.machine.events.post("miss_trubble_all_lights_off")
+        self.machine.events.post("show_mode_message_long", title="MISS TRUBBLE DEFEATED", subtitle="SEQUENCE COMPLETE")
         self.machine.events.post("miss_trubble_mode_complete")
 
     def _fail_mode(self, **kwargs):
@@ -251,6 +257,7 @@ class MissTrubble(CaseFileMixin, Mode):
         if player:
             player["miss_trubble_completed"] = 0
         self.machine.events.post("miss_trubble_all_lights_off")
+        self.machine.events.post("show_mode_message_long", title="MISS TRUBBLE ESCAPES", subtitle="TOO MUCH TROUBLE")
         self.machine.events.post("miss_trubble_mode_failed")
 
     def _score(self, points):

@@ -221,6 +221,7 @@ class Goblin(CaseFileMixin, Mode):
         self.machine.events.post("reset_drops")
         self.machine.events.post("clear_saucers")
         self.machine.events.post("goblin_start_multiball")
+        self.machine.events.post("show_mode_message_long", title="CHAOS MULTIBALL", subtitle="HIT FLASHING SHOTS")
 
         self.start_chaos_pattern()
 
@@ -261,6 +262,7 @@ class Goblin(CaseFileMixin, Mode):
             callback=self.chaos_window_complete
         )
         self._update_upper_gate_from_lit_shots()
+        self.machine.events.post("show_mode_message", title="FLASHING SHOTS", subtitle="BIG VALUE - AVOID SOLID SHOTS")
 
     def chaos_window_complete(self):
         if self.mode_finishing or self.hold_active:
@@ -309,6 +311,7 @@ class Goblin(CaseFileMixin, Mode):
 
         self.deactivate_shot(shot_name)
         self.machine.events.post("goblin_flashing_shot_score", shot=shot_name)
+        self.machine.events.post("show_mode_jackpot", title="FLASHING SHOT", subtitle=shot_name.replace("_", " ").upper(), value=self.FLASHING_SCORE)
         self._update_upper_gate_from_lit_shots()
 
     def collect_solid_shot(self, shot_name):
@@ -323,6 +326,7 @@ class Goblin(CaseFileMixin, Mode):
 
         self.deactivate_shot(shot_name)
         self.machine.events.post("goblin_solid_shot_score", shot=shot_name)
+        self.machine.events.post("show_mode_message", title="SOLID SHOT", subtitle="CHAOS BONUS REDUCED", value=new_bonus)
         self._update_upper_gate_from_lit_shots()
 
     def deactivate_shot(self, shot_name):
@@ -381,6 +385,7 @@ class Goblin(CaseFileMixin, Mode):
         self._update_upper_gate_from_lit_shots()
         
         self.machine.events.post("goblin_hold_started", saucer=saucer)
+        self.machine.events.post("show_mode_message_long", title="BONUS LOCKED", subtitle=f"SAUCER {saucer}", value=banked)
 
         hold_time_ms = self.get_current_hold_time_ms()
         self.delay.remove("goblin_hold_timer")
@@ -502,6 +507,7 @@ class Goblin(CaseFileMixin, Mode):
         self.bonus_paid = True
         self._award_points(banked)
         self.machine.events.post("goblin_bonus_collected", value=banked)
+        self.machine.events.post("show_mode_jackpot", title="GOBLIN BONUS", subtitle="CHAOS BANK", value=banked)
 
     def finish_mode(self, completed=False):
         if self.mode_finishing:
