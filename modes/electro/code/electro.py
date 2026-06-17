@@ -39,6 +39,7 @@ class Electro(CaseFileMixin, Mode):
             ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
             ("shot_assist", "NEXT SPARK HELD LONGER"),
         ])
+        self._show_message("POWER SURGE", "HIT THE LIT SPARK")
 
 
         self.value_deduct = 0
@@ -76,6 +77,28 @@ class Electro(CaseFileMixin, Mode):
     def mode_stop(self, **kwargs):
         self.clear_active_case_file_helpers()
         super().mode_stop(**kwargs)
+
+    def _show_message(self, title, subtitle="", value="", seconds="", event="show_mode_message"):
+        self.machine.events.post(
+            event,
+            title=title,
+            subtitle=subtitle,
+            value=value,
+            seconds=seconds,
+        )
+
+    def _shot_label(self, shot):
+        labels = {
+            "left_web": "LEFT WEB",
+            "spinner": "SPINNER",
+            "left_drops": "LEFT DROPS",
+            "saucers": "SAUCERS",
+            "right_web": "CENTER WEB",
+            "upper_spinner": "UPPER SPINNER",
+            "upper_targets": "UPPER TARGETS",
+            "right_drops": "RIGHT DROPS",
+        }
+        return labels.get(shot.name, shot.name.upper())
 
     def _apply_case_file_bonuses(self):
         self.case_file_extra_spark_available = False
@@ -143,6 +166,7 @@ class Electro(CaseFileMixin, Mode):
         self.current_shot = random.choice(active)
         self.current_shot.is_lit = True
 
+        self._show_message("HIT THE SPARK", self._shot_label(self.current_shot), seconds=5, event="show_mode_countdown")
         self.machine.events.post("electro_lit_shot_changed")
         self.machine.events.post(f"electro_lite_{self.current_shot.name}")
         self.machine.events.post("electro_shot_timer_start")
@@ -172,6 +196,7 @@ class Electro(CaseFileMixin, Mode):
             return
 
         # Timeout means the shot remains active, but the spark moves elsewhere.
+        self._show_message("SPARK MOVED", "FIND THE NEW SHOT")
         self.pick_next_lit_shot()
 
     def shot_hit(self, shot_name=None, **kwargs):
@@ -207,6 +232,7 @@ class Electro(CaseFileMixin, Mode):
             self.electro_best_spark = jackpot_value
         self.machine.game.player["electro_best_spark"] = self.electro_best_spark
 
+        self._show_message("ELECTRO JACKPOT", self._shot_label(shot), value=jackpot_value, event="show_mode_jackpot")
         self.machine.events.post("electro_jackpot_collected")
         self.value_deduct = 0
 
@@ -244,6 +270,7 @@ class Electro(CaseFileMixin, Mode):
 
         self._set_gate_for_shot(shot)
 
+        self._show_message("SUPER SURGE LIT", self._shot_label(shot), value=self.SUPER_JACKPOT_VALUE, seconds=10, event="show_mode_countdown")
         self.machine.events.post("electro_super_lit")
         self.machine.events.post(f"electro_super_lite_{shot.name}")
         self.machine.events.post("electro_super_timer_start")
@@ -260,10 +287,12 @@ class Electro(CaseFileMixin, Mode):
         self.current_shot.is_lit = False
         self.current_shot.is_jackpot = False
 
+        self._show_message("ELECTRO SUPER", "SUPER JACKPOT", value=self.electro_super_jackpot, event="show_mode_jackpot")
         self.machine.events.post("electro_super_collected")
         self.machine.events.post("electro_super_timer_stop")
         self.machine.events.post("electro_mode_almost_complete")
 
     def super_timeout(self, **kwargs):
+        self._show_message("SUPER MISSED", "ELECTRO ESCAPES")
         self.machine.events.post("electro_super_missed")
         self.machine.events.post("electro_mode_complete")        

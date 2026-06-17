@@ -64,11 +64,21 @@ class Sandman(CaseFileMixin, Mode):
         self.add_mode_event_handler("sandman_rubber_hit", self.schedule_next_shift)  #reset current flash timer      
 
         self.update_player_vars()
+        self._show_message("SANDMAN", "HIT THE FLASHING DROP")
         self.machine.events.post("sandman_startup_complete")
 
     def mode_stop(self, **kwargs):
         self.clear_active_case_file_helpers()
         super().mode_stop(**kwargs)
+
+    def _show_message(self, title, subtitle="", value="", seconds="", event="show_mode_message"):
+        self.machine.events.post(
+            event,
+            title=title,
+            subtitle=subtitle,
+            value=value,
+            seconds=seconds,
+        )
 
     def _apply_case_file_bonuses(self):
         self.case_file_bigger_jackpots = False
@@ -107,6 +117,7 @@ class Sandman(CaseFileMixin, Mode):
 
     def after_bank_reset(self):
         self.light_current_flash()
+        self._show_message("SHIFTING SANDS", f"HIT DROP {self.current_flash}", seconds=int(self.MOVE_INTERVAL_MS / 1000), event="show_mode_countdown")
         if self.first_target == 1:        
             self.schedule_next_shift()
 
@@ -178,12 +189,14 @@ class Sandman(CaseFileMixin, Mode):
         if target == self.current_flash:
             self.hit_order.append(target)
             self.flash_hits += 1
+            self._show_message("FLASHING HIT!", f"RUN: {len(self.hit_order)}", event="show_mode_jackpot")
             self.machine.events.post("sandman_flashing_hit")
             if getattr(self, "case_file_bigger_jackpots", False):
                 self.machine.game.player["score"] += 25000
                 self.machine.game.player["sandman_mode_points"] += 25000
                 self.machine.events.post("sandman_case_file_bonus_score")
         else:
+            self._show_message("SANDMAN SHIFTED", "HIT THE FLASHING TARGET")
             self.machine.events.post("sandman_regular_hit")
 
         self.award_points()
@@ -210,9 +223,11 @@ class Sandman(CaseFileMixin, Mode):
     def award_points(self):
 
         if self.flash_hits == 5:
+            self._show_message("SANDMAN JACKPOT", "5 FLASHING HITS", value=750000, event="show_mode_jackpot")
             self.machine.events.post("sandman_5_flashing_jackpot")
 
         if self.flash_hits == 10:
+            self._show_message("SANDMAN JACKPOT", "10 FLASHING HITS", value=1500000, event="show_mode_jackpot")
             self.machine.events.post("sandman_10_flashing_jackpot")
 
         if self.hit_order == [1, 2, 3, 4, 5]:
@@ -255,11 +270,13 @@ class Sandman(CaseFileMixin, Mode):
         self.direction = 1 - self.direction
 
         self.banks_completed += 1
+        self._show_message("BANK CLEARED", f"{self.banks_completed} OF {self.MAX_BANKS}", event="show_mode_jackpot")
         self.machine.events.post("sandman_bank_complete")
 
         self.update_player_vars()
 
         if self.banks_completed >= self.MAX_BANKS:
+            self._show_message("SANDMAN DEFEATED", "MODE COMPLETE", event="show_mode_jackpot")
             self.machine.events.post("sandman_mode_complete")
             self.machine.game.player["sandman_completed"] = True
             self.machine.events.post("reset_5bank_delayed")

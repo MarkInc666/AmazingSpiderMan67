@@ -65,10 +65,20 @@ class Vulture(CaseFileMixin, Mode):
 
         self.update_player_vars()
         self.show_targets()
+        self._show_message("VULTURE", "GET TO THE ROOFTOP")
 
     def mode_stop(self, **kwargs):
         self.clear_active_case_file_helpers()
         super().mode_stop(**kwargs)
+
+    def _show_message(self, title, subtitle="", value="", seconds="", event="show_mode_message"):
+        self.machine.events.post(
+            event,
+            title=title,
+            subtitle=subtitle,
+            value=value,
+            seconds=seconds,
+        )
 
     def _apply_case_file_bonuses(self):
         self.stage_values = dict(self.STAGE_VALUES)
@@ -95,6 +105,7 @@ class Vulture(CaseFileMixin, Mode):
 
         if not self.started:
             self.started = True
+            self._show_message("SKY ATTACK", "HIT UPPER TARGETS", seconds=40, event="show_mode_countdown")
             self.machine.events.post("vulture_timer_start")
 
         self.update_upper_multiplier()
@@ -116,6 +127,7 @@ class Vulture(CaseFileMixin, Mode):
             self.stages[target] += 1
 
         self.award_score(20000)
+        self._show_message("TARGET VALUE UP", f"{target.upper()} TARGET STAGE {self.stages[target]}")
         self.show_targets()
         self.check_add_a_ball()
         self.update_player_vars()
@@ -125,6 +137,7 @@ class Vulture(CaseFileMixin, Mode):
             return
 
         if self.stages["left"] == 3 and self.stages["center"] == 3 and self.stages["right"] == 3:
+            self._show_message("ADD-A-BALL!", "ALL TARGETS AT RED", event="show_mode_jackpot")
             self.machine.events.post("start_vulture_add_a_ball")
             self.add_a_ball_awarded = True
 
@@ -150,7 +163,8 @@ class Vulture(CaseFileMixin, Mode):
         self.machine.game.player["vulture_spins"] = self.vulture_spins        
         self.machine.game.player["vulture_banked_bonus"] = self.vulture_banked_bonus  
 
-        self.machine.game.player["vulture_last_spinner_score"] = total        
+        self.machine.game.player["vulture_last_spinner_score"] = total
+        self._show_message("VULTURE SPINNER", "AERIAL BONUS", value=total, event="show_mode_jackpot")
 
     def bank_bonus(self, value):
         player = self.machine.game.player
@@ -160,6 +174,7 @@ class Vulture(CaseFileMixin, Mode):
     def idle_decay(self, **kwargs):
         if getattr(self, "case_file_decay_skip_available", False):
             self.case_file_decay_skip_available = False
+            self._show_message("TARGETS HELD", "CASE FILE SAVED THE VALUE")
             self.machine.events.post("vulture_case_file_decay_skipped")
             self.machine.events.post("vulture_restart_idle_timer")
             return
@@ -170,6 +185,7 @@ class Vulture(CaseFileMixin, Mode):
 
         self.show_targets()
         self.update_player_vars()
+        self._show_message("VULTURE EVADED", "TARGET VALUES DROPPED")
         self.machine.events.post("vulture_restart_idle_timer")
 
     def show_targets(self, **kwargs):

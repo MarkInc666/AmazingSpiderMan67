@@ -78,12 +78,22 @@ class RhinoBash(CaseFileMixin, Mode):
         self.add_mode_event_handler("rhino_jackpot_collect_request", self.collect_jackpot)
 
         self.update_player_vars()
+        self._show_message("RHINO BASH", "POPS BUILD RAGE", value=self.jackpot_value)
         self.machine.events.post("rhino_startup_complete")
 
 
     def mode_stop(self, **kwargs):
         self.clear_active_case_file_helpers()
         super().mode_stop(**kwargs)
+
+    def _show_message(self, title, subtitle="", value="", seconds="", event="show_mode_message"):
+        self.machine.events.post(
+            event,
+            title=title,
+            subtitle=subtitle,
+            value=value,
+            seconds=seconds,
+        )
 
 
     def _apply_case_file_bonuses(self):
@@ -129,6 +139,7 @@ class RhinoBash(CaseFileMixin, Mode):
         self.award_score(self.SMASH_SCORE)
         self.rhino_mode_points += self.SMASH_SCORE
         self.jackpot_value += self.add_value
+        self._show_message("JACKPOT BUILDS", f"+{self.add_value:,} FROM SMASH", value=self.jackpot_value)
 
         self.update_player_vars()
 
@@ -147,6 +158,7 @@ class RhinoBash(CaseFileMixin, Mode):
             self.rhino_best_jackpot_value = self.jackpot_value
 
         self.machine.game.player["rhino_last_jackpot"] = self.jackpot_value
+        self._show_message("RHINO JACKPOT", "BASH COLLECTED", value=self.jackpot_value, event="show_mode_jackpot")
         self.machine.events.post("rhino_jackpot_collected")
 
         if self.jackpots >= self.max_jackpots:
@@ -186,6 +198,7 @@ class RhinoBash(CaseFileMixin, Mode):
     def set_rage_stage(self, stage):
         self.rage_stage = stage
         self.add_value = self.STAGE_ADD_VALUES[stage]
+        self._show_message("RAGE LEVEL UP", f"RAGE {stage}  +{self.add_value:,} PER HIT")
 
         if self.rage_stage > self.rhino_best_rage_stage:
             self.rhino_best_rage_stage = self.rage_stage
@@ -198,6 +211,7 @@ class RhinoBash(CaseFileMixin, Mode):
 
     def start_berserk(self):
         self.berserk_running = True
+        self._show_message("BERSERK!", "COLLECT AT B ROLLOVER", value=self.jackpot_value, seconds=int(self.berserk_time_ms() / 1000), event="show_mode_countdown")
         self.machine.events.post("rhino_berserk_started")
 
         self.delay.remove("rhino_berserk_crash")
@@ -237,6 +251,7 @@ class RhinoBash(CaseFileMixin, Mode):
         self.add_value = self.STAGE_ADD_VALUES[2]
 
         self.machine.events.post("rhino_berserk_stopped")
+        self._show_message("RHINO CRASHED", "RAGE RESET")
         self.machine.events.post("rhino_crashed")
         self.post_rage_show()
         self.update_player_vars()
@@ -266,6 +281,7 @@ class RhinoBash(CaseFileMixin, Mode):
     def complete_mode(self):
         self.mode_done = True
         self.stop_berserk()
+        self._show_message("RHINO DEFEATED", "MODE COMPLETE", event="show_mode_jackpot")
         self.machine.events.post("rhino_bash_complete")
         self.machine.game.player["rhino_completed"] = True
 

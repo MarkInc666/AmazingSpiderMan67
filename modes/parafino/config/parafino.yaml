@@ -240,11 +240,11 @@ shows:
   parafino_right_jackpot_show:
     - duration: 250ms
       lights:
-        l_5bank_1: red
-        l_5bank_2: red
-        l_5bank_3: red
-        l_5bank_4: red
-        l_5bank_5: red
+        l_5bank_1: green
+        l_5bank_2: green
+        l_5bank_3: green
+        l_5bank_4: green
+        l_5bank_5: green
         l_3_hole_l: red
         l_3_hole_r: red
     - duration: 250ms

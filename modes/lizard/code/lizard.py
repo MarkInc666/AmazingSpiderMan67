@@ -72,11 +72,21 @@ class Lizard(CaseFileMixin, Mode):
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("lizard_light_serum_location")
         self.machine.events.post("clear_saucers")
+        self._show_message("COLLECT SERUM", "HIT THE STAR ROLLOVER")
 #        self.machine.events.post("play_song_4")
 
     def mode_stop(self, **kwargs):
         self.clear_active_case_file_helpers()
         super().mode_stop(**kwargs)
+
+    def _show_message(self, title, subtitle="", value="", seconds="", event="show_mode_message"):
+        self.machine.events.post(
+            event,
+            title=title,
+            subtitle=subtitle,
+            value=value,
+            seconds=seconds,
+        )
 
     def _apply_case_file_bonuses(self):
         if self.has_case_file("more_jackpots"):
@@ -167,6 +177,7 @@ class Lizard(CaseFileMixin, Mode):
     def _ab_complete(self):
         """Completing A+B gives the player a short helper/reset during Lizard."""
         self._set_player_var("lizard_ab_ready", 1)
+        self._show_message("A+B BOOST!", "SERUM VALUE UP", value=self.AB_BONUS_VALUE)
         self.machine.events.post("lizard_ab_complete")
 
         # Existing YAML comment said A+B should reset the delivery timer.
@@ -190,6 +201,8 @@ class Lizard(CaseFileMixin, Mode):
         self._award_points(self.SERUM_COLLECT_SCORE)
         self._set_player_var("lizard_serum_ready", 1)
 
+        target = self.current_target() or "web"
+        self._show_message("SERUM READY", f"DELIVER TO {target.upper()} WEB", value=self._get_player_var("lizard_delivery_value", self.START_DELIVERY_VALUE), seconds=10, event="show_mode_countdown")
         self.machine.events.post("lizard_serum_collected")
         self.machine.events.post("lizard_light_delivery_target")
         self.machine.events.post("lizard_delivery_timer_start")
@@ -209,11 +222,13 @@ class Lizard(CaseFileMixin, Mode):
                 "lizard_delivery_value",
                 max(0, current_value - self.DELIVERY_TICK_VALUE),
             )
+            self._show_message("VALUE DROPPING", "DELIVER SERUM NOW", value=self._get_player_var("lizard_delivery_value", 0), event="show_mode_countdown")
             self.machine.events.post("lizard_delivery_tick")
 
 
     def serum_expired(self, **kwargs):
         # Public event for shows/widgets/sounds.
+        self._show_message("SERUM EXPIRED", "COLLECT ANOTHER SERUM")
         self.machine.events.post("lizard_serum_expired")
 
         # Stop the active delivery timer and delivery-target lights.
@@ -259,10 +274,12 @@ class Lizard(CaseFileMixin, Mode):
         self._set_player_var("lizard_serum_ready", 0)
         self._set_player_var("lizard_delivery_value", self.START_DELIVERY_VALUE)
 
+        self._show_message("SERUM DELIVERED", target.upper(), value=delivery_value, event="show_mode_jackpot")
         self.machine.events.post("lizard_serum_delivered")
         self.machine.events.post("lizard_delivery_timer_stop")
 
         if self._get_player_var("lizard_deliveries", 0) >= len(self.DELIVERY_SEQUENCE):
+            self._show_message("LIZARD CURED", "MODE COMPLETE", event="show_mode_jackpot")
             self.machine.events.post("lizard_mode_complete")
             return
 
