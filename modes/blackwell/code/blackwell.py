@@ -93,7 +93,7 @@ class Blackwell(CaseFileMixin, Mode):
         self.add_mode_event_handler("blackwell_fail_request", self._fail_mode)
 
         self.machine.events.post("blackwell_startup_complete")
-        self.machine.events.post("show_mode_message_long", title="PREDICTION PANIC", subtitle="HIT EACH LIT SHOT")
+        self.machine.events.post("show_mode_message_long", message_mode_title="PREDICTION PANIC", message_mode_subtitle="HIT EACH LIT SHOT")
         self._next_shot()
 
     def mode_stop(self, **kwargs):
@@ -140,7 +140,7 @@ class Blackwell(CaseFileMixin, Mode):
         self._sync_vars()
 
         self.machine.events.post("blackwell_shot_started", shot=self.current_shot, shot_number=self.current_index + 1, total_shots=len(self.shot_sequence), seconds=self.seconds_left, jackpot=self._current_jackpot_value())
-        self.machine.events.post("show_mode_countdown", title="BLACKWELL PREDICTS", subtitle=self.current_shot.replace("_", " ").upper(), value=self._current_jackpot_value(), seconds=self.seconds_left)
+        self.machine.events.post("show_mode_countdown", message_mode_title="BLACKWELL PREDICTS", message_mode_subtitle=self.current_shot.replace("_", " ").upper(), message_mode_value=self._current_jackpot_value(), message_mode_seconds=self.seconds_left)
         self.machine.events.post(f"blackwell_lite_{self.current_shot}")
         self._schedule_tick()
 
@@ -160,7 +160,7 @@ class Blackwell(CaseFileMixin, Mode):
         self._sync_vars()
         self.machine.events.post("blackwell_timer_changed", seconds=self.seconds_left)
         if self.seconds_left <= 5:
-            self.machine.events.post("show_mode_countdown", title="TIME RUNNING OUT", subtitle=self.current_shot.replace("_", " ").upper(), seconds=self.seconds_left)
+            self.machine.events.post("show_mode_countdown", message_mode_title="TIME RUNNING OUT", message_mode_subtitle=self.current_shot.replace("_", " ").upper(), message_mode_seconds=self.seconds_left)
 
         if self.seconds_left <= 0:
             self._timeout_current_shot()
@@ -175,7 +175,7 @@ class Blackwell(CaseFileMixin, Mode):
         self.seconds_left += self.SPINNER_TIME_ADD
         self._sync_vars()
         self.machine.events.post("blackwell_time_added", seconds=self.seconds_left)
-        self.machine.events.post("show_mode_message", title="TIME ADDED", subtitle="SPINNER HIT", seconds=self.seconds_left)
+        self.machine.events.post("show_mode_message", message_mode_title="TIME ADDED", message_mode_subtitle="SPINNER HIT", message_mode_seconds=self.seconds_left)
 
     def _shot_hit(self, shot_name=None, **kwargs):
         if self.mode_done or self._in_summary():
@@ -193,14 +193,14 @@ class Blackwell(CaseFileMixin, Mode):
         if self.shot_assist_available:
             self.shot_assist_available = False
             self.machine.events.post("blackwell_shot_assist_used")
-            self.machine.events.post("show_mode_message", title="SHOT ASSIST", subtitle="TIMEOUT AWARDS JACKPOT")
+            self.machine.events.post("show_mode_message", message_mode_title="SHOT ASSIST", message_mode_subtitle="TIMEOUT AWARDS JACKPOT")
             self._award_current_jackpot(shot_assist=True)
             return
 
         self.missed_shots += 1
         self._sync_vars()
         self.machine.events.post("blackwell_shot_missed", shot=self.current_shot)
-        self.machine.events.post("show_mode_message", title="MISSED SHOT", subtitle=self.current_shot.replace("_", " ").upper())
+        self.machine.events.post("show_mode_message", message_mode_title="MISSED SHOT", message_mode_subtitle=self.current_shot.replace("_", " ").upper())
         self._advance_after_delay()
 
     def _award_current_jackpot(self, shot_assist=False):
@@ -216,7 +216,7 @@ class Blackwell(CaseFileMixin, Mode):
         self._sync_vars()
 
         self.machine.events.post("blackwell_jackpot_collected", shot=self.current_shot, value=jackpot_value, shot_assist=shot_assist)
-        self.machine.events.post("show_mode_jackpot", title="PREDICTION HIT", subtitle=self.current_shot.replace("_", " ").upper(), value=jackpot_value)
+        self.machine.events.post("show_mode_jackpot", message_mode_title="PREDICTION HIT", message_mode_subtitle=self.current_shot.replace("_", " ").upper(), message_mode_value=jackpot_value)
         self._advance_after_delay()
 
     def _advance_after_delay(self):
@@ -254,7 +254,7 @@ class Blackwell(CaseFileMixin, Mode):
         if player:
             player["blackwell_completed"] = 1
         self._sync_vars()
-        self.machine.events.post("show_mode_message_long", title="BLACKWELL BEATEN", subtitle="SEQUENCE COMPLETE")
+        self.machine.events.post("show_mode_message_long", message_mode_title="BLACKWELL BEATEN", message_mode_subtitle="SEQUENCE COMPLETE")
         self.machine.events.post("blackwell_mode_complete")
 
     def _fail_mode(self, **kwargs):
@@ -269,7 +269,7 @@ class Blackwell(CaseFileMixin, Mode):
         if player:
             player["blackwell_completed"] = 0
         self._sync_vars()
-        self.machine.events.post("show_mode_message_long", title="BLACKWELL ESCAPES", subtitle="OUT OF TIME")
+        self.machine.events.post("show_mode_message_long", message_mode_title="BLACKWELL ESCAPES", message_mode_subtitle="OUT OF TIME")
         self.machine.events.post("blackwell_mode_failed")
 
     def _sync_vars(self):

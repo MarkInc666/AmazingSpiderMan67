@@ -815,8 +815,8 @@ class VillainProgression(Mode):
         if count > 0:
             self.machine.events.post(
                 "show_mode_message",
-                title="CASE FILES BANKED",
-                subtitle=f"{player['chapter_case_files_collected']} / 25  +{player['mini_wizard_case_file_bonus']:,}",
+                message_mode_title="CASE FILES BANKED",
+                message_mode_subtitle=f"{player['chapter_case_files_collected']} / 25  +{player['mini_wizard_case_file_bonus']:,}",
             )
 
     def _reset_chapter_case_file_bonus(self):
@@ -1173,8 +1173,8 @@ class VillainProgression(Mode):
         self.machine.events.post("case_files_clear_lights")
         self.machine.events.post(
             "show_mode_message",
-            title="CASE FILE BONUS",
-            subtitle=f"{player['chapter_case_files_collected']} / 25  +{player['mini_wizard_case_file_bonus']:,}",
+            message_mode_title="CASE FILE BONUS",
+            message_mode_subtitle=f"{player['chapter_case_files_collected']} / 25  +{player['mini_wizard_case_file_bonus']:,}",
         )
         self.machine.events.post(
             "chapter_mini_wizard_starting",

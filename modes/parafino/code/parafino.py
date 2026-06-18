@@ -124,7 +124,7 @@ class Parafino(CaseFileMixin, Mode):
         # Parafino wants the rooftop gate closed while running.
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("parafino_startup_complete")
-        self.machine.events.post("show_mode_message_long", title="MELT THE WAX", subtitle="HEAT AREAS FOR SAUCER JACKPOTS")
+        self.machine.events.post("show_mode_message_long", message_mode_title="MELT THE WAX", message_mode_subtitle="HEAT AREAS FOR SAUCER JACKPOTS")
 
     def mode_stop(self, **kwargs):
         self.clear_active_case_file_helpers()
@@ -256,7 +256,7 @@ class Parafino(CaseFileMixin, Mode):
             hits=player[data["hits_var"]],
             value=player[data["value_var"]],
         )
-        self.machine.events.post("show_mode_message", title="AREA HEATING", subtitle=data["display"], value=player[data["value_var"]])
+        self.machine.events.post("show_mode_message", message_mode_title="AREA HEATING", message_mode_subtitle=data["display"], message_mode_value=player[data["value_var"]])
         self.machine.events.post(
             data["jackpot_lit_event"],
             value=player[data["value_var"]],
@@ -271,7 +271,7 @@ class Parafino(CaseFileMixin, Mode):
                     data["add_ball_lit_event"],
                     value=player[data["value_var"]],
                 )
-                self.machine.events.post("show_mode_message", title="ADD-A-BALL READY", subtitle=data["display"])
+                self.machine.events.post("show_mode_message", message_mode_title="ADD-A-BALL READY", message_mode_subtitle=data["display"])
             player[data["add_ball_qualified_var"]] = 1
 
     def _saucer_1_hit(self, **kwargs):
@@ -322,7 +322,7 @@ class Parafino(CaseFileMixin, Mode):
             player[data["add_ball_qualified_var"]] = 0
             self.machine.events.post("parafino_add_a_ball")
             self.machine.events.post("parafino_add_a_ball_collected", zone=zone, saucer=saucer)
-            self.machine.events.post("show_mode_message", title="ADD-A-BALL", subtitle=f"{data["display"]}")
+            self.machine.events.post("show_mode_message", message_mode_title="ADD-A-BALL", message_mode_subtitle=f"{data["display"]}")
             add_ball_awarded = True
 
         self.machine.events.post(
@@ -332,7 +332,7 @@ class Parafino(CaseFileMixin, Mode):
             value=value,
             add_ball_awarded=add_ball_awarded,
         )
-        self.machine.events.post("show_mode_jackpot", title="WAX JACKPOT", subtitle=data["display"], value=value)
+        self.machine.events.post("show_mode_jackpot", message_mode_title="WAX JACKPOT", message_mode_subtitle=data["display"], message_mode_value=value)
 
         if self.case_file_extra_collects and player[data["extra_collect_used_var"]] == 0:
             player[data["extra_collect_used_var"]] = 1
@@ -342,7 +342,7 @@ class Parafino(CaseFileMixin, Mode):
                 saucer=saucer,
                 value=value,
             )
-            self.machine.events.post("show_mode_message", title="EXTRA COLLECT READY", subtitle=data["display"], value=value)
+            self.machine.events.post("show_mode_message", message_mode_title="EXTRA COLLECT READY", message_mode_subtitle=data["display"], message_mode_value=value)
             return
 
         self._reset_zone(zone)

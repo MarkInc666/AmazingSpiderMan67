@@ -1708,21 +1708,21 @@ player_vars:
     value_type: int
 
   # Night of the Robots mini-wizard
-  night_of_the_robots_played:
-    initial_value: 0
-    value_type: int
-  night_of_the_robots_state:
-    initial_value: "not_played"
-    value_type: str
-  night_of_the_robots_completed:
-    initial_value: 0
-    value_type: int
-  night_of_the_robots_mode_points:
-    initial_value: 0
-    value_type: int
-  night_of_the_robots_hits:
-    initial_value: 0
-    value_type: int
+#  night_of_the_robots_played:
+#    initial_value: 0
+#    value_type: int
+#  night_of_the_robots_state:
+#    initial_value: "not_played"
+#    value_type: str
+#  night_of_the_robots_completed:
+#    initial_value: 0
+#    value_type: int
+#  night_of_the_robots_mode_points:
+#    initial_value: 0
+#    value_type: int
+#  night_of_the_robots_hits:
+#    initial_value: 0
+#    value_type: int
 
   # Nature Strikes Back mini-wizard
   nature_strikes_back_played:
@@ -2190,24 +2190,24 @@ player_vars:
     initial_value: 0
     value_type: int
 
-  save_type:
-    initial_value: ""
+  message_mode_save_type:
+    initial_value: "default"
     value_type: str
 
-  seconds:
+  message_mode_seconds:
     initial_value: 0
     value_type: int
 
-  subtitle:
-    initial_value: ""
+  message_mode_subtitle:
+    initial_value: " "
     value_type: str
 
-  title:
-    initial_value: ""
+  message_mode_title:
+    initial_value: " "
     value_type: str
 
-  value:
-    initial_value: ""
+  message_mode_value:
+    initial_value: " "
     value_type: str
 
   wizard_prep_next_award:

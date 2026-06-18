@@ -63,7 +63,7 @@ class Scorpion(CaseFileMixin, Mode):
 
         self.add_mode_event_handler("s_left_drops_rubber_active", self.sting_miss_left)
         self.add_mode_event_handler("s_right_drops_rubber_active", self.sting_miss_right)
-        self.machine.events.post("show_mode_message", title="BUILD VENOM", subtitle="HIT THE SPINNER")
+        self.machine.events.post("show_mode_message", message_mode_title="BUILD VENOM", message_mode_subtitle="HIT THE SPINNER")
 
 
     def mode_stop(self, **kwargs):
@@ -100,12 +100,12 @@ class Scorpion(CaseFileMixin, Mode):
 
         self.venom_hits += 1
         self.machine.events.post("scorpion_spinner_build")
-        self.machine.events.post("show_mode_message", title="VENOM BUILDS", subtitle="SPINNER VALUE UP", value=self.scorpion_venom_value)
+        self.machine.events.post("show_mode_message", message_mode_title="VENOM BUILDS", message_mode_subtitle="SPINNER VALUE UP", message_mode_value=self.scorpion_venom_value)
 
         if self.venom_hits >= self.VENOM_READY_HITS:
             self.state = "ready"
             self.machine.events.post("scorpion_sting_ready")
-            self.machine.events.post("show_mode_message_long", title="STING READY", subtitle="CHOOSE LEFT OR RIGHT EXIT")
+            self.machine.events.post("show_mode_message_long", message_mode_title="STING READY", message_mode_subtitle="CHOOSE LEFT OR RIGHT EXIT")
 
     def right_exit_chosen(self, **kwargs):
         if self.state != "ready":
@@ -128,7 +128,7 @@ class Scorpion(CaseFileMixin, Mode):
 
         self.machine.events.post("scorpion_safe_sting_started")
         self.machine.events.post("scorpion_sting_timer_start")
-        self.machine.events.post("show_mode_countdown", title="LEFT EXIT", subtitle="LEFT BANK STING SHOT", seconds=5)
+        self.machine.events.post("show_mode_countdown", message_mode_title="LEFT EXIT", message_mode_subtitle="LEFT BANK STING SHOT", message_mode_seconds=5)
     
     def left_exit_chosen(self, **kwargs):
         if self.state != "ready":
@@ -149,7 +149,7 @@ class Scorpion(CaseFileMixin, Mode):
 
         self.machine.events.post("scorpion_hard_sting_started")
         self.machine.events.post("scorpion_sting_timer_start")
-        self.machine.events.post("show_mode_countdown", title="RIGHT EXIT", subtitle="RIGHT BANK STING SHOT", seconds=5)
+        self.machine.events.post("show_mode_countdown", message_mode_title="RIGHT EXIT", message_mode_subtitle="RIGHT BANK STING SHOT", message_mode_seconds=5)
 
     def prepare_left_bank_after_reset(self):
         for i in range(1, 4):
@@ -157,7 +157,7 @@ class Scorpion(CaseFileMixin, Mode):
                 self.machine.coils[f"c_left_bank_drop_{i}"].pulse()
 
         self.machine.events.post("scorpion_left_sting_target_lit")
-        self.machine.events.post("show_mode_message", title="STING SHOT", subtitle=f"LEFT TARGET {self.required_target}")
+        self.machine.events.post("show_mode_message", message_mode_title="STING SHOT", message_mode_subtitle=f"LEFT TARGET {self.required_target}")
 
     def prepare_right_bank_after_reset(self):
         for i in range(1, 6):
@@ -165,7 +165,7 @@ class Scorpion(CaseFileMixin, Mode):
                 self.machine.coils[f"c_right_bank_drop_{i}"].pulse()
 
         self.machine.events.post(f"scorpion_right_sting_target_{self.required_target}_lit")
-        self.machine.events.post("show_mode_message", title="STING SHOT", subtitle=f"RIGHT TARGET {self.required_target}")
+        self.machine.events.post("show_mode_message", message_mode_title="STING SHOT", message_mode_subtitle=f"RIGHT TARGET {self.required_target}")
 
     def left_drop_hit(self, target, **kwargs):
         if self.state == "sting" and self.active_target_side == "left":
@@ -206,7 +206,7 @@ class Scorpion(CaseFileMixin, Mode):
         self.machine.game.player["scorpion_biggest_jackpot"] = self.scorpion_biggest_jackpot
 
         self.machine.events.post("scorpion_sting_success")
-        self.machine.events.post("show_mode_jackpot", title="SCORPION JACKPOT", subtitle="STING SEQUENCE", value=self.jpval)
+        self.machine.events.post("show_mode_jackpot", message_mode_title="SCORPION JACKPOT", message_mode_subtitle="STING SEQUENCE", message_mode_value=self.jpval)
         self.reset_for_next_try()
 
     def award_missed_sting(self):
@@ -217,7 +217,7 @@ class Scorpion(CaseFileMixin, Mode):
         self.machine.game.player["scorpion_mode_points"] = self.scorpion_mode_points
         
         self.machine.events.post("scorpion_sting_miss")
-        self.machine.events.post("show_mode_message", title="STING FAILED", subtitle="50K CONSOLATION", value=50000)
+        self.machine.events.post("show_mode_message", message_mode_title="STING FAILED", message_mode_subtitle="50K CONSOLATION", message_mode_value=50000)
         self.reset_for_next_try()
 
     def sting_timeout(self, **kwargs):
@@ -225,7 +225,7 @@ class Scorpion(CaseFileMixin, Mode):
             return
 
         self.machine.events.post("scorpion_sting_failed")
-        self.machine.events.post("show_mode_message", title="STING FAILED", subtitle="OUT OF TIME")
+        self.machine.events.post("show_mode_message", message_mode_title="STING FAILED", message_mode_subtitle="OUT OF TIME")
         self.reset_for_next_try()
 
     def reset_for_next_try(self):
@@ -241,4 +241,4 @@ class Scorpion(CaseFileMixin, Mode):
         self.active_target_side = None
 
         self.machine.events.post("scorpion_build_phase_started")
-        self.machine.events.post("show_mode_message", title="BUILD VENOM", subtitle="HIT THE SPINNER")
+        self.machine.events.post("show_mode_message", message_mode_title="BUILD VENOM", message_mode_subtitle="HIT THE SPINNER")

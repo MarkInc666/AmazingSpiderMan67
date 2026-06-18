@@ -102,7 +102,7 @@ class doc_ock(CaseFileMixin, Mode):
 
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("doc_ock_startup_complete")
-        self.machine.events.post("show_mode_message", title="LOCK THE ARMS", subtitle="ROLLOVERS THEN WEB TARGETS")
+        self.machine.events.post("show_mode_message", message_mode_title="LOCK THE ARMS", message_mode_subtitle="ROLLOVERS THEN WEB TARGETS")
 
 
     def mode_stop(self, **kwargs):
@@ -141,7 +141,7 @@ class doc_ock(CaseFileMixin, Mode):
             "doc_ock_spinner_multiplier_increased",
             multiplier=self.doc_ock_jackpot_spinner_multi
         )
-        self.machine.events.post("show_mode_message", title="SPINNER MULTIPLIER", subtitle="DOC OCK JACKPOT", value=f"{self.doc_ock_jackpot_spinner_multi}X")
+        self.machine.events.post("show_mode_message", message_mode_title="SPINNER MULTIPLIER", message_mode_subtitle="DOC OCK JACKPOT", message_mode_value=f"{self.doc_ock_jackpot_spinner_multi}X")
 
     def rotate_left(self, **kwargs):
         if self.machine.game.player["villain_mode_in_summary"] == True: return
@@ -167,7 +167,7 @@ class doc_ock(CaseFileMixin, Mode):
         if self.locked_arms[arm-1]:
             self.machine.game.player["score"] += self.doc_ock_arm_relocked_score
             self.doc_ock_mode_points += self.doc_ock_arm_relocked_score
-            self.machine.events.post("show_mode_message", title="ARM ALREADY LOCKED", subtitle="KEEP BUILDING JACKPOT")
+            self.machine.events.post("show_mode_message", message_mode_title="ARM ALREADY LOCKED", message_mode_subtitle="KEEP BUILDING JACKPOT")
             return
 
         self.machine.game.player["score"] += self.doc_ock_arm_locked_score
@@ -180,7 +180,7 @@ class doc_ock(CaseFileMixin, Mode):
         self.machine.game.player["doc_ock_max_arms_locked"] = self.doc_ock_max_arms_locked
 
         self.machine.events.post("doc_ock_arm_locked_score")
-        self.machine.events.post("show_mode_message", title="ARM LOCKED", subtitle=f"{sum(self.locked_arms)} ARMS LOCKED")
+        self.machine.events.post("show_mode_message", message_mode_title="ARM LOCKED", message_mode_subtitle=f"{sum(self.locked_arms)} ARMS LOCKED")
         #self.check_jackpot_lit()
         self.update_player_vars()        
 
@@ -192,7 +192,7 @@ class doc_ock(CaseFileMixin, Mode):
         if self.machine.game.player["villain_mode_in_summary"] == True: return
         if self.jackpot_lit == 0:
             self.machine.events.post("doc_ock_jackpot_not_lit")
-            self.machine.events.post("show_mode_message", title="LOCK ARMS FIRST", subtitle="WEB TARGET NOT READY")
+            self.machine.events.post("show_mode_message", message_mode_title="LOCK ARMS FIRST", message_mode_subtitle="WEB TARGET NOT READY")
             self.machine.game.player["score"] += self.doc_ock_jackpot_unlit_value
             self.doc_ock_mode_points += self.doc_ock_jackpot_unlit_value
             return
@@ -216,7 +216,7 @@ class doc_ock(CaseFileMixin, Mode):
         self.machine.game.player["doc_ock_jackpots"] = self.doc_ock_jackpots
     
         self.machine.events.post("doc_ock_jackpot_award")
-        self.machine.events.post("show_mode_jackpot", title="DOC OCK JACKPOT", subtitle="TENTACLE LOCKDOWN", value=jp_value)
+        self.machine.events.post("show_mode_jackpot", message_mode_title="DOC OCK JACKPOT", message_mode_subtitle="TENTACLE LOCKDOWN", message_mode_value=jp_value)
         #self.machine.events.post("doc_ock_jackpot_collected")
 
         self.doc_ock_jackpot_spinner_multi = 1
@@ -242,7 +242,7 @@ class doc_ock(CaseFileMixin, Mode):
             if target not in self.active_breakouts:
                 self.active_breakouts.add(target)
                 self.machine.events.post(f"doc_ock_breakout_{target}_lit")
-                self.machine.events.post("show_mode_message", title="BREAKOUT LIT", subtitle=f"TARGET {target}")
+                self.machine.events.post("show_mode_message", message_mode_title="BREAKOUT LIT", message_mode_subtitle=f"TARGET {target}")
                 return
 
     def breakout_hit(self, breakout, **kwargs):
@@ -254,7 +254,7 @@ class doc_ock(CaseFileMixin, Mode):
         self.release_random_locked_arm()
         self.update_player_vars()                
         self.machine.events.post("doc_ock_breakout_hit")
-        self.machine.events.post("show_mode_message", title="ARM RELEASED", subtitle="LOCK IT AGAIN")
+        self.machine.events.post("show_mode_message", message_mode_title="ARM RELEASED", message_mode_subtitle="LOCK IT AGAIN")
         self.check_mode_over()
 
     def start_timed_release(self, **kwargs):
@@ -275,7 +275,7 @@ class doc_ock(CaseFileMixin, Mode):
             delay_ms=self.doc_ock_arm_release_delay_ms,
             delay_seconds=self.doc_ock_arm_release_delay_ms / 1000,
         )
-        self.machine.events.post("show_mode_countdown", title="TIMED RELEASE", subtitle="ARM BREAKING FREE", seconds=int(self.doc_ock_arm_release_delay_ms / 1000))
+        self.machine.events.post("show_mode_countdown", message_mode_title="TIMED RELEASE", message_mode_subtitle="ARM BREAKING FREE", message_mode_seconds=int(self.doc_ock_arm_release_delay_ms / 1000))
         self.delay.remove(self.TIMED_RELEASE_DELAY_NAME)
         self.delay.add(
             name=self.TIMED_RELEASE_DELAY_NAME,
@@ -310,7 +310,7 @@ class doc_ock(CaseFileMixin, Mode):
         self.update_player_vars()
         self.machine.events.post("doc_ock_timed_release_complete")
         self.machine.events.post("doc_ock_breakout_hit")
-        self.machine.events.post("show_mode_message", title="ARM RELEASED", subtitle="DOC OCK BREAKS FREE")
+        self.machine.events.post("show_mode_message", message_mode_title="ARM RELEASED", message_mode_subtitle="DOC OCK BREAKS FREE")
 
         if self.check_mode_over():
             self.stop_timed_release()

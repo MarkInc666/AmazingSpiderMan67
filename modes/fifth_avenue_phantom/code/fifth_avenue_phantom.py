@@ -138,7 +138,7 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
         self.machine.events.post("clear_saucers")
         self.machine.events.post("drop_target_bank_dt_bank_right_reset")
         self.machine.events.post("fifth_avenue_phantom_started")
-        self.machine.events.post("show_mode_message_long", title="REVEAL THE PHANTOM", subtitle="HIT RIGHT DROPS")
+        self.machine.events.post("show_mode_message_long", message_mode_title="REVEAL THE PHANTOM", message_mode_subtitle="HIT RIGHT DROPS")
         self._start_new_round()
 
     def mode_stop(self, **kwargs):
@@ -185,7 +185,7 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
             location=self.current_location,
             location_label=self.LOCATION_LABELS[self.current_location],
         )
-        self.machine.events.post("show_mode_message", title="PHANTOM HIDES", subtitle="RIGHT DROPS REVEAL HIM")
+        self.machine.events.post("show_mode_message", message_mode_title="PHANTOM HIDES", message_mode_subtitle="RIGHT DROPS REVEAL HIM")
         self._sync_vars()
 
     def _right_drop_hit(self, target=None, **kwargs):
@@ -219,7 +219,7 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
             location=self.current_location,
             location_label=self.LOCATION_LABELS[self.current_location],
         )
-        self.machine.events.post("show_mode_countdown", title="PHANTOM REVEALED", subtitle=self.LOCATION_LABELS[self.current_location], value=self.current_jackpot, seconds=self.reveal_seconds_left)
+        self.machine.events.post("show_mode_countdown", message_mode_title="PHANTOM REVEALED", message_mode_subtitle=self.LOCATION_LABELS[self.current_location], message_mode_value=self.current_jackpot, message_mode_seconds=self.reveal_seconds_left)
         self._sync_vars()
         self._schedule_timer_tick()
 
@@ -259,7 +259,7 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
             location=self.current_location,
             location_label=self.LOCATION_LABELS[self.current_location],
         )
-        self.machine.events.post("show_mode_jackpot", title="PHANTOM JACKPOT", subtitle=self.LOCATION_LABELS[self.current_location], value=jackpot)
+        self.machine.events.post("show_mode_jackpot", message_mode_title="PHANTOM JACKPOT", message_mode_subtitle=self.LOCATION_LABELS[self.current_location], message_mode_value=jackpot)
         self._sync_vars()
 
         if self.has_case_file("more_jackpots"):
@@ -282,7 +282,7 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
             location=self.current_location,
             location_label=self.LOCATION_LABELS[self.current_location],
         )
-        self.machine.events.post("show_mode_countdown", title="ESCAPE BONUS LIT", subtitle=self.LOCATION_LABELS[self.current_location], value=self._escape_jackpot_value(), seconds=self.reveal_seconds_left)
+        self.machine.events.post("show_mode_countdown", message_mode_title="ESCAPE BONUS LIT", message_mode_subtitle=self.LOCATION_LABELS[self.current_location], message_mode_value=self._escape_jackpot_value(), message_mode_seconds=self.reveal_seconds_left)
         self._sync_vars()
         self._schedule_timer_tick()
 
@@ -301,7 +301,7 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
             location=self.current_location,
             location_label=self.LOCATION_LABELS[self.current_location],
         )
-        self.machine.events.post("show_mode_jackpot", title="ESCAPE BONUS", subtitle=self.LOCATION_LABELS[self.current_location], value=jackpot)
+        self.machine.events.post("show_mode_jackpot", message_mode_title="ESCAPE BONUS", message_mode_subtitle=self.LOCATION_LABELS[self.current_location], message_mode_value=jackpot)
         self._sync_vars()
         self._start_new_round()
 
@@ -327,7 +327,7 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
             location_label=self.LOCATION_LABELS[self.current_location],
         )
         if self.reveal_seconds_left <= 5:
-            self.machine.events.post("show_mode_countdown", title="VANISHING", subtitle=self.LOCATION_LABELS[self.current_location], seconds=self.reveal_seconds_left)
+            self.machine.events.post("show_mode_countdown", message_mode_title="VANISHING", message_mode_subtitle=self.LOCATION_LABELS[self.current_location], message_mode_seconds=self.reveal_seconds_left)
         self._sync_vars()
 
         if self.reveal_seconds_left <= 0:
@@ -342,7 +342,7 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
 
         if self.phase == "escape":
             self.machine.events.post("fifth_avenue_phantom_escape_jackpot_missed")
-            self.machine.events.post("show_mode_message", title="ESCAPE BONUS MISSED", subtitle="PHANTOM VANISHES")
+            self.machine.events.post("show_mode_message", message_mode_title="ESCAPE BONUS MISSED", message_mode_subtitle="PHANTOM VANISHES")
             self._start_new_round()
             return
 
@@ -362,7 +362,7 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
                 return
 
             self.machine.events.post("fifth_avenue_phantom_final_reveal_expired")
-            self.machine.events.post("show_mode_message", title="PHANTOM VANISHED", subtitle="FINAL REVEAL EXPIRED")
+            self.machine.events.post("show_mode_message", message_mode_title="PHANTOM VANISHED", message_mode_subtitle="FINAL REVEAL EXPIRED")
             if self.jackpots_collected > 0:
                 self._complete_mode()
             else:
@@ -378,7 +378,7 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
             location=self.current_location,
             location_label=self.LOCATION_LABELS[self.current_location],
         )
-        self.machine.events.post("show_mode_message", title="PHANTOM VANISHED", subtitle="HIT MORE RIGHT DROPS")
+        self.machine.events.post("show_mode_message", message_mode_title="PHANTOM VANISHED", message_mode_subtitle="HIT MORE RIGHT DROPS")
         self._sync_vars()
 
     def _light_location(self, location):

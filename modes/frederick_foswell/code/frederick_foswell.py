@@ -79,8 +79,8 @@ class FrederickFoswell(Mode, CaseFileMixin):
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post(
             "show_mode_message",
-            title="FRONT PAGE FRAME-UP",
-            subtitle="POPS BUILD RUMOURS",
+            message_mode_title="FRONT PAGE FRAME-UP",
+            message_mode_subtitle="POPS BUILD RUMOURS",
         )
         self._update_lights()
         self._sync_vars()
@@ -101,8 +101,8 @@ class FrederickFoswell(Mode, CaseFileMixin):
         self._score(self.base_pop_value)
         self.machine.events.post(
             "show_mode_message",
-            title="RUMOUR ADDED",
-            subtitle=f"{self.rumours} RUMOURS",
+            message_mode_title="RUMOUR ADDED",
+            message_mode_subtitle=f"{self.rumours} RUMOURS",
         )
         self._sync_vars()
 
@@ -113,16 +113,16 @@ class FrederickFoswell(Mode, CaseFileMixin):
         if len(self.headlines_lit) >= 3:
             self.machine.events.post(
                 "show_mode_message",
-                title="SAUCERS FULL",
-                subtitle="COLLECT HEADLINES",
+                message_mode_title="SAUCERS FULL",
+                message_mode_subtitle="COLLECT HEADLINES",
             )
             return
 
         if self.rumours < 2:
             self.machine.events.post(
                 "show_mode_message",
-                title="NEED RUMOURS",
-                subtitle="HIT POPS",
+                message_mode_title="NEED RUMOURS",
+                message_mode_subtitle="HIT POPS",
             )
             return
 
@@ -142,8 +142,8 @@ class FrederickFoswell(Mode, CaseFileMixin):
         )
         self.machine.events.post(
             "show_mode_message",
-            title="HEADLINE PRINTED",
-            subtitle=f"SAUCER {saucer} LIT",
+            message_mode_title="HEADLINE PRINTED",
+            message_mode_subtitle=f"SAUCER {saucer} LIT",
         )
         self._update_lights()
         self._sync_vars()
@@ -188,7 +188,7 @@ class FrederickFoswell(Mode, CaseFileMixin):
         else:
             title = "HEADLINE COLLECTED"
             subtitle = f"{self.headlines_collected_cycle} OF 3"
-        self.machine.events.post("show_mode_message", title=title, subtitle=subtitle)
+        self.machine.events.post("show_mode_message", message_mode_title=title, message_mode_subtitle=subtitle)
 
     def _check_super_lit(self):
         if self.super_lit:
@@ -201,9 +201,9 @@ class FrederickFoswell(Mode, CaseFileMixin):
             self.machine.events.post("frederick_foswell_super_lit", value=self.last_super_value)
             self.machine.events.post(
                 "show_mode_jackpot",
-                title="SUPER LIT",
-                subtitle="SHOOT DAILY BUGLE VUK",
-                value=self.last_super_value,
+                message_mode_title="SUPER LIT",
+                message_mode_subtitle="SHOOT DAILY BUGLE VUK",
+                message_mode_value=self.last_super_value,
             )
 
     def _vuk_hit(self, **kwargs):
@@ -225,9 +225,9 @@ class FrederickFoswell(Mode, CaseFileMixin):
         self.machine.events.post("frederick_foswell_super_collected", value=value)
         self.machine.events.post(
             "show_mode_jackpot",
-            title="FRONT PAGE SUPER",
-            subtitle="THE BIG MAN EXPOSED",
-            value=value,
+            message_mode_title="FRONT PAGE SUPER",
+            message_mode_subtitle="THE BIG MAN EXPOSED",
+            message_mode_value=value,
         )
 
         if self.has_case_file("more_jackpots"):
@@ -254,8 +254,8 @@ class FrederickFoswell(Mode, CaseFileMixin):
             self.rumours -= 1
             self.machine.events.post(
                 "show_mode_message",
-                title="FALSE RUMOUR",
-                subtitle=f"{self.rumours} LEFT",
+                message_mode_title="FALSE RUMOUR",
+                message_mode_subtitle=f"{self.rumours} LEFT",
             )
             self._sync_vars()
 
@@ -276,9 +276,9 @@ class FrederickFoswell(Mode, CaseFileMixin):
         self.machine.events.post("frederick_foswell_back_page_lit", value=back_page_value)
         self.machine.events.post(
             "show_mode_jackpot",
-            title="BACK PAGE BONUS",
-            subtitle="UPPER CENTER TARGET",
-            value=back_page_value,
+            message_mode_title="BACK PAGE BONUS",
+            message_mode_subtitle="UPPER CENTER TARGET",
+            message_mode_value=back_page_value,
         )
         self.delay.remove("frederick_foswell_back_page_timeout")
         self.delay.add(
@@ -300,9 +300,9 @@ class FrederickFoswell(Mode, CaseFileMixin):
         self.machine.events.post("frederick_foswell_back_page_collected", value=value)
         self.machine.events.post(
             "show_mode_jackpot",
-            title="BACK PAGE BONUS",
-            subtitle="EXTRA EDITION",
-            value=value,
+            message_mode_title="BACK PAGE BONUS",
+            message_mode_subtitle="EXTRA EDITION",
+            message_mode_value=value,
         )
         self._update_lights()
         self._sync_vars()
@@ -314,8 +314,8 @@ class FrederickFoswell(Mode, CaseFileMixin):
         self.machine.events.post("frederick_foswell_back_page_expired")
         self.machine.events.post(
             "show_mode_message",
-            title="BACK PAGE MISSED",
-            subtitle="KEEP THE STORY ALIVE",
+            message_mode_title="BACK PAGE MISSED",
+            message_mode_subtitle="KEEP THE STORY ALIVE",
         )
         self._update_lights()
         self._sync_vars()

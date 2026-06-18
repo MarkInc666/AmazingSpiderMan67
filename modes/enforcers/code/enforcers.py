@@ -65,7 +65,7 @@ class Enforcers(Mode, CaseFileMixin):
         self.machine.events.post("enforcers_clear_upper_shows")
         self.machine.events.post("enforcers_clear_saucers")
         self.machine.events.post("enforcers_build_phase_started")
-        self.machine.events.post("show_mode_message_long", title="BREAK THE GANG", subtitle="BUILD THREE ZONES")
+        self.machine.events.post("show_mode_message_long", message_mode_title="BREAK THE GANG", message_mode_subtitle="BUILD THREE ZONES")
         self.machine.events.post(
             "enforcers_base_jackpot_set",
             value=self.base_jackpot,
@@ -138,7 +138,7 @@ class Enforcers(Mode, CaseFileMixin):
             jackpot=self._current_zone_jackpot(zone),
             jackpot_str=self._format_score(self._current_zone_jackpot(zone)),
         )
-        self.machine.events.post("show_mode_message", title="ZONE HIT", subtitle=self.ZONE_NAMES[zone], value=self._current_zone_jackpot(zone))
+        self.machine.events.post("show_mode_message", message_mode_title="ZONE HIT", message_mode_subtitle=self.ZONE_NAMES[zone], message_mode_value=self._current_zone_jackpot(zone))
 
     def _upper_target_lit(self, zone):
         self._update_upper_flash(zone)
@@ -159,7 +159,7 @@ class Enforcers(Mode, CaseFileMixin):
             jackpot=self._current_zone_jackpot(zone),
             jackpot_str=self._format_score(self._current_zone_jackpot(zone)),
         )
-        self.machine.events.post("show_mode_message", title="UPPER JACKPOT LIT", subtitle=self.ZONE_NAMES[zone], value=self._current_zone_jackpot(zone))
+        self.machine.events.post("show_mode_message", message_mode_title="UPPER JACKPOT LIT", message_mode_subtitle=self.ZONE_NAMES[zone], message_mode_value=self._current_zone_jackpot(zone))
 
         if self.has_case_file("more_jackpots") and not self.saucer_bonus_collected[zone]:
             self.saucer_bonus_lit[zone] = True
@@ -169,7 +169,7 @@ class Enforcers(Mode, CaseFileMixin):
                 zone=zone,
                 zone_name=self.ZONE_NAMES[zone],
             )
-            self.machine.events.post("show_mode_message", title="SAUCER BONUS LIT", subtitle=self.ZONE_NAMES[zone])
+            self.machine.events.post("show_mode_message", message_mode_title="SAUCER BONUS LIT", message_mode_subtitle=self.ZONE_NAMES[zone])
 
     def _update_upper_flash(self, zone):
         self.machine.events.post(f"enforcers_stop_{zone}_upper_flash")
@@ -200,7 +200,7 @@ class Enforcers(Mode, CaseFileMixin):
             value_str=self._format_score(award),
             collected=self.upper_jackpots_collected,
         )
-        self.machine.events.post("show_mode_jackpot", title="ENFORCER JACKPOT", subtitle=self.ZONE_NAMES[zone], value=award)
+        self.machine.events.post("show_mode_jackpot", message_mode_title="ENFORCER JACKPOT", message_mode_subtitle=self.ZONE_NAMES[zone], message_mode_value=award)
 
         if self.upper_jackpots_collected >= 3:
             self._light_ox()
@@ -230,7 +230,7 @@ class Enforcers(Mode, CaseFileMixin):
             value=award,
             value_str=self._format_score(award),
         )
-        self.machine.events.post("show_mode_jackpot", title="SAUCER BONUS", subtitle=self.ZONE_NAMES[zone], value=award)
+        self.machine.events.post("show_mode_jackpot", message_mode_title="SAUCER BONUS", message_mode_subtitle=self.ZONE_NAMES[zone], message_mode_value=award)
         self._sync_vars()
 
     def _upper_spinner_hit(self, **kwargs):
@@ -247,7 +247,7 @@ class Enforcers(Mode, CaseFileMixin):
             value=self.ox_super_value,
             value_str=self._format_score(self.ox_super_value),
         )
-        self.machine.events.post("show_mode_message", title="OX VALUE UP", subtitle="UPPER SPINNER", value=self.ox_super_value)
+        self.machine.events.post("show_mode_message", message_mode_title="OX VALUE UP", message_mode_subtitle="UPPER SPINNER", message_mode_value=self.ox_super_value)
 
     def _light_ox(self):
         if self.ox_lit or self.mode_done:
@@ -262,7 +262,7 @@ class Enforcers(Mode, CaseFileMixin):
             value=self.ox_super_value,
             value_str=self._format_score(self.ox_super_value),
         )
-        self.machine.events.post("show_mode_message_long", title="OX IS READY", subtitle="HIT CENTER WEB", value=self.ox_super_value)
+        self.machine.events.post("show_mode_message_long", message_mode_title="OX IS READY", message_mode_subtitle="HIT CENTER WEB", message_mode_value=self.ox_super_value)
 
     def _ox_hit(self, **kwargs):
         if self.mode_done or not self.ox_lit:
@@ -274,7 +274,7 @@ class Enforcers(Mode, CaseFileMixin):
             value=award,
             value_str=self._format_score(award),
         )
-        self.machine.events.post("show_mode_jackpot", title="OX SUPER JACKPOT", subtitle="CENTER WEB", value=award)
+        self.machine.events.post("show_mode_jackpot", message_mode_title="OX SUPER JACKPOT", message_mode_subtitle="CENTER WEB", message_mode_value=award)
         self._complete_mode()
 
     def _complete_mode(self, **kwargs):
