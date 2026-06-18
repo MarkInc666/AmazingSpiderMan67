@@ -46,19 +46,11 @@ player_vars:
     initial_value: 1
     value_type: int
 
-  villain_chapter_name:
-    initial_value: ""
-    value_type: str
-
   villains_played_this_chapter:
     initial_value: 0
     value_type: int
 
   villains_played_total:
-    initial_value: 0
-    value_type: int
-
-  villains_completed_total:
     initial_value: 0
     value_type: int
 
@@ -69,10 +61,6 @@ player_vars:
   villain_current_name:
     initial_value: ""
     value_type: str
-
-  villain_current_index:
-    initial_value: 0
-    value_type: int
 
   villain_mode_running:
     initial_value: 0
@@ -94,14 +82,6 @@ player_vars:
     initial_value: 0
     value_type: int
 
-  villain_locate_spins:
-    initial_value: 0
-    value_type: int
-
-  villain_locate_spins_needed:
-    initial_value: 0
-    value_type: int
-
   chapter_mini_wizard_ready:
     initial_value: 0
     value_type: int
@@ -113,6 +93,10 @@ player_vars:
   mini_wizard_current_key:
     initial_value: ""
     value_type: str
+
+  mini_wizard_vuk_hold_active:
+    initial_value: 0
+    value_type: int
 
   chapter_case_files_collected:
     initial_value: 0
@@ -142,10 +126,6 @@ player_vars:
     initial_value: 0
     value_type: int
 
-  kingpin_ready:
-    initial_value: 0
-    value_type: int
-
 
   # ---------------------------------------------------------------------------
   # Villain saucer state / select state
@@ -163,26 +143,6 @@ player_vars:
     initial_value: 0
     value_type: int
 
-  saucer_1_select_ready:
-    initial_value: 0
-    value_type: int
-
-  saucer_2_select_ready:
-    initial_value: 0
-    value_type: int
-
-  saucer_3_select_ready:
-    initial_value: 0
-    value_type: int
-
-
-  # ---------------------------------------------------------------------------
-  # Chapter display/widget slots
-  # ---------------------------------------------------------------------------
-
-  chapter_villain_1_key:
-    initial_value: ""
-    value_type: str
   chapter_villain_1_name:
     initial_value: ""
     value_type: str
@@ -190,9 +150,6 @@ player_vars:
     initial_value: "not_played"
     value_type: str
 
-  chapter_villain_2_key:
-    initial_value: ""
-    value_type: str
   chapter_villain_2_name:
     initial_value: ""
     value_type: str
@@ -200,9 +157,6 @@ player_vars:
     initial_value: "not_played"
     value_type: str
 
-  chapter_villain_3_key:
-    initial_value: ""
-    value_type: str
   chapter_villain_3_name:
     initial_value: ""
     value_type: str
@@ -210,9 +164,6 @@ player_vars:
     initial_value: "not_played"
     value_type: str
 
-  chapter_villain_4_key:
-    initial_value: ""
-    value_type: str
   chapter_villain_4_name:
     initial_value: ""
     value_type: str
@@ -220,9 +171,6 @@ player_vars:
     initial_value: "not_played"
     value_type: str
 
-  chapter_villain_5_key:
-    initial_value: ""
-    value_type: str
   chapter_villain_5_name:
     initial_value: ""
     value_type: str
@@ -269,10 +217,6 @@ player_vars:
   vulture_spins:
     initial_value: 0
     value_type: int
-  vulture_best_target_value:
-    initial_value: 0
-    value_type: int
-
   lizard_played:
     initial_value: 0
     value_type: int
@@ -319,13 +263,6 @@ player_vars:
   sandman_mode_points:
     initial_value: 0
     value_type: int
-  sandman_jackpots:
-    initial_value: 0
-    value_type: int
-  sandman_perfect_runs:
-    initial_value: 0
-    value_type: int
-
   electro_played:
     initial_value: 0
     value_type: int
@@ -338,18 +275,6 @@ player_vars:
   electro_mode_points:
     initial_value: 0
     value_type: int
-  electro_sparks_hit:
-    initial_value: 0
-    value_type: int
-  electro_super_jackpots:
-    initial_value: 0
-    value_type: int
-
-
-  # ---------------------------------------------------------------------------
-  # Chapter 2: Masterminds
-  # ---------------------------------------------------------------------------
-
   doc_ock_played:
     initial_value: 0
     value_type: int
@@ -384,10 +309,6 @@ player_vars:
   mysterio_illusions_cleared:
     initial_value: 0
     value_type: int
-  mysterio_reveals:
-    initial_value: 0
-    value_type: int
-
   goblin_played:
     initial_value: 0
     value_type: int
@@ -400,13 +321,6 @@ player_vars:
   goblin_mode_points:
     initial_value: 0
     value_type: int
-  goblin_jackpots:
-    initial_value: 0
-    value_type: int
-  goblin_attacks_stopped:
-    initial_value: 0
-    value_type: int
-
   scorpion_played:
     initial_value: 0
     value_type: int
@@ -422,10 +336,6 @@ player_vars:
   scorpion_stings:
     initial_value: 0
     value_type: int
-  scorpion_jackpots:
-    initial_value: 0
-    value_type: int
-
   parafino_played:
     initial_value: 0
     value_type: int
@@ -436,9 +346,6 @@ player_vars:
     initial_value: 0
     value_type: int
   parafino_mode_points:
-    initial_value: 0
-    value_type: int
-  parafino_sequences:
     initial_value: 0
     value_type: int
   parafino_jackpots:
@@ -756,79 +663,15 @@ player_vars:
   enforcers_gate_open:
     initial_value: 0
     value_type: int
-  enforcers_left_hits:
-    initial_value: 0
-    value_type: int
-  enforcers_left_multiplier:
-    initial_value: 0
-    value_type: int
-  enforcers_left_jackpot_value:
-    initial_value: 100000
-    value_type: int
-  enforcers_left_upper_lit:
-    initial_value: 0
-    value_type: int
-  enforcers_left_upper_collected:
-    initial_value: 0
-    value_type: int
   enforcers_left_saucer_lit:
-    initial_value: 0
-    value_type: int
-  enforcers_left_saucer_collected:
-    initial_value: 0
-    value_type: int
-  enforcers_left_award:
-    initial_value: 0
-    value_type: int
-  enforcers_pops_hits:
-    initial_value: 0
-    value_type: int
-  enforcers_pops_multiplier:
-    initial_value: 0
-    value_type: int
-  enforcers_pops_jackpot_value:
-    initial_value: 100000
-    value_type: int
-  enforcers_pops_upper_lit:
-    initial_value: 0
-    value_type: int
-  enforcers_pops_upper_collected:
     initial_value: 0
     value_type: int
   enforcers_pops_saucer_lit:
     initial_value: 0
     value_type: int
-  enforcers_pops_saucer_collected:
-    initial_value: 0
-    value_type: int
-  enforcers_pops_award:
-    initial_value: 0
-    value_type: int
-  enforcers_right_hits:
-    initial_value: 0
-    value_type: int
-  enforcers_right_multiplier:
-    initial_value: 0
-    value_type: int
-  enforcers_right_jackpot_value:
-    initial_value: 100000
-    value_type: int
-  enforcers_right_upper_lit:
-    initial_value: 0
-    value_type: int
-  enforcers_right_upper_collected:
-    initial_value: 0
-    value_type: int
   enforcers_right_saucer_lit:
     initial_value: 0
     value_type: int
-  enforcers_right_saucer_collected:
-    initial_value: 0
-    value_type: int
-  enforcers_right_award:
-    initial_value: 0
-    value_type: int
-
   miss_trubble_played:
     initial_value: 0
     value_type: int
@@ -912,41 +755,15 @@ player_vars:
   frederick_foswell_mode_points:
     initial_value: 0
     value_type: int
-  frederick_foswell_rumours:
-    initial_value: 0
-    value_type: int
-  frederick_foswell_total_rumours:
-    initial_value: 0
-    value_type: int
-  frederick_foswell_conversions:
-    initial_value: 0
-    value_type: int
-  frederick_foswell_headlines_lit:
-    initial_value: 0
-    value_type: int
   frederick_foswell_headlines_collected:
-    initial_value: 0
-    value_type: int
-  frederick_foswell_cycle_headlines:
-    initial_value: 0
-    value_type: int
-  frederick_foswell_super_value:
     initial_value: 0
     value_type: int
   frederick_foswell_super_collected:
     initial_value: 0
     value_type: int
-  frederick_foswell_back_page_value:
-    initial_value: 0
-    value_type: int
   frederick_foswell_back_page_collected:
     initial_value: 0
     value_type: int
-  frederick_foswell_drain_active:
-    initial_value: 0
-    value_type: int
-
-
   blackwell_played:
     initial_value: 0
     value_type: int
@@ -968,6 +785,9 @@ player_vars:
   sinister_surge_played:
     initial_value: 0
     value_type: int
+  sinister_surge_state:
+    initial_value: "not_played"
+    value_type: str
   sinister_surge_completed:
     initial_value: 0
     value_type: int
@@ -975,37 +795,6 @@ player_vars:
     initial_value: 0
     value_type: int
 
-  master_plan_played:
-    initial_value: 0
-    value_type: int
-  master_plan_completed:
-    initial_value: 0
-    value_type: int
-  master_plan_mode_points:
-    initial_value: 0
-    value_type: int
-
-  monster_island_played:
-    initial_value: 0
-    value_type: int
-  monster_island_completed:
-    initial_value: 0
-    value_type: int
-  monster_island_mode_points:
-    initial_value: 0
-    value_type: int
-
-  crime_wave_mini_played:
-    initial_value: 0
-    value_type: int
-  crime_wave_mini_completed:
-    initial_value: 0
-    value_type: int
-  crime_wave_mini_mode_points:
-    initial_value: 0
-    value_type: int
-
-  # Matto Magneto (Weird Science)
   matto_magneto_played:
     initial_value: 0
     value_type: int
@@ -1202,6 +991,51 @@ player_vars:
     initial_value: 0
     value_type: int
   vulcan_major_hits:
+    initial_value: 0
+    value_type: int
+  vulcan_spinner_hits:
+    initial_value: 0
+    value_type: int
+  vulcan_jackpot_value:
+    initial_value: 100000
+    value_type: int
+  vulcan_jackpots_collected:
+    initial_value: 0
+    value_type: int
+  vulcan_right_drops_down:
+    initial_value: 0
+    value_type: int
+  vulcan_bonus_jackpot_lit:
+    initial_value: 0
+    value_type: int
+  vulcan_bonus_jackpot_collected:
+    initial_value: 0
+    value_type: int
+  vulcan_upper_left_hit:
+    initial_value: 0
+    value_type: int
+  vulcan_upper_center_hit:
+    initial_value: 0
+    value_type: int
+  vulcan_upper_right_hit:
+    initial_value: 0
+    value_type: int
+  vulcan_upper_targets_completed:
+    initial_value: 0
+    value_type: int
+  vulcan_add_a_balls:
+    initial_value: 0
+    value_type: int
+  vulcan_eruption_bonuses:
+    initial_value: 0
+    value_type: int
+  vulcan_cooling_active:
+    initial_value: 0
+    value_type: int
+  vulcan_cooling_seconds:
+    initial_value: 0
+    value_type: int
+  vulcan_balls_in_play:
     initial_value: 0
     value_type: int
 
@@ -1606,23 +1440,6 @@ player_vars:
     value_type: int
 
   # Daily Bugle Rooftop Riot mini-wizard
-  daily_bugle_rooftop_riot_played:
-    initial_value: 0
-    value_type: int
-  daily_bugle_rooftop_riot_state:
-    initial_value: "not_played"
-    value_type: str
-  daily_bugle_rooftop_riot_completed:
-    initial_value: 0
-    value_type: int
-  daily_bugle_rooftop_riot_mode_points:
-    initial_value: 0
-    value_type: int
-  daily_bugle_rooftop_riot_hits:
-    initial_value: 0
-    value_type: int
-
-  # Mastermind Trap mini-wizard
   mastermind_trap_played:
     initial_value: 0
     value_type: int
@@ -1708,21 +1525,22 @@ player_vars:
     value_type: int
 
   # Night of the Robots mini-wizard
-#  night_of_the_robots_played:
-#    initial_value: 0
-#    value_type: int
-#  night_of_the_robots_state:
-#    initial_value: "not_played"
-#    value_type: str
-#  night_of_the_robots_completed:
-#    initial_value: 0
-#    value_type: int
-#  night_of_the_robots_mode_points:
-#    initial_value: 0
-#    value_type: int
-#  night_of_the_robots_hits:
-#    initial_value: 0
-#    value_type: int
+
+  night_of_the_robots_played:
+    initial_value: 0
+    value_type: int
+  night_of_the_robots_state:
+    initial_value: "not_played"
+    value_type: str
+  night_of_the_robots_completed:
+    initial_value: 0
+    value_type: int
+  night_of_the_robots_mode_points:
+    initial_value: 0
+    value_type: int
+  night_of_the_robots_hits:
+    initial_value: 0
+    value_type: int
 
   # Nature Strikes Back mini-wizard
   nature_strikes_back_played:
@@ -1902,90 +1720,36 @@ player_vars:
     initial_value: 0
     value_type: int
 
-  case_file_current_key:
-    initial_value: ""
-    value_type: str
-
-  case_file_current_name:
-    initial_value: ""
-    value_type: str
-
-  case_file_current_description:
-    initial_value: ""
-    value_type: str
-
   case_file_1_key:
     initial_value: ""
     value_type: str
   case_file_1_name:
     initial_value: ""
     value_type: str
-  case_file_1_description:
-    initial_value: ""
-    value_type: str
-  case_file_1_collected:
-    initial_value: 0
-    value_type: int
-
   case_file_2_key:
     initial_value: ""
     value_type: str
   case_file_2_name:
     initial_value: ""
     value_type: str
-  case_file_2_description:
-    initial_value: ""
-    value_type: str
-  case_file_2_collected:
-    initial_value: 0
-    value_type: int
-
   case_file_3_key:
     initial_value: ""
     value_type: str
   case_file_3_name:
     initial_value: ""
     value_type: str
-  case_file_3_description:
-    initial_value: ""
-    value_type: str
-  case_file_3_collected:
-    initial_value: 0
-    value_type: int
-
   case_file_4_key:
     initial_value: ""
     value_type: str
   case_file_4_name:
     initial_value: ""
     value_type: str
-  case_file_4_description:
-    initial_value: ""
-    value_type: str
-  case_file_4_collected:
-    initial_value: 0
-    value_type: int
-
   case_file_5_key:
     initial_value: ""
     value_type: str
   case_file_5_name:
     initial_value: ""
     value_type: str
-  case_file_5_description:
-    initial_value: ""
-    value_type: str
-  case_file_5_collected:
-    initial_value: 0
-    value_type: int
-
-  case_file_extra_jackpot:
-    initial_value: 0
-    value_type: int
-  case_file_extra_jackpot_collected:
-    initial_value: 0
-    value_type: int
-
   case_file_more_time:
     initial_value: 0
     value_type: int
@@ -1993,29 +1757,6 @@ player_vars:
     initial_value: 0
     value_type: int
 
-  case_file_multiplier:
-    initial_value: 0
-    value_type: int
-  case_file_multiplier_collected:
-    initial_value: 0
-    value_type: int
-
-  case_file_safety:
-    initial_value: 0
-    value_type: int
-  case_file_safety_collected:
-    initial_value: 0
-    value_type: int
-
-  case_file_super_boost:
-    initial_value: 0
-    value_type: int
-  case_file_super_boost_collected:
-    initial_value: 0
-    value_type: int
-
-
-  # Active case file helper text shown during villain modes
   active_case_file_helper_count:
     initial_value: 0
     value_type: int
@@ -2035,6 +1776,347 @@ player_vars:
   active_case_file_helper_5:
     initial_value: ""
     value_type: str
+
+  # ---------------------------------------------------------------------------
+  # Dynamically referenced player vars now declared in config
+  # ---------------------------------------------------------------------------
+
+  case_file_more_jackpots:
+    initial_value: 0
+    value_type: int
+
+  case_file_more_jackpots_collected:
+    initial_value: 0
+    value_type: int
+
+  case_file_more_jackpots_state:
+    initial_value: "NOT COLLECTED"
+    value_type: str
+
+  case_file_more_time_state:
+    initial_value: "NOT COLLECTED"
+    value_type: str
+
+  case_file_bigger_jackpots:
+    initial_value: 0
+    value_type: int
+
+  case_file_bigger_jackpots_collected:
+    initial_value: 0
+    value_type: int
+
+  case_file_bigger_jackpots_state:
+    initial_value: "NOT COLLECTED"
+    value_type: str
+
+  case_file_safety_net:
+    initial_value: 0
+    value_type: int
+
+  case_file_safety_net_collected:
+    initial_value: 0
+    value_type: int
+
+  case_file_safety_net_state:
+    initial_value: "NOT COLLECTED"
+    value_type: str
+
+  case_file_shot_assist:
+    initial_value: 0
+    value_type: int
+
+  case_file_shot_assist_collected:
+    initial_value: 0
+    value_type: int
+
+  case_file_shot_assist_state:
+    initial_value: "NOT COLLECTED"
+    value_type: str
+
+  case_file_1_benefit:
+    initial_value: ""
+    value_type: str
+
+  case_file_2_benefit:
+    initial_value: ""
+    value_type: str
+
+  case_file_3_benefit:
+    initial_value: ""
+    value_type: str
+
+  case_file_4_benefit:
+    initial_value: ""
+    value_type: str
+
+  case_file_5_benefit:
+    initial_value: ""
+    value_type: str
+
+  wizard_prep_this_chapter:
+    initial_value: 0
+    value_type: int
+
+  wizard_prep_level:
+    initial_value: 0
+    value_type: int
+
+  saucer_1_drop_hit_this_cycle:
+    initial_value: 0
+    value_type: int
+
+  saucer_2_drop_hit_this_cycle:
+    initial_value: 0
+    value_type: int
+
+  saucer_3_drop_hit_this_cycle:
+    initial_value: 0
+    value_type: int
+
+  mini_wizards_completed:
+    initial_value: 0
+    value_type: int
+
+  rhino_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  vulture_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  lizard_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  sandman_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  electro_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  doc_ock_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  mysterio_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  goblin_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  scorpion_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  parafino_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  centaur_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  cerberus_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  cyclops_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  reptilla_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  mole_man_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  enforcers_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  miss_trubble_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  fifth_avenue_phantom_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  frederick_foswell_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  blackwell_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  matto_magneto_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  doctor_manta_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  doctor_dumpty_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  doctor_cool_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  doctor_zapp_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  fantastic_fakir_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  kotep_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  infinata_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  pardo_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  vulcan_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  spider_slayer_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  henry_smythe_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  blackbeard_robot_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  executioner_of_paris_robot_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  jesse_james_robot_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  snowman_the_snowmen_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  metal_eating_monster_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  master_vine_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  blotto_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  pod_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  noah_boddy_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  fiddler_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  fly_twins_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  charles_cameo_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  plotter_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  juan_ponce_de_leon_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  devargas_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  koga_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  cowboy_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  desperado_case_files_counted_for_chapter:
+    initial_value: 0
+    value_type: int
+
+  sinister_surge_case_file_bonus:
+    initial_value: 0
+    value_type: int
+
+  mastermind_trap_case_file_bonus:
+    initial_value: 0
+    value_type: int
+
+  monster_island_breakout_case_file_bonus:
+    initial_value: 0
+    value_type: int
+
+  crime_wave_crackdown_case_file_bonus:
+    initial_value: 0
+    value_type: int
+
+  mad_science_meltdown_case_file_bonus:
+    initial_value: 0
+    value_type: int
+
+  fifth_dimension_curse_case_file_bonus:
+    initial_value: 0
+    value_type: int
+
+  night_of_the_robots_case_file_bonus:
+    initial_value: 0
+    value_type: int
+
+  nature_strikes_back_case_file_bonus:
+    initial_value: 0
+    value_type: int
+
+  who_is_the_real_villain_case_file_bonus:
+    initial_value: 0
+    value_type: int
+
+  time_tossed_showdown_case_file_bonus:
+    initial_value: 0
+    value_type: int
+
 
 
   # ---------------------------------------------------------------------------
@@ -2099,10 +2181,6 @@ player_vars:
   # Ball save / multiball / misc display helpers
   # ---------------------------------------------------------------------------
 
-  extra_ball_text:
-    initial_value: ""
-    value_type: str
-
   ball_save_count:
     initial_value: 0
     value_type: int
@@ -2122,13 +2200,14 @@ player_vars:
   multiball_autoplunge_active:
     initial_value: 0
     value_type: int
+    
   outlane_add_a_ball_pending_plunger:
     initial_value: 0
-
+    value_type: int
+    
   outlane_add_a_ball_in_plunger:
     initial_value: 0
-
-
+    value_type: int
 
   daily_bugle_pictures_taken_text:
     initial_value: ""
@@ -2189,10 +2268,6 @@ player_vars:
   kingpin_hits_needed:
     initial_value: 0
     value_type: int
-
-  message_mode_save_type:
-    initial_value: "default"
-    value_type: str
 
   message_mode_seconds:
     initial_value: 0

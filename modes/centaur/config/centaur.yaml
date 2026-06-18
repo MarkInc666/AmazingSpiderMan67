@@ -48,6 +48,16 @@ event_player:
 
   s_upper_exit_left_opto_active: centaur_upper_left_exit
 
+  # The VUK is the physical entrance to the upper playfield after Centaur opens the roof gate.
+  s_vuk_switch_active:
+    - centaur_vuk_to_roof
+    - up_kick
+
+  # Centaur does not use the three saucers during gameplay; kick out any ball that lands there.
+  s_saucer_1_active: clear_saucers
+  s_saucer_2_active: clear_saucers
+  s_saucer_3_active: clear_saucers
+
   # Same early release pattern as Daily Bugle: both flippers held/tapped while post is holding.
   s_left_flipper_active{device.switches.s_right_flipper.state == 1}:
     - centaur_post_hold_cancel

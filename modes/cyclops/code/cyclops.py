@@ -7,10 +7,10 @@ CYCLOPS - EYE OF DOOM
 Limited-flips monster mode.
 - Center web target is the Cyclops Eye.
 - Player starts with 20 flips, or 30 with More Time.
-- Each flipper press spends 1 flip.
-- Each unique drop target hit adds 3 flips.
-- Shot Assist: first drop in a bank knocks down the rest of that bank and awards
-  the flip bonus for those drops.
+- Each main flipper button press spends 1 flip.
+- Each drop target switch hit adds 3 flips.
+- Drop banks reset when the physical bank-down event fires.
+- Shot Assist: first drop in a bank knocks down the rest of that bank.
 - Eye Jackpot = remaining flips * 100K, capped at 2M or 3M with Bigger Jackpot.
 - More Jackpots gives a second Eye Jackpot opportunity.
 - Safety Net restores 5 flips once if flips hit 0.
@@ -29,11 +29,6 @@ class Cyclops(CaseFileMixin, Mode):
     JACKPOT_CAP = 2_000_000
     BIGGER_JACKPOT_CAP = 3_000_000
 
-    DROP_TARGETS = {
-        "left": (1, 2, 3),
-        "right": (1, 2, 3, 4, 5),
-    }
-
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
 
@@ -43,7 +38,6 @@ class Cyclops(CaseFileMixin, Mode):
         self.mode_points = 0
         self.flips_used = 0
         self.drops_hit = 0
-        self.drops_down = set()
         self.bank_assist_used = {"left": False, "right": False}
         self.safety_net_used = False
 
@@ -68,7 +62,6 @@ class Cyclops(CaseFileMixin, Mode):
 
         self.add_mode_event_handler("s_left_flipper_active", self._flipper_pressed)
         self.add_mode_event_handler("s_right_flipper_active", self._flipper_pressed)
-        self.add_mode_event_handler("s_right_flipper_upper_active", self._flipper_pressed)
 
         self.add_mode_event_handler("cyclops_eye_hit", self._eye_hit)
         self.add_mode_event_handler("cyclops_left_drop_1_hit", self._drop_hit, bank="left", number=1)
@@ -139,37 +132,23 @@ class Cyclops(CaseFileMixin, Mode):
         if self.mode_done:
             return
 
-        target_key = f"{bank}_{number}"
-        if target_key in self.drops_down:
-            return
-
-        self._award_drop_flip_bonus(target_key)
+        self.drops_hit += 1
+        self.flips_remaining += self.DROP_FLIP_AWARD
+        self.machine.events.post(
+            "cyclops_flips_added",
+            flips_added=self.DROP_FLIP_AWARD,
+            flips_remaining=self.flips_remaining,
+        )
         self.machine.events.post("cyclops_drop_hit", bank=bank, number=number, flips_remaining=self.flips_remaining)
         self._show_mode_message("+3 FLIPS", f"{self.flips_remaining} FLIPS LEFT")
 
         if self.has_case_file("shot_assist") and not self.bank_assist_used[bank]:
             self.bank_assist_used[bank] = True
-            self._drop_remaining_bank_targets(bank)
+            self.machine.events.post(f"cyclops_shot_assist_{bank}_bank")
+            self.machine.events.post("cyclops_shot_assist_bank_dropped", bank=bank, flips_remaining=self.flips_remaining)
+            self._show_mode_message("SHOT ASSIST", f"{bank.upper()} BANK DROPPED")
 
         self._sync_vars()
-
-    def _award_drop_flip_bonus(self, target_key):
-        self.drops_down.add(target_key)
-        self.drops_hit += 1
-        self.flips_remaining += self.DROP_FLIP_AWARD
-        self.machine.events.post("cyclops_flips_added", flips_added=self.DROP_FLIP_AWARD, flips_remaining=self.flips_remaining)
-
-    def _drop_remaining_bank_targets(self, bank):
-        for number in self.DROP_TARGETS[bank]:
-            target_key = f"{bank}_{number}"
-            if target_key not in self.drops_down:
-                self._award_drop_flip_bonus(target_key)
-
-            coil_name = f"c_{bank}_bank_drop_{number}"
-            self.machine.coils[coil_name].pulse()
-
-        self.machine.events.post("cyclops_shot_assist_bank_dropped", bank=bank, flips_remaining=self.flips_remaining)
-        self._show_mode_message("SHOT ASSIST", f"{bank.upper()} BANK DROPPED")
 
     def _eye_hit(self, **kwargs):
         if self.mode_done:
@@ -224,7 +203,7 @@ class Cyclops(CaseFileMixin, Mode):
 
         self.mode_done = True
         player = self.machine.game.player
-        player[f"{self.MODE_KEY}_completed"] = 0
+        player[f"{self.MODE_KEY}_completed"] = 1
         self._sync_vars()
         self.machine.events.post("cyclops_mode_failed")
 

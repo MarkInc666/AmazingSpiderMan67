@@ -1,0 +1,315 @@
+#config_version=6
+#
+# Player vars removed from config/player_vars.yaml during cleanup.
+# These were unused/unneeded in the current code scan, but are kept here as a backup.
+
+player_vars:
+
+  villain_chapter_name:
+    initial_value: ""
+    value_type: str
+
+  villains_completed_total:
+    initial_value: 0
+    value_type: int
+
+  villain_current_index:
+    initial_value: 0
+    value_type: int
+
+  saucer_1_select_ready:
+    initial_value: 0
+    value_type: int
+
+  saucer_2_select_ready:
+    initial_value: 0
+    value_type: int
+
+  saucer_3_select_ready:
+    initial_value: 0
+    value_type: int
+
+
+  # ---------------------------------------------------------------------------
+  # Chapter display/widget slots
+  # ---------------------------------------------------------------------------
+
+  chapter_villain_1_key:
+    initial_value: ""
+    value_type: str
+  chapter_villain_2_key:
+    initial_value: ""
+    value_type: str
+  chapter_villain_3_key:
+    initial_value: ""
+    value_type: str
+  chapter_villain_4_key:
+    initial_value: ""
+    value_type: str
+  chapter_villain_5_key:
+    initial_value: ""
+    value_type: str
+  case_file_current_key:
+    initial_value: ""
+    value_type: str
+
+  case_file_current_name:
+    initial_value: ""
+    value_type: str
+
+  case_file_current_description:
+    initial_value: ""
+    value_type: str
+
+  case_file_1_description:
+    initial_value: ""
+    value_type: str
+  case_file_1_collected:
+    initial_value: 0
+    value_type: int
+
+  case_file_2_description:
+    initial_value: ""
+    value_type: str
+  case_file_2_collected:
+    initial_value: 0
+    value_type: int
+
+  case_file_3_description:
+    initial_value: ""
+    value_type: str
+  case_file_3_collected:
+    initial_value: 0
+    value_type: int
+
+  case_file_4_description:
+    initial_value: ""
+    value_type: str
+  case_file_4_collected:
+    initial_value: 0
+    value_type: int
+
+  case_file_5_description:
+    initial_value: ""
+    value_type: str
+  case_file_5_collected:
+    initial_value: 0
+    value_type: int
+
+  case_file_extra_jackpot:
+    initial_value: 0
+    value_type: int
+  case_file_extra_jackpot_collected:
+    initial_value: 0
+    value_type: int
+
+  case_file_multiplier:
+    initial_value: 0
+    value_type: int
+  case_file_multiplier_collected:
+    initial_value: 0
+    value_type: int
+
+  case_file_safety:
+    initial_value: 0
+    value_type: int
+  case_file_safety_collected:
+    initial_value: 0
+    value_type: int
+
+  case_file_super_boost:
+    initial_value: 0
+    value_type: int
+  case_file_super_boost_collected:
+    initial_value: 0
+    value_type: int
+
+
+  # Active case file helper text shown during villain modes
+  master_plan_played:
+    initial_value: 0
+    value_type: int
+  master_plan_completed:
+    initial_value: 0
+    value_type: int
+  master_plan_mode_points:
+    initial_value: 0
+    value_type: int
+
+  monster_island_played:
+    initial_value: 0
+    value_type: int
+  monster_island_completed:
+    initial_value: 0
+    value_type: int
+  monster_island_mode_points:
+    initial_value: 0
+    value_type: int
+
+  crime_wave_mini_played:
+    initial_value: 0
+    value_type: int
+  crime_wave_mini_completed:
+    initial_value: 0
+    value_type: int
+  crime_wave_mini_mode_points:
+    initial_value: 0
+    value_type: int
+
+  # Matto Magneto (Weird Science)
+  daily_bugle_rooftop_riot_played:
+    initial_value: 0
+    value_type: int
+  daily_bugle_rooftop_riot_state:
+    initial_value: "not_played"
+    value_type: str
+  daily_bugle_rooftop_riot_completed:
+    initial_value: 0
+    value_type: int
+  daily_bugle_rooftop_riot_mode_points:
+    initial_value: 0
+    value_type: int
+  daily_bugle_rooftop_riot_hits:
+    initial_value: 0
+    value_type: int
+
+  # Mastermind Trap mini-wizard
+  vulture_best_target_value:
+    initial_value: 0
+    value_type: int
+
+  sandman_jackpots:
+    initial_value: 0
+    value_type: int
+  sandman_perfect_runs:
+    initial_value: 0
+    value_type: int
+
+  electro_sparks_hit:
+    initial_value: 0
+    value_type: int
+  electro_super_jackpots:
+    initial_value: 0
+    value_type: int
+
+
+  # ---------------------------------------------------------------------------
+  # Chapter 2: Masterminds
+  # ---------------------------------------------------------------------------
+
+  mysterio_reveals:
+    initial_value: 0
+    value_type: int
+
+  goblin_jackpots:
+    initial_value: 0
+    value_type: int
+  goblin_attacks_stopped:
+    initial_value: 0
+    value_type: int
+
+  scorpion_jackpots:
+    initial_value: 0
+    value_type: int
+
+  parafino_sequences:
+    initial_value: 0
+    value_type: int
+  extra_ball_text:
+    initial_value: ""
+    value_type: str
+
+  message_mode_save_type:
+    initial_value: "default"
+    value_type: str
+
+  enforcers_left_hits:
+    initial_value: 0
+    value_type: int
+  enforcers_left_multiplier:
+    initial_value: 0
+    value_type: int
+  enforcers_left_jackpot_value:
+    initial_value: 100000
+    value_type: int
+  enforcers_left_upper_lit:
+    initial_value: 0
+    value_type: int
+  enforcers_left_upper_collected:
+    initial_value: 0
+    value_type: int
+  enforcers_left_saucer_collected:
+    initial_value: 0
+    value_type: int
+  enforcers_left_award:
+    initial_value: 0
+    value_type: int
+  enforcers_pops_hits:
+    initial_value: 0
+    value_type: int
+  enforcers_pops_multiplier:
+    initial_value: 0
+    value_type: int
+  enforcers_pops_jackpot_value:
+    initial_value: 100000
+    value_type: int
+  enforcers_pops_upper_lit:
+    initial_value: 0
+    value_type: int
+  enforcers_pops_upper_collected:
+    initial_value: 0
+    value_type: int
+  enforcers_pops_saucer_collected:
+    initial_value: 0
+    value_type: int
+  enforcers_pops_award:
+    initial_value: 0
+    value_type: int
+  enforcers_right_hits:
+    initial_value: 0
+    value_type: int
+  enforcers_right_multiplier:
+    initial_value: 0
+    value_type: int
+  enforcers_right_jackpot_value:
+    initial_value: 100000
+    value_type: int
+  enforcers_right_upper_lit:
+    initial_value: 0
+    value_type: int
+  enforcers_right_upper_collected:
+    initial_value: 0
+    value_type: int
+  enforcers_right_saucer_collected:
+    initial_value: 0
+    value_type: int
+  enforcers_right_award:
+    initial_value: 0
+    value_type: int
+
+  frederick_foswell_rumours:
+    initial_value: 0
+    value_type: int
+  frederick_foswell_total_rumours:
+    initial_value: 0
+    value_type: int
+  frederick_foswell_conversions:
+    initial_value: 0
+    value_type: int
+  frederick_foswell_headlines_lit:
+    initial_value: 0
+    value_type: int
+  frederick_foswell_cycle_headlines:
+    initial_value: 0
+    value_type: int
+  frederick_foswell_super_value:
+    initial_value: 0
+    value_type: int
+  frederick_foswell_back_page_value:
+    initial_value: 0
+    value_type: int
+  frederick_foswell_drain_active:
+    initial_value: 0
+    value_type: int
+
+

@@ -1,10 +1,10 @@
 from mpf.core.mode import Mode
 
 """
-Monster Island mini-wizard placeholder.
+Trubble Unleashed mini-wizard placeholder.
 
 Mode idea:
-Monsters mini-wizard. 2-ball MB. Centaur=Spinner, Cerberus=3 saucers, Cyclops=moving single shot, Reptilla=upper targets, Mole Man=drop banks. Defeat all five monsters to light Monster Island Jackpot.
+Monsters mini-wizard. 2-ball MB. Centaur, Cerberus, Cyclops, Vulcan, and Miss Trubble completed lights the chapter wizard. Miss Trubble unleashes the monsters for the wizard battle.
 
 PLACEHOLDER IMPLEMENTATION
 - MPF launches the multiball from YAML.
@@ -15,7 +15,7 @@ PLACEHOLDER IMPLEMENTATION
 
 class MonsterIsland(Mode):
     MODE_KEY = "monster_island"
-    DISPLAY_NAME = "Monster Island"
+    DISPLAY_NAME = "Trubble Unleashed"
     HIT_SCORE = 50_000
     JACKPOT_SCORE = 500_000
     HITS_TO_COMPLETE = 15

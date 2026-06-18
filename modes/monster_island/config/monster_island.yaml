@@ -1,7 +1,7 @@
 #config_version=6
 
-# Monster Island placeholder mini-wizard.
-# Monsters mini-wizard. 2-ball MB. Centaur=Spinner, Cerberus=3 saucers, Cyclops=moving single shot, Reptilla=upper targets, Mole Man=drop banks. Defeat all five monsters to light Monster Island Jackpot.
+# Trubble Unleashed placeholder mini-wizard.
+# Monsters mini-wizard. 2-ball MB. Centaur, Cerberus, Cyclops, Vulcan, and Miss Trubble completed lights the chapter wizard. Miss Trubble unleashes the monsters for the wizard battle.
 
 mode:
   start_events: start_mode_monster_island

@@ -3,8 +3,9 @@
 # Cyclops - Eye of Doom
 # Limited-flips monster mode.
 # Center web target is the Cyclops Eye.
-# Drop targets add flips. Case files adjust the flip budget, jackpot cap,
-# safety net, extra Eye jackpot, and drop-bank assist.
+# Drop targets add flips. Banks reset when all drops in that bank are down.
+# Case files adjust the flip budget, jackpot cap, safety net, extra Eye jackpot,
+# and drop-bank assist.
 
 mode:
   start_events: start_mode_cyclops
@@ -40,7 +41,7 @@ event_player:
   s_web_target_mid_active:
     - cyclops_eye_hit
 
-  # Drop targets add flips. Python tracks unique drops and case-file assist.
+  # Every drop switch adds flips. Bank-down events reset the physical banks.
   s_left_drops_1_active:
     - cyclops_left_drop_1_hit
   s_left_drops_2_active:
@@ -59,6 +60,19 @@ event_player:
   s_right_drops_5_active:
     - cyclops_right_drop_5_hit
 
+
+  drop_target_bank_dt_bank_left_down:
+    - drop_target_bank_dt_bank_left_reset
+
+  drop_target_bank_dt_bank_right_down:
+    - drop_target_bank_dt_bank_right_reset
+
+
+  # Cyclops does not use saucers during gameplay; kick out any ball that lands there.
+  s_saucer_1_active: clear_saucers
+  s_saucer_2_active: clear_saucers
+  s_saucer_3_active: clear_saucers
+
   mode_cyclops_started:
     - clear_saucers
     - drop_target_bank_dt_bank_left_reset
@@ -67,8 +81,31 @@ event_player:
 
   mode_cyclops_stopping:
     - clear_saucers
+    - reset_drops
     - cyclops_eye_unlit
 
+
+
+coil_player:
+  cyclops_shot_assist_left_bank:
+    c_left_bank_drop_1:
+      action: pulse
+    c_left_bank_drop_2:
+      action: pulse
+    c_left_bank_drop_3:
+      action: pulse
+
+  cyclops_shot_assist_right_bank:
+    c_right_bank_drop_1:
+      action: pulse
+    c_right_bank_drop_2:
+      action: pulse
+    c_right_bank_drop_3:
+      action: pulse
+    c_right_bank_drop_4:
+      action: pulse
+    c_right_bank_drop_5:
+      action: pulse
 
 show_player:
   cyclops_eye_lit:
@@ -94,9 +131,18 @@ show_player:
 
 shows:
   cyclops_eye_lit_show:
-    - duration: 250ms
+    - duration: 300ms
       lights:
-        l_mid_web_target: yellow
-    - duration: 250ms
-      lights:
+        l_advance_multiplier: red
+        l_mid_multibonus: off
         l_mid_web_target: off
+    - duration: 300ms
+      lights:
+        l_advance_multiplier: off
+        l_mid_multibonus: red
+        l_mid_web_target: off
+    - duration: 300ms
+      lights:
+        l_advance_multiplier: off
+        l_mid_multibonus: off
+        l_mid_web_target: red
