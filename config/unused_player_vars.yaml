@@ -1,131 +1,106 @@
 #config_version=6
 #
-# Player vars removed from config/player_vars.yaml during cleanup.
-# These were unused/unneeded in the current code scan, but are kept here as a backup.
+# Player vars removed from config/player_vars.yaml.
+# This file is intentionally NOT included from config/config.yaml.
+# Restoring variables from here will increase BCP player update size.
 
 player_vars:
-
   villain_chapter_name:
-    initial_value: ""
+    initial_value: ''
     value_type: str
-
   villains_completed_total:
     initial_value: 0
     value_type: int
-
   villain_current_index:
     initial_value: 0
     value_type: int
-
   saucer_1_select_ready:
     initial_value: 0
     value_type: int
-
   saucer_2_select_ready:
     initial_value: 0
     value_type: int
-
   saucer_3_select_ready:
     initial_value: 0
     value_type: int
-
-
-  # ---------------------------------------------------------------------------
-  # Chapter display/widget slots
-  # ---------------------------------------------------------------------------
-
   chapter_villain_1_key:
-    initial_value: ""
+    initial_value: ''
     value_type: str
   chapter_villain_2_key:
-    initial_value: ""
+    initial_value: ''
     value_type: str
   chapter_villain_3_key:
-    initial_value: ""
+    initial_value: ''
     value_type: str
   chapter_villain_4_key:
-    initial_value: ""
+    initial_value: ''
     value_type: str
   chapter_villain_5_key:
-    initial_value: ""
+    initial_value: ''
     value_type: str
   case_file_current_key:
-    initial_value: ""
+    initial_value: ''
     value_type: str
-
   case_file_current_name:
-    initial_value: ""
+    initial_value: ''
     value_type: str
-
   case_file_current_description:
-    initial_value: ""
+    initial_value: ''
     value_type: str
-
   case_file_1_description:
-    initial_value: ""
+    initial_value: ''
     value_type: str
   case_file_1_collected:
     initial_value: 0
     value_type: int
-
   case_file_2_description:
-    initial_value: ""
+    initial_value: ''
     value_type: str
   case_file_2_collected:
     initial_value: 0
     value_type: int
-
   case_file_3_description:
-    initial_value: ""
+    initial_value: ''
     value_type: str
   case_file_3_collected:
     initial_value: 0
     value_type: int
-
   case_file_4_description:
-    initial_value: ""
+    initial_value: ''
     value_type: str
   case_file_4_collected:
     initial_value: 0
     value_type: int
-
   case_file_5_description:
-    initial_value: ""
+    initial_value: ''
     value_type: str
   case_file_5_collected:
     initial_value: 0
     value_type: int
-
   case_file_extra_jackpot:
     initial_value: 0
     value_type: int
   case_file_extra_jackpot_collected:
     initial_value: 0
     value_type: int
-
   case_file_multiplier:
     initial_value: 0
     value_type: int
   case_file_multiplier_collected:
     initial_value: 0
     value_type: int
-
   case_file_safety:
     initial_value: 0
     value_type: int
   case_file_safety_collected:
     initial_value: 0
     value_type: int
-
   case_file_super_boost:
     initial_value: 0
     value_type: int
   case_file_super_boost_collected:
     initial_value: 0
     value_type: int
-
-
-  # Active case file helper text shown during villain modes
   master_plan_played:
     initial_value: 0
     value_type: int
@@ -135,7 +110,6 @@ player_vars:
   master_plan_mode_points:
     initial_value: 0
     value_type: int
-
   monster_island_played:
     initial_value: 0
     value_type: int
@@ -145,7 +119,6 @@ player_vars:
   monster_island_mode_points:
     initial_value: 0
     value_type: int
-
   crime_wave_mini_played:
     initial_value: 0
     value_type: int
@@ -155,13 +128,11 @@ player_vars:
   crime_wave_mini_mode_points:
     initial_value: 0
     value_type: int
-
-  # Matto Magneto (Weird Science)
   daily_bugle_rooftop_riot_played:
     initial_value: 0
     value_type: int
   daily_bugle_rooftop_riot_state:
-    initial_value: "not_played"
+    initial_value: not_played
     value_type: str
   daily_bugle_rooftop_riot_completed:
     initial_value: 0
@@ -172,57 +143,42 @@ player_vars:
   daily_bugle_rooftop_riot_hits:
     initial_value: 0
     value_type: int
-
-  # Mastermind Trap mini-wizard
   vulture_best_target_value:
     initial_value: 0
     value_type: int
-
   sandman_jackpots:
     initial_value: 0
     value_type: int
   sandman_perfect_runs:
     initial_value: 0
     value_type: int
-
   electro_sparks_hit:
     initial_value: 0
     value_type: int
   electro_super_jackpots:
     initial_value: 0
     value_type: int
-
-
-  # ---------------------------------------------------------------------------
-  # Chapter 2: Masterminds
-  # ---------------------------------------------------------------------------
-
   mysterio_reveals:
     initial_value: 0
     value_type: int
-
   goblin_jackpots:
     initial_value: 0
     value_type: int
   goblin_attacks_stopped:
     initial_value: 0
     value_type: int
-
   scorpion_jackpots:
     initial_value: 0
     value_type: int
-
   parafino_sequences:
     initial_value: 0
     value_type: int
   extra_ball_text:
-    initial_value: ""
+    initial_value: ''
     value_type: str
-
   message_mode_save_type:
-    initial_value: "default"
+    initial_value: default
     value_type: str
-
   enforcers_left_hits:
     initial_value: 0
     value_type: int
@@ -286,7 +242,6 @@ player_vars:
   enforcers_right_award:
     initial_value: 0
     value_type: int
-
   frederick_foswell_rumours:
     initial_value: 0
     value_type: int
@@ -311,5 +266,657 @@ player_vars:
   frederick_foswell_drain_active:
     initial_value: 0
     value_type: int
-
-
+  rhino_jackpots:
+    initial_value: 0
+    value_type: int
+  rhino_best_rage_stage:
+    initial_value: 0
+    value_type: int
+  vulture_spins:
+    initial_value: 0
+    value_type: int
+  lizard_deliveries:
+    initial_value: 0
+    value_type: int
+  lizard_best_delivery_value:
+    initial_value: 0
+    value_type: int
+  lizard_serum_ready:
+    initial_value: 0
+    value_type: int
+  lizard_delivery_value:
+    initial_value: 0
+    value_type: int
+  lizard_a_hit:
+    initial_value: 0
+    value_type: int
+  lizard_b_hit:
+    initial_value: 0
+    value_type: int
+  lizard_ab_ready:
+    initial_value: 0
+    value_type: int
+  doc_ock_jackpots:
+    initial_value: 0
+    value_type: int
+  doc_ock_max_arms_locked:
+    initial_value: 0
+    value_type: int
+  mysterio_illusions_cleared:
+    initial_value: 0
+    value_type: int
+  scorpion_stings:
+    initial_value: 0
+    value_type: int
+  parafino_jackpots:
+    initial_value: 0
+    value_type: int
+  parafino_total_jackpots:
+    initial_value: 0
+    value_type: int
+  parafino_zone_hits:
+    initial_value: 0
+    value_type: int
+  parafino_jackpot_value:
+    initial_value: 0
+    value_type: int
+  parafino_last_jackpot_value:
+    initial_value: 0
+    value_type: int
+  parafino_left_hits:
+    initial_value: 0
+    value_type: int
+  parafino_pops_hits:
+    initial_value: 0
+    value_type: int
+  parafino_right_hits:
+    initial_value: 0
+    value_type: int
+  parafino_left_jackpot_value:
+    initial_value: 0
+    value_type: int
+  parafino_pops_jackpot_value:
+    initial_value: 0
+    value_type: int
+  parafino_right_jackpot_value:
+    initial_value: 0
+    value_type: int
+  parafino_left_heat:
+    initial_value: 0
+    value_type: int
+  parafino_pops_heat:
+    initial_value: 0
+    value_type: int
+  parafino_right_heat:
+    initial_value: 0
+    value_type: int
+  parafino_left_jackpot_lit:
+    initial_value: 0
+    value_type: int
+  parafino_pops_jackpot_lit:
+    initial_value: 0
+    value_type: int
+  parafino_right_jackpot_lit:
+    initial_value: 0
+    value_type: int
+  parafino_left_jackpots:
+    initial_value: 0
+    value_type: int
+  parafino_pops_jackpots:
+    initial_value: 0
+    value_type: int
+  parafino_right_jackpots:
+    initial_value: 0
+    value_type: int
+  parafino_saucer_1_add_ball_used:
+    initial_value: 0
+    value_type: int
+  parafino_saucer_2_add_ball_used:
+    initial_value: 0
+    value_type: int
+  parafino_saucer_3_add_ball_used:
+    initial_value: 0
+    value_type: int
+  parafino_saucer_1_add_ball_qualified:
+    initial_value: 0
+    value_type: int
+  parafino_saucer_2_add_ball_qualified:
+    initial_value: 0
+    value_type: int
+  parafino_saucer_3_add_ball_qualified:
+    initial_value: 0
+    value_type: int
+  parafino_saucer_1_extra_collect_used:
+    initial_value: 0
+    value_type: int
+  parafino_saucer_2_extra_collect_used:
+    initial_value: 0
+    value_type: int
+  parafino_saucer_3_extra_collect_used:
+    initial_value: 0
+    value_type: int
+  centaur_drops_down:
+    initial_value: 0
+    value_type: int
+  centaur_jackpot_value:
+    initial_value: 0
+    value_type: int
+  centaur_best_jackpot:
+    initial_value: 0
+    value_type: int
+  centaur_jackpots:
+    initial_value: 0
+    value_type: int
+  centaur_secret_jackpots:
+    initial_value: 0
+    value_type: int
+  centaur_consolation_awarded:
+    initial_value: 0
+    value_type: int
+  centaur_final_seconds:
+    initial_value: 0
+    value_type: int
+  centaur_phase:
+    initial_value: idle
+    value_type: str
+  centaur_gate_open:
+    initial_value: 0
+    value_type: int
+  centaur_final_active:
+    initial_value: 0
+    value_type: int
+  cyclops_flips_remaining:
+    initial_value: 0
+    value_type: int
+  cyclops_flips_used:
+    initial_value: 0
+    value_type: int
+  cyclops_drops_hit:
+    initial_value: 0
+    value_type: int
+  cyclops_eye_jackpots:
+    initial_value: 0
+    value_type: int
+  cyclops_best_jackpot:
+    initial_value: 0
+    value_type: int
+  cyclops_last_jackpot:
+    initial_value: 0
+    value_type: int
+  cyclops_jackpot_value:
+    initial_value: 0
+    value_type: int
+  cyclops_jackpot_cap:
+    initial_value: 2000000
+    value_type: int
+  cyclops_safety_net_used:
+    initial_value: 0
+    value_type: int
+  reptilla_pop_hits:
+    initial_value: 0
+    value_type: int
+  reptilla_rampage_level:
+    initial_value: 0
+    value_type: int
+  reptilla_current_jackpot:
+    initial_value: 0
+    value_type: int
+  reptilla_super_jackpot:
+    initial_value: 0
+    value_type: int
+  reptilla_jackpots_collected:
+    initial_value: 0
+    value_type: int
+  reptilla_jackpots_required:
+    initial_value: 3
+    value_type: int
+  reptilla_pop_score_value:
+    initial_value: 20000
+    value_type: int
+  reptilla_super_lit:
+    initial_value: 0
+    value_type: int
+  reptilla_super_timer_seconds:
+    initial_value: 10
+    value_type: int
+  mole_man_upper_target_hits:
+    initial_value: 0
+    value_type: int
+  mole_man_spinner_hits:
+    initial_value: 0
+    value_type: int
+  mole_man_jackpots:
+    initial_value: 0
+    value_type: int
+  mole_man_best_jackpot:
+    initial_value: 0
+    value_type: int
+  mole_man_jackpot_value:
+    initial_value: 0
+    value_type: int
+  mole_man_hurryup_seconds:
+    initial_value: 0
+    value_type: int
+  mole_man_secret_target:
+    initial_value: ''
+    value_type: str
+  mole_man_phase:
+    initial_value: get_to_upper
+    value_type: str
+  mole_man_remaining_targets:
+    initial_value: 0
+    value_type: int
+  mole_man_secret_revealed:
+    initial_value: 0
+    value_type: int
+  enforcers_base_jackpot:
+    initial_value: 100000
+    value_type: int
+  enforcers_upper_jackpots:
+    initial_value: 0
+    value_type: int
+  enforcers_saucer_bonus_jackpots:
+    initial_value: 0
+    value_type: int
+  enforcers_spinner_spins:
+    initial_value: 0
+    value_type: int
+  enforcers_ox_super_value:
+    initial_value: 0
+    value_type: int
+  enforcers_ox_lit:
+    initial_value: 0
+    value_type: int
+  enforcers_gate_open:
+    initial_value: 0
+    value_type: int
+  enforcers_left_saucer_lit:
+    initial_value: 0
+    value_type: int
+  enforcers_pops_saucer_lit:
+    initial_value: 0
+    value_type: int
+  enforcers_right_saucer_lit:
+    initial_value: 0
+    value_type: int
+  miss_trubble_round:
+    initial_value: 0
+    value_type: int
+  miss_trubble_total_rounds:
+    initial_value: 0
+    value_type: int
+  miss_trubble_correct_shots:
+    initial_value: 0
+    value_type: int
+  miss_trubble_incorrect_shots:
+    initial_value: 0
+    value_type: int
+  miss_trubble_next_jackpot:
+    initial_value: 0
+    value_type: int
+  fifth_avenue_phantom_jackpots:
+    initial_value: 0
+    value_type: int
+  fifth_avenue_phantom_escape_jackpots:
+    initial_value: 0
+    value_type: int
+  fifth_avenue_phantom_best_jackpot:
+    initial_value: 0
+    value_type: int
+  fifth_avenue_phantom_rounds:
+    initial_value: 0
+    value_type: int
+  fifth_avenue_phantom_reveals_used:
+    initial_value: 0
+    value_type: int
+  fifth_avenue_phantom_current_jackpot:
+    initial_value: 0
+    value_type: int
+  fifth_avenue_phantom_timer:
+    initial_value: 0
+    value_type: int
+  fifth_avenue_phantom_location:
+    initial_value: ''
+    value_type: str
+  fifth_avenue_phantom_phase:
+    initial_value: build
+    value_type: str
+  fifth_avenue_phantom_shot_assist_used:
+    initial_value: 0
+    value_type: int
+  frederick_foswell_headlines_collected:
+    initial_value: 0
+    value_type: int
+  frederick_foswell_super_collected:
+    initial_value: 0
+    value_type: int
+  frederick_foswell_back_page_collected:
+    initial_value: 0
+    value_type: int
+  matto_magneto_hits:
+    initial_value: 0
+    value_type: int
+  matto_magneto_major_hits:
+    initial_value: 0
+    value_type: int
+  doctor_manta_hits:
+    initial_value: 0
+    value_type: int
+  doctor_manta_major_hits:
+    initial_value: 0
+    value_type: int
+  doctor_dumpty_hits:
+    initial_value: 0
+    value_type: int
+  doctor_dumpty_major_hits:
+    initial_value: 0
+    value_type: int
+  doctor_cool_hits:
+    initial_value: 0
+    value_type: int
+  doctor_cool_major_hits:
+    initial_value: 0
+    value_type: int
+  doctor_zapp_hits:
+    initial_value: 0
+    value_type: int
+  doctor_zapp_major_hits:
+    initial_value: 0
+    value_type: int
+  fantastic_fakir_hits:
+    initial_value: 0
+    value_type: int
+  fantastic_fakir_major_hits:
+    initial_value: 0
+    value_type: int
+  kotep_hits:
+    initial_value: 0
+    value_type: int
+  kotep_major_hits:
+    initial_value: 0
+    value_type: int
+  infinata_hits:
+    initial_value: 0
+    value_type: int
+  infinata_major_hits:
+    initial_value: 0
+    value_type: int
+  pardo_hits:
+    initial_value: 0
+    value_type: int
+  pardo_major_hits:
+    initial_value: 0
+    value_type: int
+  vulcan_hits:
+    initial_value: 0
+    value_type: int
+  vulcan_major_hits:
+    initial_value: 0
+    value_type: int
+  vulcan_spinner_hits:
+    initial_value: 0
+    value_type: int
+  vulcan_jackpot_value:
+    initial_value: 100000
+    value_type: int
+  vulcan_jackpots_collected:
+    initial_value: 0
+    value_type: int
+  vulcan_right_drops_down:
+    initial_value: 0
+    value_type: int
+  vulcan_bonus_jackpot_lit:
+    initial_value: 0
+    value_type: int
+  vulcan_bonus_jackpot_collected:
+    initial_value: 0
+    value_type: int
+  vulcan_upper_left_hit:
+    initial_value: 0
+    value_type: int
+  vulcan_upper_center_hit:
+    initial_value: 0
+    value_type: int
+  vulcan_upper_right_hit:
+    initial_value: 0
+    value_type: int
+  vulcan_upper_targets_completed:
+    initial_value: 0
+    value_type: int
+  vulcan_add_a_balls:
+    initial_value: 0
+    value_type: int
+  vulcan_eruption_bonuses:
+    initial_value: 0
+    value_type: int
+  vulcan_cooling_active:
+    initial_value: 0
+    value_type: int
+  vulcan_cooling_seconds:
+    initial_value: 0
+    value_type: int
+  vulcan_balls_in_play:
+    initial_value: 0
+    value_type: int
+  spider_slayer_hits:
+    initial_value: 0
+    value_type: int
+  spider_slayer_major_hits:
+    initial_value: 0
+    value_type: int
+  henry_smythe_hits:
+    initial_value: 0
+    value_type: int
+  henry_smythe_major_hits:
+    initial_value: 0
+    value_type: int
+  blackbeard_robot_hits:
+    initial_value: 0
+    value_type: int
+  blackbeard_robot_major_hits:
+    initial_value: 0
+    value_type: int
+  executioner_of_paris_robot_hits:
+    initial_value: 0
+    value_type: int
+  executioner_of_paris_robot_major_hits:
+    initial_value: 0
+    value_type: int
+  jesse_james_robot_hits:
+    initial_value: 0
+    value_type: int
+  jesse_james_robot_major_hits:
+    initial_value: 0
+    value_type: int
+  snowman_the_snowmen_hits:
+    initial_value: 0
+    value_type: int
+  snowman_the_snowmen_major_hits:
+    initial_value: 0
+    value_type: int
+  metal_eating_monster_hits:
+    initial_value: 0
+    value_type: int
+  metal_eating_monster_major_hits:
+    initial_value: 0
+    value_type: int
+  master_vine_hits:
+    initial_value: 0
+    value_type: int
+  master_vine_major_hits:
+    initial_value: 0
+    value_type: int
+  blotto_hits:
+    initial_value: 0
+    value_type: int
+  blotto_major_hits:
+    initial_value: 0
+    value_type: int
+  pod_hits:
+    initial_value: 0
+    value_type: int
+  pod_major_hits:
+    initial_value: 0
+    value_type: int
+  noah_boddy_hits:
+    initial_value: 0
+    value_type: int
+  noah_boddy_major_hits:
+    initial_value: 0
+    value_type: int
+  fiddler_hits:
+    initial_value: 0
+    value_type: int
+  fiddler_major_hits:
+    initial_value: 0
+    value_type: int
+  fly_twins_hits:
+    initial_value: 0
+    value_type: int
+  fly_twins_major_hits:
+    initial_value: 0
+    value_type: int
+  charles_cameo_hits:
+    initial_value: 0
+    value_type: int
+  charles_cameo_major_hits:
+    initial_value: 0
+    value_type: int
+  plotter_hits:
+    initial_value: 0
+    value_type: int
+  plotter_major_hits:
+    initial_value: 0
+    value_type: int
+  juan_ponce_de_leon_hits:
+    initial_value: 0
+    value_type: int
+  juan_ponce_de_leon_major_hits:
+    initial_value: 0
+    value_type: int
+  devargas_hits:
+    initial_value: 0
+    value_type: int
+  devargas_major_hits:
+    initial_value: 0
+    value_type: int
+  koga_hits:
+    initial_value: 0
+    value_type: int
+  koga_major_hits:
+    initial_value: 0
+    value_type: int
+  cowboy_hits:
+    initial_value: 0
+    value_type: int
+  cowboy_major_hits:
+    initial_value: 0
+    value_type: int
+  desperado_hits:
+    initial_value: 0
+    value_type: int
+  desperado_major_hits:
+    initial_value: 0
+    value_type: int
+  mastermind_trap_hits:
+    initial_value: 0
+    value_type: int
+  monster_island_breakout_hits:
+    initial_value: 0
+    value_type: int
+  crime_wave_crackdown_hits:
+    initial_value: 0
+    value_type: int
+  mad_science_meltdown_hits:
+    initial_value: 0
+    value_type: int
+  fifth_dimension_curse_hits:
+    initial_value: 0
+    value_type: int
+  night_of_the_robots_hits:
+    initial_value: 0
+    value_type: int
+  nature_strikes_back_hits:
+    initial_value: 0
+    value_type: int
+  who_is_the_real_villain_hits:
+    initial_value: 0
+    value_type: int
+  time_tossed_showdown_hits:
+    initial_value: 0
+    value_type: int
+  kingpin_areas_cleared:
+    initial_value: 0
+    value_type: int
+  kingpin_jackpots:
+    initial_value: 0
+    value_type: int
+  kingpin_super_jackpots:
+    initial_value: 0
+    value_type: int
+  kingpin_current_area:
+    initial_value: ''
+    value_type: str
+  kingpin_current_area_display:
+    initial_value: ''
+    value_type: str
+  kingpin_area_progress:
+    initial_value: 0
+    value_type: int
+  kingpin_area_required:
+    initial_value: 0
+    value_type: int
+  kingpin_jackpot_ready:
+    initial_value: 0
+    value_type: int
+  kingpin_jackpot_value:
+    initial_value: 0
+    value_type: int
+  kingpin_super_jackpot_ready:
+    initial_value: 0
+    value_type: int
+  kingpin_super_jackpot_value:
+    initial_value: 0
+    value_type: int
+  kingpin_a_hit:
+    initial_value: 0
+    value_type: int
+  kingpin_b_hit:
+    initial_value: 0
+    value_type: int
+  kingpin_ab_ready:
+    initial_value: 0
+    value_type: int
+  kingpin_upper_left_hits:
+    initial_value: 0
+    value_type: int
+  kingpin_upper_center_hits:
+    initial_value: 0
+    value_type: int
+  kingpin_upper_right_hits:
+    initial_value: 0
+    value_type: int
+  kingpin_area_pops_cleared:
+    initial_value: 0
+    value_type: int
+  kingpin_area_spinner_cleared:
+    initial_value: 0
+    value_type: int
+  kingpin_area_star_cleared:
+    initial_value: 0
+    value_type: int
+  kingpin_area_upper_targets_cleared:
+    initial_value: 0
+    value_type: int
+  kingpin_area_drops_cleared:
+    initial_value: 0
+    value_type: int
+  skillshots_awarded:
+    initial_value: 0
+    value_type: int
+  doc_ock_last_jackpot:
+    initial_value: 0
+    value_type: int
+  kingpin_hits_needed:
+    initial_value: 0
+    value_type: int
