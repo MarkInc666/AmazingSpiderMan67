@@ -1,0 +1,364 @@
+#config_version=6
+
+mode:
+  start_events: start_mode_final_showdown
+  stop_events:
+    - final_showdown_mode_completed_summary
+    - ball_ended
+  priority: 1000
+  code: final_showdown.FinalShowdown
+
+variable_player:
+
+  multiball_final_showdown_multiball_started:
+    multiball_autoplunge_active:
+      action: set
+      int: 1
+
+  multiball_final_showdown_multiball_ended:
+    multiball_autoplunge_active:
+      action: set
+      int: 0
+
+
+multiballs:
+  final_showdown_multiball:
+    ball_count: 2
+    ball_count_type: total
+    shoot_again: 20s
+    start_events: final_showdown_start_multiball
+    stop_events:
+      - final_showdown_stop_multiball
+
+  final_showdown_add_a_ball:
+    ball_count: 1
+    ball_count_type: add
+    shoot_again: 10s
+    start_events: final_showdown_add_a_ball
+
+
+event_player:
+
+  drop_target_bank_dt_bank_left_down:
+    - drop_target_bank_dt_bank_left_reset
+
+  drop_target_bank_dt_bank_right_down:
+    - drop_target_bank_dt_bank_right_reset
+
+  multiball_final_showdown_multiball_started:
+    - final_showdown_choose_first_area
+
+  final_showdown_mode_complete:
+    villain_bookend_summary_request:
+      villain: final_showdown
+      done_event: final_showdown_mode_completed_summary
+
+  mode_final_showdown_stopping:
+    - final_showdown_enable_daily_bugle_mystery
+    - final_showdown_close_upper_gate
+    - final_showdown_release_all_saucers
+    - clear_saucers
+    - final_showdown_clear_all_final_showdown_lights
+
+  mode_final_showdown_started:
+    - final_showdown_setup
+    - final_showdown_start_multiball|1s
+
+  final_showdown_setup:
+    - final_showdown_reset_banks
+    - clear_saucers
+    - final_showdown_disable_daily_bugle_mystery
+    - final_showdown_mode_intro
+    - play_song_7
+
+  final_showdown_reset_banks:
+    - drop_target_bank_dt_bank_left_reset|100ms
+    - drop_target_bank_dt_bank_right_reset|200ms
+
+  multiball_final_showdown_multiball_ended:
+    - final_showdown_multiball_ended
+
+  final_showdown_open_upper_gate: rooftop_diverter_open
+
+  final_showdown_close_upper_gate: rooftop_diverter_close
+
+  final_showdown_disable_daily_bugle_mystery: disable_daily_bugle_mystery
+
+  final_showdown_enable_daily_bugle_mystery: enable_daily_bugle_mystery
+
+
+widget_player:
+  mode_final_showdown_started:
+    final_showdown:
+      action: play
+
+  final_showdown_mode_ended:
+    final_showdown:
+      action: remove
+
+  xfinal_showdown_mode_intro:
+    final_showdown_intro:
+      action: play
+      expire: 5s
+
+  final_showdown_area_changed:
+    final_showdown_area_status:
+      action: play
+      expire: 3s
+
+  xfinal_showdown_jackpot_lit:
+    final_showdown_jackpot_lit:
+      action: play
+      expire: 3s
+
+  xfinal_showdown_victory_laps_started:
+    final_showdown_victory_laps:
+      action: play
+      expire: 4s
+
+  xfinal_showdown_mode_complete:
+    final_showdown_complete:
+      action: play
+      expire: 5s
+
+  xfinal_showdown_mode_complete_goal_missed:
+    final_showdown_goal_missed:
+      action: play
+      expire: 5s
+
+
+show_player:
+
+  final_showdown_clear_area_lights:
+    final_showdown_pops_lit_show:
+      action: stop
+    final_showdown_spinner_lit_show:
+      action: stop
+    final_showdown_star_lit_show:
+      action: stop
+    final_showdown_upper_targets_lit_show:
+      action: stop
+    final_showdown_drops_lit_show:
+      action: stop
+
+  final_showdown_area_pops_lit:
+    final_showdown_pops_lit_show:
+      action: play
+      loops: -1
+      speed: 2
+
+  final_showdown_area_spinner_lit:
+    final_showdown_spinner_lit_show:
+      action: play
+      loops: -1
+      speed: 2
+
+  final_showdown_area_star_lit:
+    final_showdown_star_lit_show:
+      action: play
+      loops: -1
+      speed: 2
+
+  final_showdown_area_upper_targets_lit:
+    final_showdown_upper_targets_lit_show:
+      action: play
+      loops: -1
+      speed: 2
+
+  final_showdown_area_drops_lit:
+    final_showdown_drops_lit_show:
+      action: play
+      loops: -1
+      speed: 2
+
+  final_showdown_jackpot_lit_show:
+    final_showdown_daily_bugle_jackpot_show:
+      action: play
+      loops: -1
+      speed: 4
+
+  final_showdown_ab_ready_show:
+    final_showdown_ab_ready_show:
+      action: play
+      loops: -1
+      speed: 3
+
+  final_showdown_ab_clear_show:
+    final_showdown_ab_ready_show:
+      action: stop
+
+  final_showdown_victory_laps_show:
+    final_showdown_victory_laps_show:
+      action: play
+      loops: -1
+      speed: 5
+
+  final_showdown_super_jackpot_lit_show:
+    final_showdown_super_jackpot_show:
+      action: play
+      loops: -1
+      speed: 6
+
+  final_showdown_clear_all_final_showdown_lights:
+    final_showdown_pops_lit_show:
+      action: stop
+    final_showdown_spinner_lit_show:
+      action: stop
+    final_showdown_star_lit_show:
+      action: stop
+    final_showdown_upper_targets_lit_show:
+      action: stop
+    final_showdown_drops_lit_show:
+      action: stop
+    final_showdown_daily_bugle_jackpot_show:
+      action: stop
+    final_showdown_ab_ready_show:
+      action: stop
+    final_showdown_victory_laps_show:
+      action: stop
+    final_showdown_super_jackpot_show:
+      action: stop
+
+shows:
+
+  final_showdown_pops_lit_show:
+    - duration: 500ms
+      lights:
+        l_pop_1_1: orange
+        l_pop_1_2: orange
+        l_pop_1_3: orange
+        l_pop_1_4: orange
+        l_pop_1_5: orange
+        l_pop_1_6: orange
+        l_pop_1_7: orange
+        l_pop_1_8: orange
+        l_pop_1_9: orange
+        l_pop_1_10: orange
+        l_pop_1_11: orange
+        l_pop_1_12: orange
+        l_pop_2_1: orange
+        l_pop_2_2: orange
+        l_pop_2_3: orange
+        l_pop_2_4: orange
+        l_pop_2_5: orange
+        l_pop_2_6: orange
+        l_pop_2_7: orange
+        l_pop_2_8: orange
+        l_pop_2_9: orange
+        l_pop_2_10: orange
+        l_pop_2_11: orange
+        l_pop_2_12: orange
+    - duration: 500ms
+      lights:
+        l_pop_1_1: F09010
+        l_pop_1_2: F09010
+        l_pop_1_3: F09010
+        l_pop_1_4: F09010
+        l_pop_1_5: F09010
+        l_pop_1_6: F09010
+        l_pop_1_7: F09010
+        l_pop_1_8: F09010
+        l_pop_1_9: F09010
+        l_pop_1_10: F09010
+        l_pop_1_11: F09010
+        l_pop_1_12: F09010
+        l_pop_2_1: F09010
+        l_pop_2_2: F09010
+        l_pop_2_3: F09010
+        l_pop_2_4: F09010
+        l_pop_2_5: F09010
+        l_pop_2_6: F09010
+        l_pop_2_7: F09010
+        l_pop_2_8: F09010
+        l_pop_2_9: F09010
+        l_pop_2_10: F09010
+        l_pop_2_11: F09010
+        l_pop_2_12: F09010
+
+  final_showdown_spinner_lit_show:
+    - duration: 200ms
+      lights:
+        l_gi_a: orange
+        l_spinner: orange
+    - duration: 200ms
+      lights:
+        l_gi_a: off
+        l_spinner: off
+
+  final_showdown_star_lit_show:
+    - duration: 250ms
+      lights:
+        l_star: yellow
+    - duration: 250ms
+      lights:
+        l_star: off
+
+  final_showdown_upper_targets_lit_show:
+    - duration: 120ms
+      lights:
+        l_upper_left: yellow
+        l_upper_middle: yellow
+        l_upper_right: yellow
+    - duration: 120ms
+      lights:
+        l_upper_left: blue
+        l_upper_middle: blue
+        l_upper_right: blue
+
+  final_showdown_drops_lit_show:
+    - duration: 250ms
+      lights:
+        l_3bankbonus: yellow
+        l_5bank_1: yellow
+        l_5bank_2: yellow
+        l_5bank_3: yellow
+        l_5bank_4: yellow
+        l_5bank_5: yellow
+    - duration: 120ms
+      lights:
+        l_3bankbonus: blue
+        l_5bank_1: blue
+        l_5bank_2: blue
+        l_5bank_3: blue
+        l_5bank_4: blue
+        l_5bank_5: blue
+
+  final_showdown_daily_bugle_jackpot_show:
+    - duration: 150ms
+      lights:
+        l_gi_top_1: white
+    - duration: 150ms
+      lights:
+        l_gi_top_1: off
+
+  final_showdown_ab_ready_show:
+    - duration: 200ms
+      lights:
+        l_a_rollover: purple
+        l_b_rollover: purple
+        l_right_a: purple
+        l_left_b: purple
+    - duration: 200ms
+      lights:
+        l_a_rollover: off
+        l_b_rollover: off
+        l_right_a: off
+        l_left_b: off
+
+  final_showdown_victory_laps_show:
+    - duration: 150ms
+      lights:
+        gi: white
+    - duration: 150ms
+      lights:
+        gi: off
+
+  final_showdown_super_jackpot_show:
+    - duration: 100ms
+      lights:
+        l_gi_top_1: red
+        gi: red
+    - duration: 100ms
+      lights:
+        l_gi_top_1: white
+        gi: white      

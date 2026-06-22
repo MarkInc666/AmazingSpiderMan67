@@ -1,0 +1,28 @@
+#config_version=6
+
+mode:
+  start_events: start_mode_micro_men
+  stop_events:
+    - micro_men_mode_complete
+    - ball_ended
+  code: micro_men.MicroMen
+  priority: 300
+
+event_player:
+  s_pop_left_active: micro_men_shot_hit
+  s_pop_right_active: micro_men_shot_hit
+  s_left_drops_1_active: micro_men_shot_hit
+  s_left_drops_2_active: micro_men_shot_hit
+  s_left_drops_3_active: micro_men_shot_hit
+  s_right_drops_1_active: micro_men_shot_hit
+  s_right_drops_2_active: micro_men_shot_hit
+  s_right_drops_3_active: micro_men_shot_hit
+  s_right_drops_4_active: micro_men_shot_hit
+  s_right_drops_5_active: micro_men_shot_hit
+  s_web_target_left_active: micro_men_major_hit
+  s_web_target_mid_active: micro_men_major_hit
+  s_star_rollover_active: micro_men_major_hit
+  s_saucer_1_active: clear_saucers
+  s_saucer_2_active: clear_saucers
+  s_saucer_3_active: clear_saucers
+  mode_micro_men_stopping: clear_saucers

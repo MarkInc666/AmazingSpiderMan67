@@ -1,0 +1,128 @@
+#config_version=6
+
+mode:
+  start_events: start_mode_master_technician
+  stop_events:
+    - master_technician_mode_complete
+    - ball_ended
+  code: master_technician.MasterTechnician
+  priority: 300
+
+
+variable_player:
+
+  mode_master_technician_started:
+    master_technician_running:
+      action: set
+      int: 1
+
+  mode_master_technician_stopped:
+    master_technician_running:
+      action: set
+      int: 0
+      
+      
+event_player:
+  mode_master_technician_started:
+    - reset_drops 
+    - enable_up_post_event
+    - master_technician_start
+
+  s_web_spinner_active:
+    - master_technician_spinner_hit
+
+  s_left_drops_1_active:
+    - master_technician_left_drop_1_hit
+  s_left_drops_2_active:
+    - master_technician_left_drop_2_hit
+  s_left_drops_3_active:
+    - master_technician_left_drop_3_hit
+
+  s_right_drops_1_active:
+    - master_technician_right_drop_1_hit
+  s_right_drops_2_active:
+    - master_technician_right_drop_2_hit
+  s_right_drops_3_active:
+    - master_technician_right_drop_3_hit
+  s_right_drops_4_active:
+    - master_technician_right_drop_4_hit
+  s_right_drops_5_active:
+    - master_technician_right_drop_5_hit
+
+show_player:
+  master_technician_start:
+    master_technician_base_show:
+      loops: -1
+
+  master_technician_spinner_scored:
+    master_technician_spinner_show:
+      loops: 1
+
+  master_technician_drop_scored:
+    master_technician_drop_show:
+      loops: 1
+
+  master_technician_danger_warning:
+    master_technician_danger_show:
+      loops: 1
+
+  master_technician_mode_complete:
+    master_technician_base_show:
+      action: stop
+    master_technician_complete_show:
+      loops: 1
+
+shows:
+  master_technician_base_show:
+    - duration: 300ms
+      lights:
+        l_spinner: white
+    - duration: 300ms
+      lights:
+        l_spinner: blue
+
+  master_technician_spinner_show:
+    - duration: 100ms
+      lights:
+        l_spinner: yellow
+        gi: yellow
+    - duration: 100ms
+      lights:
+        l_spinner: white
+        gi: white
+
+  master_technician_drop_show:
+    - duration: 100ms
+      lights:
+        gi: white
+    - duration: 100ms
+      lights:
+        gi: blue
+
+  master_technician_danger_show:
+    - duration: 100ms
+      lights:
+        l_3bankbonus: cyan
+        l_left_multibonus: cyan
+        l_5bank_1: cyan
+        l_5bank_2: cyan
+        l_5bank_3: cyan
+        l_5bank_4: cyan
+        l_5bank_5: cyan
+    - duration: 100ms
+      lights:
+        l_3bankbonus: off
+        l_left_multibonus: off
+        l_5bank_1: off
+        l_5bank_2: off
+        l_5bank_3: off
+        l_5bank_4: off
+        l_5bank_5: off
+
+  master_technician_complete_show:
+    - duration: 150ms
+      lights:
+        gi: red
+    - duration: 150ms
+      lights:
+        gi: off

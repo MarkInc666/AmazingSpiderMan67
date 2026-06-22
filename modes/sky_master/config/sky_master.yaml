@@ -1,0 +1,70 @@
+#config_version=6
+
+# Blackbeard Robot placeholder villain mode.
+# Mode idea: Robot pirate steals jackpot value; hit lit plunder shots to take it back.
+
+mode:
+  start_events: start_mode_sky_master
+  stop_events:
+    - sky_master_mode_complete
+    - sky_master_mode_completed_summary
+    - ball_ended
+  code: sky_master.SkyMaster
+  priority: 300
+
+widget_player:
+  mode_sky_master_started:
+    sky_master:
+      action: play
+
+  sky_master_mode_complete:
+    sky_master:
+      action: remove
+
+  mode_sky_master_stopping:
+    sky_master:
+      action: remove
+
+event_player:
+  # Common playfield hits. Refine these later when the mode design is built out.
+  s_pop_left_active: sky_master_shot_hit
+  s_pop_right_active: sky_master_shot_hit
+  s_trispinner_opto_active: sky_master_shot_hit
+  s_web_spinner_active: sky_master_shot_hit
+  s_star_rollover_active: sky_master_shot_hit
+  s_upper_target_left_active: sky_master_shot_hit
+  s_upper_target_center_active: sky_master_shot_hit
+  s_upper_target_right_active: sky_master_shot_hit
+
+  s_left_drops_1_active: sky_master_shot_hit
+  s_left_drops_2_active: sky_master_shot_hit
+  s_left_drops_3_active: sky_master_shot_hit
+  s_right_drops_1_active: sky_master_shot_hit
+  s_right_drops_2_active: sky_master_shot_hit
+  s_right_drops_3_active: sky_master_shot_hit
+  s_right_drops_4_active: sky_master_shot_hit
+  s_right_drops_5_active: sky_master_shot_hit
+
+  s_saucer_1_active:
+    - sky_master_major_hit
+    - clear_saucers
+  s_saucer_2_active:
+    - sky_master_major_hit
+    - clear_saucers
+  s_saucer_3_active:
+    - sky_master_major_hit
+    - clear_saucers
+  s_vuk_switch_active: sky_master_major_hit
+
+  drop_target_bank_dt_bank_left_down:
+    - drop_target_bank_dt_bank_left_reset
+  drop_target_bank_dt_bank_right_down:
+    - drop_target_bank_dt_bank_right_reset
+
+  mode_sky_master_started:
+    - clear_saucers
+    - drop_target_bank_dt_bank_left_reset
+    - drop_target_bank_dt_bank_right_reset
+
+  mode_sky_master_stopping:
+    - clear_saucers

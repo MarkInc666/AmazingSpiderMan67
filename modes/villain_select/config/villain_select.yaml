@@ -15,55 +15,55 @@ mode_settings:
   # when start_mode_villain_select includes villain_keys/max_choices.
   selectable_items:
     - rhino
+    - sandman
     - vulture
     - lizard
-    - sandman
     - electro
+    - goblin
     - doc_ock
     - mysterio
-    - goblin
     - scorpion
     - parafino
-    - centaur
     - cerberus
-    - cyclops
-    - reptilla
-    - mole_man
-    - enforcers
-    - miss_trubble
-    - fifth_avenue_phantom
-    - frederick_foswell
-    - blackwell
-    - matto_magneto
-    - doctor_manta
-    - doctor_dumpty
-    - doctor_cool
-    - doctor_zapp
-    - fantastic_fakir
-    - kotep
-    - infinata
-    - pardo
     - vulcan
-    - spider_slayer
-    - henry_smythe
-    - blackbeard_robot
-    - executioner_of_paris_robot
-    - jesse_james_robot
-    - snowman_the_snowmen
-    - metal_eating_monster
-    - master_vine
-    - blotto
-    - pod
+    - diana
+    - cyclops
+    - centaur
+    - kingpin
+    - human_flies
+    - fifth_avenue_phantom
+    - enforcers
+    - diamond_smugglers
+    - pardo
+    - fakir
+    - scarlet_sorcerer
+    - super_swami
+    - frog_ghosts
     - noah_boddy
-    - fiddler
-    - fly_twins
+    - dr_magneto
+    - professor_pretoris
+    - doctor_dumpty
+    - dr_von_schlick
+    - radiation_specialist
+    - dr_zap
+    - doctor_cool
+    - snowman
+    - ice_monster
+    - dr_manta
+    - doctor_atlantean
+    - sky_master
+    - plutonians
+    - antarcticans
     - charles_cameo
-    - plotter
-    - juan_ponce_de_leon
-    - devargas
-    - koga
-    - cowboy
-    - desperado
+    - brutus
+    - eigor
+    - the_fly
+    - swamp_reptiles
+    - phantom_from_depths_of_time
+    - master_vine
+    - master_technician
+    - micro_men
+    - grand_emperor
 
   next_item_events: villain_carousel_next
   previous_item_events: villain_carousel_previous
@@ -223,13 +223,13 @@ show_player:
       action: play
       loops: -1
 
-  villain_select_highlighted_reptilla:
-    villain_select_reptilla_show:
+  villain_select_highlighted_swamp_reptiles:
+    villain_select_swamp_reptiles_show:
       action: play
       loops: -1
 
-  villain_select_highlighted_mole_man:
-    villain_select_mole_man_show:
+  villain_select_highlighted_noah_boddy:
+    villain_select_noah_boddy_show:
       action: play
       loops: -1
 
@@ -238,8 +238,8 @@ show_player:
       action: play
       loops: -1
 
-  villain_select_highlighted_miss_trubble:
-    villain_select_miss_trubble_show:
+  villain_select_highlighted_trubble_unleashed:
+    villain_select_trubble_unleashed_show:
       action: play
       loops: -1
 
@@ -248,23 +248,8 @@ show_player:
       action: play
       loops: -1
 
-  villain_select_highlighted_frederick_foswell:
-    villain_select_frederick_foswell_show:
-      action: play
-      loops: -1
-
-  villain_select_highlighted_blackwell:
-    villain_select_blackwell_show:
-      action: play
-      loops: -1
-
-  villain_select_highlighted_matto_magneto:
-    villain_select_matto_magneto_show:
-      action: play
-      loops: -1
-
-  villain_select_highlighted_doctor_manta:
-    villain_select_doctor_manta_show:
+  villain_select_highlighted_master_plan:
+    villain_select_master_plan_show:
       action: play
       loops: -1
 
@@ -273,23 +258,33 @@ show_player:
       action: play
       loops: -1
 
+  villain_select_highlighted_dr_magneto:
+    villain_select_dr_magneto_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_dr_manta:
+    villain_select_dr_manta_show:
+      action: play
+      loops: -1
+
   villain_select_highlighted_doctor_cool:
     villain_select_doctor_cool_show:
       action: play
       loops: -1
 
-  villain_select_highlighted_doctor_zapp:
-    villain_select_doctor_zapp_show:
+  villain_select_highlighted_dr_zap:
+    villain_select_dr_zap_show:
       action: play
       loops: -1
 
-  villain_select_highlighted_fantastic_fakir:
-    villain_select_fantastic_fakir_show:
+  villain_select_highlighted_fakir:
+    villain_select_fakir_show:
       action: play
       loops: -1
 
-  villain_select_highlighted_kotep:
-    villain_select_kotep_show:
+  villain_select_highlighted_scarlet_sorcerer:
+    villain_select_scarlet_sorcerer_show:
       action: play
       loops: -1
 
@@ -333,8 +328,8 @@ show_player:
       action: play
       loops: -1
 
-  villain_select_highlighted_snowman_the_snowmen:
-    villain_select_snowman_the_snowmen_show:
+  villain_select_highlighted_snowman:
+    villain_select_snowman_show:
       action: play
       loops: -1
 
@@ -353,33 +348,23 @@ show_player:
       action: play
       loops: -1
 
-  villain_select_highlighted_pod:
-    villain_select_pod_show:
+  villain_select_highlighted_frog_ghosts:
+    villain_select_frog_ghosts_show:
       action: play
       loops: -1
 
-  villain_select_highlighted_noah_boddy:
-    villain_select_noah_boddy_show:
+  villain_select_highlighted_diamond_smugglers:
+    villain_select_diamond_smugglers_show:
       action: play
       loops: -1
 
-  villain_select_highlighted_fiddler:
-    villain_select_fiddler_show:
-      action: play
-      loops: -1
-
-  villain_select_highlighted_fly_twins:
-    villain_select_fly_twins_show:
+  villain_select_highlighted_human_flies:
+    villain_select_human_flies_show:
       action: play
       loops: -1
 
   villain_select_highlighted_charles_cameo:
     villain_select_charles_cameo_show:
-      action: play
-      loops: -1
-
-  villain_select_highlighted_plotter:
-    villain_select_plotter_show:
       action: play
       loops: -1
 
@@ -522,7 +507,7 @@ shows:
       lights:
         gi: off
 
-  villain_select_reptilla_show:
+  villain_select_swamp_reptiles_show:
     - duration: 300ms
       lights:
         gi: blue
@@ -530,7 +515,7 @@ shows:
       lights:
         gi: white
 
-  villain_select_mole_man_show:
+  villain_select_noah_boddy_show:
     - duration: 300ms
       lights:
         gi: green
@@ -546,7 +531,7 @@ shows:
       lights:
         gi: blue
 
-  villain_select_miss_trubble_show:
+  villain_select_trubble_unleashed_show:
     - duration: 300ms
       lights:
         gi: green
@@ -562,42 +547,34 @@ shows:
       lights:
         gi: off
 
-  villain_select_frederick_foswell_show:
+  villain_select_master_plan_show:
     - duration: 300ms
       lights:
         gi: blue
     - duration: 300ms
       lights:
         gi: white
-
-  villain_select_blackwell_show:
-    - duration: 300ms
-      lights:
-        gi: green
-    - duration: 300ms
-      lights:
-        gi: yellow
-
-  villain_select_matto_magneto_show:
-    - duration: 300ms
-      lights:
-        gi: white
-    - duration: 300ms
-      lights:
-        gi: blue
-
-  villain_select_doctor_manta_show:
-    - duration: 300ms
-      lights:
-        gi: green
-    - duration: 300ms
-      lights:
-        gi: off
 
   villain_select_doctor_dumpty_show:
     - duration: 300ms
       lights:
+        gi: green
+    - duration: 300ms
+      lights:
         gi: yellow
+
+  villain_select_dr_magneto_show:
+    - duration: 300ms
+      lights:
+        gi: white
+    - duration: 300ms
+      lights:
+        gi: blue
+
+  villain_select_dr_manta_show:
+    - duration: 300ms
+      lights:
+        gi: green
     - duration: 300ms
       lights:
         gi: off
@@ -610,7 +587,7 @@ shows:
       lights:
         gi: white
 
-  villain_select_doctor_zapp_show:
+  villain_select_dr_zap_show:
     - duration: 300ms
       lights:
         gi: green
@@ -618,7 +595,7 @@ shows:
       lights:
         gi: yellow
 
-  villain_select_fantastic_fakir_show:
+  villain_select_fakir_show:
     - duration: 300ms
       lights:
         gi: white
@@ -626,7 +603,7 @@ shows:
       lights:
         gi: blue
 
-  villain_select_kotep_show:
+  villain_select_scarlet_sorcerer_show:
     - duration: 300ms
       lights:
         gi: green
@@ -698,7 +675,7 @@ shows:
       lights:
         gi: yellow
 
-  villain_select_snowman_the_snowmen_show:
+  villain_select_snowman_show:
     - duration: 300ms
       lights:
         gi: white
@@ -730,7 +707,7 @@ shows:
       lights:
         gi: white
 
-  villain_select_pod_show:
+  villain_select_frog_ghosts_show:
     - duration: 300ms
       lights:
         gi: green
@@ -738,15 +715,7 @@ shows:
       lights:
         gi: yellow
 
-  villain_select_noah_boddy_show:
-    - duration: 300ms
-      lights:
-        gi: white
-    - duration: 300ms
-      lights:
-        gi: blue
-
-  villain_select_fiddler_show:
+  villain_select_diamond_smugglers_show:
     - duration: 300ms
       lights:
         gi: green
@@ -754,7 +723,7 @@ shows:
       lights:
         gi: off
 
-  villain_select_fly_twins_show:
+  villain_select_human_flies_show:
     - duration: 300ms
       lights:
         gi: yellow
@@ -769,14 +738,6 @@ shows:
     - duration: 300ms
       lights:
         gi: white
-
-  villain_select_plotter_show:
-    - duration: 300ms
-      lights:
-        gi: green
-    - duration: 300ms
-      lights:
-        gi: yellow
 
   villain_select_juan_ponce_de_leon_show:
     - duration: 300ms

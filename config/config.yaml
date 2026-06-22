@@ -76,90 +76,84 @@ modes:
   - music_control
   - service
   - high_score
-  - tilt  
+  - tilt
   - bonus
   - bonus_lanes
   - daily_bugle_mystery
   - extra_ball
   - skillshot
-  - meteor
   - custom_bonus
   - super_spinner
   - super_pops
   - chaos_pops
   - villain_bookends
-  - doc_ock
-  - electro
-  - goblin 
-  - lizard
-  - mysterio
-  - parafino
   - rhino
   - sandman
-  - scorpion
   - vulture
-  - centaur
+  - lizard
+  - electro
+  - goblin
+  - doc_ock
+  - mysterio
+  - scorpion
+  - parafino
   - cerberus
-  - cyclops
   - vulcan
-  - miss_trubble
-  - enforcers
-  - mole_man
-  - fifth_avenue_phantom
-  - frederick_foswell
-  - blackwell
-  - sinister_surge
-  - master_plan
-  - monster_island
-  - crime_wave_mini
+  - diana
+  - cyclops
+  - centaur
   - kingpin
-  - matto_magneto
-  - doctor_manta
-  - doctor_dumpty
-  - doctor_cool
-  - doctor_zapp
-  - fantastic_fakir
-  - kotep
-  - infinata
+  - human_flies
+  - fifth_avenue_phantom
+  - enforcers
+  - diamond_smugglers
   - pardo
-  - reptilla
-  - spider_slayer
-  - henry_smythe
-  - blackbeard_robot
-  - executioner_of_paris_robot
-  - jesse_james_robot
-  - snowman_the_snowmen
-  - metal_eating_monster
-  - master_vine
-  - blotto
-  - pod
+  - fakir
+  - scarlet_sorcerer
+  - super_swami
+  - frog_ghosts
   - noah_boddy
-  - fiddler
-  - fly_twins
+  - dr_magneto
+  - professor_pretoris
+  - doctor_dumpty
+  - dr_von_schlick
+  - radiation_specialist
+  - dr_zap
+  - doctor_cool
+  - snowman
+  - ice_monster
+  - dr_manta
+  - doctor_atlantean
+  - sky_master
+  - plutonians
+  - antarcticans
   - charles_cameo
-  - plotter
-  - juan_ponce_de_leon
-  - devargas
-  - koga
-  - cowboy
-  - desperado
-  - daily_bugle_rooftop_riot
+  - brutus
+  - eigor
+  - the_fly
+  - swamp_reptiles
+  - phantom_from_depths_of_time
+  - master_vine
+  - master_technician
+  - micro_men
+  - grand_emperor
+  - sinister_surge
   - mastermind_trap
-  - monster_island_breakout
-  - crime_wave_crackdown
-  - mad_science_meltdown
+  - trubble_unleashed
+  - master_plan
   - fifth_dimension_curse
-  - night_of_the_robots
+  - mad_science_meltdown
   - nature_strikes_back
+  - invasion_from_everywhere
   - who_is_the_real_villain
   - time_tossed_showdown
+  - final_showdown
+  - daily_bugle_rooftop_riot
   - qualify_system
   - villain_select
   - villain_start
   - case_files
   - villain_progression
-
-
 
 event_player:
   ball_starting:

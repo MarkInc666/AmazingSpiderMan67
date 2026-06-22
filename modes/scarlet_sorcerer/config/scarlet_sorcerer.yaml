@@ -1,0 +1,28 @@
+#config_version=6
+
+mode:
+  start_events: start_mode_scarlet_sorcerer
+  stop_events:
+    - scarlet_sorcerer_mode_complete
+    - ball_ended
+  code: scarlet_sorcerer.ScarletSorcerer
+  priority: 300
+
+event_player:
+  s_pop_left_active: scarlet_sorcerer_shot_hit
+  s_pop_right_active: scarlet_sorcerer_shot_hit
+  s_left_drops_1_active: scarlet_sorcerer_shot_hit
+  s_left_drops_2_active: scarlet_sorcerer_shot_hit
+  s_left_drops_3_active: scarlet_sorcerer_shot_hit
+  s_right_drops_1_active: scarlet_sorcerer_shot_hit
+  s_right_drops_2_active: scarlet_sorcerer_shot_hit
+  s_right_drops_3_active: scarlet_sorcerer_shot_hit
+  s_right_drops_4_active: scarlet_sorcerer_shot_hit
+  s_right_drops_5_active: scarlet_sorcerer_shot_hit
+  s_web_target_left_active: scarlet_sorcerer_major_hit
+  s_web_target_mid_active: scarlet_sorcerer_major_hit
+  s_star_rollover_active: scarlet_sorcerer_major_hit
+  s_saucer_1_active: clear_saucers
+  s_saucer_2_active: clear_saucers
+  s_saucer_3_active: clear_saucers
+  mode_scarlet_sorcerer_stopping: clear_saucers

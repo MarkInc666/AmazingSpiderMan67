@@ -1,9 +1,4 @@
 #config_version=6
-#
-# Player vars removed from config/player_vars.yaml.
-# This file is intentionally NOT included from config/config.yaml.
-# Restoring variables from here will increase BCP player update size.
-
 player_vars:
   villain_chapter_name:
     initial_value: ''
@@ -242,28 +237,28 @@ player_vars:
   enforcers_right_award:
     initial_value: 0
     value_type: int
-  frederick_foswell_rumours:
+  master_plan_rumours:
     initial_value: 0
     value_type: int
-  frederick_foswell_total_rumours:
+  master_plan_total_rumours:
     initial_value: 0
     value_type: int
-  frederick_foswell_conversions:
+  master_plan_conversions:
     initial_value: 0
     value_type: int
-  frederick_foswell_headlines_lit:
+  master_plan_headlines_lit:
     initial_value: 0
     value_type: int
-  frederick_foswell_cycle_headlines:
+  master_plan_cycle_headlines:
     initial_value: 0
     value_type: int
-  frederick_foswell_super_value:
+  master_plan_super_value:
     initial_value: 0
     value_type: int
-  frederick_foswell_back_page_value:
+  master_plan_back_page_value:
     initial_value: 0
     value_type: int
-  frederick_foswell_drain_active:
+  master_plan_drain_active:
     initial_value: 0
     value_type: int
   rhino_jackpots:
@@ -452,61 +447,61 @@ player_vars:
   cyclops_safety_net_used:
     initial_value: 0
     value_type: int
-  reptilla_pop_hits:
+  swamp_reptiles_pop_hits:
     initial_value: 0
     value_type: int
-  reptilla_rampage_level:
+  swamp_reptiles_rampage_level:
     initial_value: 0
     value_type: int
-  reptilla_current_jackpot:
+  swamp_reptiles_current_jackpot:
     initial_value: 0
     value_type: int
-  reptilla_super_jackpot:
+  swamp_reptiles_super_jackpot:
     initial_value: 0
     value_type: int
-  reptilla_jackpots_collected:
+  swamp_reptiles_jackpots_collected:
     initial_value: 0
     value_type: int
-  reptilla_jackpots_required:
+  swamp_reptiles_jackpots_required:
     initial_value: 3
     value_type: int
-  reptilla_pop_score_value:
+  swamp_reptiles_pop_score_value:
     initial_value: 20000
     value_type: int
-  reptilla_super_lit:
+  swamp_reptiles_super_lit:
     initial_value: 0
     value_type: int
-  reptilla_super_timer_seconds:
+  swamp_reptiles_super_timer_seconds:
     initial_value: 10
     value_type: int
-  mole_man_upper_target_hits:
+  noah_boddy_upper_target_hits:
     initial_value: 0
     value_type: int
-  mole_man_spinner_hits:
+  noah_boddy_spinner_hits:
     initial_value: 0
     value_type: int
-  mole_man_jackpots:
+  noah_boddy_jackpots:
     initial_value: 0
     value_type: int
-  mole_man_best_jackpot:
+  noah_boddy_best_jackpot:
     initial_value: 0
     value_type: int
-  mole_man_jackpot_value:
+  noah_boddy_jackpot_value:
     initial_value: 0
     value_type: int
-  mole_man_hurryup_seconds:
+  noah_boddy_hurryup_seconds:
     initial_value: 0
     value_type: int
-  mole_man_secret_target:
+  noah_boddy_secret_target:
     initial_value: ''
     value_type: str
-  mole_man_phase:
+  noah_boddy_phase:
     initial_value: get_to_upper
     value_type: str
-  mole_man_remaining_targets:
+  noah_boddy_remaining_targets:
     initial_value: 0
     value_type: int
-  mole_man_secret_revealed:
+  noah_boddy_secret_revealed:
     initial_value: 0
     value_type: int
   enforcers_base_jackpot:
@@ -539,19 +534,19 @@ player_vars:
   enforcers_right_saucer_lit:
     initial_value: 0
     value_type: int
-  miss_trubble_round:
+  trubble_unleashed_round:
     initial_value: 0
     value_type: int
-  miss_trubble_total_rounds:
+  trubble_unleashed_total_rounds:
     initial_value: 0
     value_type: int
-  miss_trubble_correct_shots:
+  trubble_unleashed_correct_shots:
     initial_value: 0
     value_type: int
-  miss_trubble_incorrect_shots:
+  trubble_unleashed_incorrect_shots:
     initial_value: 0
     value_type: int
-  miss_trubble_next_jackpot:
+  trubble_unleashed_next_jackpot:
     initial_value: 0
     value_type: int
   fifth_avenue_phantom_jackpots:
@@ -584,25 +579,25 @@ player_vars:
   fifth_avenue_phantom_shot_assist_used:
     initial_value: 0
     value_type: int
-  frederick_foswell_headlines_collected:
+  master_plan_headlines_collected:
     initial_value: 0
     value_type: int
-  frederick_foswell_super_collected:
+  master_plan_super_collected:
     initial_value: 0
     value_type: int
-  frederick_foswell_back_page_collected:
+  master_plan_back_page_collected:
     initial_value: 0
     value_type: int
-  matto_magneto_hits:
+  dr_magneto_hits:
     initial_value: 0
     value_type: int
-  matto_magneto_major_hits:
+  dr_magneto_major_hits:
     initial_value: 0
     value_type: int
-  doctor_manta_hits:
+  dr_manta_hits:
     initial_value: 0
     value_type: int
-  doctor_manta_major_hits:
+  dr_manta_major_hits:
     initial_value: 0
     value_type: int
   doctor_dumpty_hits:
@@ -617,22 +612,22 @@ player_vars:
   doctor_cool_major_hits:
     initial_value: 0
     value_type: int
-  doctor_zapp_hits:
+  dr_zap_hits:
     initial_value: 0
     value_type: int
-  doctor_zapp_major_hits:
+  dr_zap_major_hits:
     initial_value: 0
     value_type: int
-  fantastic_fakir_hits:
+  fakir_hits:
     initial_value: 0
     value_type: int
-  fantastic_fakir_major_hits:
+  fakir_major_hits:
     initial_value: 0
     value_type: int
-  kotep_hits:
+  scarlet_sorcerer_hits:
     initial_value: 0
     value_type: int
-  kotep_major_hits:
+  scarlet_sorcerer_major_hits:
     initial_value: 0
     value_type: int
   infinata_hits:
@@ -728,10 +723,10 @@ player_vars:
   jesse_james_robot_major_hits:
     initial_value: 0
     value_type: int
-  snowman_the_snowmen_hits:
+  snowman_hits:
     initial_value: 0
     value_type: int
-  snowman_the_snowmen_major_hits:
+  snowman_major_hits:
     initial_value: 0
     value_type: int
   metal_eating_monster_hits:
@@ -752,10 +747,10 @@ player_vars:
   blotto_major_hits:
     initial_value: 0
     value_type: int
-  pod_hits:
+  frog_ghosts_hits:
     initial_value: 0
     value_type: int
-  pod_major_hits:
+  frog_ghosts_major_hits:
     initial_value: 0
     value_type: int
   noah_boddy_hits:
@@ -764,16 +759,16 @@ player_vars:
   noah_boddy_major_hits:
     initial_value: 0
     value_type: int
-  fiddler_hits:
+  diamond_smugglers_hits:
     initial_value: 0
     value_type: int
-  fiddler_major_hits:
+  diamond_smugglers_major_hits:
     initial_value: 0
     value_type: int
-  fly_twins_hits:
+  human_flies_hits:
     initial_value: 0
     value_type: int
-  fly_twins_major_hits:
+  human_flies_major_hits:
     initial_value: 0
     value_type: int
   charles_cameo_hits:
@@ -782,10 +777,10 @@ player_vars:
   charles_cameo_major_hits:
     initial_value: 0
     value_type: int
-  plotter_hits:
+  master_plan_hits:
     initial_value: 0
     value_type: int
-  plotter_major_hits:
+  master_plan_major_hits:
     initial_value: 0
     value_type: int
   juan_ponce_de_leon_hits:
@@ -821,7 +816,7 @@ player_vars:
   mastermind_trap_hits:
     initial_value: 0
     value_type: int
-  monster_island_breakout_hits:
+  trubble_unleashed_hits:
     initial_value: 0
     value_type: int
   crime_wave_crackdown_hits:

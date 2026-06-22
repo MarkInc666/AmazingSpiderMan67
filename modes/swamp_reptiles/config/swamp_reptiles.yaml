@@ -1,0 +1,103 @@
+#config_version=6
+
+mode:
+  start_events: start_mode_swamp_reptiles
+  stop_events:
+    - swamp_reptiles_mode_complete
+    - swamp_reptiles_mode_completed_summary
+    - ball_ended
+  code: swamp_reptiles.SwampReptiles
+  priority: 300
+
+widget_player:
+  mode_swamp_reptiles_started:
+    swamp_reptiles:
+      action: play
+
+  swamp_reptiles_mode_complete:
+    swamp_reptiles:
+      action: remove
+
+  mode_swamp_reptiles_stopping:
+    swamp_reptiles:
+      action: remove
+
+event_player:
+  s_pop_left_active:
+    - swamp_reptiles_pop_hit
+  s_pop_right_active:
+    - swamp_reptiles_pop_hit
+
+  s_left_drops_1_active:
+    - swamp_reptiles_left_drop_1_hit
+  s_left_drops_2_active:
+    - swamp_reptiles_left_drop_2_hit
+  s_left_drops_3_active:
+    - swamp_reptiles_left_drop_3_hit
+
+  s_right_drops_1_active:
+    - swamp_reptiles_right_drop_1_hit
+  s_right_drops_2_active:
+    - swamp_reptiles_right_drop_2_hit
+  s_right_drops_3_active:
+    - swamp_reptiles_right_drop_3_hit
+  s_right_drops_4_active:
+    - swamp_reptiles_right_drop_4_hit
+  s_right_drops_5_active:
+    - swamp_reptiles_right_drop_5_hit
+
+  s_upper_target_center_active:
+    - swamp_reptiles_upper_middle_hit
+
+  s_web_target_mid_active:
+    - swamp_reptiles_center_web_hit
+
+  s_saucer_1_active:
+    - clear_saucers
+  s_saucer_2_active:
+    - swamp_reptiles_saucer_2_hit
+    - clear_saucers
+  s_saucer_3_active:
+    - clear_saucers
+
+  mode_swamp_reptiles_started:
+    - clear_saucers
+    - reset_drops
+    - swamp_reptiles_clear_all_lights
+
+  mode_swamp_reptiles_stopping:
+    - clear_saucers
+    - swamp_reptiles_clear_all_lights
+
+light_player:
+  swamp_reptiles_left_bank_lit:
+    l_3bankbonus: orange
+
+  swamp_reptiles_upper_middle_lit:
+    l_upper_middle: orange
+
+  swamp_reptiles_right_bank_lit:
+    l_5bank_3: orange
+
+  swamp_reptiles_center_web_lit:
+    l_mid_web_target: orange
+
+  swamp_reptiles_super_jackpot_lit:
+    l_2: red
+    l_2_hole_l: red
+    l_2_hole_r: red
+
+  swamp_reptiles_clear_rampage_lights:
+    l_3bankbonus: off
+    l_upper_middle: off
+    l_5bank_3: off
+    l_mid_web_target: off
+
+  swamp_reptiles_clear_all_lights:
+    l_3bankbonus: off
+    l_upper_middle: off
+    l_5bank_3: off
+    l_mid_web_target: off
+    l_2: off
+    l_2_hole_l: off
+    l_2_hole_r: off
