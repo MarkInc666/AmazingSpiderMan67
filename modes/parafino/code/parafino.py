@@ -188,7 +188,7 @@ class Parafino(CaseFileMixin, Mode):
         player = self.machine.game.player
 
         player["parafino_mode_points"] = 0
-        player["parafino_completed"] = 0
+        player["parafino_state"] = 1
         player["parafino_zone_hits"] = 0
         player["parafino_jackpots"] = 0
         player["parafino_total_jackpots"] = 0
@@ -412,11 +412,11 @@ class Parafino(CaseFileMixin, Mode):
             self._eject_saucer(saucer)
 
         if self.machine.game.player["parafino_total_jackpots"] >= 3:
-            self.machine.game.player["parafino_completed"] = 1
+            self.machine.game.player["parafino_state"] = 2
             self.machine.events.post("parafino_mode_complete")
         else:
-            self.machine.game.player["parafino_completed"] = 0
-            self.machine.events.post("parafino_mode_failed")
+            self.machine.game.player["parafino_state"] = 2
+            self.machine.events.post("parafino_mode_complete")
 
     def _score(self, points):
         if points <= 0:

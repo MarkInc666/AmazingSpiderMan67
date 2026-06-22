@@ -13,7 +13,7 @@ from modes.common.case_file_mixin import CaseFileMixin
     "stat_2_label": "BEST VALUE",
     "stat_2_var": "lizard_best_delivery_value",
     "points_var": "lizard_mode_points",
-    "completed_var": "lizard_completed",
+    "state_var": "lizard_state",
 """
 class Lizard(CaseFileMixin, Mode):
 
@@ -146,7 +146,7 @@ class Lizard(CaseFileMixin, Mode):
         self._set_player_var("lizard_mode_points", 0)
         self._set_player_var("lizard_best_delivery_value", 0)
         self._set_player_var("lizard_deliveries_made", 0)
-        self._set_player_var("lizard_completed", 0)
+        self._set_player_var("lizard_state", 1)
 
     def current_target(self):
         deliveries = self._get_player_var("lizard_deliveries", 0)
@@ -244,7 +244,7 @@ class Lizard(CaseFileMixin, Mode):
 
         # If all attempts are used, end the mode.
         if self._get_player_var("lizard_deliveries", 0) >= len(self.DELIVERY_SEQUENCE):
-            self.machine.events.post("lizard_mode_failed")
+            self.machine.events.post("lizard_mode_complete")
             return
 
         # Otherwise light the star again for the next serum collect.
@@ -270,7 +270,7 @@ class Lizard(CaseFileMixin, Mode):
         self._add_player_var("lizard_deliveries", 1)
         self._add_player_var("lizard_deliveries_made", 1)
         #successful if just one delivery made
-        self._set_player_var("lizard_completed", 1) 
+        self._set_player_var("lizard_state", 2) 
         self._set_player_var("lizard_serum_ready", 0)
         self._set_player_var("lizard_delivery_value", self.START_DELIVERY_VALUE)
 

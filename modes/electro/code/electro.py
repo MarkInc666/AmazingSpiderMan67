@@ -17,7 +17,7 @@ import random
     "stat_2_label": "SUPER JACKPOT",
     "stat_2_var": "electro_super_jackpot",
     "points_var": "electro_mode_points",
-    "completed_var": "electro_completed",
+    "state_var": "electro_state",
 """
 
 class Electro(CaseFileMixin, Mode):
@@ -152,7 +152,7 @@ class Electro(CaseFileMixin, Mode):
         active = self.active_shots()
 
         if len(active) <= 0:
-            self.machine.events.post("electro_mode_failed")
+            self.machine.events.post("electro_mode_complete")
             return
 
         if len(active) == 1:

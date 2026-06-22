@@ -171,7 +171,7 @@ class FinalShowdown(Mode):
         self._set("final_showdown_areas_cleared", 0)
         self._set("final_showdown_jackpots", 0)
         self._set("final_showdown_super_jackpots", 0)
-        self._set("final_showdown_completed", 0)
+        self._set("final_showdown_state", 1)
 
         self._set("final_showdown_current_area", "")
         self._set("final_showdown_current_area_display", "")
@@ -342,7 +342,7 @@ class FinalShowdown(Mode):
         self.jackpot_ready = False
         self.super_jackpot_ready = False
 
-        self._set("final_showdown_completed", 1)
+        self._set("final_showdown_state", 2)
         self._set("final_showdown_current_area", "victory_laps")
         self._set("final_showdown_current_area_display", "VICTORY LAPS")
         self._set("final_showdown_jackpot_ready", 0)
@@ -529,7 +529,7 @@ class FinalShowdown(Mode):
         if self.victory_laps:
             self.machine.events.post("final_showdown_mode_complete")
         else:
-            self._set("final_showdown_completed", 1)
+            self._set("final_showdown_state", 2)
             self.machine.events.post("final_showdown_mode_complete")
 
         self.machine.events.post(

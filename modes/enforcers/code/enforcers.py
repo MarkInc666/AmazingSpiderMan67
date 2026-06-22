@@ -282,7 +282,7 @@ class Enforcers(Mode, CaseFileMixin):
             return
         self.mode_done = True
         player = self.machine.game.player
-        player["enforcers_completed"] = 1
+        player["enforcers_state"] = 2
         self._sync_vars()
         self.machine.events.post("enforcers_mode_complete")
 
@@ -291,9 +291,9 @@ class Enforcers(Mode, CaseFileMixin):
             return
         self.mode_done = True
         player = self.machine.game.player
-        player["enforcers_completed"] = 0
+        player["enforcers_state"] = 1
         self._sync_vars()
-        self.machine.events.post("enforcers_mode_failed")
+        self.machine.events.post("enforcers_mode_complete")
 
     def _score(self, points):
         player = self.machine.game.player

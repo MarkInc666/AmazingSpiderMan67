@@ -391,7 +391,7 @@ class Centaur(CaseFileMixin, Mode):
         self.final_active = False
         self.delay.remove("centaur_final_timer_tick")
         player = self.machine.game.player
-        player["centaur_completed"] = 1
+        player["centaur_state"] = 2
         self._sync_vars()
         self.machine.events.post("centaur_mode_complete")
 
@@ -403,9 +403,9 @@ class Centaur(CaseFileMixin, Mode):
         self.final_active = False
         self.delay.remove("centaur_final_timer_tick")
         player = self.machine.game.player
-        player["centaur_completed"] = 0
+        player["centaur_state"] = 1
         self._sync_vars()
-        self.machine.events.post("centaur_mode_failed")
+        self.machine.events.post("centaur_mode_complete")
 
     def _current_jackpot_value(self):
         jackpot = self.jackpot_base_value

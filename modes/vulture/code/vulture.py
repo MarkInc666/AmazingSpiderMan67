@@ -13,7 +13,7 @@ from modes.common.case_file_mixin import CaseFileMixin
     "stat_2_label": "BONUS BANKED",
     "stat_2_var": "vulture_banked_bonus",
     "points_var": "vulture_mode_points",
-    "completed_var": "vulture_completed",
+    "state_var": "vulture_state",
 
 """
 class Vulture(CaseFileMixin, Mode):

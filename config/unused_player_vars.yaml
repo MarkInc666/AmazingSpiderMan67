@@ -96,42 +96,18 @@ player_vars:
   case_file_super_boost_collected:
     initial_value: 0
     value_type: int
-  master_plan_played:
-    initial_value: 0
-    value_type: int
-  master_plan_completed:
-    initial_value: 0
-    value_type: int
   master_plan_mode_points:
-    initial_value: 0
-    value_type: int
-  monster_island_played:
-    initial_value: 0
-    value_type: int
-  monster_island_completed:
     initial_value: 0
     value_type: int
   monster_island_mode_points:
     initial_value: 0
     value_type: int
-  crime_wave_mini_played:
-    initial_value: 0
-    value_type: int
-  crime_wave_mini_completed:
-    initial_value: 0
-    value_type: int
   crime_wave_mini_mode_points:
-    initial_value: 0
-    value_type: int
-  daily_bugle_rooftop_riot_played:
     initial_value: 0
     value_type: int
   daily_bugle_rooftop_riot_state:
     initial_value: not_played
     value_type: str
-  daily_bugle_rooftop_riot_completed:
-    initial_value: 0
-    value_type: int
   daily_bugle_rooftop_riot_mode_points:
     initial_value: 0
     value_type: int

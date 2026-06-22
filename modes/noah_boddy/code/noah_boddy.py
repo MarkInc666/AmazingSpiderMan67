@@ -14,7 +14,7 @@ Rules:
 - Upper spinner builds the Noah Boddy Jackpot.
 - When only the secret target remains standing, a hurry-up starts.
 - The player has 16s, or 24s with More Time, to return lower and hit the secret target.
-- If the hurry-up expires, the secret target drops and the mode ends.
+- If the hurry-up expires, the secret target drops and the mode fails.
 - If the player exits upper left/right before reveal, all remaining drops fall and the player must return upper.
 - If a lower drop is hit before reveal, all remaining drops fall and the player must return upper.
 
@@ -29,7 +29,7 @@ Case Files:
 
 class NoahBoddy(Mode):
     MODE_KEY = "noah_boddy"
-    DISPLAY_NAME = "Dr. Noah Boddy"
+    DISPLAY_NAME = "Noah Boddy"
 
     BASE_JACKPOT = 250_000
     SPINNER_ADD_VALUE = 25_000
@@ -195,7 +195,7 @@ class NoahBoddy(Mode):
 
     def _init_player_vars(self):
         player = self.machine.game.player
-        player["noah_boddy_completed"] = 1
+        player["noah_boddy_state"] = 2
         player["noah_boddy_mode_points"] = 0
         player["noah_boddy_upper_target_hits"] = 0
         player["noah_boddy_spinner_hits"] = 0
@@ -467,7 +467,7 @@ class NoahBoddy(Mode):
 
         self.mode_done = True
         player = self.machine.game.player
-        player["noah_boddy_completed"] = 1
+        player["noah_boddy_state"] = 2
         player["noah_boddy_phase"] = "complete"
         self.machine.events.post("noah_boddy_mode_complete")
 
@@ -477,8 +477,8 @@ class NoahBoddy(Mode):
 
         self.mode_done = True
         player = self.machine.game.player
-        player["noah_boddy_completed"] = 1
-        player["noah_boddy_phase"] = "complete"
+        player["noah_boddy_state"] = 2
+        player["noah_boddy_phase"] = "failed"
         self.machine.events.post("noah_boddy_mode_complete")
 
     def _score(self, points):

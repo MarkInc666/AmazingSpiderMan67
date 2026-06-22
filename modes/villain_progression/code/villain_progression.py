@@ -12,17 +12,17 @@ class VillainProgression(Mode):
         villain_select.py only shows/returns a selected key when choices are needed
         villain_progression.py starts the selected/default villain through bookends
 
-    State wording is also prepared for a future Godot chapter widget:
-        NOT PLAYED, PLAYING, COMPLETED
+    Durable progression states are numeric to keep the Godot BCP player-var payload small.
+    Display labels are produced only for the chapter/status widgets.
     """
 
-    # Durable progression states. These match the values initialized in
-    # config/player_vars.yaml. Do not use a FAILED state for progression;
-    # a started mode is consumed and resolved to COMPLETED, while separate
-    # goal-result flags can be added later if needed.
-    NOT_PLAYED = "not_played"
-    PLAYING = "playing"
-    COMPLETED = "completed"
+    # Durable progression states. These match config/player_vars.yaml.
+    # 0 = not played, 1 = playing, 2 = completed.
+    # Do not use a FAILED state for progression; a started mode is consumed
+    # and resolved to COMPLETED. Separate goal-result flags can be added later.
+    NOT_PLAYED = 0
+    PLAYING = 1
+    COMPLETED = 2
 
     # Display-only / compatibility labels. Wizard readiness is stored in
     # chapter_mini_wizard_ready / mini_wizard_daily_bugle_ready, not as a
@@ -293,8 +293,6 @@ class VillainProgression(Mode):
         for villain_key, info in self.VILLAINS.items():
             state = self._normalize_state(player[f"{villain_key}_state"])
             if state == self.PLAYING:
-                player[f"{villain_key}_played"] = 1
-                player[f"{villain_key}_completed"] = 1
                 player[f"{villain_key}_state"] = self.COMPLETED
                 recovered.append(villain_key)
                 self.machine.events.post(
@@ -303,8 +301,6 @@ class VillainProgression(Mode):
                     villain_name=info["name"],
                 )
             elif state == self.COMPLETED:
-                player[f"{villain_key}_played"] = 1
-                player[f"{villain_key}_completed"] = 1
                 player[f"{villain_key}_state"] = self.COMPLETED
             else:
                 player[f"{villain_key}_state"] = self.NOT_PLAYED
@@ -313,8 +309,6 @@ class VillainProgression(Mode):
             mini_key = chapter["mini_wizard_key"]
             state = self._normalize_state(player[f"{mini_key}_state"])
             if state == self.PLAYING:
-                player[f"{mini_key}_played"] = 1
-                player[f"{mini_key}_completed"] = 1
                 player[f"{mini_key}_state"] = self.COMPLETED
                 recovered.append(mini_key)
                 self.machine.events.post(
@@ -323,23 +317,17 @@ class VillainProgression(Mode):
                     chapter_number=chapter_number,
                 )
             elif state == self.COMPLETED:
-                player[f"{mini_key}_played"] = 1
-                player[f"{mini_key}_completed"] = 1
                 player[f"{mini_key}_state"] = self.COMPLETED
             else:
                 player[f"{mini_key}_state"] = self.NOT_PLAYED
 
         final_state = self._normalize_state(player[f"{self.FINAL_WIZARD_KEY}_state"])
         if final_state == self.PLAYING:
-            player[f"{self.FINAL_WIZARD_KEY}_played"] = 1
-            player[f"{self.FINAL_WIZARD_KEY}_completed"] = 1
             player[f"{self.FINAL_WIZARD_KEY}_state"] = self.COMPLETED
             player["final_wizard_ready"] = 0
             recovered.append(self.FINAL_WIZARD_KEY)
             self.machine.events.post("final_wizard_recovered_completed")
         elif final_state == self.COMPLETED:
-            player[f"{self.FINAL_WIZARD_KEY}_played"] = 1
-            player[f"{self.FINAL_WIZARD_KEY}_completed"] = 1
             player[f"{self.FINAL_WIZARD_KEY}_state"] = self.COMPLETED
         else:
             player[f"{self.FINAL_WIZARD_KEY}_state"] = self.NOT_PLAYED
@@ -417,9 +405,7 @@ class VillainProgression(Mode):
         current_chapter_number = 1
         for index, chapter in enumerate(self.CHAPTERS, start=1):
             mini_key = chapter["mini_wizard_key"]
-            if player[f"{mini_key}_completed"] == 1 or self._normalize_state(player[f"{mini_key}_state"]) == self.COMPLETED:
-                player[f"{mini_key}_completed"] = 1
-                player[f"{mini_key}_played"] = 1
+            if self._normalize_state(player[f"{mini_key}_state"]) == self.COMPLETED:
                 player[f"{mini_key}_state"] = self.COMPLETED
                 completed_minis += 1
                 current_chapter_number = index + 1
@@ -433,7 +419,7 @@ class VillainProgression(Mode):
         if chapter is None:
             player["chapter_mini_wizard_ready"] = 0
             player["mini_wizard_daily_bugle_ready"] = 0
-            final_completed = player[f"{self.FINAL_WIZARD_KEY}_completed"] == 1 or self._normalize_state(player[f"{self.FINAL_WIZARD_KEY}_state"]) == self.COMPLETED
+            final_completed = self._normalize_state(player[f"{self.FINAL_WIZARD_KEY}_state"]) == self.COMPLETED
             was_ready = self._safe_int(player["final_wizard_ready"], 0) == 1
             player["final_wizard_ready"] = 0 if final_completed else 1
             if not final_completed and self._normalize_state(player[f"{self.FINAL_WIZARD_KEY}_state"]) != self.PLAYING:
@@ -458,7 +444,7 @@ class VillainProgression(Mode):
         )
 
         mini_key = chapter["mini_wizard_key"]
-        mini_completed = player[f"{mini_key}_completed"] == 1 or self._normalize_state(player[f"{mini_key}_state"]) == self.COMPLETED
+        mini_completed = self._normalize_state(player[f"{mini_key}_state"]) == self.COMPLETED
         mini_playing = self._normalize_state(player[f"{mini_key}_state"]) == self.PLAYING
         required = len(chapter["villains"])
 
@@ -637,8 +623,6 @@ class VillainProgression(Mode):
         # still counts as complete for progression and will not be replayed
         # during the same game.
         completed = bool(completed)
-        player[f"{mini_key}_played"] = 1
-        player[f"{mini_key}_completed"] = 1
         player[f"{mini_key}_state"] = self.COMPLETED
 
         player["mini_wizard_current_key"] = mini_key
@@ -728,21 +712,13 @@ class VillainProgression(Mode):
                 self.machine.game.player[name] = value
 
         for key in self.VILLAINS:
-            if self._get_player_var(f"{key}_played", None) is None:
-                self.machine.game.player[f"{key}_played"] = 0
-            if self._get_player_var(f"{key}_completed", None) is None:
-                self.machine.game.player[f"{key}_completed"] = 0
             if self._get_player_var(f"{key}_state", None) is None:
                 self.machine.game.player[f"{key}_state"] = self.NOT_PLAYED
-            if self._get_player_var(f"{key}_case_files_counted_for_chapter", None) is None:
-                self.machine.game.player[f"{key}_case_files_counted_for_chapter"] = 0
 
         self._sync_mini_wizard_case_file_bonus()
 
         for chapter in self.CHAPTERS:
             mini_key = chapter["mini_wizard_key"]
-            if self._get_player_var(f"{mini_key}_completed", None) is None:
-                self.machine.game.player[f"{mini_key}_completed"] = 0
             if self._get_player_var(f"{mini_key}_state", None) is None:
                 self.machine.game.player[f"{mini_key}_state"] = self.NOT_PLAYED
 
@@ -778,23 +754,17 @@ class VillainProgression(Mode):
         )
 
     def _add_villain_case_files_to_chapter_total(self, villain_key):
-        """Bank this villain's Case Files into the current chapter mini-wizard bonus.
+        """Bank the active Case Files into the current chapter mini-wizard bonus.
 
-        Case Files are locked once a villain starts, and villain_full_cleanup
-        resets the active Case File set later. So the correct accounting point
-        is the progression-owned villain start path.
+        The progression state is the source of truth. A villain can only start
+        from NOT_PLAYED, so no per-villain *_case_files_counted_for_chapter
+        flag is needed.
         """
         player = self.machine.game.player
-        counted_var = f"{villain_key}_case_files_counted_for_chapter"
-
-        if player[counted_var] == 1:
-            self._sync_mini_wizard_case_file_bonus()
-            return
 
         count = self._count_current_case_files()
         player["current_villain_case_files_collected"] = count
         player["chapter_case_files_collected"] = min(25, player["chapter_case_files_collected"] + count)
-        player[counted_var] = 1
         self._sync_mini_wizard_case_file_bonus()
 
         self.machine.events.post(
@@ -819,11 +789,6 @@ class VillainProgression(Mode):
         player["chapter_case_files_collected"] = 0
         player["current_villain_case_files_collected"] = 0
         self._sync_mini_wizard_case_file_bonus()
-
-        chapter = self._get_current_chapter()
-        if chapter:
-            for villain_key in chapter["villains"]:
-                player[f"{villain_key}_case_files_counted_for_chapter"] = 0
 
         self.machine.events.post("chapter_case_file_bonus_reset")
 
@@ -978,18 +943,14 @@ class VillainProgression(Mode):
 
         self._add_villain_case_files_to_chapter_total(villain_key)
 
-        # Set both the new state vars and the older *_played vars. The played
-        # bit means "do not offer this villain again." Completion is tracked
-        # separately with *_completed and *_state == COMPLETED.
-        self.machine.game.player[f"{villain_key}_played"] = 1
-        self.machine.game.player[f"{villain_key}_completed"] = 0
+        # Progression is tracked only by numeric *_state.
         self.machine.game.player[f"{villain_key}_state"] = self.PLAYING
         self.machine.game.player["villain_current_key"] = villain_key
         self.machine.game.player["villain_current_name"] = villain_key
         self.machine.game.player["villain_mode_running"] = 1
         self.machine.game.player["villain_mode_running_name"] = villain_key
 
-        self.info_log("VILLAIN START: %s state=%s played=%s", villain_key, self.machine.game.player[f"{villain_key}_state"], self.machine.game.player[f"{villain_key}_played"])
+        self.info_log("VILLAIN START: %s state=%s", villain_key, self.machine.game.player[f"{villain_key}_state"])
 
         self.machine.events.post("clear_villain_saucer_lights")
         self.machine.events.post("case_files_clear_lights")
@@ -1033,8 +994,6 @@ class VillainProgression(Mode):
         completed = bool(completed)
         finish_state = self.COMPLETED
 
-        self.machine.game.player[f"{villain_key}_completed"] = 1
-        self.machine.game.player[f"{villain_key}_played"] = 1
         self.machine.game.player[f"{villain_key}_state"] = self.COMPLETED
 
         # Keep villain_mode_running locked through the summary. The gameplay
@@ -1164,8 +1123,6 @@ class VillainProgression(Mode):
         player["mini_wizard_daily_bugle_ready"] = 0
         player["mini_wizard_vuk_hold_active"] = 1
         player["mini_wizard_current_key"] = mini_key
-        player[f"{mini_key}_played"] = 1
-        player[f"{mini_key}_completed"] = 0
         player[f"{mini_key}_state"] = self.PLAYING
         player["villain_mode_running"] = 1
         player["villain_current_key"] = mini_key
@@ -1229,12 +1186,10 @@ class VillainProgression(Mode):
 
         # Ignore duplicates from modes that post both <key>_mode_complete and
         # chapter_mini_wizard_completed.
-        if player[f"{mini_key}_completed"] == 1 and player["villain_chapter"] > chapter_number:
+        if self._normalize_state(player[f"{mini_key}_state"]) == self.COMPLETED and player["villain_chapter"] > chapter_number:
             self.machine.events.post("chapter_mini_wizard_completion_ignored_duplicate", mini_wizard=mini_key)
             return
 
-        player[f"{mini_key}_played"] = 1
-        player[f"{mini_key}_completed"] = 1
         player[f"{mini_key}_state"] = self.COMPLETED
 
         self._clear_runtime_flow_flags()
@@ -1262,8 +1217,6 @@ class VillainProgression(Mode):
     def _start_final_wizard(self, **kwargs):
         if self._safe_int(self.machine.game.player["final_wizard_ready"], 0) != 1:
             return
-        self.machine.game.player[f"{self.FINAL_WIZARD_KEY}_played"] = 1
-        self.machine.game.player[f"{self.FINAL_WIZARD_KEY}_completed"] = 0
         self.machine.game.player[f"{self.FINAL_WIZARD_KEY}_state"] = self.PLAYING
         self.machine.game.player["villain_current_key"] = self.FINAL_WIZARD_KEY
         self.machine.game.player["villain_current_name"] = self.FINAL_WIZARD_KEY
@@ -1279,14 +1232,12 @@ class VillainProgression(Mode):
         self._restore_state()
 
     def _final_wizard_gameplay_finished(self, completed=True, **kwargs):
-        """Resolve final wizard state. The final wizard currently reuses Kingpin gameplay."""
+        """Resolve final wizard state."""
         player = self.machine.game.player
         if player["villain_current_key"] != self.FINAL_WIZARD_KEY:
             self.machine.events.post("final_wizard_finish_ignored_wrong_active_mode", current_key=player["villain_current_key"])
             return
         completed = bool(completed)
-        player[f"{self.FINAL_WIZARD_KEY}_played"] = 1
-        player[f"{self.FINAL_WIZARD_KEY}_completed"] = 1
         player[f"{self.FINAL_WIZARD_KEY}_state"] = self.COMPLETED
         player["final_wizard_ready"] = 0
         player["villain_mode_running"] = 1
@@ -1352,7 +1303,7 @@ class VillainProgression(Mode):
 
     def _villain_state(self, villain_key):
         state = self._normalize_state(self._get_player_var(f"{villain_key}_state", self.NOT_PLAYED))
-        if state == self.COMPLETED or self._safe_int(self._get_player_var(f"{villain_key}_completed", 0), 0) == 1:
+        if state == self.COMPLETED:
             return self.COMPLETED
         if state == self.PLAYING:
             return self.PLAYING
@@ -1361,10 +1312,24 @@ class VillainProgression(Mode):
     def _normalize_state(self, state):
         if state is None:
             return self.NOT_PLAYED
+
+        # New durable format is numeric: 0 not played, 1 playing, 2 completed.
+        # Keep the string aliases here so older saved games / older patches do
+        # not break if they still contain legacy text state values.
+        try:
+            value = int(state)
+            if value == self.PLAYING:
+                return self.PLAYING
+            if value == self.COMPLETED:
+                return self.COMPLETED
+            return self.NOT_PLAYED
+        except Exception:
+            pass
+
         text = str(state).strip().lower().replace(" ", "_").replace("-", "_")
-        if text in ("playing", "play", "running"):
+        if text in ("1", "playing", "play", "running"):
             return self.PLAYING
-        if text in ("completed", "complete", "done", "failed", "fail"):
+        if text in ("2", "completed", "complete", "done", "failed", "fail"):
             return self.COMPLETED
         return self.NOT_PLAYED
 

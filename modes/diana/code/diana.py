@@ -19,7 +19,7 @@ class Diana(Mode):
         player[f"{self.MODE_KEY}_mode_points"] = 0
         player[f"{self.MODE_KEY}_hits"] = 0
         player[f"{self.MODE_KEY}_major_hits"] = 0
-        player[f"{self.MODE_KEY}_completed"] = 1
+        player[f"{self.MODE_KEY}_state"] = 1
 
         self.add_mode_event_handler(f"{self.MODE_KEY}_shot_hit", self._shot_hit)
         self.add_mode_event_handler(f"{self.MODE_KEY}_major_hit", self._major_hit)
@@ -51,7 +51,7 @@ class Diana(Mode):
             return
         self.mode_done = True
         player = self.machine.game.player
-        player[f"{self.MODE_KEY}_completed"] = 1
+        player[f"{self.MODE_KEY}_state"] = 2
         self.machine.events.post(f"{self.MODE_KEY}_mode_complete")
 
     def _score(self, points):

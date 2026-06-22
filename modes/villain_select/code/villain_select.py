@@ -131,10 +131,12 @@ class VillainSelect(Carousel):
         return []
 
     def _is_unavailable(self, villain_key):
-        state = str(self._player_var(f"{villain_key}_state", "NOT PLAYED"))
-        played = self._safe_int(self._player_var(f"{villain_key}_played", 0), 0)
-        completed = self._safe_int(self._player_var(f"{villain_key}_completed", 0), 0)
-        return completed == 1 or played == 1 or state in ("PLAYING", "COMPLETED")
+        state = self._player_var(f"{villain_key}_state", 0)
+        try:
+            return int(state) != 0
+        except Exception:
+            state_text = str(state).strip().upper().replace(" ", "_")
+            return state_text in ("PLAYING", "COMPLETED")
 
     def _display_name(self, villain_key):
         return str(villain_key).replace("_", " ").upper()

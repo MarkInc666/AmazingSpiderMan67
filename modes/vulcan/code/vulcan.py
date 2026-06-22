@@ -308,8 +308,8 @@ class Vulcan(CaseFileMixin, Mode):
 
         self.mode_done = True
         self._cancel_cooling_timer()
-        self._set(f"{self.MODE_KEY}_completed", 1)
-        self._set(f"{self.MODE_KEY}_state", "completed")
+        self._set(f"{self.MODE_KEY}_state", 2)
+        self._set(f"{self.MODE_KEY}_state", 2)
         self.machine.events.post(f"{self.MODE_KEY}_mode_complete")
 
     def _first_available_right_drop(self, exclude=None):

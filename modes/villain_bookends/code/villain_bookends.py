@@ -19,7 +19,7 @@ class VillainBookends(Mode):
             "stat_2_label": "BEST RAGE",
             "stat_2_var": "rhino_best_rage_stage",
             "points_var": "rhino_mode_points",
-            "completed_var": "rhino_completed",
+            "state_var": "rhino_state",
             "song": "play_song_22",
         },
 
@@ -35,7 +35,7 @@ class VillainBookends(Mode):
             "stat_2_label": "BEST RUNS",
             "stat_2_var": "sandman_best_run",
             "points_var": "sandman_mode_points",
-            "completed_var": "sandman_completed",
+            "state_var": "sandman_state",
             "song": "play_song_8",
         },
 
@@ -51,7 +51,7 @@ class VillainBookends(Mode):
             "stat_2_label": "BONUS BANKED",
             "stat_2_var": "vulture_banked_bonus",
             "points_var": "vulture_mode_points",
-            "completed_var": "vulture_completed",
+            "state_var": "vulture_state",
             "song": "play_song_10",
         },
 
@@ -67,7 +67,7 @@ class VillainBookends(Mode):
             "stat_2_label": "SUPER JACKPOT",
             "stat_2_var": "electro_super_jackpot",
             "points_var": "electro_mode_points",
-            "completed_var": "electro_completed",
+            "state_var": "electro_state",
             "song": "play_song_23",
         },
 
@@ -83,7 +83,7 @@ class VillainBookends(Mode):
             "stat_2_label": "BONUS BANKED",
             "stat_2_var": "goblin_bonus_banked",
             "points_var": "goblin_mode_points",
-            "completed_var": "goblin_completed",
+            "state_var": "goblin_state",
             "song": "play_song_7",
         },
 
@@ -99,7 +99,7 @@ class VillainBookends(Mode):
             "stat_2_label": "JACKPOT",
             "stat_2_var": "mysterio_jackpot_value",
             "points_var": "mysterio_mode_points",
-            "completed_var": "mysterio_completed",
+            "state_var": "mysterio_state",
             "song": "play_song_24",
         },
 
@@ -115,7 +115,7 @@ class VillainBookends(Mode):
             "stat_2_label": "BIGGEST JACKPOT",
             "stat_2_var": "scorpion_biggest_jackpot",
             "points_var": "scorpion_mode_points",
-            "completed_var": "scorpion_completed",
+            "state_var": "scorpion_state",
             "song": "play_song_25",
         },
 
@@ -131,7 +131,7 @@ class VillainBookends(Mode):
             "stat_2_label": "JACKPOTS",
             "stat_2_var": "doc_ock_jackpots",
             "points_var": "doc_ock_mode_points",
-            "completed_var": "doc_ock_completed",
+            "state_var": "doc_ock_state",
             "song": "play_song_18",
         },
 
@@ -147,7 +147,7 @@ class VillainBookends(Mode):
             "stat_2_label": "BEST VALUE",
             "stat_2_var": "lizard_best_delivery_value",
             "points_var": "lizard_mode_points",
-            "completed_var": "lizard_completed",
+            "state_var": "lizard_state",
             "song": "play_song_4",
         },
 
@@ -163,7 +163,7 @@ class VillainBookends(Mode):
             "stat_2_label": "JACKPOTS",
             "stat_2_var": "parafino_total_jackpots",
             "points_var": "parafino_mode_points",
-            "completed_var": "parafino_completed",
+            "state_var": "parafino_state",
             "song": "play_song_19",
         },
 
@@ -179,7 +179,7 @@ class VillainBookends(Mode):
             "stat_2_label": "BEST JACKPOT",
             "stat_2_var": "centaur_best_jackpot",
             "points_var": "centaur_mode_points",
-            "completed_var": "centaur_completed",
+            "state_var": "centaur_state",
             "song": "play_song_14",
         },
 
@@ -195,7 +195,7 @@ class VillainBookends(Mode):
             "stat_2_label": "JACKPOTS",
             "stat_2_var": "cerberus_jackpots_collected",
             "points_var": "cerberus_mode_points",
-            "completed_var": "cerberus_completed",
+            "state_var": "cerberus_state",
             "song": "play_song_9",
         },
 
@@ -211,7 +211,7 @@ class VillainBookends(Mode):
             "stat_2_label": "FLIPS LEFT",
             "stat_2_var": "cyclops_flips_remaining",
             "points_var": "cyclops_mode_points",
-            "completed_var": "cyclops_completed",
+            "state_var": "cyclops_state",
             "song": "play_song_14",
         },
 
@@ -227,7 +227,7 @@ class VillainBookends(Mode):
             "stat_2_label": "POP HITS",
             "stat_2_var": "swamp_reptiles_pop_hits",
             "points_var": "swamp_reptiles_mode_points",
-            "completed_var": "swamp_reptiles_completed",
+            "state_var": "swamp_reptiles_state",
             "song": "play_song_14",
         },
 
@@ -243,7 +243,7 @@ class VillainBookends(Mode):
             "stat_2_label": "MULTIPLIER",
             "stat_2_var": "master_technician_multiplier",
             "points_var": "master_technician_mode_points",
-            "completed_var": "master_technician_completed",
+            "state_var": "master_technician_state",
             "song": "play_song_14",
         },
 
@@ -259,7 +259,7 @@ class VillainBookends(Mode):
             "stat_2_label": "BEST JACKPOT",
             "stat_2_var": "noah_boddy_best_jackpot",
             "points_var": "noah_boddy_mode_points",
-            "completed_var": "noah_boddy_completed",
+            "state_var": "noah_boddy_state",
             "song": "play_song_14",
         },
 
@@ -275,7 +275,7 @@ class VillainBookends(Mode):
             "stat_2_label": "OX SUPER",
             "stat_2_var": "enforcers_ox_super_value",
             "points_var": "enforcers_mode_points",
-            "completed_var": "enforcers_completed",
+            "state_var": "enforcers_state",
             "song": "play_song_14",
         },
 
@@ -291,7 +291,7 @@ class VillainBookends(Mode):
             "stat_2_label": "WRONG SHOTS",
             "stat_2_var": "trubble_unleashed_incorrect_shots",
             "points_var": "trubble_unleashed_mode_points",
-            "completed_var": "trubble_unleashed_completed",
+            "state_var": "trubble_unleashed_state",
             "song": "play_song_14",
         },
 
@@ -307,7 +307,7 @@ class VillainBookends(Mode):
             "stat_2_label": "BEST JACKPOT",
             "stat_2_var": "fifth_avenue_phantom_best_jackpot",
             "points_var": "fifth_avenue_phantom_mode_points",
-            "completed_var": "fifth_avenue_phantom_completed",
+            "state_var": "fifth_avenue_phantom_state",
             "song": "play_song_14",
         },
 
@@ -323,7 +323,7 @@ class VillainBookends(Mode):
             "stat_2_label": "SUPERS",
             "stat_2_var": "master_plan_super_collected",
             "points_var": "master_plan_mode_points",
-            "completed_var": "master_plan_completed",
+            "state_var": "master_plan_state",
             "song": "play_song_14",
         },
 
@@ -339,7 +339,7 @@ class VillainBookends(Mode):
             "stat_2_label": "MISSED SHOTS",
             "stat_2_var": "doctor_dumpty_missed_shots",
             "points_var": "doctor_dumpty_mode_points",
-            "completed_var": "doctor_dumpty_completed",
+            "state_var": "doctor_dumpty_state",
             "song": "play_song_14",
         },
 
@@ -356,7 +356,7 @@ class VillainBookends(Mode):
             "stat_2_label": "MAJOR HITS",
             "stat_2_var": "dr_magneto_major_hits",
             "points_var": "dr_magneto_mode_points",
-            "completed_var": "dr_magneto_completed",
+            "state_var": "dr_magneto_state",
             "song": "play_song_27",
         },
 
@@ -372,7 +372,7 @@ class VillainBookends(Mode):
             "stat_2_label": "MAJOR HITS",
             "stat_2_var": "dr_manta_major_hits",
             "points_var": "dr_manta_mode_points",
-            "completed_var": "dr_manta_completed",
+            "state_var": "dr_manta_state",
             "song": "play_song_28",
         },
 
@@ -388,7 +388,7 @@ class VillainBookends(Mode):
             "stat_2_label": "MAJOR HITS",
             "stat_2_var": "doctor_dumpty_major_hits",
             "points_var": "doctor_dumpty_mode_points",
-            "completed_var": "doctor_dumpty_completed",
+            "state_var": "doctor_dumpty_state",
             "song": "play_song_7",
         },
 
@@ -404,7 +404,7 @@ class VillainBookends(Mode):
             "stat_2_label": "MAJOR HITS",
             "stat_2_var": "doctor_cool_major_hits",
             "points_var": "doctor_cool_mode_points",
-            "completed_var": "doctor_cool_completed",
+            "state_var": "doctor_cool_state",
             "song": "play_song_8",
         },
 
@@ -420,7 +420,7 @@ class VillainBookends(Mode):
             "stat_2_label": "MAJOR HITS",
             "stat_2_var": "dr_zap_major_hits",
             "points_var": "dr_zap_mode_points",
-            "completed_var": "dr_zap_completed",
+            "state_var": "dr_zap_state",
             "song": "play_song_9",
         },
 
@@ -436,7 +436,7 @@ class VillainBookends(Mode):
             "stat_2_label": "MAJOR HITS",
             "stat_2_var": "fakir_major_hits",
             "points_var": "fakir_mode_points",
-            "completed_var": "fakir_completed",
+            "state_var": "fakir_state",
             "song": "play_song_10",
         },
 
@@ -452,7 +452,7 @@ class VillainBookends(Mode):
             "stat_2_label": "MAJOR HITS",
             "stat_2_var": "scarlet_sorcerer_major_hits",
             "points_var": "scarlet_sorcerer_mode_points",
-            "completed_var": "scarlet_sorcerer_completed",
+            "state_var": "scarlet_sorcerer_state",
             "song": "play_song_11",
         },
 
@@ -468,7 +468,7 @@ class VillainBookends(Mode):
             "stat_2_label": "MAJOR HITS",
             "stat_2_var": "infinata_major_hits",
             "points_var": "infinata_mode_points",
-            "completed_var": "infinata_completed",
+            "state_var": "infinata_state",
             "song": "play_song_12",
         },
 
@@ -484,7 +484,7 @@ class VillainBookends(Mode):
             "stat_2_label": "MAJOR HITS",
             "stat_2_var": "pardo_major_hits",
             "points_var": "pardo_mode_points",
-            "completed_var": "pardo_completed",
+            "state_var": "pardo_state",
             "song": "play_song_13",
         },
 
@@ -500,7 +500,7 @@ class VillainBookends(Mode):
             "stat_2_label": "MAJOR HITS",
             "stat_2_var": "vulcan_major_hits",
             "points_var": "vulcan_mode_points",
-            "completed_var": "vulcan_completed",
+            "state_var": "vulcan_state",
             "song": "play_song_15",
         },
 
@@ -516,7 +516,7 @@ class VillainBookends(Mode):
             "stat_2_label": "MAJOR HITS",
             "stat_2_var": "spider_slayer_major_hits",
             "points_var": "spider_slayer_mode_points",
-            "completed_var": "spider_slayer_completed",
+            "state_var": "spider_slayer_state",
             "song": "play_song_15",
         },
 
@@ -532,7 +532,7 @@ class VillainBookends(Mode):
             "stat_2_label": "MAJOR HITS",
             "stat_2_var": "henry_smythe_major_hits",
             "points_var": "henry_smythe_mode_points",
-            "completed_var": "henry_smythe_completed",
+            "state_var": "henry_smythe_state",
             "song": "play_song_16",
         },
 
@@ -548,7 +548,7 @@ class VillainBookends(Mode):
             "stat_2_label": "MAJOR HITS",
             "stat_2_var": "blackbeard_robot_major_hits",
             "points_var": "blackbeard_robot_mode_points",
-            "completed_var": "blackbeard_robot_completed",
+            "state_var": "blackbeard_robot_state",
             "song": "play_song_17",
         },
 
@@ -564,7 +564,7 @@ class VillainBookends(Mode):
             "stat_2_label": "MAJOR HITS",
             "stat_2_var": "executioner_of_paris_robot_major_hits",
             "points_var": "executioner_of_paris_robot_mode_points",
-            "completed_var": "executioner_of_paris_robot_completed",
+            "state_var": "executioner_of_paris_robot_state",
             "song": "play_song_18",
         },
 
@@ -580,7 +580,7 @@ class VillainBookends(Mode):
             "stat_2_label": "MAJOR HITS",
             "stat_2_var": "jesse_james_robot_major_hits",
             "points_var": "jesse_james_robot_mode_points",
-            "completed_var": "jesse_james_robot_completed",
+            "state_var": "jesse_james_robot_state",
             "song": "play_song_19",
         },
 
@@ -596,7 +596,7 @@ class VillainBookends(Mode):
             "stat_2_label": "MAJOR HITS",
             "stat_2_var": "snowman_major_hits",
             "points_var": "snowman_mode_points",
-            "completed_var": "snowman_completed",
+            "state_var": "snowman_state",
             "song": "play_song_20",
         },
 
@@ -612,7 +612,7 @@ class VillainBookends(Mode):
             "stat_2_label": "MAJOR HITS",
             "stat_2_var": "metal_eating_monster_major_hits",
             "points_var": "metal_eating_monster_mode_points",
-            "completed_var": "metal_eating_monster_completed",
+            "state_var": "metal_eating_monster_state",
             "song": "play_song_21",
         },
 
@@ -628,7 +628,7 @@ class VillainBookends(Mode):
             "stat_2_label": "MAJOR HITS",
             "stat_2_var": "master_vine_major_hits",
             "points_var": "master_vine_mode_points",
-            "completed_var": "master_vine_completed",
+            "state_var": "master_vine_state",
             "song": "play_song_22",
         },
 
@@ -644,7 +644,7 @@ class VillainBookends(Mode):
             "stat_2_label": "MAJOR HITS",
             "stat_2_var": "blotto_major_hits",
             "points_var": "blotto_mode_points",
-            "completed_var": "blotto_completed",
+            "state_var": "blotto_state",
             "song": "play_song_23",
         },
 
@@ -660,7 +660,7 @@ class VillainBookends(Mode):
             "stat_2_label": "MAJOR HITS",
             "stat_2_var": "frog_ghosts_major_hits",
             "points_var": "frog_ghosts_mode_points",
-            "completed_var": "frog_ghosts_completed",
+            "state_var": "frog_ghosts_state",
             "song": "play_song_24",
         },
 
@@ -676,7 +676,7 @@ class VillainBookends(Mode):
             "stat_2_label": "MAJOR HITS",
             "stat_2_var": "noah_boddy_major_hits",
             "points_var": "noah_boddy_mode_points",
-            "completed_var": "noah_boddy_completed",
+            "state_var": "noah_boddy_state",
             "song": "play_song_25",
         },
 
@@ -692,7 +692,7 @@ class VillainBookends(Mode):
             "stat_2_label": "MAJOR HITS",
             "stat_2_var": "diamond_smugglers_major_hits",
             "points_var": "diamond_smugglers_mode_points",
-            "completed_var": "diamond_smugglers_completed",
+            "state_var": "diamond_smugglers_state",
             "song": "play_song_26",
         },
 
@@ -708,7 +708,7 @@ class VillainBookends(Mode):
             "stat_2_label": "MAJOR HITS",
             "stat_2_var": "human_flies_major_hits",
             "points_var": "human_flies_mode_points",
-            "completed_var": "human_flies_completed",
+            "state_var": "human_flies_state",
             "song": "play_song_27",
         },
 
@@ -724,7 +724,7 @@ class VillainBookends(Mode):
             "stat_2_label": "MAJOR HITS",
             "stat_2_var": "charles_cameo_major_hits",
             "points_var": "charles_cameo_mode_points",
-            "completed_var": "charles_cameo_completed",
+            "state_var": "charles_cameo_state",
             "song": "play_song_28",
         },
 
@@ -740,7 +740,7 @@ class VillainBookends(Mode):
             "stat_2_label": "MAJOR HITS",
             "stat_2_var": "master_plan_major_hits",
             "points_var": "master_plan_mode_points",
-            "completed_var": "master_plan_completed",
+            "state_var": "master_plan_state",
             "song": "play_song_7",
         },
 
@@ -756,7 +756,7 @@ class VillainBookends(Mode):
             "stat_2_label": "MAJOR HITS",
             "stat_2_var": "juan_ponce_de_leon_major_hits",
             "points_var": "juan_ponce_de_leon_mode_points",
-            "completed_var": "juan_ponce_de_leon_completed",
+            "state_var": "juan_ponce_de_leon_state",
             "song": "play_song_8",
         },
 
@@ -772,7 +772,7 @@ class VillainBookends(Mode):
             "stat_2_label": "MAJOR HITS",
             "stat_2_var": "devargas_major_hits",
             "points_var": "devargas_mode_points",
-            "completed_var": "devargas_completed",
+            "state_var": "devargas_state",
             "song": "play_song_9",
         },
 
@@ -788,7 +788,7 @@ class VillainBookends(Mode):
             "stat_2_label": "MAJOR HITS",
             "stat_2_var": "koga_major_hits",
             "points_var": "koga_mode_points",
-            "completed_var": "koga_completed",
+            "state_var": "koga_state",
             "song": "play_song_10",
         },
 
@@ -804,7 +804,7 @@ class VillainBookends(Mode):
             "stat_2_label": "MAJOR HITS",
             "stat_2_var": "cowboy_major_hits",
             "points_var": "cowboy_mode_points",
-            "completed_var": "cowboy_completed",
+            "state_var": "cowboy_state",
             "song": "play_song_11",
         },
 
@@ -820,7 +820,7 @@ class VillainBookends(Mode):
             "stat_2_label": "MAJOR HITS",
             "stat_2_var": "desperado_major_hits",
             "points_var": "desperado_mode_points",
-            "completed_var": "desperado_completed",
+            "state_var": "desperado_state",
             "song": "play_song_12",
         },
 
@@ -836,7 +836,7 @@ class VillainBookends(Mode):
             "stat_2_label": "MEGABALLS",
             "stat_2_var": "kingpin_max_balls",
             "points_var": "kingpin_mode_points",
-            "completed_var": "kingpin_completed",
+            "state_var": "kingpin_state",
             "song": "play_song_3",
         },
     }
@@ -855,9 +855,9 @@ class VillainBookends(Mode):
             "stat_1_label": "HITS",
             "stat_1_var": "sinister_surge_hits",
             "stat_2_label": "CHAPTER MB",
-            "stat_2_var": "sinister_surge_completed",
+            "stat_2_var": "sinister_surge_state",
             "points_var": "sinister_surge_mode_points",
-            "completed_var": "sinister_surge_completed",
+            "state_var": "sinister_surge_state",
             "song": "play_song_22",
         },
         "mastermind_trap": {
@@ -870,9 +870,9 @@ class VillainBookends(Mode):
             "stat_1_label": "HITS",
             "stat_1_var": "mastermind_trap_hits",
             "stat_2_label": "CHAPTER MB",
-            "stat_2_var": "mastermind_trap_completed",
+            "stat_2_var": "mastermind_trap_state",
             "points_var": "mastermind_trap_mode_points",
-            "completed_var": "mastermind_trap_completed",
+            "state_var": "mastermind_trap_state",
             "song": "play_song_18",
         },
         "trubble_unleashed": {
@@ -885,9 +885,9 @@ class VillainBookends(Mode):
             "stat_1_label": "HITS",
             "stat_1_var": "trubble_unleashed_hits",
             "stat_2_label": "CHAPTER MB",
-            "stat_2_var": "trubble_unleashed_completed",
+            "stat_2_var": "trubble_unleashed_state",
             "points_var": "trubble_unleashed_mode_points",
-            "completed_var": "trubble_unleashed_completed",
+            "state_var": "trubble_unleashed_state",
             "song": "play_song_14",
         },
         "crime_wave_crackdown": {
@@ -900,9 +900,9 @@ class VillainBookends(Mode):
             "stat_1_label": "HITS",
             "stat_1_var": "crime_wave_crackdown_hits",
             "stat_2_label": "CHAPTER MB",
-            "stat_2_var": "crime_wave_crackdown_completed",
+            "stat_2_var": "crime_wave_crackdown_state",
             "points_var": "crime_wave_crackdown_mode_points",
-            "completed_var": "crime_wave_crackdown_completed",
+            "state_var": "crime_wave_crackdown_state",
             "song": "play_song_7",
         },
         "mad_science_meltdown": {
@@ -915,9 +915,9 @@ class VillainBookends(Mode):
             "stat_1_label": "HITS",
             "stat_1_var": "mad_science_meltdown_hits",
             "stat_2_label": "CHAPTER MB",
-            "stat_2_var": "mad_science_meltdown_completed",
+            "stat_2_var": "mad_science_meltdown_state",
             "points_var": "mad_science_meltdown_mode_points",
-            "completed_var": "mad_science_meltdown_completed",
+            "state_var": "mad_science_meltdown_state",
             "song": "play_song_15",
         },
         "fifth_dimension_curse": {
@@ -930,9 +930,9 @@ class VillainBookends(Mode):
             "stat_1_label": "HITS",
             "stat_1_var": "fifth_dimension_curse_hits",
             "stat_2_label": "CHAPTER MB",
-            "stat_2_var": "fifth_dimension_curse_completed",
+            "stat_2_var": "fifth_dimension_curse_state",
             "points_var": "fifth_dimension_curse_mode_points",
-            "completed_var": "fifth_dimension_curse_completed",
+            "state_var": "fifth_dimension_curse_state",
             "song": "play_song_16",
         },
         "night_of_the_robots": {
@@ -945,9 +945,9 @@ class VillainBookends(Mode):
             "stat_1_label": "HITS",
             "stat_1_var": "night_of_the_robots_hits",
             "stat_2_label": "CHAPTER MB",
-            "stat_2_var": "night_of_the_robots_completed",
+            "stat_2_var": "night_of_the_robots_state",
             "points_var": "night_of_the_robots_mode_points",
-            "completed_var": "night_of_the_robots_completed",
+            "state_var": "night_of_the_robots_state",
             "song": "play_song_17",
         },
         "nature_strikes_back": {
@@ -960,9 +960,9 @@ class VillainBookends(Mode):
             "stat_1_label": "HITS",
             "stat_1_var": "nature_strikes_back_hits",
             "stat_2_label": "CHAPTER MB",
-            "stat_2_var": "nature_strikes_back_completed",
+            "stat_2_var": "nature_strikes_back_state",
             "points_var": "nature_strikes_back_mode_points",
-            "completed_var": "nature_strikes_back_completed",
+            "state_var": "nature_strikes_back_state",
             "song": "play_song_20",
         },
         "who_is_the_real_villain": {
@@ -975,9 +975,9 @@ class VillainBookends(Mode):
             "stat_1_label": "HITS",
             "stat_1_var": "who_is_the_real_villain_hits",
             "stat_2_label": "CHAPTER MB",
-            "stat_2_var": "who_is_the_real_villain_completed",
+            "stat_2_var": "who_is_the_real_villain_state",
             "points_var": "who_is_the_real_villain_mode_points",
-            "completed_var": "who_is_the_real_villain_completed",
+            "state_var": "who_is_the_real_villain_state",
             "song": "play_song_21",
         },
         "time_tossed_showdown": {
@@ -990,9 +990,9 @@ class VillainBookends(Mode):
             "stat_1_label": "HITS",
             "stat_1_var": "time_tossed_showdown_hits",
             "stat_2_label": "CHAPTER MB",
-            "stat_2_var": "time_tossed_showdown_completed",
+            "stat_2_var": "time_tossed_showdown_state",
             "points_var": "time_tossed_showdown_mode_points",
-            "completed_var": "time_tossed_showdown_completed",
+            "state_var": "time_tossed_showdown_state",
             "song": "play_song_23",
         },
     })
@@ -1061,7 +1061,8 @@ class VillainBookends(Mode):
         self.machine.game.player["villain_mode_in_summary"] = True
 
         data = self.VILLAINS[villain]
-        completed = self._get_player_value(data["completed_var"], 0)
+        state = self._get_player_value(data.get("state_var", ""), 0)
+        completed = int(state) == 2
 
         title = data["summary_title_complete"] if completed else data["summary_title_failed"]
 
@@ -1200,7 +1201,7 @@ VillainBookends.VILLAINS.update({
         "stat_2_label": "MISSES",
         "stat_2_var": "diana_wrong_total",
         "points_var": "diana_mode_points",
-        "completed_var": "diana_completed",
+        "state_var": "diana_state",
         "song": "play_song_26",
     },
     "trubble_unleashed": {
@@ -1215,7 +1216,7 @@ VillainBookends.VILLAINS.update({
         "stat_2_label": "MISSES",
         "stat_2_var": "trubble_unleashed_wrong_total",
         "points_var": "trubble_unleashed_mode_points",
-        "completed_var": "trubble_unleashed_completed",
+        "state_var": "trubble_unleashed_state",
         "song": "play_song_26",
     },
     "diamond_smugglers": {
@@ -1230,7 +1231,7 @@ VillainBookends.VILLAINS.update({
         "stat_2_label": "MAJOR HITS",
         "stat_2_var": "diamond_smugglers_major_hits",
         "points_var": "diamond_smugglers_mode_points",
-        "completed_var": "diamond_smugglers_completed",
+        "state_var": "diamond_smugglers_state",
         "song": "play_song_26",
     },
     "final_showdown": {
@@ -1245,7 +1246,7 @@ VillainBookends.VILLAINS.update({
         "stat_2_label": "JACKPOTS",
         "stat_2_var": "final_showdown_jackpots",
         "points_var": "final_showdown_mode_points",
-        "completed_var": "final_showdown_completed",
+        "state_var": "final_showdown_state",
         "song": "play_song_3",
     },
 })

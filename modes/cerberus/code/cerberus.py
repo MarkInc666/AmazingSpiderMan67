@@ -277,11 +277,8 @@ class Cerberus(CaseFileMixin, Mode):
         self.mode_done = True
         self.delay.remove("cerberus_mode_timer")
         self.delay.remove("cerberus_halfway_gate_open")
-        player = self.machine.game.player if self.machine.game else None
-        if player:
-            player["cerberus_completed"] = int(self.jackpots_collected >= 3)
         self._sync_vars()
-        self.machine.events.post("cerberus_mode_failed")
+        self.machine.events.post("cerberus_mode_complete")
 
     def _score(self, points):
         player = self.machine.game.player if self.machine.game else None
@@ -338,7 +335,6 @@ class Cerberus(CaseFileMixin, Mode):
         player["cerberus_best_jackpot"] = self.best_jackpot
         player["cerberus_jackpot_value"] = self.jackpot_value
         player["cerberus_timer_seconds"] = self.timer_seconds if self.timer_running else 0
-        player["cerberus_completed"] = int(self.jackpots_collected >= 3)
         player["cerberus_more_jackpots_available"] = int(getattr(self, "more_jackpots_available", False))
         player["cerberus_shot_assist_available"] = int(getattr(self, "shot_assist_available", False))
 

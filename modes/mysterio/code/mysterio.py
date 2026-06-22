@@ -15,7 +15,7 @@ import random
     "stat_2_label": "JACKPOT",
     "stat_2_var": "mysterio_jackpot_value",
     "points_var": "mysterio_mode_points",
-    "completed_var": "mysterio_completed",
+    "state_var": "mysterio_state",
 """
 class Mysterio(CaseFileMixin, Mode):
 

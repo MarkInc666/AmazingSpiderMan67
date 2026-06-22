@@ -13,7 +13,7 @@ from modes.common.case_file_mixin import CaseFileMixin
     "stat_2_label": "BEST RAGE",
     "stat_2_var": "rhino_best_rage_stage",
     "points_var": "rhino_mode_points",
-    "completed_var": "rhino_completed",
+    "state_var": "rhino_state",
 """
 
 class RhinoBash(CaseFileMixin, Mode):
@@ -283,7 +283,7 @@ class RhinoBash(CaseFileMixin, Mode):
         self.stop_berserk()
         self._show_message("RHINO DEFEATED", "MODE COMPLETE", event="show_mode_jackpot")
         self.machine.events.post("rhino_bash_complete")
-        self.machine.game.player["rhino_completed"] = True
+        self.machine.game.player["rhino_state"] = 2
 
     def award_score(self, value):
         self.machine.game.player["score"] += value

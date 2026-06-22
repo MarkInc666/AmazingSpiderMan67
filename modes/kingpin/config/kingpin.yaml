@@ -121,10 +121,6 @@ widget_player:
       action: play
       expire: 5s
 
-  xkingpin_mode_failed:
-    kingpin_failed:
-      action: play
-      expire: 5s
 
 
 show_player:

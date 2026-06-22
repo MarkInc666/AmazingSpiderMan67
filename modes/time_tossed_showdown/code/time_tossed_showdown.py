@@ -26,7 +26,7 @@ class TimeTossedShowdown(Mode):
         self.case_file_bonus = player["mini_wizard_case_file_bonus"]
         self.jackpot_value = self.BASE_JACKPOT + self.case_file_bonus
         player["mini_wizard_current_key"] = self.MODE_KEY
-        player[f"{self.MODE_KEY}_completed"] = 0
+        player[f"{self.MODE_KEY}_state"] = 1
         player[f"{self.MODE_KEY}_mode_points"] = 0
         player[f"{self.MODE_KEY}_hits"] = 0
         player[f"{self.MODE_KEY}_case_file_bonus"] = self.case_file_bonus
@@ -67,7 +67,7 @@ class TimeTossedShowdown(Mode):
 
         self.mode_done = True
         player = self.machine.game.player
-        player[f"{self.MODE_KEY}_completed"] = 1
+        player[f"{self.MODE_KEY}_state"] = 2
         self.machine.events.post(f"{self.MODE_KEY}_mode_complete")
         self.machine.events.post(f"stop_mode_{self.MODE_KEY}")
 
@@ -77,9 +77,9 @@ class TimeTossedShowdown(Mode):
 
         self.mode_done = True
         player = self.machine.game.player
-        player[f"{self.MODE_KEY}_completed"] = 0
-        player[f"{self.MODE_KEY}_state"] = "FAILED"
-        self.machine.events.post(f"{self.MODE_KEY}_mode_failed")
+        player[f"{self.MODE_KEY}_state"] = 2
+        player[f"{self.MODE_KEY}_state"] = 2
+        self.machine.events.post(f"{self.MODE_KEY}_mode_complete")
         self.machine.events.post(f"stop_mode_{self.MODE_KEY}")
 
     def _score(self, points):

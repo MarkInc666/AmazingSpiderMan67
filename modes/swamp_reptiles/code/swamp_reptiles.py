@@ -87,7 +87,7 @@ class SwampReptiles(CaseFileMixin, Mode):
         ])
 
         player = self.machine.game.player
-        player["swamp_reptiles_completed"] = 1
+        player["swamp_reptiles_state"] = 2
         self._sync_vars()
 
         self.add_mode_event_handler("swamp_reptiles_pop_hit", self._pop_hit)
@@ -353,7 +353,7 @@ class SwampReptiles(CaseFileMixin, Mode):
         self.delay.remove("swamp_reptiles_super_timer")
         self._close_rooftop_gate()
         player = self.machine.game.player
-        player["swamp_reptiles_completed"] = 1
+        player["swamp_reptiles_state"] = 2
         self._sync_vars()
         self.machine.events.post("swamp_reptiles_mode_complete")
 
@@ -364,7 +364,7 @@ class SwampReptiles(CaseFileMixin, Mode):
         self.delay.remove("swamp_reptiles_super_timer")
         self._close_rooftop_gate()
         player = self.machine.game.player
-        player["swamp_reptiles_completed"] = 1
+        player["swamp_reptiles_state"] = 2
         self._sync_vars()
         self.machine.events.post("swamp_reptiles_mode_complete")
 

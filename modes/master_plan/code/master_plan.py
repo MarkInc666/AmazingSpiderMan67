@@ -13,7 +13,7 @@ class MasterPlan(Mode):
     """
 
     MODE_KEY = "master_plan"
-    DISPLAY_NAME = "The Plotter - Master Plan"
+    DISPLAY_NAME = "The Plotter"
 
     SAUCERS = (1, 2, 3)
 
@@ -41,7 +41,7 @@ class MasterPlan(Mode):
         self.drain_ms = 3000 if self.has_case_file("more_time") else 2000
 
         player = self.machine.game.player
-        player[f"{self.MODE_KEY}_completed"] = 1
+        player[f"{self.MODE_KEY}_state"] = 1
         player[f"{self.MODE_KEY}_mode_points"] = 0
         player[f"{self.MODE_KEY}_rumours"] = 0
         player[f"{self.MODE_KEY}_total_rumours"] = 0
@@ -62,7 +62,7 @@ class MasterPlan(Mode):
         self.add_mode_event_handler("master_plan_vuk_hit", self._vuk_hit)
         self.add_mode_event_handler("master_plan_back_page_hit", self._back_page_hit)
         self.add_mode_event_handler(f"{self.MODE_KEY}_complete_request", self._complete_mode)
-        self.add_mode_event_handler(f"{self.MODE_KEY}_fail_request", self._complete_mode)
+        self.add_mode_event_handler(f"{self.MODE_KEY}_fail_request", self._fail_mode)
 
         if self.has_case_file("safety_net"):
             self.machine.events.post("start_case_file_ball_save")
@@ -336,7 +336,7 @@ class MasterPlan(Mode):
         self.delay.remove("master_plan_rumour_drain")
         self.delay.remove("master_plan_back_page_timeout")
         player = self.machine.game.player
-        player[f"{self.MODE_KEY}_completed"] = 1 if self.super_collected > 0 else 0
+        player[f"{self.MODE_KEY}_state"] = 2
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post(f"{self.MODE_KEY}_mode_complete")
 
@@ -347,7 +347,7 @@ class MasterPlan(Mode):
         self.delay.remove("master_plan_rumour_drain")
         self.delay.remove("master_plan_back_page_timeout")
         player = self.machine.game.player
-        player[f"{self.MODE_KEY}_completed"] = 1
+        player[f"{self.MODE_KEY}_state"] = 1
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post(f"{self.MODE_KEY}_mode_complete")
 

@@ -16,7 +16,7 @@ import random
     "stat_2_label": "WRONG SHOTS",
     "stat_2_var": "trubble_unleashed_incorrect_shots",
     "points_var": "trubble_unleashed_mode_points",
-    "completed_var": "trubble_unleashed_completed",
+    "state_var": "trubble_unleashed_state",
 """
 
 
@@ -244,7 +244,7 @@ class TrubbleUnleashed(CaseFileMixin, Mode):
         self.mode_done = True
         player = self.machine.game.player if self.machine.game else None
         if player:
-            player["trubble_unleashed_completed"] = 1
+            player["trubble_unleashed_state"] = 2
         self.machine.events.post("trubble_unleashed_all_lights_off")
         self.machine.events.post("show_mode_message_long", message_mode_title="TRUBBLE UNLEASHED DEFEATED", message_mode_subtitle="SEQUENCE COMPLETE")
         self.machine.events.post("trubble_unleashed_mode_complete")
@@ -255,7 +255,7 @@ class TrubbleUnleashed(CaseFileMixin, Mode):
         self.mode_done = True
         player = self.machine.game.player if self.machine.game else None
         if player:
-            player["trubble_unleashed_completed"] = 1
+            player["trubble_unleashed_state"] = 2
         self.machine.events.post("trubble_unleashed_all_lights_off")
         self.machine.events.post("show_mode_message_long", message_mode_title="TRUBBLE UNLEASHED ESCAPES", message_mode_subtitle="TOO MUCH TROUBLE")
         self.machine.events.post("trubble_unleashed_mode_complete")

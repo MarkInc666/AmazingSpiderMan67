@@ -171,7 +171,7 @@ class Kingpin(Mode):
         self._set("kingpin_areas_cleared", 0)
         self._set("kingpin_jackpots", 0)
         self._set("kingpin_super_jackpots", 0)
-        self._set("kingpin_completed", 0)
+        self._set("kingpin_state", 1)
 
         self._set("kingpin_current_area", "")
         self._set("kingpin_current_area_display", "")
@@ -342,7 +342,7 @@ class Kingpin(Mode):
         self.jackpot_ready = False
         self.super_jackpot_ready = False
 
-        self._set("kingpin_completed", 1)
+        self._set("kingpin_state", 2)
         self._set("kingpin_current_area", "victory_laps")
         self._set("kingpin_current_area_display", "VICTORY LAPS")
         self._set("kingpin_jackpot_ready", 0)
@@ -529,8 +529,8 @@ class Kingpin(Mode):
         if self.victory_laps:
             self.machine.events.post("kingpin_mode_complete")
         else:
-            self._set("kingpin_completed", 0)
-            self.machine.events.post("kingpin_mode_failed")
+            self._set("kingpin_state", 2)
+            self.machine.events.post("kingpin_mode_complete")
 
         self.machine.events.post(
             "villain_bookend_summary_request",

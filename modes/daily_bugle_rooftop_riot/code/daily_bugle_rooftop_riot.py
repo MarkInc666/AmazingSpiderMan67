@@ -24,7 +24,7 @@ class DailyBugleRooftopRiot(Mode):
 
         player = self.machine.game.player
         player["mini_wizard_current_key"] = self.MODE_KEY
-        player[f"{self.MODE_KEY}_completed"] = 0
+        player[f"{self.MODE_KEY}_state"] = 1
         player[f"{self.MODE_KEY}_mode_points"] = 0
         player[f"{self.MODE_KEY}_hits"] = 0
 
@@ -67,7 +67,7 @@ class DailyBugleRooftopRiot(Mode):
             return
         self.mode_done = True
         player = self.machine.game.player
-        player[f"{self.MODE_KEY}_completed"] = 1
+        player[f"{self.MODE_KEY}_state"] = 2
         self.machine.events.post(f"{self.MODE_KEY}_mode_complete")
         self.machine.events.post("chapter_mini_wizard_completed", mini_wizard=self.MODE_KEY)
         self.machine.events.post(f"stop_mode_{self.MODE_KEY}")
@@ -77,10 +77,10 @@ class DailyBugleRooftopRiot(Mode):
             return
         self.mode_done = True
         player = self.machine.game.player
-        player[f"{self.MODE_KEY}_completed"] = 0
+        player[f"{self.MODE_KEY}_state"] = 1
         player[f"{self.MODE_KEY}_state"] = "FAILED"
-        self.machine.events.post(f"{self.MODE_KEY}_mode_failed")
-        self.machine.events.post("chapter_mini_wizard_failed", mini_wizard=self.MODE_KEY)
+        self.machine.events.post(f"{self.MODE_KEY}_mode_complete")
+        self.machine.events.post("chapter_mini_wizard_completed", mini_wizard=self.MODE_KEY)
         self.machine.events.post(f"stop_mode_{self.MODE_KEY}")
 
     def _score(self, points):

@@ -25,7 +25,7 @@ Case File helpers:
 
 class DoctorDumpty(Mode):
     MODE_KEY = "doctor_dumpty"
-    DISPLAY_NAME = "Doctor Dumpty"
+    DISPLAY_NAME = "DoctorDumpty"
 
     BASE_SHOT_COUNT = 6
     BASE_START_TIME = 12
@@ -252,7 +252,7 @@ class DoctorDumpty(Mode):
         self.machine.events.post("rooftop_diverter_close")
         player = self.machine.game.player if self.machine.game else None
         if player:
-            player["doctor_dumpty_completed"] = 1
+            player["doctor_dumpty_state"] = 2
         self._sync_vars()
         self.machine.events.post("show_mode_message_long", message_mode_title="DOCTOR DUMPTY BEATEN", message_mode_subtitle="SEQUENCE COMPLETE")
         self.machine.events.post("doctor_dumpty_mode_complete")
@@ -267,7 +267,7 @@ class DoctorDumpty(Mode):
         self.machine.events.post("rooftop_diverter_close")
         player = self.machine.game.player if self.machine.game else None
         if player:
-            player["doctor_dumpty_completed"] = 1
+            player["doctor_dumpty_state"] = 2
         self._sync_vars()
         self.machine.events.post("show_mode_message_long", message_mode_title="DOCTOR DUMPTY ESCAPES", message_mode_subtitle="OUT OF TIME")
         self.machine.events.post("doctor_dumpty_mode_complete")

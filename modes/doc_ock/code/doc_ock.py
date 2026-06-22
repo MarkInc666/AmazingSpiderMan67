@@ -22,7 +22,7 @@ import random
     "stat_2_label": "JACKPOTS",
     "stat_2_var": "doc_ock_jackpots",
     "points_var": "doc_ock_mode_points",
-    "completed_var": "doc_ock_completed",
+    "state_var": "doc_ock_state",
 """
 class doc_ock(CaseFileMixin, Mode):
 

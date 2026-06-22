@@ -16,7 +16,7 @@ from mpf.core.delays import DelayManager
     "stat_2_label": "BEST RUNS",
     "stat_2_var": "sandman_best_run",
     "points_var": "sandman_mode_points",
-    "completed_var": "sandman_completed",
+    "state_var": "sandman_state",
 """
 class Sandman(CaseFileMixin, Mode):
 
@@ -278,7 +278,7 @@ class Sandman(CaseFileMixin, Mode):
         if self.banks_completed >= self.MAX_BANKS:
             self._show_message("SANDMAN DEFEATED", "MODE COMPLETE", event="show_mode_jackpot")
             self.machine.events.post("sandman_mode_complete")
-            self.machine.game.player["sandman_completed"] = True
+            self.machine.game.player["sandman_state"] = 2
             self.machine.events.post("reset_5bank_delayed")
             return
 

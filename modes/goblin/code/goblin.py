@@ -17,7 +17,7 @@ from modes.common.case_file_mixin import CaseFileMixin
     "stat_2_label": "BONUS BANKED",
     "stat_2_var": "goblin_bonus_banked",
     "points_var": "goblin_mode_points",
-    "completed_var": "goblin_completed",
+    "state_var": "goblin_state",
 
 
 # GOBLIN CHAOS MULTIBALL
@@ -216,7 +216,7 @@ class Goblin(CaseFileMixin, Mode):
         self._set_player_var("goblin_hold_active", 0)
         self._set_player_var("goblin_attacks_value", 0)
         self._set_player_var("goblin_mode_points", 0)
-        self._set_player_var("goblin_completed", 0)
+        self._set_player_var("goblin_state", 1)
 
         self.machine.events.post("reset_drops")
         self.machine.events.post("clear_saucers")
@@ -522,13 +522,13 @@ class Goblin(CaseFileMixin, Mode):
         self.clear_current_shows()
         self.machine.events.post("goblin_mode_ended")
 
-        self._set_player_var("goblin_completed", 1 if completed else 0)
+        self._set_player_var("goblin_state", 2)
 
         if completed:
             self.collect_banked_bonus()
             self.machine.events.post("goblin_mode_complete")
         else:
-            self.machine.events.post("goblin_mode_failed")
+            self.machine.events.post("goblin_mode_complete")
 
     def mode_stop(self, **kwargs):
         self.clear_active_case_file_helpers()

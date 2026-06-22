@@ -58,7 +58,7 @@ class MasterTechnician(Mode):
         # If either bank completes, mode ends.
         if len(self.left_down) >= 3 or len(self.right_down) >= 5:
             player = self.machine.game.player
-            player["master_technician_completed"] = 1
+            player["master_technician_state"] = 2
             self.machine.events.post("master_technician_mode_complete")
             return
 

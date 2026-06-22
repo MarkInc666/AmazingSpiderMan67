@@ -48,7 +48,7 @@ class Cyclops(CaseFileMixin, Mode):
         self.max_eye_jackpots = 2 if self.has_case_file("more_jackpots") else 1
 
         player = self.machine.game.player
-        player[f"{self.MODE_KEY}_completed"] = 0
+        player[f"{self.MODE_KEY}_state"] = 1
         self._sync_vars()
 
         self.publish_case_file_bonus_events(self.MODE_KEY)
@@ -193,7 +193,7 @@ class Cyclops(CaseFileMixin, Mode):
 
         self.mode_done = True
         player = self.machine.game.player
-        player[f"{self.MODE_KEY}_completed"] = 1
+        player[f"{self.MODE_KEY}_state"] = 2
         self._sync_vars()
         self.machine.events.post("cyclops_mode_complete")
 
@@ -203,9 +203,9 @@ class Cyclops(CaseFileMixin, Mode):
 
         self.mode_done = True
         player = self.machine.game.player
-        player[f"{self.MODE_KEY}_completed"] = 1
+        player[f"{self.MODE_KEY}_state"] = 2
         self._sync_vars()
-        self.machine.events.post("cyclops_mode_failed")
+        self.machine.events.post("cyclops_mode_complete")
 
     def _sync_vars(self):
         player = self.machine.game.player

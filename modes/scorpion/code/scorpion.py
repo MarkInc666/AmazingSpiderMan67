@@ -15,7 +15,7 @@ from modes.common.case_file_mixin import CaseFileMixin
     "stat_2_label": "BIGGEST JACKPOT",
     "stat_2_var": "scorpion_biggest_jackpot",
     "points_var": "scorpion_mode_points",
-    "completed_var": "scorpion_completed",
+    "state_var": "scorpion_state",
 """
 class Scorpion(CaseFileMixin, Mode):
 
