@@ -677,51 +677,6 @@ class VillainProgression(Mode):
         self.machine.events.post("chapter_mini_wizard_failed_but_consumed", mini_wizard=mini_key)
         self._mini_wizard_completed(mini_wizard=mini_key, **kwargs)
 
-    def _ensure_player_vars(self):
-        defaults = {
-            "villain_chapter": 1,
-            "villains_played_this_chapter": 0,
-            "villains_played_total": 0,
-            "chapter_mini_wizard_ready": 0,
-            "mini_wizard_daily_bugle_ready": 0,
-            "final_wizard_ready": 0,
-            "villain_current_key": "",
-            "villain_current_name": "",
-            "villain_mode_running": 0,
-            "villain_mode_running_name": "",
-            "villain_mode_in_summary": 0,
-            "mini_wizard_current_key": "",
-            "mini_wizard_vuk_hold_active": 0,
-            "mini_wizards_completed": 0,
-            "chapter_case_files_collected": 0,
-            "current_villain_case_files_collected": 0,
-            "mini_wizard_case_file_bonus_per_file": self.CASE_FILE_MINI_WIZARD_BONUS,
-            "mini_wizard_case_file_bonus": 0,
-            "mini_wizard_base_jackpot": self.MINI_WIZARD_BASE_JACKPOT,
-            "mini_wizard_jackpot_value": self.MINI_WIZARD_BASE_JACKPOT,
-            "villain_select_active": 0,
-            "active_case_file_helper_count": 0,
-            "active_case_file_helper_1": "",
-            "active_case_file_helper_2": "",
-            "active_case_file_helper_3": "",
-            "active_case_file_helper_4": "",
-            "active_case_file_helper_5": "",
-        }
-        for name, value in defaults.items():
-            if self._get_player_var(name, None) is None:
-                self.machine.game.player[name] = value
-
-        for key in self.VILLAINS:
-            if self._get_player_var(f"{key}_state", None) is None:
-                self.machine.game.player[f"{key}_state"] = self.NOT_PLAYED
-
-        self._sync_mini_wizard_case_file_bonus()
-
-        for chapter in self.CHAPTERS:
-            mini_key = chapter["mini_wizard_key"]
-            if self._get_player_var(f"{mini_key}_state", None) is None:
-                self.machine.game.player[f"{mini_key}_state"] = self.NOT_PLAYED
-
     def _count_current_case_files(self):
         """Return the number of currently collected Case Files for this villain attempt."""
         player = self.machine.game.player
@@ -1302,7 +1257,7 @@ class VillainProgression(Mode):
             self.machine.game.player[f"chapter_villain_{index}_state"] = self._display_state(self._villain_state(villain_key))
 
     def _villain_state(self, villain_key):
-        state = self._normalize_state(self._get_player_var(f"{villain_key}_state", self.NOT_PLAYED))
+        state = self._normalize_state(self.machine.game.player[f"{villain_key}_state"])
         if state == self.COMPLETED:
             return self.COMPLETED
         if state == self.PLAYING:
@@ -1349,30 +1304,3 @@ class VillainProgression(Mode):
         except Exception:
             return default
 
-    def _player(self):
-        if not self.machine.game:
-            return None
-        return self.machine.game.player
-
-    def _get_player_var(self, name, default=0):
-        player = self._player()
-        if not player:
-            return default
-
-        try:
-            return player[name]
-        except (KeyError, TypeError):
-            return getattr(player, name, default)
-
-    def _set_player_var(self, name, value):
-        player = self._player()
-        if not player:
-            return
-
-        try:
-            player[name] = value
-        except TypeError:
-            setattr(player, name, value)
-
-    def _add_player_var(self, name, amount):
-        self._set_player_var(name, self._get_player_var(name, 0) + amount)

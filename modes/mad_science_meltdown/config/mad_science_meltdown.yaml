@@ -41,10 +41,6 @@ widget_player:
     mad_science_meltdown:
       action: remove
 
-  mad_science_meltdown_mode_failed:
-    mad_science_meltdown:
-      action: remove
-
   mode_mad_science_meltdown_stopping:
     mad_science_meltdown:
       action: remove

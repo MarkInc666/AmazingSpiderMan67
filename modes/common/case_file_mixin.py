@@ -25,10 +25,7 @@ class CaseFileMixin:
             return bonuses
 
         for key in self.CASE_FILE_KEYS:
-            bonuses[key] = self._player_var(
-                f"case_file_{key}_collected",
-                0
-            ) == 1
+            bonuses[key] = self._safe_int(player[f"case_file_{key}_collected"], 0) == 1
 
         return bonuses
 
@@ -117,20 +114,6 @@ class CaseFileMixin:
 
         player["active_case_file_helper_count"] = 0
         self.machine.events.post("case_files_active_helpers_changed", helper_count=0)
-
-    def _player_var(self, name, default=0):
-        """Read an MPF player variable safely without using player.get()."""
-        player = self.machine.game.player if self.machine.game else None
-
-        if not player:
-            return default
-
-        try:
-            value = player[name]
-        except KeyError:
-            return default
-
-        return self._safe_int(value, default)
 
     def _safe_int(self, value, default=0):
         try:

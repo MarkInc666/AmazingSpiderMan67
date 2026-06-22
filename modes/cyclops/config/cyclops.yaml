@@ -11,7 +11,6 @@ mode:
   start_events: start_mode_cyclops
   stop_events:
     - cyclops_mode_complete
-    - cyclops_mode_failed
     - cyclops_mode_completed_summary
     - ball_ended
   code: cyclops.Cyclops
@@ -24,10 +23,6 @@ widget_player:
       action: play
 
   cyclops_mode_complete:
-    cyclops:
-      action: remove
-
-  cyclops_mode_failed:
     cyclops:
       action: remove
 
@@ -117,10 +112,6 @@ show_player:
       action: stop
 
   cyclops_mode_complete:
-    cyclops_eye_lit_show:
-      action: stop
-
-  cyclops_mode_failed:
     cyclops_eye_lit_show:
       action: stop
 

@@ -291,7 +291,7 @@ class Enforcers(Mode, CaseFileMixin):
             return
         self.mode_done = True
         player = self.machine.game.player
-        player["enforcers_state"] = 1
+        player["enforcers_state"] = 2
         self._sync_vars()
         self.machine.events.post("enforcers_mode_complete")
 

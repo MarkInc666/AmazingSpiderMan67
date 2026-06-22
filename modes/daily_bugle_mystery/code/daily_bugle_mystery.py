@@ -64,7 +64,6 @@ class DailyBugleMystery(Mode):
         self.daily_bugle_enabled = True
         self.left_exit_hold_active = False
 
-        self._ensure_player_vars()
         self._restore_runtime_state_from_player()
         self._add_handlers()
         self._restore_lights_and_widgets()
@@ -88,30 +87,6 @@ class DailyBugleMystery(Mode):
         self.add_mode_event_handler("enable_daily_bugle_mystery", self.enable_db)
         self.add_mode_event_handler("reset_daily_bugle_state", self.reset_cycle)
         self.add_mode_event_handler("daily_bugle_restore_state", self._restore_lights_and_widgets)
-
-    def _ensure_player_vars(self):
-        player = self.machine.game.player
-
-        defaults = {
-            "daily_bugle_mystery_count": 0,
-            "daily_bugle_extra_balls_awarded": 0,
-
-            # These are the persistent A/B/mystery state vars.
-            "daily_bugle_a_hit": 0,
-            "daily_bugle_b_hit": 0,
-            "daily_bugle_ab_ready": 0,
-            "daily_bugle_mystery_ready": 0,
-            "daily_bugle_last_instruction_key": "",
-            "daily_bugle_last_instruction_text": "",
-            "daily_bugle_left_exit_hold_active": 0,
-            "daily_bugle_pictures_taken": 0,
-            "daily_bugle_pictures_needed": 3,
-            "daily_bugle_pictures_taken_text": "PICS: 0/3",
-        }
-
-        for name, value in defaults.items():
-            if name not in player:
-                player[name] = value
 
     def _restore_runtime_state_from_player(self):
         player = self.machine.game.player

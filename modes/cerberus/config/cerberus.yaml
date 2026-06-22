@@ -4,7 +4,6 @@ mode:
   start_events: start_mode_cerberus
   stop_events:
     - cerberus_mode_complete
-    - cerberus_mode_failed
     - cerberus_mode_completed_summary
     - ball_ended
   code: cerberus.Cerberus
@@ -16,10 +15,6 @@ widget_player:
       action: play
 
   cerberus_mode_complete:
-    cerberus:
-      action: remove
-
-  cerberus_mode_failed:
     cerberus:
       action: remove
 

@@ -151,7 +151,7 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
 
     def _init_player_vars(self):
         player = self.machine.game.player
-        player["fifth_avenue_phantom_state"] = 1
+        player["fifth_avenue_phantom_state"] = 2
         player["fifth_avenue_phantom_mode_points"] = 0
         player["fifth_avenue_phantom_jackpots"] = 0
         player["fifth_avenue_phantom_escape_jackpots"] = 0
@@ -426,8 +426,8 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
         self.delay.remove("fifth_avenue_phantom_timer_tick")
         self._clear_lit_location()
         player = self.machine.game.player
-        player["fifth_avenue_phantom_state"] = 1
-        player["fifth_avenue_phantom_phase"] = "failed"
+        player["fifth_avenue_phantom_state"] = 2
+        player["fifth_avenue_phantom_phase"] = "goal_missed"
         self.machine.events.post("fifth_avenue_phantom_mode_complete")
 
     def _score(self, points):

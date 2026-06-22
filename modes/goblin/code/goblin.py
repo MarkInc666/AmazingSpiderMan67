@@ -209,14 +209,14 @@ class Goblin(CaseFileMixin, Mode):
         self.bonus_paid = False
         self.held_saucer = None
 
-        self._set_player_var("goblin_chaos_bonus", 0)
-        self._set_player_var("goblin_bonus_banked", 0)
-        self._set_player_var("goblin_chaos_lock", 0)  # compatibility with older widgets/code
-        self._set_player_var("goblin_hold_count", 0)
-        self._set_player_var("goblin_hold_active", 0)
-        self._set_player_var("goblin_attacks_value", 0)
-        self._set_player_var("goblin_mode_points", 0)
-        self._set_player_var("goblin_state", 1)
+        self.machine.game.player["goblin_chaos_bonus"] = 0
+        self.machine.game.player["goblin_bonus_banked"] = 0
+        self.machine.game.player["goblin_chaos_lock"] = 0  # compatibility with older widgets/code
+        self.machine.game.player["goblin_hold_count"] = 0
+        self.machine.game.player["goblin_hold_active"] = 0
+        self.machine.game.player["goblin_attacks_value"] = 0
+        self.machine.game.player["goblin_mode_points"] = 0
+        self.machine.game.player["goblin_state"] = 1
 
         self.machine.events.post("reset_drops")
         self.machine.events.post("clear_saucers")
@@ -306,8 +306,8 @@ class Goblin(CaseFileMixin, Mode):
         self.info_log("Goblin flashing shot collected: %s", shot_name)
 
         self._award_points(self.FLASHING_SCORE)
-        self._add_player_var("goblin_attacks_value", self.FLASHING_SCORE)
-        self._add_player_var("goblin_chaos_bonus", self.CHAOS_BONUS_ADD)
+        self.machine.game.player["goblin_attacks_value"] += self.FLASHING_SCORE
+        self.machine.game.player["goblin_chaos_bonus"] += self.CHAOS_BONUS_ADD
 
         self.deactivate_shot(shot_name)
         self.machine.events.post("goblin_flashing_shot_score", shot=shot_name)
@@ -319,10 +319,10 @@ class Goblin(CaseFileMixin, Mode):
 
         self._award_points(self.SOLID_SCORE)
 
-        banked = self._get_player_var("goblin_bonus_banked", 0)
-        current_bonus = self._get_player_var("goblin_chaos_bonus", 0)
+        banked = self.machine.game.player["goblin_bonus_banked"]
+        current_bonus = self.machine.game.player["goblin_chaos_bonus"]
         new_bonus = max(banked, current_bonus - self.CHAOS_BONUS_LOSS)
-        self._set_player_var("goblin_chaos_bonus", new_bonus)
+        self.machine.game.player["goblin_chaos_bonus"] = new_bonus
 
         self.deactivate_shot(shot_name)
         self.machine.events.post("goblin_solid_shot_score", shot=shot_name)
@@ -356,20 +356,20 @@ class Goblin(CaseFileMixin, Mode):
         self.info_log("Goblin saucer stabilizer hit: %s", saucer)
         self.held_saucer = saucer
         self.hold_active = True
-        self._set_player_var("goblin_hold_active", 1)
-        self._add_player_var("goblin_hold_count", 1)
+        self.machine.game.player["goblin_hold_active"] = 1
+        self.machine.game.player["goblin_hold_count"] += 1
 
         # Secure gains or restore to the secured bank.
-        current_bonus = self._get_player_var("goblin_chaos_bonus", 0)
-        banked = self._get_player_var("goblin_bonus_banked", 0)
+        current_bonus = self.machine.game.player["goblin_chaos_bonus"]
+        banked = self.machine.game.player["goblin_bonus_banked"]
 
         if current_bonus > banked:
             banked = current_bonus
-            self._set_player_var("goblin_bonus_banked", banked)
-            self._set_player_var("goblin_chaos_lock", banked)
+            self.machine.game.player["goblin_bonus_banked"] = banked
+            self.machine.game.player["goblin_chaos_lock"] = banked
         else:
-            self._set_player_var("goblin_chaos_bonus", banked)
-            self._set_player_var("goblin_chaos_lock", banked)
+            self.machine.game.player["goblin_chaos_bonus"] = banked
+            self.machine.game.player["goblin_chaos_lock"] = banked
 
         # Stop the active chaos window and turn off all solid penalty shots.
         self.delay.remove("goblin_chaos_window")
@@ -427,7 +427,7 @@ class Goblin(CaseFileMixin, Mode):
         )
 
     def get_current_hold_time_ms(self):
-        hold_count = self._get_player_var("goblin_hold_count", 0)
+        hold_count = self.machine.game.player["goblin_hold_count"]
         return max(
             self.MIN_HOLD_TIME_MS,
             self.BASE_HOLD_TIME_MS - ((hold_count - 1) * self.HOLD_REDUCTION_PER_LOCK_MS)
@@ -439,7 +439,7 @@ class Goblin(CaseFileMixin, Mode):
 
         self.info_log("Goblin saucer hold ended")
         self.hold_active = False
-        self._set_player_var("goblin_hold_active", 0)
+        self.machine.game.player["goblin_hold_active"] = 0
 
         saucer = self.held_saucer
         self.held_saucer = None
@@ -469,7 +469,7 @@ class Goblin(CaseFileMixin, Mode):
         self.info_log("Goblin ejecting held saucer %s because %s", saucer, reason)
         self.held_saucer = None
         self.hold_active = False
-        self._set_player_var("goblin_hold_active", 0)
+        self.machine.game.player["goblin_hold_active"] = 0
         self.machine.events.post("goblin_hold_ended", saucer=saucer)
         self.delayed_eject(saucer=saucer)
 
@@ -478,10 +478,10 @@ class Goblin(CaseFileMixin, Mode):
     # -------------------------------------------------------------------------
 
     def multiball_started(self, **kwargs):
-        self._set_player_var("multiball_autoplunge_active", 1)
+        self.machine.game.player["multiball_autoplunge_active"] = 1
 
     def multiball_ended(self, **kwargs):
-        self._set_player_var("multiball_autoplunge_active", 0)
+        self.machine.game.player["multiball_autoplunge_active"] = 0
 
         # Goblin ends when multiball drops to one ball. If that remaining ball
         # is being held in a saucer, eject it before ending the mode.
@@ -495,7 +495,7 @@ class Goblin(CaseFileMixin, Mode):
         if self.bonus_paid:
             return
 
-        banked = self._get_player_var("goblin_bonus_banked", 0)
+        banked = self.machine.game.player["goblin_bonus_banked"]
         if banked <= 0:
             return
 
@@ -522,7 +522,7 @@ class Goblin(CaseFileMixin, Mode):
         self.clear_current_shows()
         self.machine.events.post("goblin_mode_ended")
 
-        self._set_player_var("goblin_state", 2)
+        self.machine.game.player["goblin_state"] = 2
 
         if completed:
             self.collect_banked_bonus()
@@ -535,7 +535,7 @@ class Goblin(CaseFileMixin, Mode):
         self.clear_all_delays()
         self.clear_current_shows()
         self.machine.events.post("goblin_mode_ended")
-        self._set_player_var("multiball_autoplunge_active", 0)
+        self.machine.game.player["multiball_autoplunge_active"] = 0
         super().mode_stop(**kwargs)
 
     def clear_all_delays(self):
@@ -565,33 +565,7 @@ class Goblin(CaseFileMixin, Mode):
         self.current_solid.clear()
 
     def _award_points(self, points):
-        self._add_player_var("score", points)
-        self._add_player_var("goblin_mode_points", points)
+        self.machine.game.player["score"] += points
+        self.machine.game.player["goblin_mode_points"] += points
 
-    def _player(self):
-        if not self.machine.game:
-            return None
-        return self.machine.game.player
 
-    def _get_player_var(self, name, default=0):
-        player = self._player()
-        if not player:
-            return default
-
-        try:
-            return player[name]
-        except (KeyError, TypeError):
-            return getattr(player, name, default)
-
-    def _set_player_var(self, name, value):
-        player = self._player()
-        if not player:
-            return
-
-        try:
-            player[name] = value
-        except TypeError:
-            setattr(player, name, value)
-
-    def _add_player_var(self, name, amount):
-        self._set_player_var(name, self._get_player_var(name, 0) + amount)

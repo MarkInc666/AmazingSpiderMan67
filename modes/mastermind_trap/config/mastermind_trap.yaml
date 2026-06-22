@@ -41,10 +41,6 @@ widget_player:
     mastermind_trap:
       action: remove
 
-  mastermind_trap_mode_failed:
-    mastermind_trap:
-      action: remove
-
   mode_mastermind_trap_stopping:
     mastermind_trap:
       action: remove

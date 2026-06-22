@@ -17,7 +17,6 @@ class QualifySystem(Mode):
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
         self.qualify_logic_active = True
-        self._ensure_player_vars()
         self._add_handlers()
         self._restore_state()
 
@@ -46,23 +45,6 @@ class QualifySystem(Mode):
         self.add_mode_event_handler("chapter_mini_wizard_completed", self._reset_after_villain)
         self.add_mode_event_handler("qualify_system_restore_state", self._restore_state)
 
-    def _ensure_player_vars(self):
-        defaults = {
-            "saucer_1_state": 0,
-            "saucer_2_state": 0,
-            "saucer_3_state": 0,
-
-            "saucer_1_drop_hit_this_cycle": 0,
-            "saucer_2_drop_hit_this_cycle": 0,
-            "saucer_3_drop_hit_this_cycle": 0,
-
-            "drop_bank_completions_this_ball": 0,
-            "drop_bank_completions_this_chapter": 0,
-        }
-        for name, value in defaults.items():
-            if name not in self.machine.game.player:
-                self.machine.game.player[name] = value
-
     def _ball_started_restore(self, **kwargs):
         self._reset_drop_cycle()
         self.machine.events.post("villain_qualify_drop_bank_reset_request")
@@ -72,15 +54,12 @@ class QualifySystem(Mode):
         player = self.machine.game.player if self.machine.game else None
         if not player:
             return True
-        try:
-            if player["villain_mode_running"] == 1:
-                return True
-            if player["chapter_mini_wizard_ready"] == 1:
-                return True
-            if player["final_wizard_ready"] == 1:
-                return True
-        except KeyError:
-            pass
+        if player["villain_mode_running"] == 1:
+            return True
+        if player["chapter_mini_wizard_ready"] == 1:
+            return True
+        if player["final_wizard_ready"] == 1:
+            return True
         return False
 
     def _drop_hit(self, saucer=None, **kwargs):

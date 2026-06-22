@@ -478,7 +478,7 @@ class NoahBoddy(Mode):
         self.mode_done = True
         player = self.machine.game.player
         player["noah_boddy_state"] = 2
-        player["noah_boddy_phase"] = "failed"
+        player["noah_boddy_phase"] = "goal_missed"
         self.machine.events.post("noah_boddy_mode_complete")
 
     def _score(self, points):

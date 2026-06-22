@@ -41,10 +41,6 @@ widget_player:
     fifth_dimension_curse:
       action: remove
 
-  fifth_dimension_curse_mode_failed:
-    fifth_dimension_curse:
-      action: remove
-
   mode_fifth_dimension_curse_stopping:
     fifth_dimension_curse:
       action: remove

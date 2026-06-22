@@ -4,7 +4,6 @@ mode:
   start_events: start_mode_enforcers
   stop_events:
     - enforcers_mode_complete
-    - enforcers_mode_failed
     - enforcers_mode_completed_summary
     - ball_ended
   code: enforcers.Enforcers
@@ -16,10 +15,6 @@ widget_player:
       action: play
 
   enforcers_mode_complete:
-    enforcers:
-      action: remove
-
-  enforcers_mode_failed:
     enforcers:
       action: remove
 

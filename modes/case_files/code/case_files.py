@@ -46,7 +46,6 @@ class CaseFiles(Mode):
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
         self.case_files_logic_active = True
-        self._ensure_player_vars()
         self._add_handlers()
         self._restore_state()
         self._publish_widget_vars()
@@ -72,30 +71,6 @@ class CaseFiles(Mode):
         self.add_mode_event_handler("case_files_restore_state", self._restore_state)
         self.add_mode_event_handler("case_files_reset_all", self._reset_all_case_files)
         self.add_mode_event_handler("case_files_clear_lights", self._clear_lights)
-
-    def _ensure_player_vars(self):
-        defaults = {
-            "case_file_selected_index": 0,
-
-            "case_files_collected_count": 0,
-            "case_files_complete_ready": 0,
-            "wizard_prep_this_chapter": 0,
-            "wizard_prep_level": 0,
-            "wizard_prep_summary": "No Case Files collected",
-            "wizard_prep_next_award": "Collect More Jackpots",
-        }
-
-        for key in self.CASE_FILES:
-            defaults[f"case_file_{key}"] = 0
-            defaults[f"case_file_{key}_collected"] = 0
-            defaults[f"case_file_{key}_state"] = "NOT COLLECTED"
-
-        for name, value in defaults.items():
-            if name not in self.machine.game.player:
-                self.machine.game.player[name] = value
-
-        self._refresh_counts()
-        self._publish_widget_vars()
 
     def _spinner_hit(self, **kwargs):
         if not self.case_files_logic_active or self._case_files_locked():
@@ -271,21 +246,7 @@ class CaseFiles(Mode):
         self.machine.events.post(f"case_file_selected_{key}")
 
     def _case_file_value(self, key):
-        collected = self._player_var(f"case_file_{key}_collected", None)
-
-        if collected is None:
-            collected = self._player_var(f"case_file_{key}", 0)
-
-        return self._safe_int(collected)
-
-    def _player_var(self, name, default=0):
-        player = self.machine.game.player if self.machine.game else None
-        if not player:
-            return default
-        try:
-            return player[name]
-        except Exception:
-            return default
+        return self._safe_int(self.machine.game.player[f"case_file_{key}_collected"])
 
     def _set_case_file_collected(self, key, value):
         value = 1 if self._safe_int(value) == 1 else 0

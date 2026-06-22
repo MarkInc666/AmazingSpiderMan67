@@ -41,10 +41,6 @@ widget_player:
     nature_strikes_back:
       action: remove
 
-  nature_strikes_back_mode_failed:
-    nature_strikes_back:
-      action: remove
-
   mode_nature_strikes_back_stopping:
     nature_strikes_back:
       action: remove

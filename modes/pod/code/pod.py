@@ -71,8 +71,9 @@ class Pod(Mode):
             return
         self.mode_done = True
         player = self.machine.game.player
-        player[f"{self.MODE_KEY}_completed"] = 0
-        self.machine.events.post(f"{self.MODE_KEY}_mode_failed")
+        player[f"{self.MODE_KEY}_completed"] = 1
+        self.machine.events.post(f"{self.MODE_KEY}_goal_missed")
+        self.machine.events.post(f"{self.MODE_KEY}_mode_complete")
 
     def _score(self, points):
         player = self.machine.game.player

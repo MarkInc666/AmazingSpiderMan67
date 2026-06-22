@@ -4,7 +4,6 @@ mode:
   start_events: start_mode_centaur
   stop_events:
     - centaur_mode_complete
-    - centaur_mode_failed
     - centaur_mode_completed_summary
     - ball_ended
   code: centaur.Centaur
@@ -16,10 +15,6 @@ widget_player:
       action: play
 
   centaur_mode_complete:
-    centaur:
-      action: remove
-
-  centaur_mode_failed:
     centaur:
       action: remove
 

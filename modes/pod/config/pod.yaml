@@ -7,7 +7,6 @@ mode:
   start_events: start_mode_pod
   stop_events:
     - pod_mode_complete
-    - pod_mode_failed
     - pod_mode_completed_summary
     - ball_ended
   code: pod.Pod
@@ -19,10 +18,6 @@ widget_player:
       action: play
 
   pod_mode_complete:
-    pod:
-      action: remove
-
-  pod_mode_failed:
     pod:
       action: remove
 

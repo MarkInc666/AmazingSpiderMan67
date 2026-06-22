@@ -1,594 +1,310 @@
-from random import choice
 from mpf.core.mode import Mode
+from modes.common.case_file_mixin import CaseFileMixin
 
-"""
-kingpin_area_changed
-kingpin_area_complete
-kingpin_jackpot_lit
-kingpin_jackpot_collected
-kingpin_ab_complete
-kingpin_ab_reset
-kingpin_super_jackpot_lit
-kingpin_super_jackpot_collected
-kingpin_victory_laps_started
-kingpin_mode_complete
-kingpin_mode_failed
-kingpin_open_upper_gate
-kingpin_close_upper_gate
-kingpin_disable_daily_bugle_mystery
-kingpin_enable_daily_bugle_mystery
-"""
-class Kingpin(Mode):
 
-    """
-    KINGPIN: CLEAR THE CITY
+class Kingpin(Mode, CaseFileMixin):
+    """KINGPIN: THE FIX IS IN
 
-    A+B Daily Bugle mystery disabled during wizard mode.
+    60 second right-bank completion mode.
+    Complete all five right-bank target lights before time expires.
 
-    Start 2-ball multiball with 20s ball save.
+    Round 1 allows one right-bank hit before Kingpin sweeps the bank.
+    Round 2 allows two hits, Round 3 allows three hits, and so on.
+    After the allowed hits are used, remaining drops are auto-dropped and
+    the bank resets after a short delay.
 
-    One random city area is active at a time:
-    - Pops: 10 hits
-    - Spinner: 10 spins
-    - Star: 3 hits
-    - Upper Targets: 2 hits each
-    - Drops: complete both banks
-
-    Active area hits score 50K.
-    Inactive area hits score 20K.
-
-    Completing the active area lights Daily Bugle Jackpot at the VUK and opens the gate.
-    Jackpot = 100K × (balls in play + cleared areas)
-
-    Complete A+B before collecting Jackpot to add-a-ball on Jackpot collect.
-    Max 5 balls in play.
-    10 second ball save when ball added.
-    A+B resets after each Jackpot.
-
-    Saucers score 50K.
-    If more than 1 ball is active, saucers hold the ball for 10s, then eject.
-    If only 1 ball remains, saucers eject immediately.
-
-    Upper gate opens only when:
-    - Daily Bugle Jackpot is ready
-    - Spinner area is active
-    - Upper Target area is active
-
-    After all city areas are cleared:
-    Victory Laps begin.
-    All areas are lit for 50K per hit.
-    A+B opens gate and Daily Bugle Super Jackpot is lit for 1M × balls in play.
-
-    Mode ends when only 1 ball remains.
-    If a ball is held in a saucer when the mode ends, eject it.
+    Completing the left 3-bank adds 10 seconds and resets the left bank.
+    The mode does not control the Daily Bugle A/B gate.
     """
 
-    ACTIVE_AREA_SCORE = 50_000
-    INACTIVE_AREA_SCORE = 20_000
-    SAUCER_SCORE = 50_000
-    JACKPOT_BASE = 100_000
-    SUPER_JACKPOT_BASE = 1_000_000
-    SAUCER_HOLD_MS = 10_000
-    MAX_BALLS = 5
+    MODE_KEY = "kingpin"
+    TARGETS = (1, 2, 3, 4, 5)
 
-    AREAS = {
-        "pops": {
-            "display": "POP BUMPERS",
-            "required": 10,
-        },
-        "spinner": {
-            "display": "SPINNERS",
-            "required": 20,
-        },
-        "star": {
-            "display": "STAR",
-            "required": 3,
-        },
-        "upper_targets": {
-            "display": "UPPER TARGETS",
-            "required": 6,
-        },
-        "drops": {
-            "display": "DROP TARGETS",
-            "required": 2,
-        },
-    }
+    BASE_SECONDS = 60
+    MORE_TIME_SECONDS = 70
+    LEFT_BANK_TIME_ADD = 10
+    BANK_RESET_DELAY_MS = 2000
 
-    UPPER_TARGETS = {
-        "left": "kingpin_upper_left_hits",
-        "center": "kingpin_upper_center_hits",
-        "right": "kingpin_upper_right_hits",
-    }
-
-    SAUCER_EJECT_EVENTS = {
-        "saucer_1": "delayed_kickout_saucer_1",
-        "saucer_2": "delayed_kickout_saucer_2",
-        "saucer_3": "delayed_kickout_saucer_3",
-    }
+    NEW_TARGET_VALUE = 200_000
+    DUPLICATE_TARGET_VALUE = 50_000
+    BIGGER_NEW_TARGET_VALUE = 250_000
+    BIGGER_DUPLICATE_TARGET_VALUE = 75_000
+    EXTRA_JACKPOT_VALUE = 500_000
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
 
-        self.mode_exiting = False
-        self.current_area = None
-        self.jackpot_ready = False
-        self.victory_laps = False
-        self.super_jackpot_ready = False
-        self.held_saucers = set()
-        self.left_bank_complete = False
-        self.right_bank_complete = False
+        self.mode_done = False
+        self.bank_sweeping = False
+        self.completed = {target: False for target in self.TARGETS}
+        self.round_number = 1
+        self.round_hits = 0
+        self.remaining_seconds = self.BASE_SECONDS
+        self.mode_points = 0
+        self.new_target_value = self.NEW_TARGET_VALUE
+        self.duplicate_target_value = self.DUPLICATE_TARGET_VALUE
+        self.more_jackpots_extra_round = False
+        self.extra_round_active = False
+        self.shot_assist_used = False
 
+        self.case_files = self.get_case_file_bonuses()
+        self._apply_case_file_bonuses()
         self._reset_player_vars()
+        self._add_handlers()
 
-        self._add_switch_handlers()
-        self.add_mode_event_handler("kingpin_choose_first_area", self._choose_next_area)
-        self.add_mode_event_handler("kingpin_multiball_ended", self._multiball_ended)
-        self.add_mode_event_handler("kingpin_release_all_saucers", self._release_all_held_saucers)
+        self.machine.events.post("kingpin_started")
+        self.machine.events.post("kingpin_clear_lights")
+        self.machine.events.post("kingpin_reset_banks")
+        self.machine.events.post("kingpin_round_started", round=self.round_number, allowed=self._hits_allowed())
+        self._sync_vars()
+        self._start_timer()
 
     def mode_stop(self, **kwargs):
-        self.mode_exiting = True
-
-        self._release_all_held_saucers()
-
-        self.machine.events.post("kingpin_clear_all_kingpin_lights")
-        self.machine.events.post("kingpin_close_upper_gate")
-
+        self.delay.remove("kingpin_timer_tick")
+        self.delay.remove("kingpin_reset_right_bank")
+        self.clear_active_case_file_helpers()
+        self.machine.events.post("kingpin_clear_lights")
+        self.machine.events.post("kingpin_reset_banks")
         super().mode_stop(**kwargs)
 
-    def _add_switch_handlers(self):
-        # A/B rollovers
-        self.add_mode_event_handler("s_inlane_a_active", self._a_hit)
-        self.add_mode_event_handler("s_inlane_m_r_active", self._a_hit)
-        self.add_mode_event_handler("s_inlane_b_active", self._b_hit)
-        self.add_mode_event_handler("s_inlane_m_l_active", self._b_hit)
+    def _apply_case_file_bonuses(self):
+        self.publish_case_file_bonus_events(self.MODE_KEY)
+        self.publish_active_case_file_helpers([
+            ("more_jackpots", "EXTRA KINGPIN ROUND"),
+            ("bigger_jackpots", "250K NEW TARGETS"),
+            ("more_time", "70 SECOND TIMER"),
+            ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
+            ("shot_assist", "ROUND 2 SPOTS EXTRA TARGET"),
+        ])
 
-        # Daily Bugle / VUK jackpot
-        self.add_mode_event_handler("s_vuk_switch_active", self._daily_bugle_hit)
+        if self.has_case_file("more_time"):
+            self.remaining_seconds = self.MORE_TIME_SECONDS
 
-        # Area switches
-        self.add_mode_event_handler("s_pop_left_active", self._pop_hit)
-        self.add_mode_event_handler("s_pop_right_active", self._pop_hit)
+        if self.has_case_file("bigger_jackpots"):
+            self.new_target_value = self.BIGGER_NEW_TARGET_VALUE
+            self.duplicate_target_value = self.BIGGER_DUPLICATE_TARGET_VALUE
 
-        self.add_mode_event_handler("s_trispinner_opto_active", self._spinner_hit)
-        self.add_mode_event_handler("s_web_spinner_active", self._spinner_hit)
+        if self.has_case_file("more_jackpots"):
+            self.more_jackpots_extra_round = True
 
-        self.add_mode_event_handler("s_star_rollover_active", self._star_hit)
-
-        self.add_mode_event_handler("s_upper_target_left_active", self._upper_target_left_hit)
-        self.add_mode_event_handler("s_upper_target_center_active", self._upper_target_center_hit)
-        self.add_mode_event_handler("s_upper_target_right_active", self._upper_target_right_hit)
-
-        self.add_mode_event_handler("drop_target_bank_dt_bank_left_down", self._left_drops_complete)
-        self.add_mode_event_handler("drop_target_bank_dt_bank_right_down", self._right_drops_complete)
-
-        # Saucers
-        self.add_mode_event_handler("s_saucer_1_active", self._saucer_1_hit)
-        self.add_mode_event_handler("s_saucer_2_active", self._saucer_2_hit)
-        self.add_mode_event_handler("s_saucer_3_active", self._saucer_3_hit)
+        if self.has_case_file("safety_net"):
+            self.machine.events.post("start_case_file_ball_save")
 
     def _reset_player_vars(self):
-        self._set("kingpin_mode_points", 0)
-        self._set("kingpin_areas_cleared", 0)
-        self._set("kingpin_jackpots", 0)
-        self._set("kingpin_super_jackpots", 0)
-        self._set("kingpin_state", 1)
+        player = self.machine.game.player
+        player["kingpin_state"] = 1
+        player["kingpin_mode_points"] = 0
+        player["kingpin_hits"] = 0
+        player["kingpin_major_hits"] = 0
+        player["kingpin_timer"] = self.remaining_seconds
+        player["kingpin_round"] = self.round_number
+        player["kingpin_round_hits"] = 0
+        player["kingpin_round_hits_allowed"] = self._hits_allowed()
+        player["kingpin_completed_count"] = 0
+        player["kingpin_extra_round_active"] = 0
+        for target in self.TARGETS:
+            player[f"kingpin_target_{target}_complete"] = 0
 
-        self._set("kingpin_current_area", "")
-        self._set("kingpin_current_area_display", "")
-        self._set("kingpin_area_progress", 0)
-        self._set("kingpin_area_required", 0)
+    def _add_handlers(self):
+        for target in self.TARGETS:
+            self.add_mode_event_handler(
+                f"kingpin_right_drop_{target}_hit",
+                self._right_drop_hit,
+                target=target,
+            )
 
-        self._set("kingpin_jackpot_ready", 0)
-        self._set("kingpin_jackpot_value", 0)
-        self._set("kingpin_super_jackpot_ready", 0)
-        self._set("kingpin_super_jackpot_value", 0)
+        self.add_mode_event_handler("kingpin_left_bank_complete", self._left_bank_complete)
+        self.add_mode_event_handler("kingpin_timer_expired", self._timer_expired)
 
-        self._set("kingpin_a_hit", 0)
-        self._set("kingpin_b_hit", 0)
-        self._set("kingpin_ab_ready", 0)
+    def _start_timer(self):
+        self.delay.remove("kingpin_timer_tick")
+        self.delay.add(name="kingpin_timer_tick", ms=1000, callback=self._timer_tick)
 
-        self._set("kingpin_upper_left_hits", 0)
-        self._set("kingpin_upper_center_hits", 0)
-        self._set("kingpin_upper_right_hits", 0)
-        self._set("kingpin_area_pops_cleared", 0)
-        self._set("kingpin_area_spinner_cleared", 0)
-        self._set("kingpin_area_star_cleared", 0)
-        self._set("kingpin_area_upper_targets_cleared", 0)
-        self._set("kingpin_area_drops_cleared", 0)    
-
-    def _choose_next_area(self, **kwargs):
-        if self.victory_laps:
+    def _timer_tick(self):
+        if self.mode_done:
             return
 
-        uncleared = [
-            area for area in self.AREAS
-            if not self._get_area_cleared(area)
-        ]
+        self.remaining_seconds -= 1
+        self._sync_vars()
+        self.machine.events.post("kingpin_timer_tick", seconds=self.remaining_seconds)
 
-        if not uncleared:
-            self._start_victory_laps()
+        if self.remaining_seconds <= 0:
+            self.machine.events.post("kingpin_timer_expired")
             return
 
-        self.current_area = choice(uncleared)
-        self.jackpot_ready = False
-        self.left_bank_complete = False
-        self.right_bank_complete = False
+        self._start_timer()
 
-        area_data = self.AREAS[self.current_area]
+    def _timer_expired(self, **kwargs):
+        if self.mode_done:
+            return
 
-        self._set("kingpin_current_area", self.current_area)
-        self._set("kingpin_current_area_display", area_data["display"])
-        self._set("kingpin_area_progress", 0)
-        self._set("kingpin_area_required", area_data["required"])
-        self._set("kingpin_hits_still_needed", area_data["required"])
+        self.machine.events.post("kingpin_goal_missed")
+        self._complete_mode()
 
-        self._set("kingpin_jackpot_ready", 0)
+    def _left_bank_complete(self, **kwargs):
+        if self.mode_done:
+            return
 
-        self._reset_area_specific_progress()
+        self.remaining_seconds += self.LEFT_BANK_TIME_ADD
+        self._sync_vars()
+        self.machine.events.post("kingpin_time_added", seconds=self.LEFT_BANK_TIME_ADD)
+        self.machine.events.post("drop_target_bank_dt_bank_left_reset")
 
-        self._update_gate()
-        self.machine.events.post("kingpin_area_changed", area=self.current_area)
-        self.machine.events.post("kingpin_clear_area_lights")
-        self.machine.events.post(f"kingpin_area_{self.current_area}_lit")
+    def _right_drop_hit(self, target, **kwargs):
+        if self.mode_done or self.bank_sweeping:
+            return
 
-    def _reset_area_specific_progress(self):
-        self._set("kingpin_upper_left_hits", 0)
-        self._set("kingpin_upper_center_hits", 0)
-        self._set("kingpin_upper_right_hits", 0)
+        if self.extra_round_active:
+            self._collect_extra_jackpot(target)
+            return
+
+        self.round_hits += 1
+        self._add_hit_vars(major=True)
+
+        if self.completed[target]:
+            self._score(self.duplicate_target_value)
+            self.machine.events.post("kingpin_duplicate_target_hit", target=target, value=self.duplicate_target_value)
+        else:
+            self._complete_target(target, self.new_target_value)
+
+        if self._should_use_shot_assist():
+            self._use_shot_assist(excluding=target)
+
+        if self._all_targets_completed():
+            self._all_targets_lit()
+            return
+
+        if self.round_hits >= self._hits_allowed():
+            self._sweep_and_reset_bank()
+        else:
+            self._sync_vars()
+
+    def _complete_target(self, target, value):
+        self.completed[target] = True
+        self._score(value)
+        self.machine.events.post(f"kingpin_target_{target}_complete")
+        self.machine.events.post("kingpin_new_target_complete", target=target, value=value)
+        self._sync_vars()
+
+    def _should_use_shot_assist(self):
+        return (
+            self.has_case_file("shot_assist")
+            and not self.shot_assist_used
+            and self.round_number == 2
+            and any(not self.completed[target] for target in self.TARGETS)
+        )
+
+    def _use_shot_assist(self, excluding):
+        for target in self.TARGETS:
+            if target != excluding and not self.completed[target]:
+                self.shot_assist_used = True
+                self._complete_target(target, self.new_target_value)
+                self._pulse_drop(target)
+                self.machine.events.post("kingpin_shot_assist_spotted", target=target)
+                return
+
+    def _all_targets_lit(self):
+        self.machine.events.post("kingpin_all_targets_lit")
+
+        if self.more_jackpots_extra_round and not self.extra_round_active:
+            self.extra_round_active = True
+            self.round_hits = 0
+            self.bank_sweeping = True
+            self.machine.events.post("kingpin_extra_round_started")
+            self._drop_unhit_targets_this_cycle(excluding=None)
+            self.delay.remove("kingpin_reset_right_bank")
+            self.delay.add(name="kingpin_reset_right_bank", ms=self.BANK_RESET_DELAY_MS, callback=self._reset_for_extra_round)
+            self._sync_vars()
+            return
+
+        self._complete_mode()
+
+    def _reset_for_extra_round(self):
+        if self.mode_done:
+            return
+        self.machine.events.post("drop_target_bank_dt_bank_right_reset")
+        self.bank_sweeping = False
+        self._sync_vars()
+
+    def _collect_extra_jackpot(self, target):
+        self._score(self.EXTRA_JACKPOT_VALUE)
+        self._add_hit_vars(major=True)
+        self.machine.events.post("kingpin_extra_jackpot_collected", target=target, value=self.EXTRA_JACKPOT_VALUE)
+        self._drop_unhit_targets_this_cycle(excluding=target)
+        self._complete_mode()
+
+    def _sweep_and_reset_bank(self):
+        self.bank_sweeping = True
+        self.machine.events.post("kingpin_bank_sweep_started", round=self.round_number)
+        self._drop_unhit_targets_this_cycle(excluding=None)
+        self.delay.remove("kingpin_reset_right_bank")
+        self.delay.add(name="kingpin_reset_right_bank", ms=self.BANK_RESET_DELAY_MS, callback=self._next_round)
+        self._sync_vars()
+
+    def _next_round(self):
+        if self.mode_done:
+            return
+
+        self.round_number += 1
+        self.round_hits = 0
+        self.bank_sweeping = False
+        self.machine.events.post("drop_target_bank_dt_bank_right_reset")
+        self.machine.events.post("kingpin_round_started", round=self.round_number, allowed=self._hits_allowed())
+        self._sync_vars()
+
+    def _drop_unhit_targets_this_cycle(self, excluding=None):
+        for target in self.TARGETS:
+            if target == excluding:
+                continue
+            self._pulse_drop(target)
+
+    def _pulse_drop(self, target):
+        try:
+            self.machine.coils[f"c_right_bank_drop_{target}"].pulse()
+        except KeyError:
+            self.warning_log("Missing right-bank drop coil for Kingpin target %s", target)
+
+    def _hits_allowed(self):
+        return min(self.round_number, len(self.TARGETS))
+
+    def _all_targets_completed(self):
+        return all(self.completed.values())
+
+    def _completed_count(self):
+        return sum(1 for target in self.TARGETS if self.completed[target])
+
+    def _add_hit_vars(self, major=False):
+        player = self.machine.game.player
+        player["kingpin_hits"] += 1
+        if major:
+            player["kingpin_major_hits"] += 1
 
     def _score(self, points):
-        player = self.machine.game.player if self.machine.game else None
-
-        if not player:
-            return
-
+        player = self.machine.game.player
         player["score"] += points
-        self._add("kingpin_mode_points", points)        
+        self.mode_points += points
+        player["kingpin_mode_points"] = self.mode_points
 
-    def _area_hit(self, area, amount=1):
-        if self.victory_laps:
-            self._victory_lap_hit()
+    def _complete_mode(self):
+        if self.mode_done:
             return
 
-        if self.jackpot_ready:
-            if area == self.current_area:
-                self._score(self.ACTIVE_AREA_SCORE)
-            else:
-                self._score(self.INACTIVE_AREA_SCORE)
-            return
-
-        if area == self.current_area:
-            self._score(self.ACTIVE_AREA_SCORE)
-            self._add("kingpin_area_progress", amount)
-
-            kingpin_hits_still_needed = self._get("kingpin_area_required") - self._get("kingpin_area_progress")
-
-            self._set("kingpin_hits_still_needed", kingpin_hits_still_needed)
-
-            if kingpin_hits_still_needed > 0:
-                self.machine.events.post("kingpin_area_changed", area=self.current_area)
-
-            if self._get("kingpin_area_progress") >= self._get("kingpin_area_required"):
-                self._area_complete()
-        else:
-            self._score(self.INACTIVE_AREA_SCORE)
-
-    def _area_complete(self):
-        if not self.current_area:
-            return
-
-        completed_area = self.current_area
-
-        self._set_area_cleared(completed_area)
-        self._add("kingpin_areas_cleared", 1)
-
-        # If the drops task was completed, reset the banks immediately
-        # so the next part of the mode starts clean.
-        if completed_area == "drops":
-            self.machine.events.post("kingpin_reset_drop_banks")
-            self.left_bank_complete = False
-            self.right_bank_complete = False
-
-        self.jackpot_ready = True
-        self._set("kingpin_jackpot_ready", 1)
-        self._update_jackpot_value()
-        self._update_gate()
-
-        self.machine.events.post("kingpin_area_complete", area=completed_area)
-        self.machine.events.post("kingpin_jackpot_lit", area=completed_area)
-        self.machine.events.post("kingpin_jackpot_lit_show")
-
-    def _daily_bugle_hit(self, **kwargs):
-        self.delay.add(
-            name="kingpin_vuk_delay_eject",
-            ms=2000,
-            callback=self.fire_VUK
-        )
-
-        if self.victory_laps:
-            self._collect_super_jackpot()
-            return
-
-        if not self.jackpot_ready:
-            self._score(self.INACTIVE_AREA_SCORE)
-            return
-
-        self._collect_jackpot()
-
-
-    def fire_VUK(self):
-        self.machine.events.post("up_kick")
-
-
-    def _collect_jackpot(self):
-        jackpot_value = self._update_jackpot_value()
-        self._score(jackpot_value)
-        self._add("kingpin_jackpots", 1)
-
-        if self._get("kingpin_ab_ready") == 1 and self._balls_in_play() < self.MAX_BALLS:
-            self.machine.events.post("kingpin_add_a_ball")
-
-        self._reset_ab()
-        self.jackpot_ready = False
-        self._set("kingpin_jackpot_ready", 0)
-
-        self.machine.events.post("kingpin_jackpot_collected", value=jackpot_value)
-
-        self._choose_next_area()
-
-    def _start_victory_laps(self):
-        self.victory_laps = True
-        self.current_area = "victory_laps"
-        self.jackpot_ready = False
-        self.super_jackpot_ready = False
-
-        self._set("kingpin_state", 2)
-        self._set("kingpin_current_area", "victory_laps")
-        self._set("kingpin_current_area_display", "VICTORY LAPS")
-        self._set("kingpin_jackpot_ready", 0)
-        self._set("kingpin_super_jackpot_ready", 0)
-
-        self._update_gate()
-        self.machine.events.post("kingpin_victory_laps_started")
-        self.machine.events.post("kingpin_victory_laps_show")
-
-    def _victory_lap_hit(self):
-        self._score(self.ACTIVE_AREA_SCORE)
-
-    def _collect_super_jackpot(self):
-        if not self.super_jackpot_ready:
-            self._score(self.INACTIVE_AREA_SCORE)
-            return
-
-        value = self.SUPER_JACKPOT_BASE * max(1, self._balls_in_play())
-        self._score(value)
-        self._add("kingpin_super_jackpots", 1)
-
-        self.super_jackpot_ready = False
-        self._set("kingpin_super_jackpot_ready", 0)
-        self._set("kingpin_super_jackpot_value", 0)
-        self._reset_ab()
-        self._update_gate()
-
-        self.machine.events.post("kingpin_super_jackpot_collected", value=value)
-
-    def _a_hit(self, **kwargs):
-        self._set("kingpin_a_hit", 1)
-        self._check_ab()
-
-    def _b_hit(self, **kwargs):
-        self._set("kingpin_b_hit", 1)
-        self._check_ab()
-
-    def _check_ab(self):
-        if self._get("kingpin_a_hit") and self._get("kingpin_b_hit"):
-            self._set("kingpin_ab_ready", 1)
-            self.machine.events.post("kingpin_ab_complete")
-            self.machine.events.post("kingpin_ab_ready_show")
-            
-            if self.victory_laps:
-                self.super_jackpot_ready = True
-                value = self.SUPER_JACKPOT_BASE * max(1, self._balls_in_play())
-                self._set("kingpin_super_jackpot_ready", 1)
-                self._set("kingpin_super_jackpot_value", value)
-                self.machine.events.post("kingpin_super_jackpot_lit", value=value)
-                self.machine.events.post("kingpin_super_jackpot_lit_show")
-                self._update_gate()
-
-    def _reset_ab(self):
-        self._set("kingpin_a_hit", 0)
-        self._set("kingpin_b_hit", 0)
-        self._set("kingpin_ab_ready", 0)
-        self.machine.events.post("kingpin_ab_reset")
-        self.machine.events.post("kingpin_ab_clear_show")
-
-    def _pop_hit(self, **kwargs):
-        self._area_hit("pops")
-
-    def _spinner_hit(self, **kwargs):
-        self._area_hit("spinner")
-
-    def _star_hit(self, **kwargs):
-        self._area_hit("star")
-
-    def _upper_target_left_hit(self, **kwargs):
-        self._upper_target_hit("left")
-
-    def _upper_target_center_hit(self, **kwargs):
-        self._upper_target_hit("center")
-
-    def _upper_target_right_hit(self, **kwargs):
-        self._upper_target_hit("right")
-
-    def _upper_target_hit(self, target):
-        if self.victory_laps:
-            self._victory_lap_hit()
-            return
-
-        if self.current_area != "upper_targets":
-            self._area_hit("upper_targets", amount=0)
-            return
-
-        var_name = self.UPPER_TARGETS[target]
-        current_hits = self._get(var_name)
-
-        if current_hits >= 2:
-            # Already completed this target. Still score inactive-style points.
-            self._score(self.INACTIVE_AREA_SCORE)
-            return
-
-        self._set(var_name, current_hits + 1)
-        self._area_hit("upper_targets")
-
-    def _left_drops_complete(self, **kwargs):
-        self.left_bank_complete = True
-        self._drops_progress()
-
-    def _right_drops_complete(self, **kwargs):
-        self.right_bank_complete = True
-        self._drops_progress()
-
-    def _drops_progress(self):
-        if self.jackpot_ready:
-          return
-        
-        if self.victory_laps:
-          self._victory_lap_hit()
-          return
-
-        if self.current_area != "drops":
-          self._area_hit("drops", amount=0)
-          return
-
-        completed_count = int(self.left_bank_complete) + int(self.right_bank_complete)
-        self._set("kingpin_area_progress", completed_count)
-
-        self._score(self.ACTIVE_AREA_SCORE)
-
-        if completed_count >= 2:
-          self._area_complete()
-
-    def _saucer_1_hit(self, **kwargs):
-        self._handle_saucer_hit("saucer_1")
-
-    def _saucer_2_hit(self, **kwargs):
-        self._handle_saucer_hit("saucer_2")
-
-    def _saucer_3_hit(self, **kwargs):
-        self._handle_saucer_hit("saucer_3")
-
-    def _handle_saucer_hit(self, saucer_name): 
-        self._score(self.SAUCER_SCORE)
-
-        if self.mode_exiting:
-          self._eject_saucer(saucer_name)
-          return
-                       
-        if saucer_name in self.held_saucers:
-         return
-
-        if self._balls_in_play() <= 1:
-            self._eject_saucer(saucer_name)
-            return
-
-        self.held_saucers.add(saucer_name)
-        self.machine.events.post("kingpin_saucer_hold_started", saucer=saucer_name)
-
-        self.delay.remove(f"kingpin_{saucer_name}_hold")
-        self.delay.add(
-            name=f"kingpin_{saucer_name}_hold",
-            ms=self.SAUCER_HOLD_MS,
-            callback=self._release_saucer,
-            saucer_name=saucer_name
-        )
-
-    def _release_saucer(self, saucer_name):
-        self.held_saucers.discard(saucer_name)
-        self._eject_saucer(saucer_name)
-        self.machine.events.post("kingpin_saucer_released", saucer=saucer_name)
-
-    def _eject_saucer(self, saucer_name):
-        event = self.SAUCER_EJECT_EVENTS.get(saucer_name)
-
-        if event:
-            self.machine.events.post(event)
-
-    def _release_all_held_saucers(self, **kwargs):
-        for saucer_name in list(self.held_saucers):
-            self.delay.remove(f"kingpin_{saucer_name}_hold")
-            self._release_saucer(saucer_name)
-
-        self.held_saucers.clear()
-
-    def _multiball_ended(self, **kwargs):
-        self.mode_exiting = True
-        self.info_log("Kingpin multiball ended.")
-
-        self._release_all_held_saucers()
-
-        if self.victory_laps:
-            self.machine.events.post("kingpin_mode_complete")
-        else:
-            self._set("kingpin_state", 2)
-            self.machine.events.post("kingpin_mode_complete")
-
-        self.machine.events.post(
-            "villain_bookend_summary_request",
-            villain="kingpin",
-            done_event="kingpin_mode_done"
-        )
-
-    def _update_gate(self):
-        if self.jackpot_ready:
-            self.machine.events.post("kingpin_open_upper_gate")
-            return
-
-        if self.victory_laps and self.super_jackpot_ready:
-            self.machine.events.post("kingpin_open_upper_gate")
-            return
-
-        if self.current_area in ("spinner", "upper_targets"):
-            self.machine.events.post("kingpin_open_upper_gate")
-            return
-
-        self.machine.events.post("kingpin_close_upper_gate")
-
-    def _update_jackpot_value(self):
-        value = self.JACKPOT_BASE * (
-            max(1, self._balls_in_play()) + self._get("kingpin_areas_cleared")
-        )
-
-        self._set("kingpin_jackpot_value", value)
-        return value
-
-    def _balls_in_play(self):
-        if not self.machine.game:
-            return 0
-
-        return self.machine.game.balls_in_play
-
-    def _get_area_cleared(self, area):
-        return self._get(f"kingpin_area_{area}_cleared") == 1
-
-    def _set_area_cleared(self, area):
-        self._set(f"kingpin_area_{area}_cleared", 1)
-
-    def _get(self, name, default=0):
-        player = self.machine.game.player if self.machine.game else None
-
-        if not player:
-            return default
-
-        try:
-            return player[name]
-        except KeyError:
-            return default
-
-    def _set(self, name, value):
-        player = self.machine.game.player if self.machine.game else None
-
-        if player:
-            player[name] = value
-
-    def _add(self, name, value):
-        self._set(name, self._get(name) + value)
+        self.mode_done = True
+        self.delay.remove("kingpin_timer_tick")
+        self.delay.remove("kingpin_reset_right_bank")
+        player = self.machine.game.player
+        player["kingpin_state"] = 2
+        self._sync_vars()
+        self.machine.events.post("kingpin_mode_complete")
+
+    def _sync_vars(self):
+        player = self.machine.game.player
+        player["kingpin_mode_points"] = self.mode_points
+        player["kingpin_timer"] = max(0, self.remaining_seconds)
+        player["kingpin_round"] = self.round_number
+        player["kingpin_round_hits"] = self.round_hits
+        player["kingpin_round_hits_allowed"] = self._hits_allowed()
+        player["kingpin_completed_count"] = self._completed_count()
+        player["kingpin_extra_round_active"] = 1 if self.extra_round_active else 0
+        for target in self.TARGETS:
+            player[f"kingpin_target_{target}_complete"] = 1 if self.completed[target] else 0

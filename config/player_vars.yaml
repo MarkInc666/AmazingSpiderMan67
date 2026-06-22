@@ -357,6 +357,7 @@ player_vars:
     value_type: int
   human_flies_mode_points:
     initial_value: 0
+    value_type: int
   charles_cameo_state:
     initial_value: 0
     value_type: int
@@ -745,6 +746,45 @@ player_vars:
     value_type: int
   diana_mode_points:
     initial_value: 0
+  diana_arrows_remaining:
+    initial_value: 0
+    value_type: int
+  diana_arrows_used:
+    initial_value: 0
+    value_type: int
+  diana_current_hunt:
+    initial_value: 0
+    value_type: int
+  diana_hunt_seconds:
+    initial_value: 0
+    value_type: int
+  diana_hunt_active:
+    initial_value: 0
+    value_type: int
+  diana_phase:
+    initial_value: rearm
+    value_type: str
+  diana_bullseyes:
+    initial_value: 0
+    value_type: int
+  diana_rubber_hits:
+    initial_value: 0
+    value_type: int
+  diana_spinner_hits:
+    initial_value: 0
+    value_type: int
+  diana_upper_right_exits:
+    initial_value: 0
+    value_type: int
+  diana_safety_net_used:
+    initial_value: 0
+    value_type: int
+  diana_end_bonus:
+    initial_value: 0
+    value_type: int
+  diana_standing_targets:
+    initial_value: 0
+    value_type: int
   final_showdown_state:
     initial_value: 0
     value_type: int
@@ -816,8 +856,61 @@ player_vars:
     initial_value: 0
   human_flies_hits:
     initial_value: 0
+    value_type: int
   human_flies_major_hits:
     initial_value: 0
+    value_type: int
+  human_flies_round:
+    initial_value: 0
+    value_type: int
+  human_flies_rounds_completed:
+    initial_value: 0
+    value_type: int
+  human_flies_captures:
+    initial_value: 0
+    value_type: int
+  human_flies_super_jackpots:
+    initial_value: 0
+    value_type: int
+  human_flies_jackpots:
+    initial_value: 0
+    value_type: int
+  human_flies_spinner_hits:
+    initial_value: 0
+    value_type: int
+  human_flies_base_jackpot:
+    initial_value: 0
+    value_type: int
+  human_flies_lit_saucers:
+    initial_value: 0
+    value_type: int
+  human_flies_multiplier:
+    initial_value: 0
+    value_type: int
+  human_flies_last_award:
+    initial_value: 0
+    value_type: int
+  human_flies_shot_assist_used:
+    initial_value: 0
+    value_type: int
+  human_flies_upper_left_hit:
+    initial_value: 0
+    value_type: int
+  human_flies_upper_center_hit:
+    initial_value: 0
+    value_type: int
+  human_flies_upper_right_hit:
+    initial_value: 0
+    value_type: int
+  human_flies_saucer_1_lit:
+    initial_value: 0
+    value_type: int
+  human_flies_saucer_2_lit:
+    initial_value: 0
+    value_type: int
+  human_flies_saucer_3_lit:
+    initial_value: 0
+    value_type: int
   fifth_avenue_phantom_hits:
     initial_value: 0
   fifth_avenue_phantom_major_hits:
@@ -1094,3 +1187,107 @@ player_vars:
     initial_value: 0
   noah_boddy_best_jackpot:
     initial_value: 0
+
+  # Kingpin / Sinister Surge migrated wizard-mode vars
+  kingpin_completed_count:
+    initial_value: 0
+    value_type: int
+  kingpin_extra_round_active:
+    initial_value: 0
+    value_type: int
+  kingpin_round:
+    initial_value: 0
+    value_type: int
+  kingpin_round_hits:
+    initial_value: 0
+    value_type: int
+  kingpin_round_hits_allowed:
+    initial_value: 0
+    value_type: int
+  kingpin_target_1_complete:
+    initial_value: 0
+    value_type: int
+  kingpin_target_2_complete:
+    initial_value: 0
+    value_type: int
+  kingpin_target_3_complete:
+    initial_value: 0
+    value_type: int
+  kingpin_target_4_complete:
+    initial_value: 0
+    value_type: int
+  kingpin_target_5_complete:
+    initial_value: 0
+    value_type: int
+  kingpin_timer:
+    initial_value: 0
+    value_type: int
+  sinister_surge_a_hit:
+    initial_value: 0
+    value_type: int
+  sinister_surge_ab_ready:
+    initial_value: 0
+    value_type: int
+  sinister_surge_area_drops_cleared:
+    initial_value: 0
+    value_type: int
+  sinister_surge_area_pops_cleared:
+    initial_value: 0
+    value_type: int
+  sinister_surge_area_progress:
+    initial_value: 0
+    value_type: int
+  sinister_surge_area_required:
+    initial_value: 0
+    value_type: int
+  sinister_surge_area_spinner_cleared:
+    initial_value: 0
+    value_type: int
+  sinister_surge_area_star_cleared:
+    initial_value: 0
+    value_type: int
+  sinister_surge_area_upper_targets_cleared:
+    initial_value: 0
+    value_type: int
+  sinister_surge_areas_cleared:
+    initial_value: 0
+    value_type: int
+  sinister_surge_b_hit:
+    initial_value: 0
+    value_type: int
+  sinister_surge_current_area:
+    initial_value: ''
+    value_type: str
+  sinister_surge_current_area_display:
+    initial_value: ''
+    value_type: str
+  sinister_surge_hits_still_needed:
+    initial_value: 0
+    value_type: int
+  sinister_surge_jackpot_ready:
+    initial_value: 0
+    value_type: int
+  sinister_surge_jackpot_value:
+    initial_value: 0
+    value_type: int
+  sinister_surge_jackpots:
+    initial_value: 0
+    value_type: int
+  sinister_surge_super_jackpot_ready:
+    initial_value: 0
+    value_type: int
+  sinister_surge_super_jackpot_value:
+    initial_value: 0
+    value_type: int
+  sinister_surge_super_jackpots:
+    initial_value: 0
+    value_type: int
+  sinister_surge_upper_center_hits:
+    initial_value: 0
+    value_type: int
+  sinister_surge_upper_left_hits:
+    initial_value: 0
+    value_type: int
+  sinister_surge_upper_right_hits:
+    initial_value: 0
+    value_type: int

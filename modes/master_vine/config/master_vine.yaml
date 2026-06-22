@@ -7,7 +7,6 @@ mode:
   start_events: start_mode_master_vine
   stop_events:
     - master_vine_mode_complete
-    - master_vine_mode_failed
     - master_vine_mode_completed_summary
     - ball_ended
   code: master_vine.MasterVine
@@ -19,10 +18,6 @@ widget_player:
       action: play
 
   master_vine_mode_complete:
-    master_vine:
-      action: remove
-
-  master_vine_mode_failed:
     master_vine:
       action: remove
 

@@ -41,10 +41,6 @@ widget_player:
     who_is_the_real_villain:
       action: remove
 
-  who_is_the_real_villain_mode_failed:
-    who_is_the_real_villain:
-      action: remove
-
   mode_who_is_the_real_villain_stopping:
     who_is_the_real_villain:
       action: remove

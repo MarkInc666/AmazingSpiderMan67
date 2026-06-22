@@ -7,7 +7,6 @@ mode:
   start_events: start_mode_doctor_cool
   stop_events:
     - doctor_cool_mode_complete
-    - doctor_cool_mode_failed
     - doctor_cool_mode_completed_summary
     - ball_ended
   code: doctor_cool.DoctorCool
@@ -19,10 +18,6 @@ widget_player:
       action: play
 
   doctor_cool_mode_complete:
-    doctor_cool:
-      action: remove
-
-  doctor_cool_mode_failed:
     doctor_cool:
       action: remove
 

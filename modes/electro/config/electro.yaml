@@ -7,7 +7,6 @@ mode:
   start_events: start_mode_electro
   stop_events:
     - electro_mode_complete
-    - electro_mode_failed
     - electro_mode_completed_summary
     - ball_ended
   code: electro.Electro
@@ -76,7 +75,7 @@ sound_player:
 
 event_player:
   electro_mode_almost_complete:
-    - electro_mode_complete|1s
+    - electro_mode_complete|2s
 
   electro_startup_complete:
     - reset_drops

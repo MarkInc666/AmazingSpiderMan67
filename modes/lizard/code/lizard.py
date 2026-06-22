@@ -102,54 +102,34 @@ class Lizard(CaseFileMixin, Mode):
             self.machine.events.post("start_case_file_ball_save")
 
         if self.has_case_file("shot_assist"):
-            self._set_player_var("lizard_serum_ready", 1)
+            player = self.machine.game.player
+            player["lizard_serum_ready"] = 1
             self.machine.events.post("lizard_light_delivery_target")
             self.machine.events.post("lizard_delivery_timer_start")
 
-    def _player(self):
-        if not self.machine.game:
-            return None
-        return self.machine.game.player
-
-    def _get_player_var(self, name, default=0):
-        player = self._player()
-        if not player:
-            return default
-        try:
-            return player[name]
-        except KeyError:
-            return default
-
-    def _set_player_var(self, name, value):
-        player = self._player()
-        if not player:
-            return
-        player[name] = value
-
-    def _add_player_var(self, name, value):
-        self._set_player_var(name, self._get_player_var(name, 0) + value)
-
     def _award_points(self, points):
+        player = self.machine.game.player
         points = int(points)
-        self._add_player_var("score", points)
-        self._add_player_var("lizard_mode_points", points)
+        player["score"] += points
+        player["lizard_mode_points"] += points
 
     def _init_player_vars(self):
-        self._set_player_var("lizard_serum_ready", 0)
-        self._set_player_var("lizard_deliveries", 0)
-        self._set_player_var("lizard_delivery_value", self.START_DELIVERY_VALUE)
-        self._set_player_var("lizard_a_hit", 0)
-        self._set_player_var("lizard_b_hit", 0)
-        self._set_player_var("lizard_ab_ready", 0)
+        player = self.machine.game.player
+        player["lizard_serum_ready"] = 0
+        player["lizard_deliveries"] = 0
+        player["lizard_delivery_value"] = self.START_DELIVERY_VALUE
+        player["lizard_a_hit"] = 0
+        player["lizard_b_hit"] = 0
+        player["lizard_ab_ready"] = 0
 
         # Vars used by the generic villain summary/bookend screen.
-        self._set_player_var("lizard_mode_points", 0)
-        self._set_player_var("lizard_best_delivery_value", 0)
-        self._set_player_var("lizard_deliveries_made", 0)
-        self._set_player_var("lizard_state", 1)
+        player["lizard_mode_points"] = 0
+        player["lizard_best_delivery_value"] = 0
+        player["lizard_deliveries_made"] = 0
+        player["lizard_state"] = 1
 
     def current_target(self):
-        deliveries = self._get_player_var("lizard_deliveries", 0)
+        deliveries = self.machine.game.player["lizard_deliveries"]
 
         if deliveries >= len(self.DELIVERY_SEQUENCE):
             return None
@@ -159,24 +139,24 @@ class Lizard(CaseFileMixin, Mode):
     def a_rollover(self, **kwargs):
         if self.machine.game.player["villain_mode_in_summary"] == True: return
 
-        self._set_player_var("lizard_a_hit", 1)
+        self.machine.game.player["lizard_a_hit"] = 1
         self.machine.events.post("lizard_a_complete")
 
-        if self._get_player_var("lizard_b_hit", 0) == 1:
+        if self.machine.game.player["lizard_b_hit"] == 1:
             self._ab_complete()
 
     def b_rollover(self, **kwargs):
         if self.machine.game.player["villain_mode_in_summary"] == True: return
 
-        self._set_player_var("lizard_b_hit", 1)
+        self.machine.game.player["lizard_b_hit"] = 1
         self.machine.events.post("lizard_b_complete")
 
-        if self._get_player_var("lizard_a_hit", 0) == 1:
+        if self.machine.game.player["lizard_a_hit"] == 1:
             self._ab_complete()
 
     def _ab_complete(self):
         """Completing A+B gives the player a short helper/reset during Lizard."""
-        self._set_player_var("lizard_ab_ready", 1)
+        self.machine.game.player["lizard_ab_ready"] = 1
         self._show_message("A+B BOOST!", "SERUM VALUE UP", value=self.AB_BONUS_VALUE)
         self.machine.events.post("lizard_ab_complete")
 
@@ -184,25 +164,25 @@ class Lizard(CaseFileMixin, Mode):
         self.machine.events.post("lizard_delivery_timer_start")
 
         # Keep this bonus in Python now. It was present in YAML as lizard_apply_ab_bonus.
-        self._add_player_var("lizard_delivery_value", self.AB_BONUS_VALUE)
+        self.machine.game.player["lizard_delivery_value"] += self.AB_BONUS_VALUE
 
         # Reset A/B state so the combo can be earned again.
-        self._set_player_var("lizard_a_hit", 0)
-        self._set_player_var("lizard_b_hit", 0)
-        self._set_player_var("lizard_ab_ready", 0)
+        self.machine.game.player["lizard_a_hit"] = 0
+        self.machine.game.player["lizard_b_hit"] = 0
+        self.machine.game.player["lizard_ab_ready"] = 0
         self.machine.events.post("lizard_clear_ab")
 
     def serum_collect_request(self, **kwargs):
         if self.machine.game.player["villain_mode_in_summary"] == True: return
 
-        if self._get_player_var("lizard_serum_ready", 0) == 1:
+        if self.machine.game.player["lizard_serum_ready"] == 1:
             return
 
         self._award_points(self.SERUM_COLLECT_SCORE)
-        self._set_player_var("lizard_serum_ready", 1)
+        self.machine.game.player["lizard_serum_ready"] = 1
 
         target = self.current_target() or "web"
-        self._show_message("SERUM READY", f"DELIVER TO {target.upper()} WEB", value=self._get_player_var("lizard_delivery_value", self.START_DELIVERY_VALUE), seconds=10, event="show_mode_countdown")
+        self._show_message("SERUM READY", f"DELIVER TO {target.upper()} WEB", value=self.machine.game.player["lizard_delivery_value"], seconds=10, event="show_mode_countdown")
         self.machine.events.post("lizard_serum_collected")
         self.machine.events.post("lizard_light_delivery_target")
         self.machine.events.post("lizard_delivery_timer_start")
@@ -217,12 +197,9 @@ class Lizard(CaseFileMixin, Mode):
                 return
 
         if 3 <= int(ticks) <= 10:
-            current_value = self._get_player_var("lizard_delivery_value", self.START_DELIVERY_VALUE)
-            self._set_player_var(
-                "lizard_delivery_value",
-                max(0, current_value - self.DELIVERY_TICK_VALUE),
-            )
-            self._show_message("VALUE DROPPING", "DELIVER SERUM NOW", value=self._get_player_var("lizard_delivery_value", 0), event="show_mode_countdown")
+            current_value = self.machine.game.player["lizard_delivery_value"]
+            self.machine.game.player["lizard_delivery_value"] = max(0, current_value - self.DELIVERY_TICK_VALUE)
+            self._show_message("VALUE DROPPING", "DELIVER SERUM NOW", value=self.machine.game.player["lizard_delivery_value"], event="show_mode_countdown")
             self.machine.events.post("lizard_delivery_tick")
 
 
@@ -236,14 +213,14 @@ class Lizard(CaseFileMixin, Mode):
         self.machine.events.post("lizard_serum_expired_show")
 
         # This delivery attempt is now spent, even though no points were awarded.
-        self._add_player_var("lizard_deliveries", 1)
+        self.machine.game.player["lizard_deliveries"] += 1
 
         # Reset serum state for the next attempt.
-        self._set_player_var("lizard_serum_ready", 0)
-        self._set_player_var("lizard_delivery_value", self.START_DELIVERY_VALUE)
+        self.machine.game.player["lizard_serum_ready"] = 0
+        self.machine.game.player["lizard_delivery_value"] = self.START_DELIVERY_VALUE
 
         # If all attempts are used, end the mode.
-        if self._get_player_var("lizard_deliveries", 0) >= len(self.DELIVERY_SEQUENCE):
+        if self.machine.game.player["lizard_deliveries"] >= len(self.DELIVERY_SEQUENCE):
             self.machine.events.post("lizard_mode_complete")
             return
 
@@ -253,7 +230,7 @@ class Lizard(CaseFileMixin, Mode):
     def delivery_request(self, target=None, **kwargs):
         if self.machine.game.player["villain_mode_in_summary"] == True: return
 
-        if self._get_player_var("lizard_serum_ready", 0) == 0:
+        if self.machine.game.player["lizard_serum_ready"] == 0:
             return
 
         required_target = self.current_target()
@@ -261,24 +238,24 @@ class Lizard(CaseFileMixin, Mode):
         if required_target != target:
             return
 
-        delivery_value = self._get_player_var("lizard_delivery_value", self.START_DELIVERY_VALUE)
+        delivery_value = self.machine.game.player["lizard_delivery_value"]
         self._award_points(delivery_value)
 
-        if delivery_value > self._get_player_var("lizard_best_delivery_value", 0):
-            self._set_player_var("lizard_best_delivery_value", delivery_value)
+        if delivery_value > self.machine.game.player["lizard_best_delivery_value"]:
+            self.machine.game.player["lizard_best_delivery_value"] = delivery_value
 
-        self._add_player_var("lizard_deliveries", 1)
-        self._add_player_var("lizard_deliveries_made", 1)
+        self.machine.game.player["lizard_deliveries"] += 1
+        self.machine.game.player["lizard_deliveries_made"] += 1
         #successful if just one delivery made
-        self._set_player_var("lizard_state", 2) 
-        self._set_player_var("lizard_serum_ready", 0)
-        self._set_player_var("lizard_delivery_value", self.START_DELIVERY_VALUE)
+        self.machine.game.player["lizard_state"] = 2 
+        self.machine.game.player["lizard_serum_ready"] = 0
+        self.machine.game.player["lizard_delivery_value"] = self.START_DELIVERY_VALUE
 
         self._show_message("SERUM DELIVERED", target.upper(), value=delivery_value, event="show_mode_jackpot")
         self.machine.events.post("lizard_serum_delivered")
         self.machine.events.post("lizard_delivery_timer_stop")
 
-        if self._get_player_var("lizard_deliveries", 0) >= len(self.DELIVERY_SEQUENCE):
+        if self.machine.game.player["lizard_deliveries"] >= len(self.DELIVERY_SEQUENCE):
             self._show_message("LIZARD CURED", "MODE COMPLETE", event="show_mode_jackpot")
             self.machine.events.post("lizard_mode_complete")
             return

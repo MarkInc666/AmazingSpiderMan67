@@ -131,7 +131,7 @@ class VillainSelect(Carousel):
         return []
 
     def _is_unavailable(self, villain_key):
-        state = self._player_var(f"{villain_key}_state", 0)
+        state = self.machine.game.player[f"{villain_key}_state"]
         try:
             return int(state) != 0
         except Exception:
@@ -146,15 +146,6 @@ class VillainSelect(Carousel):
             return self.valid_villains.index(item) + 1
         except ValueError:
             return 0
-
-    def _player_var(self, name, default=0):
-        player = self.machine.game.player if self.machine.game else None
-        if not player:
-            return default
-        try:
-            return player[name]
-        except Exception:
-            return default
 
     def _safe_int(self, value, default=0):
         try:

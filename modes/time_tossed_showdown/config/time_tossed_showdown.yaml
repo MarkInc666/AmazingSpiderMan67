@@ -41,10 +41,6 @@ widget_player:
     time_tossed_showdown:
       action: remove
 
-  time_tossed_showdown_mode_failed:
-    time_tossed_showdown:
-      action: remove
-
   mode_time_tossed_showdown_stopping:
     time_tossed_showdown:
       action: remove

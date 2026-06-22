@@ -8,7 +8,6 @@ mode:
   start_events: start_mode_fifth_avenue_phantom
   stop_events:
     - fifth_avenue_phantom_mode_complete
-    - fifth_avenue_phantom_mode_failed
     - fifth_avenue_phantom_mode_completed_summary
     - ball_ended
   code: fifth_avenue_phantom.FifthAvenuePhantom
@@ -21,10 +20,6 @@ widget_player:
       action: play
 
   fifth_avenue_phantom_mode_complete:
-    fifth_avenue_phantom:
-      action: remove
-
-  fifth_avenue_phantom_mode_failed:
     fifth_avenue_phantom:
       action: remove
 
@@ -45,11 +40,6 @@ event_player:
   fifth_avenue_phantom_mode_complete:
     - clear_saucers
     - fifth_avenue_phantom_clear_lights
-
-  fifth_avenue_phantom_mode_failed:
-    - clear_saucers
-    - fifth_avenue_phantom_clear_lights
-
 
 show_player:
   fifth_avenue_phantom_light_left_web:

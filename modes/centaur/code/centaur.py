@@ -403,7 +403,7 @@ class Centaur(CaseFileMixin, Mode):
         self.final_active = False
         self.delay.remove("centaur_final_timer_tick")
         player = self.machine.game.player
-        player["centaur_state"] = 1
+        player["centaur_state"] = 2
         self._sync_vars()
         self.machine.events.post("centaur_mode_complete")
 

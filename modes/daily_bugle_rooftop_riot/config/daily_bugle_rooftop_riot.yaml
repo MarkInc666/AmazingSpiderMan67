@@ -43,10 +43,6 @@ widget_player:
     daily_bugle_rooftop_riot:
       action: remove
 
-  daily_bugle_rooftop_riot_mode_failed:
-    daily_bugle_rooftop_riot:
-      action: remove
-
   mode_daily_bugle_rooftop_riot_stopping:
     daily_bugle_rooftop_riot:
       action: remove
@@ -75,7 +71,7 @@ event_player:
 
   s_vuk_switch_active: daily_bugle_rooftop_riot_jackpot_hit
 
-  multiball_daily_bugle_rooftop_riot_multiball_ended: daily_bugle_rooftop_riot_failed
+  multiball_daily_bugle_rooftop_riot_multiball_ended: daily_bugle_rooftop_riot_fail_request
 
   mode_daily_bugle_rooftop_riot_started:
     - clear_saucers_delayed

@@ -41,7 +41,7 @@ class MasterPlan(Mode):
         self.drain_ms = 3000 if self.has_case_file("more_time") else 2000
 
         player = self.machine.game.player
-        player[f"{self.MODE_KEY}_state"] = 1
+        player[f"{self.MODE_KEY}_state"] = 2
         player[f"{self.MODE_KEY}_mode_points"] = 0
         player[f"{self.MODE_KEY}_rumours"] = 0
         player[f"{self.MODE_KEY}_total_rumours"] = 0
@@ -347,7 +347,7 @@ class MasterPlan(Mode):
         self.delay.remove("master_plan_rumour_drain")
         self.delay.remove("master_plan_back_page_timeout")
         player = self.machine.game.player
-        player[f"{self.MODE_KEY}_state"] = 1
+        player[f"{self.MODE_KEY}_state"] = 2
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post(f"{self.MODE_KEY}_mode_complete")
 

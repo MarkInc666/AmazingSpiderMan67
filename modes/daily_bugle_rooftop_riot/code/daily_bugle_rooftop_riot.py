@@ -32,7 +32,6 @@ class DailyBugleRooftopRiot(Mode):
         self.add_mode_event_handler(f"{self.MODE_KEY}_jackpot_hit", self._jackpot_hit)
         self.add_mode_event_handler(f"{self.MODE_KEY}_complete_request", self._complete_mode)
         self.add_mode_event_handler(f"{self.MODE_KEY}_fail_request", self._fail_mode)
-        self.add_mode_event_handler(f"{self.MODE_KEY}_failed", self._fail_mode)
 
         self.machine.events.post("chapter_mini_wizard_started", mini_wizard=self.MODE_KEY)
         self.machine.events.post(f"{self.MODE_KEY}_start_multiball")
@@ -77,8 +76,7 @@ class DailyBugleRooftopRiot(Mode):
             return
         self.mode_done = True
         player = self.machine.game.player
-        player[f"{self.MODE_KEY}_state"] = 1
-        player[f"{self.MODE_KEY}_state"] = "FAILED"
+        player[f"{self.MODE_KEY}_state"] = 2
         self.machine.events.post(f"{self.MODE_KEY}_mode_complete")
         self.machine.events.post("chapter_mini_wizard_completed", mini_wizard=self.MODE_KEY)
         self.machine.events.post(f"stop_mode_{self.MODE_KEY}")

@@ -41,10 +41,6 @@ widget_player:
     monster_island_breakout:
       action: remove
 
-  monster_island_breakout_mode_failed:
-    monster_island_breakout:
-      action: remove
-
   mode_monster_island_breakout_stopping:
     monster_island_breakout:
       action: remove
