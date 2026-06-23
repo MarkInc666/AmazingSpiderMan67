@@ -31,6 +31,7 @@ class Mysterio(CaseFileMixin, Mode):
         self.mysterio_illusions_cleared = 0
         self.mysterio_jackpot_value = 0
         self.active_mode_points = 0
+        self.mode_done = False
 
         self.case_files = self.get_case_file_bonuses()
         self._apply_case_file_bonuses()
@@ -131,6 +132,9 @@ class Mysterio(CaseFileMixin, Mode):
         return "right"     
 
     def shot_hit(self, shot_name=None, **kwargs):
+        if self.mode_done:
+            return
+
         if self.machine.game.player["villain_mode_in_summary"] == True: return
 
         if not shot_name:
@@ -221,6 +225,12 @@ class Mysterio(CaseFileMixin, Mode):
         self.machine.events.post("show_mode_message", message_mode_title="SUPER VALUE", message_mode_subtitle="MYSTERIO JACKPOT", message_mode_value=self.super_value)
 
     def collect_super(self, shot):
+        if self.mode_done:
+            return
+        self.mode_done = True
+        shot.disabled = True
+        shot.is_lit = False
+
         self.machine.game.player["mysterio_jackpot_value"] = self.super_value
         self.active_mode_points += self.super_value
 

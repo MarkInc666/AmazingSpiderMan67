@@ -40,6 +40,8 @@ class Sandman(CaseFileMixin, Mode):
         self.sandman_best_run = 0
         self.flash_hits = 0
         self.shot_assist = False
+        self.mode_done = False
+        self.awarded_run_jackpots = set()
 
         self.case_files = self.get_case_file_bonuses()
         self._apply_case_file_bonuses()
@@ -99,6 +101,9 @@ class Sandman(CaseFileMixin, Mode):
             self.shot_assist = True
 
     def start_bank(self, **kwargs):
+        if self.mode_done:
+            return
+
         self.down_targets = set()
         self.hit_order = []
         self.current_flash = 1
@@ -116,6 +121,9 @@ class Sandman(CaseFileMixin, Mode):
         )
 
     def after_bank_reset(self):
+        if self.mode_done:
+            return
+
         self.light_current_flash()
         self._show_message("SHIFTING SANDS", f"HIT DROP {self.current_flash}", seconds=int(self.MOVE_INTERVAL_MS / 1000), event="show_mode_countdown")
         if self.first_target == 1:        
@@ -123,6 +131,9 @@ class Sandman(CaseFileMixin, Mode):
 
 
     def schedule_next_shift(self, **kwargs):
+        if self.mode_done:
+            return
+
         self.delay.remove("sandman_shift")
         self.delay.add(
             name="sandman_shift",
@@ -131,6 +142,9 @@ class Sandman(CaseFileMixin, Mode):
         )
 
     def shift_flash(self):
+        if self.mode_done:
+            return
+
         if self.shot_assist == True:
             self.shot_assist = False
             self.drop_hit(target=self.current_flash)
@@ -178,6 +192,9 @@ class Sandman(CaseFileMixin, Mode):
         
 
     def drop_hit(self, target, **kwargs):
+        if self.mode_done:
+            return
+
         if self.direction == 1:
             target = 6 - target
 
@@ -222,11 +239,13 @@ class Sandman(CaseFileMixin, Mode):
 
     def award_points(self):
 
-        if self.flash_hits == 5:
+        if self.flash_hits == 5 and "5_flash" not in self.awarded_run_jackpots:
+            self.awarded_run_jackpots.add("5_flash")
             self._show_message("SANDMAN JACKPOT", "5 FLASHING HITS", value=750000, event="show_mode_jackpot")
             self.machine.events.post("sandman_5_flashing_jackpot")
 
-        if self.flash_hits == 10:
+        if self.flash_hits == 10 and "10_flash" not in self.awarded_run_jackpots:
+            self.awarded_run_jackpots.add("10_flash")
             self._show_message("SANDMAN JACKPOT", "10 FLASHING HITS", value=1500000, event="show_mode_jackpot")
             self.machine.events.post("sandman_10_flashing_jackpot")
 
@@ -266,6 +285,9 @@ class Sandman(CaseFileMixin, Mode):
 
 
     def complete_bank(self):
+        if self.mode_done:
+            return
+
         self.delay.remove("sandman_shift")
         self.direction = 1 - self.direction
 
@@ -276,6 +298,7 @@ class Sandman(CaseFileMixin, Mode):
         self.update_player_vars()
 
         if self.banks_completed >= self.MAX_BANKS:
+            self.mode_done = True
             self._show_message("SANDMAN DEFEATED", "MODE COMPLETE", event="show_mode_jackpot")
             self.machine.events.post("sandman_mode_complete")
             self.machine.game.player["sandman_state"] = 2

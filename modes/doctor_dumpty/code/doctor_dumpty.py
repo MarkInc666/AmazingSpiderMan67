@@ -204,6 +204,11 @@ class DoctorDumpty(Mode):
         self._advance_after_delay()
 
     def _award_current_jackpot(self, shot_assist=False):
+        if self.mode_done or not self.current_shot:
+            return
+
+        awarded_shot = self.current_shot
+        self.current_shot = None
         jackpot_value = self._current_jackpot_value()
         player = self.machine.game.player if self.machine.game else None
 
@@ -215,8 +220,8 @@ class DoctorDumpty(Mode):
         self.best_jackpot = max(self.best_jackpot, jackpot_value)
         self._sync_vars()
 
-        self.machine.events.post("doctor_dumpty_jackpot_collected", shot=self.current_shot, value=jackpot_value, shot_assist=shot_assist)
-        self.machine.events.post("show_mode_jackpot", message_mode_title="PREDICTION HIT", message_mode_subtitle=self.current_shot.replace("_", " ").upper(), message_mode_value=jackpot_value)
+        self.machine.events.post("doctor_dumpty_jackpot_collected", shot=awarded_shot, value=jackpot_value, shot_assist=shot_assist)
+        self.machine.events.post("show_mode_jackpot", message_mode_title="PREDICTION HIT", message_mode_subtitle=awarded_shot.replace("_", " ").upper(), message_mode_value=jackpot_value)
         self._advance_after_delay()
 
     def _advance_after_delay(self):

@@ -41,7 +41,7 @@ class MasterPlan(Mode):
         self.drain_ms = 2000
 
         player[f"{self.MODE_KEY}_state"] = 1
-        player[f"{self.MODE_KEY}_mode_points"] = 0
+        player["active_mode_points"] = 0
         player[f"{self.MODE_KEY}_rumours"] = 0
         player[f"{self.MODE_KEY}_total_rumours"] = 0
         player[f"{self.MODE_KEY}_conversions"] = 0
@@ -305,7 +305,7 @@ class MasterPlan(Mode):
         player = self.machine.game.player
         player["score"] += points
         self.mode_points += points
-        player[f"{self.MODE_KEY}_mode_points"] = self.mode_points
+        player["active_mode_points"] = self.mode_points
 
     def _complete_mode(self, **kwargs):
         if self.mode_done:
@@ -343,7 +343,7 @@ class MasterPlan(Mode):
 
     def _sync_vars(self):
         player = self.machine.game.player
-        player[f"{self.MODE_KEY}_mode_points"] = self.mode_points
+        player["active_mode_points"] = self.mode_points
         player[f"{self.MODE_KEY}_rumours"] = self.rumours
         player[f"{self.MODE_KEY}_total_rumours"] = self.total_rumours
         player[f"{self.MODE_KEY}_conversions"] = self.conversions

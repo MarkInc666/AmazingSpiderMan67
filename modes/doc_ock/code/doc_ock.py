@@ -58,6 +58,7 @@ class doc_ock(CaseFileMixin, Mode):
         self.locked_arms = [True, False, False, False]
 
         self.jackpot_lit = 1
+        self.mode_done = False
         self.jackpots_collected = 0
         self.active_breakouts = set()
         self.doc_ock_max_arms_locked = 1
@@ -189,6 +190,8 @@ class doc_ock(CaseFileMixin, Mode):
             self.machine.events.post("doc_ock_jackpot_lit")
 
     def jackpot_request(self, **kwargs):
+        if self.mode_done:
+            return
         if self.machine.game.player["villain_mode_in_summary"] == True: return
         if self.jackpot_lit == 0:
             self.machine.events.post("doc_ock_jackpot_not_lit")
@@ -201,6 +204,7 @@ class doc_ock(CaseFileMixin, Mode):
         if locked <= 0:
             return
 
+        self.jackpot_lit = 0
         jp_value = self.doc_ock_jackpot_base_value * (5-locked) * self.doc_ock_jackpot_spinner_multi
         
         if self.first_jackpot_maxed == True:
@@ -330,7 +334,11 @@ class doc_ock(CaseFileMixin, Mode):
         return True
 
     def check_mode_over(self):
+        if self.mode_done:
+            return True
+
         if sum(self.locked_arms) <= 0:
+            self.mode_done = True
             self.machine.events.post("doc_ock_mode_complete")
             self.machine.events.post("doc_ock_stop_timed_release")
             return True

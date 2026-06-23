@@ -279,6 +279,8 @@ class RhinoBash(CaseFileMixin, Mode):
         self.post_rage_show()
 
     def complete_mode(self):
+        if self.mode_done:
+            return
         self.mode_done = True
         self.stop_berserk()
         self._show_message("RHINO DEFEATED", "MODE COMPLETE", event="show_mode_jackpot")

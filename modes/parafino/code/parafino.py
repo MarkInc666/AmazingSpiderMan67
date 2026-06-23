@@ -304,7 +304,11 @@ class Parafino(CaseFileMixin, Mode):
     def _collect_jackpot(self, zone, saucer):
         data = self.ZONES[zone]
         player = self.machine.game.player
+        if player[data["lit_var"]] != 1:
+            return
+
         value = player[data["value_var"]]
+        player[data["lit_var"]] = 0
 
         self._score(value)
         player[data["jackpots_var"]] += 1
@@ -336,6 +340,7 @@ class Parafino(CaseFileMixin, Mode):
 
         if self.case_file_extra_collects and player[data["extra_collect_used_var"]] == 0:
             player[data["extra_collect_used_var"]] = 1
+            player[data["lit_var"]] = 1
             self.machine.events.post(
                 "parafino_case_file_extra_collect_ready",
                 zone=zone,

@@ -16,9 +16,9 @@ class ScarletSorcerer(Mode):
         self.mode_points = 0
 
         player = self.machine.game.player
-        player[f"{self.MODE_KEY}_mode_points"] = 0
-        player[f"{self.MODE_KEY}_hits"] = 0
-        player[f"{self.MODE_KEY}_major_hits"] = 0
+        player["active_mode_points"] = 0
+        player["active_mode_hits"] = 0
+        player["active_mode_major_hits"] = 0
         player[f"{self.MODE_KEY}_state"] = 1
 
         self.add_mode_event_handler(f"{self.MODE_KEY}_shot_hit", self._shot_hit)
@@ -62,6 +62,6 @@ class ScarletSorcerer(Mode):
 
     def _sync_vars(self):
         player = self.machine.game.player
-        player[f"{self.MODE_KEY}_mode_points"] = self.mode_points
-        player[f"{self.MODE_KEY}_hits"] = self.hits
-        player[f"{self.MODE_KEY}_major_hits"] = self.major_hits
+        player["active_mode_points"] = self.mode_points
+        player["active_mode_hits"] = self.hits
+        player["active_mode_major_hits"] = self.major_hits

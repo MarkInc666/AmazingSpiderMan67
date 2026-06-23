@@ -27,8 +27,8 @@ class NatureStrikesBack(Mode):
         self.jackpot_value = self.BASE_JACKPOT + self.case_file_bonus
         player["mini_wizard_current_key"] = self.MODE_KEY
         player[f"{self.MODE_KEY}_state"] = 1
-        player[f"{self.MODE_KEY}_mode_points"] = 0
-        player[f"{self.MODE_KEY}_hits"] = 0
+        player["active_mode_points"] = 0
+        player["active_mode_hits"] = 0
         player[f"{self.MODE_KEY}_case_file_bonus"] = self.case_file_bonus
         player[f"{self.MODE_KEY}_jackpot_value"] = self.jackpot_value
 
@@ -88,7 +88,7 @@ class NatureStrikesBack(Mode):
 
     def _sync_vars(self):
         player = self.machine.game.player
-        player[f"{self.MODE_KEY}_mode_points"] = self.mode_points
-        player[f"{self.MODE_KEY}_hits"] = self.hits
+        player["active_mode_points"] = self.mode_points
+        player["active_mode_hits"] = self.hits
         player[f"{self.MODE_KEY}_case_file_bonus"] = self.case_file_bonus
         player[f"{self.MODE_KEY}_jackpot_value"] = self.jackpot_value

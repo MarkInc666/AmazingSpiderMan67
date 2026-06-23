@@ -28,9 +28,9 @@ class PhantomFromDepthsOfTime(Mode):
         self.mode_points = 0
 
         player = self.machine.game.player
-        player[f"{self.MODE_KEY}_mode_points"] = 0
-        player[f"{self.MODE_KEY}_hits"] = 0
-        player[f"{self.MODE_KEY}_major_hits"] = 0
+        player["active_mode_points"] = 0
+        player["active_mode_hits"] = 0
+        player["active_mode_major_hits"] = 0
         player[f"{self.MODE_KEY}_state"] = 1
 
         self.add_mode_event_handler(f"{self.MODE_KEY}_shot_hit", self._shot_hit)
@@ -39,6 +39,7 @@ class PhantomFromDepthsOfTime(Mode):
         self.add_mode_event_handler(f"{self.MODE_KEY}_fail_request", self._fail_mode)
 
         self.machine.events.post(f"{self.MODE_KEY}_placeholder_started")
+        self._show_placeholder_message(self.DISPLAY_NAME.upper(), f"HIT {self.HITS_TO_COMPLETE} SHOTS", value=self.mode_points)
 
     def _shot_hit(self, **kwargs):
         if self.mode_done:
@@ -47,6 +48,7 @@ class PhantomFromDepthsOfTime(Mode):
         self._score(self.HIT_SCORE)
         self._sync_vars()
         self.machine.events.post(f"{self.MODE_KEY}_progress", hits=self.hits)
+        self._show_placeholder_message("SHOT HIT", f"{self.hits} / {self.HITS_TO_COMPLETE}", value=self.mode_points)
         if self.hits >= self.HITS_TO_COMPLETE:
             self._complete_mode()
 
@@ -57,6 +59,7 @@ class PhantomFromDepthsOfTime(Mode):
         self._score(self.MAJOR_SCORE)
         self._sync_vars()
         self.machine.events.post(f"{self.MODE_KEY}_major_progress", major_hits=self.major_hits)
+        self._show_placeholder_message("MAJOR HIT", f"{self.major_hits} MAJOR", value=self.mode_points, event="show_mode_jackpot")
 
     def _complete_mode(self, **kwargs):
         if self.mode_done:
@@ -64,6 +67,7 @@ class PhantomFromDepthsOfTime(Mode):
         self.mode_done = True
         player = self.machine.game.player
         player[f"{self.MODE_KEY}_state"] = 2
+        self._show_placeholder_message(self.DISPLAY_NAME.upper(), "MODE COMPLETE", value=self.mode_points, event="show_mode_jackpot")
         self.machine.events.post(f"{self.MODE_KEY}_mode_complete")
 
     def _fail_mode(self, **kwargs):
@@ -72,7 +76,18 @@ class PhantomFromDepthsOfTime(Mode):
         self.mode_done = True
         player = self.machine.game.player
         player[f"{self.MODE_KEY}_state"] = 2
+        self._show_placeholder_message(self.DISPLAY_NAME.upper(), "MODE COMPLETE", value=self.mode_points, event="show_mode_jackpot")
         self.machine.events.post(f"{self.MODE_KEY}_mode_complete")
+
+
+    def _show_placeholder_message(self, title, subtitle="", value="", seconds="", event="show_mode_message"):
+        self.machine.events.post(
+            event,
+            message_mode_title=title,
+            message_mode_subtitle=subtitle,
+            message_mode_value=value,
+            message_mode_seconds=seconds,
+        )
 
     def _score(self, points):
         player = self.machine.game.player
@@ -82,6 +97,6 @@ class PhantomFromDepthsOfTime(Mode):
 
     def _sync_vars(self):
         player = self.machine.game.player
-        player[f"{self.MODE_KEY}_mode_points"] = self.mode_points
-        player[f"{self.MODE_KEY}_hits"] = self.hits
-        player[f"{self.MODE_KEY}_major_hits"] = self.major_hits
+        player["active_mode_points"] = self.mode_points
+        player["active_mode_hits"] = self.hits
+        player["active_mode_major_hits"] = self.major_hits

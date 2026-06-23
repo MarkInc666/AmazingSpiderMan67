@@ -559,8 +559,8 @@ player_vars:
     initial_value: 0
     value_type: int
   message_mode_seconds:
-    initial_value: 0
-    value_type: int
+    initial_value: " "
+    value_type: str
   message_mode_subtitle:
     initial_value: " "
     value_type: str

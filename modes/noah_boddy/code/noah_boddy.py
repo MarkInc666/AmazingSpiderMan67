@@ -442,9 +442,10 @@ class NoahBoddy(Mode):
             self.programmatic_drops_pending.discard(target)
 
     def _award_secret_jackpot(self, source="drop_target"):
-        if self.mode_done:
+        if self.mode_done or not self.hurryup_active:
             return
 
+        self.hurryup_active = False
         self.delay.remove("noah_boddy_hurryup_tick")
         jackpot = self._current_jackpot_value()
         self.jackpots_collected += 1

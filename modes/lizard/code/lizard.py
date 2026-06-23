@@ -38,6 +38,7 @@ class Lizard(CaseFileMixin, Mode):
         super().mode_start(**kwargs)
 
         self._init_player_vars()
+        self.mode_done = False
 
         # Switch/event handlers.
         self.add_mode_event_handler("s_star_rollover_active", self.serum_collect_request)
@@ -173,6 +174,9 @@ class Lizard(CaseFileMixin, Mode):
         self.machine.events.post("lizard_clear_ab")
 
     def serum_collect_request(self, **kwargs):
+        if self.mode_done:
+            return
+
         if self.machine.game.player["villain_mode_in_summary"] == True: return
 
         if self.machine.game.player["lizard_serum_ready"] == 1:
@@ -204,6 +208,9 @@ class Lizard(CaseFileMixin, Mode):
 
 
     def serum_expired(self, **kwargs):
+        if self.mode_done:
+            return
+
         # Public event for shows/widgets/sounds.
         self._show_message("SERUM EXPIRED", "COLLECT ANOTHER SERUM")
         self.machine.events.post("lizard_serum_expired")
@@ -221,6 +228,7 @@ class Lizard(CaseFileMixin, Mode):
 
         # If all attempts are used, end the mode.
         if self.machine.game.player["lizard_deliveries"] >= len(self.DELIVERY_SEQUENCE):
+            self.mode_done = True
             self.machine.events.post("lizard_mode_complete")
             return
 
@@ -228,6 +236,9 @@ class Lizard(CaseFileMixin, Mode):
         self.machine.events.post("lizard_light_serum_location")
 
     def delivery_request(self, target=None, **kwargs):
+        if self.mode_done:
+            return
+
         if self.machine.game.player["villain_mode_in_summary"] == True: return
 
         if self.machine.game.player["lizard_serum_ready"] == 0:
@@ -238,6 +249,7 @@ class Lizard(CaseFileMixin, Mode):
         if required_target != target:
             return
 
+        self.machine.game.player["lizard_serum_ready"] = 0
         delivery_value = self.machine.game.player["lizard_delivery_value"]
         self._award_points(delivery_value)
 
@@ -256,6 +268,7 @@ class Lizard(CaseFileMixin, Mode):
         self.machine.events.post("lizard_delivery_timer_stop")
 
         if self.machine.game.player["lizard_deliveries"] >= len(self.DELIVERY_SEQUENCE):
+            self.mode_done = True
             self._show_message("LIZARD CURED", "MODE COMPLETE", event="show_mode_jackpot")
             self.machine.events.post("lizard_mode_complete")
             return

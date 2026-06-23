@@ -1,8 +1,9 @@
 #config_version=6
 
 # Fifth Avenue Phantom — Vanish and Reveal
-# Right drop targets reveal the Phantom's hiding place for longer windows.
-# Catch him while lit for a jackpot. If the fifth reveal expires, the mode ends.
+# Five-round reveal/collect mode. More Jackpots adds a sixth round.
+# Right drops reveal the jackpot shot, add time, and lower the jackpot value.
+# Timer expiry ends only the current round; after the final round the mode completes.
 
 mode:
   start_events: start_mode_fifth_avenue_phantom

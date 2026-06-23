@@ -62,6 +62,7 @@ class TrubbleUnleashed(CaseFileMixin, Mode):
         self.rounds_to_play = self.BASE_ROUNDS
         self.correct_shots = 0
         self.incorrect_shots = 0
+        self.round_awarding = False
         self.mode_points = 0
         self.current_groups = []
         self.correct_group = None
@@ -128,6 +129,7 @@ class TrubbleUnleashed(CaseFileMixin, Mode):
         self._shot_hit(group="upper_spinner")
 
     def _start_next_round(self):
+        self.round_awarding = False
         if self._inactive():
             return
 
@@ -154,12 +156,16 @@ class TrubbleUnleashed(CaseFileMixin, Mode):
         self._update_rooftop_diverter()
 
     def _shot_hit(self, group=None, **kwargs):
+        if self.round_awarding:
+            return
+
         if self._inactive() or group not in self.current_groups:
             return
 
         all_good = self.first_round_all_good and self.round_number == 1
         is_correct = all_good or group == self.correct_group
 
+        self.round_awarding = True
         self.delay.remove("trubble_unleashed_hide_reveal")
 
         if is_correct:

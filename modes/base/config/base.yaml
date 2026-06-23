@@ -3,6 +3,7 @@
 mode:
   start_events: ball_started
   priority: 100
+  code: base.Base
 
 multiballs:
   outlane_add_a_ball:

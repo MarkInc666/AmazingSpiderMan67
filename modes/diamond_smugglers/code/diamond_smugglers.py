@@ -228,6 +228,9 @@ class DiamondSmugglers(Mode, CaseFileMixin):
         )
 
     def _collect_jackpot(self, saucer):
+        if self.mode_done or not self.saucer_chase_active:
+            return
+
         self.saucer_chase_active = False
         self.star_freeze_active = False
         self.delay.remove("diamond_smugglers_star_freeze")
@@ -257,6 +260,7 @@ class DiamondSmugglers(Mode, CaseFileMixin):
         self.machine.events.post("drop_target_bank_dt_bank_right_reset")
 
         if self.jackpots_collected >= self.required_jackpots:
+            self.mode_done = True
             self.delay.add(name="diamond_smugglers_complete_delay", ms=1_000, callback=self._complete_mode)
         else:
             self.machine.events.post("diamond_smugglers_build_phase_started")
@@ -292,9 +296,8 @@ class DiamondSmugglers(Mode, CaseFileMixin):
         self._cycle_saucer()
 
     def _complete_mode(self, **kwargs):
-        if self.mode_done:
-            return
-        self.mode_done = True
+        if not self.mode_done:
+            self.mode_done = True
         player = self.machine.game.player
         player[f"{self.MODE_KEY}_state"] = 2
         self.machine.events.post("diamond_smugglers_clear_lights")

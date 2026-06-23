@@ -46,6 +46,8 @@ class Electro(CaseFileMixin, Mode):
 
         self.super_active = False
         self.current_shot = None
+        self.mode_done = False
+        self.collected_jackpot_shots = set()
 
         self.electro_super_jackpot = 0
         self.electro_best_spark = 0
@@ -147,12 +149,15 @@ class Electro(CaseFileMixin, Mode):
         return [shot for shot in self.shots if not shot.disabled]
 
     def pick_next_lit_shot(self):
+        if self.mode_done:
+            return
+
         self.stop_current_lit_shot()
 
         active = self.active_shots()
 
         if len(active) <= 0:
-            self.machine.events.post("electro_mode_complete")
+            self._complete_mode()
             return
 
         if len(active) == 1:
@@ -192,6 +197,9 @@ class Electro(CaseFileMixin, Mode):
         self.machine.events.post("electro_shot_timer_stop")
 
     def lit_shot_timeout(self, **kwargs):
+        if self.mode_done:
+            return
+
         if self.super_active:
             return
 
@@ -200,6 +208,9 @@ class Electro(CaseFileMixin, Mode):
         self.pick_next_lit_shot()
 
     def shot_hit(self, shot_name=None, **kwargs):
+        if self.mode_done:
+            return
+
         if self.machine.game.player["villain_mode_in_summary"] == True: return
        
         if not shot_name:
@@ -223,6 +234,12 @@ class Electro(CaseFileMixin, Mode):
         self.collect_normal_jackpot(shot)
 
     def collect_normal_jackpot(self, shot):
+        if self.mode_done or shot.name in self.collected_jackpot_shots:
+            return
+        self.collected_jackpot_shots.add(shot.name)
+        shot.disabled = True
+        shot.is_lit = False
+
         jackpot_value = self.NORMAL_JACKPOT_VALUE - 10000 * self.value_deduct
         self.machine.game.player["score"] += jackpot_value
         self.active_mode_points += jackpot_value
@@ -276,6 +293,10 @@ class Electro(CaseFileMixin, Mode):
         self.machine.events.post("electro_super_timer_start")
 
     def collect_super(self):
+        if self.mode_done:
+            return
+        self.mode_done = True
+
         self.electro_super_jackpot = self.machine.game.player["electro_super_jackpot_value"]
         self.active_mode_points += self.electro_super_jackpot
 
@@ -293,6 +314,15 @@ class Electro(CaseFileMixin, Mode):
         self.machine.events.post("electro_mode_almost_complete")
 
     def super_timeout(self, **kwargs):
+        if self.mode_done:
+            return
+        self.mode_done = True
         self._show_message("SUPER MISSED", "ELECTRO ESCAPES")
         self.machine.events.post("electro_super_missed")
-        self.machine.events.post("electro_mode_complete")        
+        self.machine.events.post("electro_mode_complete")
+    def _complete_mode(self, **kwargs):
+        if self.mode_done:
+            return
+        self.mode_done = True
+        self.machine.events.post("electro_mode_complete")
+

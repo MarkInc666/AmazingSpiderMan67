@@ -43,6 +43,7 @@ class Scorpion(CaseFileMixin, Mode):
         self.venom_hits = 0
         self.tries_used = 0
         self.state = "build"
+        self.mode_done = False
         self.active_target_side = None
         self.required_target = None
 
@@ -89,6 +90,9 @@ class Scorpion(CaseFileMixin, Mode):
             self.machine.events.post("scorpion_case_file_target_spotted")
 
     def spinner_hit(self, **kwargs):
+        if self.mode_done:
+            return
+
         self.machine.game.player["score"] += 25000
         self.scorpion_venom_value += 50000
 
@@ -108,6 +112,9 @@ class Scorpion(CaseFileMixin, Mode):
             self.machine.events.post("show_mode_message_long", message_mode_title="STING READY", message_mode_subtitle="CHOOSE LEFT OR RIGHT EXIT")
 
     def right_exit_chosen(self, **kwargs):
+        if self.mode_done:
+            return
+
         if self.state != "ready":
             return
 
@@ -131,6 +138,9 @@ class Scorpion(CaseFileMixin, Mode):
         self.machine.events.post("show_mode_countdown", message_mode_title="LEFT EXIT", message_mode_subtitle="LEFT BANK STING SHOT", message_mode_seconds=5)
     
     def left_exit_chosen(self, **kwargs):
+        if self.mode_done:
+            return
+
         if self.state != "ready":
             return
 
@@ -168,24 +178,39 @@ class Scorpion(CaseFileMixin, Mode):
         self.machine.events.post("show_mode_message", message_mode_title="STING SHOT", message_mode_subtitle=f"RIGHT TARGET {self.required_target}")
 
     def left_drop_hit(self, target, **kwargs):
+        if self.mode_done:
+            return
+
         if self.state == "sting" and self.active_target_side == "left":
             if target == self.required_target:
                 self.award_sting(safe=True)
 
     def sting_miss_left(self, **kwargs):
+        if self.mode_done:
+            return
+
         if self.state == "sting" and self.active_target_side == "left":
             self.award_missed_sting()
 
     def right_drop_hit(self, target, **kwargs):
+        if self.mode_done:
+            return
+
         if self.state == "sting" and self.active_target_side == "right":
             if target == self.required_target:
                 self.award_sting(safe=False)
 
     def sting_miss_right(self, **kwargs):
+        if self.mode_done:
+            return
+
         if self.state == "sting" and self.active_target_side == "right":
             self.award_missed_sting()
 
     def award_sting(self, safe):
+        if self.mode_done or self.state != "sting":
+            return
+        self.state = "awarding"
         self.machine.events.post("scorpion_sting_timer_stop")
 
         self.scorpion_stings += 1
@@ -210,6 +235,9 @@ class Scorpion(CaseFileMixin, Mode):
         self.reset_for_next_try()
 
     def award_missed_sting(self):
+        if self.mode_done or self.state != "sting":
+            return
+        self.state = "awarding"
         self.machine.events.post("scorpion_sting_timer_stop")
 
         self.machine.game.player["score"] += 50000
@@ -221,6 +249,9 @@ class Scorpion(CaseFileMixin, Mode):
         self.reset_for_next_try()
 
     def sting_timeout(self, **kwargs):
+        if self.mode_done:
+            return
+
         if self.state != "sting":
             return
 
@@ -233,11 +264,14 @@ class Scorpion(CaseFileMixin, Mode):
         self.tries_used += 1
 
         if self.tries_used >= self.MAX_TRIES:
+            self.mode_done = True
+            self.state = "done"
             self.machine.events.post("scorpion_mode_complete")
             return
 
         self.venom_hits = 0
         self.state = "build"
+        self.mode_done = False
         self.active_target_side = None
 
         self.machine.events.post("scorpion_build_phase_started")

@@ -25,8 +25,8 @@ class DailyBugleRooftopRiot(Mode):
         player = self.machine.game.player
         player["mini_wizard_current_key"] = self.MODE_KEY
         player[f"{self.MODE_KEY}_state"] = 1
-        player[f"{self.MODE_KEY}_mode_points"] = 0
-        player[f"{self.MODE_KEY}_hits"] = 0
+        player["active_mode_points"] = 0
+        player["active_mode_hits"] = 0
 
         self.add_mode_event_handler(f"{self.MODE_KEY}_shot_hit", self._shot_hit)
         self.add_mode_event_handler(f"{self.MODE_KEY}_jackpot_hit", self._jackpot_hit)
@@ -89,5 +89,5 @@ class DailyBugleRooftopRiot(Mode):
 
     def _sync_vars(self):
         player = self.machine.game.player
-        player[f"{self.MODE_KEY}_mode_points"] = self.mode_points
-        player[f"{self.MODE_KEY}_hits"] = self.hits
+        player["active_mode_points"] = self.mode_points
+        player["active_mode_hits"] = self.hits

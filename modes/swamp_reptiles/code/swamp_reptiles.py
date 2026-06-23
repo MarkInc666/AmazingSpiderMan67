@@ -338,6 +338,7 @@ class SwampReptiles(CaseFileMixin, Mode):
             return
 
         self.super_collected = True
+        self.super_lit = False
         self._score(self.super_jackpot_value)
         self.machine.events.post(
             "swamp_reptiles_super_jackpot_collected",
