@@ -32,13 +32,16 @@ event_player:
   mode_fifth_avenue_phantom_started:
     - clear_saucers
     - drop_target_bank_dt_bank_right_reset
+    - drop_target_bank_dt_bank_left_reset
 
   mode_fifth_avenue_phantom_stopping:
     - clear_saucers
+    - drop_target_bank_dt_bank_left_reset
     - fifth_avenue_phantom_clear_lights
 
   fifth_avenue_phantom_mode_complete:
     - clear_saucers
+    - drop_target_bank_dt_bank_left_reset
     - fifth_avenue_phantom_clear_lights
 
 show_player:
@@ -90,6 +93,46 @@ show_player:
     fifth_avenue_phantom_saucers_show:
       action: stop
 
+  fifth_avenue_phantom_light_right_1:
+    fifth_avenue_phantom_right_1_show:
+      loops: -1
+
+  fifth_avenue_phantom_light_right_2:
+    fifth_avenue_phantom_right_2_show:
+      loops: -1
+
+  fifth_avenue_phantom_light_right_3:
+    fifth_avenue_phantom_right_3_show:
+      loops: -1
+
+  fifth_avenue_phantom_light_right_4:
+    fifth_avenue_phantom_right_4_show:
+      loops: -1
+
+  fifth_avenue_phantom_light_right_5:
+    fifth_avenue_phantom_right_5_show:
+      loops: -1
+
+  fifth_avenue_phantom_stop_right_1:
+    fifth_avenue_phantom_right_1_show:
+      action: stop
+
+  fifth_avenue_phantom_stop_right_2:
+    fifth_avenue_phantom_right_2_show:
+      action: stop
+
+  fifth_avenue_phantom_stop_right_3:
+    fifth_avenue_phantom_right_3_show:
+      action: stop
+
+  fifth_avenue_phantom_stop_right_4:
+    fifth_avenue_phantom_right_4_show:
+      action: stop
+
+  fifth_avenue_phantom_stop_right_5:
+    fifth_avenue_phantom_right_5_show:
+      action: stop
+
   fifth_avenue_phantom_clear_lights:
     fifth_avenue_phantom_left_web_show:
       action: stop
@@ -102,6 +145,16 @@ show_player:
     fifth_avenue_phantom_upper_targets_show:
       action: stop
     fifth_avenue_phantom_saucers_show:
+      action: stop
+    fifth_avenue_phantom_right_1_show:
+      action: stop
+    fifth_avenue_phantom_right_2_show:
+      action: stop
+    fifth_avenue_phantom_right_3_show:
+      action: stop
+    fifth_avenue_phantom_right_4_show:
+      action: stop
+    fifth_avenue_phantom_right_5_show:
       action: stop
 
 
@@ -133,14 +186,10 @@ shows:
   fifth_avenue_phantom_left_drops_show:
     - duration: 150ms
       lights:
-        l_3bankbonus: purple
-        l_left_special: purple
-        l_left_multibonus: purple
+        l_gi_3bank: purple
     - duration: 150ms
       lights:
-        l_3bankbonus: off
-        l_left_special: off
-        l_left_multibonus: off
+        l_gi_3bank: off
 
   fifth_avenue_phantom_upper_targets_show:
     - duration: 150ms
@@ -177,3 +226,43 @@ shows:
         l_3: off
         l_3_hole_l: off
         l_3_hole_r: off
+
+  fifth_avenue_phantom_right_1_show:
+    - duration: 150ms
+      lights:
+        l_5bank_1: purple
+    - duration: 150ms
+      lights:
+        l_5bank_1: off
+
+  fifth_avenue_phantom_right_2_show:
+    - duration: 150ms
+      lights:
+        l_5bank_2: purple
+    - duration: 150ms
+      lights:
+        l_5bank_2: off
+
+  fifth_avenue_phantom_right_3_show:
+    - duration: 150ms
+      lights:
+        l_5bank_3: purple
+    - duration: 150ms
+      lights:
+        l_5bank_3: off
+
+  fifth_avenue_phantom_right_4_show:
+    - duration: 150ms
+      lights:
+        l_5bank_4: purple
+    - duration: 150ms
+      lights:
+        l_5bank_4: off
+
+  fifth_avenue_phantom_right_5_show:
+    - duration: 150ms
+      lights:
+        l_5bank_5: purple
+    - duration: 150ms
+      lights:
+        l_5bank_5: off

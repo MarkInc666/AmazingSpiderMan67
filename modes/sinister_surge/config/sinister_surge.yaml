@@ -39,6 +39,10 @@ multiballs:
 
 event_player:
 
+  s_vuk_switch_active:
+    - sinister_surge_vuk_hit
+    - sinister_surge_kick_vuk|2s
+
   drop_target_bank_dt_bank_left_down:
     - drop_target_bank_dt_bank_left_reset
 
@@ -66,6 +70,7 @@ event_player:
   sinister_surge_setup:
     - sinister_surge_reset_banks
     - clear_saucers
+    - sinister_surge_kick_vuk|1.5s
     - sinister_surge_disable_daily_bugle_mystery
     - sinister_surge_mode_intro
     - play_song_7
@@ -80,6 +85,8 @@ event_player:
   sinister_surge_open_upper_gate: rooftop_diverter_open
 
   sinister_surge_close_upper_gate: rooftop_diverter_close
+
+  sinister_surge_kick_vuk: up_kick
 
   sinister_surge_disable_daily_bugle_mystery: disable_daily_bugle_mystery
 

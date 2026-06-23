@@ -1,6 +1,5 @@
 import random
 from mpf.core.mode import Mode
-from modes.common.case_file_mixin import CaseFileMixin
 
 
 class MasterPlan(Mode):
@@ -34,14 +33,14 @@ class MasterPlan(Mode):
         self.back_page_lit = False
         self.last_super_value = 0
 
-        self.case_files = self.get_case_file_bonuses()
-        self.base_pop_value = 75_000 if self.has_case_file("bigger_jackpots") else 50_000
-        self.base_spin_value = 150_000 if self.has_case_file("bigger_jackpots") else 100_000
-        self.base_headline_value = 250_000 if self.has_case_file("bigger_jackpots") else 200_000
-        self.drain_ms = 3000 if self.has_case_file("more_time") else 2000
-
         player = self.machine.game.player
-        player[f"{self.MODE_KEY}_state"] = 2
+        self.case_file_bonus = player["mini_wizard_case_file_bonus"]
+        self.base_pop_value = 50_000
+        self.base_spin_value = 100_000 + self.case_file_bonus
+        self.base_headline_value = 200_000 + self.case_file_bonus
+        self.drain_ms = 2000
+
+        player[f"{self.MODE_KEY}_state"] = 1
         player[f"{self.MODE_KEY}_mode_points"] = 0
         player[f"{self.MODE_KEY}_rumours"] = 0
         player[f"{self.MODE_KEY}_total_rumours"] = 0
@@ -64,18 +63,6 @@ class MasterPlan(Mode):
         self.add_mode_event_handler(f"{self.MODE_KEY}_complete_request", self._complete_mode)
         self.add_mode_event_handler(f"{self.MODE_KEY}_fail_request", self._fail_mode)
 
-        if self.has_case_file("safety_net"):
-            self.machine.events.post("start_case_file_ball_save")
-
-        self.publish_case_file_bonus_events("master_plan")
-        self.publish_active_case_file_helpers([
-            ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
-            ("bigger_jackpots", "BIGGER FRONT PAGE VALUES"),
-            ("more_time", "RUMOURS LAST LONGER"),
-            ("shot_assist", "HEADLINE ASSIST ACTIVE"),
-            ("more_jackpots", "BACK PAGE BONUS AVAILABLE"),
-        ])
-
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post(
             "show_mode_message",
@@ -88,7 +75,6 @@ class MasterPlan(Mode):
     def mode_stop(self, **kwargs):
         self.delay.remove("master_plan_rumour_drain")
         self.delay.remove("master_plan_back_page_timeout")
-        self.clear_active_case_file_helpers()
         self.machine.events.post("master_plan_clear_lights")
         super().mode_stop(**kwargs)
 
@@ -159,11 +145,6 @@ class MasterPlan(Mode):
 
         self._collect_headline(saucer, assisted=False)
 
-        if self.has_case_file("shot_assist") and len(self.headlines_lit) >= 1:
-            # If two or more headlines were lit before collection, one remains now.
-            assisted_saucer = sorted(self.headlines_lit)[0]
-            self._collect_headline(assisted_saucer, assisted=True)
-
         self._check_super_lit()
         self._update_lights()
         self._sync_vars()
@@ -229,9 +210,6 @@ class MasterPlan(Mode):
             message_mode_subtitle="THE BIG MAN EXPOSED",
             message_mode_value=value,
         )
-
-        if self.has_case_file("more_jackpots"):
-            self._start_back_page_bonus(value)
 
         self._start_rumour_drain()
         self._update_lights()

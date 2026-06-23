@@ -142,8 +142,11 @@ class SinisterSurge(Mode):
         self.add_mode_event_handler("s_inlane_b_active", self._b_hit)
         self.add_mode_event_handler("s_inlane_m_l_active", self._b_hit)
 
-        # Daily Bugle / VUK jackpot
-        self.add_mode_event_handler("s_vuk_switch_active", self._daily_bugle_hit)
+        # Daily Bugle / VUK jackpot.
+        # Use a mode-owned event instead of binding the switch directly so YAML
+        # can also guarantee the VUK kicks even when the mode starts with a ball
+        # already sitting on the VUK switch.
+        self.add_mode_event_handler("sinister_surge_vuk_hit", self._daily_bugle_hit)
 
         # Area switches
         self.add_mode_event_handler("s_pop_left_active", self._pop_hit)
@@ -167,7 +170,7 @@ class SinisterSurge(Mode):
         self.add_mode_event_handler("s_saucer_3_active", self._saucer_3_hit)
 
     def _reset_player_vars(self):
-        self._set("active_mode_points", 0)
+        self._set("sinister_surge_mode_points", 0)
         self._set("sinister_surge_areas_cleared", 0)
         self._set("sinister_surge_jackpots", 0)
         self._set("sinister_surge_super_jackpots", 0)
@@ -243,7 +246,7 @@ class SinisterSurge(Mode):
             return
 
         player["score"] += points
-        self._add("active_mode_points", points)        
+        self._add("sinister_surge_mode_points", points)        
 
     def _area_hit(self, area, amount=1):
         if self.victory_laps:
