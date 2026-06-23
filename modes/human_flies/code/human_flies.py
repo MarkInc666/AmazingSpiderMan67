@@ -98,9 +98,9 @@ class HumanFlies(CaseFileMixin, Mode):
     def _reset_player_vars(self):
         player = self.machine.game.player
         player["human_flies_state"] = 1
-        player["human_flies_mode_points"] = 0
-        player["human_flies_hits"] = 0
-        player["human_flies_major_hits"] = 0
+        player["active_mode_points"] = 0
+        player["active_mode_hits"] = 0
+        player["active_mode_major_hits"] = 0
         player["human_flies_round"] = self.round_number
         player["human_flies_rounds_completed"] = 0
         player["human_flies_captures"] = 0
@@ -262,13 +262,13 @@ class HumanFlies(CaseFileMixin, Mode):
         player = self.machine.game.player
         player["score"] += points
         self.mode_points += points
-        player["human_flies_mode_points"] = self.mode_points
+        player["active_mode_points"] = self.mode_points
 
     def _sync_vars(self):
         player = self.machine.game.player
-        player["human_flies_mode_points"] = self.mode_points
-        player["human_flies_hits"] = len(self.upper_targets_hit)
-        player["human_flies_major_hits"] = self.jackpots_collected
+        player["active_mode_points"] = self.mode_points
+        player["active_mode_hits"] = len(self.upper_targets_hit)
+        player["active_mode_major_hits"] = self.jackpots_collected
         player["human_flies_round"] = self.round_number
         player["human_flies_rounds_completed"] = self.rounds_completed
         player["human_flies_captures"] = self.captures

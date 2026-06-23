@@ -15,7 +15,7 @@ import random
     "stat_1_var": "trubble_unleashed_correct_shots",
     "stat_2_label": "WRONG SHOTS",
     "stat_2_var": "trubble_unleashed_incorrect_shots",
-    "points_var": "trubble_unleashed_mode_points",
+    "points_var": "active_mode_points",
     "state_var": "trubble_unleashed_state",
 """
 
@@ -272,7 +272,7 @@ class TrubbleUnleashed(CaseFileMixin, Mode):
         player = self.machine.game.player if self.machine.game else None
         if not player:
             return
-        player["trubble_unleashed_mode_points"] = self.mode_points
+        player["active_mode_points"] = self.mode_points
         player["trubble_unleashed_round"] = self.round_number
         player["trubble_unleashed_total_rounds"] = self.rounds_to_play
         player["trubble_unleashed_correct_shots"] = self.correct_shots

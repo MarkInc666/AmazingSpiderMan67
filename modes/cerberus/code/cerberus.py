@@ -328,7 +328,7 @@ class Cerberus(CaseFileMixin, Mode):
         if not player:
             return
 
-        player["cerberus_mode_points"] = self.mode_points
+        player["active_mode_points"] = self.mode_points
         player["cerberus_targets_hit"] = self.targets_hit
         player["cerberus_spinner_spins"] = self.spinner_spins
         player["cerberus_jackpots_collected"] = self.jackpots_collected

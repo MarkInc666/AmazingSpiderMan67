@@ -209,7 +209,7 @@ class Cyclops(CaseFileMixin, Mode):
 
     def _sync_vars(self):
         player = self.machine.game.player
-        player["cyclops_mode_points"] = self.mode_points
+        player["active_mode_points"] = self.mode_points
         player["cyclops_flips_remaining"] = self.flips_remaining
         player["cyclops_flips_used"] = self.flips_used
         player["cyclops_drops_hit"] = self.drops_hit

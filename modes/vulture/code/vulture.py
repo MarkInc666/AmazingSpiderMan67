@@ -12,7 +12,7 @@ from modes.common.case_file_mixin import CaseFileMixin
     "stat_1_var": "vulture_spins",
     "stat_2_label": "BONUS BANKED",
     "stat_2_var": "vulture_banked_bonus",
-    "points_var": "vulture_mode_points",
+    "points_var": "active_mode_points",
     "state_var": "vulture_state",
 
 """
@@ -33,7 +33,7 @@ class Vulture(CaseFileMixin, Mode):
 
         self.vulture_spins = 0 
         self.vulture_banked_bonus = 0
-        self.vulture_mode_points = 0
+        self.active_mode_points = 0
 
         self.case_files = self.get_case_file_bonuses()
         self._apply_case_file_bonuses()
@@ -212,5 +212,5 @@ class Vulture(CaseFileMixin, Mode):
 
     def award_score(self, value):
         self.machine.game.player["score"] += value
-        self.vulture_mode_points += value
-        self.machine.game.player["vulture_mode_points"] = self.vulture_mode_points 
+        self.active_mode_points += value
+        self.machine.game.player["active_mode_points"] = self.active_mode_points 

@@ -425,7 +425,7 @@ class SwampReptiles(CaseFileMixin, Mode):
 
     def _sync_vars(self):
         player = self.machine.game.player
-        player["swamp_reptiles_mode_points"] = self.mode_points
+        player["active_mode_points"] = self.mode_points
         player["swamp_reptiles_pop_hits"] = self.pop_hits
         player["swamp_reptiles_rampage_level"] = self.rampage_level
         player["swamp_reptiles_current_jackpot"] = self._display_jackpot_value()

@@ -326,9 +326,9 @@ class Vulcan(CaseFileMixin, Mode):
         self._sync_vars()
 
     def _sync_vars(self):
-        self._set("vulcan_mode_points", self.mode_points)
-        self._set("vulcan_hits", self.jackpots_collected + self.spinner_hits)
-        self._set("vulcan_major_hits", self.add_a_balls_awarded + self.eruption_bonuses)
+        self._set("active_mode_points", self.mode_points)
+        self._set("active_mode_hits", self.jackpots_collected + self.spinner_hits)
+        self._set("active_mode_major_hits", self.add_a_balls_awarded + self.eruption_bonuses)
         self._set("vulcan_spinner_hits", self.spinner_hits)
         self._set("vulcan_jackpot_value", self.jackpot_value)
         self._set("vulcan_jackpots_collected", self.jackpots_collected)

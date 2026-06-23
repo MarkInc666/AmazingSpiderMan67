@@ -492,7 +492,7 @@ class Diana(CaseFileMixin, Mode):
 
     def _sync_vars(self):
         player = self.machine.game.player
-        player["diana_mode_points"] = self.mode_points
+        player["active_mode_points"] = self.mode_points
         player["diana_arrows_remaining"] = self.arrows_remaining
         player["diana_arrows_used"] = self.arrows_used
         player["diana_current_hunt"] = self.current_hunt
@@ -506,8 +506,8 @@ class Diana(CaseFileMixin, Mode):
         player["diana_safety_net_used"] = 1 if self.safety_net_used else 0
         player["diana_end_bonus"] = self.end_bonus
         player["diana_standing_targets"] = len(self.standing_targets)
-        player["diana_hits"] = self.bullseyes + self.rubber_hits
-        player["diana_major_hits"] = self.bullseyes
+        player["active_mode_hits"] = self.bullseyes + self.rubber_hits
+        player["active_mode_major_hits"] = self.bullseyes
 
     def _done_or_summary(self):
         player = self.machine.game.player

@@ -8,7 +8,6 @@ multiballs:
   outlane_add_a_ball:
     ball_count: 1
     ball_count_type: add
-    shoot_again: 10s
     start_events: start_outlane_add_a_ball
 
 variable_player:
@@ -79,7 +78,7 @@ event_player:
   s_plunger_active{current_player.outlane_add_a_ball_pending_plunger == 1}:
     - outlane_add_a_ball_arrived_at_plunger
 
-  s_plunger_inactive{current_player.saved_ball_in_plunger != 1}:
+  s_plunger_inactive{current_player.saved_ball_in_plunger != 1 and current_player.outlane_add_a_ball_in_plunger != 1}:
     - start_my_default_ball_save
 
   s_plunger_inactive{current_player.saved_ball_in_plunger == 1}:
@@ -90,14 +89,12 @@ event_player:
     - disable_outlane_autoplunge
 
   s_outlane_r_active{current_player.outlane_add_a_ball_available == 1 and current_player.ball_save_count == 0}:
-    - saved_ball_pending_plunger
     - outlane_add_a_ball_pending_plunger
     - consume_outlane_add_a_ball
     - start_outlane_add_a_ball
     - enable_outlane_autoplunge
 
   s_outlane_l_active{current_player.outlane_add_a_ball_available == 1 and current_player.ball_save_count == 0}:
-    - saved_ball_pending_plunger
     - outlane_add_a_ball_pending_plunger
     - consume_outlane_add_a_ball
     - start_outlane_add_a_ball

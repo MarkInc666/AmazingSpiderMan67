@@ -277,9 +277,9 @@ class DoctorDumpty(Mode):
         if not player:
             return
 
-        player["doctor_dumpty_mode_points"] = self.mode_points
-        player["doctor_dumpty_hits"] = self.jackpots_collected
-        player["doctor_dumpty_major_hits"] = len(self.shot_sequence)
+        player["active_mode_points"] = self.mode_points
+        player["active_mode_hits"] = self.jackpots_collected
+        player["active_mode_major_hits"] = len(self.shot_sequence)
         player["doctor_dumpty_jackpots"] = self.jackpots_collected
         player["doctor_dumpty_missed_shots"] = self.missed_shots
         player["doctor_dumpty_best_jackpot"] = self.best_jackpot

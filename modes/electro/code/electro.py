@@ -16,7 +16,7 @@ import random
     "stat_1_var": "electro_best_spark",
     "stat_2_label": "SUPER JACKPOT",
     "stat_2_var": "electro_super_jackpot",
-    "points_var": "electro_mode_points",
+    "points_var": "active_mode_points",
     "state_var": "electro_state",
 """
 
@@ -49,7 +49,7 @@ class Electro(CaseFileMixin, Mode):
 
         self.electro_super_jackpot = 0
         self.electro_best_spark = 0
-        self.electro_mode_points = 0
+        self.active_mode_points = 0
 
         self.shots = [
             Shot("left_web", 10, 70, "electro_left_web_hit", group="left"),
@@ -225,8 +225,8 @@ class Electro(CaseFileMixin, Mode):
     def collect_normal_jackpot(self, shot):
         jackpot_value = self.NORMAL_JACKPOT_VALUE - 10000 * self.value_deduct
         self.machine.game.player["score"] += jackpot_value
-        self.electro_mode_points += jackpot_value
-        self.machine.game.player["electro_mode_points"] = self.electro_mode_points
+        self.active_mode_points += jackpot_value
+        self.machine.game.player["active_mode_points"] = self.active_mode_points
 
         if jackpot_value > self.electro_best_spark:
             self.electro_best_spark = jackpot_value
@@ -277,10 +277,10 @@ class Electro(CaseFileMixin, Mode):
 
     def collect_super(self):
         self.electro_super_jackpot = self.machine.game.player["electro_super_jackpot_value"]
-        self.electro_mode_points += self.electro_super_jackpot
+        self.active_mode_points += self.electro_super_jackpot
 
         self.machine.game.player["electro_super_jackpot"] = self.electro_super_jackpot
-        self.machine.game.player["electro_mode_points"] = self.electro_mode_points
+        self.machine.game.player["active_mode_points"] = self.active_mode_points
 
         self.machine.game.player["score"] += self.electro_super_jackpot
 

@@ -1,19 +1,19 @@
 #config_version=6
 player_vars:
   chapter_current_key:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   chapter_current_name:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   chapter_mini_wizard_key:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   chapter_mini_wizard_name:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   chapter_mini_wizard_state:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   villain_chapter:
     initial_value: 1
@@ -25,16 +25,16 @@ player_vars:
     initial_value: 0
     value_type: int
   villain_current_key:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   villain_current_name:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   villain_mode_running:
     initial_value: 0
     value_type: int
   villain_mode_running_name:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   villain_mode_in_summary:
     initial_value: 0
@@ -52,7 +52,7 @@ player_vars:
     initial_value: 0
     value_type: int
   mini_wizard_current_key:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   mini_wizard_vuk_hold_active:
     initial_value: 0
@@ -88,31 +88,31 @@ player_vars:
     initial_value: 0
     value_type: int
   chapter_villain_1_name:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   chapter_villain_1_state:
     initial_value: not_played
     value_type: str
   chapter_villain_2_name:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   chapter_villain_2_state:
     initial_value: not_played
     value_type: str
   chapter_villain_3_name:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   chapter_villain_3_state:
     initial_value: not_played
     value_type: str
   chapter_villain_4_name:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   chapter_villain_4_state:
     initial_value: not_played
     value_type: str
   chapter_villain_5_name:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   chapter_villain_5_state:
     initial_value: not_played
@@ -120,348 +120,188 @@ player_vars:
   rhino_state:
     initial_value: 0
     value_type: int
-  rhino_mode_points:
-    initial_value: 0
-    value_type: int
   vulture_state:
-    initial_value: 0
-    value_type: int
-  vulture_mode_points:
     initial_value: 0
     value_type: int
   lizard_state:
     initial_value: 0
     value_type: int
-  lizard_mode_points:
-    initial_value: 0
-    value_type: int
   sandman_state:
-    initial_value: 0
-    value_type: int
-  sandman_mode_points:
     initial_value: 0
     value_type: int
   electro_state:
     initial_value: 0
     value_type: int
-  electro_mode_points:
-    initial_value: 0
-    value_type: int
   doc_ock_state:
-    initial_value: 0
-    value_type: int
-  doc_ock_mode_points:
     initial_value: 0
     value_type: int
   mysterio_state:
     initial_value: 0
     value_type: int
-  mysterio_mode_points:
-    initial_value: 0
-    value_type: int
   goblin_state:
-    initial_value: 0
-    value_type: int
-  goblin_mode_points:
     initial_value: 0
     value_type: int
   scorpion_state:
     initial_value: 0
     value_type: int
-  scorpion_mode_points:
-    initial_value: 0
-    value_type: int
   parafino_state:
-    initial_value: 0
-    value_type: int
-  parafino_mode_points:
     initial_value: 0
     value_type: int
   centaur_state:
     initial_value: 0
     value_type: int
-  centaur_mode_points:
-    initial_value: 0
-    value_type: int
   cerberus_state:
-    initial_value: 0
-    value_type: int
-  cerberus_mode_points:
     initial_value: 0
     value_type: int
   cyclops_state:
     initial_value: 0
     value_type: int
-  cyclops_mode_points:
-    initial_value: 0
-    value_type: int
   swamp_reptiles_state:
     initial_value: 0
     value_type: int
-  swamp_reptiles_mode_points:
-    initial_value: 0
   noah_boddy_state:
-    initial_value: 0
-    value_type: int
-  noah_boddy_mode_points:
     initial_value: 0
     value_type: int
   enforcers_state:
     initial_value: 0
     value_type: int
-  enforcers_mode_points:
-    initial_value: 0
-    value_type: int
   trubble_unleashed_state:
     initial_value: 0
     value_type: int
-  trubble_unleashed_mode_points:
-    initial_value: 0
   fifth_avenue_phantom_state:
-    initial_value: 0
-    value_type: int
-  fifth_avenue_phantom_mode_points:
     initial_value: 0
     value_type: int
   master_plan_state:
     initial_value: 0
     value_type: int
-  master_plan_mode_points:
-    initial_value: 0
   doctor_dumpty_state:
-    initial_value: 0
-    value_type: int
-  doctor_dumpty_mode_points:
     initial_value: 0
     value_type: int
   sinister_surge_state:
     initial_value: 0
     value_type: int
-  sinister_surge_mode_points:
-    initial_value: 0
-    value_type: int
   dr_magneto_state:
     initial_value: 0
     value_type: int
-  dr_magneto_mode_points:
-    initial_value: 0
   dr_manta_state:
     initial_value: 0
     value_type: int
-  dr_manta_mode_points:
-    initial_value: 0
   doctor_cool_state:
-    initial_value: 0
-    value_type: int
-  doctor_cool_mode_points:
     initial_value: 0
     value_type: int
   dr_zap_state:
     initial_value: 0
     value_type: int
-  dr_zap_mode_points:
-    initial_value: 0
   fakir_state:
     initial_value: 0
     value_type: int
-  fakir_mode_points:
-    initial_value: 0
   scarlet_sorcerer_state:
     initial_value: 0
     value_type: int
-  scarlet_sorcerer_mode_points:
-    initial_value: 0
   infinata_state:
-    initial_value: 0
-    value_type: int
-  infinata_mode_points:
     initial_value: 0
     value_type: int
   pardo_state:
     initial_value: 0
     value_type: int
-  pardo_mode_points:
-    initial_value: 0
-    value_type: int
   vulcan_state:
-    initial_value: 0
-    value_type: int
-  vulcan_mode_points:
     initial_value: 0
     value_type: int
   spider_slayer_state:
     initial_value: 0
     value_type: int
-  spider_slayer_mode_points:
-    initial_value: 0
-    value_type: int
   henry_smythe_state:
-    initial_value: 0
-    value_type: int
-  henry_smythe_mode_points:
     initial_value: 0
     value_type: int
   blackbeard_robot_state:
     initial_value: 0
     value_type: int
-  blackbeard_robot_mode_points:
-    initial_value: 0
-    value_type: int
   executioner_of_paris_robot_state:
-    initial_value: 0
-    value_type: int
-  executioner_of_paris_robot_mode_points:
     initial_value: 0
     value_type: int
   jesse_james_robot_state:
     initial_value: 0
     value_type: int
-  jesse_james_robot_mode_points:
-    initial_value: 0
-    value_type: int
   snowman_state:
     initial_value: 0
     value_type: int
-  snowman_mode_points:
-    initial_value: 0
   metal_eating_monster_state:
-    initial_value: 0
-    value_type: int
-  metal_eating_monster_mode_points:
     initial_value: 0
     value_type: int
   master_vine_state:
     initial_value: 0
     value_type: int
-  master_vine_mode_points:
-    initial_value: 0
-    value_type: int
   blotto_state:
-    initial_value: 0
-    value_type: int
-  blotto_mode_points:
     initial_value: 0
     value_type: int
   frog_ghosts_state:
     initial_value: 0
     value_type: int
-  frog_ghosts_mode_points:
-    initial_value: 0
   diamond_smugglers_state:
     initial_value: 0
     value_type: int
-  diamond_smugglers_mode_points:
-    initial_value: 0
   human_flies_state:
-    initial_value: 0
-    value_type: int
-  human_flies_mode_points:
     initial_value: 0
     value_type: int
   charles_cameo_state:
     initial_value: 0
     value_type: int
-  charles_cameo_mode_points:
-    initial_value: 0
-    value_type: int
   juan_ponce_de_leon_state:
-    initial_value: 0
-    value_type: int
-  juan_ponce_de_leon_mode_points:
     initial_value: 0
     value_type: int
   devargas_state:
     initial_value: 0
     value_type: int
-  devargas_mode_points:
-    initial_value: 0
-    value_type: int
   koga_state:
-    initial_value: 0
-    value_type: int
-  koga_mode_points:
     initial_value: 0
     value_type: int
   cowboy_state:
     initial_value: 0
     value_type: int
-  cowboy_mode_points:
-    initial_value: 0
-    value_type: int
   desperado_state:
-    initial_value: 0
-    value_type: int
-  desperado_mode_points:
     initial_value: 0
     value_type: int
   mastermind_trap_state:
     initial_value: 0
     value_type: int
-  mastermind_trap_mode_points:
-    initial_value: 0
-    value_type: int
   crime_wave_crackdown_state:
-    initial_value: 0
-    value_type: int
-  crime_wave_crackdown_mode_points:
     initial_value: 0
     value_type: int
   mad_science_meltdown_state:
     initial_value: 0
     value_type: int
-  mad_science_meltdown_mode_points:
-    initial_value: 0
-    value_type: int
   fifth_dimension_curse_state:
-    initial_value: 0
-    value_type: int
-  fifth_dimension_curse_mode_points:
     initial_value: 0
     value_type: int
   night_of_the_robots_state:
     initial_value: 0
     value_type: int
-  night_of_the_robots_mode_points:
-    initial_value: 0
-    value_type: int
   nature_strikes_back_state:
-    initial_value: 0
-    value_type: int
-  nature_strikes_back_mode_points:
     initial_value: 0
     value_type: int
   who_is_the_real_villain_state:
     initial_value: 0
     value_type: int
-  who_is_the_real_villain_mode_points:
-    initial_value: 0
-    value_type: int
   time_tossed_showdown_state:
-    initial_value: 0
-    value_type: int
-  time_tossed_showdown_mode_points:
     initial_value: 0
     value_type: int
   kingpin_state:
     initial_value: 0
     value_type: int
-  kingpin_mode_points:
-    initial_value: 0
-    value_type: int
   villain_bookend_title:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   villain_bookend_line_1:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   villain_bookend_line_2:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   villain_bookend_line_3:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   villain_bookend_footer:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   case_files_collected_count:
     initial_value: 0
@@ -473,34 +313,34 @@ player_vars:
     initial_value: 0
     value_type: int
   case_file_1_key:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   case_file_1_name:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   case_file_2_key:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   case_file_2_name:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   case_file_3_key:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   case_file_3_name:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   case_file_4_key:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   case_file_4_name:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   case_file_5_key:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   case_file_5_name:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   case_file_more_time:
     initial_value: 0
@@ -512,19 +352,19 @@ player_vars:
     initial_value: 0
     value_type: int
   active_case_file_helper_1:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   active_case_file_helper_2:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   active_case_file_helper_3:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   active_case_file_helper_4:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   active_case_file_helper_5:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   case_file_more_jackpots:
     initial_value: 0
@@ -566,19 +406,19 @@ player_vars:
     initial_value: NOT COLLECTED
     value_type: str
   case_file_1_benefit:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   case_file_2_benefit:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   case_file_3_benefit:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   case_file_4_benefit:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   case_file_5_benefit:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   wizard_prep_this_chapter:
     initial_value: 0
@@ -683,7 +523,7 @@ player_vars:
     initial_value: 0
     value_type: int
   daily_bugle_pictures_taken_text:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   daily_bugle_pictures_taken:
     initial_value: 0
@@ -692,19 +532,19 @@ player_vars:
     initial_value: 3
     value_type: int
   case_file_1_state:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   case_file_2_state:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   case_file_3_state:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   case_file_4_state:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   case_file_5_state:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   daily_bugle_a_hit:
     initial_value: 0
@@ -722,30 +562,26 @@ player_vars:
     initial_value: 0
     value_type: int
   message_mode_subtitle:
-    initial_value: ' '
+    initial_value: " "
     value_type: str
   message_mode_title:
-    initial_value: ' '
+    initial_value: " "
     value_type: str
   message_mode_value:
-    initial_value: ' '
+    initial_value: " "
     value_type: str
   wizard_prep_next_award:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   wizard_prep_summary:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   master_technician_state:
     initial_value: 0
     value_type: int
-  master_technician_mode_points:
-    initial_value: 0
   diana_state:
     initial_value: 0
     value_type: int
-  diana_mode_points:
-    initial_value: 0
   diana_arrows_remaining:
     initial_value: 0
     value_type: int
@@ -786,78 +622,6 @@ player_vars:
     initial_value: 0
     value_type: int
   final_showdown_state:
-    initial_value: 0
-    value_type: int
-  final_showdown_mode_points:
-    initial_value: 0
-  rhino_hits:
-    initial_value: 0
-  rhino_major_hits:
-    initial_value: 0
-  sandman_hits:
-    initial_value: 0
-  sandman_major_hits:
-    initial_value: 0
-  vulture_hits:
-    initial_value: 0
-  vulture_major_hits:
-    initial_value: 0
-  lizard_hits:
-    initial_value: 0
-  lizard_major_hits:
-    initial_value: 0
-  electro_hits:
-    initial_value: 0
-  electro_major_hits:
-    initial_value: 0
-  goblin_hits:
-    initial_value: 0
-  goblin_major_hits:
-    initial_value: 0
-  doc_ock_hits:
-    initial_value: 0
-  doc_ock_major_hits:
-    initial_value: 0
-  mysterio_hits:
-    initial_value: 0
-  mysterio_major_hits:
-    initial_value: 0
-  scorpion_hits:
-    initial_value: 0
-  scorpion_major_hits:
-    initial_value: 0
-  parafino_hits:
-    initial_value: 0
-  parafino_major_hits:
-    initial_value: 0
-  cerberus_hits:
-    initial_value: 0
-  cerberus_major_hits:
-    initial_value: 0
-  vulcan_hits:
-    initial_value: 0
-  vulcan_major_hits:
-    initial_value: 0
-  diana_hits:
-    initial_value: 0
-  diana_major_hits:
-    initial_value: 0
-  cyclops_hits:
-    initial_value: 0
-  cyclops_major_hits:
-    initial_value: 0
-  centaur_hits:
-    initial_value: 0
-  centaur_major_hits:
-    initial_value: 0
-  kingpin_hits:
-    initial_value: 0
-  kingpin_major_hits:
-    initial_value: 0
-  human_flies_hits:
-    initial_value: 0
-    value_type: int
-  human_flies_major_hits:
     initial_value: 0
     value_type: int
   human_flies_round:
@@ -911,262 +675,54 @@ player_vars:
   human_flies_saucer_3_lit:
     initial_value: 0
     value_type: int
-  fifth_avenue_phantom_hits:
-    initial_value: 0
-  fifth_avenue_phantom_major_hits:
-    initial_value: 0
-  enforcers_hits:
-    initial_value: 0
-  enforcers_major_hits:
-    initial_value: 0
-  diamond_smugglers_hits:
-    initial_value: 0
-  diamond_smugglers_major_hits:
-    initial_value: 0
-  pardo_hits:
-    initial_value: 0
-  pardo_major_hits:
-    initial_value: 0
-  fakir_hits:
-    initial_value: 0
-  fakir_major_hits:
-    initial_value: 0
-  scarlet_sorcerer_hits:
-    initial_value: 0
-  scarlet_sorcerer_major_hits:
-    initial_value: 0
   super_swami_state:
     initial_value: 0
     value_type: int
-  super_swami_mode_points:
-    initial_value: 0
-  super_swami_hits:
-    initial_value: 0
-  super_swami_major_hits:
-    initial_value: 0
-  frog_ghosts_hits:
-    initial_value: 0
-  frog_ghosts_major_hits:
-    initial_value: 0
-  noah_boddy_hits:
-    initial_value: 0
-  noah_boddy_major_hits:
-    initial_value: 0
-  dr_magneto_hits:
-    initial_value: 0
-  dr_magneto_major_hits:
-    initial_value: 0
   professor_pretoris_state:
     initial_value: 0
     value_type: int
-  professor_pretoris_mode_points:
-    initial_value: 0
-  professor_pretoris_hits:
-    initial_value: 0
-  professor_pretoris_major_hits:
-    initial_value: 0
-  doctor_dumpty_hits:
-    initial_value: 0
-  doctor_dumpty_major_hits:
-    initial_value: 0
   dr_von_schlick_state:
     initial_value: 0
     value_type: int
-  dr_von_schlick_mode_points:
-    initial_value: 0
-  dr_von_schlick_hits:
-    initial_value: 0
-  dr_von_schlick_major_hits:
-    initial_value: 0
   radiation_specialist_state:
     initial_value: 0
     value_type: int
-  radiation_specialist_mode_points:
-    initial_value: 0
-  radiation_specialist_hits:
-    initial_value: 0
-  radiation_specialist_major_hits:
-    initial_value: 0
-  dr_zap_hits:
-    initial_value: 0
-  dr_zap_major_hits:
-    initial_value: 0
-  doctor_cool_hits:
-    initial_value: 0
-  doctor_cool_major_hits:
-    initial_value: 0
-  snowman_hits:
-    initial_value: 0
-  snowman_major_hits:
-    initial_value: 0
   ice_monster_state:
     initial_value: 0
     value_type: int
-  ice_monster_mode_points:
-    initial_value: 0
-  ice_monster_hits:
-    initial_value: 0
-  ice_monster_major_hits:
-    initial_value: 0
-  dr_manta_hits:
-    initial_value: 0
-  dr_manta_major_hits:
-    initial_value: 0
   doctor_atlantean_state:
     initial_value: 0
     value_type: int
-  doctor_atlantean_mode_points:
-    initial_value: 0
-  doctor_atlantean_hits:
-    initial_value: 0
-  doctor_atlantean_major_hits:
-    initial_value: 0
   sky_master_state:
     initial_value: 0
     value_type: int
-  sky_master_mode_points:
-    initial_value: 0
-  sky_master_hits:
-    initial_value: 0
-  sky_master_major_hits:
-    initial_value: 0
   plutonians_state:
     initial_value: 0
     value_type: int
-  plutonians_mode_points:
-    initial_value: 0
-  plutonians_hits:
-    initial_value: 0
-  plutonians_major_hits:
-    initial_value: 0
   antarcticans_state:
     initial_value: 0
     value_type: int
-  antarcticans_mode_points:
-    initial_value: 0
-  antarcticans_hits:
-    initial_value: 0
-  antarcticans_major_hits:
-    initial_value: 0
-  charles_cameo_hits:
-    initial_value: 0
-  charles_cameo_major_hits:
-    initial_value: 0
   brutus_state:
     initial_value: 0
     value_type: int
-  brutus_mode_points:
-    initial_value: 0
-  brutus_hits:
-    initial_value: 0
-  brutus_major_hits:
-    initial_value: 0
   eigor_state:
     initial_value: 0
     value_type: int
-  eigor_mode_points:
-    initial_value: 0
-  eigor_hits:
-    initial_value: 0
-  eigor_major_hits:
-    initial_value: 0
   the_fly_state:
     initial_value: 0
     value_type: int
-  the_fly_mode_points:
-    initial_value: 0
-  the_fly_hits:
-    initial_value: 0
-  the_fly_major_hits:
-    initial_value: 0
-  swamp_reptiles_hits:
-    initial_value: 0
-  swamp_reptiles_major_hits:
-    initial_value: 0
   phantom_from_depths_of_time_state:
     initial_value: 0
     value_type: int
-  phantom_from_depths_of_time_mode_points:
-    initial_value: 0
-  phantom_from_depths_of_time_hits:
-    initial_value: 0
-  phantom_from_depths_of_time_major_hits:
-    initial_value: 0
-  master_vine_hits:
-    initial_value: 0
-  master_vine_major_hits:
-    initial_value: 0
-  master_technician_hits:
-    initial_value: 0
-  master_technician_major_hits:
-    initial_value: 0
   micro_men_state:
     initial_value: 0
     value_type: int
-  micro_men_mode_points:
-    initial_value: 0
-  micro_men_hits:
-    initial_value: 0
-  micro_men_major_hits:
-    initial_value: 0
   grand_emperor_state:
     initial_value: 0
     value_type: int
-  grand_emperor_mode_points:
-    initial_value: 0
-  grand_emperor_hits:
-    initial_value: 0
-  grand_emperor_major_hits:
-    initial_value: 0
-  sinister_surge_hits:
-    initial_value: 0
-  sinister_surge_major_hits:
-    initial_value: 0
-  mastermind_trap_hits:
-    initial_value: 0
-  mastermind_trap_major_hits:
-    initial_value: 0
-  trubble_unleashed_hits:
-    initial_value: 0
-  trubble_unleashed_major_hits:
-    initial_value: 0
-  master_plan_hits:
-    initial_value: 0
-  master_plan_major_hits:
-    initial_value: 0
-  fifth_dimension_curse_hits:
-    initial_value: 0
-  fifth_dimension_curse_major_hits:
-    initial_value: 0
-  mad_science_meltdown_hits:
-    initial_value: 0
-  mad_science_meltdown_major_hits:
-    initial_value: 0
-  nature_strikes_back_hits:
-    initial_value: 0
-  nature_strikes_back_major_hits:
-    initial_value: 0
   invasion_from_everywhere_state:
     initial_value: 0
     value_type: int
-  invasion_from_everywhere_mode_points:
-    initial_value: 0
-  invasion_from_everywhere_hits:
-    initial_value: 0
-  invasion_from_everywhere_major_hits:
-    initial_value: 0
-  who_is_the_real_villain_hits:
-    initial_value: 0
-  who_is_the_real_villain_major_hits:
-    initial_value: 0
-  time_tossed_showdown_hits:
-    initial_value: 0
-  time_tossed_showdown_major_hits:
-    initial_value: 0
-  final_showdown_hits:
-    initial_value: 0
-  final_showdown_major_hits:
-    initial_value: 0
   swamp_reptiles_jackpots_collected:
     initial_value: 0
   swamp_reptiles_pop_hits:
@@ -1187,8 +743,6 @@ player_vars:
     initial_value: 0
   noah_boddy_best_jackpot:
     initial_value: 0
-
-  # Kingpin / Sinister Surge migrated wizard-mode vars
   kingpin_completed_count:
     initial_value: 0
     value_type: int
@@ -1256,10 +810,10 @@ player_vars:
     initial_value: 0
     value_type: int
   sinister_surge_current_area:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   sinister_surge_current_area_display:
-    initial_value: ''
+    initial_value: ""
     value_type: str
   sinister_surge_hits_still_needed:
     initial_value: 0
@@ -1289,5 +843,14 @@ player_vars:
     initial_value: 0
     value_type: int
   sinister_surge_upper_right_hits:
+    initial_value: 0
+    value_type: int
+  active_mode_points:
+    initial_value: 0
+    value_type: int
+  active_mode_hits:
+    initial_value: 0
+    value_type: int
+  active_mode_major_hits:
     initial_value: 0
     value_type: int

@@ -109,4 +109,4 @@ class MasterTechnician(Mode):
     def award_score(self, value):
         player = self.machine.game.player
         player["score"] += value
-        player["master_technician_mode_points"] = player["master_technician_mode_points"] + value
+        player["active_mode_points"] = player["active_mode_points"] + value

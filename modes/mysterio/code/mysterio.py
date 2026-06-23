@@ -14,7 +14,7 @@ import random
     "stat_1_var": "mysterio_illusions_cleared",
     "stat_2_label": "JACKPOT",
     "stat_2_var": "mysterio_jackpot_value",
-    "points_var": "mysterio_mode_points",
+    "points_var": "active_mode_points",
     "state_var": "mysterio_state",
 """
 class Mysterio(CaseFileMixin, Mode):
@@ -30,7 +30,7 @@ class Mysterio(CaseFileMixin, Mode):
         self.super_value = self.STARTING_SUPER
         self.mysterio_illusions_cleared = 0
         self.mysterio_jackpot_value = 0
-        self.mysterio_mode_points = 0
+        self.active_mode_points = 0
 
         self.case_files = self.get_case_file_bonuses()
         self._apply_case_file_bonuses()
@@ -180,8 +180,8 @@ class Mysterio(CaseFileMixin, Mode):
         self.machine.events.post("show_mode_message", message_mode_title="WRONG SHOT", message_mode_subtitle="SUPER VALUE REDUCED", message_mode_value=self.super_value)
         self.machine.events.post("mysterio_score_wrong_shot")
         
-        self.mysterio_mode_points += 10000
-        self.machine.game.player["mysterio_mode_points"] = self.mysterio_mode_points
+        self.active_mode_points += 10000
+        self.machine.game.player["active_mode_points"] = self.active_mode_points
         self.machine.game.player["score"] += 10000
 
         self.reduce_super(self.WRONG_DEDUCT)
@@ -195,8 +195,8 @@ class Mysterio(CaseFileMixin, Mode):
         self.machine.events.post("show_mode_message", message_mode_title="CLUE FOUND", message_mode_subtitle=f"SPIDEY SENSE: {shot.hint.upper()}")
         self.machine.events.post("mysterio_score_wrong_shot")
 
-        self.mysterio_mode_points += 5000
-        self.machine.game.player["mysterio_mode_points"] = self.mysterio_mode_points
+        self.active_mode_points += 5000
+        self.machine.game.player["active_mode_points"] = self.active_mode_points
         self.machine.game.player["score"] += 5000
 
         self.reduce_super(self.CLUE_DEDUCT)
@@ -222,9 +222,9 @@ class Mysterio(CaseFileMixin, Mode):
 
     def collect_super(self, shot):
         self.machine.game.player["mysterio_jackpot_value"] = self.super_value
-        self.mysterio_mode_points += self.super_value
+        self.active_mode_points += self.super_value
 
-        self.machine.game.player["mysterio_mode_points"] = self.mysterio_mode_points
+        self.machine.game.player["active_mode_points"] = self.active_mode_points
         self.machine.game.player["score"] += self.super_value
 
         self.machine.events.post("mysterio_super_collected")

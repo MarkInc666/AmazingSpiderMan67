@@ -14,7 +14,7 @@ from modes.common.case_file_mixin import CaseFileMixin
     "stat_1_var": "scorpion_stings",
     "stat_2_label": "BIGGEST JACKPOT",
     "stat_2_var": "scorpion_biggest_jackpot",
-    "points_var": "scorpion_mode_points",
+    "points_var": "active_mode_points",
     "state_var": "scorpion_state",
 """
 class Scorpion(CaseFileMixin, Mode):
@@ -48,7 +48,7 @@ class Scorpion(CaseFileMixin, Mode):
 
         self.scorpion_stings = 0
         self.scorpion_biggest_jackpot = 0
-        self.scorpion_mode_points = 0
+        self.active_mode_points = 0
 
         self.add_mode_event_handler("scorpion_spinner_hit", self.spinner_hit)
         self.add_mode_event_handler("scorpion_right_exit_chosen", self.right_exit_chosen)
@@ -92,8 +92,8 @@ class Scorpion(CaseFileMixin, Mode):
         self.machine.game.player["score"] += 25000
         self.scorpion_venom_value += 50000
 
-        self.scorpion_mode_points += 25000
-        self.machine.game.player["scorpion_mode_points"] = self.scorpion_mode_points
+        self.active_mode_points += 25000
+        self.machine.game.player["active_mode_points"] = self.active_mode_points
 
         if self.state != "build":
             return
@@ -199,8 +199,8 @@ class Scorpion(CaseFileMixin, Mode):
             self.machine.events.post("scorpion_hard_jackpot")
 
         self.machine.game.player["score"] += self.jpval
-        self.scorpion_mode_points += self.jpval
-        self.machine.game.player["scorpion_mode_points"] = self.scorpion_mode_points
+        self.active_mode_points += self.jpval
+        self.machine.game.player["active_mode_points"] = self.active_mode_points
         if self.jpval > self.scorpion_biggest_jackpot:
             self.scorpion_biggest_jackpot = self.jpval
         self.machine.game.player["scorpion_biggest_jackpot"] = self.scorpion_biggest_jackpot
@@ -213,8 +213,8 @@ class Scorpion(CaseFileMixin, Mode):
         self.machine.events.post("scorpion_sting_timer_stop")
 
         self.machine.game.player["score"] += 50000
-        self.scorpion_mode_points += 50000
-        self.machine.game.player["scorpion_mode_points"] = self.scorpion_mode_points
+        self.active_mode_points += 50000
+        self.machine.game.player["active_mode_points"] = self.active_mode_points
         
         self.machine.events.post("scorpion_sting_miss")
         self.machine.events.post("show_mode_message", message_mode_title="STING FAILED", message_mode_subtitle="50K CONSOLATION", message_mode_value=50000)

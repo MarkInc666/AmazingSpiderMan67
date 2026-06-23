@@ -15,7 +15,7 @@ from mpf.core.delays import DelayManager
     "stat_1_var": "sandman_total_drops",
     "stat_2_label": "BEST RUNS",
     "stat_2_var": "sandman_best_run",
-    "points_var": "sandman_mode_points",
+    "points_var": "active_mode_points",
     "state_var": "sandman_state",
 """
 class Sandman(CaseFileMixin, Mode):
@@ -36,7 +36,7 @@ class Sandman(CaseFileMixin, Mode):
         self.banks_completed = 0
         self.hit_order = []
         self.direction = 0 # 0 = L to R, 1 = R to L
-        self.sandman_mode_points = 0
+        self.active_mode_points = 0
         self.sandman_best_run = 0
         self.flash_hits = 0
         self.shot_assist = False
@@ -193,7 +193,7 @@ class Sandman(CaseFileMixin, Mode):
             self.machine.events.post("sandman_flashing_hit")
             if getattr(self, "case_file_bigger_jackpots", False):
                 self.machine.game.player["score"] += 25000
-                self.machine.game.player["sandman_mode_points"] += 25000
+                self.machine.game.player["active_mode_points"] += 25000
                 self.machine.events.post("sandman_case_file_bonus_score")
         else:
             self._show_message("SANDMAN SHIFTED", "HIT THE FLASHING TARGET")

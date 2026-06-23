@@ -167,7 +167,7 @@ class SinisterSurge(Mode):
         self.add_mode_event_handler("s_saucer_3_active", self._saucer_3_hit)
 
     def _reset_player_vars(self):
-        self._set("sinister_surge_mode_points", 0)
+        self._set("active_mode_points", 0)
         self._set("sinister_surge_areas_cleared", 0)
         self._set("sinister_surge_jackpots", 0)
         self._set("sinister_surge_super_jackpots", 0)
@@ -243,7 +243,7 @@ class SinisterSurge(Mode):
             return
 
         player["score"] += points
-        self._add("sinister_surge_mode_points", points)        
+        self._add("active_mode_points", points)        
 
     def _area_hit(self, area, amount=1):
         if self.victory_laps:

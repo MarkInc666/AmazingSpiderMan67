@@ -424,7 +424,7 @@ class Centaur(CaseFileMixin, Mode):
 
     def _sync_vars(self):
         player = self.machine.game.player
-        player["centaur_mode_points"] = self.mode_points
+        player["active_mode_points"] = self.mode_points
         player["centaur_drops_down"] = len(self.drops_down)
         player["centaur_jackpot_value"] = self._current_jackpot_value()
         player["centaur_best_jackpot"] = self.best_jackpot

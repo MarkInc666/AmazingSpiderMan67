@@ -196,7 +196,7 @@ class NoahBoddy(Mode):
     def _init_player_vars(self):
         player = self.machine.game.player
         player["noah_boddy_state"] = 2
-        player["noah_boddy_mode_points"] = 0
+        player["active_mode_points"] = 0
         player["noah_boddy_upper_target_hits"] = 0
         player["noah_boddy_spinner_hits"] = 0
         player["noah_boddy_jackpots"] = 0
@@ -493,7 +493,7 @@ class NoahBoddy(Mode):
 
     def _sync_vars(self):
         player = self.machine.game.player
-        player["noah_boddy_mode_points"] = self.mode_points
+        player["active_mode_points"] = self.mode_points
         player["noah_boddy_upper_target_hits"] = self.upper_target_hits
         player["noah_boddy_spinner_hits"] = self.spinner_hits
         player["noah_boddy_jackpots"] = self.jackpots_collected

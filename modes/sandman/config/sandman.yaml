@@ -12,49 +12,49 @@ mode:
 variable_player:
   sandman_regular_hit:
     score: 5000
-    sandman_mode_points:
+    active_mode_points:
       action: add
       int: 5000
 
   sandman_flashing_hit:
     score: 50000
-    sandman_mode_points:
+    active_mode_points:
       action: add
       int: 50000
 
   sandman_any_5_flashing_jackpot:
     score: 250000
-    sandman_mode_points:
+    active_mode_points:
       action: add
       int: 250000
 
   sandman_any_10_flashing_jackpot:
     score: 750000
-    sandman_mode_points:
+    active_mode_points:
       action: add
       int: 750000
 
   sandman_2_in_a_row_jackpot:
     score: 100000
-    sandman_mode_points:
+    active_mode_points:
       action: add
       int: 100000
 
   sandman_3_in_a_row_jackpot:
     score: 200000
-    sandman_mode_points:
+    active_mode_points:
       action: add
       int: 200000
 
   sandman_4_in_a_row_jackpot:
     score: 1000000
-    sandman_mode_points:
+    active_mode_points:
       action: add
       int: 1000000
 
   sandman_5_in_a_row_jackpot:
     score: 2000000
-    sandman_mode_points:
+    active_mode_points:
       action: add
       int: 2000000
 

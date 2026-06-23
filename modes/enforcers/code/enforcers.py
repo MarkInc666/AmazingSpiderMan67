@@ -325,7 +325,7 @@ class Enforcers(Mode, CaseFileMixin):
 
     def _sync_vars(self):
         player = self.machine.game.player
-        player["enforcers_mode_points"] = self.mode_points
+        player["active_mode_points"] = self.mode_points
         player["enforcers_base_jackpot"] = self.base_jackpot
         player["enforcers_upper_jackpots"] = self.upper_jackpots_collected
         player["enforcers_saucer_bonus_jackpots"] = self.saucer_bonus_collected_count

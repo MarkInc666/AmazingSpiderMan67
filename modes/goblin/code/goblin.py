@@ -16,7 +16,7 @@ from modes.common.case_file_mixin import CaseFileMixin
     "stat_1_var": "goblin_attacks_value", # points collected from flashing shots
     "stat_2_label": "BONUS BANKED",
     "stat_2_var": "goblin_bonus_banked",
-    "points_var": "goblin_mode_points",
+    "points_var": "active_mode_points",
     "state_var": "goblin_state",
 
 
@@ -215,7 +215,7 @@ class Goblin(CaseFileMixin, Mode):
         self.machine.game.player["goblin_hold_count"] = 0
         self.machine.game.player["goblin_hold_active"] = 0
         self.machine.game.player["goblin_attacks_value"] = 0
-        self.machine.game.player["goblin_mode_points"] = 0
+        self.machine.game.player["active_mode_points"] = 0
         self.machine.game.player["goblin_state"] = 1
 
         self.machine.events.post("reset_drops")
@@ -566,6 +566,6 @@ class Goblin(CaseFileMixin, Mode):
 
     def _award_points(self, points):
         self.machine.game.player["score"] += points
-        self.machine.game.player["goblin_mode_points"] += points
+        self.machine.game.player["active_mode_points"] += points
 
 

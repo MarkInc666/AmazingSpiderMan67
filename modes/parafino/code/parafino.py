@@ -187,7 +187,7 @@ class Parafino(CaseFileMixin, Mode):
     def _reset_player_vars(self):
         player = self.machine.game.player
 
-        player["parafino_mode_points"] = 0
+        player["active_mode_points"] = 0
         player["parafino_state"] = 1
         player["parafino_zone_hits"] = 0
         player["parafino_jackpots"] = 0
@@ -424,4 +424,4 @@ class Parafino(CaseFileMixin, Mode):
 
         player = self.machine.game.player
         player["score"] += points
-        player["parafino_mode_points"] += points
+        player["active_mode_points"] += points

@@ -21,7 +21,7 @@ import random
     "stat_1_var": "doc_ock_max_arms_locked",
     "stat_2_label": "JACKPOTS",
     "stat_2_var": "doc_ock_jackpots",
-    "points_var": "doc_ock_mode_points",
+    "points_var": "active_mode_points",
     "state_var": "doc_ock_state",
 """
 class doc_ock(CaseFileMixin, Mode):
@@ -62,7 +62,7 @@ class doc_ock(CaseFileMixin, Mode):
         self.active_breakouts = set()
         self.doc_ock_max_arms_locked = 1
         self.doc_ock_jackpots = 0
-        self.doc_ock_mode_points = 0
+        self.active_mode_points = 0
         self.first_jackpot_maxed = False
         
         self.case_files = self.get_case_file_bonuses()
@@ -166,12 +166,12 @@ class doc_ock(CaseFileMixin, Mode):
         #already locked
         if self.locked_arms[arm-1]:
             self.machine.game.player["score"] += self.doc_ock_arm_relocked_score
-            self.doc_ock_mode_points += self.doc_ock_arm_relocked_score
+            self.active_mode_points += self.doc_ock_arm_relocked_score
             self.machine.events.post("show_mode_message", message_mode_title="ARM ALREADY LOCKED", message_mode_subtitle="KEEP BUILDING JACKPOT")
             return
 
         self.machine.game.player["score"] += self.doc_ock_arm_locked_score
-        self.doc_ock_mode_points += self.doc_ock_arm_locked_score
+        self.active_mode_points += self.doc_ock_arm_locked_score
 
         self.locked_arms[arm-1] = True
         self.refresh_lane_lights()
@@ -194,7 +194,7 @@ class doc_ock(CaseFileMixin, Mode):
             self.machine.events.post("doc_ock_jackpot_not_lit")
             self.machine.events.post("show_mode_message", message_mode_title="LOCK ARMS FIRST", message_mode_subtitle="WEB TARGET NOT READY")
             self.machine.game.player["score"] += self.doc_ock_jackpot_unlit_value
-            self.doc_ock_mode_points += self.doc_ock_jackpot_unlit_value
+            self.active_mode_points += self.doc_ock_jackpot_unlit_value
             return
             
         locked = sum(self.locked_arms)
@@ -209,8 +209,8 @@ class doc_ock(CaseFileMixin, Mode):
 
         self.machine.game.player["score"] += jp_value
         self.machine.game.player["doc_ock_last_jackpot"] = jp_value
-        self.doc_ock_mode_points += jp_value
-        self.machine.game.player["doc_ock_mode_points"] = self.doc_ock_mode_points
+        self.active_mode_points += jp_value
+        self.machine.game.player["active_mode_points"] = self.active_mode_points
 
         self.doc_ock_jackpots += 1
         self.machine.game.player["doc_ock_jackpots"] = self.doc_ock_jackpots

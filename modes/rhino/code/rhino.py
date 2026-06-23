@@ -12,7 +12,7 @@ from modes.common.case_file_mixin import CaseFileMixin
     "stat_1_var": "rhino_best_jackpot_value",
     "stat_2_label": "BEST RAGE",
     "stat_2_var": "rhino_best_rage_stage",
-    "points_var": "rhino_mode_points",
+    "points_var": "active_mode_points",
     "state_var": "rhino_state",
 """
 
@@ -48,7 +48,7 @@ class RhinoBash(CaseFileMixin, Mode):
 
         self.rhino_best_rage_stage = 0
         self.rhino_best_jackpot_value = 0
-        self.rhino_mode_points = 0
+        self.active_mode_points = 0
     
         self.pops = 0
         self.jackpots = 0
@@ -137,7 +137,7 @@ class RhinoBash(CaseFileMixin, Mode):
             return
 
         self.award_score(self.SMASH_SCORE)
-        self.rhino_mode_points += self.SMASH_SCORE
+        self.active_mode_points += self.SMASH_SCORE
         self.jackpot_value += self.add_value
         self._show_message("JACKPOT BUILDS", f"+{self.add_value:,} FROM SMASH", value=self.jackpot_value)
 
@@ -152,7 +152,7 @@ class RhinoBash(CaseFileMixin, Mode):
         self.award_score(self.jackpot_value)
         self.jackpots += 1
 
-        self.rhino_mode_points += self.jackpot_value
+        self.active_mode_points += self.jackpot_value
 
         if self.jackpot_value > self.rhino_best_jackpot_value:
             self.rhino_best_jackpot_value = self.jackpot_value
@@ -303,5 +303,5 @@ class RhinoBash(CaseFileMixin, Mode):
 
         player["rhino_best_rage_stage"]=  self.rhino_best_rage_stage
         player["rhino_best_jackpot_value"] = self.rhino_best_jackpot_value
-        player["rhino_mode_points"] = self.rhino_mode_points
+        player["active_mode_points"] = self.active_mode_points
         

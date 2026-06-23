@@ -95,12 +95,12 @@ widget_player:
     sinister_surge:
       action: remove
 
-  xsinister_surge_mode_intro:
+  xxxsinister_surge_mode_intro:
     sinister_surge_intro:
       action: play
       expire: 5s
 
-  sinister_surge_area_changed:
+  xxxsinister_surge_area_changed:
     sinister_surge_area_status:
       action: play
       expire: 3s
@@ -110,12 +110,12 @@ widget_player:
       action: play
       expire: 3s
 
-  xsinister_surge_victory_laps_started:
+  xxxsinister_surge_victory_laps_started:
     sinister_surge_victory_laps:
       action: play
       expire: 4s
 
-  xsinister_surge_mode_complete:
+  xxxsinister_surge_mode_complete:
     sinister_surge_complete:
       action: play
       expire: 5s

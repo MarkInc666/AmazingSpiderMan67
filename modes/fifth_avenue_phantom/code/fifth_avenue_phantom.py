@@ -152,7 +152,7 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
     def _init_player_vars(self):
         player = self.machine.game.player
         player["fifth_avenue_phantom_state"] = 2
-        player["fifth_avenue_phantom_mode_points"] = 0
+        player["active_mode_points"] = 0
         player["fifth_avenue_phantom_jackpots"] = 0
         player["fifth_avenue_phantom_escape_jackpots"] = 0
         player["fifth_avenue_phantom_best_jackpot"] = 0
@@ -439,7 +439,7 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
 
     def _sync_vars(self):
         player = self.machine.game.player
-        player["fifth_avenue_phantom_mode_points"] = self.mode_points
+        player["active_mode_points"] = self.mode_points
         player["fifth_avenue_phantom_jackpots"] = self.jackpots_collected
         player["fifth_avenue_phantom_escape_jackpots"] = self.escape_jackpots_collected
         player["fifth_avenue_phantom_best_jackpot"] = self.best_jackpot

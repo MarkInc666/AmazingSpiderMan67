@@ -12,7 +12,7 @@ from modes.common.case_file_mixin import CaseFileMixin
     "stat_1_var": "lizard_deliveries",
     "stat_2_label": "BEST VALUE",
     "stat_2_var": "lizard_best_delivery_value",
-    "points_var": "lizard_mode_points",
+    "points_var": "active_mode_points",
     "state_var": "lizard_state",
 """
 class Lizard(CaseFileMixin, Mode):
@@ -111,7 +111,7 @@ class Lizard(CaseFileMixin, Mode):
         player = self.machine.game.player
         points = int(points)
         player["score"] += points
-        player["lizard_mode_points"] += points
+        player["active_mode_points"] += points
 
     def _init_player_vars(self):
         player = self.machine.game.player
@@ -123,7 +123,7 @@ class Lizard(CaseFileMixin, Mode):
         player["lizard_ab_ready"] = 0
 
         # Vars used by the generic villain summary/bookend screen.
-        player["lizard_mode_points"] = 0
+        player["active_mode_points"] = 0
         player["lizard_best_delivery_value"] = 0
         player["lizard_deliveries_made"] = 0
         player["lizard_state"] = 1

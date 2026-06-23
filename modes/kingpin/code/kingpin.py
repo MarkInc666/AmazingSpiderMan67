@@ -93,9 +93,9 @@ class Kingpin(Mode, CaseFileMixin):
     def _reset_player_vars(self):
         player = self.machine.game.player
         player["kingpin_state"] = 1
-        player["kingpin_mode_points"] = 0
-        player["kingpin_hits"] = 0
-        player["kingpin_major_hits"] = 0
+        player["active_mode_points"] = 0
+        player["active_mode_hits"] = 0
+        player["active_mode_major_hits"] = 0
         player["kingpin_timer"] = self.remaining_seconds
         player["kingpin_round"] = self.round_number
         player["kingpin_round_hits"] = 0
@@ -275,15 +275,15 @@ class Kingpin(Mode, CaseFileMixin):
 
     def _add_hit_vars(self, major=False):
         player = self.machine.game.player
-        player["kingpin_hits"] += 1
+        player["active_mode_hits"] += 1
         if major:
-            player["kingpin_major_hits"] += 1
+            player["active_mode_major_hits"] += 1
 
     def _score(self, points):
         player = self.machine.game.player
         player["score"] += points
         self.mode_points += points
-        player["kingpin_mode_points"] = self.mode_points
+        player["active_mode_points"] = self.mode_points
 
     def _complete_mode(self):
         if self.mode_done:
@@ -299,7 +299,7 @@ class Kingpin(Mode, CaseFileMixin):
 
     def _sync_vars(self):
         player = self.machine.game.player
-        player["kingpin_mode_points"] = self.mode_points
+        player["active_mode_points"] = self.mode_points
         player["kingpin_timer"] = max(0, self.remaining_seconds)
         player["kingpin_round"] = self.round_number
         player["kingpin_round_hits"] = self.round_hits
