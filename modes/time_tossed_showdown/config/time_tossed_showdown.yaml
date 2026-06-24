@@ -75,16 +75,21 @@ event_player:
   s_saucer_3_active:
     time_tossed_showdown_shot_hit:
     delayed_kickout_saucer_3:
-  s_vuk_switch_active: time_tossed_showdown_shot_hit
+  s_vuk_switch_active:
+    - time_tossed_showdown_shot_hit
+    - up_kick|1.5s
 
   multiball_time_tossed_showdown_multiball_ended: time_tossed_showdown_complete_request
 
   mode_time_tossed_showdown_started:
+    - disable_daily_bugle_mystery
     - clear_saucers_delayed
     - drop_target_bank_dt_bank_left_reset
     - drop_target_bank_dt_bank_right_reset
 
   mode_time_tossed_showdown_stopping:
+    - enable_daily_bugle_mystery
+    - daily_bugle_restore_state
     - clear_saucers_delayed
 
   # Keep mini-wizard drop banks playable after they are completed.

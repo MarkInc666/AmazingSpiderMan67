@@ -55,6 +55,7 @@ event_player:
 
   mode_final_showdown_stopping:
     - final_showdown_enable_daily_bugle_mystery
+    - daily_bugle_restore_state
     - final_showdown_close_upper_gate
     - final_showdown_release_all_saucers
     - clear_saucers

@@ -74,10 +74,10 @@ class Vulture(CaseFileMixin, Mode):
     def _show_message(self, title, subtitle="", value="", seconds="", event="show_mode_message"):
         self.machine.events.post(
             event,
-            title=title,
-            subtitle=subtitle,
-            value=value,
-            seconds=seconds,
+            message_mode_title=title,
+            message_mode_subtitle=subtitle,
+            message_mode_value=value,
+            message_mode_seconds=seconds,
         )
 
     def _apply_case_file_bonuses(self):

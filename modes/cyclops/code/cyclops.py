@@ -91,6 +91,23 @@ class Cyclops(CaseFileMixin, Mode):
             message_mode_seconds=seconds,
         )
 
+    def _show_status(self, title, value):
+        self.machine.events.post(
+            "show_mode_status",
+            mode_status_title=title,
+            mode_status_value=value,
+        )
+
+    def _update_status(self, title, value):
+        self.machine.events.post(
+            "update_mode_status",
+            mode_status_title=title,
+            mode_status_value=value,
+        )
+
+    def _hide_status(self):
+        self.machine.events.post("hide_mode_status")
+
     def _show_mode_jackpot(self, title, value, subtitle=""):
         self.machine.events.post(
             "show_mode_jackpot",
@@ -102,6 +119,7 @@ class Cyclops(CaseFileMixin, Mode):
 
     def mode_stop(self, **kwargs):
         self.clear_active_case_file_helpers()
+        self.machine.events.post("hide_mode_status")
         super().mode_stop(**kwargs)
 
     def _flipper_pressed(self, **kwargs):
@@ -211,6 +229,11 @@ class Cyclops(CaseFileMixin, Mode):
         player = self.machine.game.player
         player["active_mode_points"] = self.mode_points
         player["cyclops_flips_remaining"] = self.flips_remaining
+        self.machine.events.post(
+            "update_mode_status",
+            mode_status_title="FLIPS LEFT",
+            mode_status_value=self.flips_remaining,
+        )
         player["cyclops_flips_used"] = self.flips_used
         player["cyclops_drops_hit"] = self.drops_hit
         player["cyclops_eye_jackpots"] = self.eye_jackpots

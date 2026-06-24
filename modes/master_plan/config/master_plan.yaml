@@ -37,12 +37,15 @@ event_player:
   s_upper_target_center_active: master_plan_back_page_hit
 
   mode_master_plan_started:
+    - disable_daily_bugle_mystery
     - clear_saucers
     - drop_target_bank_dt_bank_left_reset
     - drop_target_bank_dt_bank_right_reset
     - rooftop_diverter_close
 
   mode_master_plan_stopping:
+    - enable_daily_bugle_mystery
+    - daily_bugle_restore_state
     - clear_saucers
     - rooftop_diverter_close
     - master_plan_clear_lights

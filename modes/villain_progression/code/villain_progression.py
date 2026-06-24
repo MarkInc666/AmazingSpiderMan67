@@ -383,6 +383,11 @@ class VillainProgression(Mode):
         self.machine.events.post("case_files_clear_lights", reason=reason)
         self.machine.events.post("clear_villain_saucer_lights", reason=reason)
         self.machine.events.post("timer_timer_up_post_hold_complete", reason=reason)
+        # Mini-wizards and final wizard disable Daily Bugle while they own the
+        # VUK. Re-enable and redraw it during any global cleanup so A/B and the
+        # default VUK eject path recover even if a wizard stops unexpectedly.
+        self.machine.events.post("enable_daily_bugle_mystery", reason=reason)
+        self.machine.events.post("daily_bugle_restore_state", reason=reason)
         self.machine.events.post("villain_mode_ended", villain_key="", villain="", reason=reason)
 
     def _sync_chapter_ready_flags(self, post_events=True):

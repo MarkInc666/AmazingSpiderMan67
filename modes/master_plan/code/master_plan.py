@@ -138,7 +138,7 @@ class MasterPlan(Mode):
         if self.mode_done:
             return
 
-        self.machine.events.post(f"kickout_saucer_{saucer}")
+        self.machine.events.post(f"delayed_kickout_saucer_{saucer}")
 
         if saucer not in self.headlines_lit or self.super_lit:
             return

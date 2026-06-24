@@ -234,11 +234,22 @@ widget_player:
 
   show_mode_countdown:
     mode_message:
-      expire: 2s
       action: play
 
   hide_mode_message:
     mode_message:
+      action: remove
+
+  show_mode_status:
+    mode_status:
+      action: play
+
+  update_mode_status:
+    mode_status:
+      action: play
+
+  hide_mode_status:
+    mode_status:
       action: remove
 
 

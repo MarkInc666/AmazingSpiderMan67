@@ -524,11 +524,8 @@ class Goblin(CaseFileMixin, Mode):
 
         self.machine.game.player["goblin_state"] = 2
 
-        if completed:
-            self.collect_banked_bonus()
-            self.machine.events.post("goblin_mode_complete")
-        else:
-            self.machine.events.post("goblin_mode_complete")
+        self.collect_banked_bonus()
+        self.machine.events.post("goblin_mode_complete")
 
     def mode_stop(self, **kwargs):
         self.clear_active_case_file_helpers()

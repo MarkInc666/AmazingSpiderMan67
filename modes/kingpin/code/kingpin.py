@@ -57,6 +57,13 @@ class Kingpin(Mode, CaseFileMixin):
         self.machine.events.post("kingpin_reset_banks")
         self.machine.events.post("kingpin_round_started", round=self.round_number, allowed=self._hits_allowed())
         self._sync_vars()
+        self._show_message(
+            "KINGPIN",
+            f"ROUND {self.round_number}: {self._hits_allowed()} HIT",
+            value=f"{self._completed_count()}/5 TARGETS",
+            seconds=self.remaining_seconds,
+            event="show_mode_countdown",
+        )
         self._start_timer()
 
     def mode_stop(self, **kwargs):
@@ -66,6 +73,18 @@ class Kingpin(Mode, CaseFileMixin):
         self.machine.events.post("kingpin_clear_lights")
         self.machine.events.post("kingpin_reset_banks")
         super().mode_stop(**kwargs)
+
+    def _show_message(self, title, subtitle="", value="", seconds="", event="show_mode_message"):
+        self.machine.events.post(
+            event,
+            message_mode_title=title,
+            message_mode_subtitle=subtitle,
+            message_mode_value=value,
+            message_mode_seconds=seconds,
+        )
+
+    def _format_score(self, value):
+        return f"{int(value):,}"
 
     def _apply_case_file_bonuses(self):
         self.publish_case_file_bonus_events(self.MODE_KEY)
@@ -139,6 +158,7 @@ class Kingpin(Mode, CaseFileMixin):
             return
 
         self.machine.events.post("kingpin_goal_missed")
+        self._show_message("TIME UP", "KINGPIN ESCAPES", event="show_mode_jackpot")
         self._complete_mode()
 
     def _left_bank_complete(self, **kwargs):
@@ -148,6 +168,13 @@ class Kingpin(Mode, CaseFileMixin):
         self.remaining_seconds += self.LEFT_BANK_TIME_ADD
         self._sync_vars()
         self.machine.events.post("kingpin_time_added", seconds=self.LEFT_BANK_TIME_ADD)
+        self._show_message(
+            "TIME ADDED",
+            "LEFT BANK COMPLETE",
+            value=f"+{self.LEFT_BANK_TIME_ADD}s",
+            seconds=self.remaining_seconds,
+            event="show_mode_countdown",
+        )
         self.machine.events.post("drop_target_bank_dt_bank_left_reset")
 
     def _right_drop_hit(self, target, **kwargs):
@@ -164,6 +191,12 @@ class Kingpin(Mode, CaseFileMixin):
         if self.completed[target]:
             self._score(self.duplicate_target_value)
             self.machine.events.post("kingpin_duplicate_target_hit", target=target, value=self.duplicate_target_value)
+            self._show_message(
+                "TARGET AGAIN",
+                f"DROP {target}",
+                value=self._format_score(self.duplicate_target_value),
+                event="show_mode_message",
+            )
         else:
             self._complete_target(target, self.new_target_value)
 
@@ -185,6 +218,12 @@ class Kingpin(Mode, CaseFileMixin):
         self.machine.events.post(f"kingpin_target_{target}_complete")
         self.machine.events.post("kingpin_new_target_complete", target=target, value=value)
         self._sync_vars()
+        self._show_message(
+            "TARGET LOCKED",
+            f"DROP {target}",
+            value=self._format_score(value),
+            event="show_mode_jackpot",
+        )
 
     def _should_use_shot_assist(self):
         return (
@@ -201,16 +240,24 @@ class Kingpin(Mode, CaseFileMixin):
                 self._complete_target(target, self.new_target_value)
                 self._pulse_drop(target)
                 self.machine.events.post("kingpin_shot_assist_spotted", target=target)
+                self._show_message("SHOT ASSIST", f"DROP {target} SPOTTED", event="show_mode_jackpot")
                 return
 
     def _all_targets_lit(self):
         self.machine.events.post("kingpin_all_targets_lit")
+        self._show_message("ALL TARGETS", "KINGPIN CORNERED", event="show_mode_jackpot")
 
         if self.more_jackpots_extra_round and not self.extra_round_active:
             self.extra_round_active = True
             self.round_hits = 0
             self.bank_sweeping = True
             self.machine.events.post("kingpin_extra_round_started")
+            self._show_message(
+                "EXTRA ROUND",
+                "MORE JACKPOTS",
+                value=self._format_score(self.EXTRA_JACKPOT_VALUE),
+                event="show_mode_jackpot",
+            )
             self._drop_unhit_targets_this_cycle(excluding=None)
             self.delay.remove("kingpin_reset_right_bank")
             self.delay.add(name="kingpin_reset_right_bank", ms=self.BANK_RESET_DELAY_MS, callback=self._reset_for_extra_round)
@@ -230,12 +277,19 @@ class Kingpin(Mode, CaseFileMixin):
         self._score(self.EXTRA_JACKPOT_VALUE)
         self._add_hit_vars(major=True)
         self.machine.events.post("kingpin_extra_jackpot_collected", target=target, value=self.EXTRA_JACKPOT_VALUE)
+        self._show_message(
+            "EXTRA JACKPOT",
+            f"DROP {target}",
+            value=self._format_score(self.EXTRA_JACKPOT_VALUE),
+            event="show_mode_jackpot",
+        )
         self._drop_unhit_targets_this_cycle(excluding=target)
         self._complete_mode()
 
     def _sweep_and_reset_bank(self):
         self.bank_sweeping = True
         self.machine.events.post("kingpin_bank_sweep_started", round=self.round_number)
+        self._show_message("KINGPIN SWEEPS", "BANK RESETTING", event="show_mode_message")
         self._drop_unhit_targets_this_cycle(excluding=None)
         self.delay.remove("kingpin_reset_right_bank")
         self.delay.add(name="kingpin_reset_right_bank", ms=self.BANK_RESET_DELAY_MS, callback=self._next_round)
@@ -251,6 +305,13 @@ class Kingpin(Mode, CaseFileMixin):
         self.machine.events.post("drop_target_bank_dt_bank_right_reset")
         self.machine.events.post("kingpin_round_started", round=self.round_number, allowed=self._hits_allowed())
         self._sync_vars()
+        self._show_message(
+            "KINGPIN",
+            f"ROUND {self.round_number}: {self._hits_allowed()} HITS",
+            value=f"{self._completed_count()}/5 TARGETS",
+            seconds=self.remaining_seconds,
+            event="show_mode_countdown",
+        )
 
     def _drop_unhit_targets_this_cycle(self, excluding=None):
         for target in self.TARGETS:
@@ -295,6 +356,7 @@ class Kingpin(Mode, CaseFileMixin):
         player = self.machine.game.player
         player["kingpin_state"] = 2
         self._sync_vars()
+        self._show_message("KINGPIN DEFEATED", "MODE COMPLETE", event="show_mode_jackpot")
         self.machine.events.post("kingpin_mode_complete")
 
     def _sync_vars(self):

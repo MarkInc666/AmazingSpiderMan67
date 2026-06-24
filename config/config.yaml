@@ -73,6 +73,7 @@ game:
 modes:
   - attract
   - base
+  - light_feedback
   - music_control
   - service
   - high_score

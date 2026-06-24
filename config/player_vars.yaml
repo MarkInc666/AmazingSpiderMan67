@@ -570,6 +570,12 @@ player_vars:
   message_mode_value:
     initial_value: " "
     value_type: str
+  mode_status_title:
+    initial_value: " "
+    value_type: str
+  mode_status_value:
+    initial_value: " "
+    value_type: str
   wizard_prep_next_award:
     initial_value: ""
     value_type: str

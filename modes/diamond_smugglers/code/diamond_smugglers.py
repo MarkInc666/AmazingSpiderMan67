@@ -32,9 +32,9 @@ class DiamondSmugglers(Mode, CaseFileMixin):
     MORE_JACKPOTS_REQUIRED_JACKPOTS = 4
 
     SAUCER_KICK_EVENTS = {
-        1: "kickout_saucer_1",
-        2: "kickout_saucer_2",
-        3: "kickout_saucer_3",
+        1: "delayed_kickout_saucer_1",
+        2: "delayed_kickout_saucer_2",
+        3: "delayed_kickout_saucer_3",
     }
 
     def mode_start(self, **kwargs):

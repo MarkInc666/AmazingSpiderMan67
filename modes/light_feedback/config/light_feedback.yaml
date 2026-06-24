@@ -1,0 +1,260 @@
+#config_version=6
+# Global playfield switch-hit light feedback.
+# Conservative defaults:
+# - 250ms minimum flash steps so the hit is visible on the real playfield.
+# - white command color so tinted plastics/inserts provide the visible color.
+# - single-light mappings only for the first pass; mode-specific reward flashes can use the double show.
+
+mode:
+  start_events: ball_started
+  stop_events:
+    - ball_ending
+    - ball_ended
+    - tilt
+    - slam_tilt
+  priority: 105
+
+show_player:
+  s_leaf_next_to_1_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_gi_ramp
+  s_web_target_mid_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_mid_web_target
+  s_saucer_1_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_1
+  s_saucer_2_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_2
+  s_saucer_3_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_3
+  s_vuk_switch_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_gi_top_1
+  s_upper_entrance_opto_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_gi_top_2
+  s_upper_exit_left_opto_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_gi_mid_spider
+  s_upper_exit_right_opto_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_gi_upflip
+  s_trispinner_opto_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_gi_a
+  s_upper_target_left_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_upper_left
+  s_upper_target_center_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_upper_middle
+  s_upper_target_right_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_upper_right
+  s_right_drops_top_rubber_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_gi_5bank_upper
+  s_star_rollover_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_star
+  s_inlane_a_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_a_rollover
+  s_inlane_b_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_b_rollover
+  s_above_star_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_gi_a
+  s_web_spinner_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_spinner
+  s_above_spinner_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_gi_spinner
+  s_inlane_m_l_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_left_b
+  s_web_target_left_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_left_web_target
+  s_inlane_l_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_left_inlane
+  s_outlane_l_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_left_outlane
+  s_left_drops_rubber_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_gi_3bank
+  s_left_drops_1_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_gi_3bank
+  s_left_drops_2_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_gi_3bank
+  s_left_drops_3_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_gi_3bank
+  s_left_drops_top_left_rubber_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_gi_3bank
+  s_left_drops_top_right_rubber_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_gi_3bank
+  s_pop_left_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_pop_1_6
+  s_pop_right_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_pop_2_6
+  s_right_drops_rubber_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_gi_5bank_lower
+  s_right_drops_1_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_5bank_1
+  s_right_drops_2_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_5bank_2
+  s_right_drops_3_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_5bank_3
+  s_right_drops_4_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_5bank_4
+  s_right_drops_5_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_5bank_5
+  s_inlane_m_r_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_right_a
+  s_mid_right_rubber_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_gi_right_lower_triangle
+  s_outlane_r_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_right_outlane
+  s_inlane_r_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_right_inlane
+  s_sling_r_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_gi_right_sling
+  s_sling_l_active:
+    switch_feedback_single:
+      priority: 900
+      show_tokens:
+        lights: l_gi_left_sling_lower, l_gi_left_sling_upper
+
+shows:
+  switch_feedback_single:
+    - duration: 250ms
+      lights:
+        (lights): white
+    - duration: 250ms
+      lights:
+        (lights): off
+
+  switch_feedback_double:
+    - duration: 250ms
+      lights:
+        (lights): white
+    - duration: 250ms
+      lights:
+        (lights): off
+    - duration: 250ms
+      lights:
+        (lights): white
+    - duration: 250ms
+      lights:
+        (lights): off

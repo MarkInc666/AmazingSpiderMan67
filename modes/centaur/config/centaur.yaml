@@ -61,12 +61,15 @@ event_player:
     - centaur_post_hold_cancel
 
   mode_centaur_started:
+    - disable_daily_bugle_mystery
     - clear_saucers
     - reset_drops
 
   mode_centaur_stopping:
     - clear_saucers
     - centaur_clear_all_lights
+    - enable_daily_bugle_mystery
+    - daily_bugle_restore_state
 
 coil_player:
   centaur_stage_right_bank_drops:

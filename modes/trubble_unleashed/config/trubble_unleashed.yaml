@@ -39,6 +39,11 @@ event_player:
   s_pop_left_active: trubble_unleashed_pops_hit
   s_pop_right_active: trubble_unleashed_pops_hit
 
+  # Daily Bugle VUK is disabled during the wizard, so the wizard
+  # must always eject the ball itself.
+  s_vuk_switch_active:
+    - up_kick|1.5s
+
   # Saucers are not Miss Trubble choices, but they must still kick out.
   s_saucer_1_active: clear_saucers
   s_saucer_2_active: clear_saucers
@@ -50,11 +55,14 @@ event_player:
     - drop_target_bank_dt_bank_right_reset
 
   trubble_unleashed_startup_complete:
+    - disable_daily_bugle_mystery
     - clear_saucers
     - drop_target_bank_dt_bank_left_reset
     - drop_target_bank_dt_bank_right_reset
 
   mode_trubble_unleashed_stopping:
+    - enable_daily_bugle_mystery
+    - daily_bugle_restore_state
     - trubble_unleashed_all_lights_off
     - clear_saucers
 

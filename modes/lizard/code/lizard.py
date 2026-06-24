@@ -83,10 +83,10 @@ class Lizard(CaseFileMixin, Mode):
     def _show_message(self, title, subtitle="", value="", seconds="", event="show_mode_message"):
         self.machine.events.post(
             event,
-            title=title,
-            subtitle=subtitle,
-            value=value,
-            seconds=seconds,
+            message_mode_title=title,
+            message_mode_subtitle=subtitle,
+            message_mode_value=value,
+            message_mode_seconds=seconds,
         )
 
     def _apply_case_file_bonuses(self):
@@ -203,7 +203,7 @@ class Lizard(CaseFileMixin, Mode):
         if 3 <= int(ticks) <= 10:
             current_value = self.machine.game.player["lizard_delivery_value"]
             self.machine.game.player["lizard_delivery_value"] = max(0, current_value - self.DELIVERY_TICK_VALUE)
-            self._show_message("VALUE DROPPING", "DELIVER SERUM NOW", value=self.machine.game.player["lizard_delivery_value"], event="show_mode_countdown")
+            self._show_message("VALUE DROPPING", "DELIVER SERUM NOW", value=self.machine.game.player["lizard_delivery_value"], seconds=int(ticks), event="show_mode_countdown")
             self.machine.events.post("lizard_delivery_tick")
 
 
