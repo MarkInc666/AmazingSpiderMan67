@@ -77,6 +77,7 @@ class Lizard(CaseFileMixin, Mode):
 #        self.machine.events.post("play_song_4")
 
     def mode_stop(self, **kwargs):
+        self.machine.events.post("hide_mode_status")
         self.clear_active_case_file_helpers()
         super().mode_stop(**kwargs)
 
@@ -203,7 +204,7 @@ class Lizard(CaseFileMixin, Mode):
         if 3 <= int(ticks) <= 10:
             current_value = self.machine.game.player["lizard_delivery_value"]
             self.machine.game.player["lizard_delivery_value"] = max(0, current_value - self.DELIVERY_TICK_VALUE)
-            self._show_message("VALUE DROPPING", "DELIVER SERUM NOW", value=self.machine.game.player["lizard_delivery_value"], seconds=int(ticks), event="show_mode_countdown")
+            self.machine.events.post("update_mode_status", mode_status_title="SECONDS LEFT", mode_status_value=int(ticks))
             self.machine.events.post("lizard_delivery_tick")
 
 
@@ -217,6 +218,7 @@ class Lizard(CaseFileMixin, Mode):
 
         # Stop the active delivery timer and delivery-target lights.
         self.machine.events.post("lizard_delivery_timer_stop")
+        self.machine.events.post("hide_mode_status")
         self.machine.events.post("lizard_serum_expired_show")
 
         # This delivery attempt is now spent, even though no points were awarded.

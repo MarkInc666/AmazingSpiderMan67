@@ -504,10 +504,14 @@ class Goblin(CaseFileMixin, Mode):
             self.case_file_extra_chaos_jackpot = False
             self.machine.events.post("goblin_case_file_extra_chaos_jackpot")
 
+        # Match Vulture's bonus behavior: bank the value for the normal
+        # end-of-ball bonus count instead of scoring it immediately here.
+        player = self.machine.game.player
+        player["goblin_bonus"] = player["goblin_bonus"] + banked
+
         self.bonus_paid = True
-        self._award_points(banked)
         self.machine.events.post("goblin_bonus_collected", value=banked)
-        self.machine.events.post("show_mode_jackpot", message_mode_title="GOBLIN BONUS", message_mode_subtitle="CHAOS BANK", message_mode_value=banked)
+        self.machine.events.post("show_mode_jackpot", message_mode_title="GOBLIN BONUS BANKED", message_mode_subtitle="CHAOS BANK", message_mode_value=banked)
 
     def finish_mode(self, completed=False):
         if self.mode_finishing:

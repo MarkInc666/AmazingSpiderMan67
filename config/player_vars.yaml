@@ -492,6 +492,36 @@ player_vars:
   hold_bonus:
     initial_value: 0
     value_type: int
+  vulture_bonus:
+    initial_value: 0
+    value_type: int
+  goblin_bonus:
+    initial_value: 0
+    value_type: int
+  vulcan_bonus:
+    initial_value: 0
+    value_type: int
+  diamond_bonus:
+    initial_value: 0
+    value_type: int
+  mystic_bonus:
+    initial_value: 0
+    value_type: int
+  dumpty_bonus:
+    initial_value: 0
+    value_type: int
+  radiation_bonus:
+    initial_value: 0
+    value_type: int
+  plutonian_bonus:
+    initial_value: 0
+    value_type: int
+  swamp_bonus:
+    initial_value: 0
+    value_type: int
+  technician_bonus:
+    initial_value: 0
+    value_type: int
   drop_bank_completions_this_ball:
     initial_value: 0
     value_type: int

@@ -178,6 +178,7 @@ class NoahBoddy(Mode):
         )
 
     def mode_stop(self, **kwargs):
+        self.machine.events.post("hide_mode_status")
         self.delay.remove("noah_boddy_hurryup_tick")
         self.clear_active_case_file_helpers()
         self.machine.events.post("rooftop_diverter_close")
@@ -381,7 +382,7 @@ class NoahBoddy(Mode):
             seconds=self.hurryup_seconds_left,
             jackpot=self._current_jackpot_value(),
         )
-        self._show_mode_countdown("HIT SECRET TARGET", self.hurryup_seconds_left, self.TARGET_LABELS[self.secret_target])
+        self.machine.events.post("update_mode_status", mode_status_title="SECONDS LEFT", mode_status_value=max(0, self.hurryup_seconds_left))
         self._sync_vars()
 
         if self.hurryup_seconds_left <= 0:

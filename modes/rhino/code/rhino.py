@@ -83,6 +83,7 @@ class RhinoBash(CaseFileMixin, Mode):
 
 
     def mode_stop(self, **kwargs):
+        self.machine.events.post("hide_mode_status")
         self.clear_active_case_file_helpers()
         super().mode_stop(**kwargs)
 
@@ -228,6 +229,7 @@ class RhinoBash(CaseFileMixin, Mode):
         self.berserk_running = False
         self.delay.remove("rhino_berserk_crash")
         self.machine.events.post("rhino_berserk_stopped")
+        self.machine.events.post("hide_mode_status")
 
     def berserk_time_ms(self):
         index = min(self.jackpots, len(self.BERSERK_TIMES_MS) - 1)
@@ -251,6 +253,7 @@ class RhinoBash(CaseFileMixin, Mode):
         self.add_value = self.STAGE_ADD_VALUES[2]
 
         self.machine.events.post("rhino_berserk_stopped")
+        self.machine.events.post("hide_mode_status")
         self._show_message("RHINO CRASHED", "RAGE RESET")
         self.machine.events.post("rhino_crashed")
         self.post_rage_show()

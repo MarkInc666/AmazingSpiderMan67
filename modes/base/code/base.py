@@ -40,7 +40,6 @@ class Base(Mode):
         message_mode_seconds="",
         **kwargs,
     ):
-        self._cancel_countdown()
         self._set_mode_message_vars(
             message_mode_title=message_mode_title,
             message_mode_subtitle=message_mode_subtitle,
@@ -62,7 +61,7 @@ class Base(Mode):
             message_mode_title=message_mode_title,
             message_mode_subtitle=message_mode_subtitle,
             message_mode_value=message_mode_value,
-            message_mode_seconds=message_mode_seconds,
+            message_mode_seconds="",
         )
 
         seconds = self._parse_seconds(message_mode_seconds)
@@ -128,7 +127,6 @@ class Base(Mode):
 
         player = self.machine.game.player
         display_remaining = self._display_text(remaining)
-        player["message_mode_seconds"] = display_remaining
         player["mode_status_title"] = getattr(self, "_message_countdown_status_title", "SECONDS LEFT")
         player["mode_status_value"] = display_remaining
 
@@ -151,6 +149,7 @@ class Base(Mode):
         self._clear_mode_message_vars()
 
     def _hide_mode_status(self, **kwargs):
+        self._cancel_countdown()
         self._clear_mode_status_vars()
 
     def _cancel_countdown(self):

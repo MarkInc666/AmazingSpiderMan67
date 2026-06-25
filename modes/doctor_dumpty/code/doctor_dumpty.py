@@ -97,6 +97,7 @@ class DoctorDumpty(Mode):
         self._next_shot()
 
     def mode_stop(self, **kwargs):
+        self.machine.events.post("hide_mode_status")
         self.delay.remove("doctor_dumpty_timer_tick")
         self.delay.remove("doctor_dumpty_next_shot_delay")
         self._stop_current_shot_light()
@@ -159,8 +160,7 @@ class DoctorDumpty(Mode):
         self.seconds_left -= 1
         self._sync_vars()
         self.machine.events.post("doctor_dumpty_timer_changed", seconds=self.seconds_left)
-        if self.seconds_left <= 5:
-            self.machine.events.post("show_mode_countdown", message_mode_title="TIME RUNNING OUT", message_mode_subtitle=self.current_shot.replace("_", " ").upper(), message_mode_seconds=self.seconds_left)
+        self.machine.events.post("update_mode_status", mode_status_title="SECONDS LEFT", mode_status_value=max(0, self.seconds_left))
 
         if self.seconds_left <= 0:
             self._timeout_current_shot()

@@ -148,6 +148,7 @@ class SwampReptiles(CaseFileMixin, Mode):
         )
 
     def mode_stop(self, **kwargs):
+        self.machine.events.post("hide_mode_status")
         self.delay.remove("swamp_reptiles_super_timer")
         self._close_rooftop_gate()
         self.clear_active_case_file_helpers()

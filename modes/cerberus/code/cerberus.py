@@ -91,6 +91,7 @@ class Cerberus(CaseFileMixin, Mode):
         self._refresh_lights()
 
     def mode_stop(self, **kwargs):
+        self.machine.events.post("hide_mode_status")
         self.delay.remove("cerberus_mode_timer")
         self.delay.remove("cerberus_halfway_gate_open")
         self.clear_active_case_file_helpers()

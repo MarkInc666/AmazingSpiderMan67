@@ -70,6 +70,7 @@ class Sandman(CaseFileMixin, Mode):
         self.machine.events.post("sandman_startup_complete")
 
     def mode_stop(self, **kwargs):
+        self.machine.events.post("hide_mode_status")
         self.clear_active_case_file_helpers()
         super().mode_stop(**kwargs)
 

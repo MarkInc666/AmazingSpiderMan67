@@ -107,6 +107,7 @@ class Vulcan(CaseFileMixin, Mode):
         self._show_mode_message("VOLCANO UNLEASHED", "SPINNER BUILDS - DROPS COLLECT")
 
     def mode_stop(self, **kwargs):
+        self.machine.events.post("hide_mode_status")
         self.delay.remove("vulcan_cooling_tick")
         self.delay.remove("vulcan_reset_upper_targets_after_flash")
         self.machine.events.post("vulcan_clear_all_lights")
@@ -285,7 +286,7 @@ class Vulcan(CaseFileMixin, Mode):
 
         self.cooling_seconds_left -= 1
         self.machine.events.post("vulcan_cooling_tick", seconds=self.cooling_seconds_left)
-        self._show_mode_countdown("COOLING TIMER", self.cooling_seconds_left, "SPINNER RESETS TIMER")
+        self.machine.events.post("update_mode_status", mode_status_title="SECONDS LEFT", mode_status_value=max(0, self.cooling_seconds_left))
         self._sync_vars()
 
         if self.cooling_seconds_left <= 0:
@@ -300,6 +301,7 @@ class Vulcan(CaseFileMixin, Mode):
         self.cooling_active = False
         self.cooling_seconds_left = 0
         self.delay.remove("vulcan_cooling_tick")
+        self.machine.events.post("hide_mode_status")
         self._sync_vars()
 
     def _complete_mode(self, **kwargs):

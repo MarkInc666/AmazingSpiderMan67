@@ -128,6 +128,7 @@ class Diana(CaseFileMixin, Mode):
         self._sync_vars()
 
     def mode_stop(self, **kwargs):
+        self.machine.events.post("hide_mode_status")
         self._clear_delays()
         if self.post_hold_active:
             self.machine.events.post("timer_timer_up_post_hold_complete")
@@ -329,11 +330,7 @@ class Diana(CaseFileMixin, Mode):
             hunt=self.current_hunt,
             seconds=self.hunt_seconds_left,
         )
-        self._show_mode_countdown(
-            f"HUNT {self.current_hunt}",
-            self.hunt_seconds_left,
-            "BULLSEYES AND RUBBER",
-        )
+        self.machine.events.post("update_mode_status", mode_status_title="SECONDS LEFT", mode_status_value=max(0, self.hunt_seconds_left))
         self._sync_vars()
 
         if self.hunt_seconds_left <= 0:

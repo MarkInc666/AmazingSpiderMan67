@@ -67,6 +67,7 @@ class Kingpin(Mode, CaseFileMixin):
         self._start_timer()
 
     def mode_stop(self, **kwargs):
+        self.machine.events.post("hide_mode_status")
         self.delay.remove("kingpin_timer_tick")
         self.delay.remove("kingpin_reset_right_bank")
         self.clear_active_case_file_helpers()
@@ -146,6 +147,7 @@ class Kingpin(Mode, CaseFileMixin):
         self.remaining_seconds -= 1
         self._sync_vars()
         self.machine.events.post("kingpin_timer_tick", seconds=self.remaining_seconds)
+        self.machine.events.post("update_mode_status", mode_status_title="SECONDS LEFT", mode_status_value=max(0, self.remaining_seconds))
 
         if self.remaining_seconds <= 0:
             self.machine.events.post("kingpin_timer_expired")
@@ -172,9 +174,8 @@ class Kingpin(Mode, CaseFileMixin):
             "TIME ADDED",
             "LEFT BANK COMPLETE",
             value=f"+{self.LEFT_BANK_TIME_ADD}s",
-            seconds=self.remaining_seconds,
-            event="show_mode_countdown",
         )
+        self.machine.events.post("update_mode_status", mode_status_title="SECONDS LEFT", mode_status_value=max(0, self.remaining_seconds))
         self.machine.events.post("drop_target_bank_dt_bank_left_reset")
 
     def _right_drop_hit(self, target, **kwargs):

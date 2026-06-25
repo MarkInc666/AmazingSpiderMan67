@@ -155,6 +155,7 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
         self._start_new_round()
 
     def mode_stop(self, **kwargs):
+        self.machine.events.post("hide_mode_status")
         self.delay.remove("fifth_avenue_phantom_timer_tick")
         self.delay.remove("fifth_avenue_phantom_next_round")
         self._clear_lit_location()
@@ -289,6 +290,7 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
 
         self.phase = "awarding"
         self.delay.remove("fifth_avenue_phantom_timer_tick")
+        self.machine.events.post("hide_mode_status")
         jackpot = self.current_jackpot
         self.last_jackpot_awarded = jackpot
         self.jackpots_collected += 1
@@ -321,6 +323,7 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
 
         self.phase = "round_missed"
         self.delay.remove("fifth_avenue_phantom_timer_tick")
+        self.machine.events.post("hide_mode_status")
         self.rounds_missed += 1
         self._clear_lit_location()
         self.machine.events.post(
@@ -379,13 +382,7 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
             location=self.current_location,
             location_label=self.LOCATION_LABELS[self.current_location],
         )
-        self.machine.events.post(
-            "show_mode_countdown",
-            message_mode_title=f"ROUND {self.rounds_started}: VANISHING",
-            message_mode_subtitle=self.LOCATION_LABELS[self.current_location],
-            message_mode_value=self.current_jackpot,
-            message_mode_seconds=max(0, self.reveal_seconds_left),
-        )
+        self.machine.events.post("update_mode_status", mode_status_title="SECONDS LEFT", mode_status_value=max(0, self.reveal_seconds_left))
         self._sync_vars()
 
         if self.reveal_seconds_left <= 0:

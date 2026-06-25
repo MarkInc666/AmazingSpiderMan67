@@ -101,6 +101,7 @@ class Centaur(CaseFileMixin, Mode):
         self._show_mode_message("BUILD THE CHARGE", "4 DROPS OPENS THE GATE")
 
     def mode_stop(self, **kwargs):
+        self.machine.events.post("hide_mode_status")
         self.delay.remove("centaur_post_hold_release")
         self.delay.remove("centaur_stage_right_bank")
         self.delay.remove("centaur_final_timer_tick")
@@ -317,7 +318,7 @@ class Centaur(CaseFileMixin, Mode):
         self.final_seconds_left -= 1
         self._sync_vars()
         self.machine.events.post("centaur_final_timer_changed", seconds=self.final_seconds_left)
-        self._show_mode_countdown("HIT RIGHT RUBBER", self.final_seconds_left, "CENTAUR JACKPOT")
+        self.machine.events.post("update_mode_status", mode_status_title="SECONDS LEFT", mode_status_value=max(0, self.final_seconds_left))
 
         if self.final_seconds_left <= 0:
             self._final_timer_expired()

@@ -62,12 +62,14 @@ class Vulture(CaseFileMixin, Mode):
         self.add_mode_event_handler("vulture_spinner_hit", self.spinner_hit)
         self.add_mode_event_handler("vulture_idle_decay", self.idle_decay)
         self.add_mode_event_handler("vulture_show_targets", self.show_targets)
+        self.add_mode_event_handler("timer_vulture_mode_timer_tick", self.timer_tick)
 
         self.update_player_vars()
         self.show_targets()
         self._show_message("VULTURE", "GET TO THE ROOFTOP")
 
     def mode_stop(self, **kwargs):
+        self.machine.events.post("hide_mode_status")
         self.clear_active_case_file_helpers()
         super().mode_stop(**kwargs)
 
@@ -105,7 +107,8 @@ class Vulture(CaseFileMixin, Mode):
 
         if not self.started:
             self.started = True
-            self._show_message("SKY ATTACK", "HIT UPPER TARGETS", seconds=40, event="show_mode_countdown")
+            self._show_message("SKY ATTACK", "HIT UPPER TARGETS")
+            self.machine.events.post("show_mode_status", mode_status_title="SECONDS LEFT", mode_status_value=40)
             self.machine.events.post("vulture_timer_start")
 
         self.update_upper_multiplier()
@@ -117,6 +120,17 @@ class Vulture(CaseFileMixin, Mode):
 
         self.update_upper_multiplier()
         self.update_player_vars()
+
+    def timer_tick(self, ticks=None, **kwargs):
+        if not self.started:
+            return
+        remaining = ticks
+        if remaining is None:
+            try:
+                remaining = self.machine.timers["vulture_mode_timer"].ticks
+            except Exception:
+                remaining = ""
+        self.machine.events.post("update_mode_status", mode_status_title="SECONDS LEFT", mode_status_value=remaining)
 
     def update_upper_multiplier(self):
         if self.upper_balls >= 2:

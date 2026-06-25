@@ -235,6 +235,8 @@ widget_player:
   show_mode_countdown:
     mode_message:
       action: play
+      expire: 2s
+      priority: 4096
 
   hide_mode_message:
     mode_message:
@@ -243,10 +245,12 @@ widget_player:
   show_mode_status:
     mode_status:
       action: play
+      priority: 4095
 
   update_mode_status:
     mode_status:
       action: play
+      priority: 4095
 
   hide_mode_status:
     mode_status:

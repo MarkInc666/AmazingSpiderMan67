@@ -130,8 +130,64 @@ mode_settings:
       skip_if_zero: true
 
     - entry: goblin_bonus
-      text: "CHAOS BONUS"
-      player_score_entry: goblin_chaos_bonus
+      text: "GOBLIN CHAOS"
+      player_score_entry: goblin_bonus
+      score: 1
+      reset_player_score_entry: true
+      skip_if_zero: true
+
+    - entry: vulcan_bonus
+      text: "VULCAN ERUPTION"
+      player_score_entry: vulcan_bonus
+      score: 1
+      reset_player_score_entry: true
+      skip_if_zero: true
+
+    - entry: diamond_bonus
+      text: "DIAMOND SMUGGLERS"
+      player_score_entry: diamond_bonus
+      score: 1
+      reset_player_score_entry: true
+      skip_if_zero: true
+
+    - entry: mystic_bonus
+      text: "MYSTIC BONUS"
+      player_score_entry: mystic_bonus
+      score: 1
+      reset_player_score_entry: true
+      skip_if_zero: true
+
+    - entry: dumpty_bonus
+      text: "DUMPTY DEVICES"
+      player_score_entry: dumpty_bonus
+      score: 1
+      reset_player_score_entry: true
+      skip_if_zero: true
+
+    - entry: radiation_bonus
+      text: "RADIATION RAMPAGE"
+      player_score_entry: radiation_bonus
+      score: 1
+      reset_player_score_entry: true
+      skip_if_zero: true
+
+    - entry: plutonian_bonus
+      text: "PLUTONIAN BONUS"
+      player_score_entry: plutonian_bonus
+      score: 1
+      reset_player_score_entry: true
+      skip_if_zero: true
+
+    - entry: swamp_bonus
+      text: "SWAMP REPTILES"
+      player_score_entry: swamp_bonus
+      score: 1
+      reset_player_score_entry: true
+      skip_if_zero: true
+
+    - entry: technician_bonus
+      text: "TECHNICIAN TRAP"
+      player_score_entry: technician_bonus
       score: 1
       reset_player_score_entry: true
       skip_if_zero: true
