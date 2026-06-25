@@ -5,12 +5,6 @@ mode:
   priority: 500
   use_wait_queue: true
 
-# todo 
-#* villains defeated
-#* rooftop spins
-#* mystery awards collected
-#* spidey bonus
-#* vulture bonus
 slide_player:
   mode_bonus_started:
     bonus:
@@ -19,199 +13,49 @@ slide_player:
       action: remove
 
   bonus_start:
-      bonus:
-        action: update
-        tokens:
-          entry: initial
+    bonus:
+      action: update
+      tokens:
+        entry: initial
 
   bonus_entry:
     bonus:
       action: update
 
+sound_player:
+  asm_bonus_bucket_counted:
+    hb_pot_1:
+      action: play
+      bus: effects
 
+  asm_bonus_mode_counted:
+    bump_sfx_2:
+      action: play
+      bus: effects
+
+  asm_bonus_total_awarded:
+    hb_bounce_2:
+      action: play
+      bus: effects
+
+  asm_bonus_held:
+    sm_ill_keep_these:
+      action: play
+      bus: voice
+
+  asm_hold_bonus_awarded:
+    sm_ill_keep_these:
+      action: play
+      bus: voice
 
 mode_settings:
   display_delay_ms: 1000ms
   hurry_up_delay_ms: 50ms
-
   keep_multiplier: false
 
-  bonus_entries:
-
-    - entry: bonus_count
-      text: "BONUS LIGHTS"
-      player_score_entry: bonus_count
-      score: 1000
-      reset_player_score_entry: true
-      skip_if_zero: true
-
-    # - entry: bonus_1k
-    #   text: "1K"
-    #   player_score_entry: bonus_1k_lit
-    #   score: 1000
-    #   reset_player_score_entry: true
-    #   skip_if_zero: true
-
-    # - entry: bonus_2k
-    #   text: "2K"
-    #   player_score_entry: bonus_2k_lit
-    #   score: 2000
-    #   reset_player_score_entry: true
-    #   skip_if_zero: true
-
-    # - entry: bonus_3k
-    #   text: "3K"
-    #   player_score_entry: bonus_3k_lit
-    #   score: 3000
-    #   reset_player_score_entry: true
-    #   skip_if_zero: true
-
-    # - entry: bonus_4k
-    #   text: "4K"
-    #   player_score_entry: bonus_4k_lit
-    #   score: 4000
-    #   reset_player_score_entry: true
-    #   skip_if_zero: true
-
-    # - entry: bonus_5k
-    #   text: "5K"
-    #   player_score_entry: bonus_5k_lit
-    #   score: 5000
-    #   reset_player_score_entry: true
-    #   skip_if_zero: true
-
-    # - entry: bonus_6k
-    #   text: "6K"
-    #   player_score_entry: bonus_6k_lit
-    #   score: 6000
-    #   reset_player_score_entry: true
-    #   skip_if_zero: true
-
-    # - entry: bonus_7k
-    #   text: "7K"
-    #   player_score_entry: bonus_7k_lit
-    #   score: 7000
-    #   reset_player_score_entry: true
-    #   skip_if_zero: true
-
-    # - entry: bonus_8k
-    #   text: "8K"
-    #   player_score_entry: bonus_8k_lit
-    #   score: 8000
-    #   reset_player_score_entry: true
-    #   skip_if_zero: true
-
-    # - entry: bonus_9k
-    #   text: "9K"
-    #   player_score_entry: bonus_9k_lit
-    #   score: 9000
-    #   reset_player_score_entry: true
-    #   skip_if_zero: true
-
-    # - entry: bonus_10k
-    #   text: "10K"
-    #   player_score_entry: bonus_10k_lit
-    #   score: 10000
-    #   reset_player_score_entry: true
-    #   skip_if_zero: true
-
-    # - entry: bonus_20k
-    #   text: "20K"
-    #   player_score_entry: bonus_20k_lit
-    #   score: 20000
-    #   reset_player_score_entry: true
-    #   skip_if_zero: true
-
-    - entry: vulture_bonus
-      text: "VULTURE FLIGHT"
-      player_score_entry: vulture_bonus
-      score: 1
-      reset_player_score_entry: true
-      skip_if_zero: true
-
-    - entry: goblin_bonus
-      text: "GOBLIN CHAOS"
-      player_score_entry: goblin_bonus
-      score: 1
-      reset_player_score_entry: true
-      skip_if_zero: true
-
-    - entry: vulcan_bonus
-      text: "VULCAN ERUPTION"
-      player_score_entry: vulcan_bonus
-      score: 1
-      reset_player_score_entry: true
-      skip_if_zero: true
-
-    - entry: diamond_bonus
-      text: "DIAMOND SMUGGLERS"
-      player_score_entry: diamond_bonus
-      score: 1
-      reset_player_score_entry: true
-      skip_if_zero: true
-
-    - entry: super_swami_bonus
-      text: "SUPER SWAMI"
-      player_score_entry: super_swami_bonus
-      score: 1
-      reset_player_score_entry: true
-      skip_if_zero: true
-
-    - entry: dumpty_bonus
-      text: "DUMPTY DEVICES"
-      player_score_entry: dumpty_bonus
-      score: 1
-      reset_player_score_entry: true
-      skip_if_zero: true
-
-    - entry: radiation_bonus
-      text: "RADIATION RAMPAGE"
-      player_score_entry: radiation_bonus
-      score: 1
-      reset_player_score_entry: true
-      skip_if_zero: true
-
-    - entry: plutonians_bonus
-      text: "THE PLUTONIANS"
-      player_score_entry: plutonians_bonus
-      score: 1
-      reset_player_score_entry: true
-      skip_if_zero: true
-
-    - entry: swamp_bonus
-      text: "SWAMP REPTILES"
-      player_score_entry: swamp_bonus
-      score: 1
-      reset_player_score_entry: true
-      skip_if_zero: true
-
-    - entry: technician_bonus
-      text: "TECHNICIAN TRAP"
-      player_score_entry: technician_bonus
-      score: 1
-      reset_player_score_entry: true
-      skip_if_zero: true
-
-
-#light_player:
-  # Turn off the light as it is counted
-#  bonus_bonus_1k_earned:
-#    l_bonus_1k: off
-#  bonus_bonus_2k_earned:
-#    l_bonus_2k: off
-#  # ... and so on ...
-#  bonus_bonus_20k_earned:
-#    l_bonus_20k: off
-
-#  bonus_multiplier:
-#    l_multiplier_2x: off
-#    l_multiplier_3x: off
-#    l_multiplier_4x: off
-#    l_multiplier_5x: off
-
-
-#sound_player:
-#  bonus_entry:
-#    bonus_tick_sound:
-#      action: play
-
+  # ASM67 uses custom bonus code rather than stock MPF bonus_entries:
+  # - regular bonus buckets are visibly counted once per bonus multiplier pass
+  # - mode/chapter bank bonuses are listed separately and are not multiplied
+  # - mode/chapter bank bonuses carry over across balls
+  # - held_bonus is consumed when awarded unless Hold Bonus is earned again
+  bonus_entries: []

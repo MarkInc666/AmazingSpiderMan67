@@ -1,253 +1,402 @@
 #config_version=6
 
-# Miss Trubble: Double Trouble.
-# Three shots look identical. Spinner reveals which shot is good.
+# Trubble Unleashed - Chapter 3 wizard
+# No active case-file powers. Chapter case files only scale values.
 
 mode:
   start_events: start_mode_trubble_unleashed
   stop_events:
+    - stop_mode_trubble_unleashed
     - trubble_unleashed_mode_complete
     - trubble_unleashed_mode_completed_summary
     - ball_ended
   code: trubble_unleashed.TrubbleUnleashed
-  priority: 300
+  priority: 800
 
+variable_player:
+  multiball_trubble_unleashed_multiball_started:
+    multiball_autoplunge_active:
+      action: set
+      int: 1
+
+  multiball_trubble_unleashed_multiball_ended:
+    multiball_autoplunge_active:
+      action: set
+      int: 0
+
+  multiball_trubble_unleashed_add_a_ball_started:
+    multiball_autoplunge_active:
+      action: set
+      int: 1
+
+  multiball_trubble_unleashed_add_a_ball_ended:
+    multiball_autoplunge_active:
+      action: set
+      int: 0
+
+multiballs:
+  trubble_unleashed_multiball:
+    ball_count: 2
+    ball_count_type: total
+    shoot_again: 20s
+    start_events: trubble_unleashed_start_multiball
+    stop_events:
+      - trubble_unleashed_stop_multiball
+
+  trubble_unleashed_add_a_ball:
+    ball_count: 1
+    ball_count_type: add
+    shoot_again: 10s
+    start_events: trubble_unleashed_add_a_ball
+
+widget_player:
+  mode_trubble_unleashed_started:
+    trubble_unleashed:
+      action: play
+
+  trubble_unleashed_mode_complete:
+    trubble_unleashed:
+      action: remove
+
+  mode_trubble_unleashed_stopping:
+    trubble_unleashed:
+      action: remove
 
 event_player:
-  s_web_target_left_active: trubble_unleashed_left_web_hit
-  s_web_target_mid_active: trubble_unleashed_center_web_hit
-
-  # Either spinner reveals the current answer. The upper spinner may also be
-  # one of the three hidden choices, so Python handles that special case.
-  s_web_spinner_active: trubble_unleashed_spinner_reveal
-  s_trispinner_opto_active: trubble_unleashed_spinner_switch
-
-  s_upper_target_left_active: trubble_unleashed_upper_target_left_hit
-  s_upper_target_center_active: trubble_unleashed_upper_target_center_hit
-  s_upper_target_right_active: trubble_unleashed_upper_target_right_hit
-
-  s_left_drops_1_active: trubble_unleashed_left_drops_hit
-  s_left_drops_2_active: trubble_unleashed_left_drops_hit
-  s_left_drops_3_active: trubble_unleashed_left_drops_hit
-
-  s_right_drops_1_active: trubble_unleashed_right_drops_hit
-  s_right_drops_2_active: trubble_unleashed_right_drops_hit
-  s_right_drops_3_active: trubble_unleashed_right_drops_hit
-  s_right_drops_4_active: trubble_unleashed_right_drops_hit
-  s_right_drops_5_active: trubble_unleashed_right_drops_hit
-
-  s_pop_left_active: trubble_unleashed_pops_hit
-  s_pop_right_active: trubble_unleashed_pops_hit
-
-  # Daily Bugle VUK is disabled during the wizard, so the wizard
-  # must always eject the ball itself.
-  s_vuk_switch_active:
-    - up_kick|1.5s
-
-  # Saucers are not Miss Trubble choices, but they must still kick out.
-  s_saucer_1_active: clear_saucers
-  s_saucer_2_active: clear_saucers
-  s_saucer_3_active: clear_saucers
-
-  drop_target_bank_dt_bank_left_down:
-    - drop_target_bank_dt_bank_left_reset
-  drop_target_bank_dt_bank_right_down:
-    - drop_target_bank_dt_bank_right_reset
-
-  trubble_unleashed_startup_complete:
-    - disable_daily_bugle_mystery
-    - clear_saucers
-    - drop_target_bank_dt_bank_left_reset
-    - drop_target_bank_dt_bank_right_reset
+  mode_trubble_unleashed_started:
+    - trubble_unleashed_setup
+    - play_song_14
 
   mode_trubble_unleashed_stopping:
     - enable_daily_bugle_mystery
     - daily_bugle_restore_state
-    - trubble_unleashed_all_lights_off
     - clear_saucers
+    - reset_drops
+    - trubble_unleashed_close_gate
+    - trubble_unleashed_clear_all_lights
 
+  trubble_unleashed_setup:
+    - disable_daily_bugle_mystery
+    - clear_saucers
+    - reset_drops
+    - trubble_unleashed_close_gate
+    - trubble_unleashed_clear_all_lights
+
+  multiball_trubble_unleashed_multiball_ended:
+    - trubble_unleashed_multiball_ended
+
+  s_upper_target_left_active:
+    - trubble_unleashed_upper_target_left_hit
+  s_upper_target_center_active:
+    - trubble_unleashed_upper_target_center_hit
+  s_upper_target_right_active:
+    - trubble_unleashed_upper_target_right_hit
+
+  s_upper_exit_left_opto_active:
+    - trubble_unleashed_upper_exit_left
+  s_upper_exit_right_opto_active:
+    - trubble_unleashed_upper_exit_right
+
+  s_left_drops_1_active:
+    - trubble_unleashed_left_drop_hit
+  s_left_drops_2_active:
+    - trubble_unleashed_left_drop_hit
+  s_left_drops_3_active:
+    - trubble_unleashed_left_drop_hit
+
+  s_right_drops_1_active:
+    - trubble_unleashed_right_drop_1_hit
+  s_right_drops_2_active:
+    - trubble_unleashed_right_drop_2_hit
+  s_right_drops_3_active:
+    - trubble_unleashed_right_drop_3_hit
+  s_right_drops_4_active:
+    - trubble_unleashed_right_drop_4_hit
+  s_right_drops_5_active:
+    - trubble_unleashed_right_drop_5_hit
+
+  s_saucer_1_active:
+    - trubble_unleashed_saucer_1_hit
+  s_saucer_2_active:
+    - trubble_unleashed_saucer_2_hit
+  s_saucer_3_active:
+    - trubble_unleashed_saucer_3_hit
+
+  # Daily Bugle is disabled during the wizard, so Trubble owns VUK eject/add-a-ball.
+  s_vuk_switch_active:
+    - trubble_unleashed_vuk_hit
+
+  # Flipper-cancel the post hold. The timed staged shot starts only after the post drops.
+  s_left_flipper_active{device.switches.s_right_flipper.state == 1}:
+    - trubble_unleashed_post_hold_cancel
+  s_right_flipper_active{device.switches.s_left_flipper.state == 1}:
+    - trubble_unleashed_post_hold_cancel
+
+  drop_target_bank_dt_bank_left_down:
+    - trubble_unleashed_left_bank_complete
+  drop_target_bank_dt_bank_right_down:
+    - trubble_unleashed_right_bank_complete
+
+  trubble_unleashed_open_gate: rooftop_diverter_open
+  trubble_unleashed_close_gate: rooftop_diverter_close
+
+coil_player:
+  trubble_unleashed_drop_right_target_1:
+    c_right_bank_drop_1:
+      action: pulse
+  trubble_unleashed_drop_right_target_2:
+    c_right_bank_drop_2:
+      action: pulse
+  trubble_unleashed_drop_right_target_3:
+    c_right_bank_drop_3:
+      action: pulse
+  trubble_unleashed_drop_right_target_4:
+    c_right_bank_drop_4:
+      action: pulse
+  trubble_unleashed_drop_right_target_5:
+    c_right_bank_drop_5:
+      action: pulse
+
+show_player:
+  trubble_unleashed_saucer_1_lit:
+    trubble_unleashed_saucer_1_lit_show:
+      loops: -1
+  trubble_unleashed_saucer_2_lit:
+    trubble_unleashed_saucer_2_lit_show:
+      loops: -1
+  trubble_unleashed_saucer_3_lit:
+    trubble_unleashed_saucer_3_lit_show:
+      loops: -1
+
+  trubble_unleashed_clear_saucer_lights:
+    trubble_unleashed_saucer_1_lit_show:
+      action: stop
+    trubble_unleashed_saucer_2_lit_show:
+      action: stop
+    trubble_unleashed_saucer_3_lit_show:
+      action: stop
+
+  trubble_unleashed_right_drop_1_staged:
+    trubble_unleashed_right_drop_1_staged_show:
+      loops: -1
+  trubble_unleashed_right_drop_2_staged:
+    trubble_unleashed_right_drop_2_staged_show:
+      loops: -1
+  trubble_unleashed_right_drop_3_staged:
+    trubble_unleashed_right_drop_3_staged_show:
+      loops: -1
+  trubble_unleashed_right_drop_4_staged:
+    trubble_unleashed_right_drop_4_staged_show:
+      loops: -1
+  trubble_unleashed_right_drop_5_staged:
+    trubble_unleashed_right_drop_5_staged_show:
+      loops: -1
+
+  trubble_unleashed_clear_staged_lights:
+    trubble_unleashed_right_drop_1_staged_show:
+      action: stop
+    trubble_unleashed_right_drop_2_staged_show:
+      action: stop
+    trubble_unleashed_right_drop_3_staged_show:
+      action: stop
+    trubble_unleashed_right_drop_4_staged_show:
+      action: stop
+    trubble_unleashed_right_drop_5_staged_show:
+      action: stop
+
+  trubble_unleashed_add_a_ball_lit:
+    trubble_unleashed_vuk_add_a_ball_show:
+      loops: -1
+  trubble_unleashed_add_a_ball_unlit:
+    trubble_unleashed_vuk_add_a_ball_show:
+      action: stop
+
+  trubble_unleashed_staged_drop_collected:
+    trubble_unleashed_staged_success_show:
+      loops: 2
+  trubble_unleashed_saucer_jackpot_collected:
+    trubble_unleashed_saucer_jackpot_show:
+      loops: 2
+  trubble_unleashed_left_bank_complete_show:
+    trubble_unleashed_left_bank_complete_flash:
+      loops: 2
+
+  trubble_unleashed_clear_all_lights:
+    trubble_unleashed_saucer_1_lit_show:
+      action: stop
+    trubble_unleashed_saucer_2_lit_show:
+      action: stop
+    trubble_unleashed_saucer_3_lit_show:
+      action: stop
+    trubble_unleashed_right_drop_1_staged_show:
+      action: stop
+    trubble_unleashed_right_drop_2_staged_show:
+      action: stop
+    trubble_unleashed_right_drop_3_staged_show:
+      action: stop
+    trubble_unleashed_right_drop_4_staged_show:
+      action: stop
+    trubble_unleashed_right_drop_5_staged_show:
+      action: stop
+    trubble_unleashed_vuk_add_a_ball_show:
+      action: stop
+
+shows:
+  trubble_unleashed_saucer_1_lit_show:
+    - duration: 200ms
+      lights:
+        l_1: purple
+        l_1_hole_l: purple
+        l_1_hole_r: purple
+    - duration: 200ms
+      lights:
+        l_1: off
+        l_1_hole_l: off
+        l_1_hole_r: off
+
+  trubble_unleashed_saucer_2_lit_show:
+    - duration: 200ms
+      lights:
+        l_2: purple
+        l_2_hole_l: purple
+        l_2_hole_r: purple
+    - duration: 200ms
+      lights:
+        l_2: off
+        l_2_hole_l: off
+        l_2_hole_r: off
+
+  trubble_unleashed_saucer_3_lit_show:
+    - duration: 200ms
+      lights:
+        l_3: purple
+        l_3_hole_l: purple
+        l_3_hole_r: purple
+    - duration: 200ms
+      lights:
+        l_3: off
+        l_3_hole_l: off
+        l_3_hole_r: off
+
+  trubble_unleashed_right_drop_1_staged_show:
+    - duration: 150ms
+      lights:
+        l_5bank_1: green
+    - duration: 150ms
+      lights:
+        l_5bank_1: off
+  trubble_unleashed_right_drop_2_staged_show:
+    - duration: 150ms
+      lights:
+        l_5bank_2: green
+    - duration: 150ms
+      lights:
+        l_5bank_2: off
+  trubble_unleashed_right_drop_3_staged_show:
+    - duration: 150ms
+      lights:
+        l_5bank_3: green
+    - duration: 150ms
+      lights:
+        l_5bank_3: off
+  trubble_unleashed_right_drop_4_staged_show:
+    - duration: 150ms
+      lights:
+        l_5bank_4: green
+    - duration: 150ms
+      lights:
+        l_5bank_4: off
+  trubble_unleashed_right_drop_5_staged_show:
+    - duration: 150ms
+      lights:
+        l_5bank_5: green
+    - duration: 150ms
+      lights:
+        l_5bank_5: off
+
+  trubble_unleashed_vuk_add_a_ball_show:
+    - duration: 200ms
+      lights:
+        l_gi_a: cyan
+        l_gi_ramp: cyan
+    - duration: 200ms
+      lights:
+        l_gi_a: off
+        l_gi_ramp: off
+
+  trubble_unleashed_staged_success_show:
+    - duration: 100ms
+      lights:
+        l_gi_5bank_lower: blue
+        l_gi_5bank_upper: blue
+    - duration: 100ms
+      lights:
+        l_gi_5bank_lower: off
+        l_gi_5bank_upper: off
+
+  trubble_unleashed_saucer_jackpot_show:
+    - duration: 100ms
+      lights:
+        l_1: white
+        l_1_hole_l: white
+        l_1_hole_r: white
+        l_2: white
+        l_2_hole_l: white
+        l_2_hole_r: white
+        l_3: white
+        l_3_hole_l: white
+        l_3_hole_r: white
+    - duration: 100ms
+      lights:
+        l_1: off
+        l_1_hole_l: off
+        l_1_hole_r: off
+        l_2: off
+        l_2_hole_l: off
+        l_2_hole_r: off
+        l_3: off
+        l_3_hole_l: off
+        l_3_hole_r: off
+
+  trubble_unleashed_left_bank_complete_flash:
+    - duration: 100ms
+      lights:
+        l_gi_3bank: white
+    - duration: 100ms
+      lights:
+        l_gi_3bank: off
 
 light_player:
-  trubble_unleashed_all_lights_off:
-    l_left_web_target: off
+  trubble_unleashed_clear_all_lights:
     l_gi_a: off
+    l_gi_ramp: off
+    l_gi_3bank: off
+    l_gi_5bank_lower: off
+    l_gi_5bank_upper: off
+    l_1: off
+    l_1_hole_l: off
+    l_1_hole_r: off
+    l_2: off
+    l_2_hole_l: off
+    l_2_hole_r: off
+    l_3: off
+    l_3_hole_l: off
+    l_3_hole_r: off
     l_upper_left: off
     l_upper_middle: off
     l_upper_right: off
-    l_3bankbonus: off
     l_5bank_1: off
     l_5bank_2: off
     l_5bank_3: off
     l_5bank_4: off
     l_5bank_5: off
-    l_pop_1_1: off
-    l_pop_1_2: off
-    l_pop_1_3: off
-    l_pop_1_4: off
-    l_pop_1_5: off
-    l_pop_1_6: off
-    l_pop_1_7: off
-    l_pop_1_8: off
-    l_pop_1_9: off
-    l_pop_1_10: off
-    l_pop_1_11: off
-    l_pop_1_12: off
-    l_pop_2_1: off
-    l_pop_2_2: off
-    l_pop_2_3: off
-    l_pop_2_4: off
-    l_pop_2_5: off
-    l_pop_2_6: off
-    l_pop_2_7: off
-    l_pop_2_8: off
-    l_pop_2_9: off
-    l_pop_2_10: off
-    l_pop_2_11: off
-    l_pop_2_12: off
 
-  # Hidden state: all current choices look the same.
-  trubble_unleashed_hidden_left_web:
-    l_left_web_target: white
-  trubble_unleashed_hidden_center_web:
-    l_mid_web_target: white
-  trubble_unleashed_hidden_upper_spinner:
-    l_gi_a: white
-  trubble_unleashed_hidden_upper_target_left:
-    l_upper_left: white
-  trubble_unleashed_hidden_upper_target_center:
-    l_upper_middle: white
-  trubble_unleashed_hidden_upper_target_right:
-    l_upper_right: white
-  trubble_unleashed_hidden_left_drops:
-    l_3bankbonus: white
-  trubble_unleashed_hidden_right_drops:
-    l_5bank_1: white
-    l_5bank_2: white
-    l_5bank_3: white
-    l_5bank_4: white
-    l_5bank_5: white
-  trubble_unleashed_hidden_pops:
-    l_pop_1_1: white
-    l_pop_1_2: white
-    l_pop_1_3: white
-    l_pop_1_4: white
-    l_pop_1_5: white
-    l_pop_1_6: white
-    l_pop_1_7: white
-    l_pop_1_8: white
-    l_pop_1_9: white
-    l_pop_1_10: white
-    l_pop_1_11: white
-    l_pop_1_12: white
-    l_pop_2_1: white
-    l_pop_2_2: white
-    l_pop_2_3: white
-    l_pop_2_4: white
-    l_pop_2_5: white
-    l_pop_2_6: white
-    l_pop_2_7: white
-    l_pop_2_8: white
-    l_pop_2_9: white
-    l_pop_2_10: white
-    l_pop_2_11: white
-    l_pop_2_12: white
+  trubble_unleashed_setup:
+    l_gi_3bank: blue
 
-  # Correct reveal: bright green.
-  trubble_unleashed_reveal_good_left_web:
-    l_left_web_target: green
-  trubble_unleashed_reveal_good_center_web:
-    l_mid_web_target: green
-  trubble_unleashed_reveal_good_upper_spinner:
-    l_gi_a: green
-  trubble_unleashed_reveal_good_upper_target_left:
-    l_upper_left: green
-  trubble_unleashed_reveal_good_upper_target_center:
-    l_upper_middle: green
-  trubble_unleashed_reveal_good_upper_target_right:
-    l_upper_right: green
-  trubble_unleashed_reveal_good_left_drops:
-    l_3bankbonus: green
-  trubble_unleashed_reveal_good_right_drops:
-    l_5bank_1: green
-    l_5bank_2: green
-    l_5bank_3: green
-    l_5bank_4: green
-    l_5bank_5: green
-  trubble_unleashed_reveal_good_pops:
-    l_pop_1_1: green
-    l_pop_1_2: green
-    l_pop_1_3: green
-    l_pop_1_4: green
-    l_pop_1_5: green
-    l_pop_1_6: green
-    l_pop_1_7: green
-    l_pop_1_8: green
-    l_pop_1_9: green
-    l_pop_1_10: green
-    l_pop_1_11: green
-    l_pop_1_12: green
-    l_pop_2_1: green
-    l_pop_2_2: green
-    l_pop_2_3: green
-    l_pop_2_4: green
-    l_pop_2_5: green
-    l_pop_2_6: green
-    l_pop_2_7: green
-    l_pop_2_8: green
-    l_pop_2_9: green
-    l_pop_2_10: green
-    l_pop_2_11: green
-    l_pop_2_12: green
-
-  # Wrong reveal: dim red.
-  trubble_unleashed_reveal_bad_left_web:
-    l_left_web_target: 800000
-  trubble_unleashed_reveal_bad_center_web:
-    l_mid_web_target: 800000
-  trubble_unleashed_reveal_bad_upper_spinner:
-    l_gi_a: 800000
-  trubble_unleashed_reveal_bad_upper_target_left:
-    l_upper_left: 800000
-  trubble_unleashed_reveal_bad_upper_target_center:
-    l_upper_middle: 800000
-  trubble_unleashed_reveal_bad_upper_target_right:
-    l_upper_right: 800000
-  trubble_unleashed_reveal_bad_left_drops:
-    l_3bankbonus: 800040
-  trubble_unleashed_reveal_bad_right_drops:
-    l_5bank_1: 800040
-    l_5bank_2: 800040
-    l_5bank_3: 800040
-    l_5bank_4: 800040
-    l_5bank_5: 800040
-  trubble_unleashed_reveal_bad_pops:
-    l_pop_1_1: 800000
-    l_pop_1_2: 800000
-    l_pop_1_3: 800000
-    l_pop_1_4: 800000
-    l_pop_1_5: 800000
-    l_pop_1_6: 800000
-    l_pop_1_7: 800000
-    l_pop_1_8: 800000
-    l_pop_1_9: 800000
-    l_pop_1_10: 800000
-    l_pop_1_11: 800000
-    l_pop_1_12: 800000
-    l_pop_2_1: 800000
-    l_pop_2_2: 800000
-    l_pop_2_3: 800000
-    l_pop_2_4: 800000
-    l_pop_2_5: 800000
-    l_pop_2_6: 800000
-    l_pop_2_7: 800000
-    l_pop_2_8: 800000
-    l_pop_2_9: 800000
-    l_pop_2_10: 800000
-    l_pop_2_11: 800000
-    l_pop_2_12: 800000
-
-  # Brief hit confirmation. Python immediately starts the next round after this.
-  trubble_unleashed_correct_shot:
-    l_gi_bright: green
-  trubble_unleashed_incorrect_shot:
-    l_gi_bright: red
+  trubble_unleashed_upper_target_left_hit:
+    l_upper_left: purple
+  trubble_unleashed_upper_target_center_hit:
+    l_upper_middle: purple
+  trubble_unleashed_upper_target_right_hit:
+    l_upper_right: purple

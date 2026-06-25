@@ -492,6 +492,9 @@ player_vars:
   hold_bonus:
     initial_value: 0
     value_type: int
+  held_bonus:
+    initial_value: 0
+    value_type: int
   vulture_bonus:
     initial_value: 0
     value_type: int
@@ -500,6 +503,9 @@ player_vars:
     value_type: int
   vulcan_bonus:
     initial_value: 0
+    value_type: int
+  vulcan_upper_target_bonus_value:
+    initial_value: 75000
     value_type: int
   diamond_bonus:
     initial_value: 0
@@ -771,10 +777,45 @@ player_vars:
     initial_value: 0
   master_plan_super_collected:
     initial_value: 0
-  trubble_unleashed_correct_shots:
+  fakir_correct_shots:
     initial_value: 0
-  trubble_unleashed_incorrect_shots:
+    value_type: int
+  fakir_incorrect_shots:
     initial_value: 0
+    value_type: int
+  trubble_unleashed_saucer_jackpot:
+    initial_value: 0
+    value_type: int
+  trubble_unleashed_saucer_jackpots:
+    initial_value: 0
+    value_type: int
+  trubble_unleashed_staged_successes:
+    initial_value: 0
+    value_type: int
+  trubble_unleashed_staged_seconds:
+    initial_value: 0
+    value_type: int
+  trubble_unleashed_staged_targets:
+    initial_value: 0
+    value_type: int
+  trubble_unleashed_add_a_ball_qualified:
+    initial_value: 0
+    value_type: int
+  trubble_unleashed_add_a_balls:
+    initial_value: 0
+    value_type: int
+  trubble_unleashed_lit_saucers:
+    initial_value: 0
+    value_type: int
+  fakir_round:
+    initial_value: 0
+    value_type: int
+  fakir_total_rounds:
+    initial_value: 0
+    value_type: int
+  fakir_next_jackpot:
+    initial_value: 0
+    value_type: int
   noah_boddy_upper_target_hits:
     initial_value: 0
   noah_boddy_best_jackpot:

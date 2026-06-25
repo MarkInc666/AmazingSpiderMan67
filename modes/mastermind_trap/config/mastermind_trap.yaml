@@ -1,8 +1,8 @@
 #config_version=6
 
-# Mastermind Trap placeholder mini-wizard.
-# Masterminds mini-wizard multiball.
-# Temporary flow: intro -> 2-ball multiball -> MB end -> summary -> next chapter.
+# Mastermind Trap mini-wizard.
+# Chapter 2 wizard: Goblin, Doc Ock, Mysterio, Scorpion, and Parafino traps.
+# Uses chapter case-file bonus only. Active case-file powers are not used.
 
 mode:
   start_events: start_mode_mastermind_trap
@@ -16,7 +16,7 @@ multiballs:
   mastermind_trap_multiball:
     ball_count: 2
     ball_count_type: total
-    shoot_again: 15s
+    shoot_again: 18s
     start_events: mastermind_trap_start_multiball
     stop_events:
       - stop_mode_mastermind_trap
@@ -37,61 +37,305 @@ widget_player:
     mastermind_trap:
       action: play
 
+
   mastermind_trap_mode_complete:
     mastermind_trap:
+      action: remove
+    mode_status:
       action: remove
 
   mode_mastermind_trap_stopping:
     mastermind_trap:
+      action: remove
+    mode_status:
+      action: remove
+    mode_message:
       action: remove
 
   stop_mode_mastermind_trap:
     mastermind_trap:
       action: remove
+    mode_status:
+      action: remove
+    mode_message:
+      action: remove
 
 event_player:
-  s_pop_left_active: mastermind_trap_shot_hit
-  s_pop_right_active: mastermind_trap_shot_hit
-  s_trispinner_opto_active: mastermind_trap_shot_hit
-  s_web_spinner_active: mastermind_trap_shot_hit
-  s_star_rollover_active: mastermind_trap_shot_hit
-  s_upper_target_left_active: mastermind_trap_shot_hit
-  s_upper_target_center_active: mastermind_trap_shot_hit
-  s_upper_target_right_active: mastermind_trap_shot_hit
-  s_left_drops_1_active: mastermind_trap_shot_hit
-  s_left_drops_2_active: mastermind_trap_shot_hit
-  s_left_drops_3_active: mastermind_trap_shot_hit
-  s_right_drops_1_active: mastermind_trap_shot_hit
-  s_right_drops_2_active: mastermind_trap_shot_hit
-  s_right_drops_3_active: mastermind_trap_shot_hit
-  s_right_drops_4_active: mastermind_trap_shot_hit
-  s_right_drops_5_active: mastermind_trap_shot_hit
-  s_saucer_1_active:
-    mastermind_trap_shot_hit:
-    delayed_kickout_saucer_1:
-  s_saucer_2_active:
-    mastermind_trap_shot_hit:
-    delayed_kickout_saucer_2:
-  s_saucer_3_active:
-    mastermind_trap_shot_hit:
-    delayed_kickout_saucer_3:
-  s_vuk_switch_active:
-    - mastermind_trap_shot_hit
-    - up_kick|1.5s
-
-  multiball_mastermind_trap_multiball_ended: mastermind_trap_complete_request
-
   mode_mastermind_trap_started:
     - disable_daily_bugle_mystery
     - clear_saucers_delayed
     - drop_target_bank_dt_bank_left_reset
     - drop_target_bank_dt_bank_right_reset
+    - rooftop_diverter_open
+    - play_song_18
 
   mode_mastermind_trap_stopping:
     - enable_daily_bugle_mystery
     - daily_bugle_restore_state
     - clear_saucers_delayed
+    - rooftop_diverter_close
+    - mastermind_trap_clear_lights
+
+  s_saucer_1_active:
+    delayed_kickout_saucer_1:
+  s_saucer_2_active:
+    delayed_kickout_saucer_2:
+  s_saucer_3_active:
+    delayed_kickout_saucer_3:
+  s_vuk_switch_active:
+    up_kick|1.5s:
+
+  multiball_mastermind_trap_multiball_ended: mastermind_trap_multiball_ended
+  mastermind_trap_mode_complete: stop_mode_mastermind_trap
 
   # Keep mini-wizard drop banks playable after they are completed.
   drop_target_bank_dt_bank_left_down: drop_target_bank_dt_bank_left_reset
   drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset
+
+show_player:
+  mastermind_trap_setup_lights:
+    mastermind_trap_right_bank_show:
+      action: play
+      loops: -1
+      speed: 2
+    mastermind_trap_upper_targets_show:
+      action: play
+      loops: -1
+      speed: 2
+    mastermind_trap_saucers_show:
+      action: play
+      loops: -1
+      speed: 2
+    mastermind_trap_spinner_star_show:
+      action: play
+      loops: -1
+      speed: 2
+    mastermind_trap_pops_show:
+      action: play
+      loops: -1
+      speed: 2
+
+  mastermind_trap_jackpot_lit:
+    mastermind_trap_vuk_jackpot_show:
+      action: play
+      loops: -1
+      speed: 4
+
+  mastermind_trap_jackpot_collected:
+    mastermind_trap_vuk_jackpot_show:
+      action: stop
+    mastermind_trap_collect_flash_show:
+      action: play
+      loops: 1
+
+  mastermind_trap_super_jackpot_lit:
+    mastermind_trap_vuk_super_show:
+      action: play
+      loops: -1
+      speed: 6
+
+  mastermind_trap_super_jackpot_collected:
+    mastermind_trap_vuk_super_show:
+      action: stop
+    mastermind_trap_collect_flash_show:
+      action: play
+      loops: 1
+
+  mastermind_trap_goblin_trap_complete:
+    mastermind_trap_right_bank_show:
+      action: stop
+  mastermind_trap_doc_ock_trap_complete:
+    mastermind_trap_upper_targets_show:
+      action: stop
+  mastermind_trap_mysterio_trap_complete:
+    mastermind_trap_saucers_show:
+      action: stop
+  mastermind_trap_scorpion_trap_complete:
+    mastermind_trap_spinner_star_show:
+      action: stop
+  mastermind_trap_parafino_trap_complete:
+    mastermind_trap_pops_show:
+      action: stop
+
+  mastermind_trap_clear_lights:
+    mastermind_trap_all_traps_show:
+      action: stop
+    mastermind_trap_right_bank_show:
+      action: stop
+    mastermind_trap_upper_targets_show:
+      action: stop
+    mastermind_trap_saucers_show:
+      action: stop
+    mastermind_trap_spinner_star_show:
+      action: stop
+    mastermind_trap_pops_show:
+      action: stop
+    mastermind_trap_vuk_jackpot_show:
+      action: stop
+    mastermind_trap_vuk_super_show:
+      action: stop
+
+shows:
+  mastermind_trap_all_traps_show:
+    - duration: 500ms
+      lights:
+        l_5bank_1: green
+        l_5bank_2: green
+        l_5bank_3: green
+        l_5bank_4: white
+        l_5bank_5: green
+        l_upper_left: white
+        l_upper_middle: white
+        l_upper_right: white
+        l_1: green
+        l_2: green
+        l_3: green
+        l_spinner: white
+        l_star: red
+        l_pop_1_1: white
+        l_pop_1_6: white
+        l_pop_2_1: white
+        l_pop_2_6: white
+    - duration: 500ms
+      lights:
+        l_5bank_1: off
+        l_5bank_2: off
+        l_5bank_3: off
+        l_5bank_4: off
+        l_5bank_5: off
+        l_upper_left: off
+        l_upper_middle: off
+        l_upper_right: off
+        l_1: off
+        l_2: off
+        l_3: off
+        l_spinner: off
+        l_star: off
+        l_pop_1_1: off
+        l_pop_1_6: off
+        l_pop_2_1: off
+        l_pop_2_6: off
+
+  mastermind_trap_right_bank_show:
+    - duration: 400ms
+      lights:
+        l_5bank_1: green
+        l_5bank_2: green
+        l_5bank_3: green
+        l_5bank_4: white
+        l_5bank_5: green
+    - duration: 400ms
+      lights:
+        l_5bank_1: off
+        l_5bank_2: off
+        l_5bank_3: off
+        l_5bank_4: off
+        l_5bank_5: off
+
+  mastermind_trap_upper_targets_show:
+    - duration: 400ms
+      lights:
+        l_upper_left: white
+        l_upper_middle: white
+        l_upper_right: white
+    - duration: 400ms
+      lights:
+        l_upper_left: off
+        l_upper_middle: off
+        l_upper_right: off
+
+  mastermind_trap_saucers_show:
+    - duration: 400ms
+      lights:
+        l_1: green
+        l_2: green
+        l_3: green
+        l_1_hole_l: red
+        l_2_hole_l: red
+        l_3_hole_l: red
+    - duration: 400ms
+      lights:
+        l_1: off
+        l_2: off
+        l_3: off
+        l_1_hole_l: off
+        l_2_hole_l: off
+        l_3_hole_l: off
+
+  mastermind_trap_spinner_star_show:
+    - duration: 400ms
+      lights:
+        l_spinner: white
+        l_star: red
+    - duration: 400ms
+      lights:
+        l_spinner: off
+        l_star: off
+
+  mastermind_trap_pops_show:
+    - duration: 400ms
+      lights:
+        l_pop_1_1: white
+        l_pop_1_6: white
+        l_pop_1_12: white
+        l_pop_2_1: white
+        l_pop_2_6: white
+        l_pop_2_12: white
+    - duration: 400ms
+      lights:
+        l_pop_1_1: off
+        l_pop_1_6: off
+        l_pop_1_12: off
+        l_pop_2_1: off
+        l_pop_2_6: off
+        l_pop_2_12: off
+
+  mastermind_trap_vuk_jackpot_show:
+    - duration: 250ms
+      lights:
+        l_gi_ramp: white
+        l_gi_top_1: white
+        l_gi_top_2: white
+        l_gi_top_3: white
+        l_gi_top_4: white
+    - duration: 250ms
+      lights:
+        l_gi_ramp: off
+        l_gi_top_1: off
+        l_gi_top_2: off
+        l_gi_top_3: off
+        l_gi_top_4: off
+
+  mastermind_trap_vuk_super_show:
+    - duration: 150ms
+      lights:
+        l_gi_ramp: white
+        l_gi_top_1: white
+        l_gi_top_2: white
+        l_gi_top_3: white
+        l_gi_top_4: white
+        l_special: yellow
+    - duration: 150ms
+      lights:
+        l_gi_ramp: off
+        l_gi_top_1: off
+        l_gi_top_2: off
+        l_gi_top_3: off
+        l_gi_top_4: off
+        l_special: off
+
+  mastermind_trap_collect_flash_show:
+    - duration: 100ms
+      lights:
+        l_gi_ramp: white
+        l_gi_top_1: white
+        l_gi_top_2: white
+        l_gi_top_3: white
+        l_gi_top_4: white
+    - duration: 100ms
+      lights:
+        l_gi_ramp: off
+        l_gi_top_1: off
+        l_gi_top_2: off
+        l_gi_top_3: off
+        l_gi_top_4: off

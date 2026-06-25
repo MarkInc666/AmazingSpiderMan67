@@ -34,6 +34,10 @@ class Vulcan(CaseFileMixin, Mode):
     SPINNER_BUILD = 20_000
     BIGGER_SPINNER_BUILD = 30_000
     UPPER_TARGET_SCORE = 25_000
+    SPINNER_BONUS_BANK = 2_000
+    VULCAN_JACKPOT_BONUS_BANK = 50_000
+    UPPER_TARGET_BONUS_START = 75_000
+    UPPER_TARGET_BONUS_STEP = 25_000
     UPPER_LEFT_EXIT_BUILD = 50_000
     ERUPTION_BONUS = 250_000
     COOLING_SECONDS = 16
@@ -67,6 +71,7 @@ class Vulcan(CaseFileMixin, Mode):
         self.add_a_balls_awarded = 0
         self.eruption_bonuses = 0
         self.shot_assist_used = False
+        self.upper_target_bonus_value = self.UPPER_TARGET_BONUS_START
 
         self._sync_vars()
         self.publish_case_file_bonus_events(self.MODE_KEY)
@@ -121,6 +126,7 @@ class Vulcan(CaseFileMixin, Mode):
 
         self.spinner_hits += 1
         self._score(self.SPINNER_SCORE)
+        self._bank_vulcan_bonus(self.SPINNER_BONUS_BANK)
         self.jackpot_value += self.spinner_build_value
         self.machine.events.post("vulcan_jackpot_built", value=self.jackpot_value)
 
@@ -152,6 +158,7 @@ class Vulcan(CaseFileMixin, Mode):
         self.right_drops_down.add(number)
         self.jackpots_collected += 1
         self._score(self.jackpot_value)
+        self._bank_vulcan_bonus(self.VULCAN_JACKPOT_BONUS_BANK)
         self.machine.events.post("vulcan_right_drop_collected", number=number, value=self.jackpot_value)
         self.machine.events.post(f"vulcan_right_drop_{number}_collected")
         self._show_mode_jackpot("VULCAN JACKPOT", self.jackpot_value, f"DROP {number}")
@@ -186,6 +193,9 @@ class Vulcan(CaseFileMixin, Mode):
 
     def _complete_upper_targets(self):
         self.machine.events.post("vulcan_upper_targets_completed")
+        self._bank_vulcan_bonus(self.upper_target_bonus_value)
+        self.machine.events.post("vulcan_upper_target_bonus_banked", value=self.upper_target_bonus_value)
+        self.upper_target_bonus_value += self.UPPER_TARGET_BONUS_STEP
 
         if self._balls_in_play() < self.MAX_BALLS:
             self.add_a_balls_awarded += 1
@@ -228,6 +238,7 @@ class Vulcan(CaseFileMixin, Mode):
         self.bonus_jackpot_collected = True
         self.bonus_jackpot_lit = False
         self._score(self.jackpot_value)
+        self._bank_vulcan_bonus(self.VULCAN_JACKPOT_BONUS_BANK)
         self.machine.events.post("vulcan_bonus_jackpot_collected", value=self.jackpot_value)
         self._show_mode_jackpot("RUBBER BONUS JACKPOT", self.jackpot_value)
         self._sync_vars()
@@ -322,6 +333,9 @@ class Vulcan(CaseFileMixin, Mode):
                 return number
         return None
 
+    def _bank_vulcan_bonus(self, value):
+        self._add("vulcan_bonus", value)
+
     def _score(self, points):
         self._add("score", points)
         self.mode_points += points
@@ -346,6 +360,7 @@ class Vulcan(CaseFileMixin, Mode):
         self._set("vulcan_cooling_active", int(self.cooling_active))
         self._set("vulcan_cooling_seconds", self.cooling_seconds_left)
         self._set("vulcan_balls_in_play", self._balls_in_play())
+        self._set("vulcan_upper_target_bonus_value", self.upper_target_bonus_value)
 
     def _show_mode_message(self, title, subtitle="", value="", seconds=""):
         self.machine.events.post(

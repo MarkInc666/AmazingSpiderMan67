@@ -26,6 +26,8 @@ class DiamondSmugglers(Mode, CaseFileMixin):
     WRONG_SAUCER_SCORE = 10_000
     STAR_FREEZE_MS = 10_000
     MORE_TIME_STAR_FREEZE_MS = 15_000
+    DIAMOND_DROP_BONUS_BANK = 25_000
+    DIAMOND_STAR_BONUS_BANK = 100_000
 
     SAUCER_CYCLE_MS_BY_ROUND = (750, 500, 350, 300)
     NORMAL_REQUIRED_JACKPOTS = 3
@@ -114,6 +116,7 @@ class DiamondSmugglers(Mode, CaseFileMixin):
         add_value = self.right_drop_add if bank == "right" else self.left_drop_add
         score_value = 25_000
         self.drop_hits += 1
+        self._bank_diamond_bonus(self.DIAMOND_DROP_BONUS_BANK)
         self.jackpot_value += add_value
         self._score(score_value)
         self._sync_vars()
@@ -266,7 +269,12 @@ class DiamondSmugglers(Mode, CaseFileMixin):
             self.machine.events.post("diamond_smugglers_build_phase_started")
 
     def _star_hit(self, **kwargs):
-        if self.mode_done or not self.saucer_chase_active:
+        if self.mode_done:
+            return
+
+        self._bank_diamond_bonus(self.DIAMOND_STAR_BONUS_BANK)
+
+        if not self.saucer_chase_active:
             return
 
         self.delay.remove("diamond_smugglers_saucer_cycle")
@@ -302,6 +310,10 @@ class DiamondSmugglers(Mode, CaseFileMixin):
         player[f"{self.MODE_KEY}_state"] = 2
         self.machine.events.post("diamond_smugglers_clear_lights")
         self.machine.events.post("diamond_smugglers_mode_complete")
+
+    def _bank_diamond_bonus(self, value):
+        player = self.machine.game.player
+        player["diamond_bonus"] += value
 
     def _score(self, points):
         player = self.machine.game.player
