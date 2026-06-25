@@ -150,9 +150,9 @@ mode_settings:
       reset_player_score_entry: true
       skip_if_zero: true
 
-    - entry: mystic_bonus
-      text: "MYSTIC BONUS"
-      player_score_entry: mystic_bonus
+    - entry: super_swami_bonus
+      text: "SUPER SWAMI"
+      player_score_entry: super_swami_bonus
       score: 1
       reset_player_score_entry: true
       skip_if_zero: true
@@ -171,9 +171,9 @@ mode_settings:
       reset_player_score_entry: true
       skip_if_zero: true
 
-    - entry: plutonian_bonus
-      text: "PLUTONIAN BONUS"
-      player_score_entry: plutonian_bonus
+    - entry: plutonians_bonus
+      text: "THE PLUTONIANS"
+      player_score_entry: plutonians_bonus
       score: 1
       reset_player_score_entry: true
       skip_if_zero: true

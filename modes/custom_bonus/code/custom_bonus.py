@@ -10,10 +10,10 @@ class CustomBonus(Mode):
         "goblin_bonus",
         "vulcan_bonus",
         "diamond_bonus",
-        "mystic_bonus",
+        "super_swami_bonus",
         "dumpty_bonus",
         "radiation_bonus",
-        "plutonian_bonus",
+        "plutonians_bonus",
         "swamp_bonus",
         "technician_bonus",
     ]

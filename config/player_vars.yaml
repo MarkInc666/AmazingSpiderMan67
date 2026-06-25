@@ -504,7 +504,7 @@ player_vars:
   diamond_bonus:
     initial_value: 0
     value_type: int
-  mystic_bonus:
+  super_swami_bonus:
     initial_value: 0
     value_type: int
   dumpty_bonus:
@@ -513,7 +513,7 @@ player_vars:
   radiation_bonus:
     initial_value: 0
     value_type: int
-  plutonian_bonus:
+  plutonians_bonus:
     initial_value: 0
     value_type: int
   swamp_bonus:
