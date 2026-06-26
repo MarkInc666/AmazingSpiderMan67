@@ -39,7 +39,7 @@ class Bonus(MpfBonus):
         ("technician_bonus", "TECHNICIAN TRAP", False),
     ]
 
-    BUCKET_STEP_MS = 100
+    BUCKET_STEP_MS = 250
     PAGE_DELAY_MS = 650
     MODE_STEP_MS = 750
     FINAL_DELAY_MS = 1200
@@ -176,10 +176,13 @@ class Bonus(MpfBonus):
     def _build_mode_entries(self):
         entries = []
         for var_name, text, consume_after_award in self.MODE_BONUS_ENTRIES:
-            if var_name in self._player:
+            try:
                 value = int(self._player[var_name])
-                if value > 0:
-                    entries.append((var_name, text, value, consume_after_award))
+            except (KeyError, TypeError, ValueError):
+                value = 0
+
+            if value > 0:
+                entries.append((var_name, text, value, consume_after_award))
         return entries
 
     def _count_next_mode_entry(self):
@@ -275,7 +278,6 @@ class Bonus(MpfBonus):
             return False
 
     def _finish_bonus(self):
-        if self._bonus_queue:
-            self._bonus_queue.clear()
-            self._bonus_queue = None
+        # Let MPF's mode wait queue be cleared by the mode lifecycle.
+        # Clearing it manually here can double-clear and raise "Not locked".
         self.stop()
