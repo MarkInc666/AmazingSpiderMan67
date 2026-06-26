@@ -3,12 +3,14 @@ from mpf.modes.bonus.code.bonus import Bonus as MpfBonus
 
 
 class Bonus(MpfBonus):
-    """ASM67 custom end-of-ball bonus sequence.
+    """ASM67 clean end-of-ball bonus sequence.
 
-    This keeps MPF's built-in bonus-mode start/tilt behavior, but replaces the
-    normal bonus-entry math with a custom two-page sequence:
-      1. Count lit bonus buckets once per bonus X pass.
-      2. Count held/mode bank bonuses unmultiplied.
+    Presentation rules:
+      * Bonus slide appears first with player score visible.
+      * Regular bonus buckets count from low to high once per multiplier cycle.
+      * Each shown bucket is added to score immediately.
+      * Multiplier lamps 2X-5X go out after their cycle is counted.
+      * Mode/chapter bonuses are shown after a longer pause and scored as shown.
     """
 
     BONUS_BUCKETS_DESC = [
@@ -27,29 +29,38 @@ class Bonus(MpfBonus):
 
     MODE_BONUS_ENTRIES = [
         ("held_bonus", "HELD BONUS", True),
-        ("vulture_bonus", "VULTURE FLIGHT", False),
-        ("goblin_bonus", "GOBLIN CHAOS", False),
-        ("vulcan_bonus", "VULCAN ERUPTION", False),
-        ("diamond_bonus", "DIAMOND SMUGGLERS", False),
-        ("super_swami_bonus", "SUPER SWAMI", False),
-        ("dumpty_bonus", "DUMPTY DEVICES", False),
-        ("radiation_bonus", "RADIATION RAMPAGE", False),
-        ("plutonians_bonus", "THE PLUTONIANS", False),
-        ("swamp_bonus", "SWAMP REPTILES", False),
-        ("technician_bonus", "TECHNICIAN TRAP", False),
+        ("vulture_bonus", "VULTURE FLIGHT", True),
+        ("goblin_bonus", "GOBLIN CHAOS", True),
+        ("vulcan_bonus", "VULCAN ERUPTION", True),
+        ("diamond_bonus", "DIAMOND SMUGGLERS", True),
+        ("super_swami_bonus", "SUPER SWAMI", True),
+        ("dumpty_bonus", "DUMPTY DEVICES", True),
+        ("radiation_bonus", "RADIATION RAMPAGE", True),
+        ("plutonians_bonus", "THE PLUTONIANS", True),
+        ("swamp_bonus", "SWAMP REPTILES", True),
+        ("technician_bonus", "TECHNICIAN TRAP", True),
     ]
 
-    BUCKET_STEP_MS = 250
-    PAGE_DELAY_MS = 650
-    MODE_STEP_MS = 750
-    FINAL_DELAY_MS = 1200
+    MULTIPLIER_LIGHTS = {
+        2: "l_2x",
+        3: "l_3x",
+        4: "l_4x",
+        5: "l_5x",
+    }
+
+    INTRO_DELAY_MS = 700
+    BUCKET_STEP_MS = 160
+    NEXT_CYCLE_DELAY_MS = 260
+    MODE_PAGE_DELAY_MS = 1100
+    MODE_STEP_MS = 850
+    FINAL_DELAY_MS = 1100
 
     def mode_start(self, **kwargs):
         # Do not call MpfBonus.mode_start(); that would run stock bonus math.
         Mode.mode_start(self, **kwargs)
 
-        self._bonus_queue = kwargs.get("queue")
         self._player = self.machine.game.player
+        self._bonus_running = True
 
         self.machine.events.post("bonus_start", ball=self._player["ball"])
 
@@ -69,24 +80,16 @@ class Bonus(MpfBonus):
         self._mode_index = 0
         self._bucket_index = 0
         self._current_pass = 1
-        self._bonus_multiplier = max(1, int(self._player["bonus_multiplier"]))
+        self._bonus_multiplier = max(1, min(5, int(self._player["bonus_multiplier"])))
         self._hold_bonus_earned = bool(self._player["hold_bonus"])
-        self._starting_held_bonus = int(self._player["held_bonus"])
 
-        self._show_bonus_entry("page_regular", "REGULAR BONUS", 0)
+        self._show_bonus_entry("bonus_title", "BONUS", "")
 
-        if self._lit_buckets:
-            self.delay.add(
-                name="asm_bonus_start_regular_pass",
-                ms=self.PAGE_DELAY_MS,
-                callback=self._start_regular_pass,
-            )
-        else:
-            self.delay.add(
-                name="asm_bonus_no_regular_bonus",
-                ms=self.PAGE_DELAY_MS,
-                callback=self._finish_regular_bonus,
-            )
+        self.delay.add(
+            name="asm_bonus_start_regular",
+            ms=self.INTRO_DELAY_MS,
+            callback=self._start_regular_or_mode_bonus,
+        )
 
     def _build_lit_bucket_list(self):
         remaining = min(int(self._player["bonus_count"]), 75)
@@ -100,14 +103,25 @@ class Bonus(MpfBonus):
         # Count visibly from lowest to highest.
         return list(reversed(lit))
 
+    def _start_regular_or_mode_bonus(self):
+        if self._lit_buckets:
+            self._start_regular_pass()
+        else:
+            self._finish_regular_bonus()
+
     def _start_regular_pass(self):
         self._bucket_index = 0
         self._relight_lit_bonus_buckets()
-        self._show_bonus_entry(
-            "bonus_pass",
-            "BONUS X {}".format(self._current_pass),
-            self._regular_total,
-        )
+
+        if self._current_pass > 1:
+            self._show_bonus_entry(
+                "bonus_title",
+                "{}X BONUS".format(self._current_pass),
+                "",
+            )
+        else:
+            self._show_bonus_entry("bonus_title", "BONUS", "")
+
         self.delay.add(
             name="asm_bonus_first_bucket",
             ms=self.BUCKET_STEP_MS,
@@ -116,29 +130,16 @@ class Bonus(MpfBonus):
 
     def _count_next_bonus_bucket(self):
         if self._bucket_index >= len(self._lit_buckets):
-            self._current_pass += 1
-            if self._current_pass <= self._bonus_multiplier:
-                self.delay.add(
-                    name="asm_bonus_next_regular_pass",
-                    ms=self.BUCKET_STEP_MS,
-                    callback=self._start_regular_pass,
-                )
-            else:
-                self.delay.add(
-                    name="asm_bonus_finish_regular",
-                    ms=self.PAGE_DELAY_MS,
-                    callback=self._finish_regular_bonus,
-                )
+            self._finish_regular_pass()
             return
 
         _, bucket_value, bucket_text, light_name = self._lit_buckets[self._bucket_index]
-        self._regular_total += bucket_value
 
-        self._show_bonus_entry(
-            "regular_bucket",
-            "{} BONUS".format(bucket_text),
-            self._regular_total,
-        )
+        self._player["score"] += bucket_value
+        self._regular_total += bucket_value
+        self._final_total += bucket_value
+
+        self._show_bonus_entry("regular_bucket", bucket_text, bucket_value)
         self.machine.events.post(
             "asm_bonus_bucket_counted",
             bucket=bucket_text,
@@ -154,22 +155,47 @@ class Bonus(MpfBonus):
             callback=self._count_next_bonus_bucket,
         )
 
+    def _finish_regular_pass(self):
+        self._turn_off_multiplier_light_for_pass(self._current_pass)
+        self._current_pass += 1
+
+        if self._current_pass <= self._bonus_multiplier:
+            self.delay.add(
+                name="asm_bonus_next_regular_pass",
+                ms=self.NEXT_CYCLE_DELAY_MS,
+                callback=self._start_regular_pass,
+            )
+        else:
+            self.delay.add(
+                name="asm_bonus_finish_regular",
+                ms=self.MODE_PAGE_DELAY_MS,
+                callback=self._finish_regular_bonus,
+            )
+
     def _finish_regular_bonus(self):
-        self._final_total = self._regular_total
-        self._show_bonus_entry("regular_total", "REGULAR BONUS", self._regular_total)
+        self._turn_off_all_bonus_bucket_lights()
         self.delay.add(
             name="asm_bonus_start_mode_page",
-            ms=self.PAGE_DELAY_MS,
+            ms=0,
             callback=self._start_mode_bonus_page,
         )
 
     def _start_mode_bonus_page(self):
         self._mode_entries = self._build_mode_entries()
         self._mode_index = 0
-        self._show_bonus_entry("page_modes", "MODE BONUSES", self._final_total)
+
+        if not self._mode_entries:
+            self.delay.add(
+                name="asm_bonus_finalize_no_modes",
+                ms=self.MODE_PAGE_DELAY_MS,
+                callback=self._handle_hold_bonus,
+            )
+            return
+
+        self._show_bonus_entry("mode_title", "MODE BONUS", "")
         self.delay.add(
             name="asm_bonus_first_mode_entry",
-            ms=self.PAGE_DELAY_MS,
+            ms=self.MODE_PAGE_DELAY_MS,
             callback=self._count_next_mode_entry,
         )
 
@@ -189,15 +215,17 @@ class Bonus(MpfBonus):
         if self._mode_index >= len(self._mode_entries):
             self.delay.add(
                 name="asm_bonus_finalize",
-                ms=self.PAGE_DELAY_MS,
-                callback=self._award_final_bonus,
+                ms=self.MODE_PAGE_DELAY_MS,
+                callback=self._handle_hold_bonus,
             )
             return
 
         var_name, text, value, consume_after_award = self._mode_entries[self._mode_index]
+
+        self._player["score"] += value
         self._final_total += value
 
-        self._show_bonus_entry(var_name, text, self._final_total)
+        self._show_bonus_entry("mode_bonus", text, value)
         self.machine.events.post(
             "asm_bonus_mode_counted",
             bonus_name=text,
@@ -215,17 +243,6 @@ class Bonus(MpfBonus):
             callback=self._count_next_mode_entry,
         )
 
-    def _award_final_bonus(self):
-        self._player["score"] += self._final_total
-        self._show_bonus_entry("final_total", "TOTAL BONUS", self._final_total)
-        self.machine.events.post("asm_bonus_total_awarded", total=self._final_total)
-
-        self.delay.add(
-            name="asm_bonus_hold_check",
-            ms=self.FINAL_DELAY_MS,
-            callback=self._handle_hold_bonus,
-        )
-
     def _handle_hold_bonus(self):
         if self._hold_bonus_earned:
             if self._is_last_ball():
@@ -238,11 +255,12 @@ class Bonus(MpfBonus):
                 self._show_bonus_entry("bonus_held", "BONUS HELD", self._final_total)
                 self.machine.events.post("asm_bonus_held", total=self._final_total)
         else:
-            # Held bonus is a one-shot carryover. Mode banks are not consumed.
             self._player["held_bonus"] = 0
 
         self._player["hold_bonus"] = 0
         self._reset_regular_bonus_state()
+
+        self.machine.events.post("asm_bonus_total_awarded", total=self._final_total)
 
         self.delay.add(
             name="asm_bonus_finish",
@@ -254,6 +272,7 @@ class Bonus(MpfBonus):
         self._player["bonus_count"] = 0
         self._player["bonus_multiplier"] = 1
         self._turn_off_all_bonus_bucket_lights()
+        self._turn_off_all_multiplier_lights()
 
     def _relight_lit_bonus_buckets(self):
         for _, _, _, light_name in self._lit_buckets:
@@ -261,6 +280,15 @@ class Bonus(MpfBonus):
 
     def _turn_off_all_bonus_bucket_lights(self):
         for _, _, _, light_name in self.BONUS_BUCKETS_DESC:
+            self.machine.events.post("bonus_light_{}_off".format(light_name))
+
+    def _turn_off_multiplier_light_for_pass(self, bonus_pass):
+        light_name = self.MULTIPLIER_LIGHTS.get(bonus_pass)
+        if light_name:
+            self.machine.events.post("bonus_light_{}_off".format(light_name))
+
+    def _turn_off_all_multiplier_lights(self):
+        for light_name in self.MULTIPLIER_LIGHTS.values():
             self.machine.events.post("bonus_light_{}_off".format(light_name))
 
     def _show_bonus_entry(self, entry, text, score):
