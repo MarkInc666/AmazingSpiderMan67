@@ -156,22 +156,6 @@ modes:
   - case_files
   - villain_progression
 
-variable_player:
-  ball_starting:
-    tilted_this_ball:
-      action: set
-      int: 0
-
-  tilt:
-    tilted_this_ball:
-      action: set
-      int: 1
-
-  slam_tilt:
-    tilted_this_ball:
-      action: set
-      int: 1
-
 event_player:
   ball_starting:
     - cmd_flippers_enable
