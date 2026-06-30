@@ -307,7 +307,7 @@ shows:
   lower_spinner_flash_show:
     - duration: 100ms
       lights:
-        gi: white
+        gi: 080800
     - duration: 100ms
       lights:
         gi: yellow
@@ -346,35 +346,35 @@ shows:
   vulcan_right_drop_1_lit_show:
     - duration: 250ms
       lights:
-        l_5bank_1: orange
+        l_5bank_1: 00FFA0
     - duration: 250ms
       lights:
         l_5bank_1: off
   vulcan_right_drop_2_lit_show:
     - duration: 250ms
       lights:
-        l_5bank_2: orange
+        l_5bank_2: 00FFA0
     - duration: 250ms
       lights:
         l_5bank_2: off
   vulcan_right_drop_3_lit_show:
     - duration: 250ms
       lights:
-        l_5bank_3: orange
+        l_5bank_3: 00FFA0
     - duration: 250ms
       lights:
         l_5bank_3: off
   vulcan_right_drop_4_lit_show:
     - duration: 250ms
       lights:
-        l_5bank_4: orange
+        l_5bank_4: 00FFA0
     - duration: 250ms
       lights:
         l_5bank_4: off
   vulcan_right_drop_5_lit_show:
     - duration: 250ms
       lights:
-        l_5bank_5: orange
+        l_5bank_5: 00FFA0
     - duration: 250ms
       lights:
         l_5bank_5: off

@@ -25,36 +25,36 @@ flippers:
     main_coil: c_flipper_left_upper_full
     hold_coil: c_flipper_left_upper_hold
     activation_switch: s_left_flipper
-    enable_events: ball_started
-    disable_events: ball_will_end
+    enable_events: ball_started, cmd_flippers_enable
+    disable_events: ball_will_end, cmd_flippers_disable
     
   left_lower_flipper:
     main_coil: c_flipper_left_lower_full
     hold_coil: c_flipper_left_lower_hold
     activation_switch: s_left_flipper
-    enable_events: ball_started
-    disable_events: ball_will_end
+    enable_events: ball_started, cmd_flippers_enable
+    disable_events: ball_will_end, cmd_flippers_disable
 
   right_lower_flipper:
     main_coil: c_flipper_right_lower_full
     hold_coil: c_flipper_right_lower_hold
     activation_switch: s_right_flipper
-    enable_events: ball_started
-    disable_events: ball_will_end
+    enable_events: ball_started, cmd_flippers_enable
+    disable_events: ball_will_end, cmd_flippers_disable
 
   right_mid_flipper:
     main_coil: c_flipper_right_mid_full
     hold_coil: c_flipper_right_mid_hold
     activation_switch: s_right_flipper_upper
-    enable_events: ball_started
-    disable_events: ball_will_end
+    enable_events: ball_started, cmd_flippers_enable
+    disable_events: ball_will_end, cmd_flippers_disable
 
   right_upper_flipper:
     main_coil: c_flipper_right_upper_full
     hold_coil: c_flipper_right_upper_hold
     activation_switch: s_right_flipper_upper
-    enable_events: ball_started
-    disable_events: ball_will_end
+    enable_events: ball_started, cmd_flippers_enable
+    disable_events: ball_will_end, cmd_flippers_disable
 
 
 

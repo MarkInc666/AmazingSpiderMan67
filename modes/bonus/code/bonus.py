@@ -29,16 +29,16 @@ class Bonus(MpfBonus):
 
     MODE_BONUS_ENTRIES = [
         ("held_bonus", "HELD BONUS", True),
-        ("vulture_bonus", "VULTURE FLIGHT", True),
-        ("goblin_bonus", "GOBLIN CHAOS", True),
-        ("vulcan_bonus", "VULCAN ERUPTION", True),
-        ("diamond_bonus", "DIAMOND SMUGGLERS", True),
-        ("super_swami_bonus", "SUPER SWAMI", True),
-        ("dumpty_bonus", "DUMPTY DEVICES", True),
-        ("radiation_bonus", "RADIATION RAMPAGE", True),
-        ("plutonians_bonus", "THE PLUTONIANS", True),
-        ("swamp_bonus", "SWAMP REPTILES", True),
-        ("technician_bonus", "TECHNICIAN TRAP", True),
+        ("vulture_bonus", "VULTURE FLIGHT", False),
+        ("goblin_bonus", "GOBLIN CHAOS", False),
+        ("vulcan_bonus", "VULCAN ERUPTION", False),
+        ("diamond_bonus", "DIAMOND SMUGGLERS", False),
+        ("super_swami_bonus", "SUPER SWAMI", False),
+        ("dumpty_bonus", "DUMPTY DEVICES", False),
+        ("radiation_bonus", "RADIATION RAMPAGE", False),
+        ("plutonians_bonus", "THE PLUTONIANS", False),
+        ("swamp_bonus", "SWAMP REPTILES", False),
+        ("technician_bonus", "TECHNICIAN TRAP", False),
     ]
 
     MULTIPLIER_LIGHTS = {

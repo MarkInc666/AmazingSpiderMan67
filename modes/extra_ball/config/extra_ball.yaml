@@ -78,6 +78,8 @@ event_player:
     - increase_ballsave_count
   ball_save_case_file_ball_save_enabled:
     - increase_ballsave_count
+  ball_save_chapter_select_ball_save_enabled:
+    - increase_ballsave_count
 
   ball_save_default_ball_save_saving_ball:
     saved_ball_pending_plunger:
@@ -100,6 +102,9 @@ event_player:
       title: BALL SAVED
       subtitle: SAFETY NET
 
+  ball_save_chapter_select_ball_save_saving_ball:
+    saved_ball_pending_plunger:
+
   show_ball_saved_safety_net:
     show_ball_saved_widget:
       save_type: safety_net
@@ -117,6 +122,8 @@ event_player:
   ball_save_mystery_ball_save_disabled{current_player.ball_save_count > 0}:
     - decrease_ballsave_count
   ball_save_case_file_ball_save_disabled{current_player.ball_save_count > 0}:
+    - decrease_ballsave_count
+  ball_save_chapter_select_ball_save_disabled{current_player.ball_save_count > 0}:
     - decrease_ballsave_count
 
 

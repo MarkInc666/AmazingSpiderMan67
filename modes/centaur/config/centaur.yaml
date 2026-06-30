@@ -90,8 +90,8 @@ light_player:
     l_gi_ramp: green
 
   centaur_final_shot_staged:
-    l_5bank_1: red
-    l_5bank_5: red
+    l_5bank_1: cyan
+    l_5bank_5: cyan
     l_gi_5bank_lower: red
     l_gi_5bank_upper: red
 

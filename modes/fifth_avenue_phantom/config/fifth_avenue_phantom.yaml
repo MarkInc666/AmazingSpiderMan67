@@ -231,7 +231,7 @@ shows:
   fifth_avenue_phantom_right_1_show:
     - duration: 150ms
       lights:
-        l_5bank_1: purple
+        l_5bank_1: 0080FF
     - duration: 150ms
       lights:
         l_5bank_1: off
@@ -239,7 +239,7 @@ shows:
   fifth_avenue_phantom_right_2_show:
     - duration: 150ms
       lights:
-        l_5bank_2: purple
+        l_5bank_2: 0080FF
     - duration: 150ms
       lights:
         l_5bank_2: off
@@ -247,7 +247,7 @@ shows:
   fifth_avenue_phantom_right_3_show:
     - duration: 150ms
       lights:
-        l_5bank_3: purple
+        l_5bank_3: 0080FF
     - duration: 150ms
       lights:
         l_5bank_3: off
@@ -255,7 +255,7 @@ shows:
   fifth_avenue_phantom_right_4_show:
     - duration: 150ms
       lights:
-        l_5bank_4: purple
+        l_5bank_4: 0080FF
     - duration: 150ms
       lights:
         l_5bank_4: off
@@ -263,7 +263,7 @@ shows:
   fifth_avenue_phantom_right_5_show:
     - duration: 150ms
       lights:
-        l_5bank_5: purple
+        l_5bank_5: 0080FF
     - duration: 150ms
       lights:
         l_5bank_5: off

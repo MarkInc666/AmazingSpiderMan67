@@ -182,16 +182,24 @@ autofire_coils:
   slingshot_left:
     coil: c_left_sling
     switch: s_sling_l
+    enable_events: ball_started, cmd_autofire_coils_enable
+    disable_events: ball_will_end, cmd_autofire_coils_disable
 
   slingshot_right:
     coil: c_right_sling
     switch: s_sling_r
+    enable_events: ball_started, cmd_autofire_coils_enable
+    disable_events: ball_will_end, cmd_autofire_coils_disable
 
   pop_left:
     coil: c_pop_left
     switch: s_pop_left
+    enable_events: ball_started, cmd_autofire_coils_enable
+    disable_events: ball_will_end, cmd_autofire_coils_disable
 
   pop_right:
     coil: c_pop_right
     switch: s_pop_right
+    enable_events: ball_started, cmd_autofire_coils_enable
+    disable_events: ball_will_end, cmd_autofire_coils_disable
 

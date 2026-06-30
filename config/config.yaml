@@ -196,6 +196,23 @@ event_player:
   ball_started{current_player.multiball_autoplunge_active == 1}:
     - disable_outlane_autoplunge
 
+  chapter_select_pending_drain:
+    - clear_saucers
+    - cmd_flippers_disable
+    - cmd_autofire_coils_disable
+
+  s_plunger_active{current_player.chapter_select_needed == 1 and current_player.chapter_select_active != 1}:
+    - start_mode_chapter_select|500ms
+
+  s_saucer_1_active{current_player.chapter_select_needed == 1}:
+    - delayed_kickout_saucer_1
+
+  s_saucer_2_active{current_player.chapter_select_needed == 1}:
+    - delayed_kickout_saucer_2
+
+  s_saucer_3_active{current_player.chapter_select_needed == 1}:
+    - delayed_kickout_saucer_3
+
   drop_target_bank_dt_bank_left_down{current_player.villain_mode_running == 0}:
     - drop_target_bank_dt_bank_left_reset
 
@@ -329,6 +346,15 @@ ball_saves:
     grace_period: 2s
     enable_events:
       - start_case_file_ball_save
+
+  chapter_select_ball_save:
+    active_time: 60s
+    hurry_up_time: 0s
+    grace_period: 0s
+    balls_to_save: 1
+    auto_launch: false
+    enable_events:
+      - chapter_select_pending_drain
 
 
 
