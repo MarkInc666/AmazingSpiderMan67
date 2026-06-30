@@ -35,5 +35,4 @@ event_player:
     - rooftop_diverter_open
 
   mode_noah_boddy_stopping:
-    - clear_saucers
     - rooftop_diverter_close

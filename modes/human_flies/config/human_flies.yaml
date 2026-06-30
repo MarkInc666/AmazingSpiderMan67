@@ -68,7 +68,6 @@ event_player:
     - human_flies_clear_all_lights
 
   mode_human_flies_stopping:
-    - clear_saucers_delayed
     - human_flies_clear_all_lights
 
   human_flies_mode_complete:

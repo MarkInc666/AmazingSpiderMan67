@@ -1055,8 +1055,6 @@ class VillainBookends(Mode):
             self.machine.events.post("reset_villain_locate")
             self.machine.events.post("reset_daily_bugle_state")
             self.machine.events.post("reset_drops")
-            self.machine.events.post("drop_target_bank_dt_bank_left_reset")
-            self.machine.events.post("drop_target_bank_dt_bank_right_reset")
             self.machine.events.post("villain_bookend_summary_hide")
             self.machine.events.post("villain_bookend_summary_done", villain=villain)
 

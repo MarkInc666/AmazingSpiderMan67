@@ -66,5 +66,3 @@ event_player:
     - drop_target_bank_dt_bank_left_reset
     - drop_target_bank_dt_bank_right_reset
 
-  mode_dr_magneto_stopping:
-    - clear_saucers

@@ -46,7 +46,6 @@ event_player:
   mode_master_plan_stopping:
     - enable_daily_bugle_mystery
     - daily_bugle_restore_state
-    - clear_saucers
     - rooftop_diverter_close
     - master_plan_clear_lights
 

@@ -20,9 +20,6 @@ event_player:
 
   mode_kingpin_stopping:
     - kingpin_clear_lights
-    - drop_target_bank_dt_bank_left_reset
-    - drop_target_bank_dt_bank_right_reset|100ms
-    - clear_saucers_delayed
 
   kingpin_mode_complete:
     villain_bookend_summary_request:

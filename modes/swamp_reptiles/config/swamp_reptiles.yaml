@@ -66,7 +66,6 @@ event_player:
     - swamp_reptiles_clear_all_lights
 
   mode_swamp_reptiles_stopping:
-    - clear_saucers
     - swamp_reptiles_clear_all_lights
 
 light_player:

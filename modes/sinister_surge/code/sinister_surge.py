@@ -123,7 +123,6 @@ class SinisterSurge(Mode):
         self._add_switch_handlers()
         self.add_mode_event_handler("sinister_surge_choose_first_area", self._choose_next_area)
         self.add_mode_event_handler("sinister_surge_multiball_ended", self._multiball_ended)
-        self.add_mode_event_handler("sinister_surge_release_all_saucers", self._release_all_held_saucers)
 
     def mode_stop(self, **kwargs):
         self.mode_exiting = True

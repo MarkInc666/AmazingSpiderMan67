@@ -52,7 +52,6 @@ event_player:
 
   mode_parafino_stopping:
     - parafino_clear_all_lights
-    - clear_saucers
     - rooftop_diverter_close
 
 

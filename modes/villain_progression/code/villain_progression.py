@@ -123,6 +123,11 @@ class VillainProgression(Mode):
         },
     ]
 
+    INITIAL_AVAILABLE_CHAPTERS = (1, 2, 3)
+    # Fixed reveal order keeps chapter discovery non-sequential but fair for
+    # multiplayer/tournament games. Chapters 1-3 start available.
+    CHAPTER_UNLOCK_DECK = (6, 4, 8, 5, 10, 7, 9)
+
     VILLAINS = {'antarcticans': {'chapter': 8, 'name': 'The Antarcticans', 'start_event': 'start_mode_antarcticans'},
      'brutus': {'chapter': 9, 'name': 'Brutus', 'start_event': 'start_mode_brutus'},
      'centaur': {'chapter': 3, 'name': 'Centaur', 'start_event': 'start_mode_centaur'},
@@ -269,6 +274,19 @@ class VillainProgression(Mode):
 
         self._restore_state()
 
+        # Chapter Select is only allowed at controlled ball-start stop points:
+        # game start, or the next shooter-lane ball after a chapter/mini-wizard
+        # is completed. The actual chapter is chosen before the player plunges.
+        if self._safe_int(self.machine.game.player["chapter_select_needed"], 0) == 1:
+            self.delay.add(
+                name="chapter_select_at_shooter_lane",
+                ms=500,
+                callback=lambda: self.machine.events.post(
+                    "start_mode_chapter_select",
+                    chapter=self.machine.game.player["selected_chapter"],
+                ),
+            )
+
     def mode_stop(self, **kwargs):
         # Do not make progression decisions while stopping at ball_ending.
         # Anything still PLAYING will be resolved on the next mode_start.
@@ -395,30 +413,29 @@ class VillainProgression(Mode):
         self._recalculate_progression_from_states(post_events=post_events)
 
     def _recalculate_progression_from_states(self, post_events=True):
-        """Derive chapter, wizard readiness, and counts from durable states.
+        """Derive selected chapter, wizard readiness, and counts.
 
-        No counters are trusted as source-of-truth. If the five villains in the
-        current chapter are completed, the mini-wizard becomes ready immediately
-        and the rooftop/VUK gate is opened without requiring a saucer hit. If a
-        mini-wizard is completed, the next chapter becomes current.
+        Chapter Select owns which comic/chapter is active. Completing a
+        mini-wizard marks that comic COLLECTED and reveals another chapter from
+        the fixed deck, but progression does not force a strict 1->2->3->4 path.
         """
         player = self.machine.game.player
 
-        # Count completed mini-wizards and advance to the first incomplete
-        # chapter. This self-heals duplicate events and startup recovery.
-        completed_minis = 0
-        current_chapter_number = 1
-        for index, chapter in enumerate(self.CHAPTERS, start=1):
-            mini_key = chapter["mini_wizard_key"]
-            if self._normalize_state(player[f"{mini_key}_state"]) == self.COMPLETED:
-                player[f"{mini_key}_state"] = self.COMPLETED
-                completed_minis += 1
-                current_chapter_number = index + 1
-            else:
-                break
+        self._sync_chapter_collection_state()
 
+        completed_minis = sum(
+            1
+            for index, chapter_info in enumerate(self.CHAPTERS, start=1)
+            if self._safe_int(player[f"chapter_{index}_collected"], 0) == 1
+        )
         player["mini_wizards_completed"] = completed_minis
-        player["villain_chapter"] = current_chapter_number
+
+        selected = self._safe_int(player["selected_chapter"], 1)
+        if selected < 1 or selected > len(self.CHAPTERS):
+            selected = self._first_available_chapter_number() or 1
+            player["selected_chapter"] = selected
+
+        player["villain_chapter"] = selected
 
         chapter = self._get_current_chapter()
         if chapter is None:
@@ -433,7 +450,6 @@ class VillainProgression(Mode):
                 self.machine.events.post("final_wizard_ready")
             return
 
-        # Not in final wizard yet.
         player["final_wizard_ready"] = 0
 
         completed_count = 0
@@ -453,6 +469,13 @@ class VillainProgression(Mode):
         mini_playing = self._normalize_state(player[f"{mini_key}_state"]) == self.PLAYING
         required = len(chapter["villains"])
 
+        # While waiting for comic/chapter selection at the shooter lane, do not
+        # reopen the completed chapter's wizard or advance start logic.
+        if self._safe_int(player["chapter_select_needed"], 0) == 1:
+            player["chapter_mini_wizard_ready"] = 0
+            player["mini_wizard_daily_bugle_ready"] = 0
+            return
+
         if completed_count >= required and not mini_completed:
             was_ready = self._safe_int(player["chapter_mini_wizard_ready"], 0) == 1
             player["chapter_mini_wizard_ready"] = 1
@@ -460,9 +483,6 @@ class VillainProgression(Mode):
             if not mini_playing:
                 player[f"{mini_key}_state"] = self.NOT_PLAYED
 
-            # Wizard readiness opens the gate immediately. The transition events
-            # are only posted on 0 -> 1, but _mini_wizard_ready_at_daily_bugle
-            # may safely be called again by external compatibility events.
             if post_events and not was_ready:
                 self.machine.events.post(
                     "chapter_mini_wizard_ready",
@@ -555,6 +575,7 @@ class VillainProgression(Mode):
         self.add_mode_event_handler("villain_progression_start_default", self._start_default_villain)
         self.add_mode_event_handler("villain_progression_start_selected", self._start_selected_villain)
         self.add_mode_event_handler("villain_select_choice_made", self._start_selected_villain)
+        self.add_mode_event_handler("chapter_select_selected", self._chapter_selected)
         self.add_mode_event_handler("villain_progression_start_final_wizard", self._start_final_wizard)
         self.add_mode_event_handler("final_showdown_mode_complete", self._final_wizard_gameplay_finished, completed=True)
         self.add_mode_event_handler("villain_progression_restore_state", self._restore_state)
@@ -758,6 +779,18 @@ class VillainProgression(Mode):
         villain_start.py should call this instead of deciding chapter contents or
         starting villains itself.
         """
+        if (
+            self._safe_int(self.machine.game.player["chapter_select_needed"], 0) == 1
+            or self._safe_int(self.machine.game.player["chapter_select_active"], 0) == 1
+        ):
+            self.machine.events.post(
+                "villain_start_ignored_chapter_select_active",
+                saucer=saucer,
+                source=source,
+            )
+            self.machine.events.post("clear_saucers_delayed")
+            return
+
         state = self._safe_int(state, 0)
         if max_choices is None:
             max_choices = state
@@ -818,6 +851,92 @@ class VillainProgression(Mode):
             max_choices=max_choices,
             villain_keys=",".join(available),
         )
+
+    def _chapter_selected(self, chapter_number=None, chapter_name="", **kwargs):
+        chapter_number = self._safe_int(chapter_number, 0)
+        if not self._chapter_is_available(chapter_number):
+            self.machine.events.post(
+                "chapter_select_rejected_by_progression",
+                chapter_number=chapter_number,
+                chapter_name=chapter_name,
+            )
+            return
+
+        player = self.machine.game.player
+        player["selected_chapter"] = chapter_number
+        player["villain_chapter"] = chapter_number
+        player["chapter_select_needed"] = 0
+        player["chapter_select_active"] = 0
+
+        chapter = self.CHAPTERS[chapter_number - 1]
+        self.machine.events.post(
+            "villain_chapter_started",
+            chapter=chapter["key"],
+            chapter_name=chapter["name"],
+            chapter_number=chapter_number,
+        )
+        self.machine.events.post(
+            "chapter_comic_selected",
+            chapter=chapter["key"],
+            chapter_name=chapter["name"],
+            chapter_number=chapter_number,
+        )
+        self._recalculate_progression_from_states(post_events=True)
+        self._restore_state()
+        self._schedule_case_files_restore(reason="chapter_selected")
+
+    def _sync_chapter_collection_state(self):
+        player = self.machine.game.player
+
+        for chapter_number in self.INITIAL_AVAILABLE_CHAPTERS:
+            player[f"chapter_{chapter_number}_unlocked"] = 1
+
+        completed_count = 0
+        for chapter_number, chapter in enumerate(self.CHAPTERS, start=1):
+            mini_key = chapter["mini_wizard_key"]
+            if self._normalize_state(player[f"{mini_key}_state"]) == self.COMPLETED:
+                player[f"chapter_{chapter_number}_collected"] = 1
+                player[f"chapter_{chapter_number}_unlocked"] = 1
+                completed_count += 1
+
+        while self._safe_int(player["chapter_unlock_deck_index"], 0) < completed_count:
+            if not self._unlock_next_chapter_from_deck():
+                break
+
+    def _unlock_next_chapter_from_deck(self):
+        player = self.machine.game.player
+        index = self._safe_int(player["chapter_unlock_deck_index"], 0)
+
+        while index < len(self.CHAPTER_UNLOCK_DECK):
+            chapter_number = self.CHAPTER_UNLOCK_DECK[index]
+            index += 1
+            player["chapter_unlock_deck_index"] = index
+            if self._safe_int(player[f"chapter_{chapter_number}_unlocked"], 0) == 0:
+                player[f"chapter_{chapter_number}_unlocked"] = 1
+                self.machine.events.post(
+                    "chapter_comic_unlocked",
+                    chapter_number=chapter_number,
+                    chapter_name=self.CHAPTERS[chapter_number - 1]["name"],
+                )
+                return True
+
+        player["chapter_unlock_deck_index"] = len(self.CHAPTER_UNLOCK_DECK)
+        return False
+
+    def _chapter_is_available(self, chapter_number):
+        if chapter_number < 1 or chapter_number > len(self.CHAPTERS):
+            return False
+        player = self.machine.game.player
+        return (
+            self._safe_int(player[f"chapter_{chapter_number}_unlocked"], 0) == 1
+            and self._safe_int(player[f"chapter_{chapter_number}_collected"], 0) == 0
+        )
+
+    def _first_available_chapter_number(self):
+        for chapter_number in range(1, len(self.CHAPTERS) + 1):
+            if self._chapter_is_available(chapter_number):
+                return chapter_number
+        return None
 
     def _chapter_for_mini_wizard(self, mini_key):
         for index, chapter in enumerate(self.CHAPTERS, start=1):
@@ -1130,10 +1249,6 @@ class VillainProgression(Mode):
     def _mini_wizard_completed(self, mini_wizard=None, **kwargs):
         player = self.machine.game.player
 
-        # Use the concrete mini-wizard key from the handler or the key recorded
-        # when Daily Bugle/VUK started the mini-wizard. Do not fall back to the
-        # current chapter here, because duplicate generic completion events can
-        # arrive after the chapter has already advanced.
         mini_key = mini_wizard or player["mini_wizard_current_key"]
         if not mini_key:
             self.machine.events.post("chapter_mini_wizard_completion_ignored_no_key")
@@ -1144,33 +1259,43 @@ class VillainProgression(Mode):
             self.machine.events.post("chapter_mini_wizard_completion_unknown", mini_wizard=mini_key)
             return
 
-        # Ignore duplicates from modes that post both <key>_mode_complete and
-        # chapter_mini_wizard_completed.
-        if self._normalize_state(player[f"{mini_key}_state"]) == self.COMPLETED and player["villain_chapter"] > chapter_number:
+        if (
+            self._safe_int(player[f"chapter_{chapter_number}_collected"], 0) == 1
+            and self._safe_int(player["chapter_select_needed"], 0) == 1
+        ):
             self.machine.events.post("chapter_mini_wizard_completion_ignored_duplicate", mini_wizard=mini_key)
             return
 
         player[f"{mini_key}_state"] = self.COMPLETED
+        player[f"chapter_{chapter_number}_collected"] = 1
+        player[f"chapter_{chapter_number}_unlocked"] = 1
+        self._unlock_next_chapter_from_deck()
 
         self._clear_runtime_flow_flags()
 
-        # Reset chapter-local bonus after a mini-wizard/chapter ends, then
-        # derive the next chapter/final-wizard readiness from completed states.
+        # The completed comic is now collected. Stop normal progression here and
+        # make the next controlled ball-start/shooter-lane state open Chapter
+        # Select instead of immediately moving into another chapter.
+        player["selected_chapter"] = chapter_number
+        player["villain_chapter"] = chapter_number
+        player["chapter_select_needed"] = 1
+        player["chapter_select_active"] = 0
+
         self._reset_chapter_case_file_bonus()
-        old_chapter = player["villain_chapter"]
-        self._recalculate_progression_from_states(post_events=True)
-        next_chapter = self._get_current_chapter()
-        if next_chapter is not None and player["villain_chapter"] != old_chapter:
-            self.machine.events.post(
-                "villain_chapter_started",
-                chapter=next_chapter["key"],
-                chapter_name=next_chapter["name"],
-                chapter_number=player["villain_chapter"],
-            )
+        self._recalculate_progression_from_states(post_events=False)
 
         self._post_global_cleanup_events(reason="mini_wizard_completed")
+        self.machine.events.post("chapter_comic_collected", chapter_number=chapter_number, chapter_name=chapter["name"])
+        self.machine.events.post("chapter_select_pending_drain", chapter_number=chapter_number, chapter_name=chapter["name"])
         self.machine.events.post("chapter_mini_wizard_ended", mini_wizard=mini_key)
         self.machine.events.post("villain_mode_ended", villain=mini_key, villain_key=mini_key)
+
+        # Let the completed wizard/chapter transition drain safely. Chapter
+        # Select will appear at the next ball start/shooter-lane state.
+        self.machine.events.post("cmd_flippers_disable")
+        self.machine.events.post("cmd_autofire_coils_disable")
+        self.machine.events.post("timer_timer_up_post_hold_complete")
+
         self._restore_state()
         self._schedule_case_files_restore(reason="mini_wizard_completed")
 

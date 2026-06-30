@@ -47,6 +47,7 @@ class Electro(CaseFileMixin, Mode):
         self.super_active = False
         self.current_shot = None
         self.mode_done = False
+        self.awaiting_next_shot = False
         self.collected_jackpot_shots = set()
 
         self.electro_super_jackpot = 0
@@ -153,6 +154,7 @@ class Electro(CaseFileMixin, Mode):
         if self.mode_done:
             return
 
+        self.awaiting_next_shot = False
         self.stop_current_lit_shot()
 
         active = self.active_shots()
@@ -204,6 +206,11 @@ class Electro(CaseFileMixin, Mode):
         if self.super_active:
             return
 
+        # Ignore stale timer completions that arrive during the jackpot award pause.
+        # This prevents the next lit shot from being immediately advanced again.
+        if self.awaiting_next_shot or not self.current_shot or not self.current_shot.is_lit:
+            return
+
         # Timeout means the shot remains active, but the spark moves elsewhere.
         self._show_message("SPARK MOVED", "FIND THE NEW SHOT")
         self.pick_next_lit_shot()
@@ -237,6 +244,13 @@ class Electro(CaseFileMixin, Mode):
     def collect_normal_jackpot(self, shot):
         if self.mode_done or shot.name in self.collected_jackpot_shots:
             return
+
+        # Stop the active shot timer immediately. If the shot was hit near the end
+        # of the countdown, a pending timeout event can otherwise move the next
+        # spark almost immediately after it appears.
+        self.machine.events.post("electro_shot_timer_stop")
+        self.awaiting_next_shot = True
+
         self.collected_jackpot_shots.add(shot.name)
         shot.disabled = True
         shot.is_lit = False
@@ -273,6 +287,7 @@ class Electro(CaseFileMixin, Mode):
 
     def delayed_next_shot(self, **kwargs):
         self.machine.events.post("electro_shot_timer_stop")
+        self.awaiting_next_shot = False
         self.pick_next_lit_shot()
 
     def start_super_jackpot(self, shot):

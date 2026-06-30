@@ -76,7 +76,6 @@ event_player:
 
   mode_cyclops_stopping:
     - clear_saucers
-    - reset_drops
     - cyclops_eye_unlit
 
 

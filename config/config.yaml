@@ -152,6 +152,7 @@ modes:
   - daily_bugle_rooftop_riot
   - qualify_system
   - villain_select
+  - chapter_select
   - villain_start
   - case_files
   - villain_progression

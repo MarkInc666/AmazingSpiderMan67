@@ -68,8 +68,6 @@ event_player:
     - vulcan_clear_bonus_rubber
 
   mode_vulcan_stopping:
-    - clear_saucers
-    - reset_drops
     - rooftop_diverter_close
     - vulcan_clear_all_lights
 

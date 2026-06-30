@@ -70,8 +70,6 @@ event_player:
   mode_trubble_unleashed_stopping:
     - enable_daily_bugle_mystery
     - daily_bugle_restore_state
-    - clear_saucers
-    - reset_drops
     - trubble_unleashed_close_gate
     - trubble_unleashed_clear_all_lights
 

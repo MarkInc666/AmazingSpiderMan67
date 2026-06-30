@@ -75,7 +75,6 @@ event_player:
 
   mode_diana_stopping:
     - clear_saucers
-    - reset_drops
     - diana_clear_all_lights
 
 coil_player:

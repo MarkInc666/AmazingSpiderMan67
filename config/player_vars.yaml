@@ -15,6 +15,123 @@ player_vars:
   chapter_mini_wizard_state:
     initial_value: ""
     value_type: str
+  selected_chapter:
+    initial_value: 1
+    value_type: int
+  chapter_select_needed:
+    initial_value: 1
+    value_type: int
+  chapter_select_active:
+    initial_value: 0
+    value_type: int
+  chapter_unlock_deck_index:
+    initial_value: 0
+    value_type: int
+  chapter_1_unlocked:
+    initial_value: 1
+    value_type: int
+  chapter_1_collected:
+    initial_value: 0
+    value_type: int
+  chapter_2_unlocked:
+    initial_value: 1
+    value_type: int
+  chapter_2_collected:
+    initial_value: 0
+    value_type: int
+  chapter_3_unlocked:
+    initial_value: 1
+    value_type: int
+  chapter_3_collected:
+    initial_value: 0
+    value_type: int
+  chapter_4_unlocked:
+    initial_value: 0
+    value_type: int
+  chapter_4_collected:
+    initial_value: 0
+    value_type: int
+  chapter_5_unlocked:
+    initial_value: 0
+    value_type: int
+  chapter_5_collected:
+    initial_value: 0
+    value_type: int
+  chapter_6_unlocked:
+    initial_value: 0
+    value_type: int
+  chapter_6_collected:
+    initial_value: 0
+    value_type: int
+  chapter_7_unlocked:
+    initial_value: 0
+    value_type: int
+  chapter_7_collected:
+    initial_value: 0
+    value_type: int
+  chapter_8_unlocked:
+    initial_value: 0
+    value_type: int
+  chapter_8_collected:
+    initial_value: 0
+    value_type: int
+  chapter_9_unlocked:
+    initial_value: 0
+    value_type: int
+  chapter_9_collected:
+    initial_value: 0
+    value_type: int
+  chapter_10_unlocked:
+    initial_value: 0
+    value_type: int
+  chapter_10_collected:
+    initial_value: 0
+    value_type: int
+  chapter_select_left_visible:
+    initial_value: 0
+    value_type: int
+  chapter_select_left_number:
+    initial_value: ""
+    value_type: str
+  chapter_select_left_title:
+    initial_value: ""
+    value_type: str
+  chapter_select_left_status:
+    initial_value: ""
+    value_type: str
+  chapter_select_left_selectable:
+    initial_value: 0
+    value_type: int
+  chapter_select_center_visible:
+    initial_value: 0
+    value_type: int
+  chapter_select_center_number:
+    initial_value: ""
+    value_type: str
+  chapter_select_center_title:
+    initial_value: ""
+    value_type: str
+  chapter_select_center_status:
+    initial_value: ""
+    value_type: str
+  chapter_select_center_selectable:
+    initial_value: 0
+    value_type: int
+  chapter_select_right_visible:
+    initial_value: 0
+    value_type: int
+  chapter_select_right_number:
+    initial_value: ""
+    value_type: str
+  chapter_select_right_title:
+    initial_value: ""
+    value_type: str
+  chapter_select_right_status:
+    initial_value: ""
+    value_type: str
+  chapter_select_right_selectable:
+    initial_value: 0
+    value_type: int
   villain_chapter:
     initial_value: 1
     value_type: int

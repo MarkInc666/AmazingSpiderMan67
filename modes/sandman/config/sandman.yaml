@@ -77,9 +77,6 @@ widget_player:
 
 event_player:
 
-  sandman_mode_completed_summary:
-    - reset_drops
-
   sandman_startup_complete:
     - sandman_start_bank
     - clear_saucers_delayed

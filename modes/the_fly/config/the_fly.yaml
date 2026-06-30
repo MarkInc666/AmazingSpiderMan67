@@ -65,6 +65,3 @@ event_player:
     - clear_saucers
     - drop_target_bank_dt_bank_left_reset
     - drop_target_bank_dt_bank_right_reset
-
-  mode_the_fly_stopping:
-    - clear_saucers

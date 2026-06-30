@@ -68,9 +68,6 @@ event_player:
   drop_target_bank_dt_bank_right_down:
     - drop_target_bank_dt_bank_right_reset
 
-  mode_doctor_dumpty_stopping:
-    - clear_saucers
-
 
 random_event_player:
   doctor_dumpty_jackpot_collected:

@@ -57,8 +57,6 @@ event_player:
     - sinister_surge_enable_daily_bugle_mystery
     - daily_bugle_restore_state
     - sinister_surge_close_upper_gate
-    - sinister_surge_release_all_saucers
-    - clear_saucers_delayed
     - sinister_surge_clear_all_sinister_surge_lights
 
   sinister_surge_mode_complete:

@@ -57,9 +57,6 @@ event_player:
     - diamond_smugglers_clear_lights
 
   mode_diamond_smugglers_stopping:
-    - clear_saucers
-    - drop_target_bank_dt_bank_left_reset
-    - drop_target_bank_dt_bank_right_reset
     - diamond_smugglers_clear_lights
 
 show_player:

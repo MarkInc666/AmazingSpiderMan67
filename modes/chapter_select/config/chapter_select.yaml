@@ -1,0 +1,74 @@
+#config_version=6
+
+mode:
+  code: chapter_select.ChapterSelect
+  start_events: start_mode_chapter_select
+  stop_events:
+    - stop_mode_chapter_select
+    - ball_ending
+    - tilt
+    - slam_tilt
+  priority: 520
+
+event_player:
+  mode_chapter_select_started:
+    - play_song_20
+
+  s_right_flipper_inactive{device.switches.s_left_flipper.state == 0}:
+    - chapter_carousel_next
+
+  s_left_flipper_inactive{device.switches.s_right_flipper.state == 0}:
+    - chapter_carousel_previous
+
+  both_flippers_held_1s:
+    - chapter_carousel_select
+
+  # Manual plunge also confirms the centered comic. If the centered comic is
+  # LOCKED or COLLECTED, ChapterSelect defaults to the next AVAILABLE comic.
+  s_plunger_inactive:
+    - chapter_carousel_select
+
+sound_player:
+  chapter_carousel_next:
+    hb_up_1:
+      action: play
+      bus: effects
+
+  chapter_carousel_previous:
+    hb_down_1:
+      action: play
+      bus: effects
+
+  chapter_carousel_accept_selection:
+    zip_out:
+      action: play
+      bus: effects
+
+  chapter_select_defaulted_to_next_available:
+    zip_out:
+      action: play
+      bus: effects
+
+  chapter_select_no_available_chapters:
+    hb_bonk_1:
+      action: play
+      bus: effects
+
+  chapter_select_edge:
+    hb_bonk_1:
+      action: play
+      bus: effects
+
+widget_player:
+  mode_chapter_select_started:
+    chapter_select:
+      action: play
+      priority: 2000
+
+  stop_mode_chapter_select:
+    chapter_select:
+      action: remove
+
+  chapter_select_stopped:
+    chapter_select:
+      action: remove

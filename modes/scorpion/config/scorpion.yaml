@@ -22,9 +22,6 @@ widget_player:
 
 event_player:
 
-  scorpion_mode_completed_summary:
-    - reset_drops
-
   mode_scorpion_started:
     - rooftop_diverter_open
     - scorpion_build_phase_started
