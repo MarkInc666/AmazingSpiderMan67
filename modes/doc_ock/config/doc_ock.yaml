@@ -47,6 +47,7 @@ widget_player:
 
 event_player:
   drop_target_bank_dt_bank_left_down:
+    - doc_ock_left_bank_complete
     - drop_target_bank_dt_bank_left_reset
 
   drop_target_bank_dt_bank_right_down:

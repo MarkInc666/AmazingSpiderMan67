@@ -52,6 +52,8 @@ class doc_ock(CaseFileMixin, Mode):
         self.doc_ock_jackpot_spinner_multi = 1
         self.doc_ock_arm_locked_score = 50000
         self.doc_ock_arm_relocked_score = 10000
+        self.doc_ock_left_bank_complete_score = 50000
+        self.doc_ock_left_bank_all_locked_score = 100000
 
         # Start with one arm already disabled/locked.
         # False = free, True = locked
@@ -82,6 +84,7 @@ class doc_ock(CaseFileMixin, Mode):
         self.add_mode_event_handler("doc_ock_rotate_left", self.rotate_left)
         self.add_mode_event_handler("doc_ock_rotate_right", self.rotate_right)
         self.add_mode_event_handler("doc_ock_jackpot_request", self.jackpot_request)
+        self.add_mode_event_handler("doc_ock_left_bank_complete", self.left_bank_complete)
         self.add_mode_event_handler("doc_ock_start_timed_release", self.start_timed_release)
         self.add_mode_event_handler("doc_ock_stop_timed_release", self.stop_timed_release)
 
@@ -174,17 +177,50 @@ class doc_ock(CaseFileMixin, Mode):
 
         self.machine.game.player["score"] += self.doc_ock_arm_locked_score
         self.active_mode_points += self.doc_ock_arm_locked_score
+        self.machine.game.player["active_mode_points"] = self.active_mode_points
 
-        self.locked_arms[arm-1] = True
-        self.refresh_lane_lights()
-
-        self.doc_ock_max_arms_locked += 1
-        self.machine.game.player["doc_ock_max_arms_locked"] = self.doc_ock_max_arms_locked
+        self._lock_arm_index(arm - 1)
 
         self.machine.events.post("doc_ock_arm_locked_score")
         self.machine.events.post("show_mode_message", message_mode_title="ARM LOCKED", message_mode_subtitle=f"{sum(self.locked_arms)} ARMS LOCKED")
         #self.check_jackpot_lit()
         self.update_player_vars()        
+
+    def _lock_arm_index(self, arm_index):
+        self.locked_arms[arm_index] = True
+        self.refresh_lane_lights()
+
+        locked_count = sum(self.locked_arms)
+        self.doc_ock_max_arms_locked = max(self.doc_ock_max_arms_locked, locked_count)
+        self.machine.game.player["doc_ock_max_arms_locked"] = self.doc_ock_max_arms_locked
+
+    def _lock_next_free_arm(self):
+        for arm_index, locked in enumerate(self.locked_arms):
+            if not locked:
+                self._lock_arm_index(arm_index)
+                return arm_index + 1
+        return None
+
+    def left_bank_complete(self, **kwargs):
+        if self.machine.game.player["villain_mode_in_summary"] == True:
+            return
+
+        self.jackpot_lit = 1
+        locked_arm = self._lock_next_free_arm()
+
+        if locked_arm is None:
+            award = self.doc_ock_left_bank_all_locked_score
+            self.machine.events.post("show_mode_message", message_mode_title="JACKPOT READY", message_mode_subtitle="ALL ARMS LOCKED")
+        else:
+            award = self.doc_ock_left_bank_complete_score
+            self.machine.events.post("doc_ock_arm_locked_score")
+            self.machine.events.post("show_mode_message", message_mode_title="BANK COMPLETE", message_mode_subtitle=f"ARM {locked_arm} LOCKED - JACKPOT LIT")
+
+        self.machine.game.player["score"] += award
+        self.active_mode_points += award
+        self.machine.game.player["active_mode_points"] = self.active_mode_points
+        self.check_jackpot_lit()
+        self.update_player_vars()
 
     def check_jackpot_lit(self):
         if sum(self.locked_arms) > 0:

@@ -7,14 +7,19 @@ class VillainBookends(Mode):
     SUMMARY_MS = 6000
 
     VILLAINS = {
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Build Rage with pop bumper hits.
+        #   intro_2: Cash Berserk jackpots at the B rollover.
+        #   intro_3: Bigger rage means bigger jackpots.
+        #   stat_1_label: BEST JACKPOT
         'rhino': {
             'title': 'RHINO BASH',
-            'intro_1': 'Build Rage with pop bumper hits.',
-            'intro_2': 'Cash Berserk jackpots at the B rollover.',
-            'intro_3': 'Bigger rage means bigger jackpots.',
+            'intro_1': 'Build Rage Value with Pops.',
+            'intro_2': 'All Switches Stock up Rage',
+            'intro_3': 'Collect Jackpots at B',
             'summary_title_complete': 'RHINO DEFEATED',
             'summary_title_failed': 'RHINO ESCAPED',
-            'stat_1_label': 'BEST JACKPOT',
+            'stat_1_label': 'Biggest Jackpot',
             'stat_1_var': 'rhino_best_jackpot_value',
             'stat_2_label': 'BEST RAGE',
             'stat_2_var': 'rhino_best_rage_stage',
@@ -22,11 +27,15 @@ class VillainBookends(Mode):
             'state_var': 'rhino_state',
             'song': 'play_song_22',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Shoot the flashing drop target.
+        #   intro_2: Hit drops in sequence for bigger value.
+        #   intro_3: Complete the run before Sandman reforms.
         'sandman': {
             'title': 'SANDMAN',
-            'intro_1': 'Shoot the flashing drop target.',
-            'intro_2': 'Hit drops in sequence for bigger value.',
-            'intro_3': 'Complete the run before Sandman reforms.',
+            'intro_1': 'Hit flashing drops.',
+            'intro_2': 'Sequence earns more points.',
+            'intro_3': 'Beat him before reset.',
             'summary_title_complete': 'SANDMAN DEFEATED',
             'summary_title_failed': 'SANDMAN ESCAPED',
             'stat_1_label': 'DROPS HIT',
@@ -37,26 +46,35 @@ class VillainBookends(Mode):
             'state_var': 'sandman_state',
             'song': 'play_song_8',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Get to the rooftop.
+        #   intro_2: Hit upper targets to raise spinner value.
+        #   intro_3: Spin fast before the targets decay.
+        #   stat_2_label: BONUS BANKED
         'vulture': {
             'title': 'VULTURE',
-            'intro_1': 'Get to the rooftop.',
-            'intro_2': 'Hit upper targets to raise spinner value.',
-            'intro_3': 'Spin fast before the targets decay.',
+            'intro_1': 'Reach the rooftop.',
+            'intro_2': 'Hit Targets to Build Value.',
+            'intro_3': 'Spin to collect before it decays.',
             'summary_title_complete': 'VULTURE DEFEATED',
             'summary_title_failed': 'VULTURE ESCAPED',
             'stat_1_label': 'SPINS',
             'stat_1_var': 'vulture_spins',
-            'stat_2_label': 'BONUS BANKED',
+            'stat_2_label': 'BANKED',
             'stat_2_var': 'vulture_bonus',
             'points_var': 'active_mode_points',
             'state_var': 'vulture_state',
             'song': 'play_song_10',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Create the antidote at the star rollover.
+        #   intro_2: Deliver it to the lit web targets.
+        #   intro_3: Move fast before the serum value drains.
         'lizard': {
             'title': 'THE LIZARD',
-            'intro_1': 'Create the antidote at the star rollover.',
-            'intro_2': 'Deliver it to the lit web targets.',
-            'intro_3': 'Move fast before the serum value drains.',
+            'intro_1': 'Make serum at STAR.',
+            'intro_2': 'Deliver to web shots.',
+            'intro_3': 'Hurry before it decays.',
             'summary_title_complete': 'LIZARD CURED',
             'summary_title_failed': 'LIZARD ESCAPED',
             'stat_1_label': 'DELIVERIES',
@@ -67,11 +85,15 @@ class VillainBookends(Mode):
             'state_var': 'lizard_state',
             'song': 'play_song_4',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Follow the moving spark.
+        #   intro_2: Hit each charged shot before time runs out.
+        #   intro_3: The final spark awards Super Jackpot.
         'electro': {
             'title': 'ELECTRO',
-            'intro_1': 'Follow the moving spark.',
-            'intro_2': 'Hit each charged shot before time runs out.',
-            'intro_3': 'The final spark awards Super Jackpot.',
+            'intro_1': 'Follow the spark.',
+            'intro_2': 'Hit charged JACKPOT shots.',
+            'intro_3': 'Final spark is a Super.',
             'summary_title_complete': 'ELECTRO DEFEATED',
             'summary_title_failed': 'ELECTRO ESCAPED',
             'stat_1_label': 'BEST SPARK',
@@ -82,26 +104,35 @@ class VillainBookends(Mode):
             'state_var': 'electro_state',
             'song': 'play_song_23',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Goblin attacks in chaos multiball.
+        #   intro_2: Flashing shots build value. Solid shots cash in.
+        #   intro_3: Saucers can rest the battle and bank bonus.
+        #   stat_2_label: BONUS BANKED
         'goblin': {
             'title': 'GREEN GOBLIN',
-            'intro_1': 'Goblin attacks in chaos multiball.',
-            'intro_2': 'Flashing shots build value. Solid shots cash in.',
-            'intro_3': 'Saucers can rest the battle and bank bonus.',
+            'intro_1': 'Chaos multiball.',
+            'intro_2': 'Flashing builds value.',
+            'intro_3': 'Avoid Solid shots.',
             'summary_title_complete': 'GOBLIN DEFEATED',
             'summary_title_failed': 'GOBLIN ESCAPED',
             'stat_1_label': 'ATTACK TOTAL',
             'stat_1_var': 'goblin_attacks_value',
-            'stat_2_label': 'BONUS BANKED',
+            'stat_2_label': 'BANKED',
             'stat_2_var': 'goblin_bonus',
             'points_var': 'active_mode_points',
             'state_var': 'goblin_state',
             'song': 'play_song_7',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Lock tentacle arms with rollovers.
+        #   intro_2: Shoot web targets for jackpots.
+        #   intro_3: Spinner increases the multiplier.
         'doc_ock': {
             'title': 'DOCTOR OCTOPUS',
-            'intro_1': 'Lock tentacle arms with rollovers.',
-            'intro_2': 'Shoot web targets for jackpots.',
-            'intro_3': 'Spinner increases the multiplier.',
+            'intro_1': 'Lock arms with lanes.',
+            'intro_2': 'Web shots score JACKPOTS',
+            'intro_3': 'Spin to boost X and light WEBS.',
             'summary_title_complete': 'DOC OCK DEFEATED',
             'summary_title_failed': 'DOC OCK ESCAPED',
             'stat_1_label': 'ARMS LOCKED',
@@ -112,11 +143,15 @@ class VillainBookends(Mode):
             'state_var': 'doc_ock_state',
             'song': 'play_song_18',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Find the real Mysterio.
+        #   intro_2: Wrong shots lower the jackpot value.
+        #   intro_3: Use clues to find the Super shot.
         'mysterio': {
             'title': 'MYSTERIO',
             'intro_1': 'Find the real Mysterio.',
-            'intro_2': 'Wrong shots lower the jackpot value.',
-            'intro_3': 'Use clues to find the Super shot.',
+            'intro_2': 'Wrong shots decrease JACKPOT',
+            'intro_3': 'Clues reveal the SUPER JACKPOT.',
             'summary_title_complete': 'MYSTERIO DEFEATED',
             'summary_title_failed': 'MYSTERIO ESCAPED',
             'stat_1_label': 'CLUES USED',
@@ -127,11 +162,15 @@ class VillainBookends(Mode):
             'state_var': 'mysterio_state',
             'song': 'play_song_24',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Build Venom with the upper spinner.
+        #   intro_2: Choose your exit to stage the attack.
+        #   intro_3: Hit the staged drop before time runs out.
         'scorpion': {
             'title': 'SCORPION',
-            'intro_1': 'Build Venom with the upper spinner.',
-            'intro_2': 'Choose your exit to stage the attack.',
-            'intro_3': 'Hit the staged drop before time runs out.',
+            'intro_1': 'Upper spinner builds venom.',
+            'intro_2': 'Exit the Roof to Left or Right',
+            'intro_3': 'Hit staged drop for Venom JACKPOT.',
             'summary_title_complete': 'SCORPION DEFEATED',
             'summary_title_failed': 'SCORPION ESCAPED',
             'stat_1_label': 'STINGS',
@@ -142,11 +181,15 @@ class VillainBookends(Mode):
             'state_var': 'scorpion_state',
             'song': 'play_song_25',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Parafino's wax traps the city.
+        #   intro_2: Build zone jackpots with drops and pops.
+        #   intro_3: Cash saucers. Three hits lights add-a-ball.
         'parafino': {
             'title': 'PARAFINO',
-            'intro_1': "Parafino's wax traps the city.",
-            'intro_2': 'Build zone jackpots with drops and pops.',
-            'intro_3': 'Cash saucers. Three hits lights add-a-ball.',
+            'intro_1': 'Wax traps the city.',
+            'intro_2': 'Drops and Pops melt the wax.',
+            'intro_3': 'ADD-A-BALL and JACKPOTS at Saucers.',
             'summary_title_complete': 'PARAFINO DEFEATED',
             'summary_title_failed': 'PARAFINO ESCAPED',
             'stat_1_label': 'ZONE HITS',
@@ -157,11 +200,15 @@ class VillainBookends(Mode):
             'state_var': 'parafino_state',
             'song': 'play_song_19',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Hit upper targets to wake the three heads.
+        #   intro_2: Lit saucers collect jackpots.
+        #   intro_3: The matching saucer scores double.
         'cerberus': {
             'title': 'CERBERUS',
-            'intro_1': 'Hit upper targets to wake the three heads.',
-            'intro_2': 'Lit saucers collect jackpots.',
-            'intro_3': 'The matching saucer scores double.',
+            'intro_1': 'Wake Heads with upper targets.',
+            'intro_2': 'Lit Saucers score JACKPOTS',
+            'intro_3': 'Flashing Saucers score double.',
             'summary_title_complete': 'CERBERUS DEFEATED',
             'summary_title_failed': 'CERBERUS ESCAPED',
             'stat_1_label': 'TARGETS',
@@ -172,26 +219,35 @@ class VillainBookends(Mode):
             'state_var': 'cerberus_state',
             'song': 'play_song_9',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Multiball erupts across the playfield.
+        #   intro_2: Spinners build the Vulcan Jackpot.
+        #   intro_3: Right drops collect. Upper targets add balls.
+        #   stat_2_label: BONUS BANKED
         'vulcan': {
             'title': 'VULCAN',
-            'intro_1': 'Multiball erupts across the playfield.',
-            'intro_2': 'Spinners build the Vulcan Jackpot.',
-            'intro_3': 'Right drops collect. Upper targets add balls.',
+            'intro_1': 'Eruption multiball.',
+            'intro_2': 'Spinners build RIGHT DROP JACKPOT.',
+            'intro_3': 'Upper Targets for ADD-A-BALL.',
             'summary_title_complete': 'VULCAN DEFEATED',
             'summary_title_failed': 'VULCAN ESCAPED',
             'stat_1_label': 'JACKPOTS',
             'stat_1_var': 'vulcan_jackpots_collected',
-            'stat_2_label': 'BONUS BANKED',
+            'stat_2_label': 'BANKED',
             'stat_2_var': 'vulcan_bonus',
             'points_var': 'active_mode_points',
             'state_var': 'vulcan_state',
             'song': 'play_song_15',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Diana takes aim with Trubble's arrows.
+        #   intro_2: Use the post-release timed shot.
+        #   intro_3: Hit the arrow target before time runs out.
         'diana': {
             'title': 'DIANA',
-            'intro_1': "Diana takes aim with Trubble's arrows.",
-            'intro_2': 'Use the post-release timed shot.',
-            'intro_3': 'Hit the arrow target before time runs out.',
+            'intro_1': 'Diana takes aim.',
+            'intro_2': 'LEFT ROOF EXIT for UPPOST shot.',
+            'intro_3': 'Limited flips to make shots',
             'summary_title_complete': 'DIANA DEFEATED',
             'summary_title_failed': 'DIANA ESCAPED',
             'stat_1_label': 'ROUNDS',
@@ -202,11 +258,15 @@ class VillainBookends(Mode):
             'state_var': 'diana_state',
             'song': 'play_song_26',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: The center web target is the Cyclops Eye.
+        #   intro_2: You have limited flips. Drops add flips.
+        #   intro_3: Hit the Eye for remaining flips x 100K.
         'cyclops': {
             'title': 'CYCLOPS',
-            'intro_1': 'The center web target is the Cyclops Eye.',
-            'intro_2': 'You have limited flips. Drops add flips.',
-            'intro_3': 'Hit the Eye for remaining flips x 100K.',
+            'intro_1': 'Eye is center web.',
+            'intro_2': 'Flips are limited.',
+            'intro_3': 'Drops add flips.',
             'summary_title_complete': 'CYCLOPS DEFEATED',
             'summary_title_failed': 'CYCLOPS ESCAPED',
             'stat_1_label': 'BEST JP',
@@ -217,14 +277,19 @@ class VillainBookends(Mode):
             'state_var': 'cyclops_state',
             'song': 'play_song_14',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Drop targets build the Centaur Jackpot.
+        #   intro_2: Four drops open the gate to the roof.
+        #   intro_3: Exit left and hit the staged rubber shot.
+        #   stat_1_label: DROPS DOWN
         'centaur': {
             'title': 'CENTAUR CHARGE',
-            'intro_1': 'Drop targets build the Centaur Jackpot.',
-            'intro_2': 'Four drops open the gate to the roof.',
-            'intro_3': 'Exit left and hit the staged rubber shot.',
+            'intro_1': 'Drops build JP.',
+            'intro_2': 'Four drops open roof.',
+            'intro_3': 'Exit left for final.',
             'summary_title_complete': 'CENTAUR TRAPPED',
             'summary_title_failed': 'CENTAUR ESCAPED',
-            'stat_1_label': 'DROPS DOWN',
+            'stat_1_label': 'DROPS',
             'stat_1_var': 'centaur_drops_down',
             'stat_2_label': 'BEST JP',
             'stat_2_var': 'centaur_best_jackpot',
@@ -232,14 +297,19 @@ class VillainBookends(Mode):
             'state_var': 'centaur_state',
             'song': 'play_song_14',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Kingpin is running the Crime Wave.
+        #   intro_2: Clear areas and collect Daily Bugle jackpots.
+        #   intro_3: Use add-a-ball to keep the operation alive.
+        #   stat_1_label: AREAS CLEARED
         'kingpin': {
             'title': 'KINGPIN',
-            'intro_1': 'Kingpin is running the Crime Wave.',
-            'intro_2': 'Clear areas and collect Daily Bugle jackpots.',
-            'intro_3': 'Use add-a-ball to keep the operation alive.',
+            'intro_1': 'Clear crime areas.',
+            'intro_2': 'Cash Bugle jackpots.',
+            'intro_3': 'Add balls to survive.',
             'summary_title_complete': 'KINGPIN DEFEATED',
             'summary_title_failed': 'KINGPIN ESCAPED',
-            'stat_1_label': 'AREAS CLEARED',
+            'stat_1_label': 'AREAS',
             'stat_1_var': 'kingpin_areas_cleared',
             'stat_2_label': 'MAX BALLS',
             'stat_2_var': 'kingpin_max_balls',
@@ -247,27 +317,38 @@ class VillainBookends(Mode):
             'state_var': 'kingpin_state',
             'song': 'play_song_3',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: The Human Flies are framing Spider-Man.
+        #   intro_2: Hit paired wall-crawler shots before they move.
+        #   intro_3: Clear both flies to stop the frame-up.
+        #   stat_2_label: MAJOR HITS
         'human_flies': {
             'title': 'HUMAN FLIES',
-            'intro_1': 'The Human Flies are framing Spider-Man.',
-            'intro_2': 'Hit paired wall-crawler shots before they move.',
-            'intro_3': 'Clear both flies to stop the frame-up.',
+            'intro_1': 'Stop the frame-up.',
+            'intro_2': 'Hit paired shots.',
+            'intro_3': 'Clear both flies.',
             'summary_title_complete': 'HUMAN FLIES CAUGHT',
             'summary_title_failed': 'HUMAN FLIES ESCAPED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'MAJOR HITS',
+            'stat_2_label': 'MAJORS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'human_flies_state',
             'song': 'play_song_27',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   title: FIFTH AVENUE PHANTOM
+        #   intro_1: Drop the right bank to reveal the Phantom.
+        #   intro_2: Catch him while the hidden shot is lit.
+        #   intro_3: Early catches score bigger jackpots.
+        #   summary_title_complete: PHANTOM CAPTURED
         'fifth_avenue_phantom': {
-            'title': 'FIFTH AVENUE PHANTOM',
-            'intro_1': 'Drop the right bank to reveal the Phantom.',
-            'intro_2': 'Catch him while the hidden shot is lit.',
-            'intro_3': 'Early catches score bigger jackpots.',
-            'summary_title_complete': 'PHANTOM CAPTURED',
+            'title': '5TH AVE PHANTOM',
+            'intro_1': 'Drop right bank.',
+            'intro_2': 'Reveal the hideout.',
+            'intro_3': 'Catch him fast.',
+            'summary_title_complete': 'PHANTOM CAUGHT',
             'summary_title_failed': 'PHANTOM VANISHED',
             'stat_1_label': 'JACKPOTS',
             'stat_1_var': 'fifth_avenue_phantom_jackpots',
@@ -277,12 +358,17 @@ class VillainBookends(Mode):
             'state_var': 'fifth_avenue_phantom_state',
             'song': 'play_song_14',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Work the crime zones: drops, pops, and right bank.
+        #   intro_2: Zone hits light upper-target jackpots.
+        #   intro_3: Collect all three, then hit OX at center web.
+        #   summary_title_complete: THE GANG IS BROKEN
         'enforcers': {
             'title': 'ENFORCERS / OX',
-            'intro_1': 'Work the crime zones: drops, pops, and right bank.',
-            'intro_2': 'Zone hits light upper-target jackpots.',
-            'intro_3': 'Collect all three, then hit OX at center web.',
-            'summary_title_complete': 'THE GANG IS BROKEN',
+            'intro_1': 'Work crime zones.',
+            'intro_2': 'Light upper jackpots.',
+            'intro_3': 'Hit OX at center web.',
+            'summary_title_complete': 'GANG BROKEN',
             'summary_title_failed': 'OX GOT AWAY',
             'stat_1_label': 'UPPER JPS',
             'stat_1_var': 'enforcers_upper_jackpots',
@@ -292,41 +378,55 @@ class VillainBookends(Mode):
             'state_var': 'enforcers_state',
             'song': 'play_song_14',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Hit drops to build the Diamond Jackpot.
+        #   intro_2: Complete the 5-bank to start saucer chase.
+        #   intro_3: Star rollover lights all saucers briefly.
+        #   stat_2_label: BONUS BANKED
         'diamond_smugglers': {
             'title': 'DIAMOND SMUGGLERS',
-            'intro_1': 'Hit drops to build the Diamond Jackpot.',
-            'intro_2': 'Complete the 5-bank to start saucer chase.',
-            'intro_3': 'Star rollover lights all saucers briefly.',
+            'intro_1': 'Drops build Diamonds.',
+            'intro_2': '5-bank starts chase.',
+            'intro_3': 'STAR lights saucers.',
             'summary_title_complete': 'SMUGGLERS BUSTED',
             'summary_title_failed': 'SMUGGLERS ESCAPED',
             'stat_1_label': 'SHIPMENTS',
             'stat_1_var': 'active_mode_major_hits',
-            'stat_2_label': 'BONUS BANKED',
+            'stat_2_label': 'BANKED',
             'stat_2_var': 'diamond_bonus',
             'points_var': 'active_mode_points',
             'state_var': 'diamond_smugglers_state',
             'song': 'play_song_26',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Pardo commands a mystic performance.
+        #   intro_2: Complete the moving act shots.
+        #   intro_3: Break the control before the act changes.
+        #   stat_2_label: MAJOR HITS
         'pardo': {
             'title': 'PARDO',
-            'intro_1': 'Pardo commands a mystic performance.',
-            'intro_2': 'Complete the moving act shots.',
-            'intro_3': 'Break the control before the act changes.',
+            'intro_1': 'Pardo takes control.',
+            'intro_2': 'Hit moving acts.',
+            'intro_3': 'Break the spell.',
             'summary_title_complete': 'PARDO DEFEATED',
             'summary_title_failed': 'PARDO ESCAPED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'MAJOR HITS',
+            'stat_2_label': 'MAJORS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'pardo_state',
             'song': 'play_song_13',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: The Fakir hides the real target.
+        #   intro_2: Spinner briefly reveals the true shot.
+        #   intro_3: Wrong shots feed the illusion.
         'fakir': {
             'title': 'THE FAKIR',
-            'intro_1': 'The Fakir hides the real target.',
-            'intro_2': 'Spinner briefly reveals the true shot.',
-            'intro_3': 'Wrong shots feed the illusion.',
+            'intro_1': 'Find the true shot.',
+            'intro_2': 'Spinner reveals it.',
+            'intro_3': 'Wrong shots confuse.',
             'summary_title_complete': 'FAKIR DEFEATED',
             'summary_title_failed': 'FAKIR ESCAPED',
             'stat_1_label': 'GOOD SHOTS',
@@ -337,59 +437,79 @@ class VillainBookends(Mode):
             'state_var': 'fakir_state',
             'song': 'play_song_10',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: The Scarlet Sorcerer summons strange magic.
+        #   intro_2: Hit the lit mystic shots to break the spell.
+        #   intro_3: Complete the pattern before the curse spreads.
+        #   stat_2_label: MAJOR HITS
         'scarlet_sorcerer': {
             'title': 'SCARLET SORCERER',
-            'intro_1': 'The Scarlet Sorcerer summons strange magic.',
-            'intro_2': 'Hit the lit mystic shots to break the spell.',
-            'intro_3': 'Complete the pattern before the curse spreads.',
+            'intro_1': 'Sorcery spreads.',
+            'intro_2': 'Hit mystic shots.',
+            'intro_3': 'Break the curse.',
             'summary_title_complete': 'SORCERER DEFEATED',
             'summary_title_failed': 'SORCERER ESCAPED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'MAJOR HITS',
+            'stat_2_label': 'MAJORS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'scarlet_sorcerer_state',
             'song': 'play_song_11',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: The Super Swami bends minds across the city.
+        #   intro_2: Follow the moving shot and break his control.
+        #   intro_3: Complete the sequence to stop the trance.
+        #   stat_2_label: BONUS BANKED
         'super_swami': {
             'title': 'SUPER SWAMI',
-            'intro_1': 'The Super Swami bends minds across the city.',
-            'intro_2': 'Follow the moving shot and break his control.',
-            'intro_3': 'Complete the sequence to stop the trance.',
+            'intro_1': 'Swami bends minds.',
+            'intro_2': 'Follow moving shots.',
+            'intro_3': 'Stop the trance.',
             'summary_title_complete': 'SWAMI DEFEATED',
             'summary_title_failed': 'SWAMI ESCAPED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'BONUS BANKED',
+            'stat_2_label': 'BANKED',
             'stat_2_var': 'super_swami_bonus',
             'points_var': 'active_mode_points',
             'state_var': 'super_swami_state',
             'song': 'play_song_12',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Frog Ghosts slip through the Fifth Dimension.
+        #   intro_2: Hit the haunted shots before they move.
+        #   intro_3: Clear the ghosts and seal the rift.
+        #   stat_2_label: MAJOR HITS
         'frog_ghosts': {
             'title': 'FROG GHOSTS',
-            'intro_1': 'Frog Ghosts slip through the Fifth Dimension.',
-            'intro_2': 'Hit the haunted shots before they move.',
-            'intro_3': 'Clear the ghosts and seal the rift.',
+            'intro_1': 'Ghosts slip loose.',
+            'intro_2': 'Hit haunted shots.',
+            'intro_3': 'Seal the rift.',
             'summary_title_complete': 'GHOSTS BANISHED',
             'summary_title_failed': 'GHOSTS VANISHED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'MAJOR HITS',
+            'stat_2_label': 'MAJORS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'frog_ghosts_state',
             'song': 'play_song_24',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Noah Boddy vanishes from sight.
+        #   intro_2: Use upper clues to find the hidden target.
+        #   intro_3: Hit the true drop before he disappears.
+        #   stat_1_label: UPPER HITS
         'noah_boddy': {
             'title': 'DR. NOAH BODDY',
-            'intro_1': 'Noah Boddy vanishes from sight.',
-            'intro_2': 'Use upper clues to find the hidden target.',
-            'intro_3': 'Hit the true drop before he disappears.',
+            'intro_1': 'Noah Boddy vanished.',
+            'intro_2': 'Use upper clues.',
+            'intro_3': 'Find the true drop.',
             'summary_title_complete': 'NOAH BODDY FOUND',
             'summary_title_failed': 'NOAH BODDY ESCAPED',
-            'stat_1_label': 'UPPER HITS',
+            'stat_1_label': 'UPPER',
             'stat_1_var': 'noah_boddy_upper_target_hits',
             'stat_2_label': 'BEST JP',
             'stat_2_var': 'noah_boddy_best_jackpot',
@@ -397,41 +517,56 @@ class VillainBookends(Mode):
             'state_var': 'noah_boddy_state',
             'song': 'play_song_25',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Magnetic force pulls shots around the city.
+        #   intro_2: Use the spinner to stabilize the field.
+        #   intro_3: Cash the lit shot before it moves.
+        #   stat_2_label: MAJOR HITS
         'dr_magneto': {
             'title': 'DR. MAGNETO',
-            'intro_1': 'Magnetic force pulls shots around the city.',
-            'intro_2': 'Use the spinner to stabilize the field.',
-            'intro_3': 'Cash the lit shot before it moves.',
+            'intro_1': 'Magneto moves shots.',
+            'intro_2': 'Spinner stabilizes.',
+            'intro_3': 'Cash the lit shot.',
             'summary_title_complete': 'DR. MAGNETO DEFEATED',
             'summary_title_failed': 'DR. MAGNETO ESCAPED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'MAJOR HITS',
+            'stat_2_label': 'MAJORS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'dr_magneto_state',
             'song': 'play_song_27',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   title: PROFESSOR PRETORIS
+        #   intro_1: Pretoris is shrinking the city.
+        #   intro_2: Solve the shot puzzle before the ray fires.
+        #   intro_3: Beat the sequence and restore the landmark.
+        #   stat_2_label: MAJOR HITS
         'professor_pretoris': {
-            'title': 'PROFESSOR PRETORIS',
-            'intro_1': 'Pretoris is shrinking the city.',
-            'intro_2': 'Solve the shot puzzle before the ray fires.',
-            'intro_3': 'Beat the sequence and restore the landmark.',
+            'title': 'PROF. PRETORIS',
+            'intro_1': 'Pretoris shrinks all.',
+            'intro_2': 'Solve the shot puzzle.',
+            'intro_3': 'Restore landmark.',
             'summary_title_complete': 'PRETORIS STOPPED',
             'summary_title_failed': 'PRETORIS ESCAPED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'MAJOR HITS',
+            'stat_2_label': 'MAJORS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'professor_pretoris_state',
             'song': 'play_song_28',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Doctor Dumpty has a fragile plan.
+        #   intro_2: Build value without cracking the sequence.
+        #   intro_3: Wrong shots break the egg.
         'doctor_dumpty': {
             'title': 'DOCTOR DUMPTY',
-            'intro_1': 'Doctor Dumpty has a fragile plan.',
-            'intro_2': 'Build value without cracking the sequence.',
-            'intro_3': 'Wrong shots break the egg.',
+            'intro_1': 'Build without cracks.',
+            'intro_2': 'Wrong shots break it.',
+            'intro_3': 'Cash before it falls.',
             'summary_title_complete': 'DOCTOR DUMPTY DEFEATED',
             'summary_title_failed': 'DOCTOR DUMPTY ESCAPED',
             'stat_1_label': 'JACKPOTS',
@@ -442,326 +577,440 @@ class VillainBookends(Mode):
             'state_var': 'doctor_dumpty_state',
             'song': 'play_song_7',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Von Schlick has slicked the playfield.
+        #   intro_2: Control the sequence before shots slip away.
+        #   intro_3: Finish the pattern to end the oil scheme.
+        #   stat_2_label: MAJOR HITS
         'dr_von_schlick': {
             'title': 'DR. VON SCHLICK',
-            'intro_1': 'Von Schlick has slicked the playfield.',
-            'intro_2': 'Control the sequence before shots slip away.',
-            'intro_3': 'Finish the pattern to end the oil scheme.',
+            'intro_1': 'Slick shots slide.',
+            'intro_2': 'Control the pattern.',
+            'intro_3': 'End the oil scheme.',
             'summary_title_complete': 'SCHLICK STOPPED',
             'summary_title_failed': 'SCHLICK ESCAPED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'MAJOR HITS',
+            'stat_2_label': 'MAJORS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'dr_von_schlick_state',
             'song': 'play_song_8',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   title: RADIATION SPECIALIST
+        #   intro_1: Radiation is spreading across the city.
+        #   intro_2: Hit charged shots to contain it.
+        #   intro_3: Finish the sequence before the warning peaks.
+        #   stat_2_label: BONUS BANKED
         'radiation_specialist': {
-            'title': 'RADIATION SPECIALIST',
-            'intro_1': 'Radiation is spreading across the city.',
-            'intro_2': 'Hit charged shots to contain it.',
-            'intro_3': 'Finish the sequence before the warning peaks.',
+            'title': 'RADIATION',
+            'intro_1': 'Radiation spreads.',
+            'intro_2': 'Hit charged shots.',
+            'intro_3': 'Contain the warning.',
             'summary_title_complete': 'RADIATION CONTAINED',
             'summary_title_failed': 'RADIATION ESCAPED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'BONUS BANKED',
+            'stat_2_label': 'BANKED',
             'stat_2_var': 'radiation_bonus',
             'points_var': 'active_mode_points',
             'state_var': 'radiation_specialist_state',
             'song': 'play_song_15',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Dr. Zap chains electricity across shots.
+        #   intro_2: Follow the lit charge pattern.
+        #   intro_3: Break the circuit before it overloads.
+        #   stat_2_label: MAJOR HITS
         'dr_zap': {
             'title': 'DR. ZAP',
-            'intro_1': 'Dr. Zap chains electricity across shots.',
-            'intro_2': 'Follow the lit charge pattern.',
-            'intro_3': 'Break the circuit before it overloads.',
+            'intro_1': 'Zap chains shots.',
+            'intro_2': 'Follow the charge.',
+            'intro_3': 'Break the circuit.',
             'summary_title_complete': 'DR. ZAP DEFEATED',
             'summary_title_failed': 'DR. ZAP ESCAPED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'MAJOR HITS',
+            'stat_2_label': 'MAJORS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'dr_zap_state',
             'song': 'play_song_9',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Doctor Cool freezes timers and shots.
+        #   intro_2: Thaw the lit shots with spinner and targets.
+        #   intro_3: Cash the jackpot before everything freezes.
+        #   stat_2_label: MAJOR HITS
         'doctor_cool': {
             'title': 'DOCTOR COOL',
-            'intro_1': 'Doctor Cool freezes timers and shots.',
-            'intro_2': 'Thaw the lit shots with spinner and targets.',
-            'intro_3': 'Cash the jackpot before everything freezes.',
+            'intro_1': 'Cool freezes shots.',
+            'intro_2': 'Thaw with spinner.',
+            'intro_3': 'Cash before freeze.',
             'summary_title_complete': 'DOCTOR COOL DEFEATED',
             'summary_title_failed': 'DOCTOR COOL ESCAPED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'MAJOR HITS',
+            'stat_2_label': 'MAJORS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'doctor_cool_state',
             'song': 'play_song_8',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: The Snowman is freezing the city.
+        #   intro_2: Thaw frozen shots with spinner and targets.
+        #   intro_3: Break the freeze before time runs out.
+        #   stat_2_label: MAJOR HITS
         'snowman': {
             'title': 'THE SNOWMAN',
-            'intro_1': 'The Snowman is freezing the city.',
-            'intro_2': 'Thaw frozen shots with spinner and targets.',
-            'intro_3': 'Break the freeze before time runs out.',
+            'intro_1': 'Snowman freezes all.',
+            'intro_2': 'Thaw frozen shots.',
+            'intro_3': 'Break the freeze.',
             'summary_title_complete': 'SNOWMAN MELTED',
             'summary_title_failed': 'SNOWMAN ESCAPED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'MAJOR HITS',
+            'stat_2_label': 'MAJORS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'snowman_state',
             'song': 'play_song_20',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: The Ice Monster blocks the city in frozen chaos.
+        #   intro_2: Hit thaw shots to open scoring.
+        #   intro_3: Collect the jackpot before everything freezes.
+        #   stat_2_label: MAJOR HITS
         'ice_monster': {
             'title': 'THE ICE MONSTER',
-            'intro_1': 'The Ice Monster blocks the city in frozen chaos.',
-            'intro_2': 'Hit thaw shots to open scoring.',
-            'intro_3': 'Collect the jackpot before everything freezes.',
+            'intro_1': 'Ice blocks the city.',
+            'intro_2': 'Hit thaw shots.',
+            'intro_3': 'Cash before freeze.',
             'summary_title_complete': 'ICE MONSTER STOPPED',
             'summary_title_failed': 'ICE MONSTER ESCAPED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'MAJOR HITS',
+            'stat_2_label': 'MAJORS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'ice_monster_state',
             'song': 'play_song_21',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Dr. Manta traps the city beneath the waves.
+        #   intro_2: Escape saucer traps with lit rescue shots.
+        #   intro_3: Collect the jackpot before he dives again.
+        #   stat_2_label: MAJOR HITS
         'dr_manta': {
             'title': 'DR. MANTA',
-            'intro_1': 'Dr. Manta traps the city beneath the waves.',
-            'intro_2': 'Escape saucer traps with lit rescue shots.',
-            'intro_3': 'Collect the jackpot before he dives again.',
+            'intro_1': 'Manta dives deep.',
+            'intro_2': 'Escape saucer traps.',
+            'intro_3': 'Hit rescue shots.',
             'summary_title_complete': 'DR. MANTA DEFEATED',
             'summary_title_failed': 'DR. MANTA ESCAPED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'MAJOR HITS',
+            'stat_2_label': 'MAJORS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'dr_manta_state',
             'song': 'play_song_28',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Doctor Atlantean rules from a lost city.
+        #   intro_2: Hit sky shots to bring the city down.
+        #   intro_3: Complete the attack before he escapes.
+        #   stat_2_label: MAJOR HITS
         'doctor_atlantean': {
             'title': 'DOCTOR ATLANTEAN',
-            'intro_1': 'Doctor Atlantean rules from a lost city.',
-            'intro_2': 'Hit sky shots to bring the city down.',
-            'intro_3': 'Complete the attack before he escapes.',
+            'intro_1': 'Lost city rises.',
+            'intro_2': 'Hit sky shots.',
+            'intro_3': 'Bring it down.',
             'summary_title_complete': 'ATLANTEAN DEFEATED',
             'summary_title_failed': 'ATLANTEAN ESCAPED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'MAJOR HITS',
+            'stat_2_label': 'MAJORS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'doctor_atlantean_state',
             'song': 'play_song_16',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Sky Master attacks from above the clouds.
+        #   intro_2: Find the moving flight path.
+        #   intro_3: Hit the lit shots and ground his aircraft.
+        #   stat_2_label: MAJOR HITS
         'sky_master': {
             'title': 'SKY MASTER',
-            'intro_1': 'Sky Master attacks from above the clouds.',
-            'intro_2': 'Find the moving flight path.',
-            'intro_3': 'Hit the lit shots and ground his aircraft.',
+            'intro_1': 'Attack from above.',
+            'intro_2': 'Find flight path.',
+            'intro_3': 'Ground his aircraft.',
             'summary_title_complete': 'SKY MASTER GROUNDED',
             'summary_title_failed': 'SKY MASTER ESCAPED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'MAJOR HITS',
+            'stat_2_label': 'MAJORS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'sky_master_state',
             'song': 'play_song_17',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: The Plutonians have landed.
+        #   intro_2: Hit invasion shots before they reposition.
+        #   intro_3: Stop the attack and save the city.
+        #   stat_2_label: BONUS BANKED
         'plutonians': {
             'title': 'THE PLUTONIANS',
-            'intro_1': 'The Plutonians have landed.',
-            'intro_2': 'Hit invasion shots before they reposition.',
-            'intro_3': 'Stop the attack and save the city.',
+            'intro_1': 'Plutonians invade.',
+            'intro_2': 'Hit invasion shots.',
+            'intro_3': 'Stop the attack.',
             'summary_title_complete': 'PLUTONIANS REPELLED',
             'summary_title_failed': 'PLUTONIANS ESCAPED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'BONUS BANKED',
+            'stat_2_label': 'BANKED',
             'stat_2_var': 'plutonians_bonus',
             'points_var': 'active_mode_points',
             'state_var': 'plutonians_state',
             'song': 'play_song_19',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: The Antarcticans strike from the ice.
+        #   intro_2: Hit rescue shots before the freeze spreads.
+        #   intro_3: Finish the sequence and escape the trap.
+        #   stat_2_label: MAJOR HITS
         'antarcticans': {
             'title': 'THE ANTARCTICANS',
-            'intro_1': 'The Antarcticans strike from the ice.',
-            'intro_2': 'Hit rescue shots before the freeze spreads.',
-            'intro_3': 'Finish the sequence and escape the trap.',
+            'intro_1': 'Ice invaders strike.',
+            'intro_2': 'Hit rescue shots.',
+            'intro_3': 'Escape the freeze.',
             'summary_title_complete': 'ANTARCTICANS STOPPED',
             'summary_title_failed': 'ANTARCTICANS ESCAPED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'MAJOR HITS',
+            'stat_2_label': 'MAJORS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'antarcticans_state',
             'song': 'play_song_18',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Charles Cameo hides behind disguises.
+        #   intro_2: Identify the real shot pattern.
+        #   intro_3: Shoot the true villain before he changes roles.
+        #   stat_2_label: MAJOR HITS
         'charles_cameo': {
             'title': 'CHARLES CAMEO',
-            'intro_1': 'Charles Cameo hides behind disguises.',
-            'intro_2': 'Identify the real shot pattern.',
-            'intro_3': 'Shoot the true villain before he changes roles.',
+            'intro_1': 'Cameo wears disguises.',
+            'intro_2': 'Find the real shot.',
+            'intro_3': 'Catch him changing.',
             'summary_title_complete': 'CHARLES CAMEO DEFEATED',
             'summary_title_failed': 'CHARLES CAMEO ESCAPED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'MAJOR HITS',
+            'stat_2_label': 'MAJORS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'charles_cameo_state',
             'song': 'play_song_28',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Brutus is guarding the hideout.
+        #   intro_2: Break through his cover with lit shots.
+        #   intro_3: Finish the fight before he blocks the route.
+        #   stat_2_label: MAJOR HITS
         'brutus': {
             'title': 'BRUTUS',
-            'intro_1': 'Brutus is guarding the hideout.',
-            'intro_2': 'Break through his cover with lit shots.',
-            'intro_3': 'Finish the fight before he blocks the route.',
+            'intro_1': 'Brutus guards cover.',
+            'intro_2': 'Break through shots.',
+            'intro_3': 'Finish the fight.',
             'summary_title_complete': 'BRUTUS BEATEN',
             'summary_title_failed': 'BRUTUS ESCAPED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'MAJOR HITS',
+            'stat_2_label': 'MAJORS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'brutus_state',
             'song': 'play_song_23',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Eigor is smashing through the city.
+        #   intro_2: Hit heavy shots to wear him down.
+        #   intro_3: Collect the jackpot before he escapes.
+        #   stat_2_label: MAJOR HITS
         'eigor': {
             'title': 'EIGOR',
-            'intro_1': 'Eigor is smashing through the city.',
-            'intro_2': 'Hit heavy shots to wear him down.',
-            'intro_3': 'Collect the jackpot before he escapes.',
+            'intro_1': 'Eigor smashes city.',
+            'intro_2': 'Hit heavy shots.',
+            'intro_3': 'Cash before escape.',
             'summary_title_complete': 'EIGOR STOPPED',
             'summary_title_failed': 'EIGOR ESCAPED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'MAJOR HITS',
+            'stat_2_label': 'MAJORS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'eigor_state',
             'song': 'play_song_10',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: The Fly crawls across the city walls.
+        #   intro_2: Track the moving shot and cut him off.
+        #   intro_3: Catch him before he slips away.
+        #   stat_2_label: MAJOR HITS
         'the_fly': {
             'title': 'THE FLY',
-            'intro_1': 'The Fly crawls across the city walls.',
-            'intro_2': 'Track the moving shot and cut him off.',
-            'intro_3': 'Catch him before he slips away.',
+            'intro_1': 'The Fly crawls fast.',
+            'intro_2': 'Track moving shots.',
+            'intro_3': 'Catch him quickly.',
             'summary_title_complete': 'FLY CAUGHT',
             'summary_title_failed': 'FLY ESCAPED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'MAJOR HITS',
+            'stat_2_label': 'MAJORS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'the_fly_state',
             'song': 'play_song_9',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Swamp Reptiles are loose in the city.
+        #   intro_2: Hit pops to light Rampage Jackpots.
+        #   intro_3: Collect the Super Jackpot at the saucer.
+        #   stat_2_label: BONUS BANKED
         'swamp_reptiles': {
             'title': 'SWAMP REPTILES',
-            'intro_1': 'Swamp Reptiles are loose in the city.',
-            'intro_2': 'Hit pops to light Rampage Jackpots.',
-            'intro_3': 'Collect the Super Jackpot at the saucer.',
+            'intro_1': 'Reptiles run wild.',
+            'intro_2': 'Pops light jackpots.',
+            'intro_3': 'Saucer scores Super.',
             'summary_title_complete': 'REPTILES CAPTURED',
             'summary_title_failed': 'REPTILES ESCAPED',
             'stat_1_label': 'RAMPAGE JPS',
             'stat_1_var': 'swamp_reptiles_jackpots_collected',
-            'stat_2_label': 'BONUS BANKED',
+            'stat_2_label': 'BANKED',
             'stat_2_var': 'swamp_bonus',
             'points_var': 'active_mode_points',
             'state_var': 'swamp_reptiles_state',
             'song': 'play_song_14',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   title: PHANTOM FROM THE DEPTHS OF TIME
+        #   intro_1: The Phantom rises from another age.
+        #   intro_2: Follow the time-tossed shots.
+        #   intro_3: Complete the sequence before he fades away.
+        #   summary_title_complete: PHANTOM DEFEATED
+        #   summary_title_failed: PHANTOM ESCAPED
+        #   stat_2_label: MAJOR HITS
         'phantom_from_depths_of_time': {
-            'title': 'PHANTOM FROM THE DEPTHS OF TIME',
-            'intro_1': 'The Phantom rises from another age.',
-            'intro_2': 'Follow the time-tossed shots.',
-            'intro_3': 'Complete the sequence before he fades away.',
-            'summary_title_complete': 'PHANTOM DEFEATED',
-            'summary_title_failed': 'PHANTOM ESCAPED',
+            'title': 'TIME PHANTOM',
+            'intro_1': 'Time Phantom rises.',
+            'intro_2': 'Follow time shots.',
+            'intro_3': 'Stop him before fade.',
+            'summary_title_complete': 'TIME PHANTOM BEATEN',
+            'summary_title_failed': 'TIME PHANTOM ESCAPED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'MAJOR HITS',
+            'stat_2_label': 'MAJORS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'phantom_from_depths_of_time_state',
             'song': 'play_song_11',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Master Vine spreads across the playfield.
+        #   intro_2: Clear vine shots before they lock out.
+        #   intro_3: Stop the growth before it covers the city.
+        #   stat_2_label: MAJOR HITS
         'master_vine': {
             'title': 'MASTER VINE',
-            'intro_1': 'Master Vine spreads across the playfield.',
-            'intro_2': 'Clear vine shots before they lock out.',
-            'intro_3': 'Stop the growth before it covers the city.',
+            'intro_1': 'Vines spread fast.',
+            'intro_2': 'Clear vine shots.',
+            'intro_3': 'Stop the growth.',
             'summary_title_complete': 'MASTER VINE DEFEATED',
             'summary_title_failed': 'MASTER VINE ESCAPED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'MAJOR HITS',
+            'stat_2_label': 'MAJORS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'master_vine_state',
             'song': 'play_song_22',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Drop targets set the spinner value.
+        #   intro_2: Build the circuit, then rip the spinner.
+        #   intro_3: Complete a bank before the system shorts out.
+        #   stat_1_label: SPINNER VALUE
+        #   stat_2_label: BONUS BANKED
         'master_technician': {
             'title': 'MASTER TECHNICIAN',
-            'intro_1': 'Drop targets set the spinner value.',
-            'intro_2': 'Build the circuit, then rip the spinner.',
-            'intro_3': 'Complete a bank before the system shorts out.',
+            'intro_1': 'Drops set spinner.',
+            'intro_2': 'Build the circuit.',
+            'intro_3': 'Spin before short.',
             'summary_title_complete': 'TECHNICIAN STOPPED',
             'summary_title_failed': 'TECHNICIAN ESCAPED',
-            'stat_1_label': 'SPINNER VALUE',
+            'stat_1_label': 'SPIN VALUE',
             'stat_1_var': 'master_technician_spinner_value',
-            'stat_2_label': 'BONUS BANKED',
+            'stat_2_label': 'BANKED',
             'stat_2_var': 'technician_bonus',
             'points_var': 'active_mode_points',
             'state_var': 'master_technician_state',
             'song': 'play_song_14',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: The Micro-Men attack from every direction.
+        #   intro_2: Hit tiny targets before they scatter.
+        #   intro_3: Clear the swarm and restore the scale.
+        #   stat_2_label: MAJOR HITS
         'micro_men': {
             'title': 'MICRO-MEN',
-            'intro_1': 'The Micro-Men attack from every direction.',
-            'intro_2': 'Hit tiny targets before they scatter.',
-            'intro_3': 'Clear the swarm and restore the scale.',
+            'intro_1': 'Micro-Men swarm.',
+            'intro_2': 'Hit tiny targets.',
+            'intro_3': 'Clear the attack.',
             'summary_title_complete': 'MICRO-MEN STOPPED',
             'summary_title_failed': 'MICRO-MEN ESCAPED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'MAJOR HITS',
+            'stat_2_label': 'MAJORS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'micro_men_state',
             'song': 'play_song_12',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: The Grand Emperor commands the final attack.
+        #   intro_2: Hit invasion shots in order.
+        #   intro_3: Stop the command signal before it completes.
+        #   stat_2_label: MAJOR HITS
         'grand_emperor': {
             'title': 'GRAND EMPEROR',
-            'intro_1': 'The Grand Emperor commands the final attack.',
-            'intro_2': 'Hit invasion shots in order.',
-            'intro_3': 'Stop the command signal before it completes.',
+            'intro_1': 'Emperor commands all.',
+            'intro_2': 'Hit invasion shots.',
+            'intro_3': 'Stop the signal.',
             'summary_title_complete': 'EMPEROR DEFEATED',
             'summary_title_failed': 'EMPEROR ESCAPED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'MAJOR HITS',
+            'stat_2_label': 'MAJORS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'grand_emperor_state',
             'song': 'play_song_12',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Chapter 1 mini-wizard multiball.
+        #   intro_2: Collect surge jackpots and survive.
+        #   intro_3: Chapter case files raise the values.
         'sinister_surge': {
             'title': 'SINISTER SURGE',
-            'intro_1': 'Chapter 1 mini-wizard multiball.',
-            'intro_2': 'Collect surge jackpots and survive.',
-            'intro_3': 'Chapter case files raise the values.',
+            'intro_1': 'Mini-wizard MB.',
+            'intro_2': 'Clear surge areas.',
+            'intro_3': 'Case files boost value.',
             'summary_title_complete': 'SINISTER SURGE CLEARED',
             'summary_title_failed': 'SINISTER SURGE LOST',
             'stat_1_label': 'HITS',
@@ -772,11 +1021,15 @@ class VillainBookends(Mode):
             'state_var': 'sinister_surge_state',
             'song': 'play_song_22',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Chapter 2 mini-wizard multiball.
+        #   intro_2: Escape the masterminds while multiball runs.
+        #   intro_3: Chapter case files raise the values.
         'mastermind_trap': {
             'title': 'MASTERMIND TRAP',
-            'intro_1': 'Chapter 2 mini-wizard multiball.',
-            'intro_2': 'Escape the masterminds while multiball runs.',
-            'intro_3': 'Chapter case files raise the values.',
+            'intro_1': 'Mastermind multiball.',
+            'intro_2': 'Complete trap shots.',
+            'intro_3': 'All traps light Super.',
             'summary_title_complete': 'MASTERMIND TRAP CLEARED',
             'summary_title_failed': 'MASTERMIND TRAP LOST',
             'stat_1_label': 'HITS',
@@ -787,11 +1040,15 @@ class VillainBookends(Mode):
             'state_var': 'mastermind_trap_state',
             'song': 'play_song_18',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Miss Trubble has unleashed her creations.
+        #   intro_2: Use roof targets, saucers, and staged drops.
+        #   intro_3: Survive multiball as long as you can.
         'trubble_unleashed': {
             'title': 'TRUBBLE UNLEASHED',
-            'intro_1': 'Miss Trubble has unleashed her creations.',
-            'intro_2': 'Use roof targets, saucers, and staged drops.',
-            'intro_3': 'Survive multiball as long as you can.',
+            'intro_1': 'Trubble unleashed!',
+            'intro_2': 'Hit targets/saucers.',
+            'intro_3': 'Stage drops for value.',
             'summary_title_complete': 'TRUBBLE CONTAINED',
             'summary_title_failed': 'TRUBBLE RUNS WILD',
             'stat_1_label': 'JACKPOTS',
@@ -802,11 +1059,15 @@ class VillainBookends(Mode):
             'state_var': 'trubble_unleashed_state',
             'song': 'play_song_14',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Decode the Plotter’s scheme.
+        #   intro_2: Build headlines and cash Daily Bugle supers.
+        #   intro_3: Chapter case files raise the values.
         'master_plan': {
             'title': 'THE PLOTTER - MASTER PLAN',
-            'intro_1': 'Decode the Plotter’s scheme.',
-            'intro_2': 'Build headlines and cash Daily Bugle supers.',
-            'intro_3': 'Chapter case files raise the values.',
+            'intro_1': 'Decode the scheme.',
+            'intro_2': 'Build headlines.',
+            'intro_3': 'Cash Bugle supers.',
             'summary_title_complete': 'MASTER PLAN EXPOSED',
             'summary_title_failed': 'PLOTTER ESCAPED',
             'stat_1_label': 'HEADLINES',
@@ -817,11 +1078,15 @@ class VillainBookends(Mode):
             'state_var': 'master_plan_state',
             'song': 'play_song_14',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Chapter 5 mini-wizard multiball.
+        #   intro_2: Break the curse during multiball.
+        #   intro_3: Chapter case files raise the values.
         'fifth_dimension_curse': {
             'title': 'FIFTH DIMENSION CURSE',
-            'intro_1': 'Chapter 5 mini-wizard multiball.',
-            'intro_2': 'Break the curse during multiball.',
-            'intro_3': 'Chapter case files raise the values.',
+            'intro_1': 'Curse multiball.',
+            'intro_2': 'Break mystic shots.',
+            'intro_3': 'Case files boost value.',
             'summary_title_complete': 'CURSE BROKEN',
             'summary_title_failed': 'CURSE ESCAPES',
             'stat_1_label': 'HITS',
@@ -832,11 +1097,15 @@ class VillainBookends(Mode):
             'state_var': 'fifth_dimension_curse_state',
             'song': 'play_song_16',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Chapter 6 mini-wizard multiball.
+        #   intro_2: Keep the lab under control.
+        #   intro_3: Chapter case files raise the values.
         'mad_science_meltdown': {
             'title': 'MAD SCIENCE MELTDOWN',
-            'intro_1': 'Chapter 6 mini-wizard multiball.',
-            'intro_2': 'Keep the lab under control.',
-            'intro_3': 'Chapter case files raise the values.',
+            'intro_1': 'Lab meltdown MB.',
+            'intro_2': 'Control experiments.',
+            'intro_3': 'Case files boost value.',
             'summary_title_complete': 'MELTDOWN STOPPED',
             'summary_title_failed': 'MELTDOWN SPREADS',
             'stat_1_label': 'HITS',
@@ -847,11 +1116,15 @@ class VillainBookends(Mode):
             'state_var': 'mad_science_meltdown_state',
             'song': 'play_song_15',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Chapter 7 mini-wizard multiball.
+        #   intro_2: Contain the elemental chaos.
+        #   intro_3: Chapter case files raise the values.
         'nature_strikes_back': {
             'title': 'NATURE STRIKES BACK',
-            'intro_1': 'Chapter 7 mini-wizard multiball.',
-            'intro_2': 'Contain the elemental chaos.',
-            'intro_3': 'Chapter case files raise the values.',
+            'intro_1': 'Nature attacks.',
+            'intro_2': 'Contain chaos shots.',
+            'intro_3': 'Case files boost value.',
             'summary_title_complete': 'NATURE CONTAINED',
             'summary_title_failed': 'NATURE BREAKS LOOSE',
             'stat_1_label': 'HITS',
@@ -862,11 +1135,16 @@ class VillainBookends(Mode):
             'state_var': 'nature_strikes_back_state',
             'song': 'play_song_20',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   title: INVASION FROM EVERYWHERE
+        #   intro_1: Chapter 8 mini-wizard multiball.
+        #   intro_2: Fight the lost-world invaders.
+        #   intro_3: Chapter case files raise the values.
         'invasion_from_everywhere': {
-            'title': 'INVASION FROM EVERYWHERE',
-            'intro_1': 'Chapter 8 mini-wizard multiball.',
-            'intro_2': 'Fight the lost-world invaders.',
-            'intro_3': 'Chapter case files raise the values.',
+            'title': 'LOST WORLD INVASION',
+            'intro_1': 'Invasion multiball.',
+            'intro_2': 'Fight lost worlds.',
+            'intro_3': 'Case files boost value.',
             'summary_title_complete': 'INVASION STOPPED',
             'summary_title_failed': 'INVASION CONTINUES',
             'stat_1_label': 'HITS',
@@ -877,11 +1155,16 @@ class VillainBookends(Mode):
             'state_var': 'invasion_from_everywhere_state',
             'song': 'play_song_19',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   title: WHO IS THE REAL VILLAIN?
+        #   intro_1: Chapter 9 mini-wizard multiball.
+        #   intro_2: Unmask the chaos while multiball runs.
+        #   intro_3: Chapter case files raise the values.
         'who_is_the_real_villain': {
-            'title': 'WHO IS THE REAL VILLAIN?',
-            'intro_1': 'Chapter 9 mini-wizard multiball.',
-            'intro_2': 'Unmask the chaos while multiball runs.',
-            'intro_3': 'Chapter case files raise the values.',
+            'title': 'REAL VILLAIN?',
+            'intro_1': 'Unmask the villain.',
+            'intro_2': 'Hit chaos shots.',
+            'intro_3': 'Case files boost value.',
             'summary_title_complete': 'VILLAIN REVEALED',
             'summary_title_failed': 'VILLAIN VANISHED',
             'stat_1_label': 'HITS',
@@ -892,11 +1175,16 @@ class VillainBookends(Mode):
             'state_var': 'who_is_the_real_villain_state',
             'song': 'play_song_21',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   title: TIME-TOSSED SHOWDOWN
+        #   intro_1: Chapter 10 mini-wizard multiball.
+        #   intro_2: Survive the time-tossed brawl.
+        #   intro_3: Chapter case files raise the values.
         'time_tossed_showdown': {
-            'title': 'TIME-TOSSED SHOWDOWN',
-            'intro_1': 'Chapter 10 mini-wizard multiball.',
-            'intro_2': 'Survive the time-tossed brawl.',
-            'intro_3': 'Chapter case files raise the values.',
+            'title': 'TIME SHOWDOWN',
+            'intro_1': 'Time-tossed battle.',
+            'intro_2': 'Survive multiball.',
+            'intro_3': 'Case files boost value.',
             'summary_title_complete': 'SHOWDOWN WON',
             'summary_title_failed': 'SHOWDOWN LOST',
             'stat_1_label': 'HITS',
@@ -907,14 +1195,19 @@ class VillainBookends(Mode):
             'state_var': 'time_tossed_showdown_state',
             'song': 'play_song_23',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: The citywide battle reaches its peak.
+        #   intro_2: Clear areas and collect Daily Bugle jackpots.
+        #   intro_3: Finish the final battle to save the city.
+        #   stat_1_label: AREAS CLEARED
         'final_showdown': {
             'title': 'FINAL SHOWDOWN',
-            'intro_1': 'The citywide battle reaches its peak.',
-            'intro_2': 'Clear areas and collect Daily Bugle jackpots.',
-            'intro_3': 'Finish the final battle to save the city.',
+            'intro_1': 'Final city battle.',
+            'intro_2': 'Clear all areas.',
+            'intro_3': 'Save the city.',
             'summary_title_complete': 'FINAL SHOWDOWN WON',
             'summary_title_failed': 'FINAL SHOWDOWN LOST',
-            'stat_1_label': 'AREAS CLEARED',
+            'stat_1_label': 'AREAS',
             'stat_1_var': 'final_showdown_areas_cleared',
             'stat_2_label': 'JACKPOTS',
             'stat_2_var': 'final_showdown_jackpots',
