@@ -276,16 +276,24 @@ class VillainProgression(Mode):
 
         # Chapter Select is only allowed at controlled ball-start stop points:
         # game start, or the next shooter-lane ball after a chapter/mini-wizard
-        # is completed. The actual chapter is chosen before the player plunges.
-        if self._safe_int(self.machine.game.player["chapter_select_needed"], 0) == 1:
-            self.delay.add(
-                name="chapter_select_at_shooter_lane",
-                ms=500,
-                callback=lambda: self.machine.events.post(
-                    "start_mode_chapter_select",
-                    chapter=self.machine.game.player["selected_chapter"],
-                ),
-            )
+        # is completed. If a summary is still holding the trough eject via
+        # queue_relay_player, do not start the carousel yet.
+        if (
+            self._safe_int(self.machine.game.player["chapter_select_needed"], 0) == 1
+            and self._safe_int(self.machine.game.player["chapter_select_waiting_for_summary"], 0) == 0
+        ):
+            self._schedule_chapter_select_at_shooter_lane()
+
+    def _schedule_chapter_select_at_shooter_lane(self):
+        self.delay.remove("chapter_select_at_shooter_lane")
+        self.delay.add(
+            name="chapter_select_at_shooter_lane",
+            ms=500,
+            callback=lambda: self.machine.events.post(
+                "start_mode_chapter_select",
+                chapter=self.machine.game.player["selected_chapter"],
+            ),
+        )
 
     def mode_stop(self, **kwargs):
         # Do not make progression decisions while stopping at ball_ending.
@@ -664,6 +672,14 @@ class VillainProgression(Mode):
             completed=1 if completed else 0,
         )
 
+        # Arm the controlled chapter-select drain before the summary starts.
+        # If the wizard-ending drain reaches the trough during the summary,
+        # the transition ball save replaces it without ending the ball, while
+        # queue_relay_player holds the trough eject until the summary-complete
+        # event below releases it.
+        player["chapter_select_waiting_for_summary"] = 1
+        self.machine.events.post("chapter_select_pending_drain", chapter_number=chapter_number, chapter_name=chapter["name"])
+
         self.machine.events.post(f"stop_mode_{mini_key}")
 
         self.delay.add(
@@ -867,6 +883,7 @@ class VillainProgression(Mode):
         player["villain_chapter"] = chapter_number
         player["chapter_select_needed"] = 0
         player["chapter_select_active"] = 0
+        player["chapter_select_waiting_for_summary"] = 0
 
         chapter = self.CHAPTERS[chapter_number - 1]
         self.machine.events.post(
@@ -1263,8 +1280,11 @@ class VillainProgression(Mode):
             self._safe_int(player[f"chapter_{chapter_number}_collected"], 0) == 1
             and self._safe_int(player["chapter_select_needed"], 0) == 1
         ):
+            self._release_chapter_select_summary_hold(mini_wizard=mini_key)
             self.machine.events.post("chapter_mini_wizard_completion_ignored_duplicate", mini_wizard=mini_key)
             return
+
+        self._release_chapter_select_summary_hold(mini_wizard=mini_key)
 
         player[f"{mini_key}_state"] = self.COMPLETED
         player[f"chapter_{chapter_number}_collected"] = 1
@@ -1286,7 +1306,7 @@ class VillainProgression(Mode):
 
         self._post_global_cleanup_events(reason="mini_wizard_completed")
         self.machine.events.post("chapter_comic_collected", chapter_number=chapter_number, chapter_name=chapter["name"])
-        self.machine.events.post("chapter_select_pending_drain", chapter_number=chapter_number, chapter_name=chapter["name"])
+        self.machine.events.post("chapter_select_transition_ready", chapter_number=chapter_number, chapter_name=chapter["name"])
         self.machine.events.post("chapter_mini_wizard_ended", mini_wizard=mini_key)
         self.machine.events.post("villain_mode_ended", villain=mini_key, villain_key=mini_key)
 
@@ -1298,6 +1318,15 @@ class VillainProgression(Mode):
 
         self._restore_state()
         self._schedule_case_files_restore(reason="mini_wizard_completed")
+
+    def _release_chapter_select_summary_hold(self, mini_wizard=None, **kwargs):
+        player = self.machine.game.player
+
+        if self._safe_int(player["chapter_select_waiting_for_summary"], 0) != 1:
+            return
+
+        player["chapter_select_waiting_for_summary"] = 0
+        self.machine.events.post("chapter_select_summary_complete", mini_wizard=mini_wizard)
 
     def _start_final_wizard(self, **kwargs):
         if self._safe_int(self.machine.game.player["final_wizard_ready"], 0) != 1:
