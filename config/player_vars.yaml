@@ -24,6 +24,9 @@ player_vars:
   chapter_select_active:
     initial_value: 0
     value_type: int
+  chapter_select_waiting_for_summary:
+    initial_value: 0
+    value_type: int
   chapter_unlock_deck_index:
     initial_value: 0
     value_type: int
