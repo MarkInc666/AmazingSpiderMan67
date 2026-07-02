@@ -307,7 +307,7 @@ shows:
   lower_spinner_flash_show:
     - duration: 100ms
       lights:
-        gi: 080800
+        gi: "080800"
     - duration: 100ms
       lights:
         gi: yellow
