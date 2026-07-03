@@ -12,7 +12,7 @@ mode:
 
 event_player:
   mode_chapter_select_started:
-    - play_song_11
+    - play_song_20
     - cmd_flippers_disable
     - cmd_autofire_coils_disable
 

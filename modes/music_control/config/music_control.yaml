@@ -132,7 +132,7 @@ sound_player:
       loops: -1
 
   play_music_song_26: 
-    intro_mild_2:
+    intro_mild:
       bus: music
       loops: -1
 
