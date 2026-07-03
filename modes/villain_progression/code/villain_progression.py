@@ -274,6 +274,15 @@ class VillainProgression(Mode):
 
         self._restore_state()
 
+        if (
+            self._safe_int(self.machine.game.player["chapter_mini_wizard_ready"], 0) == 1
+            and self._safe_int(self.machine.game.player["chapter_select_needed"], 0) == 0
+        ):
+            self._mini_wizard_ready_at_daily_bugle(
+                post_restore=False,
+                reason="ball_start_restore",
+            )
+
         # Chapter Select is only allowed at controlled ball-start stop points:
         # game start, or the next shooter-lane ball after a chapter/mini-wizard
         # is completed. If a summary is still holding the trough eject via
@@ -292,6 +301,23 @@ class VillainProgression(Mode):
             callback=lambda: self.machine.events.post(
                 "start_mode_chapter_select",
                 chapter=self.machine.game.player["selected_chapter"],
+            ),
+        )
+
+    def _schedule_mini_wizard_gate_open(self, reason=""):
+        """Open rooftop access for a ready chapter mini-wizard using one delayed pulse.
+
+        The rooftop diverter/gate coil toggles mechanically, so this must never
+        retry or fire multiple pulses. Use this only when the wizard-ready state
+        is first awarded or restored on a new ball.
+        """
+        self.delay.remove("mini_wizard_ready_gate_open")
+        self.delay.add(
+            name="mini_wizard_ready_gate_open",
+            ms=500,
+            callback=lambda: self.machine.events.post(
+                "rooftop_diverter_open",
+                reason=reason,
             ),
         )
 
@@ -375,6 +401,14 @@ class VillainProgression(Mode):
         if recovered:
             self._post_global_cleanup_events(reason="ball_start_recovery")
         self._recalculate_progression_from_states(post_events=True)
+        if (
+            self._safe_int(self.machine.game.player["chapter_mini_wizard_ready"], 0) == 1
+            and self._safe_int(self.machine.game.player["chapter_select_needed"], 0) == 0
+        ):
+            self._mini_wizard_ready_at_daily_bugle(
+                post_restore=False,
+                reason="ball_start_state_restore",
+            )
 
     def _finalize_active_flow_on_mode_stop(self):
         """Deprecated: progression is no longer resolved during mode_stop."""
@@ -1194,7 +1228,7 @@ class VillainProgression(Mode):
         if self._normalize_state(self.machine.game.player[f"{mini_key}_state"]) != self.PLAYING:
             self.machine.game.player[f"{mini_key}_state"] = self.NOT_PLAYED
 
-        self.machine.events.post("rooftop_diverter_open")
+        self._schedule_mini_wizard_gate_open(reason=kwargs.get("reason", "mini_wizard_ready"))
         self.machine.events.post("villain_mini_wizard_gate_opened")
 
         self.machine.events.post(

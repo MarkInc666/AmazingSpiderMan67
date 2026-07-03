@@ -82,6 +82,7 @@ event_player:
   multiball_mad_science_meltdown_multiball_ended: mad_science_meltdown_complete_request
 
   mode_mad_science_meltdown_started:
+    - rooftop_diverter_open|500ms
     - disable_daily_bugle_mystery
     - clear_saucers_delayed
     - drop_target_bank_dt_bank_left_reset

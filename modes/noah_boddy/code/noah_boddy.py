@@ -27,7 +27,7 @@ Case Files:
 """
 
 
-class NoahBoddy(Mode):
+class NoahBoddy(CaseFileMixin, Mode):
     MODE_KEY = "noah_boddy"
     DISPLAY_NAME = "Noah Boddy"
 
@@ -97,6 +97,7 @@ class NoahBoddy(Mode):
         self.jackpot_multiplier = 1
         self.hurryup_seconds = self.HURRYUP_SECONDS
         self.hurryup_seconds_left = 0
+        self.hurryup_active = False
         self.upper_target_score = self.UPPER_TARGET_SCORE
         self.mode_points = 0
         self.upper_target_hits = 0
@@ -347,6 +348,7 @@ class NoahBoddy(Mode):
 
     def _start_hurryup(self):
         self.phase = "hurryup"
+        self.hurryup_active = True
         self.hurryup_seconds_left = self.hurryup_seconds
         self.machine.events.post(
             "noah_boddy_secret_revealed",
@@ -468,6 +470,8 @@ class NoahBoddy(Mode):
             return
 
         self.mode_done = True
+        self.hurryup_active = False
+        self.delay.remove("noah_boddy_hurryup_tick")
         player = self.machine.game.player
         player["noah_boddy_state"] = 2
         player["noah_boddy_phase"] = "complete"
@@ -478,6 +482,8 @@ class NoahBoddy(Mode):
             return
 
         self.mode_done = True
+        self.hurryup_active = False
+        self.delay.remove("noah_boddy_hurryup_tick")
         player = self.machine.game.player
         player["noah_boddy_state"] = 2
         player["noah_boddy_phase"] = "goal_missed"
@@ -512,4 +518,7 @@ class NoahBoddy(Mode):
             return True
 
         player = self.machine.game.player
-        return player["villain_mode_in_summary"] is True
+        try:
+            return bool(player["villain_mode_in_summary"])
+        except KeyError:
+            return False

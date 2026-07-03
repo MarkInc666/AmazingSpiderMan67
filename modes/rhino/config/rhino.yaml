@@ -22,6 +22,9 @@ widget_player:
 
 
 event_player:
+  mode_rhino_started:
+    - rooftop_diverter_open|500ms
+
 
   drop_target_bank_dt_bank_left_down:
     - drop_target_bank_dt_bank_left_reset

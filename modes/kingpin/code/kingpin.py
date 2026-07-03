@@ -68,6 +68,7 @@ class Kingpin(Mode, CaseFileMixin):
 
     def mode_stop(self, **kwargs):
         self.machine.events.post("hide_mode_status")
+        self.machine.game.player["multiball_autoplunge_active"] = 0
         self.delay.remove("kingpin_timer_tick")
         self.delay.remove("kingpin_reset_right_bank")
         self.clear_active_case_file_helpers()
@@ -135,6 +136,7 @@ class Kingpin(Mode, CaseFileMixin):
 
         self.add_mode_event_handler("kingpin_left_bank_complete", self._left_bank_complete)
         self.add_mode_event_handler("kingpin_timer_expired", self._timer_expired)
+        self.add_mode_event_handler("kingpin_multiball_ended", self._multiball_ended)
 
     def _start_timer(self):
         self.delay.remove("kingpin_timer_tick")
@@ -154,6 +156,15 @@ class Kingpin(Mode, CaseFileMixin):
             return
 
         self._start_timer()
+
+    def _multiball_ended(self, **kwargs):
+        if self.mode_done:
+            return
+
+        self.machine.game.player["multiball_autoplunge_active"] = 0
+        self.machine.events.post("kingpin_multiball_drained")
+        self._show_message("MULTIBALL ENDED", "KINGPIN MODE OVER", event="show_mode_jackpot")
+        self._complete_mode()
 
     def _timer_expired(self, **kwargs):
         if self.mode_done:

@@ -82,6 +82,7 @@ event_player:
   multiball_time_tossed_showdown_multiball_ended: time_tossed_showdown_complete_request
 
   mode_time_tossed_showdown_started:
+    - rooftop_diverter_open|500ms
     - disable_daily_bugle_mystery
     - clear_saucers_delayed
     - drop_target_bank_dt_bank_left_reset

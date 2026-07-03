@@ -23,7 +23,7 @@ Case File helpers:
 """
 
 
-class DoctorDumpty(Mode):
+class DoctorDumpty(CaseFileMixin, Mode):
     MODE_KEY = "doctor_dumpty"
     DISPLAY_NAME = "DoctorDumpty"
 

@@ -5,12 +5,6 @@ mode:
   priority: 100
   code: base.Base
 
-multiballs:
-  outlane_add_a_ball:
-    ball_count: 1
-    ball_count_type: add
-    start_events: start_outlane_add_a_ball
-
 variable_player:
   secondary_switch_hit:
     score: 500
@@ -90,16 +84,12 @@ event_player:
     - disable_outlane_autoplunge
 
   s_outlane_r_active{current_player.outlane_add_a_ball_available == 1 and current_player.ball_save_count == 0}:
-    - outlane_add_a_ball_pending_plunger
     - consume_outlane_add_a_ball
     - start_outlane_add_a_ball
-    - enable_outlane_autoplunge
 
   s_outlane_l_active{current_player.outlane_add_a_ball_available == 1 and current_player.ball_save_count == 0}:
-    - outlane_add_a_ball_pending_plunger
     - consume_outlane_add_a_ball
     - start_outlane_add_a_ball
-    - enable_outlane_autoplunge
 
   s_leaf_next_to_1_active:
     - secondary_switch_hit

@@ -74,6 +74,7 @@ event_player:
   multiball_daily_bugle_rooftop_riot_multiball_ended: daily_bugle_rooftop_riot_fail_request
 
   mode_daily_bugle_rooftop_riot_started:
+    - rooftop_diverter_open|500ms
     - clear_saucers_delayed
     - drop_target_bank_dt_bank_left_reset
     - drop_target_bank_dt_bank_right_reset|100ms

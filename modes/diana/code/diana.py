@@ -302,11 +302,7 @@ class Diana(CaseFileMixin, Mode):
             hunt=self.current_hunt,
             seconds=self.hunt_seconds_left,
         )
-        self._show_mode_countdown(
-            f"HUNT {self.current_hunt}",
-            self.hunt_seconds_left,
-            "BULLSEYES AND RUBBER",
-        )
+        self._show_mode_message(f"HUNT {self.current_hunt}", "BULLSEYES AND RUBBER")
         self._sync_vars()
         self._schedule_hunt_tick()
 
@@ -330,7 +326,6 @@ class Diana(CaseFileMixin, Mode):
             hunt=self.current_hunt,
             seconds=self.hunt_seconds_left,
         )
-        self.machine.events.post("update_mode_status", mode_status_title="SECONDS LEFT", mode_status_value=max(0, self.hunt_seconds_left))
         self._sync_vars()
 
         if self.hunt_seconds_left <= 0:
@@ -505,6 +500,24 @@ class Diana(CaseFileMixin, Mode):
         player["diana_standing_targets"] = len(self.standing_targets)
         player["active_mode_hits"] = self.bullseyes + self.rubber_hits
         player["active_mode_major_hits"] = self.bullseyes
+        self._update_mode_status()
+
+    def _update_mode_status(self):
+        if self.mode_done:
+            return
+
+        if self.hunt_active:
+            self.machine.events.post(
+                "update_mode_status",
+                mode_status_title="ARROWS / TIME",
+                mode_status_value=f"{max(0, self.arrows_remaining)} / {max(0, self.hunt_seconds_left)}",
+            )
+        else:
+            self.machine.events.post(
+                "update_mode_status",
+                mode_status_title="ARROWS LEFT",
+                mode_status_value=max(0, self.arrows_remaining),
+            )
 
     def _done_or_summary(self):
         player = self.machine.game.player

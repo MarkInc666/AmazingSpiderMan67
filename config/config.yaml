@@ -347,6 +347,19 @@ ball_saves:
     enable_events:
       - start_case_file_ball_save
 
+  outlane_add_a_ball_save:
+    active_time: 3s
+    hurry_up_time: 0s
+    grace_period: 2s
+    balls_to_save: 1
+    auto_launch: false
+    enable_events:
+      - start_outlane_add_a_ball
+    early_ball_save_events:
+      - s_outlane_l_active
+      - s_outlane_r_active
+
+
   chapter_select_ball_save:
     active_time: 60s
     hurry_up_time: 0s

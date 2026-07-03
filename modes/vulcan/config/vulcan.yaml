@@ -59,10 +59,13 @@ widget_player:
       action: remove
 
 event_player:
+  drop_target_bank_dt_bank_left_down:
+    - drop_target_bank_dt_bank_left_reset
+
   vulcan_setup:
     - clear_saucers
     - reset_drops
-    - rooftop_diverter_open
+    - rooftop_diverter_open|500ms
     - vulcan_right_bank_reloaded
     - vulcan_upper_targets_reset
     - vulcan_clear_bonus_rubber

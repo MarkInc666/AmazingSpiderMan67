@@ -8,6 +8,28 @@ mode:
   priority: 1000
   code: kingpin.Kingpin
 
+variable_player:
+  multiball_kingpin_multiball_started:
+    multiball_autoplunge_active:
+      action: set
+      int: 1
+
+  multiball_kingpin_multiball_ended:
+    multiball_autoplunge_active:
+      action: set
+      int: 0
+
+multiballs:
+  kingpin_multiball:
+    ball_count: 2
+    ball_count_type: total
+    shoot_again: 20s
+    start_events: kingpin_start_multiball
+    stop_events:
+      - kingpin_stop_multiball
+      - kingpin_mode_completed_summary
+      - ball_ended
+
 event_player:
   mode_kingpin_started:
     - kingpin_setup
@@ -16,15 +38,20 @@ event_player:
     - drop_target_bank_dt_bank_left_reset
     - drop_target_bank_dt_bank_right_reset|100ms
     - clear_saucers_delayed
+    - kingpin_start_multiball
     - kingpin_mode_intro
 
   mode_kingpin_stopping:
+    - kingpin_stop_multiball
     - kingpin_clear_lights
 
   kingpin_mode_complete:
     villain_bookend_summary_request:
       villain: kingpin
       done_event: kingpin_mode_completed_summary
+
+  multiball_kingpin_multiball_ended:
+    - kingpin_multiball_ended
 
   s_right_drops_1_active: kingpin_right_drop_1_hit
   s_right_drops_2_active: kingpin_right_drop_2_hit

@@ -49,7 +49,7 @@ widget_player:
 
 event_player:
   mode_vulture_started:
-    - rooftop_diverter_open
+    - rooftop_diverter_open|500ms
     - clear_saucers
     - vulture_show_targets
     

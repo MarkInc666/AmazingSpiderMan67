@@ -62,6 +62,7 @@ event_player:
     - drop_target_bank_dt_bank_right_reset
 
   mode_pardo_started:
+    - rooftop_diverter_open|500ms
     - clear_saucers
     - drop_target_bank_dt_bank_left_reset
     - drop_target_bank_dt_bank_right_reset

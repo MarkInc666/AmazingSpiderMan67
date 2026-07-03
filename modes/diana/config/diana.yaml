@@ -26,6 +26,9 @@ widget_player:
       action: remove
 
 event_player:
+  drop_target_bank_dt_bank_left_down:
+    - drop_target_bank_dt_bank_left_reset
+
   # Rearm upstairs. Daily Bugle/Vulture-style shared VUK handling is left alone.
   s_trispinner_opto_active:
     - diana_upper_spinner_hit
@@ -70,7 +73,7 @@ event_player:
   mode_diana_started:
     - clear_saucers
     - reset_5bank
-    - rooftop_diverter_open
+    - rooftop_diverter_open|500ms
     - diana_rearm_phase_started
 
   mode_diana_stopping:

@@ -232,7 +232,7 @@ class doc_ock(CaseFileMixin, Mode):
         if self.machine.game.player["villain_mode_in_summary"] == True: return
         if self.jackpot_lit == 0:
             self.machine.events.post("doc_ock_jackpot_not_lit")
-            self.machine.events.post("show_mode_message", message_mode_title="LOCK ARMS FIRST", message_mode_subtitle="WEB TARGET NOT READY")
+            self.machine.events.post("show_mode_message", message_mode_title="SHOOT SPINNER", message_mode_subtitle="WEB TARGET NOT READY")
             self.machine.game.player["score"] += self.doc_ock_jackpot_unlit_value
             self.active_mode_points += self.doc_ock_jackpot_unlit_value
             return
@@ -263,14 +263,33 @@ class doc_ock(CaseFileMixin, Mode):
         self.doc_ock_jackpot_spinner_multi = 1
         self.jackpots_collected += 1
         self.jackpot_lit = 0
+        self.update_player_vars()
+
+        # Do not immediately post breakout/timed-release messages here. They
+        # overwrite the jackpot award before the player can read it. Delay the
+        # follow-up rules so the jackpot message stays visible first.
+        self.delay.remove("doc_ock_post_jackpot_followup")
+        self.delay.add(
+            name="doc_ock_post_jackpot_followup",
+            ms=1800,
+            callback=self._post_jackpot_followup,
+        )
+
+        self.check_mode_over()
+
+
+    def _post_jackpot_followup(self, **kwargs):
+        if self.mode_done:
+            return
+
+        if self.machine.game.player["villain_mode_in_summary"] == True:
+            return
 
         self.spawn_breakout_target()
-        self.update_player_vars()        
+        self.update_player_vars()
 
         if self.jackpots_collected >= self.JACKPOTS_BEFORE_TIMED_RELEASE:
             self.machine.events.post("doc_ock_start_timed_release")
-
-        self.check_mode_over()
 
     def spawn_breakout_target(self):
         if len(self.active_breakouts) >= self.MAX_BREAKOUT_TARGETS:
