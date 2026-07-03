@@ -217,7 +217,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'cerberus_jackpots_collected',
             'points_var': 'active_mode_points',
             'state_var': 'cerberus_state',
-            'song': 'play_song_9',
+            'song': 'play_song_22',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Multiball erupts across the playfield.
@@ -237,7 +237,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'vulcan_bonus',
             'points_var': 'active_mode_points',
             'state_var': 'vulcan_state',
-            'song': 'play_song_15',
+            'song': 'play_song_3',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Diana takes aim with Trubble's arrows.
@@ -256,7 +256,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'diana_wrong_total',
             'points_var': 'active_mode_points',
             'state_var': 'diana_state',
-            'song': 'play_song_26',
+            'song': 'play_song_10',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: The center web target is the Cyclops Eye.
@@ -275,7 +275,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'cyclops_flips_remaining',
             'points_var': 'active_mode_points',
             'state_var': 'cyclops_state',
-            'song': 'play_song_14',
+            'song': 'play_song_4',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Drop targets build the Centaur Jackpot.
@@ -295,7 +295,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'centaur_best_jackpot',
             'points_var': 'active_mode_points',
             'state_var': 'centaur_state',
-            'song': 'play_song_14',
+            'song': 'play_song_23',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Kingpin is running the Crime Wave.
@@ -315,7 +315,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'kingpin_max_balls',
             'points_var': 'active_mode_points',
             'state_var': 'kingpin_state',
-            'song': 'play_song_3',
+            'song': 'play_song_7',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: The Human Flies are framing Spider-Man.
@@ -335,7 +335,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'human_flies_state',
-            'song': 'play_song_27',
+            'song': 'play_song_3',
         },
         # ORIGINAL DISPLAY TEXT:
         #   title: FIFTH AVENUE PHANTOM
@@ -356,7 +356,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'fifth_avenue_phantom_best_jackpot',
             'points_var': 'active_mode_points',
             'state_var': 'fifth_avenue_phantom_state',
-            'song': 'play_song_14',
+            'song': 'play_song_24',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Work the crime zones: drops, pops, and right bank.
@@ -376,7 +376,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'enforcers_ox_super_value',
             'points_var': 'active_mode_points',
             'state_var': 'enforcers_state',
-            'song': 'play_song_14',
+            'song': 'play_song_25',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Hit drops to build the Diamond Jackpot.
@@ -396,7 +396,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'diamond_bonus',
             'points_var': 'active_mode_points',
             'state_var': 'diamond_smugglers_state',
-            'song': 'play_song_26',
+            'song': 'play_song_19',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Pardo commands a mystic performance.
@@ -416,7 +416,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'pardo_state',
-            'song': 'play_song_13',
+            'song': 'play_song_22',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: The Fakir hides the real target.
@@ -435,7 +435,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'fakir_incorrect_shots',
             'points_var': 'active_mode_points',
             'state_var': 'fakir_state',
-            'song': 'play_song_10',
+            'song': 'play_song_8',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: The Scarlet Sorcerer summons strange magic.
@@ -455,7 +455,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'scarlet_sorcerer_state',
-            'song': 'play_song_11',
+            'song': 'play_song_10',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: The Super Swami bends minds across the city.
@@ -475,7 +475,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'super_swami_bonus',
             'points_var': 'active_mode_points',
             'state_var': 'super_swami_state',
-            'song': 'play_song_12',
+            'song': 'play_song_4',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Frog Ghosts slip through the Fifth Dimension.
@@ -495,7 +495,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'frog_ghosts_state',
-            'song': 'play_song_24',
+            'song': 'play_song_23',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Noah Boddy vanishes from sight.
@@ -515,7 +515,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'noah_boddy_best_jackpot',
             'points_var': 'active_mode_points',
             'state_var': 'noah_boddy_state',
-            'song': 'play_song_25',
+            'song': 'play_song_7',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Magnetic force pulls shots around the city.
@@ -535,7 +535,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'dr_magneto_state',
-            'song': 'play_song_27',
+            'song': 'play_song_18',
         },
         # ORIGINAL DISPLAY TEXT:
         #   title: PROFESSOR PRETORIS
@@ -556,7 +556,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'professor_pretoris_state',
-            'song': 'play_song_28',
+            'song': 'play_song_24',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Doctor Dumpty has a fragile plan.
@@ -575,7 +575,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'doctor_dumpty_missed_shots',
             'points_var': 'active_mode_points',
             'state_var': 'doctor_dumpty_state',
-            'song': 'play_song_7',
+            'song': 'play_song_25',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Von Schlick has slicked the playfield.
@@ -595,7 +595,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'dr_von_schlick_state',
-            'song': 'play_song_8',
+            'song': 'play_song_19',
         },
         # ORIGINAL DISPLAY TEXT:
         #   title: RADIATION SPECIALIST
@@ -616,7 +616,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'radiation_bonus',
             'points_var': 'active_mode_points',
             'state_var': 'radiation_specialist_state',
-            'song': 'play_song_15',
+            'song': 'play_song_22',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Dr. Zap chains electricity across shots.
@@ -636,7 +636,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'dr_zap_state',
-            'song': 'play_song_9',
+            'song': 'play_song_8',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Doctor Cool freezes timers and shots.
@@ -656,7 +656,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'doctor_cool_state',
-            'song': 'play_song_8',
+            'song': 'play_song_10',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: The Snowman is freezing the city.
@@ -676,7 +676,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'snowman_state',
-            'song': 'play_song_20',
+            'song': 'play_song_4',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: The Ice Monster blocks the city in frozen chaos.
@@ -696,7 +696,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'ice_monster_state',
-            'song': 'play_song_21',
+            'song': 'play_song_23',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Dr. Manta traps the city beneath the waves.
@@ -716,7 +716,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'dr_manta_state',
-            'song': 'play_song_28',
+            'song': 'play_song_7',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Doctor Atlantean rules from a lost city.
@@ -736,7 +736,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'doctor_atlantean_state',
-            'song': 'play_song_16',
+            'song': 'play_song_18',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Sky Master attacks from above the clouds.
@@ -756,7 +756,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'sky_master_state',
-            'song': 'play_song_17',
+            'song': 'play_song_24',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: The Plutonians have landed.
@@ -776,7 +776,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'plutonians_bonus',
             'points_var': 'active_mode_points',
             'state_var': 'plutonians_state',
-            'song': 'play_song_19',
+            'song': 'play_song_25',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: The Antarcticans strike from the ice.
@@ -796,7 +796,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'antarcticans_state',
-            'song': 'play_song_18',
+            'song': 'play_song_19',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Charles Cameo hides behind disguises.
@@ -816,7 +816,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'charles_cameo_state',
-            'song': 'play_song_28',
+            'song': 'play_song_22',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Brutus is guarding the hideout.
@@ -836,7 +836,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'brutus_state',
-            'song': 'play_song_23',
+            'song': 'play_song_8',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Eigor is smashing through the city.
@@ -876,7 +876,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'the_fly_state',
-            'song': 'play_song_9',
+            'song': 'play_song_4',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Swamp Reptiles are loose in the city.
@@ -896,7 +896,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'swamp_bonus',
             'points_var': 'active_mode_points',
             'state_var': 'swamp_reptiles_state',
-            'song': 'play_song_14',
+            'song': 'play_song_23',
         },
         # ORIGINAL DISPLAY TEXT:
         #   title: PHANTOM FROM THE DEPTHS OF TIME
@@ -919,7 +919,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'phantom_from_depths_of_time_state',
-            'song': 'play_song_11',
+            'song': 'play_song_7',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Master Vine spreads across the playfield.
@@ -939,7 +939,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'master_vine_state',
-            'song': 'play_song_22',
+            'song': 'play_song_18',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Drop targets set the spinner value.
@@ -960,7 +960,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'technician_bonus',
             'points_var': 'active_mode_points',
             'state_var': 'master_technician_state',
-            'song': 'play_song_14',
+            'song': 'play_song_24',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: The Micro-Men attack from every direction.
@@ -980,7 +980,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'micro_men_state',
-            'song': 'play_song_12',
+            'song': 'play_song_25',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: The Grand Emperor commands the final attack.
@@ -1000,7 +1000,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'grand_emperor_state',
-            'song': 'play_song_12',
+            'song': 'play_song_19',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Chapter 1 mini-wizard multiball.
@@ -1038,7 +1038,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'mastermind_trap_state',
             'points_var': 'active_mode_points',
             'state_var': 'mastermind_trap_state',
-            'song': 'play_song_18',
+            'song': 'play_song_8',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Miss Trubble has unleashed her creations.
@@ -1057,7 +1057,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'trubble_unleashed_staged_hits',
             'points_var': 'active_mode_points',
             'state_var': 'trubble_unleashed_state',
-            'song': 'play_song_14',
+            'song': 'play_song_10',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Decode the Plotter’s scheme.
@@ -1076,7 +1076,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'master_plan_super_collected',
             'points_var': 'active_mode_points',
             'state_var': 'master_plan_state',
-            'song': 'play_song_14',
+            'song': 'play_song_4',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Chapter 5 mini-wizard multiball.
@@ -1095,7 +1095,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'fifth_dimension_curse_state',
             'points_var': 'active_mode_points',
             'state_var': 'fifth_dimension_curse_state',
-            'song': 'play_song_16',
+            'song': 'play_song_23',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Chapter 6 mini-wizard multiball.
@@ -1114,7 +1114,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'mad_science_meltdown_state',
             'points_var': 'active_mode_points',
             'state_var': 'mad_science_meltdown_state',
-            'song': 'play_song_15',
+            'song': 'play_song_7',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Chapter 7 mini-wizard multiball.
@@ -1133,7 +1133,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'nature_strikes_back_state',
             'points_var': 'active_mode_points',
             'state_var': 'nature_strikes_back_state',
-            'song': 'play_song_20',
+            'song': 'play_song_18',
         },
         # ORIGINAL DISPLAY TEXT:
         #   title: INVASION FROM EVERYWHERE
@@ -1153,7 +1153,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'invasion_from_everywhere_state',
             'points_var': 'active_mode_points',
             'state_var': 'invasion_from_everywhere_state',
-            'song': 'play_song_19',
+            'song': 'play_song_24',
         },
         # ORIGINAL DISPLAY TEXT:
         #   title: WHO IS THE REAL VILLAIN?
@@ -1173,7 +1173,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'who_is_the_real_villain_state',
             'points_var': 'active_mode_points',
             'state_var': 'who_is_the_real_villain_state',
-            'song': 'play_song_21',
+            'song': 'play_song_25',
         },
         # ORIGINAL DISPLAY TEXT:
         #   title: TIME-TOSSED SHOWDOWN
@@ -1193,7 +1193,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'time_tossed_showdown_state',
             'points_var': 'active_mode_points',
             'state_var': 'time_tossed_showdown_state',
-            'song': 'play_song_23',
+            'song': 'play_song_19',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: The citywide battle reaches its peak.
@@ -1213,7 +1213,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'final_showdown_jackpots',
             'points_var': 'active_mode_points',
             'state_var': 'final_showdown_state',
-            'song': 'play_song_3',
+            'song': 'play_song_22',
         },
     }
 

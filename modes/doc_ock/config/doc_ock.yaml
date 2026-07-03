@@ -10,11 +10,6 @@ mode:
   priority: 600
 
 
-variable_player:
-  doc_ock_jackpot_award:
-    score: current_player.doc_ock_last_jackpot
-
-
 
 widget_player:
   xxx_doc_ock_next_jackpot_changed:

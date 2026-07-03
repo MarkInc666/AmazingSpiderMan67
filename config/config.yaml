@@ -370,16 +370,6 @@ ball_saves:
       - chapter_select_pending_drain
 
 
-  chapter_select_transition_ball_save:
-    active_time: 60s
-    hurry_up_time: 0s
-    grace_period: 0s
-    balls_to_save: 1
-    auto_launch: false
-    enable_events:
-      - chapter_select_pending_drain
-
-
 queue_relay_player:
   balldevice_bd_trough_ball_eject_attempt{current_player.chapter_select_waiting_for_summary == 1}:
     post: chapter_select_trough_eject_held_for_summary
