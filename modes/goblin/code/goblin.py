@@ -220,6 +220,7 @@ class Goblin(CaseFileMixin, Mode):
 
         self.machine.events.post("reset_drops")
         self.machine.events.post("clear_saucers")
+        self.machine.events.post("goblin_lite_saucers")
         self.machine.events.post("goblin_start_multiball")
         self.machine.events.post("show_mode_message_long", message_mode_title="CHAOS MULTIBALL", message_mode_subtitle="HIT FLASHING SHOTS")
 
@@ -234,6 +235,7 @@ class Goblin(CaseFileMixin, Mode):
             return
 
         self.clear_current_shows()
+        self.machine.events.post("goblin_lite_saucers")
 
         # Every new chaos window resets shot availability. A hit only disables
         # that shot for the current 6 second chaos window / hold window, not for
@@ -354,6 +356,8 @@ class Goblin(CaseFileMixin, Mode):
             return
 
         self.info_log("Goblin saucer stabilizer hit: %s", saucer)
+        self.machine.events.post("goblin_stop_saucers")
+        self.machine.events.post("goblin_solid_saucers")
         self.held_saucer = saucer
         self.hold_active = True
         self.machine.game.player["goblin_hold_active"] = 1
@@ -445,6 +449,8 @@ class Goblin(CaseFileMixin, Mode):
         self.held_saucer = None
 
         self.machine.events.post("goblin_hold_ended", saucer=saucer)
+        self.machine.events.post("goblin_stop_saucers")
+        self.machine.events.post("goblin_lite_saucers")
         self.machine.events.post("clear_saucers")
 
         if saucer is not None:

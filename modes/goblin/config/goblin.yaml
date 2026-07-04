@@ -316,28 +316,28 @@ shows:
         l_gi_a: green
 
   goblin_saucers_flash_show:
-    - duration: 120ms
-      lights:
-        l_1_hole_l: D08080
-        l_1: D08080
-        l_1_hole_r: D08080
-        l_2_hole_l: D08080
-        l_2: D08080
-        l_2_hole_r: D08080
-        l_3_hole_l: D08080
-        l_3: D08080
-        l_3_hole_r: D08080
-    - duration: 120ms
+    - duration: 180ms
       lights:
         l_1_hole_l: red
-        l_1: red
+        l_1: green
         l_1_hole_r: red
         l_2_hole_l: red
-        l_2: red
+        l_2: green
         l_2_hole_r: red
         l_3_hole_l: red
-        l_3: red
+        l_3: green
         l_3_hole_r: red
+    - duration: 180ms
+      lights:
+        l_1_hole_l: off
+        l_1: off
+        l_1_hole_r: off
+        l_2_hole_l: off
+        l_2: off
+        l_2_hole_r: off
+        l_3_hole_l: off
+        l_3: off
+        l_3_hole_r: off
 
   goblin_upper_target_flash_show:
     - duration: 120ms
@@ -388,15 +388,15 @@ shows:
   goblin_saucers_solid_show:
     - duration: -1
       lights:
-        l_1_hole_l: green
+        l_1_hole_l: red
         l_1: green
-        l_1_hole_r: green
-        l_2_hole_l: green
+        l_1_hole_r: red
+        l_2_hole_l: red
         l_2: green
-        l_2_hole_r: green
-        l_3_hole_l: green
+        l_2_hole_r: red
+        l_3_hole_l: red
         l_3: green
-        l_3_hole_r: green
+        l_3_hole_r: red
 
   goblin_upper_target_solid_show:
     - duration: -1

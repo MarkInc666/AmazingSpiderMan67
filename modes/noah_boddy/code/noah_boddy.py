@@ -358,6 +358,7 @@ class NoahBoddy(CaseFileMixin, Mode):
             jackpot=self._current_jackpot_value(),
         )
         self.machine.events.post("noah_boddy_secret_hurryup_started")
+        self.machine.events.post(f"noah_boddy_secret_{self.secret_target}_lit")
         self._show_mode_countdown("SECRET TARGET FOUND", self.hurryup_seconds_left, self.TARGET_LABELS[self.secret_target])
 
         if self.has_case_file("safety_net"):
@@ -414,6 +415,7 @@ class NoahBoddy(CaseFileMixin, Mode):
         self.secret_target = None
         self.hurryup_seconds_left = 0
         self.machine.events.post("noah_boddy_search_collapsed", reason=reason)
+        self.machine.events.post("noah_boddy_secret_lights_off")
         self.machine.events.post("noah_boddy_return_to_upper")
         self._show_mode_message("SEARCH LOST", "RETURN TO THE ROOF")
         self._sync_vars()
@@ -475,6 +477,7 @@ class NoahBoddy(CaseFileMixin, Mode):
         player = self.machine.game.player
         player["noah_boddy_state"] = 2
         player["noah_boddy_phase"] = "complete"
+        self.machine.events.post("noah_boddy_secret_lights_off")
         self.machine.events.post("noah_boddy_mode_complete")
 
     def _fail_mode(self, **kwargs):
@@ -487,6 +490,7 @@ class NoahBoddy(CaseFileMixin, Mode):
         player = self.machine.game.player
         player["noah_boddy_state"] = 2
         player["noah_boddy_phase"] = "goal_missed"
+        self.machine.events.post("noah_boddy_secret_lights_off")
         self.machine.events.post("noah_boddy_mode_complete")
 
     def _score(self, points):

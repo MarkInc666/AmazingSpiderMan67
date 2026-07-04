@@ -45,6 +45,9 @@ class Kingpin(Mode, CaseFileMixin):
         self.duplicate_target_value = self.DUPLICATE_TARGET_VALUE
         self.more_jackpots_extra_round = False
         self.extra_round_active = False
+        self.extra_round_used = False
+        self.goal_completed = False
+        self.timer_has_expired = False
         self.shot_assist_used = False
 
         self.case_files = self.get_case_file_bonuses()
@@ -161,18 +164,31 @@ class Kingpin(Mode, CaseFileMixin):
         if self.mode_done:
             return
 
+        # Kingpin is a multiball mode. Do not end the mode from objectives,
+        # timers, or other tasks; only finish it once play has dropped back
+        # to a single ball. The MPF multiball-ended event should normally
+        # mean this already, but keep the check here so a noisy/early event
+        # cannot complete the mode while 2+ balls are still active.
+        if self._balls_in_play() > 1:
+            self.machine.events.post("kingpin_multiball_end_ignored", balls=self._balls_in_play())
+            return
+
         self.machine.game.player["multiball_autoplunge_active"] = 0
         self.machine.events.post("kingpin_multiball_drained")
         self._show_message("MULTIBALL ENDED", "KINGPIN MODE OVER", event="show_mode_jackpot")
         self._complete_mode()
 
     def _timer_expired(self, **kwargs):
-        if self.mode_done:
+        if self.mode_done or self.timer_has_expired:
             return
 
+        self.timer_has_expired = True
+        self.remaining_seconds = 0
+        self.delay.remove("kingpin_timer_tick")
+        self._sync_vars()
         self.machine.events.post("kingpin_goal_missed")
-        self._show_message("TIME UP", "KINGPIN ESCAPES", event="show_mode_jackpot")
-        self._complete_mode()
+        self.machine.events.post("update_mode_status", mode_status_title="MULTIBALL", mode_status_value="SURVIVE")
+        self._show_message("TIME UP", "KEEP FIGHTING", event="show_mode_jackpot")
 
     def _left_bank_complete(self, **kwargs):
         if self.mode_done:
@@ -215,7 +231,7 @@ class Kingpin(Mode, CaseFileMixin):
         if self._should_use_shot_assist():
             self._use_shot_assist(excluding=target)
 
-        if self._all_targets_completed():
+        if self._all_targets_completed() and not self.goal_completed:
             self._all_targets_lit()
             return
 
@@ -257,9 +273,9 @@ class Kingpin(Mode, CaseFileMixin):
 
     def _all_targets_lit(self):
         self.machine.events.post("kingpin_all_targets_lit")
-        self._show_message("ALL TARGETS", "KINGPIN CORNERED", event="show_mode_jackpot")
 
-        if self.more_jackpots_extra_round and not self.extra_round_active:
+        if self.more_jackpots_extra_round and not self.extra_round_used:
+            self.extra_round_used = True
             self.extra_round_active = True
             self.round_hits = 0
             self.bank_sweeping = True
@@ -276,7 +292,11 @@ class Kingpin(Mode, CaseFileMixin):
             self._sync_vars()
             return
 
-        self._complete_mode()
+        self.goal_completed = True
+        self.machine.events.post("kingpin_goal_completed")
+        self.machine.events.post("update_mode_status", mode_status_title="MULTIBALL", mode_status_value="SURVIVE")
+        self._show_message("KINGPIN DEFEATED", "SURVIVE MULTIBALL", event="show_mode_jackpot")
+        self._sync_vars()
 
     def _reset_for_extra_round(self):
         if self.mode_done:
@@ -295,8 +315,15 @@ class Kingpin(Mode, CaseFileMixin):
             value=self._format_score(self.EXTRA_JACKPOT_VALUE),
             event="show_mode_jackpot",
         )
+        self.extra_round_active = False
+        self.goal_completed = True
+        self.machine.events.post("kingpin_goal_completed")
+        self.machine.events.post("update_mode_status", mode_status_title="MULTIBALL", mode_status_value="SURVIVE")
         self._drop_unhit_targets_this_cycle(excluding=target)
-        self._complete_mode()
+        self.bank_sweeping = True
+        self.delay.remove("kingpin_reset_right_bank")
+        self.delay.add(name="kingpin_reset_right_bank", ms=self.BANK_RESET_DELAY_MS, callback=self._next_round)
+        self._sync_vars()
 
     def _sweep_and_reset_bank(self):
         self.bank_sweeping = True
@@ -370,6 +397,12 @@ class Kingpin(Mode, CaseFileMixin):
         self._sync_vars()
         self._show_message("KINGPIN DEFEATED", "MODE COMPLETE", event="show_mode_jackpot")
         self.machine.events.post("kingpin_mode_complete")
+
+    def _balls_in_play(self):
+        try:
+            return self.machine.game.balls_in_play
+        except AttributeError:
+            return 1
 
     def _sync_vars(self):
         player = self.machine.game.player

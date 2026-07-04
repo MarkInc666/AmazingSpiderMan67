@@ -215,21 +215,25 @@ shows:
     - duration: 250ms
       lights:
         l_spinner: green
+        l_gi_a: green
         l_upper_middle: green
     - duration: 250ms
       lights:
         l_spinner: yellow
+        l_gi_a: yellow
         l_upper_middle: yellow
 
   scorpion_ready_show:
     - duration: 300ms
       lights:
-        l_upper_left: red
+        l_upper_left: yellow
         l_upper_right: green
+        l_gi_a: yellow
     - duration: 300ms
       lights:
-        l_upper_left: yellow
+        l_upper_left: green
         l_upper_right: yellow
+        l_gi_a: green
 
   scorpion_safe_sting_show:
     - duration: 200ms

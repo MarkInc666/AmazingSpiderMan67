@@ -103,3 +103,139 @@ light_player:
     l_5bank_3: yellow
     l_5bank_4: yellow
     l_5bank_5: yellow
+
+show_player:
+  kingpin_round_started:
+    kingpin_right_drop_1_available_show:
+      action: play
+      loops: -1
+      speed: 2
+    kingpin_right_drop_2_available_show:
+      action: play
+      loops: -1
+      speed: 2
+    kingpin_right_drop_3_available_show:
+      action: play
+      loops: -1
+      speed: 2
+    kingpin_right_drop_4_available_show:
+      action: play
+      loops: -1
+      speed: 2
+    kingpin_right_drop_5_available_show:
+      action: play
+      loops: -1
+      speed: 2
+    kingpin_left_bank_time_show:
+      action: play
+      loops: -1
+      speed: 2
+
+  kingpin_target_1_complete:
+    kingpin_right_drop_1_available_show:
+      action: stop
+  kingpin_target_2_complete:
+    kingpin_right_drop_2_available_show:
+      action: stop
+  kingpin_target_3_complete:
+    kingpin_right_drop_3_available_show:
+      action: stop
+  kingpin_target_4_complete:
+    kingpin_right_drop_4_available_show:
+      action: stop
+  kingpin_target_5_complete:
+    kingpin_right_drop_5_available_show:
+      action: stop
+
+  kingpin_bank_sweep_started:
+    kingpin_right_drop_1_available_show:
+      action: stop
+    kingpin_right_drop_2_available_show:
+      action: stop
+    kingpin_right_drop_3_available_show:
+      action: stop
+    kingpin_right_drop_4_available_show:
+      action: stop
+    kingpin_right_drop_5_available_show:
+      action: stop
+
+  kingpin_extra_round_started:
+    kingpin_right_drop_1_available_show:
+      action: play
+      loops: -1
+      speed: 3
+    kingpin_right_drop_2_available_show:
+      action: play
+      loops: -1
+      speed: 3
+    kingpin_right_drop_3_available_show:
+      action: play
+      loops: -1
+      speed: 3
+    kingpin_right_drop_4_available_show:
+      action: play
+      loops: -1
+      speed: 3
+    kingpin_right_drop_5_available_show:
+      action: play
+      loops: -1
+      speed: 3
+
+  kingpin_clear_lights:
+    kingpin_right_drop_1_available_show:
+      action: stop
+    kingpin_right_drop_2_available_show:
+      action: stop
+    kingpin_right_drop_3_available_show:
+      action: stop
+    kingpin_right_drop_4_available_show:
+      action: stop
+    kingpin_right_drop_5_available_show:
+      action: stop
+    kingpin_left_bank_time_show:
+      action: stop
+
+shows:
+  kingpin_right_drop_1_available_show:
+    - duration: 250ms
+      lights:
+        l_5bank_1: yellow
+    - duration: 250ms
+      lights:
+        l_5bank_1: off
+  kingpin_right_drop_2_available_show:
+    - duration: 250ms
+      lights:
+        l_5bank_2: yellow
+    - duration: 250ms
+      lights:
+        l_5bank_2: off
+  kingpin_right_drop_3_available_show:
+    - duration: 250ms
+      lights:
+        l_5bank_3: yellow
+    - duration: 250ms
+      lights:
+        l_5bank_3: off
+  kingpin_right_drop_4_available_show:
+    - duration: 250ms
+      lights:
+        l_5bank_4: yellow
+    - duration: 250ms
+      lights:
+        l_5bank_4: off
+  kingpin_right_drop_5_available_show:
+    - duration: 250ms
+      lights:
+        l_5bank_5: yellow
+    - duration: 250ms
+      lights:
+        l_5bank_5: off
+
+  kingpin_left_bank_time_show:
+    - duration: 400ms
+      lights:
+        l_3bankbonus: blue
+    - duration: 400ms
+      lights:
+        l_3bankbonus: off

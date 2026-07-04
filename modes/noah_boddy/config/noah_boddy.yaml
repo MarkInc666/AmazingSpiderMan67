@@ -36,3 +36,203 @@ event_player:
 
   mode_noah_boddy_stopping:
     - rooftop_diverter_close
+
+show_player:
+  noah_boddy_get_to_upper:
+    noah_boddy_roof_search_show:
+      action: play
+      loops: -1
+      speed: 2
+
+  noah_boddy_search_started:
+    noah_boddy_roof_search_show:
+      action: play
+      loops: -1
+      speed: 2
+    noah_boddy_lower_targets_search_show:
+      action: play
+      loops: -1
+      speed: 2
+
+  noah_boddy_return_to_upper:
+    noah_boddy_lower_targets_search_show:
+      action: stop
+    noah_boddy_roof_search_show:
+      action: play
+      loops: -1
+      speed: 2
+
+  noah_boddy_secret_hurryup_started:
+    noah_boddy_roof_search_show:
+      action: stop
+    noah_boddy_lower_targets_search_show:
+      action: stop
+
+  noah_boddy_secret_left_1_lit:
+    noah_boddy_secret_left_show:
+      action: play
+      loops: -1
+      speed: 3
+  noah_boddy_secret_left_2_lit:
+    noah_boddy_secret_left_show:
+      action: play
+      loops: -1
+      speed: 3
+  noah_boddy_secret_left_3_lit:
+    noah_boddy_secret_left_show:
+      action: play
+      loops: -1
+      speed: 3
+
+  noah_boddy_secret_right_1_lit:
+    noah_boddy_secret_right_1_show:
+      action: play
+      loops: -1
+      speed: 3
+  noah_boddy_secret_right_2_lit:
+    noah_boddy_secret_right_2_show:
+      action: play
+      loops: -1
+      speed: 3
+  noah_boddy_secret_right_3_lit:
+    noah_boddy_secret_right_3_show:
+      action: play
+      loops: -1
+      speed: 3
+  noah_boddy_secret_right_4_lit:
+    noah_boddy_secret_right_4_show:
+      action: play
+      loops: -1
+      speed: 3
+  noah_boddy_secret_right_5_lit:
+    noah_boddy_secret_right_5_show:
+      action: play
+      loops: -1
+      speed: 3
+
+  noah_boddy_secret_lights_off:
+    noah_boddy_secret_left_show:
+      action: stop
+    noah_boddy_secret_right_1_show:
+      action: stop
+    noah_boddy_secret_right_2_show:
+      action: stop
+    noah_boddy_secret_right_3_show:
+      action: stop
+    noah_boddy_secret_right_4_show:
+      action: stop
+    noah_boddy_secret_right_5_show:
+      action: stop
+
+  noah_boddy_mode_complete:
+    noah_boddy_roof_search_show:
+      action: stop
+    noah_boddy_lower_targets_search_show:
+      action: stop
+    noah_boddy_secret_left_show:
+      action: stop
+    noah_boddy_secret_right_1_show:
+      action: stop
+    noah_boddy_secret_right_2_show:
+      action: stop
+    noah_boddy_secret_right_3_show:
+      action: stop
+    noah_boddy_secret_right_4_show:
+      action: stop
+    noah_boddy_secret_right_5_show:
+      action: stop
+
+  mode_noah_boddy_stopping:
+    noah_boddy_roof_search_show:
+      action: stop
+    noah_boddy_lower_targets_search_show:
+      action: stop
+    noah_boddy_secret_left_show:
+      action: stop
+    noah_boddy_secret_right_1_show:
+      action: stop
+    noah_boddy_secret_right_2_show:
+      action: stop
+    noah_boddy_secret_right_3_show:
+      action: stop
+    noah_boddy_secret_right_4_show:
+      action: stop
+    noah_boddy_secret_right_5_show:
+      action: stop
+
+shows:
+  noah_boddy_roof_search_show:
+    - duration: 250ms
+      lights:
+        l_upper_left: yellow
+        l_upper_middle: yellow
+        l_upper_right: yellow
+        l_gi_a: yellow
+    - duration: 250ms
+      lights:
+        l_upper_left: green
+        l_upper_middle: green
+        l_upper_right: green
+        l_gi_a: green
+
+  noah_boddy_lower_targets_search_show:
+    - duration: 300ms
+      lights:
+        l_3bankbonus: yellow
+        l_5bank_1: yellow
+        l_5bank_2: yellow
+        l_5bank_3: yellow
+        l_5bank_4: yellow
+        l_5bank_5: yellow
+    - duration: 300ms
+      lights:
+        l_3bankbonus: off
+        l_5bank_1: off
+        l_5bank_2: off
+        l_5bank_3: off
+        l_5bank_4: off
+        l_5bank_5: off
+
+  noah_boddy_secret_left_show:
+    - duration: 120ms
+      lights:
+        l_3bankbonus: green
+    - duration: 120ms
+      lights:
+        l_3bankbonus: yellow
+
+  noah_boddy_secret_right_1_show:
+    - duration: 120ms
+      lights:
+        l_5bank_1: green
+    - duration: 120ms
+      lights:
+        l_5bank_1: off
+  noah_boddy_secret_right_2_show:
+    - duration: 120ms
+      lights:
+        l_5bank_2: green
+    - duration: 120ms
+      lights:
+        l_5bank_2: off
+  noah_boddy_secret_right_3_show:
+    - duration: 120ms
+      lights:
+        l_5bank_3: green
+    - duration: 120ms
+      lights:
+        l_5bank_3: off
+  noah_boddy_secret_right_4_show:
+    - duration: 120ms
+      lights:
+        l_5bank_4: green
+    - duration: 120ms
+      lights:
+        l_5bank_4: off
+  noah_boddy_secret_right_5_show:
+    - duration: 120ms
+      lights:
+        l_5bank_5: green
+    - duration: 120ms
+      lights:
+        l_5bank_5: off

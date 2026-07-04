@@ -163,3 +163,180 @@ light_player:
     l_1: white
     l_2: white
     l_3: white
+
+show_player:
+  human_flies_round_started:
+    human_flies_upper_left_available_show:
+      action: play
+      loops: -1
+      speed: 2
+    human_flies_upper_center_available_show:
+      action: play
+      loops: -1
+      speed: 2
+    human_flies_upper_right_available_show:
+      action: play
+      loops: -1
+      speed: 2
+    human_flies_spinner_build_show:
+      action: play
+      loops: -1
+      speed: 2
+
+  human_flies_round_reset:
+    human_flies_saucer_1_lit_show:
+      action: stop
+    human_flies_saucer_2_lit_show:
+      action: stop
+    human_flies_saucer_3_lit_show:
+      action: stop
+    human_flies_upper_left_available_show:
+      action: play
+      loops: -1
+      speed: 2
+    human_flies_upper_center_available_show:
+      action: play
+      loops: -1
+      speed: 2
+    human_flies_upper_right_available_show:
+      action: play
+      loops: -1
+      speed: 2
+
+  human_flies_upper_left_complete:
+    human_flies_upper_left_available_show:
+      action: stop
+    human_flies_saucer_1_lit_show:
+      action: play
+      loops: -1
+      speed: 2
+  human_flies_upper_center_complete:
+    human_flies_upper_center_available_show:
+      action: stop
+    human_flies_saucer_2_lit_show:
+      action: play
+      loops: -1
+      speed: 2
+  human_flies_upper_right_complete:
+    human_flies_upper_right_available_show:
+      action: stop
+    human_flies_saucer_3_lit_show:
+      action: play
+      loops: -1
+      speed: 2
+
+  human_flies_shot_assist_used:
+    human_flies_upper_left_available_show:
+      action: stop
+    human_flies_upper_center_available_show:
+      action: stop
+    human_flies_upper_right_available_show:
+      action: stop
+    human_flies_saucer_1_lit_show:
+      action: play
+      loops: -1
+      speed: 2
+    human_flies_saucer_2_lit_show:
+      action: play
+      loops: -1
+      speed: 2
+    human_flies_saucer_3_lit_show:
+      action: play
+      loops: -1
+      speed: 2
+
+  human_flies_brother_captured:
+    human_flies_saucer_1_lit_show:
+      action: stop
+    human_flies_saucer_2_lit_show:
+      action: stop
+    human_flies_saucer_3_lit_show:
+      action: stop
+  human_flies_super_jackpot_collected:
+    human_flies_saucer_1_lit_show:
+      action: stop
+    human_flies_saucer_2_lit_show:
+      action: stop
+    human_flies_saucer_3_lit_show:
+      action: stop
+
+  human_flies_clear_all_lights:
+    human_flies_upper_left_available_show:
+      action: stop
+    human_flies_upper_center_available_show:
+      action: stop
+    human_flies_upper_right_available_show:
+      action: stop
+    human_flies_spinner_build_show:
+      action: stop
+    human_flies_saucer_1_lit_show:
+      action: stop
+    human_flies_saucer_2_lit_show:
+      action: stop
+    human_flies_saucer_3_lit_show:
+      action: stop
+
+shows:
+  human_flies_upper_left_available_show:
+    - duration: 250ms
+      lights:
+        l_upper_left: yellow
+    - duration: 250ms
+      lights:
+        l_upper_left: off
+  human_flies_upper_center_available_show:
+    - duration: 250ms
+      lights:
+        l_upper_middle: yellow
+    - duration: 250ms
+      lights:
+        l_upper_middle: off
+  human_flies_upper_right_available_show:
+    - duration: 250ms
+      lights:
+        l_upper_right: yellow
+    - duration: 250ms
+      lights:
+        l_upper_right: off
+
+  human_flies_spinner_build_show:
+    - duration: 350ms
+      lights:
+        l_gi_a: yellow
+    - duration: 350ms
+      lights:
+        l_gi_a: off
+
+  human_flies_saucer_1_lit_show:
+    - duration: 180ms
+      lights:
+        l_1: green
+        l_1_hole_l: red
+        l_1_hole_r: red
+    - duration: 180ms
+      lights:
+        l_1: off
+        l_1_hole_l: off
+        l_1_hole_r: off
+  human_flies_saucer_2_lit_show:
+    - duration: 180ms
+      lights:
+        l_2: green
+        l_2_hole_l: red
+        l_2_hole_r: red
+    - duration: 180ms
+      lights:
+        l_2: off
+        l_2_hole_l: off
+        l_2_hole_r: off
+  human_flies_saucer_3_lit_show:
+    - duration: 180ms
+      lights:
+        l_3: green
+        l_3_hole_l: red
+        l_3_hole_r: red
+    - duration: 180ms
+      lights:
+        l_3: off
+        l_3_hole_l: off
+        l_3_hole_r: off
