@@ -1,9 +1,16 @@
 #config_version=6
 
 mode:
-  start_events: ball_started
+  start_events:
+    # Normal balls get a skill shot immediately.
+    # Chapter-select transition balls wait until the player selects a chapter,
+    # then the selected/plunged ball gets the normal skill shot.
+    - ball_started{current_player.chapter_select_needed != 1}
+    - chapter_select_selected
   stop_events:
     - finish_skillshot2
+    - start_mode_chapter_select
+    - mode_chapter_select_started
   priority: 500
   code: skillshot.SkillShot
 
@@ -32,6 +39,10 @@ widget_player:
   mode_skillshot_started:
     skillshot:
       action: play
+
+  mode_skillshot_stopping:
+    skillshot:
+      action: remove
 
   show_skillshot_result:
     skillshot_completed:

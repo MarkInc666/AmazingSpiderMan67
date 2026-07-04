@@ -313,6 +313,15 @@ class Cerberus(CaseFileMixin, Mode):
             self.machine.events.post("cerberus_gate_open_for_upper")
 
     def _refresh_lights(self):
+        # Flash the upper targets only when Cerberus wants the player back on
+        # the roof. Once any saucer jackpot is lit, the mode closes the gate
+        # and the saucers become the intended shots, so stop upper-target
+        # guidance to keep the light language clear.
+        if any(self.saucer_jackpot_lit.get(saucer, False) for saucer in [1, 2, 3]):
+            self.machine.events.post("cerberus_stop_upper_targets")
+        else:
+            self.machine.events.post("cerberus_lite_upper_targets")
+
         for saucer in [1, 2, 3]:
             if self.saucer_jackpot_lit[saucer]:
                 self.machine.events.post(f"cerberus_saucer_{saucer}_jackpot_lit")

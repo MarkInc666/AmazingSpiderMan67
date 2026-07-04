@@ -27,7 +27,7 @@ event_player:
     - chapter_carousel_previous
 
   both_flippers_held_1s:
-    - chapter_carousel_select
+    - chapter_carousel_select_flippers
 
   # Manual plunge also confirms the centered comic. If the centered comic is
   # LOCKED or COLLECTED, ChapterSelect defaults to the next AVAILABLE comic.
@@ -61,6 +61,11 @@ sound_player:
       bus: effects
 
   chapter_select_edge:
+    hb_bonk_1:
+      action: play
+      bus: effects
+
+  chapter_select_flipper_select_not_ready:
     hb_bonk_1:
       action: play
       bus: effects

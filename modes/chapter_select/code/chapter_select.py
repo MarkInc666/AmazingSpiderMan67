@@ -22,6 +22,7 @@ class ChapterSelect(Mode):
         player = self.machine.game.player
         player["chapter_select_active"] = 1
         self.selection_made = False
+        self.flipper_select_enabled = False
         requested = self._safe_int(kwargs.get("chapter", 0), 0)
         if requested < 1 or requested > len(self.CHAPTERS):
             requested = self._safe_int(player["selected_chapter"], 1)
@@ -29,7 +30,14 @@ class ChapterSelect(Mode):
         self.add_mode_event_handler("chapter_carousel_next", self.move_next)
         self.add_mode_event_handler("chapter_carousel_previous", self.move_previous)
         self.add_mode_event_handler("chapter_carousel_select", self.select_current)
+        self.add_mode_event_handler("chapter_carousel_select_flippers", self.select_current_with_flippers)
         self.machine.events.post("case_files_clear_lights")
+        self.delay.add(
+            name="chapter_select_enable_flipper_select",
+            ms=3000,
+            callback=self._enable_flipper_select,
+        )
+        self.machine.events.post("chapter_select_flipper_select_locked")
         self._publish_view()
 
     def mode_stop(self, **kwargs):
@@ -37,6 +45,16 @@ class ChapterSelect(Mode):
             self.machine.game.player["chapter_select_active"] = 0
         self.machine.events.post("chapter_select_stopped")
         super().mode_stop(**kwargs)
+
+    def _enable_flipper_select(self):
+        self.flipper_select_enabled = True
+        self.machine.events.post("chapter_select_flipper_select_ready")
+
+    def select_current_with_flippers(self, **kwargs):
+        if not self.flipper_select_enabled:
+            self.machine.events.post("chapter_select_flipper_select_not_ready")
+            return
+        self.select_current(**kwargs)
 
     def move_next(self, **kwargs):
         if self.current_index >= len(self.CHAPTERS) - 1:

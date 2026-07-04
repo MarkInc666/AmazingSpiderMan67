@@ -22,6 +22,23 @@ widget_player:
     cerberus:
       action: remove
 
+show_player:
+  cerberus_lite_upper_targets:
+    cerberus_upper_targets_flash_show:
+      loops: -1
+
+  cerberus_stop_upper_targets:
+    cerberus_upper_targets_flash_show:
+      action: stop
+
+  cerberus_clear_all_lights:
+    cerberus_upper_targets_flash_show:
+      action: stop
+
+  mode_cerberus_stopping:
+    cerberus_upper_targets_flash_show:
+      action: stop
+
 event_player:
   s_upper_target_left_active:
     - cerberus_upper_target_1_hit
@@ -105,6 +122,9 @@ light_player:
     l_3: off
 
   cerberus_clear_all_lights:
+    l_upper_left: off
+    l_upper_middle: off
+    l_upper_right: off
     l_1: off
     l_2: off
     l_3: off
@@ -114,3 +134,16 @@ light_player:
     l_2_hole_r: off
     l_3_hole_l: off
     l_3_hole_r: off
+
+shows:
+  cerberus_upper_targets_flash_show:
+    - duration: 250ms
+      lights:
+        l_upper_left: yellow
+        l_upper_middle: yellow
+        l_upper_right: yellow
+    - duration: 250ms
+      lights:
+        l_upper_left: off
+        l_upper_middle: off
+        l_upper_right: off
