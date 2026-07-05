@@ -265,33 +265,28 @@ class doc_ock(CaseFileMixin, Mode):
         self.jackpot_lit = 0
         self.update_player_vars()
 
-        # Do not immediately post breakout/timed-release messages here. They
-        # overwrite the jackpot award before the player can read it. Delay the
-        # follow-up rules so the jackpot message stays visible first.
-        self.delay.remove("doc_ock_post_jackpot_followup")
-        self.delay.add(
-            name="doc_ock_post_jackpot_followup",
-            ms=1800,
-            callback=self._post_jackpot_followup,
-        )
+        # Keep the jackpot message clean. Apply the follow-up gameplay state
+        # silently so BREAKOUT LIT / ARM BREAKING FREE does not replace the
+        # jackpot award on screen.
+        self._post_jackpot_followup(show_messages=False)
 
         self.check_mode_over()
 
 
-    def _post_jackpot_followup(self, **kwargs):
+    def _post_jackpot_followup(self, show_messages=True, **kwargs):
         if self.mode_done:
             return
 
         if self.machine.game.player["villain_mode_in_summary"] == True:
             return
 
-        self.spawn_breakout_target()
+        self.spawn_breakout_target(show_message=show_messages)
         self.update_player_vars()
 
         if self.jackpots_collected >= self.JACKPOTS_BEFORE_TIMED_RELEASE:
-            self.machine.events.post("doc_ock_start_timed_release")
+            self.start_timed_release(show_countdown=show_messages)
 
-    def spawn_breakout_target(self):
+    def spawn_breakout_target(self, show_message=True):
         if len(self.active_breakouts) >= self.MAX_BREAKOUT_TARGETS:
             return
 
@@ -302,7 +297,8 @@ class doc_ock(CaseFileMixin, Mode):
             if target not in self.active_breakouts:
                 self.active_breakouts.add(target)
                 self.machine.events.post(f"doc_ock_breakout_{target}_lit")
-                self.machine.events.post("show_mode_message", message_mode_title="BREAKOUT LIT", message_mode_subtitle=f"TARGET {target}")
+                if show_message:
+                    self.machine.events.post("show_mode_message", message_mode_title="BREAKOUT LIT", message_mode_subtitle=f"TARGET {target}")
                 return
 
     def breakout_hit(self, breakout, **kwargs):
@@ -317,7 +313,7 @@ class doc_ock(CaseFileMixin, Mode):
         self.machine.events.post("show_mode_message", message_mode_title="ARM RELEASED", message_mode_subtitle="LOCK IT AGAIN")
         self.check_mode_over()
 
-    def start_timed_release(self, **kwargs):
+    def start_timed_release(self, show_countdown=True, **kwargs):
         if self.machine.game.player["villain_mode_in_summary"] == True:
             return
 
@@ -335,7 +331,8 @@ class doc_ock(CaseFileMixin, Mode):
             delay_ms=self.doc_ock_arm_release_delay_ms,
             delay_seconds=self.doc_ock_arm_release_delay_ms / 1000,
         )
-        self.machine.events.post("show_mode_countdown", message_mode_title="TIMED RELEASE", message_mode_subtitle="ARM BREAKING FREE", message_mode_seconds=int(self.doc_ock_arm_release_delay_ms / 1000))
+        if show_countdown:
+            self.machine.events.post("show_mode_countdown", message_mode_title="TIMED RELEASE", message_mode_subtitle="ARM BREAKING FREE", message_mode_seconds=int(self.doc_ock_arm_release_delay_ms / 1000))
         self.delay.remove(self.TIMED_RELEASE_DELAY_NAME)
         self.delay.add(
             name=self.TIMED_RELEASE_DELAY_NAME,

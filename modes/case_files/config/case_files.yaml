@@ -9,11 +9,11 @@ mode:
 widget_player:
   case_files_status_changed:
     daily_bugle_ready:
-      action: update
+      action: play
 
   case_files_active_helpers_changed:
     daily_bugle_ready:
-      action: update
+      action: play
 
 event_player:
   s_web_spinner_active{current_player.villain_mode_running != 1}:

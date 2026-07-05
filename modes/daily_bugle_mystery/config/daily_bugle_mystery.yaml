@@ -53,7 +53,7 @@ widget_player:
 
   daily_bugle_widget_update:
     daily_bugle_ready:
-      action: update
+      action: play
 
 
 variable_player:
