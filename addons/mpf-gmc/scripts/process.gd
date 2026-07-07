@@ -111,7 +111,7 @@ func _check_mpf():
 	if not output:
 		return
 	var result = output[0].strip_edges()
-	if result  == "Z":
+	if result == "Z":
 		mpf_attempts += 1
 		if mpf_attempts <= MAX_MPF_ATTEMPTS:
 			self.log.info("MPF Failed to Start, Retrying (%d/%d)", [mpf_attempts, MAX_MPF_ATTEMPTS])
@@ -119,7 +119,8 @@ func _check_mpf():
 		else:
 			self.mpf.server.set_status(self.mpf.server.ServerStatus.ERROR)
 			self.mpf_spawned.emit(-1)
-	elif result == "Ss":
+	elif result.begins_with("S"):
+		# Treat "S", "Ss", "Sl" etc. as alive/sleeping
 		self.mpf_spawned.emit(1)
 	else:
 		self.log.warning("Unknown process status '%s'", result)

@@ -1,12 +1,3 @@
-[gd_scene format=3 uid="uid://b0exigwv3clut"]
-
-[node name="List_Button" type="Button"]
-size_flags_horizontal = 3
-size_flags_vertical = 3
-size_flags_stretch_ratio = 3.0
-toggle_mode = true
-action_mode = 0
-button_mask = 0
-shortcut_in_tooltip = false
-text = "List Button"
-alignment = 0
+version https://git-lfs.github.com/spec/v1
+oid sha256:d1a4674ec76990b6e1c32d9b06abf91ced0ca929fc27ca06cca37684ebfb9ef9
+size 282
