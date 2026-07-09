@@ -283,15 +283,8 @@ class VillainProgression(Mode):
                 reason="ball_start_restore",
             )
 
-        # Chapter Select is only allowed at controlled ball-start stop points:
-        # game start, or the next shooter-lane ball after a chapter/mini-wizard
-        # is completed. If a summary is still holding the trough eject via
-        # queue_relay_player, do not start the carousel yet.
-        if (
-            self._safe_int(self.machine.game.player["chapter_select_needed"], 0) == 1
-            and self._safe_int(self.machine.game.player["chapter_select_waiting_for_summary"], 0) == 0
-        ):
-            self._schedule_chapter_select_at_shooter_lane()
+        # Chapter Select starts automatically from config.yaml when needed;
+        # the Start button remains reserved for normal start/add-player behavior.
 
     def _schedule_chapter_select_at_shooter_lane(self):
         self.delay.remove("chapter_select_at_shooter_lane")

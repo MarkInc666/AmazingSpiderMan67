@@ -20,14 +20,19 @@ event_player:
     - cmd_flippers_enable
     - cmd_autofire_coils_enable
 
-  s_right_flipper_inactive{device.switches.s_left_flipper.state == 0}:
-    - chapter_carousel_next
+  # Flipper input is routed through code so chapter selection requires
+  # a clean chord: both released, then both held, then either released.
+  s_right_flipper_active:
+    - chapter_select_right_flipper_active
 
-  s_left_flipper_inactive{device.switches.s_right_flipper.state == 0}:
-    - chapter_carousel_previous
+  s_right_flipper_inactive:
+    - chapter_select_right_flipper_inactive
 
-  both_flippers_held_1s:
-    - chapter_carousel_select_flippers
+  s_left_flipper_active:
+    - chapter_select_left_flipper_active
+
+  s_left_flipper_inactive:
+    - chapter_select_left_flipper_inactive
 
   # Manual plunge also confirms the centered comic. If the centered comic is
   # LOCKED or COLLECTED, ChapterSelect defaults to the next AVAILABLE comic.

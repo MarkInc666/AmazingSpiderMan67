@@ -201,8 +201,12 @@ event_player:
     - cmd_flippers_disable
     - cmd_autofire_coils_disable
 
-  s_plunger_active{current_player.chapter_select_needed == 1 and current_player.chapter_select_active != 1}:
-    - start_mode_chapter_select|500ms
+  # Chapter Select opens automatically when needed while MPF serves the ball normally.
+  # After a wizard summary, the trough eject is held until Chapter Select starts.
+  ball_started{current_player.chapter_select_needed == 1 and current_player.chapter_select_waiting_for_summary == 0 and current_player.chapter_select_active != 1}:
+    - chapter_select_start_requested|100ms
+    - start_mode_chapter_select|300ms
+
 
   s_saucer_1_active{current_player.chapter_select_needed == 1}:
     - delayed_kickout_saucer_1
@@ -383,7 +387,7 @@ ball_saves:
 queue_relay_player:
   balldevice_bd_trough_ball_eject_attempt{current_player.chapter_select_waiting_for_summary == 1}:
     post: chapter_select_trough_eject_held_for_summary
-    wait_for: chapter_select_summary_complete.2
+    wait_for: chapter_select_start_requested.1
 
 
 #todo - when ball saved, use these events to trigger display

@@ -64,8 +64,13 @@ event_player:
   mode_base_started:
     - mode_base_started_delayed|1s
 
-  mode_base_started_delayed:
+  mode_base_started_delayed{current_player.chapter_select_needed != 1}:
     - play_song_5
+
+  # After a wizard summary, keep the display/audio in a Chapter Select
+  # transition state until Chapter Select takes over.
+  chapter_select_summary_complete:
+    - play_song_20
 
   s_plunger_active{current_player.saved_ball_pending_plunger == 1}:
     - saved_ball_arrived_at_plunger
@@ -185,6 +190,27 @@ sound_player:
 
 
 widget_player:
+  chapter_select_summary_complete:
+    chapter_select_transition:
+      action: play
+      key: chapter_select_transition
+      priority: 2100
+
+  chapter_select_start_requested:
+    chapter_select_transition:
+      action: remove
+      key: chapter_select_transition
+
+  mode_chapter_select_started:
+    chapter_select_transition:
+      action: remove
+      key: chapter_select_transition
+
+  chapter_select_selected:
+    chapter_select_transition:
+      action: remove
+      key: chapter_select_transition
+
   mode_base_started:
     villain_chapter_status:
       action: play
