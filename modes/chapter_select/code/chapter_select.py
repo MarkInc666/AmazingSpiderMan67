@@ -22,31 +22,31 @@ class ChapterSelect(Mode):
         player = self.machine.game.player
         player["chapter_select_active"] = 1
         self.selection_made = False
-        self.flipper_select_enabled = False
-        self.left_flipper_active = self._switch_active("s_left_flipper")
-        self.right_flipper_active = self._switch_active("s_right_flipper")
-        # A both-flipper select must be intentional inside Chapter Select:
-        # both released first, then both held, then either released.
-        self.flipper_chord_armed = False
-        self.flipper_chord_was_held = False
         requested = self._safe_int(kwargs.get("chapter", 0), 0)
         if requested < 1 or requested > len(self.CHAPTERS):
             requested = self._safe_int(player["selected_chapter"], 1)
         self.current_index = max(0, min(len(self.CHAPTERS) - 1, requested - 1))
+
+        # Flipper input is handled here instead of by YAML combo_switches. A held-over
+        # both-flipper press from the previous wizard/summary cannot select. The
+        # player must release both, then hold both, then release either flipper.
+        self.left_flipper_active = self._switch_active("s_left_flipper")
+        self.right_flipper_active = self._switch_active("s_right_flipper")
+        self.clean_flipper_release_seen = not self.left_flipper_active and not self.right_flipper_active
+        self.both_flippers_armed = False
+
         self.add_mode_event_handler("chapter_carousel_next", self.move_next)
         self.add_mode_event_handler("chapter_carousel_previous", self.move_previous)
         self.add_mode_event_handler("chapter_carousel_select", self.select_current)
-        self.add_mode_event_handler("chapter_select_left_flipper_active", self._left_flipper_active)
-        self.add_mode_event_handler("chapter_select_left_flipper_inactive", self._left_flipper_inactive)
-        self.add_mode_event_handler("chapter_select_right_flipper_active", self._right_flipper_active)
-        self.add_mode_event_handler("chapter_select_right_flipper_inactive", self._right_flipper_inactive)
+        self.add_mode_event_handler("s_left_flipper_active", self._left_flipper_active)
+        self.add_mode_event_handler("s_left_flipper_inactive", self._left_flipper_inactive)
+        self.add_mode_event_handler("s_right_flipper_active", self._right_flipper_active)
+        self.add_mode_event_handler("s_right_flipper_inactive", self._right_flipper_inactive)
         self.machine.events.post("case_files_clear_lights")
-        self.delay.add(
-            name="chapter_select_enable_flipper_select",
-            ms=3000,
-            callback=self._enable_flipper_select,
-        )
-        self.machine.events.post("chapter_select_flipper_select_locked")
+        if self.clean_flipper_release_seen:
+            self.machine.events.post("chapter_select_flipper_select_ready")
+        else:
+            self.machine.events.post("chapter_select_flipper_select_locked")
         self._publish_view()
 
     def mode_stop(self, **kwargs):
@@ -55,73 +55,54 @@ class ChapterSelect(Mode):
         self.machine.events.post("chapter_select_stopped")
         super().mode_stop(**kwargs)
 
-    def _enable_flipper_select(self):
-        self.flipper_select_enabled = True
-        self._arm_flipper_chord_if_released()
-        self.machine.events.post("chapter_select_flipper_select_ready")
-
     def _left_flipper_active(self, **kwargs):
         self.left_flipper_active = True
-        self._note_flipper_chord_held()
+        self._arm_both_flipper_select_if_ready()
 
     def _right_flipper_active(self, **kwargs):
         self.right_flipper_active = True
-        self._note_flipper_chord_held()
+        self._arm_both_flipper_select_if_ready()
 
     def _left_flipper_inactive(self, **kwargs):
-        was_both_held = self.left_flipper_active and self.right_flipper_active
+        should_select = self.both_flippers_armed
         self.left_flipper_active = False
-        if self._select_on_clean_chord_release(was_both_held):
-            return
-        self._arm_flipper_chord_if_released()
-        if not self.right_flipper_active:
-            self.move_previous(**kwargs)
+        self._handle_flipper_release(should_select=should_select, direction="left")
 
     def _right_flipper_inactive(self, **kwargs):
-        was_both_held = self.left_flipper_active and self.right_flipper_active
+        should_select = self.both_flippers_armed
         self.right_flipper_active = False
-        if self._select_on_clean_chord_release(was_both_held):
+        self._handle_flipper_release(should_select=should_select, direction="right")
+
+    def _handle_flipper_release(self, should_select=False, direction=""):
+        if self.selection_made:
             return
-        self._arm_flipper_chord_if_released()
-        if not self.left_flipper_active:
-            self.move_next(**kwargs)
 
-    def _note_flipper_chord_held(self):
-        if (
-            self.flipper_select_enabled
-            and self.flipper_chord_armed
-            and self.left_flipper_active
-            and self.right_flipper_active
-        ):
-            self.flipper_chord_was_held = True
+        if should_select:
+            self.both_flippers_armed = False
+            self.select_current(source="flippers")
+            return
 
-    def _select_on_clean_chord_release(self, was_both_held):
-        if not self.flipper_select_enabled:
-            if was_both_held:
-                self.machine.events.post("chapter_select_flipper_select_not_ready")
-            return False
-        if self.flipper_chord_armed and self.flipper_chord_was_held and was_both_held:
-            self.flipper_chord_armed = False
-            self.flipper_chord_was_held = False
-            self.select_current()
-            return True
-        return False
+        # Once both are released, the next intentional both-flipper chord can select.
+        if not self.left_flipper_active and not self.right_flipper_active:
+            if not self.clean_flipper_release_seen:
+                self.clean_flipper_release_seen = True
+                self.machine.events.post("chapter_select_flipper_select_ready")
+            self.both_flippers_armed = False
 
-    def _arm_flipper_chord_if_released(self):
-        if self.flipper_select_enabled and not self.left_flipper_active and not self.right_flipper_active:
-            self.flipper_chord_armed = True
-            self.flipper_chord_was_held = False
+        # Normal chapter navigation: release right for next, release left for previous,
+        # but only when the opposite flipper is not being held.
+        if direction == "right" and not self.left_flipper_active:
+            self.move_next()
+        elif direction == "left" and not self.right_flipper_active:
+            self.move_previous()
 
-    def _switch_active(self, switch_name):
-        try:
-            return bool(self.machine.switch_controller.is_active(switch_name))
-        except Exception:
-            try:
-                return bool(self.machine.switches[switch_name].state)
-            except Exception:
-                return False
+    def _arm_both_flipper_select_if_ready(self):
+        if self.clean_flipper_release_seen and self.left_flipper_active and self.right_flipper_active:
+            self.both_flippers_armed = True
 
     def move_next(self, **kwargs):
+        if self.selection_made:
+            return
         if self.current_index >= len(self.CHAPTERS) - 1:
             self.machine.events.post("chapter_select_edge")
             return
@@ -130,6 +111,8 @@ class ChapterSelect(Mode):
         self._publish_view()
 
     def move_previous(self, **kwargs):
+        if self.selection_made:
+            return
         if self.current_index <= 0:
             self.machine.events.post("chapter_select_edge")
             return
@@ -230,6 +213,12 @@ class ChapterSelect(Mode):
         if self._safe_int(player[f"chapter_{chapter_number}_unlocked"], 0) == 1:
             return "AVAILABLE"
         return "LOCKED"
+
+    def _switch_active(self, switch_name):
+        switch = self.machine.switches.get(switch_name)
+        if not switch:
+            return False
+        return switch.state == 1
 
     def _safe_int(self, value, default=0):
         try:

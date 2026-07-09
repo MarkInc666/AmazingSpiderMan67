@@ -201,12 +201,16 @@ event_player:
     - cmd_flippers_disable
     - cmd_autofire_coils_disable
 
-  # Chapter Select opens automatically when needed while MPF serves the ball normally.
-  # After a wizard summary, the trough eject is held until Chapter Select starts.
+  # Chapter Select starts automatically when needed. Start button remains normal
+  # MPF start/add-player only. The plunger-lane switch is the important fallback
+  # trigger after the ball is served, so the transition cover cannot get stuck.
   ball_started{current_player.chapter_select_needed == 1 and current_player.chapter_select_waiting_for_summary == 0 and current_player.chapter_select_active != 1}:
     - chapter_select_start_requested|100ms
     - start_mode_chapter_select|300ms
 
+  s_plunger_active{current_player.chapter_select_needed == 1 and current_player.chapter_select_waiting_for_summary == 0 and current_player.chapter_select_active != 1}:
+    - chapter_select_start_requested
+    - start_mode_chapter_select|100ms
 
   s_saucer_1_active{current_player.chapter_select_needed == 1}:
     - delayed_kickout_saucer_1

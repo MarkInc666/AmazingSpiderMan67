@@ -20,19 +20,8 @@ event_player:
     - cmd_flippers_enable
     - cmd_autofire_coils_enable
 
-  # Flipper input is routed through code so chapter selection requires
-  # a clean chord: both released, then both held, then either released.
-  s_right_flipper_active:
-    - chapter_select_right_flipper_active
-
-  s_right_flipper_inactive:
-    - chapter_select_right_flipper_inactive
-
-  s_left_flipper_active:
-    - chapter_select_left_flipper_active
-
-  s_left_flipper_inactive:
-    - chapter_select_left_flipper_inactive
+  # Flipper navigation and both-flipper select are handled in Python so the
+  # mode can require a clean release-before-hold-before-release selection.
 
   # Manual plunge also confirms the centered comic. If the centered comic is
   # LOCKED or COLLECTED, ChapterSelect defaults to the next AVAILABLE comic.

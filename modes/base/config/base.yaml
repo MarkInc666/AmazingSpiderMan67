@@ -68,7 +68,7 @@ event_player:
     - play_song_5
 
   # After a wizard summary, keep the display/audio in a Chapter Select
-  # transition state until Chapter Select takes over.
+  # transition state while waiting for the player to press Start.
   chapter_select_summary_complete:
     - play_song_20
 
@@ -195,11 +195,6 @@ widget_player:
       action: play
       key: chapter_select_transition
       priority: 2100
-
-  chapter_select_start_requested:
-    chapter_select_transition:
-      action: remove
-      key: chapter_select_transition
 
   mode_chapter_select_started:
     chapter_select_transition:
