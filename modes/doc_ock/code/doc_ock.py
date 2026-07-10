@@ -302,13 +302,30 @@ class doc_ock(CaseFileMixin, Mode):
                 return
 
     def breakout_hit(self, breakout, **kwargs):
-        if self.machine.game.player["villain_mode_in_summary"] == True: return
+        if self.mode_done:
+            return
+
+        if self.machine.game.player["villain_mode_in_summary"] == True:
+            return
 
         if breakout not in self.active_breakouts:
             return
 
-        self.release_random_locked_arm()
-        self.update_player_vars()                
+        # Consume the breakout target before doing anything else. Some
+        # physical switches, especially saucers during kickout, can post
+        # repeated active events from one shot. If the target stays active,
+        # one physical breakout can release multiple arms and incorrectly
+        # finish the mode.
+        self.active_breakouts.remove(breakout)
+        self.machine.events.post(f"doc_ock_breakout_{breakout}_collected")
+
+        released = self.release_random_locked_arm()
+        if not released:
+            self.update_player_vars()
+            self.check_mode_over()
+            return
+
+        self.update_player_vars()
         self.machine.events.post("doc_ock_breakout_hit")
         self.machine.events.post("show_mode_message", message_mode_title="ARM RELEASED", message_mode_subtitle="LOCK IT AGAIN")
         self.check_mode_over()

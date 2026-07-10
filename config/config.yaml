@@ -391,7 +391,7 @@ ball_saves:
 queue_relay_player:
   balldevice_bd_trough_ball_eject_attempt{current_player.chapter_select_waiting_for_summary == 1}:
     post: chapter_select_trough_eject_held_for_summary
-    wait_for: chapter_select_start_requested.1
+    wait_for: chapter_select_summary_complete.1
 
 
 #todo - when ball saved, use these events to trigger display

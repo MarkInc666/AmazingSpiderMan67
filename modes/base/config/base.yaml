@@ -247,7 +247,7 @@ widget_player:
     mode_message:
       action: play
       expire: 2s
-      priority: 4096
+      priority: 2600
 
   hide_mode_message:
     mode_message:
@@ -256,12 +256,12 @@ widget_player:
   show_mode_status:
     mode_status:
       action: play
-      priority: 4095
+      priority: 2500
 
   update_mode_status:
     mode_status:
       action: play
-      priority: 4095
+      priority: 2500
 
   hide_mode_status:
     mode_status:

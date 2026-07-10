@@ -215,6 +215,30 @@ show_player:
       loops: -1
 
 
+  doc_ock_breakout_1_collected:
+    doc_ock_breakout_1_show:
+      action: stop
+
+  doc_ock_breakout_2_collected:
+    doc_ock_breakout_2_show:
+      action: stop
+
+  doc_ock_breakout_3_collected:
+    doc_ock_breakout_3_show:
+      action: stop
+
+  doc_ock_breakout_4_collected:
+    doc_ock_breakout_4_show:
+      action: stop
+
+  doc_ock_breakout_5_collected:
+    doc_ock_breakout_5_show:
+      action: stop
+
+  doc_ock_breakout_6_collected:
+    doc_ock_breakout_6_show:
+      action: stop
+
   doc_ock_mode_complete:
     doc_ock_arm_1_pulse:
       action: stop

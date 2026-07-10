@@ -181,6 +181,33 @@ class Base(Mode):
 
     @staticmethod
     def _display_text(value):
+        """Return display-safe text, comma-formatting score/jackpot numbers."""
         if value is None or value == "":
             return " "
-        return str(value)
+
+        # Display-only helper: these vars are used by GMC text widgets.
+        # Format integer scores/jackpots like 250,000, while leaving
+        # mixed strings such as "3 / 12", "SURVIVE", or "+50K" alone.
+        if isinstance(value, bool):
+            return str(value)
+
+        if isinstance(value, int):
+            return f"{value:,}"
+
+        if isinstance(value, float):
+            if value.is_integer():
+                return f"{int(value):,}"
+            return str(value)
+
+        text = str(value)
+        stripped = text.strip()
+        if stripped:
+            sign = ""
+            digits = stripped
+            if digits[0] in "+-":
+                sign = digits[0]
+                digits = digits[1:]
+            if digits.isdigit():
+                return f"{sign}{int(digits):,}"
+
+        return text
