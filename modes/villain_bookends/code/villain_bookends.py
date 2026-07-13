@@ -217,7 +217,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'cerberus_jackpots_collected',
             'points_var': 'active_mode_points',
             'state_var': 'cerberus_state',
-            'song': 'play_song_9',
+            'song': 'play_song_8',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Multiball erupts across the playfield.
@@ -237,7 +237,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'vulcan_bonus',
             'points_var': 'active_mode_points',
             'state_var': 'vulcan_state',
-            'song': 'play_song_15',
+            'song': 'play_song_19',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Diana takes aim with Trubble's arrows.
@@ -256,7 +256,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'diana_wrong_total',
             'points_var': 'active_mode_points',
             'state_var': 'diana_state',
-            'song': 'play_song_26',
+            'song': 'play_song_9',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: The center web target is the Cyclops Eye.
@@ -275,7 +275,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'cyclops_flips_remaining',
             'points_var': 'active_mode_points',
             'state_var': 'cyclops_state',
-            'song': 'play_song_14',
+            'song': 'play_song_3',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Drop targets build the Centaur Jackpot.
@@ -295,7 +295,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'centaur_best_jackpot',
             'points_var': 'active_mode_points',
             'state_var': 'centaur_state',
-            'song': 'play_song_14',
+            'song': 'play_song_1',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Kingpin is running the Crime Wave.

@@ -12,7 +12,7 @@ mode:
 
 event_player:
   mode_chapter_select_started:
-    - play_song_20
+    - play_chapter_select_music
     - cmd_flippers_disable
     - cmd_autofire_coils_disable
 
@@ -69,6 +69,7 @@ widget_player:
     chapter_select:
       action: play
       priority: 2000
+
 
   stop_mode_chapter_select:
     chapter_select:

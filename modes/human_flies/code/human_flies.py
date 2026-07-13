@@ -75,6 +75,7 @@ class HumanFlies(CaseFileMixin, Mode):
         self.machine.events.post("drop_target_bank_dt_bank_right_reset")
         self.machine.events.post("human_flies_clear_all_lights")
         self.machine.events.post("human_flies_round_started", round=self.round_number)
+        self.machine.events.post("human_flies_upper_access_needed")
         self.machine.events.post("human_flies_start_more_time_multiball" if self.has_case_file("more_time") else "human_flies_start_multiball")
         self._sync_vars()
         self._show_mode_message("HUMAN FLIES", "GET TO THE ROOF")
@@ -83,6 +84,7 @@ class HumanFlies(CaseFileMixin, Mode):
         self.clear_active_case_file_helpers()
         self.machine.events.post("human_flies_clear_all_lights")
         self.machine.events.post("clear_saucers_delayed")
+        self.machine.events.post("rooftop_diverter_close")
         super().mode_stop(**kwargs)
 
     def _publish_case_file_status(self):
@@ -175,6 +177,7 @@ class HumanFlies(CaseFileMixin, Mode):
             for assist_target in self.UPPER_TARGETS:
                 self._light_saucer_for_target(assist_target)
             self.machine.events.post("human_flies_shot_assist_used")
+            self.machine.events.post("human_flies_upper_access_complete")
             self._show_mode_message("SHOT ASSIST", "ALL SAUCERS LIT")
         else:
             self._light_saucer_for_target(target)
@@ -194,6 +197,8 @@ class HumanFlies(CaseFileMixin, Mode):
         self.lit_saucers.add(saucer)
         self.machine.events.post(f"human_flies_upper_{target}_complete")
         self.machine.events.post(f"human_flies_{saucer}_lit")
+        if len(self.upper_targets_hit) >= len(self.UPPER_TARGETS):
+            self.machine.events.post("human_flies_upper_access_complete")
 
     def _saucer_hit(self, saucer, **kwargs):
         if self._done_or_summary():
@@ -245,6 +250,7 @@ class HumanFlies(CaseFileMixin, Mode):
         self.lit_saucers.clear()
         self.machine.events.post("human_flies_round_reset")
         self.machine.events.post("human_flies_round_started", round=self.round_number)
+        self.machine.events.post("human_flies_upper_access_needed")
         self._sync_vars()
 
     def _multiball_ended(self, **kwargs):

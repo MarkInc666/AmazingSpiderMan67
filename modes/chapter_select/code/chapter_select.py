@@ -148,6 +148,9 @@ class ChapterSelect(Mode):
             )
 
         chapter_number, chapter_name = self.CHAPTERS[self.current_index]
+        player = self.machine.game.player
+        player["chapter_select_confirm_number"] = f"CHAPTER {chapter_number}"
+        player["chapter_select_confirm_title"] = chapter_name
         self.selection_made = True
         self.machine.events.post(
             "chapter_select_selected",

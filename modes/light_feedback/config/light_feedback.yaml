@@ -282,23 +282,23 @@ show_player:
 
 shows:
   switch_feedback_single:
-    - duration: 250ms
+    - duration: 100ms
       lights:
         (lights): white
-    - duration: 250ms
+    - duration: 100ms
       lights:
         (lights): off
 
   switch_feedback_double:
-    - duration: 250ms
+    - duration: 100ms
       lights:
         (lights): white
-    - duration: 250ms
+    - duration: 75ms
       lights:
         (lights): off
-    - duration: 250ms
+    - duration: 100ms
       lights:
         (lights): white
-    - duration: 250ms
+    - duration: 75ms
       lights:
         (lights): off

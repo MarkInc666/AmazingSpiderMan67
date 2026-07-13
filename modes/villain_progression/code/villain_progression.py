@@ -149,7 +149,7 @@ class VillainProgression(Mode):
      'enforcers': {'chapter': 4, 'name': 'Enforcers / Ox', 'start_event': 'start_mode_enforcers'},
      'fakir': {'chapter': 5, 'name': 'The Fakir', 'start_event': 'start_mode_fakir'},
      'fifth_avenue_phantom': {'chapter': 4,
-                              'name': 'Fifth Avenue Phantom',
+                              'name': '5th Avenue Phantom',
                               'start_event': 'start_mode_fifth_avenue_phantom'},
      'frog_ghosts': {'chapter': 5, 'name': 'Frog Ghosts', 'start_event': 'start_mode_frog_ghosts'},
      'goblin': {'chapter': 2, 'name': 'Green Goblin', 'start_event': 'start_mode_goblin'},

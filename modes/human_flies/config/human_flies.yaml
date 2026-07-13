@@ -64,12 +64,19 @@ widget_player:
 
 event_player:
   mode_human_flies_started:
-    - rooftop_diverter_open|500ms
+    - human_flies_upper_access_needed|500ms
     - clear_saucers_delayed
     - human_flies_clear_all_lights
 
   mode_human_flies_stopping:
     - human_flies_clear_all_lights
+    - rooftop_diverter_close
+  human_flies_upper_access_needed:
+    - rooftop_diverter_open
+
+  human_flies_upper_access_complete:
+    - rooftop_diverter_close
+
 
   human_flies_mode_complete:
     villain_bookend_summary_request:

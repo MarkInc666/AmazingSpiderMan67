@@ -287,6 +287,7 @@ class CaseFiles(Mode):
             self.machine.game.player[f"case_file_{index}_benefit"] = self.CASE_FILE_BENEFITS[key]
 
         self.machine.events.post("case_files_status_changed")
+        self.machine.events.post("daily_bugle_widget_update")
 
     def _clear_lights(self, **kwargs):
         """Public event hook for clearing all case file lights/shows.

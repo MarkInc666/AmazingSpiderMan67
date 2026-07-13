@@ -61,6 +61,12 @@ event_player:
   finish_skillshot:
     - play_random_main_song
 
+  play_bonus_music:
+    - play_song_6
+
+  play_chapter_select_music:
+    - play_song_20
+
   mode_base_started:
     - mode_base_started_delayed|1s
 
@@ -70,7 +76,10 @@ event_player:
   # After a wizard summary, keep the display/audio in a Chapter Select
   # transition state while waiting for the player to press Start.
   chapter_select_summary_complete:
-    - play_song_20
+    - play_chapter_select_music
+
+  chapter_select_selected:
+    - chapter_select_confirmed|2s
 
   s_plunger_active{current_player.saved_ball_pending_plunger == 1}:
     - saved_ball_arrived_at_plunger
@@ -205,6 +214,10 @@ widget_player:
     chapter_select_transition:
       action: remove
       key: chapter_select_transition
+    chapter_selected_confirmation:
+      action: play
+      priority: 2200
+      expire: 2s
 
   mode_base_started:
     villain_chapter_status:

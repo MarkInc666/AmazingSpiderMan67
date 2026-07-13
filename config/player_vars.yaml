@@ -436,31 +436,31 @@ player_vars:
     initial_value: ""
     value_type: str
   case_file_1_name:
-    initial_value: ""
+    initial_value: "More Jackpots"
     value_type: str
   case_file_2_key:
     initial_value: ""
     value_type: str
   case_file_2_name:
-    initial_value: ""
+    initial_value: "More Time"
     value_type: str
   case_file_3_key:
     initial_value: ""
     value_type: str
   case_file_3_name:
-    initial_value: ""
+    initial_value: "Bigger Jackpots"
     value_type: str
   case_file_4_key:
     initial_value: ""
     value_type: str
   case_file_4_name:
-    initial_value: ""
+    initial_value: "Safety Net"
     value_type: str
   case_file_5_key:
     initial_value: ""
     value_type: str
   case_file_5_name:
-    initial_value: ""
+    initial_value: "Shot Assist"
     value_type: str
   case_file_more_time:
     initial_value: 0
@@ -682,6 +682,12 @@ player_vars:
     initial_value: 0
     value_type: int
   daily_bugle_pictures_taken_text:
+    initial_value: "PICS: 0/3"
+    value_type: str
+  chapter_select_confirm_number:
+    initial_value: ""
+    value_type: str
+  chapter_select_confirm_title:
     initial_value: ""
     value_type: str
   daily_bugle_pictures_taken:
@@ -691,19 +697,19 @@ player_vars:
     initial_value: 3
     value_type: int
   case_file_1_state:
-    initial_value: ""
+    initial_value: "NOT COLLECTED"
     value_type: str
   case_file_2_state:
-    initial_value: ""
+    initial_value: "NOT COLLECTED"
     value_type: str
   case_file_3_state:
-    initial_value: ""
+    initial_value: "NOT COLLECTED"
     value_type: str
   case_file_4_state:
-    initial_value: ""
+    initial_value: "NOT COLLECTED"
     value_type: str
   case_file_5_state:
-    initial_value: ""
+    initial_value: "NOT COLLECTED"
     value_type: str
   daily_bugle_a_hit:
     initial_value: 0
