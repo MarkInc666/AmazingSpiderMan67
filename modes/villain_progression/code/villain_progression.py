@@ -274,6 +274,9 @@ class VillainProgression(Mode):
 
         self._restore_state()
 
+        if recovered:
+            self._schedule_case_files_restore(reason="startup_recovery")
+
         if (
             self._safe_int(self.machine.game.player["chapter_mini_wizard_ready"], 0) == 1
             and self._safe_int(self.machine.game.player["chapter_select_needed"], 0) == 0
@@ -431,6 +434,9 @@ class VillainProgression(Mode):
         for index in range(1, 6):
             player[f"active_case_file_helper_{index}"] = ""
 
+        self.machine.events.post("case_files_active_helpers_changed")
+        self.machine.events.post("daily_bugle_widget_update")
+
     def _post_global_cleanup_events(self, reason=""):
         self.machine.events.post("villain_full_cleanup", reason=reason)
         self.machine.events.post("case_files_clear_lights", reason=reason)
@@ -441,6 +447,9 @@ class VillainProgression(Mode):
         # default VUK eject path recover even if a wizard stops unexpectedly.
         self.machine.events.post("enable_daily_bugle_mystery", reason=reason)
         self.machine.events.post("daily_bugle_restore_state", reason=reason)
+        self.machine.events.post("case_files_active_helpers_changed", reason=reason)
+        self.machine.events.post("case_files_restore_state", reason=reason)
+        self.machine.events.post("daily_bugle_widget_update", reason=reason)
         self.machine.events.post("villain_mode_ended", villain_key="", villain="", reason=reason)
 
     def _sync_chapter_ready_flags(self, post_events=True):

@@ -95,7 +95,8 @@ class DailyBugleMystery(Mode):
         self.b_hit = bool(player["daily_bugle_b_hit"])
         self.mystery_ab_ready = bool(player["daily_bugle_ab_ready"])
         self.mystery_ready = bool(player["daily_bugle_mystery_ready"])
-        self.rooftop_photos = self._safe_int(player["daily_bugle_rooftop_photos"], 0)
+        self.rooftop_photos = self._safe_int(player["daily_bugle_pictures_taken"], 0)
+        self.update_player_vars(post_widget_update=False)
 
     def disable_db(self, **kwargs):
         self.daily_bugle_enabled = False
@@ -202,13 +203,13 @@ class DailyBugleMystery(Mode):
         if not player:
             return
 
-        pictures = self.rooftop_photos 
-        #self._safe_int(player["daily_bugle_pictures_taken"], 0)
-        needed = self._safe_int(player["daily_bugle_pictures_needed"], 3)
+        pictures = self._safe_int(self.rooftop_photos, 0)
+        needed = self._safe_int(player["daily_bugle_pictures_needed"], self.PHOTOS_NEEDED)
 
+        player["daily_bugle_pictures_taken"] = pictures
         player["daily_bugle_pictures_taken_text"] = f"PICS: {pictures}/{needed}"
 
-        self.machine.events.post("daily_bugle_widget_update")
+        self._post_widget_update()
 
     def rooftop_left_exit(self, **kwargs):
         if not self.daily_bugle_enabled:
@@ -460,9 +461,21 @@ class DailyBugleMystery(Mode):
         player["daily_bugle_b_hit"] = int(self.b_hit)
         player["daily_bugle_ab_ready"] = int(self.mystery_ab_ready)
         player["daily_bugle_mystery_ready"] = int(self.mystery_ready)
+        player["daily_bugle_pictures_taken"] = self._safe_int(self.rooftop_photos, 0)
+        player["daily_bugle_pictures_needed"] = self.PHOTOS_NEEDED
+        player["daily_bugle_pictures_taken_text"] = f"PICS: {player['daily_bugle_pictures_taken']}/{player['daily_bugle_pictures_needed']}"
 
         if post_widget_update:
-            self.machine.events.post("daily_bugle_widget_update")
+            self._post_widget_update()
+
+    def _post_widget_update(self):
+        self.machine.events.post("daily_bugle_widget_update")
+        self.delay.remove("daily_bugle_widget_update_deferred")
+        self.delay.add(
+            name="daily_bugle_widget_update_deferred",
+            ms=50,
+            callback=lambda: self.machine.events.post("daily_bugle_widget_update"),
+        )
 
     def _restore_lights_and_widgets(self, **kwargs):
         """Restore visuals from state without replaying hit animations."""
@@ -484,7 +497,7 @@ class DailyBugleMystery(Mode):
             else:
                 self.machine.events.post("daily_bugle_b_restore_incomplete")
 
-        self.machine.events.post("daily_bugle_widget_update")
+        self._post_widget_update()
 
     def _safe_int(self, value, default=0):
         try:

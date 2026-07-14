@@ -8,6 +8,21 @@ mode:
   code: professor_pretoris.ProfessorPretoris
   priority: 300
 
+
+widget_player:
+  mode_professor_pretoris_started:
+    professor_pretoris:
+      action: play
+
+  professor_pretoris_mode_complete:
+    professor_pretoris:
+      action: remove
+
+  mode_professor_pretoris_stopping:
+    professor_pretoris:
+      action: remove
+
+
 event_player:
   s_pop_left_active: professor_pretoris_shot_hit
   s_pop_right_active: professor_pretoris_shot_hit

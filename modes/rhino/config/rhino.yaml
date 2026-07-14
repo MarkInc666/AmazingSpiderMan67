@@ -20,6 +20,9 @@ widget_player:
     rhino:
       action: remove
 
+  mode_rhino_stopping:
+    rhino:
+      action: remove
 
 event_player:
   mode_rhino_started:

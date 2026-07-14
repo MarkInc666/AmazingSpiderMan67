@@ -10,10 +10,6 @@ mode:
   priority: 600
 
 
-variable_player:
-  doc_ock_jackpot_award:
-    score: current_player.doc_ock_last_jackpot
-
 
 
 widget_player:
@@ -44,6 +40,9 @@ widget_player:
     doc_ock:
       action: remove
 
+  mode_doc_ock_stopping:
+    doc_ock:
+      action: remove
 
 event_player:
   drop_target_bank_dt_bank_left_down:

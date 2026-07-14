@@ -9,6 +9,20 @@ mode:
   priority: 300
 
 
+widget_player:
+  mode_master_technician_started:
+    master_technician:
+      action: play
+
+  master_technician_mode_complete:
+    master_technician:
+      action: remove
+
+  mode_master_technician_stopping:
+    master_technician:
+      action: remove
+
+
 variable_player:
 
   mode_master_technician_started:

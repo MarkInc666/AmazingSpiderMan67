@@ -172,6 +172,7 @@ class doc_ock(CaseFileMixin, Mode):
         if self.locked_arms[arm-1]:
             self.machine.game.player["score"] += self.doc_ock_arm_relocked_score
             self.active_mode_points += self.doc_ock_arm_relocked_score
+            self.check_jackpot_lit()
             self.machine.events.post("show_mode_message", message_mode_title="ARM ALREADY LOCKED", message_mode_subtitle="KEEP BUILDING JACKPOT")
             return
 
@@ -183,7 +184,7 @@ class doc_ock(CaseFileMixin, Mode):
 
         self.machine.events.post("doc_ock_arm_locked_score")
         self.machine.events.post("show_mode_message", message_mode_title="ARM LOCKED", message_mode_subtitle=f"{sum(self.locked_arms)} ARMS LOCKED")
-        #self.check_jackpot_lit()
+        self.check_jackpot_lit()
         self.update_player_vars()        
 
     def _lock_arm_index(self, arm_index):

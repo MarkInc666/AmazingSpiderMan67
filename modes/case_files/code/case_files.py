@@ -52,6 +52,8 @@ class CaseFiles(Mode):
 
     def mode_stop(self, **kwargs):
         self.case_files_logic_active = False
+        self.machine.events.post("case_files_active_helpers_changed")
+        self.machine.events.post("daily_bugle_widget_update")
         super().mode_stop(**kwargs)
 
     def _add_handlers(self):
@@ -279,6 +281,8 @@ class CaseFiles(Mode):
         return None
 
     def _publish_widget_vars(self):
+        self._refresh_counts()
+
         for index, key in enumerate(self.CASE_FILES, start=1):
             collected = self._case_file_value(key)
             self.machine.game.player[f"case_file_{index}_key"] = key

@@ -46,6 +46,9 @@ widget_player:
     vulture:
       action: remove
 
+  mode_vulture_stopping:
+    vulture:
+      action: remove
 
 event_player:
   mode_vulture_started:

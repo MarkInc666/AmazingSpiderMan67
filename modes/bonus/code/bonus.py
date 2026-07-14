@@ -53,7 +53,7 @@ class Bonus(MpfBonus):
     NEXT_CYCLE_DELAY_MS = 260
     MODE_PAGE_DELAY_MS = 1100
     MODE_STEP_MS = 850
-    FINAL_DELAY_MS = 1100
+    FINAL_SCORE_HOLD_MS = 2500
 
     def mode_start(self, **kwargs):
         # Do not call MpfBonus.mode_start(); that would run stock bonus math.
@@ -261,10 +261,11 @@ class Bonus(MpfBonus):
         self._reset_regular_bonus_state()
 
         self.machine.events.post("asm_bonus_total_awarded", total=self._final_total)
+        self._show_bonus_entry("final_score_hold", "PLAYER SCORE", int(self._player["score"]))
 
         self.delay.add(
             name="asm_bonus_finish",
-            ms=self.FINAL_DELAY_MS,
+            ms=self.FINAL_SCORE_HOLD_MS,
             callback=self._finish_bonus,
         )
 

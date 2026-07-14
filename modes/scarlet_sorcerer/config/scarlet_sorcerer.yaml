@@ -8,6 +8,20 @@ mode:
   code: scarlet_sorcerer.ScarletSorcerer
   priority: 300
 
+widget_player:
+  mode_scarlet_sorcerer_started:
+    scarlet_sorcerer:
+      action: play
+
+  scarlet_sorcerer_mode_complete:
+    scarlet_sorcerer:
+      action: remove
+
+  mode_scarlet_sorcerer_stopping:
+    scarlet_sorcerer:
+      action: remove
+
+
 event_player:
   s_pop_left_active: scarlet_sorcerer_shot_hit
   s_pop_right_active: scarlet_sorcerer_shot_hit

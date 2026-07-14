@@ -22,6 +22,9 @@ widget_player:
     electro:
       action: remove
 
+  mode_electro_stopping:
+    electro:
+      action: remove
 
 random_event_player:
   electro_jackpot_collected:

@@ -8,6 +8,20 @@ mode:
   code: super_swami.SuperSwami
   priority: 300
 
+widget_player:
+  mode_super_swami_started:
+    super_swami:
+      action: play
+
+  super_swami_mode_complete:
+    super_swami:
+      action: remove
+
+  mode_super_swami_stopping:
+    super_swami:
+      action: remove
+
+
 event_player:
   s_pop_left_active: super_swami_shot_hit
   s_pop_right_active: super_swami_shot_hit

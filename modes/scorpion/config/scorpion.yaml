@@ -19,6 +19,9 @@ widget_player:
     scorpion:
       action: remove
 
+  mode_scorpion_stopping:
+    scorpion:
+      action: remove
 
 event_player:
   drop_target_bank_dt_bank_left_down:

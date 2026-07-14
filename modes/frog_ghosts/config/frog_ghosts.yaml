@@ -8,6 +8,20 @@ mode:
   code: frog_ghosts.FrogGhosts
   priority: 300
 
+widget_player:
+  mode_frog_ghosts_started:
+    frog_ghosts:
+      action: play
+
+  frog_ghosts_mode_complete:
+    frog_ghosts:
+      action: remove
+
+  mode_frog_ghosts_stopping:
+    frog_ghosts:
+      action: remove
+
+
 event_player:
   s_pop_left_active: frog_ghosts_shot_hit
   s_pop_right_active: frog_ghosts_shot_hit

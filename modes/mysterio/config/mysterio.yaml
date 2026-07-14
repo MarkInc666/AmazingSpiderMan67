@@ -19,6 +19,9 @@ widget_player:
     mysterio:
       action: remove
 
+  mode_mysterio_stopping:
+    mysterio:
+      action: remove
 
 sound_player:
   mysterio_spidey_sense_left:

@@ -8,6 +8,20 @@ mode:
   code: micro_men.MicroMen
   priority: 300
 
+widget_player:
+  mode_micro_men_started:
+    micro_men:
+      action: play
+
+  micro_men_mode_complete:
+    micro_men:
+      action: remove
+
+  mode_micro_men_stopping:
+    micro_men:
+      action: remove
+
+
 event_player:
   s_pop_left_active: micro_men_shot_hit
   s_pop_right_active: micro_men_shot_hit

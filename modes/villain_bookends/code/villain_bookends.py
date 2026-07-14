@@ -419,20 +419,20 @@ class VillainBookends(Mode):
             'song': 'play_song_13',
         },
         # ORIGINAL DISPLAY TEXT:
-        #   intro_1: The Fakir hides the real target.
-        #   intro_2: Spinner briefly reveals the true shot.
-        #   intro_3: Wrong shots feed the illusion.
+        #   intro_1: Two-ball multiball: the saucers hide fake rubies.
+        #   intro_2: Lock a saucer ball to open the roof and reveal the real ruby.
+        #   intro_3: Collect three Ruby Jackpots, then the fourth reveal is Super.
         'fakir': {
             'title': 'THE FAKIR',
-            'intro_1': 'Find the true shot.',
-            'intro_2': 'Spinner reveals it.',
-            'intro_3': 'Wrong shots confuse.',
+            'intro_1': '2-Ball Ruby Heist.',
+            'intro_2': 'Saucer reveals upper ruby.',
+            'intro_3': '3 Rubies light Super.',
             'summary_title_complete': 'FAKIR DEFEATED',
             'summary_title_failed': 'FAKIR ESCAPED',
-            'stat_1_label': 'GOOD SHOTS',
-            'stat_1_var': 'fakir_correct_shots',
-            'stat_2_label': 'WRONG SHOTS',
-            'stat_2_var': 'fakir_incorrect_shots',
+            'stat_1_label': 'RUBIES',
+            'stat_1_var': 'active_mode_hits',
+            'stat_2_label': 'SUPERS',
+            'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'fakir_state',
             'song': 'play_song_10',

@@ -74,6 +74,9 @@ widget_player:
     sandman:
       action: remove
 
+  mode_sandman_stopping:
+    sandman:
+      action: remove
 
 event_player:
 

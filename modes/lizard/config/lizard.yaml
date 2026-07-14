@@ -19,6 +19,9 @@ widget_player:
     lizard:
       action: remove
 
+  mode_lizard_stopping:
+    lizard:
+      action: remove
 
 random_event_player:
   lizard_serum_collected:
