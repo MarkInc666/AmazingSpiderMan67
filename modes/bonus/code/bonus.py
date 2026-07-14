@@ -284,7 +284,10 @@ class Bonus(MpfBonus):
             self.machine.events.post("bonus_light_{}_off".format(light_name))
 
     def _turn_off_multiplier_light_for_pass(self, bonus_pass):
-        light_name = self.MULTIPLIER_LIGHTS.get(bonus_pass)
+        # Count multiplier lamps down from the earned multiplier. For example,
+        # a 5X bonus turns off 5X, then 4X, then 3X, then 2X as the count runs.
+        multiplier_to_clear = self._bonus_multiplier - bonus_pass + 1
+        light_name = self.MULTIPLIER_LIGHTS.get(multiplier_to_clear)
         if light_name:
             self.machine.events.post("bonus_light_{}_off".format(light_name))
 
