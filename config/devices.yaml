@@ -53,8 +53,8 @@ flippers:
     main_coil: c_flipper_right_upper_full
     hold_coil: c_flipper_right_upper_hold
     activation_switch: s_right_flipper_upper
-    enable_events: ball_started, cmd_flippers_enable
-    disable_events: ball_will_end, cmd_flippers_disable
+    enable_events: ball_started, cmd_flippers_enable, cmd_upper_flippers_enable
+    disable_events: ball_will_end, cmd_flippers_disable, cmd_upper_flippers_disable
 
 
 

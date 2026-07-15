@@ -405,14 +405,14 @@ class VillainBookends(Mode):
         #   stat_2_label: MAJOR HITS
         'pardo': {
             'title': 'PARDO',
-            'intro_1': 'Pardo takes control.',
-            'intro_2': 'Hit moving acts.',
-            'intro_3': 'Break the spell.',
+            'intro_1': 'Five-shot Hypnosis Reel.',
+            'intro_2': 'Spinner reveals the true shot.',
+            'intro_3': 'Seven wrong shots and he escapes.',
             'summary_title_complete': 'PARDO DEFEATED',
             'summary_title_failed': 'PARDO ESCAPED',
-            'stat_1_label': 'HITS',
+            'stat_1_label': 'GOOD SHOTS',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'MAJORS',
+            'stat_2_label': 'WRONG SHOTS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'pardo_state',
@@ -865,14 +865,14 @@ class VillainBookends(Mode):
         #   stat_2_label: MAJOR HITS
         'the_fly': {
             'title': 'THE FLY',
-            'intro_1': 'The Fly crawls fast.',
-            'intro_2': 'Track moving shots.',
-            'intro_3': 'Catch him quickly.',
+            'intro_1': 'SAUCERS OPEN GATE.',
+            'intro_2': 'HIT 3 ROOF TARGETS.',
+            'intro_3': 'REMAINING FLIPS BOOST SUPER.',
             'summary_title_complete': 'FLY CAUGHT',
             'summary_title_failed': 'FLY ESCAPED',
-            'stat_1_label': 'HITS',
+            'stat_1_label': 'JACKPOTS',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'MAJORS',
+            'stat_2_label': '',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'the_fly_state',
@@ -1282,7 +1282,11 @@ class VillainBookends(Mode):
 
         self._set_machine_var("villain_bookend_title", title)
         self._set_machine_var("villain_bookend_line_1", f"{data['stat_1_label']}: {stat_1}")
-        self._set_machine_var("villain_bookend_line_2", f"{data['stat_2_label']}: {stat_2}")
+        stat_2_label = data.get('stat_2_label', '')
+        if stat_2_label:
+            self._set_machine_var("villain_bookend_line_2", f"{stat_2_label}: {stat_2}")
+        else:
+            self._set_machine_var("villain_bookend_line_2", "")
         self._set_machine_var("villain_bookend_line_3", f"POINTS: {points:,}")
         self._set_machine_var("villain_bookend_footer", "HOLD BOTH FLIPPERS TO CONTINUE")
 

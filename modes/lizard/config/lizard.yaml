@@ -86,6 +86,19 @@ timers:
       - event: lizard_delivery_timer_stop
         action: stop
 
+  lizard_followup_timer:
+    start_value: 5
+    end_value: 0
+    direction: down
+    tick_interval: 1s
+    control_events:
+      - event: lizard_followup_timer_start
+        action: restart
+      - event: lizard_followup_timer_stop
+        action: stop
+      - event: lizard_mode_complete
+        action: stop
+
 show_player:
 
   lizard_light_serum_location:
@@ -114,6 +127,12 @@ show_player:
     lizard_center_web_show:
       loops: -1
 
+  lizard_light_both_webs:
+    lizard_left_web_show:
+      loops: -1
+    lizard_center_web_show:
+      loops: -1
+
   lizard_serum_delivered:
     lizard_left_web_show:
       action: stop
@@ -122,6 +141,24 @@ show_player:
     lizard_gi_show:
       action: stop
     lizard_gi_hurry_show:
+      action: stop
+
+  lizard_followup_collected:
+    lizard_left_web_show:
+      action: stop
+    lizard_center_web_show:
+      action: stop
+
+  lizard_followup_expired:
+    lizard_left_web_show:
+      action: stop
+    lizard_center_web_show:
+      action: stop
+
+  lizard_followup_cleanup:
+    lizard_left_web_show:
+      action: stop
+    lizard_center_web_show:
       action: stop
 
   lizard_serum_expired_show:

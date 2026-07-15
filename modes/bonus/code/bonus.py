@@ -48,6 +48,8 @@ class Bonus(MpfBonus):
         5: "l_5x",
     }
 
+    ALL_BONUS_LIGHTS = [light_name for _, _, _, light_name in BONUS_BUCKETS_DESC] + list(MULTIPLIER_LIGHTS.values())
+
     INTRO_DELAY_MS = 700
     BUCKET_STEP_MS = 160
     NEXT_CYCLE_DELAY_MS = 260
@@ -82,6 +84,13 @@ class Bonus(MpfBonus):
         self._current_pass = 1
         self._bonus_multiplier = max(1, min(5, int(self._player["bonus_multiplier"])))
         self._hold_bonus_earned = bool(self._player["hold_bonus"])
+
+        # Bonus mode owns these lamps during the end-of-ball count. Do not use
+        # the bonus_lanes show events here; their "off" events only stop shows
+        # and can restore older light-stack state instead of asserting off.
+        self._turn_off_all_bonus_lights()
+        self._relight_lit_bonus_buckets()
+        self._light_multiplier_snapshot()
 
         self._show_bonus_entry("bonus_title", "BONUS", "")
 
@@ -146,7 +155,7 @@ class Bonus(MpfBonus):
             value=bucket_value,
             total=self._regular_total,
         )
-        self.machine.events.post("bonus_light_{}_off".format(light_name))
+        self._set_bonus_light(light_name, False)
 
         self._bucket_index += 1
         self.delay.add(
@@ -272,16 +281,27 @@ class Bonus(MpfBonus):
     def _reset_regular_bonus_state(self):
         self._player["bonus_count"] = 0
         self._player["bonus_multiplier"] = 1
-        self._turn_off_all_bonus_bucket_lights()
-        self._turn_off_all_multiplier_lights()
+        self._turn_off_all_bonus_lights()
 
     def _relight_lit_bonus_buckets(self):
         for _, _, _, light_name in self._lit_buckets:
-            self.machine.events.post("bonus_light_{}_on".format(light_name))
+            self._set_bonus_light(light_name, True)
+
+    def _light_multiplier_snapshot(self):
+        for multiplier, light_name in self.MULTIPLIER_LIGHTS.items():
+            self._set_bonus_light(light_name, self._bonus_multiplier >= multiplier)
 
     def _turn_off_all_bonus_bucket_lights(self):
         for _, _, _, light_name in self.BONUS_BUCKETS_DESC:
-            self.machine.events.post("bonus_light_{}_off".format(light_name))
+            self._set_bonus_light(light_name, False)
+
+    def _turn_off_all_bonus_lights(self):
+        for light_name in self.ALL_BONUS_LIGHTS:
+            self._set_bonus_light(light_name, False)
+
+    def _set_bonus_light(self, light_name, enabled):
+        state = "on" if enabled else "off"
+        self.machine.events.post("asm_bonus_count_light_{}_{}".format(light_name, state))
 
     def _turn_off_multiplier_light_for_pass(self, bonus_pass):
         # Count multiplier lamps down from the earned multiplier. For example,
@@ -289,11 +309,7 @@ class Bonus(MpfBonus):
         multiplier_to_clear = self._bonus_multiplier - bonus_pass + 1
         light_name = self.MULTIPLIER_LIGHTS.get(multiplier_to_clear)
         if light_name:
-            self.machine.events.post("bonus_light_{}_off".format(light_name))
-
-    def _turn_off_all_multiplier_lights(self):
-        for light_name in self.MULTIPLIER_LIGHTS.values():
-            self.machine.events.post("bonus_light_{}_off".format(light_name))
+            self._set_bonus_light(light_name, False)
 
     def _show_bonus_entry(self, entry, text, score):
         self.machine.events.post(

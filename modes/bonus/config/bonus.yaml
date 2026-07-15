@@ -26,6 +26,100 @@ slide_player:
     bonus:
       action: update
 
+light_player:
+  mode_bonus_stopping:
+    l_1k: off
+    l_2k: off
+    l_3k: off
+    l_4k: off
+    l_5k: off
+    l_6k: off
+    l_7k: off
+    l_8k: off
+    l_9k: off
+    l_10k: off
+    l_20k: off
+    l_2x: off
+    l_3x: off
+    l_4x: off
+    l_5x: off
+
+  asm_bonus_count_light_l_1k_on:
+    l_1k: white
+  asm_bonus_count_light_l_1k_off:
+    l_1k: off
+
+  asm_bonus_count_light_l_2k_on:
+    l_2k: white
+  asm_bonus_count_light_l_2k_off:
+    l_2k: off
+
+  asm_bonus_count_light_l_3k_on:
+    l_3k: white
+  asm_bonus_count_light_l_3k_off:
+    l_3k: off
+
+  asm_bonus_count_light_l_4k_on:
+    l_4k: white
+  asm_bonus_count_light_l_4k_off:
+    l_4k: off
+
+  asm_bonus_count_light_l_5k_on:
+    l_5k: white
+  asm_bonus_count_light_l_5k_off:
+    l_5k: off
+
+  asm_bonus_count_light_l_6k_on:
+    l_6k: white
+  asm_bonus_count_light_l_6k_off:
+    l_6k: off
+
+  asm_bonus_count_light_l_7k_on:
+    l_7k: white
+  asm_bonus_count_light_l_7k_off:
+    l_7k: off
+
+  asm_bonus_count_light_l_8k_on:
+    l_8k: white
+  asm_bonus_count_light_l_8k_off:
+    l_8k: off
+
+  asm_bonus_count_light_l_9k_on:
+    l_9k: white
+  asm_bonus_count_light_l_9k_off:
+    l_9k: off
+
+  asm_bonus_count_light_l_10k_on:
+    l_10k: white
+  asm_bonus_count_light_l_10k_off:
+    l_10k: off
+
+  asm_bonus_count_light_l_20k_on:
+    l_20k: white
+  asm_bonus_count_light_l_20k_off:
+    l_20k: off
+
+  asm_bonus_count_light_l_2x_on:
+    l_2x: white
+  asm_bonus_count_light_l_2x_off:
+    l_2x: off
+
+  asm_bonus_count_light_l_3x_on:
+    l_3x: white
+  asm_bonus_count_light_l_3x_off:
+    l_3x: off
+
+  asm_bonus_count_light_l_4x_on:
+    l_4x: white
+  asm_bonus_count_light_l_4x_off:
+    l_4x: off
+
+  asm_bonus_count_light_l_5x_on:
+    l_5x: white
+  asm_bonus_count_light_l_5x_off:
+    l_5x: off
+
+
 sound_player:
   asm_bonus_bucket_counted:
     hb_pot_1:
