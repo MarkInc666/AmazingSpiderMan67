@@ -81,6 +81,7 @@ class HumanFlies(CaseFileMixin, Mode):
         self._show_mode_message("HUMAN FLIES", "GET TO THE ROOF")
 
     def mode_stop(self, **kwargs):
+        self.machine.events.post("hide_mode_status")
         self.clear_active_case_file_helpers()
         self.machine.events.post("human_flies_clear_all_lights")
         self.machine.events.post("clear_saucers_delayed")
@@ -293,6 +294,16 @@ class HumanFlies(CaseFileMixin, Mode):
         player["human_flies_saucer_1_lit"] = 1 if "saucer_1" in self.lit_saucers else 0
         player["human_flies_saucer_2_lit"] = 1 if "saucer_2" in self.lit_saucers else 0
         player["human_flies_saucer_3_lit"] = 1 if "saucer_3" in self.lit_saucers else 0
+        self._update_mode_status()
+
+    def _update_mode_status(self):
+        if self.lit_saucers:
+            title = "LIT SAUCERS / CAPTURES"
+            value = f"{len(self.lit_saucers)} / {self.captures}"
+        else:
+            title = "UPPER TARGETS / ROUND"
+            value = f"{len(self.upper_targets_hit)}/3 / {self.round_number}"
+        self.machine.events.post("update_mode_status", mode_status_title=title, mode_status_value=value)
 
     def _eject_saucer(self, saucer):
         self.machine.events.post(self.SAUCER_EJECT_EVENTS[saucer])

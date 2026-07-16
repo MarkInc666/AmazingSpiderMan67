@@ -94,6 +94,7 @@ class Fakir(CaseFileMixin, Mode):
         self.machine.events.post("fakir_startup_complete")
 
     def mode_stop(self, **kwargs):
+        self.machine.events.post("hide_mode_status")
         self.delay.remove("fakir_ruby_timer")
         self.delay.remove("fakir_restore_base_gi")
         self.delay.remove("fakir_safety_net_after_kickout")
@@ -324,6 +325,19 @@ class Fakir(CaseFileMixin, Mode):
         player["active_mode_hits"] = self.total_rubies_collected
         player["active_mode_major_hits"] = self.super_jackpots_collected
         player["fakir_correct_shots"] = self.total_rubies_collected
+        self._update_mode_status()
+
+    def _update_mode_status(self):
+        if getattr(self, "super_lit", False):
+            title = "SUPER JACKPOT LIT"
+            value = f"RUBIES {self.total_rubies_collected}"
+        elif getattr(self, "ruby_attempt_active", False):
+            title = "HIT REVEALED RUBY"
+            value = f"RUBIES {self.total_rubies_collected}/3"
+        else:
+            title = "SAUCERS REVEAL RUBY"
+            value = f"RUBIES {self.total_rubies_collected}/3"
+        self.machine.events.post("update_mode_status", mode_status_title=title, mode_status_value=value)
 
     def _inactive(self):
         if self.mode_done:

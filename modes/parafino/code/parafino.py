@@ -125,8 +125,20 @@ class Parafino(CaseFileMixin, Mode):
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("parafino_startup_complete")
         self.machine.events.post("show_mode_message_long", message_mode_title="MELT THE WAX", message_mode_subtitle="HEAT AREAS FOR SAUCER JACKPOTS")
+        self._update_mode_status()
+
+    def _update_mode_status(self):
+        player = self.machine.game.player
+        lit = sum(int(player[zone["lit_var"]]) for zone in self.ZONES.values())
+        jackpots = sum(int(player[zone["jackpots_var"]]) for zone in self.ZONES.values())
+        self.machine.events.post(
+            "update_mode_status",
+            mode_status_title="LIT SAUCERS / JACKPOTS",
+            mode_status_value=f"{lit} / {jackpots}",
+        )
 
     def mode_stop(self, **kwargs):
+        self.machine.events.post("hide_mode_status")
         self.clear_active_case_file_helpers()
         self.mode_exiting = True
         self.delay.remove("parafino_start_safety_net")

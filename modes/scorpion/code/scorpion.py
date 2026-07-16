@@ -65,7 +65,21 @@ class Scorpion(CaseFileMixin, Mode):
         self.add_mode_event_handler("s_left_drops_rubber_active", self.sting_miss_left)
         self.add_mode_event_handler("s_right_drops_rubber_active", self.sting_miss_right)
         self.machine.events.post("show_mode_message", message_mode_title="BUILD VENOM", message_mode_subtitle="HIT THE SPINNER")
+        self._update_mode_status()
 
+
+    def _update_mode_status(self):
+        if self.state == "build":
+            title = "VENOM / ATTEMPTS"
+            value = f"{self.venom_hits}/{self.VENOM_READY_HITS} / {self.tries_used}/{self.MAX_TRIES}"
+        elif self.state == "ready":
+            title = "STING READY"
+            value = "CHOOSE UPPER EXIT"
+        else:
+            side = (self.active_target_side or "").upper()
+            title = "HIT FLASHING DROP"
+            value = f"{side} {self.required_target or ''}".strip()
+        self.machine.events.post("update_mode_status", mode_status_title=title, mode_status_value=value)
 
     def mode_stop(self, **kwargs):
         self.machine.events.post("hide_mode_status")
@@ -106,11 +120,13 @@ class Scorpion(CaseFileMixin, Mode):
         self.venom_hits += 1
         self.machine.events.post("scorpion_spinner_build")
         self.machine.events.post("show_mode_message", message_mode_title="VENOM BUILDS", message_mode_subtitle="SPINNER VALUE UP", message_mode_value=self.scorpion_venom_value)
+        self._update_mode_status()
 
         if self.venom_hits >= self.VENOM_READY_HITS:
             self.state = "ready"
             self.machine.events.post("scorpion_sting_ready")
             self.machine.events.post("show_mode_message_long", message_mode_title="STING READY", message_mode_subtitle="CHOOSE LEFT OR RIGHT EXIT")
+            self._update_mode_status()
 
     def right_exit_chosen(self, **kwargs):
         if self.mode_done:
@@ -124,6 +140,7 @@ class Scorpion(CaseFileMixin, Mode):
         self.active_target_side = "left"
 
         self.required_target = random.randint(1, 3)
+        self._update_mode_status()
 
         # reset bank first
         self.machine.coils["c_left_bank_reset"].pulse()
@@ -150,6 +167,7 @@ class Scorpion(CaseFileMixin, Mode):
         self.active_target_side = "right"
 
         self.required_target = random.randint(1, 5)
+        self._update_mode_status()
 
         self.machine.coils["c_right_bank_reset"].pulse()
 

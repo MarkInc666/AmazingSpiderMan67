@@ -83,6 +83,16 @@ class Sandman(CaseFileMixin, Mode):
             message_mode_seconds=seconds,
         )
 
+    def _update_status(self):
+        if self.mode_done:
+            return
+        physical_target = 6 - self.current_flash if self.direction == 1 else self.current_flash
+        self.machine.events.post(
+            "show_mode_status",
+            mode_status_title=f"FLASH DROP {physical_target}",
+            mode_status_value=f"BANK {self.banks_completed + 1} OF {self.MAX_BANKS}  RUN {len(self.hit_order)}",
+        )
+
     def _apply_case_file_bonuses(self):
         self.case_file_bigger_jackpots = False
 
@@ -126,7 +136,8 @@ class Sandman(CaseFileMixin, Mode):
             return
 
         self.light_current_flash()
-        self._show_message("SHIFTING SANDS", f"HIT DROP {self.current_flash}", seconds=int(self.MOVE_INTERVAL_MS / 1000), event="show_mode_countdown")
+        self._show_message("SHIFTING SANDS", f"HIT DROP {self.current_flash}")
+        self._update_status()
         if self.first_target == 1:        
             self.schedule_next_shift()
 
@@ -172,6 +183,7 @@ class Sandman(CaseFileMixin, Mode):
 
         self.current_flash = next_target
         self.light_current_flash()
+        self._update_status()
         self.schedule_next_shift()
 
 
@@ -317,5 +329,6 @@ class Sandman(CaseFileMixin, Mode):
         player["sandman_banks_completed"] = self.banks_completed
         player["sandman_total_drops"] = self.flash_hits
         player["sandman_best_run"] = self.sandman_best_run
+        self._update_status()
     
 

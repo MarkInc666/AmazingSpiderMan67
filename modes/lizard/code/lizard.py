@@ -78,6 +78,7 @@ class Lizard(CaseFileMixin, Mode):
         self.machine.events.post("lizard_light_serum_location")
         self.machine.events.post("clear_saucers")
         self._show_message("COLLECT SERUM", "HIT THE STAR ROLLOVER")
+        self._update_status()
 #        self.machine.events.post("play_song_4")
 
     def mode_stop(self, **kwargs):
@@ -96,6 +97,22 @@ class Lizard(CaseFileMixin, Mode):
             message_mode_value=value,
             message_mode_seconds=seconds,
         )
+
+    def _update_status(self):
+        if self.mode_done:
+            return
+        player = self.machine.game.player
+        deliveries = player["lizard_deliveries"]
+        if player["lizard_followup_ready"] == 1:
+            title = "FOLLOW-UP WEB"
+            value = (self._followup_target or "WEB").upper()
+        elif player["lizard_serum_ready"] == 1:
+            title = "DELIVER SERUM"
+            value = (self.current_target() or "WEB").upper()
+        else:
+            title = "COLLECT SERUM"
+            value = f"STAR  {deliveries} OF {len(self.DELIVERY_SEQUENCE)}"
+        self.machine.events.post("show_mode_status", mode_status_title=title, mode_status_value=value)
 
     def _apply_case_file_bonuses(self):
         self.START_DELIVERY_VALUE = type(self).START_DELIVERY_VALUE
@@ -237,6 +254,7 @@ class Lizard(CaseFileMixin, Mode):
             self._show_message("SAFETY NET", "SERUM SAVED - TRY AGAIN")
             self.machine.events.post("lizard_safety_net_used")
             self.machine.events.post("lizard_light_serum_location")
+            self._update_status()
             return
 
         self._show_message("SERUM EXPIRED", "COLLECT ANOTHER SERUM")
@@ -257,6 +275,7 @@ class Lizard(CaseFileMixin, Mode):
 
         # Otherwise light the star again for the next serum collect.
         self.machine.events.post("lizard_light_serum_location")
+        self._update_status()
 
     def delivery_request(self, target=None, **kwargs):
         if self.mode_done:
@@ -313,6 +332,7 @@ class Lizard(CaseFileMixin, Mode):
             return
 
         self.machine.events.post("lizard_light_serum_location")
+        self._update_status()
 
     def _start_followup_jackpot(self, delivered_target, delivery_value):
         self._followup_target = self.OPPOSITE_TARGET.get(delivered_target, self.current_target() or "center")
@@ -361,6 +381,7 @@ class Lizard(CaseFileMixin, Mode):
             return
 
         self.machine.events.post("lizard_light_serum_location")
+        self._update_status()
 
     def _complete_mode(self):
         self.mode_done = True

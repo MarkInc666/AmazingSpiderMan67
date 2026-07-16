@@ -105,8 +105,10 @@ class TheFly(CaseFileMixin, Mode):
             self.machine.events.post("start_case_file_ball_save")
 
         self._show_message("SAUCERS OPEN GATE", "HIT ANY SAUCER")
+        self._update_mode_status()
 
     def mode_stop(self, **kwargs):
+        self.machine.events.post("hide_mode_status")
         self.delay.remove("the_fly_reenable_upper_flippers")
         self.delay.remove("the_fly_reset_for_next_attempt")
         self.machine.events.post("cmd_upper_flippers_enable")
@@ -139,6 +141,7 @@ class TheFly(CaseFileMixin, Mode):
             return
 
         self.gate_open = True
+        self._update_mode_status()
         self.machine.events.post("the_fly_saucers_off")
         self.machine.events.post("rooftop_diverter_open")
         self.machine.events.post("clear_saucers")
@@ -151,6 +154,7 @@ class TheFly(CaseFileMixin, Mode):
         self.gate_open = False
         self.roof_attempt_active = True
         self.flips_remaining = self.flips_per_attempt
+        self._update_mode_status()
         self.targets_hit = set()
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("the_fly_saucers_off")
@@ -163,6 +167,7 @@ class TheFly(CaseFileMixin, Mode):
             return
 
         self.flips_remaining = max(0, self.flips_remaining - 1)
+        self._update_mode_status()
         self.machine.events.post("the_fly_flips_changed", flips=self.flips_remaining)
 
         if self.flips_remaining <= 0 and len(self.targets_hit) < 3:
@@ -196,6 +201,7 @@ class TheFly(CaseFileMixin, Mode):
 
         target_number = len(self.targets_hit) + 1
         self.targets_hit.add(target)
+        self._update_mode_status()
 
         if target_number < 3:
             points = self.target_values[target_number - 1]
@@ -297,6 +303,18 @@ class TheFly(CaseFileMixin, Mode):
         self.machine.events.post("the_fly_saucers_off")
         self._show_message("THE FLY", "MODE COMPLETE", value=self.mode_points, event="show_mode_jackpot")
         self.machine.events.post("the_fly_mode_complete")
+
+    def _update_mode_status(self):
+        if self.roof_attempt_active:
+            title = "ROOF TARGETS / FLIPS"
+            value = f"{len(self.targets_hit)}/3 / {self.flips_remaining}"
+        elif self.gate_open:
+            title = "ROOF ACCESS OPEN"
+            value = "SHOOT UPPER ENTRANCE"
+        else:
+            title = "ROOF CLEARS / GATE"
+            value = f"{self.rooftop_jackpots}/3 / HIT SAUCER"
+        self.machine.events.post("update_mode_status", mode_status_title=title, mode_status_value=value)
 
     def _show_message(self, title, subtitle="", value="", seconds="", event="show_mode_message"):
         self.machine.events.post(

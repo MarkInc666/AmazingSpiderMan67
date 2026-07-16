@@ -1288,7 +1288,7 @@ class VillainBookends(Mode):
         else:
             self._set_machine_var("villain_bookend_line_2", "")
         self._set_machine_var("villain_bookend_line_3", f"POINTS: {points:,}")
-        self._set_machine_var("villain_bookend_footer", "HOLD BOTH FLIPPERS TO CONTINUE")
+        self._set_machine_var("villain_bookend_footer", "")
 
         self.machine.events.post("villain_bookend_intro_hide")
         self.machine.events.post("villain_bookend_summary_show", villain=villain)

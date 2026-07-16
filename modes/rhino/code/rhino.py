@@ -96,6 +96,15 @@ class RhinoBash(CaseFileMixin, Mode):
             message_mode_seconds=seconds,
         )
 
+    def _update_status(self):
+        if self.mode_done or self.berserk_running:
+            return
+        self.machine.events.post(
+            "show_mode_status",
+            mode_status_title="RAGE / JACKPOTS",
+            mode_status_value=f"{self.rage_stage} / {self.jackpots} OF {self.max_jackpots}",
+        )
+
 
     def _apply_case_file_bonuses(self):
         if self.has_case_file("more_jackpots"):
@@ -309,4 +318,5 @@ class RhinoBash(CaseFileMixin, Mode):
         player["rhino_best_rage_stage"]=  self.rhino_best_rage_stage
         player["rhino_best_jackpot_value"] = self.rhino_best_jackpot_value
         player["active_mode_points"] = self.active_mode_points
+        self._update_status()
         

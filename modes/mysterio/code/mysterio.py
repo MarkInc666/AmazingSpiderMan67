@@ -63,6 +63,7 @@ class Mysterio(CaseFileMixin, Mode):
         self.start_trial()
 
     def mode_stop(self, **kwargs):
+        self.machine.events.post("hide_mode_status")
         self.clear_active_case_file_helpers()
         super().mode_stop(**kwargs)
 
@@ -86,6 +87,13 @@ class Mysterio(CaseFileMixin, Mode):
 
         if self.has_case_file("shot_assist"):
             self.case_file_reveal_false_shot = True
+
+    def _update_mode_status(self):
+        self.machine.events.post(
+            "update_mode_status",
+            mode_status_title="SHOTS LEFT / SUPER",
+            mode_status_value=f"{sum(1 for shot in self.shots if not shot.disabled)} / {self.super_value:,}",
+        )
 
     def start_trial(self):
         for shot in self.shots:
@@ -118,6 +126,7 @@ class Mysterio(CaseFileMixin, Mode):
                 self.machine.events.post("show_mode_message", message_mode_title="FALSE SHOT REMOVED", message_mode_subtitle=revealed.name.replace("_", " ").upper())
 
         self.machine.game.player["mysterio_super_value"] = self.super_value
+        self._update_mode_status()
         self.machine.events.post("mysterio_startup_complete")
         self.machine.events.post("mysterio_all_shots_lit")
         self.machine.events.post("show_mode_message_long", message_mode_title="ILLUSION TRIAL", message_mode_subtitle="FIND THE REAL SHOT", message_mode_value=self.super_value)
@@ -221,6 +230,7 @@ class Mysterio(CaseFileMixin, Mode):
     def reduce_super(self, amount):
         self.super_value = max(self.SUPER_FLOOR, self.super_value - amount)
         self.machine.game.player["mysterio_super_value"] = self.super_value
+        self._update_mode_status()
         self.machine.events.post("mysterio_super_changed")
         self.machine.events.post("show_mode_message", message_mode_title="SUPER VALUE", message_mode_subtitle="MYSTERIO JACKPOT", message_mode_value=self.super_value)
 

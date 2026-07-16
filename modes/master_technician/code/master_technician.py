@@ -31,6 +31,10 @@ class MasterTechnician(Mode):
                 target=target
             )
 
+    def mode_stop(self, **kwargs):
+        self.machine.events.post("hide_mode_status")
+        super().mode_stop(**kwargs)
+
     def met_start(self, **kwargs):
         self.update_player_vars()
 
@@ -98,6 +102,13 @@ class MasterTechnician(Mode):
 
         return value
 
+    def _update_mode_status(self):
+        self.machine.events.post(
+            "update_mode_status",
+            mode_status_title="LEFT / RIGHT DROPS",
+            mode_status_value=f"{len(self.left_down)}/3 / {len(self.right_down)}/5  SPIN {self.calculate_spinner_value():,}",
+        )
+
     def update_player_vars(self):
         player = self.machine.game.player
 
@@ -105,6 +116,7 @@ class MasterTechnician(Mode):
         player["master_technician_right_drops_down"] = len(self.right_down)
         player["master_technician_multiplier"] = self.calculate_multiplier()
         player["master_technician_spinner_value"] = self.calculate_spinner_value()
+        self._update_mode_status()
 
     def award_score(self, value):
         player = self.machine.game.player

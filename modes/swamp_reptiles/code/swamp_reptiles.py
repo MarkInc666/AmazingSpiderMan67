@@ -437,6 +437,19 @@ class SwampReptiles(CaseFileMixin, Mode):
         player["swamp_reptiles_pop_score_value"] = self.pop_score_value
         player["swamp_reptiles_super_lit"] = 1 if self.super_lit else 0
         player["swamp_reptiles_super_timer_seconds"] = self._super_timer_seconds()
+        self._update_mode_status()
+
+    def _update_mode_status(self):
+        if self.super_lit:
+            title = "SUPER JACKPOT LIT"
+            value = "HIT SAUCER 2"
+        elif self.lit_shots:
+            title = "LIT JACKPOTS / COLLECTED"
+            value = f"{len(self.lit_shots)} / {self.jackpots_collected}/{self.required_jackpots}"
+        else:
+            title = "POPS TO LIGHT JPS"
+            value = f"RAMPAGE {self.rampage_level}"
+        self.machine.events.post("update_mode_status", mode_status_title=title, mode_status_value=value)
 
     def _in_summary_or_done(self):
         if self.mode_done:

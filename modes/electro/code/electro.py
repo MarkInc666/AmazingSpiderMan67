@@ -91,6 +91,14 @@ class Electro(CaseFileMixin, Mode):
             message_mode_seconds=seconds,
         )
 
+    def _update_status(self):
+        if self.mode_done:
+            return
+        remaining = len(self.active_shots())
+        title = "SUPER SPARK" if self.super_active else "SPARKS LEFT"
+        value = self._shot_label(self.current_shot) if self.super_active and self.current_shot else remaining
+        self.machine.events.post("show_mode_status", mode_status_title=title, mode_status_value=value)
+
     def _shot_label(self, shot):
         labels = {
             "left_web": "LEFT WEB",
@@ -265,6 +273,7 @@ class Electro(CaseFileMixin, Mode):
         self.machine.game.player["electro_best_spark"] = self.electro_best_spark
 
         self._show_message("ELECTRO JACKPOT", self._shot_label(shot), value=jackpot_value, event="show_mode_jackpot")
+        self._update_status()
         self.machine.events.post("electro_jackpot_collected")
         self.value_deduct = 0
 

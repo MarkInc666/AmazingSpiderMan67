@@ -425,6 +425,8 @@ class doc_ock(CaseFileMixin, Mode):
 
         player["doc_ock_next_jackpot"] = self.calculate_next_jackpot()
 
+        self._update_mode_status()
+
         self.machine.events.post(
             "doc_ock_next_jackpot_changed",
             value=player["doc_ock_next_jackpot"],
@@ -433,6 +435,19 @@ class doc_ock(CaseFileMixin, Mode):
             jackpot_lit=self.jackpot_lit,
         )
     
+    def _update_mode_status(self):
+        locked = sum(self.locked_arms)
+        if self.active_breakouts:
+            title = "BREAKOUTS / ARMS"
+            value = f"{len(self.active_breakouts)} / {locked} LOCKED"
+        elif self.jackpot_lit:
+            title = "WEB JACKPOT / ARMS"
+            value = f"{self.jackpots_collected} / {locked} LOCKED"
+        else:
+            title = "LOCK THE ARMS"
+            value = f"{locked} OF 4 LOCKED"
+        self.machine.events.post("update_mode_status", mode_status_title=title, mode_status_value=value)
+
     def calculate_next_jackpot(self):
         locked = sum(self.locked_arms)
 

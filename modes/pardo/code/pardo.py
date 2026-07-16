@@ -90,6 +90,7 @@ class Pardo(CaseFileMixin, Mode):
         self._start_next_round()
 
     def mode_stop(self, **kwargs):
+        self.machine.events.post("hide_mode_status")
         self.delay.remove("pardo_hide_reveal")
         self.machine.events.post("pardo_all_lights_off")
         self.machine.events.post("rooftop_diverter_close")
@@ -275,6 +276,12 @@ class Pardo(CaseFileMixin, Mode):
         player["active_mode_points"] = self.mode_points
         player["active_mode_hits"] = self.correct_shots
         player["active_mode_major_hits"] = self.incorrect_shots
+        self._update_mode_status()
+
+    def _update_mode_status(self):
+        title = "CORRECT / WRONG"
+        value = f"{self.correct_shots}/5 / {self.incorrect_shots}/7"
+        self.machine.events.post("update_mode_status", mode_status_title=title, mode_status_value=value)
 
     def _inactive(self):
         if self.mode_done:

@@ -73,6 +73,7 @@ class Enforcers(Mode, CaseFileMixin):
         )
 
     def mode_stop(self, **kwargs):
+        self.machine.events.post("hide_mode_status")
         self.clear_active_case_file_helpers()
         self.machine.events.post("enforcers_clear_all_lights")
         self.machine.events.post("enforcers_clear_upper_shows")
@@ -334,6 +335,8 @@ class Enforcers(Mode, CaseFileMixin):
         player["enforcers_ox_lit"] = 1 if self.ox_lit else 0
         player["enforcers_gate_open"] = 1 if self.rooftop_gate_open else 0
 
+        self._update_mode_status()
+
         for zone in self.ZONES:
             player[f"enforcers_{zone}_hits"] = self.zone_hits[zone]
             player[f"enforcers_{zone}_multiplier"] = self.zone_multiplier[zone]
@@ -343,6 +346,17 @@ class Enforcers(Mode, CaseFileMixin):
             player[f"enforcers_{zone}_saucer_lit"] = 1 if self.saucer_bonus_lit[zone] else 0
             player[f"enforcers_{zone}_saucer_collected"] = 1 if self.saucer_bonus_collected[zone] else 0
             player[f"enforcers_{zone}_award"] = self.upper_awards[zone]
+
+    def _update_mode_status(self):
+        if self.ox_lit:
+            title = "OX SUPER LIT"
+            value = "HIT CENTER WEB"
+        else:
+            lit = sum(1 for zone in self.ZONES if self.upper_lit[zone])
+            collected = sum(1 for zone in self.ZONES if self.upper_collected[zone])
+            title = "UPPER JPS / CLEARED"
+            value = f"{lit} LIT / {collected}/3"
+        self.machine.events.post("update_mode_status", mode_status_title=title, mode_status_value=value)
 
     def _format_score(self, value):
         return f"{int(value):,}"

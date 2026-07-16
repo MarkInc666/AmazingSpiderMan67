@@ -121,6 +121,15 @@ class Goblin(CaseFileMixin, Mode):
         else:
             self.machine.events.post("rooftop_diverter_close")
 
+    def _update_mode_status(self):
+        if getattr(self, "hold_active", False):
+            title = "CHAOS STABILIZED"
+            value = f"BANK {self.machine.game.player['goblin_bonus_banked']:,}"
+        else:
+            title = "FLASHING / SOLID SHOTS"
+            value = f"{len(getattr(self, 'current_flashing', set()))} / {len(getattr(self, 'current_solid', set()))}"
+        self.machine.events.post("update_mode_status", mode_status_title=title, mode_status_value=value)
+
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
 
@@ -225,6 +234,7 @@ class Goblin(CaseFileMixin, Mode):
         self.machine.events.post("show_mode_message_long", message_mode_title="CHAOS MULTIBALL", message_mode_subtitle="HIT FLASHING SHOTS")
 
         self.start_chaos_pattern()
+        self._update_mode_status()
 
     # -------------------------------------------------------------------------
     # Chaos pattern
@@ -334,7 +344,9 @@ class Goblin(CaseFileMixin, Mode):
     def deactivate_shot(self, shot_name):
         self.active_shots.discard(shot_name)
         self.current_flashing.discard(shot_name)
+        self._update_mode_status()
         self.current_solid.discard(shot_name)
+        self._update_mode_status()
         self.machine.events.post(f"goblin_stop_{shot_name}")
 
     # -------------------------------------------------------------------------
@@ -538,6 +550,7 @@ class Goblin(CaseFileMixin, Mode):
         self.machine.events.post("goblin_mode_complete")
 
     def mode_stop(self, **kwargs):
+        self.machine.events.post("hide_mode_status")
         self.clear_active_case_file_helpers()
         self.clear_all_delays()
         self.clear_current_shows()

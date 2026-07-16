@@ -67,6 +67,7 @@ class Vulture(CaseFileMixin, Mode):
         self.update_player_vars()
         self.show_targets()
         self._show_message("VULTURE", "GET TO THE ROOFTOP")
+        self.machine.events.post("show_mode_status", mode_status_title="ROOF ACCESS", mode_status_value="GET TO ROOFTOP")
 
     def mode_stop(self, **kwargs):
         self.machine.events.post("hide_mode_status")

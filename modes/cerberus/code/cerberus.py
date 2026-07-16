@@ -348,9 +348,21 @@ class Cerberus(CaseFileMixin, Mode):
         player["cerberus_more_jackpots_available"] = int(getattr(self, "more_jackpots_available", False))
         player["cerberus_shot_assist_available"] = int(getattr(self, "shot_assist_available", False))
 
+        self._update_mode_status()
+
         for saucer in [1, 2, 3]:
             player[f"cerberus_saucer_{saucer}_jackpot_lit"] = int(self.saucer_jackpot_lit[saucer])
             player[f"cerberus_saucer_{saucer}_double_lit"] = int(self.saucer_double_lit[saucer])
+
+    def _update_mode_status(self):
+        lit = sum(1 for saucer in [1, 2, 3] if self.saucer_jackpot_lit[saucer])
+        if lit:
+            title = "SAUCERS LIT / JPS"
+            value = f"{lit} / {self.jackpots_collected}/3"
+        else:
+            title = "HIT UPPER TARGETS"
+            value = f"JACKPOTS {self.jackpots_collected}/3"
+        self.machine.events.post("update_mode_status", mode_status_title=title, mode_status_value=value)
 
     def _in_summary_or_done(self):
         if self.mode_done:

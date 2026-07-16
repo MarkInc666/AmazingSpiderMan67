@@ -78,6 +78,7 @@ class DiamondSmugglers(Mode, CaseFileMixin):
         )
 
     def mode_stop(self, **kwargs):
+        self.machine.events.post("hide_mode_status")
         self.delay.remove("diamond_smugglers_saucer_cycle")
         self.delay.remove("diamond_smugglers_star_freeze")
         self.delay.remove("diamond_smugglers_resume_chase")
@@ -331,6 +332,16 @@ class DiamondSmugglers(Mode, CaseFileMixin):
         player["active_mode_points"] = self.mode_points
         player["active_mode_hits"] = self.drop_hits
         player["active_mode_major_hits"] = self.jackpots_collected
+        self._update_mode_status()
+
+    def _update_mode_status(self):
+        if self.saucer_chase_active:
+            title = "DIAMOND CHASE"
+            value = f"JACKPOTS {self.jackpots_collected}"
+        else:
+            title = "DROP HITS / JACKPOTS"
+            value = f"{self.drop_hits} / {self.jackpots_collected}"
+        self.machine.events.post("update_mode_status", mode_status_title=title, mode_status_value=value)
 
     def _format_score(self, value):
         return f"{int(value):,}"
