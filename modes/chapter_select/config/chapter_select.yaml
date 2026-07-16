@@ -29,12 +29,12 @@ event_player:
     - chapter_carousel_select
 
 sound_player:
-  chapter_carousel_next:
+  chapter_select_move_next_sound:
     hb_up_1:
       action: play
       bus: effects
 
-  chapter_carousel_previous:
+  chapter_select_move_previous_sound:
     hb_down_1:
       action: play
       bus: effects

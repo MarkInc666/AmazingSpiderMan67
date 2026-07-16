@@ -108,6 +108,7 @@ class ChapterSelect(Mode):
             return
         self.current_index += 1
         self.machine.events.post("chapter_select_moved", direction="right")
+        self.machine.events.post("chapter_select_move_next_sound")
         self._publish_view()
 
     def move_previous(self, **kwargs):
@@ -118,6 +119,7 @@ class ChapterSelect(Mode):
             return
         self.current_index -= 1
         self.machine.events.post("chapter_select_moved", direction="left")
+        self.machine.events.post("chapter_select_move_previous_sound")
         self._publish_view()
 
     def select_current(self, **kwargs):
