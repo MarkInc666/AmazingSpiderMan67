@@ -77,7 +77,11 @@ class Lizard(CaseFileMixin, Mode):
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("lizard_light_serum_location")
         self.machine.events.post("clear_saucers")
-        self._show_message("COLLECT SERUM", "HIT THE STAR ROLLOVER")
+        self.machine.events.post(
+            "show_mode_message",
+            message_mode_title="COLLECT SERUM",
+            message_mode_subtitle="HIT THE STAR ROLLOVER",
+        )
         self._update_status()
 #        self.machine.events.post("play_song_4")
 
@@ -88,15 +92,6 @@ class Lizard(CaseFileMixin, Mode):
         self.machine.events.post("lizard_followup_cleanup")
         self.clear_active_case_file_helpers()
         super().mode_stop(**kwargs)
-
-    def _show_message(self, title, subtitle="", value="", seconds="", event="show_mode_message"):
-        self.machine.events.post(
-            event,
-            message_mode_title=title,
-            message_mode_subtitle=subtitle,
-            message_mode_value=value,
-            message_mode_seconds=seconds,
-        )
 
     def _update_status(self):
         if self.mode_done:
@@ -185,7 +180,12 @@ class Lizard(CaseFileMixin, Mode):
     def _ab_complete(self):
         """Completing A+B gives the player a short helper/reset during Lizard."""
         self.machine.game.player["lizard_ab_ready"] = 1
-        self._show_message("A+B BOOST!", "SERUM VALUE UP", value=self.AB_BONUS_VALUE)
+        self.machine.events.post(
+            "show_mode_message",
+            message_mode_title="A+B BOOST!",
+            message_mode_subtitle="SERUM VALUE UP",
+            message_mode_value=self.AB_BONUS_VALUE,
+        )
         self.machine.events.post("lizard_ab_complete")
 
         # Existing YAML comment said A+B should reset the delivery timer.
@@ -217,7 +217,13 @@ class Lizard(CaseFileMixin, Mode):
             subtitle = "DELIVER TO EITHER WEB"
         else:
             subtitle = f"DELIVER TO {target.upper()} WEB"
-        self._show_message("SERUM READY", subtitle, value=self.machine.game.player["lizard_delivery_value"], seconds=10, event="show_mode_countdown")
+        self.machine.events.post(
+            "show_mode_countdown",
+            message_mode_title="SERUM READY",
+            message_mode_subtitle=subtitle,
+            message_mode_value=self.machine.game.player["lizard_delivery_value"],
+            message_mode_seconds=10,
+        )
         self.machine.events.post("lizard_serum_collected")
         self.machine.events.post("lizard_light_delivery_target")
         self.machine.events.post("lizard_delivery_timer_start")
@@ -251,13 +257,21 @@ class Lizard(CaseFileMixin, Mode):
             self._safety_net_used = True
             self.machine.game.player["lizard_serum_ready"] = 0
             self.machine.game.player["lizard_delivery_value"] = self.START_DELIVERY_VALUE
-            self._show_message("SAFETY NET", "SERUM SAVED - TRY AGAIN")
+            self.machine.events.post(
+                "show_mode_message",
+                message_mode_title="SAFETY NET",
+                message_mode_subtitle="SERUM SAVED - TRY AGAIN",
+            )
             self.machine.events.post("lizard_safety_net_used")
             self.machine.events.post("lizard_light_serum_location")
             self._update_status()
             return
 
-        self._show_message("SERUM EXPIRED", "COLLECT ANOTHER SERUM")
+        self.machine.events.post(
+            "show_mode_message",
+            message_mode_title="SERUM EXPIRED",
+            message_mode_subtitle="COLLECT ANOTHER SERUM",
+        )
         self.machine.events.post("lizard_serum_expired")
 
         # This delivery attempt is now spent, even though no points were awarded.
@@ -317,7 +331,12 @@ class Lizard(CaseFileMixin, Mode):
         self.machine.game.player["lizard_delivery_value"] = self.START_DELIVERY_VALUE
 
         subtitle = "ANY WEB ACCEPTED" if used_shot_assist else target.upper()
-        self._show_message("SERUM DELIVERED", subtitle, value=delivery_value, event="show_mode_jackpot")
+        self.machine.events.post(
+            "show_mode_jackpot",
+            message_mode_title="SERUM DELIVERED",
+            message_mode_subtitle=subtitle,
+            message_mode_value=delivery_value,
+        )
         self.delay.remove("lizard_next_serum_prompt")
         self.delay.add(name="lizard_next_serum_prompt", ms=2000, callback=self._prompt_next_serum)
         self.machine.events.post("lizard_serum_delivered")
@@ -341,19 +360,24 @@ class Lizard(CaseFileMixin, Mode):
         if self.mode_done or self.machine.game.player["villain_mode_in_summary"] is True:
             return
         self.machine.events.post("lizard_more_serum_needed")
-        self._show_message("COLLECT MORE SERUM", "HIT THE STAR ROLLOVER", reminder=True)
+        self.machine.events.post(
+            "show_mode_message",
+            message_mode_title="COLLECT MORE SERUM",
+            message_mode_subtitle="HIT THE STAR ROLLOVER",
+            reminder=True,
+        )
 
     def _start_followup_jackpot(self, delivered_target, delivery_value):
         self._followup_target = self.OPPOSITE_TARGET.get(delivered_target, self.current_target() or "center")
         self._followup_value = int(delivery_value / 2)
         self.machine.game.player["lizard_followup_ready"] = 1
 
-        self._show_message(
-            "FOLLOW-UP JACKPOT",
-            "HIT {} WEB".format(self._followup_target.upper()),
-            value=self._followup_value,
-            seconds=5,
-            event="show_mode_countdown",
+        self.machine.events.post(
+            "show_mode_countdown",
+            message_mode_title="FOLLOW-UP JACKPOT",
+            message_mode_subtitle="HIT {} WEB".format(self._followup_target.upper()),
+            message_mode_value=self._followup_value,
+            message_mode_seconds=5,
         )
         self.machine.events.post("lizard_followup_started")
         self._light_target(self._followup_target)
@@ -368,7 +392,12 @@ class Lizard(CaseFileMixin, Mode):
         self.machine.events.post("lizard_followup_collected")
         self.machine.events.post("hide_mode_status")
         self._award_points(self._followup_value)
-        self._show_message("FOLLOW-UP JACKPOT", target.upper(), value=self._followup_value, event="show_mode_jackpot")
+        self.machine.events.post(
+            "show_mode_jackpot",
+            message_mode_title="FOLLOW-UP JACKPOT",
+            message_mode_subtitle=target.upper(),
+            message_mode_value=self._followup_value,
+        )
         self._finish_followup()
 
     def followup_expired(self, **kwargs):
@@ -378,7 +407,11 @@ class Lizard(CaseFileMixin, Mode):
         self.machine.game.player["lizard_followup_ready"] = 0
         self.machine.events.post("lizard_followup_expired")
         self.machine.events.post("hide_mode_status")
-        self._show_message("FOLLOW-UP MISSED", "COLLECT SERUM")
+        self.machine.events.post(
+            "show_mode_message",
+            message_mode_title="FOLLOW-UP MISSED",
+            message_mode_subtitle="COLLECT SERUM",
+        )
         self._finish_followup()
 
     def _finish_followup(self):
@@ -396,7 +429,11 @@ class Lizard(CaseFileMixin, Mode):
         self.mode_done = True
         self.machine.events.post("lizard_followup_timer_stop")
         self.machine.events.post("lizard_followup_cleanup")
-        self._show_message("LIZARD CURED", "MODE COMPLETE", event="show_mode_jackpot")
+        self.machine.events.post(
+            "show_mode_jackpot",
+            message_mode_title="LIZARD CURED",
+            message_mode_subtitle="MODE COMPLETE",
+        )
         self.machine.events.post("lizard_mode_complete")
 
     def light_next_target(self, **kwargs):

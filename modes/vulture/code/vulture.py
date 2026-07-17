@@ -179,7 +179,12 @@ class Vulture(CaseFileMixin, Mode):
         self.machine.game.player["vulture_banked_bonus"] = self.vulture_banked_bonus  
 
         self.machine.game.player["vulture_last_spinner_score"] = total
-        self._show_message("VULTURE SPINNER", "AERIAL BONUS", value=total, event="show_mode_jackpot")
+        self._show_message(
+            "VULTURE SPINNER",
+            "TOTAL COLLECTED",
+            value=self.vulture_banked_bonus,
+            event="show_mode_jackpot",
+        )
 
     def bank_bonus(self, value):
         player = self.machine.game.player
