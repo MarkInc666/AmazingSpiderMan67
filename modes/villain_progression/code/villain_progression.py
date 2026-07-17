@@ -1070,10 +1070,6 @@ class VillainProgression(Mode):
             self.machine.events.post("mystery_start_next_villain_rejected", reason="start_flow_active")
             return
 
-        if self._safe_int(player["villain_start_ready"], 0) == 1:
-            self.machine.events.post("mystery_start_next_villain_rejected", reason="already_qualified")
-            return
-
         available = self._get_available_villains(limit=1)
         if not available:
             self.machine.events.post("mystery_start_next_villain_rejected", reason="no_villains_remaining")

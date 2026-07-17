@@ -56,7 +56,24 @@ class DailyBugleMystery(Mode):
         "mystery_award_start_super_pops",
         "mystery_award_million_points",
         "mystery_award_villain_start_ready",
+        "mystery_award_start_next_villain",
     ]
+
+    # Lightweight copy of the current chapter villain order. VillainProgression
+    # remains the source of truth for actually starting modes; this is only used
+    # to avoid selecting mystery awards that cannot do anything right now.
+    CHAPTER_VILLAINS = {
+        1: ("rhino", "sandman", "vulture", "lizard", "electro"),
+        2: ("goblin", "doc_ock", "mysterio", "scorpion", "parafino"),
+        3: ("cerberus", "vulcan", "diana", "cyclops", "centaur"),
+        4: ("kingpin", "human_flies", "fifth_avenue_phantom", "enforcers", "diamond_smugglers"),
+        5: ("pardo", "fakir", "scarlet_sorcerer", "super_swami", "frog_ghosts"),
+        6: ("noah_boddy", "dr_magneto", "professor_pretoris", "doctor_dumpty", "dr_von_schlick"),
+        7: ("radiation_specialist", "dr_zap", "doctor_cool", "snowman", "ice_monster"),
+        8: ("dr_manta", "doctor_atlantean", "sky_master", "plutonians", "antarcticans"),
+        9: ("charles_cameo", "brutus", "eigor", "the_fly", "swamp_reptiles"),
+        10: ("phantom_from_depths_of_time", "master_vine", "master_technician", "micro_men", "grand_emperor"),
+    }
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
@@ -412,9 +429,19 @@ class DailyBugleMystery(Mode):
             award_event = random.choice(valid_awards)
 
             if award_event == "mystery_award_villain_start_ready":
-                villain_mode_running = player["villain_mode_running"]
-                villain_start_ready = player["villain_start_ready"]
-                if villain_mode_running == 0 and villain_start_ready == 0:
+                # READY VILLAIN should max the three start saucers, but only
+                # while normal villain progression is actually available. Do
+                # not award it during wizard-ready, chapter-select, villain
+                # select, or active-mode states.
+                if self._can_ready_villain_award():
+                    self.machine.events.post(award_event)
+                    return
+
+            elif award_event == "mystery_award_start_next_villain":
+                # START NEXT VILLAIN bypasses saucers entirely. Only choose it
+                # when there is at least one unplayed villain in the current
+                # chapter and no progression flow is already active.
+                if self._can_start_next_villain_award():
                     self.machine.events.post(award_event)
                     return
 
@@ -430,6 +457,47 @@ class DailyBugleMystery(Mode):
 
         # Safe fallback if every random choice was filtered out.
         self.machine.events.post("mystery_award_million_points")
+
+
+    def _progression_award_blocked(self):
+        player = self.machine.game.player if self.machine.game else None
+        if not player:
+            return True
+
+        blocked_flags = (
+            "villain_mode_running",
+            "villain_select_active",
+            "chapter_mini_wizard_ready",
+            "mini_wizard_daily_bugle_ready",
+            "mini_wizard_vuk_hold_active",
+            "final_wizard_ready",
+            "chapter_select_needed",
+            "chapter_select_active",
+        )
+        return any(self._safe_int(player[name], 0) == 1 for name in blocked_flags)
+
+    def _has_available_villain_in_current_chapter(self):
+        player = self.machine.game.player if self.machine.game else None
+        if not player:
+            return False
+
+        chapter_number = self._safe_int(player["villain_chapter"], 1)
+        for villain_key in self.CHAPTER_VILLAINS.get(chapter_number, ()):
+            if self._safe_int(player[f"{villain_key}_state"], 0) == 0:
+                return True
+        return False
+
+    def _can_ready_villain_award(self):
+        return (
+            not self._progression_award_blocked()
+            and self._has_available_villain_in_current_chapter()
+        )
+
+    def _can_start_next_villain_award(self):
+        return (
+            not self._progression_award_blocked()
+            and self._has_available_villain_in_current_chapter()
+        )
 
     def fire_vuk(self):
         self.machine.events.post("up_kick")

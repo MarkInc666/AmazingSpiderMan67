@@ -37,6 +37,7 @@ class QualifySystem(Mode):
 
         self.add_mode_event_handler("drop_target_bank_dt_bank_left_down", self._bank_completed)
         self.add_mode_event_handler("saucer_star_upgrade_hit", self._star_hit)
+        self.add_mode_event_handler("mystery_award_villain_start_ready", self._mystery_award_villain_start_ready)
 
         self.add_mode_event_handler("ball_started", self._ball_started_restore)
         self.add_mode_event_handler("villain_started_set", self._reset_after_villain)
@@ -61,6 +62,40 @@ class QualifySystem(Mode):
         if player["final_wizard_ready"] == 1:
             return True
         return False
+
+
+    def _mystery_award_villain_start_ready(self, **kwargs):
+        """Daily Bugle READY VILLAIN: max all three villain-start saucers."""
+        if not self.qualify_logic_active:
+            return
+
+        if self._qualify_blocked():
+            self.machine.events.post("mystery_villain_start_ready_rejected", reason="progression_blocked")
+            return
+
+        player = self.machine.game.player
+        extra_blocked_flags = (
+            "villain_select_active",
+            "chapter_select_needed",
+            "chapter_select_active",
+        )
+        if any(self._safe_int(player[name], 0) == 1 for name in extra_blocked_flags):
+            self.machine.events.post("mystery_villain_start_ready_rejected", reason="selection_active")
+            return
+
+        for saucer in self.SAUCERS:
+            player[f"{saucer}_state"] = self.MAX_SAUCER_STATE
+            player[f"{saucer}_drop_hit_this_cycle"] = 0
+            self.machine.events.post(
+                "saucer_state_advanced",
+                saucer=saucer,
+                state=self.MAX_SAUCER_STATE,
+                source="daily_bugle_mystery",
+            )
+            self.machine.events.post(f"{saucer}_state_{self.MAX_SAUCER_STATE}")
+
+        self.machine.events.post("mystery_villain_start_ready_qualified")
+        self._restore_state()
 
     def _drop_hit(self, saucer=None, **kwargs):
         if not self.qualify_logic_active or saucer not in self.SAUCERS:
