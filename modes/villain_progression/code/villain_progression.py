@@ -617,6 +617,7 @@ class VillainProgression(Mode):
         self.add_mode_event_handler("villain_progression_request_start", self._request_start)
         self.add_mode_event_handler("villain_progression_request_choices", self._post_available_choices)
         self.add_mode_event_handler("villain_progression_start_default", self._start_default_villain)
+        self.add_mode_event_handler("mystery_award_start_next_villain", self._mystery_start_next_villain)
         self.add_mode_event_handler("villain_progression_start_selected", self._start_selected_villain)
         self.add_mode_event_handler("villain_select_choice_made", self._start_selected_villain)
         self.add_mode_event_handler("chapter_select_selected", self._chapter_selected)
@@ -1053,6 +1054,70 @@ class VillainProgression(Mode):
             self.machine.events.post("villain_start_request_failed", reason="no_villains_available")
             return
         self._start_villain(available[0])
+
+    def _mystery_start_next_villain(self, **kwargs):
+        """Immediately start the next unplayed villain when Mystery awards it."""
+        player = self.machine.game.player
+        blocked_flags = (
+            "villain_mode_running",
+            "villain_select_active",
+            "chapter_mini_wizard_ready",
+            "final_wizard_ready",
+            "chapter_select_needed",
+            "chapter_select_active",
+        )
+        if any(self._safe_int(player[name], 0) == 1 for name in blocked_flags):
+            self.machine.events.post("mystery_start_next_villain_rejected", reason="start_flow_active")
+            return
+
+        if self._safe_int(player["villain_start_ready"], 0) == 1:
+            self.machine.events.post("mystery_start_next_villain_rejected", reason="already_qualified")
+            return
+
+        available = self._get_available_villains(limit=1)
+        if not available:
+            self.machine.events.post("mystery_start_next_villain_rejected", reason="no_villains_remaining")
+            return
+
+        villain_key = available[0]
+        info = self.VILLAINS[villain_key]
+        self.machine.events.post(
+            "mystery_next_villain_started",
+            villain_key=villain_key,
+            villain_name=info["name"],
+        )
+        self.machine.events.post(
+            "show_mode_message",
+            message=f"STARTING NEXT VILLAIN\n{info['name'].upper()}",
+            duration=2,
+            priority=200,
+        )
+        self.delay.remove("mystery_start_next_villain")
+        self.delay.add(
+            name="mystery_start_next_villain",
+            ms=2000,
+            callback=self._execute_mystery_start_next_villain,
+            villain_key=villain_key,
+        )
+
+    def _execute_mystery_start_next_villain(self, villain_key, **kwargs):
+        """Start the Mystery-selected villain after its award message is readable."""
+        player = self.machine.game.player
+        blocked_flags = (
+            "villain_mode_running",
+            "villain_select_active",
+            "chapter_mini_wizard_ready",
+            "final_wizard_ready",
+            "chapter_select_needed",
+            "chapter_select_active",
+        )
+        if any(self._safe_int(player[name], 0) == 1 for name in blocked_flags):
+            self.machine.events.post("mystery_start_next_villain_rejected", reason="start_flow_changed")
+            return
+        if villain_key not in self._get_available_villains():
+            self.machine.events.post("mystery_start_next_villain_rejected", reason="villain_no_longer_available")
+            return
+        self._start_villain(villain_key)
 
     def _start_selected_villain(self, villain_key=None, item=None, **kwargs):
         villain_key = villain_key or item

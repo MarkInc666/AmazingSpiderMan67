@@ -162,7 +162,12 @@ sound_player:
       bus: voice
 
   mystery_award_villain_start_ready:
-    sm_i_wonder_what_mr_jameson:
+    jj_that_menace_is_getting_help:
+      action: play
+      bus: voice
+
+  mystery_award_start_next_villain:
+    sm_objective_spotted:
       action: play
       bus: voice
 
@@ -436,7 +441,7 @@ shows:
         l_spinner: white
     - duration: 400ms
       lights:
-        l_spinner: blue
+        l_spinner: yellow
 
   daily_bugle_mystery_ready_show:
     - duration: 250ms
