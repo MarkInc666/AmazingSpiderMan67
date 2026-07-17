@@ -133,8 +133,8 @@ class Parafino(CaseFileMixin, Mode):
         jackpots = sum(int(player[zone["jackpots_var"]]) for zone in self.ZONES.values())
         self.machine.events.post(
             "update_mode_status",
-            mode_status_title="LIT SAUCERS / JACKPOTS",
-            mode_status_value=f"{lit} / {jackpots}",
+            mode_status_title="SAUCERS LIT / JACKPOTS",
+            mode_status_value=f"{lit} OF 3 / {jackpots}",
         )
 
     def mode_stop(self, **kwargs):
@@ -247,6 +247,7 @@ class Parafino(CaseFileMixin, Mode):
             return
 
         data = self.ZONES[zone]
+        self._score(5_000)
         hits_to_add = 1
 
         if self.case_file_shot_assist_double_first_zone_hit and player[data["hits_var"]] == 0:
@@ -269,6 +270,7 @@ class Parafino(CaseFileMixin, Mode):
             value=player[data["value_var"]],
         )
         self.machine.events.post("show_mode_message", message_mode_title="AREA HEATING", message_mode_subtitle=data["display"], message_mode_value=player[data["value_var"]])
+        self._update_mode_status()
         self.machine.events.post(
             data["jackpot_lit_event"],
             value=player[data["value_var"]],
@@ -338,7 +340,8 @@ class Parafino(CaseFileMixin, Mode):
             player[data["add_ball_qualified_var"]] = 0
             self.machine.events.post("parafino_add_a_ball")
             self.machine.events.post("parafino_add_a_ball_collected", zone=zone, saucer=saucer)
-            self.machine.events.post("show_mode_message", message_mode_title="ADD-A-BALL", message_mode_subtitle=f"{data["display"]}")
+            self.delay.remove("parafino_ball_added_message")
+            self.delay.add(name="parafino_ball_added_message", ms=2100, callback=self._show_ball_added_message)
             add_ball_awarded = True
 
         self.machine.events.post(
@@ -348,6 +351,7 @@ class Parafino(CaseFileMixin, Mode):
             value=value,
             add_ball_awarded=add_ball_awarded,
         )
+        self._update_mode_status()
         self.machine.events.post("show_mode_jackpot", message_mode_title="WAX JACKPOT", message_mode_subtitle=data["display"], message_mode_value=value)
 
         if self.case_file_extra_collects and player[data["extra_collect_used_var"]] == 0:
@@ -363,6 +367,12 @@ class Parafino(CaseFileMixin, Mode):
             return
 
         self._reset_zone(zone)
+
+
+    def _show_ball_added_message(self):
+        if self.mode_exiting:
+            return
+        self.machine.events.post("show_mode_message", message_mode_title="BALL ADDED", message_mode_subtitle="MULTIBALL CONTINUES")
 
     def _reset_zone(self, zone):
         data = self.ZONES[zone]

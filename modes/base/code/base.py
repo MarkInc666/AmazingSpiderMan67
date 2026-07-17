@@ -17,6 +17,8 @@ class Base(Mode):
     )
 
     COUNTDOWN_DELAY_NAME = "mode_message_countdown_tick"
+    REMINDER_DELAY_NAME = "mode_message_reminder"
+    REMINDER_INTERVAL_MS = 9000
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
@@ -24,6 +26,7 @@ class Base(Mode):
             self.add_mode_event_handler(event, self._sync_mode_message_vars, priority=10000)
         self.add_mode_event_handler("show_mode_countdown", self._sync_mode_countdown_vars, priority=10000)
         self.add_mode_event_handler("hide_mode_message", self._hide_mode_message, priority=10000)
+        self.add_mode_event_handler("reset_mode_message_reminder", self._reset_mode_message_reminder, priority=10000)
 
         self.add_mode_event_handler("show_mode_status", self._sync_mode_status_vars, priority=10000)
         self.add_mode_event_handler("update_mode_status", self._sync_mode_status_vars, priority=10000)
@@ -38,6 +41,7 @@ class Base(Mode):
         message_mode_subtitle="",
         message_mode_value="",
         message_mode_seconds="",
+        reminder=False,
         **kwargs,
     ):
         self._set_mode_message_vars(
@@ -46,6 +50,16 @@ class Base(Mode):
             message_mode_value=message_mode_value,
             message_mode_seconds=message_mode_seconds,
         )
+        if reminder:
+            self._reminder_payload = dict(
+                message_mode_title=message_mode_title,
+                message_mode_subtitle=message_mode_subtitle,
+                message_mode_value=message_mode_value,
+                message_mode_seconds=message_mode_seconds,
+            )
+            self._schedule_mode_message_reminder()
+        else:
+            self.delay.remove(self.REMINDER_DELAY_NAME)
 
     def _sync_mode_countdown_vars(
         self,
@@ -148,6 +162,20 @@ class Base(Mode):
         self._cancel_countdown()
         self._clear_mode_message_vars()
 
+    def _schedule_mode_message_reminder(self):
+        self.delay.remove(self.REMINDER_DELAY_NAME)
+        self.delay.add(name=self.REMINDER_DELAY_NAME, ms=self.REMINDER_INTERVAL_MS, callback=self._show_mode_message_reminder)
+
+    def _show_mode_message_reminder(self):
+        payload = getattr(self, "_reminder_payload", None)
+        if not payload:
+            return
+        self.machine.events.post("show_mode_message", reminder=True, **payload)
+
+    def _reset_mode_message_reminder(self, **kwargs):
+        if getattr(self, "_reminder_payload", None):
+            self._schedule_mode_message_reminder()
+
     def _hide_mode_status(self, **kwargs):
         self._cancel_countdown()
         self._clear_mode_status_vars()
@@ -155,6 +183,11 @@ class Base(Mode):
     def _cancel_countdown(self):
         self.delay.remove(self.COUNTDOWN_DELAY_NAME)
         self._message_countdown_remaining = 0
+
+    def mode_stop(self, **kwargs):
+        self.delay.remove(self.REMINDER_DELAY_NAME)
+        self._reminder_payload = None
+        super().mode_stop(**kwargs)
 
     def _clear_mode_message_vars(self):
         self._set_mode_message_vars(

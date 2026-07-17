@@ -1330,7 +1330,9 @@ class VillainBookends(Mode):
         self.machine.events.post("villain_bookend_intro_hide")
 
     def _skip_current_bookend(self, **kwargs):
-        if self.current_stage in ("intro", "summary"):
+        # Intros may be skipped, but summaries must run for their full duration.
+        # Wizard summaries use this time to drain balls and prepare chapter select.
+        if self.current_stage == "intro":
             self.delay.remove("villain_bookend_done")
             self._finish_current_bookend()
 

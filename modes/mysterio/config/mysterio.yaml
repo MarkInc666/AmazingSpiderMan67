@@ -39,6 +39,12 @@ sound_player:
       action: play
       bus: voice
 
+  mysterio_non_clue_shot:
+    sm_he_must_be_around_here_somewhere:
+      action: play
+      bus: voice
+
+
 event_player:
   mode_mysterio_started:
     - reset_drops

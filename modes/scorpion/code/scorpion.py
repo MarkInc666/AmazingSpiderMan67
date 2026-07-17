@@ -64,7 +64,7 @@ class Scorpion(CaseFileMixin, Mode):
 
         self.add_mode_event_handler("s_left_drops_rubber_active", self.sting_miss_left)
         self.add_mode_event_handler("s_right_drops_rubber_active", self.sting_miss_right)
-        self.machine.events.post("show_mode_message", message_mode_title="BUILD VENOM", message_mode_subtitle="HIT THE SPINNER")
+        self.machine.events.post("show_mode_message", message_mode_title="BUILD VENOM", message_mode_subtitle="HIT THE ROOF SPINNER", reminder=True)
         self._update_mode_status()
 
 
@@ -250,7 +250,9 @@ class Scorpion(CaseFileMixin, Mode):
         self.machine.game.player["scorpion_biggest_jackpot"] = self.scorpion_biggest_jackpot
 
         self.machine.events.post("scorpion_sting_success")
-        self.machine.events.post("show_mode_jackpot", message_mode_title="SCORPION JACKPOT", message_mode_subtitle="STING SEQUENCE", message_mode_value=self.jpval)
+        self.machine.events.post("show_mode_jackpot", message_mode_title="JACKPOT", message_mode_subtitle="SCORPION STING", message_mode_value=self.jpval)
+        self.delay.remove("scorpion_next_objective")
+        self.delay.add(name="scorpion_next_objective", ms=2000, callback=self.reset_for_next_attempt)
         self.reset_for_next_try()
 
     def award_missed_sting(self):
@@ -294,4 +296,4 @@ class Scorpion(CaseFileMixin, Mode):
         self.active_target_side = None
 
         self.machine.events.post("scorpion_build_phase_started")
-        self.machine.events.post("show_mode_message", message_mode_title="BUILD VENOM", message_mode_subtitle="HIT THE SPINNER")
+        self.machine.events.post("show_mode_message", message_mode_title="BUILD VENOM", message_mode_subtitle="HIT THE ROOF SPINNER", reminder=True)

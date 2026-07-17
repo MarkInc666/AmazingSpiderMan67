@@ -27,11 +27,6 @@ widget_player:
       action: play
       expire: 2s
 
-  doc_ock_jackpot_award:
-    jackpot_collected:
-      action: play
-      expire: 2s
-
   mode_doc_ock_started:
     doc_ock:
       action: play
@@ -129,6 +124,15 @@ sound_player:
 
 
 show_player:
+  mode_doc_ock_started:
+    doc_ock_spinner_active_show:
+      action: play
+      loops: -1
+
+  mode_doc_ock_stopping:
+    doc_ock_spinner_active_show:
+      action: stop
+
   doc_ock_arm_1_pulse:
     doc_ock_arm_1_solid:
       action: stop
@@ -265,6 +269,14 @@ show_player:
       loops: 1
 
 shows:
+  doc_ock_spinner_active_show:
+    - duration: 250ms
+      lights:
+        l_spinner: yellow
+    - duration: 250ms
+      lights:
+        l_spinner: off
+
   doc_ock_arm_1_pulse:
     - duration: 200ms
       lights:

@@ -180,6 +180,7 @@ class Mysterio(CaseFileMixin, Mode):
 
 
     def handle_wrong_shot(self, shot):
+        self.machine.events.post("mysterio_non_clue_shot")
         if getattr(self, "case_file_extra_chance_available", False):
             self.case_file_extra_chance_available = False
             self.machine.events.post("mysterio_case_file_extra_chance_used", shot=shot.name)

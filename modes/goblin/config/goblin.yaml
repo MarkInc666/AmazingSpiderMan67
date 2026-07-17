@@ -98,11 +98,11 @@ event_player:
   # real playfield input -> Python shot events
   s_web_target_left_active: goblin_left_web_hit
   s_web_target_mid_active: goblin_right_web_hit
-  s_web_spinner_active: goblin_spinner_hit
+  s_star_rollover_active: goblin_star_hit
+  s_pop_left_active: goblin_pops_hit
+  s_pop_right_active: goblin_pops_hit
   gob_left_drops_hit: goblin_left_drops_hit
   gob_right_drops_hit: goblin_right_drops_hit
-  s_trispinner_opto_active: goblin_upper_spinner_hit
-  gob_upper_targets_hit: goblin_upper_target_hit
 
   # Saucers stabilize chaos and hold/eject from Python.
   # These use separate events to avoid relying on parameterized event_player syntax.

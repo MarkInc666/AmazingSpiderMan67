@@ -318,6 +318,8 @@ class Lizard(CaseFileMixin, Mode):
 
         subtitle = "ANY WEB ACCEPTED" if used_shot_assist else target.upper()
         self._show_message("SERUM DELIVERED", subtitle, value=delivery_value, event="show_mode_jackpot")
+        self.delay.remove("lizard_next_serum_prompt")
+        self.delay.add(name="lizard_next_serum_prompt", ms=2000, callback=self._prompt_next_serum)
         self.machine.events.post("lizard_serum_delivered")
         self.machine.events.post("lizard_delivery_timer_stop")
 
@@ -333,6 +335,13 @@ class Lizard(CaseFileMixin, Mode):
 
         self.machine.events.post("lizard_light_serum_location")
         self._update_status()
+
+
+    def _prompt_next_serum(self):
+        if self.mode_done or self.machine.game.player["villain_mode_in_summary"] is True:
+            return
+        self.machine.events.post("lizard_more_serum_needed")
+        self._show_message("COLLECT MORE SERUM", "HIT THE STAR ROLLOVER", reminder=True)
 
     def _start_followup_jackpot(self, delivered_target, delivery_value):
         self._followup_target = self.OPPOSITE_TARGET.get(delivered_target, self.current_target() or "center")

@@ -200,7 +200,6 @@ class Vulture(CaseFileMixin, Mode):
 
         self.show_targets()
         self.update_player_vars()
-        self._show_message("VULTURE EVADED", "TARGET VALUES DROPPED")
         self.machine.events.post("vulture_restart_idle_timer")
 
     def show_targets(self, **kwargs):

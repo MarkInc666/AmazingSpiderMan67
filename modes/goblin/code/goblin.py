@@ -103,11 +103,14 @@ class Goblin(CaseFileMixin, Mode):
     HOLD_REDUCTION_PER_LOCK_MS = 1000
     MIN_HOLD_FLASHING_SHOTS = 4
 
-    FLASHING_SCORE = 50000
+    JACKPOT_START = 100000
+    JACKPOT_STEP = 50000
+    JACKPOT_MAX = 500000
+    FLASHING_SCORE = 100000
     SOLID_SCORE = 2000
 
     CHAOS_BONUS_ADD = 100000
-    CHAOS_BONUS_LOSS = 100000
+    CHAOS_BONUS_LOSS = 50000
 
     UPPER_GATE_SHOTS = {"upper_targets", "upper_spinner"}
 
@@ -126,8 +129,8 @@ class Goblin(CaseFileMixin, Mode):
             title = "CHAOS STABILIZED"
             value = f"BANK {self.machine.game.player['goblin_bonus_banked']:,}"
         else:
-            title = "FLASHING / SOLID SHOTS"
-            value = f"{len(getattr(self, 'current_flashing', set()))} / {len(getattr(self, 'current_solid', set()))}"
+            title = "CHAOS BONUS"
+            value = f"{self.machine.game.player['goblin_chaos_bonus']:,}"
         self.machine.events.post("update_mode_status", mode_status_title=title, mode_status_value=value)
 
     def mode_start(self, **kwargs):
@@ -145,12 +148,11 @@ class Goblin(CaseFileMixin, Mode):
         ])
 
         self.shots = [
+            GoblinShot("star", "goblin_star_hit"),
+            GoblinShot("pops", "goblin_pops_hit"),
             GoblinShot("left_web", "goblin_left_web_hit"),
-            GoblinShot("spinner", "goblin_spinner_hit"),
-            GoblinShot("left_drops", "goblin_left_drops_hit"),
             GoblinShot("right_web", "goblin_right_web_hit"),
-            GoblinShot("upper_spinner", "goblin_upper_spinner_hit"),
-            GoblinShot("upper_target", "goblin_upper_target_hit"),
+            GoblinShot("left_drops", "goblin_left_drops_hit"),
             GoblinShot("right_drops", "goblin_right_drops_hit"),
         ]
 
@@ -226,6 +228,7 @@ class Goblin(CaseFileMixin, Mode):
         self.machine.game.player["goblin_attacks_value"] = 0
         self.machine.game.player["active_mode_points"] = 0
         self.machine.game.player["goblin_state"] = 1
+        self.machine.game.player["goblin_jackpot_value"] = self.JACKPOT_START
 
         self.machine.events.post("reset_drops")
         self.machine.events.post("clear_saucers")
@@ -243,38 +246,14 @@ class Goblin(CaseFileMixin, Mode):
     def start_chaos_pattern(self):
         if self.mode_finishing or self.hold_active:
             return
-
         self.clear_current_shows()
-        self.machine.events.post("goblin_lite_saucers")
-
-        # Every new chaos window resets shot availability. A hit only disables
-        # that shot for the current 6 second chaos window / hold window, not for
-        # the whole mode.
         self.active_shots = {shot.name for shot in self.shots}
-
-        available = list(self.active_shots)
-        random.shuffle(available)
-
-        flashing = available[:3]
-        solid = available[3:6]
-
-        self.current_flashing = set(flashing)
-        self.current_solid = set(solid)
-
-        for shot_name in self.current_flashing:
-            self.machine.events.post(f"goblin_lite_{shot_name}")
-
+        self.current_flashing.clear()
+        self.current_solid = set(self.active_shots)
         for shot_name in self.current_solid:
             self.machine.events.post(f"goblin_solid_{shot_name}")
-
-        self.delay.remove("goblin_chaos_window")
-        self.delay.add(
-            name="goblin_chaos_window",
-            ms=self.CHAOS_WINDOW_MS,
-            callback=self.chaos_window_complete
-        )
-        self._update_upper_gate_from_lit_shots()
-        self.machine.events.post("show_mode_message", message_mode_title="FLASHING SHOTS", message_mode_subtitle="BIG VALUE - AVOID SOLID SHOTS")
+        self.machine.events.post("show_mode_message", message_mode_title="CHAOS!", message_mode_subtitle="GET A BALL TO A SAUCER", reminder=True)
+        self._update_mode_status()
 
     def chaos_window_complete(self):
         if self.mode_finishing or self.hold_active:
@@ -295,51 +274,35 @@ class Goblin(CaseFileMixin, Mode):
     # -------------------------------------------------------------------------
 
     def shot_hit(self, shot_name=None, **kwargs):
-        if self.machine.game.player["villain_mode_in_summary"] == True: return        
-        if self.mode_finishing or not shot_name:
+        if self.machine.game.player["villain_mode_in_summary"] is True or self.mode_finishing or not shot_name:
             return
-
         if shot_name not in self.active_shots:
             return
-
-        if shot_name in self.current_flashing:
-            self.collect_flashing_shot(shot_name)
-            return
-
-        # No penalty shots during saucer hold. Solids are normally turned off during
-        # hold, but this guard keeps the rule safe if a switch/event sneaks through.
         if self.hold_active:
-            return
-
-        if shot_name in self.current_solid:
+            self.collect_flashing_shot(shot_name)
+        else:
             self.collect_solid_shot(shot_name)
 
     def collect_flashing_shot(self, shot_name):
-        self.info_log("Goblin flashing shot collected: %s", shot_name)
-
-        self._award_points(self.FLASHING_SCORE)
-        self.machine.game.player["goblin_attacks_value"] += self.FLASHING_SCORE
-        self.machine.game.player["goblin_chaos_bonus"] += self.CHAOS_BONUS_ADD
-
+        value = int(self.machine.game.player["goblin_jackpot_value"])
+        self._award_points(value)
+        self.machine.game.player["goblin_attacks_value"] += value
+        self.machine.game.player["goblin_chaos_bonus"] += value
+        self.machine.game.player["goblin_bonus_banked"] = self.machine.game.player["goblin_chaos_bonus"]
+        self.machine.game.player["goblin_jackpot_value"] = min(self.JACKPOT_MAX, value + self.JACKPOT_STEP)
         self.deactivate_shot(shot_name)
         self.machine.events.post("goblin_flashing_shot_score", shot=shot_name)
-        self.machine.events.post("show_mode_jackpot", message_mode_title="FLASHING SHOT", message_mode_subtitle=shot_name.replace("_", " ").upper(), message_mode_value=self.FLASHING_SCORE)
-        self._update_upper_gate_from_lit_shots()
+        self.machine.events.post("show_mode_jackpot", message_mode_title="GOBLIN JACKPOT", message_mode_subtitle=shot_name.replace("_", " ").upper(), message_mode_value=value)
+        self._update_mode_status()
 
     def collect_solid_shot(self, shot_name):
-        self.info_log("Goblin solid penalty shot hit: %s", shot_name)
-
+        value = int(self.machine.game.player["goblin_jackpot_value"])
+        loss = value // 2
         self._award_points(self.SOLID_SCORE)
-
-        banked = self.machine.game.player["goblin_bonus_banked"]
-        current_bonus = self.machine.game.player["goblin_chaos_bonus"]
-        new_bonus = max(banked, current_bonus - self.CHAOS_BONUS_LOSS)
-        self.machine.game.player["goblin_chaos_bonus"] = new_bonus
-
-        self.deactivate_shot(shot_name)
+        self.machine.game.player["goblin_chaos_bonus"] = max(0, self.machine.game.player["goblin_chaos_bonus"] - loss)
         self.machine.events.post("goblin_solid_shot_score", shot=shot_name)
-        self.machine.events.post("show_mode_message", message_mode_title="SOLID SHOT", message_mode_subtitle="CHAOS BONUS REDUCED", message_mode_value=new_bonus)
-        self._update_upper_gate_from_lit_shots()
+        self.machine.events.post("show_mode_message", message_mode_title="CHAOS HIT", message_mode_subtitle="CHAOS BONUS REDUCED", message_mode_value=self.machine.game.player["goblin_chaos_bonus"])
+        self._update_mode_status()
 
     def deactivate_shot(self, shot_name):
         self.active_shots.discard(shot_name)
@@ -391,17 +354,16 @@ class Goblin(CaseFileMixin, Mode):
         self.delay.remove("goblin_chaos_window")
         self.delay.remove("goblin_chaos_pause")
 
-        for shot_name in list(self.current_solid):
-            self.machine.events.post(f"goblin_stop_{shot_name}")
-            self.current_flashing.add(shot_name)
-            self.machine.events.post(f"goblin_lite_{shot_name}")
-
+        self.active_shots = {shot.name for shot in self.shots}
+        self.current_flashing = set(self.active_shots)
         self.current_solid.clear()
-        self.ensure_minimum_hold_flashing_shots()
+        for shot_name in self.current_flashing:
+            self.machine.events.post(f"goblin_stop_{shot_name}")
+            self.machine.events.post(f"goblin_lite_{shot_name}")
         self._update_upper_gate_from_lit_shots()
         
         self.machine.events.post("goblin_hold_started", saucer=saucer)
-        self.machine.events.post("show_mode_message_long", message_mode_title="BONUS LOCKED", message_mode_subtitle=f"SAUCER {saucer}", message_mode_value=banked)
+        self.machine.events.post("show_mode_message_long", message_mode_title="CHAOS CALMED", message_mode_subtitle="HIT LIT TARGETS BEFORE RELEASE", message_mode_value=banked)
 
         hold_time_ms = self.get_current_hold_time_ms()
         self.delay.remove("goblin_hold_timer")

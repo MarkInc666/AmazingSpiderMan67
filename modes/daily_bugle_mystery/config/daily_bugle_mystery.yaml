@@ -351,8 +351,8 @@ shows:
         l_right_a: off
     - duration: -1
       lights:
-        l_a_rollover: blue
-        l_right_a: blue
+        l_a_rollover: yellow
+        l_right_a: yellow
 
   daily_bugle_b_hit_flash_then_solid:
     - duration: 120ms
@@ -373,20 +373,20 @@ shows:
         l_left_b: off
     - duration: -1
       lights:
-        l_b_rollover: blue
-        l_left_b: blue
+        l_b_rollover: yellow
+        l_left_b: yellow
 
   daily_bugle_a_solid:
     - duration: -1
       lights:
-        l_a_rollover: blue
-        l_right_a: blue
+        l_a_rollover: yellow
+        l_right_a: yellow
 
   daily_bugle_b_solid:
     - duration: -1
       lights:
-        l_b_rollover: blue
-        l_left_b: blue
+        l_b_rollover: yellow
+        l_left_b: yellow
 
   daily_bugle_a_off:
     - duration: -1
@@ -417,18 +417,18 @@ shows:
         l_left_b: white
     - duration: 300ms
       lights:
-        l_a_rollover: blue
-        l_b_rollover: blue
-        l_right_a: blue
-        l_left_b: blue
+        l_a_rollover: yellow
+        l_b_rollover: yellow
+        l_right_a: yellow
+        l_left_b: yellow
 
   daily_bugle_ab_ready_solid:
     - duration: -1
       lights:
-        l_a_rollover: blue
-        l_right_a: blue
-        l_b_rollover: blue
-        l_left_b: blue
+        l_a_rollover: yellow
+        l_right_a: yellow
+        l_b_rollover: yellow
+        l_left_b: yellow
 
   daily_bugle_spinner_ready_show:
     - duration: 400ms

@@ -181,6 +181,8 @@ class doc_ock(CaseFileMixin, Mode):
         self.machine.game.player["active_mode_points"] = self.active_mode_points
 
         self._lock_arm_index(arm - 1)
+        if self.jackpots_collected >= self.JACKPOTS_BEFORE_TIMED_RELEASE:
+            self.start_timed_release(show_countdown=False)
 
         self.machine.events.post("doc_ock_arm_locked_score")
         self.machine.events.post("show_mode_message", message_mode_title="ARM LOCKED", message_mode_subtitle=f"{sum(self.locked_arms)} ARMS LOCKED")
@@ -215,6 +217,8 @@ class doc_ock(CaseFileMixin, Mode):
         else:
             award = self.doc_ock_left_bank_complete_score
             self.machine.events.post("doc_ock_arm_locked_score")
+            if self.jackpots_collected >= self.JACKPOTS_BEFORE_TIMED_RELEASE:
+                self.start_timed_release(show_countdown=False)
             self.machine.events.post("show_mode_message", message_mode_title="BANK COMPLETE", message_mode_subtitle=f"ARM {locked_arm} LOCKED - JACKPOT LIT")
 
         self.machine.game.player["score"] += award
