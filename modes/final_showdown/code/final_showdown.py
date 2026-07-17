@@ -132,6 +132,8 @@ class FinalShowdown(Mode):
 
         self.machine.events.post("final_showdown_clear_all_final_showdown_lights")
         self.machine.events.post("final_showdown_close_upper_gate")
+        self.machine.events.post("hide_mode_status")
+        self.machine.events.post("cancel_mode_message_reminder")
 
         super().mode_stop(**kwargs)
 
@@ -230,6 +232,13 @@ class FinalShowdown(Mode):
         self.machine.events.post("final_showdown_area_changed", area=self.current_area)
         self.machine.events.post("final_showdown_clear_area_lights")
         self.machine.events.post(f"final_showdown_area_{self.current_area}_lit")
+        self.machine.events.post(
+            "show_mode_message",
+            message_mode_title=f"HIT {area_data['display']}",
+            message_mode_subtitle=f"{area_data['required']} NEEDED",
+            reminder=True,
+        )
+        self._update_area_status()
 
     def _reset_area_specific_progress(self):
         self._set("final_showdown_upper_left_hits", 0)
@@ -264,6 +273,8 @@ class FinalShowdown(Mode):
             final_showdown_hits_still_needed = self._get("final_showdown_area_required") - self._get("final_showdown_area_progress")
 
             self._set("final_showdown_hits_still_needed", final_showdown_hits_still_needed)
+            self._update_area_status()
+            self.machine.events.post("reset_mode_message_reminder")
 
             if final_showdown_hits_still_needed > 0:
                 self.machine.events.post("final_showdown_area_changed", area=self.current_area)
@@ -297,6 +308,18 @@ class FinalShowdown(Mode):
         self.machine.events.post("final_showdown_area_complete", area=completed_area)
         self.machine.events.post("final_showdown_jackpot_lit", area=completed_area)
         self.machine.events.post("final_showdown_jackpot_lit_show")
+        self.machine.events.post(
+            "show_mode_message",
+            message_mode_title="JACKPOT LIT",
+            message_mode_subtitle="SHOOT DAILY BUGLE",
+            message_mode_value=self._get("final_showdown_jackpot_value"),
+            reminder=True,
+        )
+        self.machine.events.post(
+            "show_mode_status",
+            mode_status_title="AREAS CLEARED",
+            mode_status_value=f"{self._get('final_showdown_areas_cleared')} / {len(self.AREAS)}",
+        )
 
     def _daily_bugle_hit(self, **kwargs):
         self.delay.add(
@@ -333,6 +356,12 @@ class FinalShowdown(Mode):
         self._set("final_showdown_jackpot_ready", 0)
 
         self.machine.events.post("final_showdown_jackpot_collected", value=jackpot_value)
+        self.machine.events.post(
+            "show_mode_jackpot",
+            message_mode_title="JACKPOT",
+            message_mode_subtitle=f"{self._get('final_showdown_areas_cleared')} AREAS CLEARED",
+            message_mode_value=jackpot_value,
+        )
 
         self._choose_next_area()
 
@@ -351,6 +380,17 @@ class FinalShowdown(Mode):
         self._update_gate()
         self.machine.events.post("final_showdown_victory_laps_started")
         self.machine.events.post("final_showdown_victory_laps_show")
+        self.machine.events.post(
+            "show_mode_message",
+            message_mode_title="VICTORY LAPS",
+            message_mode_subtitle="COMPLETE A + B",
+            reminder=True,
+        )
+        self.machine.events.post(
+            "show_mode_status",
+            mode_status_title="SUPER JACKPOTS",
+            mode_status_value=self._get("final_showdown_super_jackpots"),
+        )
 
     def _victory_lap_hit(self):
         self._score(self.ACTIVE_AREA_SCORE)
@@ -371,6 +411,11 @@ class FinalShowdown(Mode):
         self._update_gate()
 
         self.machine.events.post("final_showdown_super_jackpot_collected", value=value)
+        self.machine.events.post(
+            "show_mode_jackpot",
+            message_mode_title="SUPER JACKPOT",
+            message_mode_value=value,
+        )
 
     def _a_hit(self, **kwargs):
         self._set("final_showdown_a_hit", 1)
@@ -536,6 +581,18 @@ class FinalShowdown(Mode):
             "villain_bookend_summary_request",
             villain="final_showdown",
             done_event="final_showdown_mode_done"
+        )
+
+    def _update_area_status(self):
+        if not self.current_area or self.current_area == "victory_laps":
+            return
+        display = self.AREAS[self.current_area]["display"]
+        progress = self._get("final_showdown_area_progress")
+        required = self._get("final_showdown_area_required")
+        self.machine.events.post(
+            "show_mode_status",
+            mode_status_title=display,
+            mode_status_value=f"{progress} / {required}",
         )
 
     def _update_gate(self):

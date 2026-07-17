@@ -113,20 +113,21 @@ class SwampReptiles(CaseFileMixin, Mode):
             self.machine.events.post("start_case_file_ball_save")
 
         self.machine.events.post("swamp_reptiles_startup_complete")
-        self._show_mode_message("SWAMP RAMPAGE", "HIT POPS TO LIGHT JACKPOTS")
+        self._show_mode_message("SWAMP RAMPAGE", "HIT POPS TO LIGHT JACKPOTS", reminder=True)
         self.machine.events.post("swamp_reptiles_clear_all_lights")
         self.machine.events.post("clear_saucers")
         self._update_rooftop_gate()
         self._sync_vars()
 
 
-    def _show_mode_message(self, title, subtitle="", value="", seconds=""):
+    def _show_mode_message(self, title, subtitle="", value="", seconds="", reminder=False):
         self.machine.events.post(
             "show_mode_message",
             message_mode_title=title,
             message_mode_subtitle=subtitle,
             message_mode_value=value,
             message_mode_seconds=seconds,
+            reminder=reminder,
         )
 
     def _show_mode_jackpot(self, title, value, subtitle=""):
@@ -154,6 +155,7 @@ class SwampReptiles(CaseFileMixin, Mode):
         self.clear_active_case_file_helpers()
         self.machine.events.post("swamp_reptiles_clear_all_lights")
         self.machine.events.post("clear_saucers")
+        self.machine.events.post("cancel_mode_message_reminder")
         super().mode_stop(**kwargs)
 
     def _pop_hit(self, **kwargs):

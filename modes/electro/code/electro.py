@@ -39,7 +39,7 @@ class Electro(CaseFileMixin, Mode):
             ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
             ("shot_assist", "NEXT SPARK HELD LONGER"),
         ])
-        self._show_message("POWER SURGE", "HIT THE LIT SPARK")
+        self._show_message("POWER SURGE", "HIT THE LIT SPARK", reminder=True)
 
 
         self.value_deduct = 0
@@ -80,15 +80,17 @@ class Electro(CaseFileMixin, Mode):
     def mode_stop(self, **kwargs):
         self.machine.events.post("hide_mode_status")
         self.clear_active_case_file_helpers()
+        self.machine.events.post("cancel_mode_message_reminder")
         super().mode_stop(**kwargs)
 
-    def _show_message(self, title, subtitle="", value="", seconds="", event="show_mode_message"):
+    def _show_message(self, title, subtitle="", value="", seconds="", event="show_mode_message", reminder=False):
         self.machine.events.post(
             event,
             message_mode_title=title,
             message_mode_subtitle=subtitle,
             message_mode_value=value,
             message_mode_seconds=seconds,
+            reminder=reminder,
         )
 
     def _update_status(self):

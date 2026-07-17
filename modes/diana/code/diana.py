@@ -124,7 +124,7 @@ class Diana(CaseFileMixin, Mode):
         self.machine.events.post("reset_5bank")
         self.machine.events.post("rooftop_diverter_open")
         self.machine.events.post("diana_mode_started")
-        self._show_mode_message("DIANA", "GET TO THE ROOF")
+        self._show_mode_message("DIANA", "GET TO THE ROOF", reminder=True)
         self._sync_vars()
 
     def mode_stop(self, **kwargs):
@@ -135,6 +135,7 @@ class Diana(CaseFileMixin, Mode):
         self.machine.events.post("diana_clear_all_lights")
         self.machine.events.post("rooftop_diverter_close")
         self.clear_active_case_file_helpers()
+        self.machine.events.post("cancel_mode_message_reminder")
         super().mode_stop(**kwargs)
 
 
@@ -143,13 +144,14 @@ class Diana(CaseFileMixin, Mode):
         self.delay.remove("diana_stage_right_bank")
         self.delay.remove("diana_hunt_timer_tick")
 
-    def _show_mode_message(self, title, subtitle="", value="", seconds=""):
+    def _show_mode_message(self, title, subtitle="", value="", seconds="", reminder=False):
         self.machine.events.post(
             "show_mode_message",
             message_mode_title=title,
             message_mode_subtitle=subtitle,
             message_mode_value=value,
             message_mode_seconds=seconds,
+            reminder=reminder,
         )
 
     def _show_mode_jackpot(self, title, value, subtitle=""):
@@ -350,7 +352,7 @@ class Diana(CaseFileMixin, Mode):
             return
 
         self.phase = "rearm"
-        self._show_mode_message("REARM", "GET BACK TO THE ROOF")
+        self._show_mode_message("REARM", "GET BACK TO THE ROOF", reminder=True)
         self._sync_vars()
 
     def _end_hunt_early(self, reason="upper_rearm"):

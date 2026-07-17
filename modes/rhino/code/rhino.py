@@ -78,22 +78,24 @@ class RhinoBash(CaseFileMixin, Mode):
         self.add_mode_event_handler("rhino_jackpot_collect_request", self.collect_jackpot)
 
         self.update_player_vars()
-        self._show_message("RHINO BASH", "POPS BUILD RAGE", value=self.jackpot_value)
+        self._show_message("RHINO BASH", "POPS BUILD RAGE", value=self.jackpot_value, reminder=True)
         self.machine.events.post("rhino_startup_complete")
 
 
     def mode_stop(self, **kwargs):
         self.machine.events.post("hide_mode_status")
         self.clear_active_case_file_helpers()
+        self.machine.events.post("cancel_mode_message_reminder")
         super().mode_stop(**kwargs)
 
-    def _show_message(self, title, subtitle="", value="", seconds="", event="show_mode_message"):
+    def _show_message(self, title, subtitle="", value="", seconds="", event="show_mode_message", reminder=False):
         self.machine.events.post(
             event,
             message_mode_title=title,
             message_mode_subtitle=subtitle,
             message_mode_value=value,
             message_mode_seconds=seconds,
+            reminder=reminder,
         )
 
     def _update_status(self):

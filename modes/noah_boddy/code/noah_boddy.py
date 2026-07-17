@@ -151,13 +151,14 @@ class NoahBoddy(CaseFileMixin, Mode):
         self._show_mode_message("FIND THE NOAH BODDY", "GET TO THE ROOF")
 
 
-    def _show_mode_message(self, title, subtitle="", value="", seconds=""):
+    def _show_mode_message(self, title, subtitle="", value="", seconds="", reminder=False):
         self.machine.events.post(
             "show_mode_message",
             message_mode_title=title,
             message_mode_subtitle=subtitle,
             message_mode_value=value,
             message_mode_seconds=seconds,
+            reminder=reminder,
         )
 
     def _show_mode_jackpot(self, title, value, subtitle=""):

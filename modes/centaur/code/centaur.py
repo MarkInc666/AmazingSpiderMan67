@@ -98,7 +98,7 @@ class Centaur(CaseFileMixin, Mode):
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("centaur_startup_complete")
         self.machine.events.post("centaur_build_phase_started")
-        self._show_mode_message("BUILD THE CHARGE", "4 DROPS OPENS THE GATE")
+        self._show_mode_message("BUILD THE CHARGE", "4 DROPS OPENS THE GATE", reminder=True)
 
     def mode_stop(self, **kwargs):
         self.machine.events.post("hide_mode_status")
@@ -110,16 +110,18 @@ class Centaur(CaseFileMixin, Mode):
         self.machine.events.post("centaur_clear_all_lights")
         self.machine.events.post("rooftop_diverter_close")
         self.clear_active_case_file_helpers()
+        self.machine.events.post("cancel_mode_message_reminder")
         super().mode_stop(**kwargs)
 
 
-    def _show_mode_message(self, title, subtitle="", value="", seconds=""):
+    def _show_mode_message(self, title, subtitle="", value="", seconds="", reminder=False):
         self.machine.events.post(
             "show_mode_message",
             message_mode_title=title,
             message_mode_subtitle=subtitle,
             message_mode_value=value,
             message_mode_seconds=seconds,
+            reminder=reminder,
         )
 
     def _show_mode_jackpot(self, title, value, subtitle=""):
@@ -184,7 +186,7 @@ class Centaur(CaseFileMixin, Mode):
             self.phase = "roof_ready"
             self.machine.events.post("rooftop_diverter_open")
             self.machine.events.post("centaur_gate_open")
-            self._show_mode_message("GATE OPEN", "GET TO THE ROOF")
+            self._show_mode_message("GATE OPEN", "GET TO THE ROOF", reminder=True)
             self._sync_vars()
 
     def _bank_rubber_hit(self, **kwargs):

@@ -77,18 +77,19 @@ class Cyclops(CaseFileMixin, Mode):
 
         self.machine.events.post("cyclops_mode_started")
         self.machine.events.post("cyclops_eye_lit")
-        self._show_mode_message("HIT THE EYE", f"{self.flips_remaining} FLIPS")
+        self._show_mode_message("HIT THE EYE", f"{self.flips_remaining} FLIPS", reminder=True)
         self.machine.events.post("drop_target_bank_dt_bank_left_reset")
         self.machine.events.post("drop_target_bank_dt_bank_right_reset")
 
 
-    def _show_mode_message(self, title, subtitle="", value="", seconds=""):
+    def _show_mode_message(self, title, subtitle="", value="", seconds="", reminder=False):
         self.machine.events.post(
             "show_mode_message",
             message_mode_title=title,
             message_mode_subtitle=subtitle,
             message_mode_value=value,
             message_mode_seconds=seconds,
+            reminder=reminder,
         )
 
     def _show_status(self, title, value):
@@ -120,6 +121,7 @@ class Cyclops(CaseFileMixin, Mode):
     def mode_stop(self, **kwargs):
         self.clear_active_case_file_helpers()
         self.machine.events.post("hide_mode_status")
+        self.machine.events.post("cancel_mode_message_reminder")
         super().mode_stop(**kwargs)
 
     def _flipper_pressed(self, **kwargs):

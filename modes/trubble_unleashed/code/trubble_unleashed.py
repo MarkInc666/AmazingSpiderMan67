@@ -99,7 +99,7 @@ class TrubbleUnleashed(Mode):
 
         self.machine.events.post("trubble_unleashed_setup")
         self.machine.events.post("trubble_unleashed_start_multiball")
-        self._show_message("TRUBBLE UNLEASHED", "OPEN THE ROOF")
+        self._show_message("TRUBBLE UNLEASHED", "OPEN THE ROOF", reminder=True)
         self._update_saucer_lights()
         self._update_add_a_ball_light()
 
@@ -112,6 +112,7 @@ class TrubbleUnleashed(Mode):
         self.machine.events.post("trubble_unleashed_clear_all_lights")
         self.machine.events.post("trubble_unleashed_close_gate")
         self.machine.events.post("clear_saucers")
+        self.machine.events.post("cancel_mode_message_reminder")
         super().mode_stop(**kwargs)
 
     def _left_drop_hit(self, **kwargs):
@@ -128,7 +129,7 @@ class TrubbleUnleashed(Mode):
         self.machine.events.post("trubble_unleashed_left_bank_complete_show")
         self.machine.events.post("trubble_unleashed_open_gate")
         self.machine.events.post("drop_target_bank_dt_bank_left_reset")
-        self._show_message("ROOF OPEN", "GET TO THE TOP")
+        self._show_message("ROOF OPEN", "GET TO THE TOP", reminder=True)
 
     def _right_bank_complete(self, **kwargs):
         if self._inactive():
@@ -172,7 +173,7 @@ class TrubbleUnleashed(Mode):
         if self._inactive():
             return
         self.machine.events.post("trubble_unleashed_close_gate")
-        self._show_message("GATE CLOSED", "REOPEN WITH LEFT BANK")
+        self._show_message("GATE CLOSED", "REOPEN WITH LEFT BANK", reminder=True)
 
     def _upper_exit_right(self, **kwargs):
         if self._inactive():
@@ -435,7 +436,7 @@ class TrubbleUnleashed(Mode):
         self.mode_points += points
         self._sync_vars()
 
-    def _show_message(self, title, subtitle="", value=""):
+    def _show_message(self, title, subtitle="", value="", reminder=False):
         self.machine.events.post(
             "show_mode_message",
             message_mode_title=title,

@@ -131,6 +131,8 @@ class SinisterSurge(Mode):
 
         self.machine.events.post("sinister_surge_clear_all_sinister_surge_lights")
         self.machine.events.post("sinister_surge_close_upper_gate")
+        self.machine.events.post("hide_mode_status")
+        self.machine.events.post("cancel_mode_message_reminder")
 
         super().mode_stop(**kwargs)
 
@@ -232,6 +234,13 @@ class SinisterSurge(Mode):
         self.machine.events.post("sinister_surge_area_changed", area=self.current_area)
         self.machine.events.post("sinister_surge_clear_area_lights")
         self.machine.events.post(f"sinister_surge_area_{self.current_area}_lit")
+        self.machine.events.post(
+            "show_mode_message",
+            message_mode_title=f"HIT {area_data['display']}",
+            message_mode_subtitle=f"{area_data['required']} NEEDED",
+            reminder=True,
+        )
+        self._update_area_status()
 
     def _reset_area_specific_progress(self):
         self._set("sinister_surge_upper_left_hits", 0)
@@ -266,6 +275,8 @@ class SinisterSurge(Mode):
             sinister_surge_hits_still_needed = self._get("sinister_surge_area_required") - self._get("sinister_surge_area_progress")
 
             self._set("sinister_surge_hits_still_needed", sinister_surge_hits_still_needed)
+            self._update_area_status()
+            self.machine.events.post("reset_mode_message_reminder")
 
             if sinister_surge_hits_still_needed > 0:
                 self.machine.events.post("sinister_surge_area_changed", area=self.current_area)
@@ -299,6 +310,18 @@ class SinisterSurge(Mode):
         self.machine.events.post("sinister_surge_area_complete", area=completed_area)
         self.machine.events.post("sinister_surge_jackpot_lit", area=completed_area)
         self.machine.events.post("sinister_surge_jackpot_lit_show")
+        self.machine.events.post(
+            "show_mode_message",
+            message_mode_title="JACKPOT LIT",
+            message_mode_subtitle="SHOOT DAILY BUGLE",
+            message_mode_value=self._get("sinister_surge_jackpot_value"),
+            reminder=True,
+        )
+        self.machine.events.post(
+            "show_mode_status",
+            mode_status_title="AREAS CLEARED",
+            mode_status_value=f"{self._get('sinister_surge_areas_cleared')} / {len(self.AREAS)}",
+        )
 
     def _daily_bugle_hit(self, **kwargs):
         self.delay.add(
@@ -335,6 +358,12 @@ class SinisterSurge(Mode):
         self._set("sinister_surge_jackpot_ready", 0)
 
         self.machine.events.post("sinister_surge_jackpot_collected", value=jackpot_value)
+        self.machine.events.post(
+            "show_mode_jackpot",
+            message_mode_title="JACKPOT",
+            message_mode_subtitle=f"{self._get('sinister_surge_areas_cleared')} AREAS CLEARED",
+            message_mode_value=jackpot_value,
+        )
 
         self._choose_next_area()
 
@@ -353,6 +382,17 @@ class SinisterSurge(Mode):
         self._update_gate()
         self.machine.events.post("sinister_surge_victory_laps_started")
         self.machine.events.post("sinister_surge_victory_laps_show")
+        self.machine.events.post(
+            "show_mode_message",
+            message_mode_title="VICTORY LAPS",
+            message_mode_subtitle="COMPLETE A + B",
+            reminder=True,
+        )
+        self.machine.events.post(
+            "show_mode_status",
+            mode_status_title="SUPER JACKPOTS",
+            mode_status_value=self._get("sinister_surge_super_jackpots"),
+        )
 
     def _victory_lap_hit(self):
         self._score(self.ACTIVE_AREA_SCORE)
@@ -373,6 +413,11 @@ class SinisterSurge(Mode):
         self._update_gate()
 
         self.machine.events.post("sinister_surge_super_jackpot_collected", value=value)
+        self.machine.events.post(
+            "show_mode_jackpot",
+            message_mode_title="SUPER JACKPOT",
+            message_mode_value=value,
+        )
 
     def _a_hit(self, **kwargs):
         self._set("sinister_surge_a_hit", 1)
@@ -535,6 +580,18 @@ class SinisterSurge(Mode):
             self.machine.events.post("sinister_surge_mode_complete")
 
         self.machine.events.post("stop_mode_sinister_surge")
+
+    def _update_area_status(self):
+        if not self.current_area or self.current_area == "victory_laps":
+            return
+        display = self.AREAS[self.current_area]["display"]
+        progress = self._get("sinister_surge_area_progress")
+        required = self._get("sinister_surge_area_required")
+        self.machine.events.post(
+            "show_mode_status",
+            mode_status_title=display,
+            mode_status_value=f"{progress} / {required}",
+        )
 
     def _update_gate(self):
         if self.jackpot_ready:

@@ -104,7 +104,7 @@ class TheFly(CaseFileMixin, Mode):
         if self.has_case_file("safety_net"):
             self.machine.events.post("start_case_file_ball_save")
 
-        self._show_message("SAUCERS OPEN GATE", "HIT ANY SAUCER")
+        self._show_message("SAUCERS OPEN GATE", "HIT ANY SAUCER", reminder=True)
         self._update_mode_status()
 
     def mode_stop(self, **kwargs):
@@ -118,6 +118,7 @@ class TheFly(CaseFileMixin, Mode):
         self.machine.events.post("enable_daily_bugle_mystery")
         self.machine.events.post("daily_bugle_restore_state")
         self.clear_active_case_file_helpers()
+        self.machine.events.post("cancel_mode_message_reminder")
         super().mode_stop(**kwargs)
 
     def _configure_values(self):
@@ -145,7 +146,7 @@ class TheFly(CaseFileMixin, Mode):
         self.machine.events.post("the_fly_saucers_off")
         self.machine.events.post("rooftop_diverter_open")
         self.machine.events.post("clear_saucers")
-        self._show_message("GATE OPEN", "GET TO THE ROOF")
+        self._show_message("GATE OPEN", "GET TO THE ROOF", reminder=True)
 
     def _upper_entrance(self, **kwargs):
         if self.mode_done or self.roof_attempt_active or not self.gate_open:
@@ -260,7 +261,7 @@ class TheFly(CaseFileMixin, Mode):
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("the_fly_targets_off")
         self.machine.events.post("the_fly_saucers_needed")
-        self._show_message("SAUCERS OPEN GATE", "HIT ANY SAUCER")
+        self._show_message("SAUCERS OPEN GATE", "HIT ANY SAUCER", reminder=True)
 
     def _upper_exit(self, **kwargs):
         # The mode does not depend on exits for normal flow, but this is a
@@ -316,13 +317,14 @@ class TheFly(CaseFileMixin, Mode):
             value = f"{self.rooftop_jackpots}/3 / HIT SAUCER"
         self.machine.events.post("update_mode_status", mode_status_title=title, mode_status_value=value)
 
-    def _show_message(self, title, subtitle="", value="", seconds="", event="show_mode_message"):
+    def _show_message(self, title, subtitle="", value="", seconds="", event="show_mode_message", reminder=False):
         self.machine.events.post(
             event,
             message_mode_title=title,
             message_mode_subtitle=subtitle,
             message_mode_value=value,
             message_mode_seconds=seconds,
+            reminder=reminder,
         )
 
     def _format_score(self, points):

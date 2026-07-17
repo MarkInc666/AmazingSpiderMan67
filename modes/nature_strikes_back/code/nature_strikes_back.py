@@ -37,6 +37,14 @@ class NatureStrikesBack(Mode):
         self.add_mode_event_handler(f"{self.MODE_KEY}_fail_request", self._fail_mode)
 
         self.machine.events.post("chapter_mini_wizard_started", mini_wizard=self.MODE_KEY)
+        self.machine.events.post(
+            "show_mode_message",
+            message_mode_title=self.DISPLAY_NAME.upper(),
+            message_mode_subtitle="HIT ALL LIT SHOTS",
+            message_mode_value=self.jackpot_value,
+            reminder=True,
+        )
+        self._update_status()
         self.machine.events.post(f"{self.MODE_KEY}_start_multiball")
 
     def mode_stop(self, **kwargs):
@@ -59,6 +67,14 @@ class NatureStrikesBack(Mode):
             jackpot_value=self.jackpot_value,
             case_file_bonus=self.case_file_bonus,
         )
+        self.machine.events.post(
+            "show_mode_jackpot",
+            message_mode_title="JACKPOT",
+            message_mode_subtitle=f"{self.hits} SHOTS HIT",
+            message_mode_value=self.jackpot_value,
+        )
+        self._update_status()
+        self.machine.events.post("reset_mode_message_reminder")
 
     def _complete_mode(self, **kwargs):
         if self.mode_done:
@@ -68,6 +84,8 @@ class NatureStrikesBack(Mode):
         player = self.machine.game.player
         player[f"{self.MODE_KEY}_state"] = 2
         self.machine.events.post(f"{self.MODE_KEY}_mode_complete")
+        self.machine.events.post("hide_mode_status")
+        self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post(f"stop_mode_{self.MODE_KEY}")
 
     def _fail_mode(self, **kwargs):
@@ -78,7 +96,16 @@ class NatureStrikesBack(Mode):
         player = self.machine.game.player
         player[f"{self.MODE_KEY}_state"] = 2
         self.machine.events.post(f"{self.MODE_KEY}_mode_complete")
+        self.machine.events.post("hide_mode_status")
+        self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post(f"stop_mode_{self.MODE_KEY}")
+
+    def _update_status(self):
+        self.machine.events.post(
+            "show_mode_status",
+            mode_status_title="HITS / POINTS",
+            mode_status_value=f"{self.hits} / {self.mode_points:,}",
+        )
 
     def _score(self, points):
         player = self.machine.game.player

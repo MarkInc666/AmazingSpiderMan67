@@ -79,13 +79,14 @@ class Kingpin(Mode, CaseFileMixin):
         self.machine.events.post("kingpin_reset_banks")
         super().mode_stop(**kwargs)
 
-    def _show_message(self, title, subtitle="", value="", seconds="", event="show_mode_message"):
+    def _show_message(self, title, subtitle="", value="", seconds="", event="show_mode_message", reminder=False):
         self.machine.events.post(
             event,
             message_mode_title=title,
             message_mode_subtitle=subtitle,
             message_mode_value=value,
             message_mode_seconds=seconds,
+            reminder=reminder,
         )
 
     def _format_score(self, value):

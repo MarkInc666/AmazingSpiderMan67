@@ -27,6 +27,7 @@ class Base(Mode):
         self.add_mode_event_handler("show_mode_countdown", self._sync_mode_countdown_vars, priority=10000)
         self.add_mode_event_handler("hide_mode_message", self._hide_mode_message, priority=10000)
         self.add_mode_event_handler("reset_mode_message_reminder", self._reset_mode_message_reminder, priority=10000)
+        self.add_mode_event_handler("cancel_mode_message_reminder", self._cancel_mode_message_reminder, priority=10000)
 
         self.add_mode_event_handler("show_mode_status", self._sync_mode_status_vars, priority=10000)
         self.add_mode_event_handler("update_mode_status", self._sync_mode_status_vars, priority=10000)
@@ -57,6 +58,11 @@ class Base(Mode):
                 message_mode_value=message_mode_value,
                 message_mode_seconds=message_mode_seconds,
             )
+            self._schedule_mode_message_reminder()
+        elif getattr(self, "_reminder_payload", None):
+            # A temporary jackpot/completion message pauses the objective reminder.
+            # Restart the inactivity interval so the objective returns after the
+            # temporary message has had time to be read.
             self._schedule_mode_message_reminder()
         else:
             self.delay.remove(self.REMINDER_DELAY_NAME)
@@ -175,6 +181,10 @@ class Base(Mode):
     def _reset_mode_message_reminder(self, **kwargs):
         if getattr(self, "_reminder_payload", None):
             self._schedule_mode_message_reminder()
+
+    def _cancel_mode_message_reminder(self, **kwargs):
+        self.delay.remove(self.REMINDER_DELAY_NAME)
+        self._reminder_payload = None
 
     def _hide_mode_status(self, **kwargs):
         self._cancel_countdown()

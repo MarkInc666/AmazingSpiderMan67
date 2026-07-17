@@ -66,21 +66,23 @@ class Vulture(CaseFileMixin, Mode):
 
         self.update_player_vars()
         self.show_targets()
-        self._show_message("VULTURE", "GET TO THE ROOFTOP")
+        self._show_message("VULTURE", "GET TO THE ROOFTOP", reminder=True)
         self.machine.events.post("show_mode_status", mode_status_title="ROOF ACCESS", mode_status_value="GET TO ROOFTOP")
 
     def mode_stop(self, **kwargs):
         self.machine.events.post("hide_mode_status")
         self.clear_active_case_file_helpers()
+        self.machine.events.post("cancel_mode_message_reminder")
         super().mode_stop(**kwargs)
 
-    def _show_message(self, title, subtitle="", value="", seconds="", event="show_mode_message"):
+    def _show_message(self, title, subtitle="", value="", seconds="", event="show_mode_message", reminder=False):
         self.machine.events.post(
             event,
             message_mode_title=title,
             message_mode_subtitle=subtitle,
             message_mode_value=value,
             message_mode_seconds=seconds,
+            reminder=reminder,
         )
 
     def _apply_case_file_bonuses(self):
@@ -108,7 +110,7 @@ class Vulture(CaseFileMixin, Mode):
 
         if not self.started:
             self.started = True
-            self._show_message("SKY ATTACK", "HIT UPPER TARGETS")
+            self._show_message("SKY ATTACK", "HIT UPPER TARGETS", reminder=True)
             self.machine.events.post("show_mode_status", mode_status_title="SECONDS LEFT", mode_status_value=40)
             self.machine.events.post("vulture_timer_start")
 

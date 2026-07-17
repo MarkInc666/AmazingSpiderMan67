@@ -362,13 +362,14 @@ class Vulcan(CaseFileMixin, Mode):
         self._set("vulcan_balls_in_play", self._balls_in_play())
         self._set("vulcan_upper_target_bonus_value", self.upper_target_bonus_value)
 
-    def _show_mode_message(self, title, subtitle="", value="", seconds=""):
+    def _show_mode_message(self, title, subtitle="", value="", seconds="", reminder=False):
         self.machine.events.post(
             "show_mode_message",
             message_mode_title=title,
             message_mode_subtitle=subtitle,
             message_mode_value=value,
             message_mode_seconds=seconds,
+            reminder=reminder,
         )
 
     def _show_mode_jackpot(self, title, value, subtitle=""):

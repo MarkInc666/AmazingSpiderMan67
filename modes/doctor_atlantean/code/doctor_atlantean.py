@@ -39,7 +39,12 @@ class DoctorAtlantean(Mode):
         self.add_mode_event_handler(f"{self.MODE_KEY}_fail_request", self._fail_mode)
 
         self.machine.events.post(f"{self.MODE_KEY}_placeholder_started")
-        self._show_placeholder_message(self.DISPLAY_NAME.upper(), f"HIT {self.HITS_TO_COMPLETE} SHOTS", value=self.mode_points)
+        self._show_placeholder_message(self.DISPLAY_NAME.upper(), f"HIT {self.HITS_TO_COMPLETE} SHOTS", value=self.mode_points, reminder=True)
+
+    def mode_stop(self, **kwargs):
+        self.machine.events.post("cancel_mode_message_reminder")
+        self.machine.events.post("hide_mode_status")
+        super().mode_stop(**kwargs)
 
     def _shot_hit(self, **kwargs):
         if self.mode_done:
@@ -68,6 +73,7 @@ class DoctorAtlantean(Mode):
         player = self.machine.game.player
         player[f"{self.MODE_KEY}_state"] = 2
         self._show_placeholder_message(self.DISPLAY_NAME.upper(), "MODE COMPLETE", value=self.mode_points, event="show_mode_jackpot")
+        self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post(f"{self.MODE_KEY}_mode_complete")
 
     def _fail_mode(self, **kwargs):
@@ -77,16 +83,18 @@ class DoctorAtlantean(Mode):
         player = self.machine.game.player
         player[f"{self.MODE_KEY}_state"] = 2
         self._show_placeholder_message(self.DISPLAY_NAME.upper(), "MODE COMPLETE", value=self.mode_points, event="show_mode_jackpot")
+        self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post(f"{self.MODE_KEY}_mode_complete")
 
 
-    def _show_placeholder_message(self, title, subtitle="", value="", seconds="", event="show_mode_message"):
+    def _show_placeholder_message(self, title, subtitle="", value="", seconds="", event="show_mode_message", reminder=False):
         self.machine.events.post(
             event,
             message_mode_title=title,
             message_mode_subtitle=subtitle,
             message_mode_value=value,
             message_mode_seconds=seconds,
+            reminder=reminder,
         )
 
     def _score(self, points):

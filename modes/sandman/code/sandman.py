@@ -66,21 +66,23 @@ class Sandman(CaseFileMixin, Mode):
         self.add_mode_event_handler("sandman_rubber_hit", self.schedule_next_shift)  #reset current flash timer      
 
         self.update_player_vars()
-        self._show_message("SANDMAN", "HIT THE FLASHING DROP")
+        self._show_message("SANDMAN", "HIT THE FLASHING DROP", reminder=True)
         self.machine.events.post("sandman_startup_complete")
 
     def mode_stop(self, **kwargs):
         self.machine.events.post("hide_mode_status")
         self.clear_active_case_file_helpers()
+        self.machine.events.post("cancel_mode_message_reminder")
         super().mode_stop(**kwargs)
 
-    def _show_message(self, title, subtitle="", value="", seconds="", event="show_mode_message"):
+    def _show_message(self, title, subtitle="", value="", seconds="", event="show_mode_message", reminder=False):
         self.machine.events.post(
             event,
             message_mode_title=title,
             message_mode_subtitle=subtitle,
             message_mode_value=value,
             message_mode_seconds=seconds,
+            reminder=reminder,
         )
 
     def _update_status(self):
@@ -136,7 +138,7 @@ class Sandman(CaseFileMixin, Mode):
             return
 
         self.light_current_flash()
-        self._show_message("SHIFTING SANDS", f"HIT DROP {self.current_flash}")
+        self._show_message("SHIFTING SANDS", f"HIT DROP {self.current_flash}", reminder=True)
         self._update_status()
         if self.first_target == 1:        
             self.schedule_next_shift()
