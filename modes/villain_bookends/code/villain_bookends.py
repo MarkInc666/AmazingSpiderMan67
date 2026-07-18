@@ -44,7 +44,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'sandman_best_run',
             'points_var': 'active_mode_points',
             'state_var': 'sandman_state',
-            'song': 'play_song_8',
+            'song': 'play_song_37',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Get to the rooftop.
@@ -275,7 +275,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'cyclops_flips_remaining',
             'points_var': 'active_mode_points',
             'state_var': 'cyclops_state',
-            'song': 'play_song_3',
+            'song': 'play_song_30',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Drop targets build the Centaur Jackpot.
@@ -295,7 +295,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'centaur_best_jackpot',
             'points_var': 'active_mode_points',
             'state_var': 'centaur_state',
-            'song': 'play_song_1',
+            'song': 'play_song_31',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Kingpin is running the Crime Wave.
@@ -315,7 +315,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'kingpin_max_balls',
             'points_var': 'active_mode_points',
             'state_var': 'kingpin_state',
-            'song': 'play_song_3',
+            'song': 'play_song_40',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: The Human Flies are framing Spider-Man.
@@ -335,7 +335,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'human_flies_state',
-            'song': 'play_song_27',
+            'song': 'play_song_29',
         },
         # ORIGINAL DISPLAY TEXT:
         #   title: FIFTH AVENUE PHANTOM
@@ -356,7 +356,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'fifth_avenue_phantom_best_jackpot',
             'points_var': 'active_mode_points',
             'state_var': 'fifth_avenue_phantom_state',
-            'song': 'play_song_14',
+            'song': 'play_song_37',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Work the crime zones: drops, pops, and right bank.
@@ -376,7 +376,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'enforcers_ox_super_value',
             'points_var': 'active_mode_points',
             'state_var': 'enforcers_state',
-            'song': 'play_song_14',
+            'song': 'play_song_36',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Hit drops to build the Diamond Jackpot.
@@ -416,7 +416,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'pardo_state',
-            'song': 'play_song_13',
+            'song': 'play_song_33',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Two-ball multiball: the saucers hide fake rubies.
@@ -435,7 +435,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'fakir_state',
-            'song': 'play_song_10',
+            'song': 'play_song_34',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: The Scarlet Sorcerer summons strange magic.
@@ -455,7 +455,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'scarlet_sorcerer_state',
-            'song': 'play_song_11',
+            'song': 'play_song_34',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: The Super Swami bends minds across the city.
@@ -535,7 +535,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'dr_magneto_state',
-            'song': 'play_song_27',
+            'song': 'play_song_40',
         },
         # ORIGINAL DISPLAY TEXT:
         #   title: PROFESSOR PRETORIS
@@ -1057,7 +1057,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'trubble_unleashed_staged_hits',
             'points_var': 'active_mode_points',
             'state_var': 'trubble_unleashed_state',
-            'song': 'play_song_14',
+            'song': 'play_song_33',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Decode the Plotter’s scheme.
@@ -1076,7 +1076,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'master_plan_super_collected',
             'points_var': 'active_mode_points',
             'state_var': 'master_plan_state',
-            'song': 'play_song_14',
+            'song': 'play_song_32',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Chapter 5 mini-wizard multiball.
