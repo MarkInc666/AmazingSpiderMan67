@@ -246,3 +246,9 @@ class QualifySystem(Mode):
                 state=state,
             )
             self.machine.events.post(f"{saucer}_restore_state_{state}")
+
+    def _safe_int(self, value, default=0):
+        try:
+            return int(value)
+        except (TypeError, ValueError):
+            return default
