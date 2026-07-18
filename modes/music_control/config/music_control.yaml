@@ -145,3 +145,69 @@ sound_player:
     dash_to_safety_3:
       bus: music
       loops: -1
+
+  play_music_song_29:
+    anji:
+      bus: music
+      loops: -1
+
+  play_music_song_30:
+    besame_mucho:
+      bus: music
+      loops: -1
+
+  play_music_song_31:
+    blood_and_black_lace:
+      bus: music
+      loops: -1
+
+  play_music_song_32:
+    danube_incident:
+      bus: music
+      loops: -1
+
+  play_music_song_33:
+    happy_go_lively:
+      bus: music
+      loops: -1
+
+  play_music_song_34:
+    la_buritta:
+      bus: music
+      loops: -1
+
+  play_music_song_35:
+    spooky:
+      bus: music
+      loops: -1
+
+  play_music_song_36:
+    sunflower:
+      bus: music
+      loops: -1
+
+  play_music_song_37:
+    the_enchanted_sea:
+      bus: music
+      loops: -1
+
+  play_music_song_38:
+    the_hearse:
+      bus: music
+      loops: -1
+
+  play_music_song_39:
+    the_ox:
+      bus: music
+      loops: -1
+
+  play_music_song_40:
+    yegelle_tezeta:
+      bus: music
+      loops: -1
+
+  play_music_song_41:
+    action_line:
+      bus: music
+      loops: -1
+
