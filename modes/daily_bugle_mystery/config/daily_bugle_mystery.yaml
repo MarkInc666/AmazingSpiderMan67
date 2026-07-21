@@ -50,10 +50,12 @@ widget_player:
   daily_bugle_widget_remove:
     daily_bugle_ready:
       action: remove
+      key: daily_bugle_ready
 
   daily_bugle_widget_update:
     daily_bugle_ready:
-      action: update
+      action: play
+      key: daily_bugle_ready
 
 
 variable_player:

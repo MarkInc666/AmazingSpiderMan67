@@ -211,3 +211,42 @@ sound_player:
       bus: music
       loops: -1
 
+  play_music_song_42:
+    the_shadows:
+      bus: music
+      loops: -1
+
+  play_music_song_43:
+    fbi:
+      bus: music
+      loops: -1
+
+  play_music_song_44:
+    don_and_dewey:
+      bus: music
+      loops: -1
+
+  play_music_song_45:
+    beat_girl:
+      bus: music
+      loops: -1
+
+  play_music_song_46:
+    aztec:
+      bus: music
+      loops: -1
+
+  play_music_song_47:
+    motorcycle_circus:
+      bus: music
+      loops: -1
+
+  play_music_song_48:
+    peace_pipe:
+      bus: music
+      loops: -1
+
+  play_music_song_49:
+    tall_cool_one:
+      bus: music
+      loops: -1

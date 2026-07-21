@@ -229,6 +229,7 @@ widget_player:
       action: play
     daily_bugle_ready:
       action: play
+      key: daily_bugle_ready
 
   show_player_2_added:
     player_2_added_widget:
