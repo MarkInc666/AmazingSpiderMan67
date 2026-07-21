@@ -65,7 +65,7 @@ widget_player:
 event_player:
   mode_trubble_unleashed_started:
     - trubble_unleashed_setup
-    - play_song_14
+    - play_song_47
 
   mode_trubble_unleashed_stopping:
     - enable_daily_bugle_mystery

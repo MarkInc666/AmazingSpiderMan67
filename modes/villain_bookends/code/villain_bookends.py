@@ -356,7 +356,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'fifth_avenue_phantom_best_jackpot',
             'points_var': 'active_mode_points',
             'state_var': 'fifth_avenue_phantom_state',
-            'song': 'play_song_14',
+            'song': 'play_song_25',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Work the crime zones: drops, pops, and right bank.
@@ -696,7 +696,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'ice_monster_state',
-            'song': 'play_song_21',
+            'song': 'play_song_42',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Dr. Manta traps the city beneath the waves.
@@ -1057,7 +1057,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'trubble_unleashed_staged_hits',
             'points_var': 'active_mode_points',
             'state_var': 'trubble_unleashed_state',
-            'song': 'play_song_14',
+            'song': 'play_song_47',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Decode the Plotter’s scheme.
@@ -1076,7 +1076,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'master_plan_super_collected',
             'points_var': 'active_mode_points',
             'state_var': 'master_plan_state',
-            'song': 'play_song_14',
+            'song': 'play_song_43',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Chapter 5 mini-wizard multiball.
@@ -1133,7 +1133,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'nature_strikes_back_state',
             'points_var': 'active_mode_points',
             'state_var': 'nature_strikes_back_state',
-            'song': 'play_song_20',
+            'song': 'play_song_44',
         },
         # ORIGINAL DISPLAY TEXT:
         #   title: INVASION FROM EVERYWHERE
