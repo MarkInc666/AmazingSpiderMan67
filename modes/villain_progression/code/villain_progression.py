@@ -37,7 +37,7 @@ class VillainProgression(Mode):
         "safety_net",
         "shot_assist",
     ]
-    CASE_FILE_MINI_WIZARD_BONUS = 25_000
+    CASE_FILE_MINI_WIZARD_BONUS = 20_000
     MINI_WIZARD_BASE_JACKPOT = 50_000
 
     CHAPTERS = [

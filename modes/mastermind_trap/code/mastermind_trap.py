@@ -258,7 +258,7 @@ class MastermindTrap(Mode):
             return
 
         self.completed_traps.add(trap)
-        value = self.TRAP_AWARD_BASE + self.case_file_bonus
+        value = self.TRAP_AWARD_BASE
         self._score(value)
         self._add("active_mode_major_hits", 1)
         self._set(f"{self.MODE_KEY}_{trap}_complete", 1)
@@ -310,7 +310,7 @@ class MastermindTrap(Mode):
         return self.JACKPOT_BASE + (self.JACKPOT_PER_TRAP * len(self.completed_traps)) + self.case_file_bonus
 
     def _current_super_jackpot_value(self):
-        return self.SUPER_JACKPOT_BASE + (500_000 * len(self.completed_traps)) + (self.case_file_bonus * 2)
+        return self.SUPER_JACKPOT_BASE + (500_000 * len(self.completed_traps)) + self.case_file_bonus
 
     def _sync_status_vars(self):
         self._set(f"{self.MODE_KEY}_jackpot_value", self._current_jackpot_value())

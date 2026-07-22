@@ -184,7 +184,7 @@ player_vars:
     initial_value: 0
     value_type: int
   mini_wizard_case_file_bonus_per_file:
-    initial_value: 25000
+    initial_value: 20000
     value_type: int
   mini_wizard_case_file_bonus:
     initial_value: 0
@@ -394,6 +394,21 @@ player_vars:
     initial_value: 0
     value_type: int
   fifth_dimension_curse_state:
+    initial_value: 0
+    value_type: int
+  fifth_dimension_curse_active_zones:
+    initial_value: 0
+    value_type: int
+  fifth_dimension_curse_jackpots:
+    initial_value: 0
+    value_type: int
+  fifth_dimension_curse_add_a_balls:
+    initial_value: 0
+    value_type: int
+  fifth_dimension_curse_upper_targets:
+    initial_value: 0
+    value_type: int
+  fifth_dimension_curse_add_a_ball_qualified:
     initial_value: 0
     value_type: int
   night_of_the_robots_state:

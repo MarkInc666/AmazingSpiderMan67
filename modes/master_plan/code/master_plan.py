@@ -36,8 +36,8 @@ class MasterPlan(Mode):
         player = self.machine.game.player
         self.case_file_bonus = player["mini_wizard_case_file_bonus"]
         self.base_pop_value = 50_000
-        self.base_spin_value = 100_000 + self.case_file_bonus
-        self.base_headline_value = 200_000 + self.case_file_bonus
+        self.base_spin_value = 100_000
+        self.base_headline_value = 200_000
         self.drain_ms = 2000
 
         player[f"{self.MODE_KEY}_state"] = 1
@@ -299,7 +299,7 @@ class MasterPlan(Mode):
         self._sync_vars()
 
     def _super_value(self):
-        return self.base_headline_value * 3
+        return (self.base_headline_value * 3) + self.case_file_bonus
 
     def _score(self, points):
         player = self.machine.game.player

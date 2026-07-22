@@ -114,6 +114,7 @@ class SinisterSurge(Mode):
         self.jackpot_ready = False
         self.victory_laps = False
         self.super_jackpot_ready = False
+        self.case_file_bonus = self._get("mini_wizard_case_file_bonus", 0)
         self.held_saucers = set()
         self.left_bank_complete = False
         self.right_bank_complete = False
@@ -402,7 +403,7 @@ class SinisterSurge(Mode):
             self._score(self.INACTIVE_AREA_SCORE)
             return
 
-        value = self.SUPER_JACKPOT_BASE * max(1, self._balls_in_play())
+        value = (self.SUPER_JACKPOT_BASE * max(1, self._balls_in_play())) + self.case_file_bonus
         self._score(value)
         self._add("sinister_surge_super_jackpots", 1)
 
@@ -435,7 +436,7 @@ class SinisterSurge(Mode):
             
             if self.victory_laps:
                 self.super_jackpot_ready = True
-                value = self.SUPER_JACKPOT_BASE * max(1, self._balls_in_play())
+                value = (self.SUPER_JACKPOT_BASE * max(1, self._balls_in_play())) + self.case_file_bonus
                 self._set("sinister_surge_super_jackpot_ready", 1)
                 self._set("sinister_surge_super_jackpot_value", value)
                 self.machine.events.post("sinister_surge_super_jackpot_lit", value=value)
@@ -609,9 +610,10 @@ class SinisterSurge(Mode):
         self.machine.events.post("sinister_surge_close_upper_gate")
 
     def _update_jackpot_value(self):
-        value = self.JACKPOT_BASE * (
-            max(1, self._balls_in_play()) + self._get("sinister_surge_areas_cleared")
-        )
+        value = (
+            self.JACKPOT_BASE
+            * (max(1, self._balls_in_play()) + self._get("sinister_surge_areas_cleared"))
+        ) + self.case_file_bonus
 
         self._set("sinister_surge_jackpot_value", value)
         return value

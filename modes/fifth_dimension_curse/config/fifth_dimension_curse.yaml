@@ -1,33 +1,43 @@
 #config_version=6
 
-# Fifth Dimension Curse placeholder mini-wizard.
-# Mystic Menace mini-wizard multiball.
-# Temporary flow: intro -> 2-ball multiball -> MB end -> summary -> next chapter.
-
 mode:
   start_events: start_mode_fifth_dimension_curse
   stop_events:
     - stop_mode_fifth_dimension_curse
+    - fifth_dimension_curse_mode_complete
     - ball_ended
   code: fifth_dimension_curse.FifthDimensionCurse
   priority: 800
 
 multiballs:
   fifth_dimension_curse_multiball:
-    ball_count: 2
+    ball_count: 3
     ball_count_type: total
-    shoot_again: 15s
+    shoot_again: 20s
     start_events: fifth_dimension_curse_start_multiball
     stop_events:
       - stop_mode_fifth_dimension_curse
+
+  fifth_dimension_curse_add_a_ball:
+    ball_count: 1
+    ball_count_type: add
+    shoot_again: 10s
+    start_events: fifth_dimension_curse_add_a_ball
 
 variable_player:
   multiball_fifth_dimension_curse_multiball_started:
     multiball_autoplunge_active:
       action: set
       int: 1
-
   multiball_fifth_dimension_curse_multiball_ended:
+    multiball_autoplunge_active:
+      action: set
+      int: 0
+  multiball_fifth_dimension_curse_add_a_ball_started:
+    multiball_autoplunge_active:
+      action: set
+      int: 1
+  multiball_fifth_dimension_curse_add_a_ball_ended:
     multiball_autoplunge_active:
       action: set
       int: 0
@@ -36,63 +46,532 @@ widget_player:
   mode_fifth_dimension_curse_started:
     fifth_dimension_curse:
       action: play
-
   fifth_dimension_curse_mode_complete:
     fifth_dimension_curse:
       action: remove
-
   mode_fifth_dimension_curse_stopping:
-    fifth_dimension_curse:
-      action: remove
-
-  stop_mode_fifth_dimension_curse:
     fifth_dimension_curse:
       action: remove
 
 event_player:
-  s_pop_left_active: fifth_dimension_curse_shot_hit
-  s_pop_right_active: fifth_dimension_curse_shot_hit
-  s_trispinner_opto_active: fifth_dimension_curse_shot_hit
-  s_web_spinner_active: fifth_dimension_curse_shot_hit
-  s_star_rollover_active: fifth_dimension_curse_shot_hit
-  s_upper_target_left_active: fifth_dimension_curse_shot_hit
-  s_upper_target_center_active: fifth_dimension_curse_shot_hit
-  s_upper_target_right_active: fifth_dimension_curse_shot_hit
-  s_left_drops_1_active: fifth_dimension_curse_shot_hit
-  s_left_drops_2_active: fifth_dimension_curse_shot_hit
-  s_left_drops_3_active: fifth_dimension_curse_shot_hit
-  s_right_drops_1_active: fifth_dimension_curse_shot_hit
-  s_right_drops_2_active: fifth_dimension_curse_shot_hit
-  s_right_drops_3_active: fifth_dimension_curse_shot_hit
-  s_right_drops_4_active: fifth_dimension_curse_shot_hit
-  s_right_drops_5_active: fifth_dimension_curse_shot_hit
-  s_saucer_1_active:
-    fifth_dimension_curse_shot_hit:
-    delayed_kickout_saucer_1:
-  s_saucer_2_active:
-    fifth_dimension_curse_shot_hit:
-    delayed_kickout_saucer_2:
-  s_saucer_3_active:
-    fifth_dimension_curse_shot_hit:
-    delayed_kickout_saucer_3:
-  s_vuk_switch_active:
-    - fifth_dimension_curse_shot_hit
-    - up_kick|1.5s
-
-  multiball_fifth_dimension_curse_multiball_ended: fifth_dimension_curse_complete_request
-
   mode_fifth_dimension_curse_started:
-    - rooftop_diverter_open|500ms
     - disable_daily_bugle_mystery
     - clear_saucers_delayed
     - drop_target_bank_dt_bank_left_reset
     - drop_target_bank_dt_bank_right_reset
-
+    - play_song_48
   mode_fifth_dimension_curse_stopping:
     - enable_daily_bugle_mystery
     - daily_bugle_restore_state
     - clear_saucers_delayed
-
-  # Keep mini-wizard drop banks playable after they are completed.
+    - drop_target_bank_dt_bank_left_reset
+    - drop_target_bank_dt_bank_right_reset
   drop_target_bank_dt_bank_left_down: drop_target_bank_dt_bank_left_reset
   drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset
+  s_saucer_1_active: delayed_kickout_saucer_1
+  s_saucer_2_active: delayed_kickout_saucer_2
+  s_saucer_3_active: delayed_kickout_saucer_3
+  multiball_fifth_dimension_curse_multiball_ended: fifth_dimension_curse_multiball_ended
+
+light_player:
+  fifth_dimension_curse_dim_all_zones:
+    l_gi_ramp: 303030
+    l_gi_top_1: 303030
+    l_gi_top_2: 303030
+    l_pop_1_1: 303030
+    l_pop_1_11: 303030
+    l_pop_1_12: 303030
+    l_gi_a: 303030
+    l_gi_ab: 303030
+    l_gi_bright: 303030
+    l_gi_mid_spider: 303030
+    l_gi_top_3: 303030
+    l_gi_top_4: 303030
+    l_gi_upflip: 303030
+    l_pop_2_1: 303030
+    l_pop_2_11: 303030
+    l_pop_2_12: 303030
+    l_gi_3bank: 303030
+    l_gi_left_lower: 303030
+    l_gi_left_upper: 303030
+    l_gi_left_upper_flipper: 303030
+    l_gi_spinner: 303030
+    l_pop_1_10: 303030
+    l_pop_1_2: 303030
+    l_pop_1_3: 303030
+    l_pop_1_4: 303030
+    l_pop_1_5: 303030
+    l_pop_1_6: 303030
+    l_pop_1_7: 303030
+    l_pop_1_8: 303030
+    l_pop_1_9: 303030
+    l_gi_5bank_lower: 303030
+    l_gi_5bank_upper: 303030
+    l_gi_right_lower_triangle: 303030
+    l_pop_2_10: 303030
+    l_pop_2_2: 303030
+    l_pop_2_3: 303030
+    l_pop_2_4: 303030
+    l_pop_2_5: 303030
+    l_pop_2_6: 303030
+    l_pop_2_7: 303030
+    l_pop_2_8: 303030
+    l_pop_2_9: 303030
+    l_gi_left_sling_lower: 303030
+    l_gi_left_sling_upper: 303030
+    l_gi_right_return: 303030
+    l_gi_right_sling: 303030
+  fifth_dimension_curse_zone_upper_left_bright:
+    l_gi_ramp: FFFFFF
+    l_gi_top_1: FFFFFF
+    l_gi_top_2: FFFFFF
+    l_pop_1_1: FFFFFF
+    l_pop_1_11: FFFFFF
+    l_pop_1_12: FFFFFF
+  fifth_dimension_curse_zone_upper_left_dim:
+    l_gi_ramp: 303030
+    l_gi_top_1: 303030
+    l_gi_top_2: 303030
+    l_pop_1_1: 303030
+    l_pop_1_11: 303030
+    l_pop_1_12: 303030
+  fifth_dimension_curse_zone_upper_right_bright:
+    l_gi_a: FFFFFF
+    l_gi_ab: FFFFFF
+    l_gi_bright: FFFFFF
+    l_gi_mid_spider: FFFFFF
+    l_gi_top_3: FFFFFF
+    l_gi_top_4: FFFFFF
+    l_gi_upflip: FFFFFF
+    l_pop_2_1: FFFFFF
+    l_pop_2_11: FFFFFF
+    l_pop_2_12: FFFFFF
+  fifth_dimension_curse_zone_upper_right_dim:
+    l_gi_a: 303030
+    l_gi_ab: 303030
+    l_gi_bright: 303030
+    l_gi_mid_spider: 303030
+    l_gi_top_3: 303030
+    l_gi_top_4: 303030
+    l_gi_upflip: 303030
+    l_pop_2_1: 303030
+    l_pop_2_11: 303030
+    l_pop_2_12: 303030
+  fifth_dimension_curse_zone_middle_left_bright:
+    l_gi_3bank: FFFFFF
+    l_gi_left_lower: FFFFFF
+    l_gi_left_upper: FFFFFF
+    l_gi_left_upper_flipper: FFFFFF
+    l_gi_spinner: FFFFFF
+    l_pop_1_10: FFFFFF
+    l_pop_1_2: FFFFFF
+    l_pop_1_3: FFFFFF
+    l_pop_1_4: FFFFFF
+    l_pop_1_5: FFFFFF
+    l_pop_1_6: FFFFFF
+    l_pop_1_7: FFFFFF
+    l_pop_1_8: FFFFFF
+    l_pop_1_9: FFFFFF
+  fifth_dimension_curse_zone_middle_left_dim:
+    l_gi_3bank: 303030
+    l_gi_left_lower: 303030
+    l_gi_left_upper: 303030
+    l_gi_left_upper_flipper: 303030
+    l_gi_spinner: 303030
+    l_pop_1_10: 303030
+    l_pop_1_2: 303030
+    l_pop_1_3: 303030
+    l_pop_1_4: 303030
+    l_pop_1_5: 303030
+    l_pop_1_6: 303030
+    l_pop_1_7: 303030
+    l_pop_1_8: 303030
+    l_pop_1_9: 303030
+  fifth_dimension_curse_zone_middle_right_bright:
+    l_gi_5bank_lower: FFFFFF
+    l_gi_5bank_upper: FFFFFF
+    l_gi_right_lower_triangle: FFFFFF
+    l_pop_2_10: FFFFFF
+    l_pop_2_2: FFFFFF
+    l_pop_2_3: FFFFFF
+    l_pop_2_4: FFFFFF
+    l_pop_2_5: FFFFFF
+    l_pop_2_6: FFFFFF
+    l_pop_2_7: FFFFFF
+    l_pop_2_8: FFFFFF
+    l_pop_2_9: FFFFFF
+  fifth_dimension_curse_zone_middle_right_dim:
+    l_gi_5bank_lower: 303030
+    l_gi_5bank_upper: 303030
+    l_gi_right_lower_triangle: 303030
+    l_pop_2_10: 303030
+    l_pop_2_2: 303030
+    l_pop_2_3: 303030
+    l_pop_2_4: 303030
+    l_pop_2_5: 303030
+    l_pop_2_6: 303030
+    l_pop_2_7: 303030
+    l_pop_2_8: 303030
+    l_pop_2_9: 303030
+  fifth_dimension_curse_zone_lower_left_bright:
+    l_gi_left_sling_lower: FFFFFF
+    l_gi_left_sling_upper: FFFFFF
+  fifth_dimension_curse_zone_lower_left_dim:
+    l_gi_left_sling_lower: 303030
+    l_gi_left_sling_upper: 303030
+  fifth_dimension_curse_zone_lower_right_bright:
+    l_gi_right_return: FFFFFF
+    l_gi_right_sling: FFFFFF
+  fifth_dimension_curse_zone_lower_right_dim:
+    l_gi_right_return: 303030
+    l_gi_right_sling: 303030
+  fifth_dimension_curse_restore_all_lights:
+    l_gi_ramp: E0E0E0
+    l_gi_top_1: E0E0E0
+    l_gi_top_2: E0E0E0
+    l_pop_1_1: E0E0E0
+    l_pop_1_11: E0E0E0
+    l_pop_1_12: E0E0E0
+    l_gi_a: E0E0E0
+    l_gi_ab: E0E0E0
+    l_gi_bright: E0E0E0
+    l_gi_mid_spider: E0E0E0
+    l_gi_top_3: E0E0E0
+    l_gi_top_4: E0E0E0
+    l_gi_upflip: E0E0E0
+    l_pop_2_1: E0E0E0
+    l_pop_2_11: E0E0E0
+    l_pop_2_12: E0E0E0
+    l_gi_3bank: E0E0E0
+    l_gi_left_lower: E0E0E0
+    l_gi_left_upper: E0E0E0
+    l_gi_left_upper_flipper: E0E0E0
+    l_gi_spinner: E0E0E0
+    l_pop_1_10: E0E0E0
+    l_pop_1_2: E0E0E0
+    l_pop_1_3: E0E0E0
+    l_pop_1_4: E0E0E0
+    l_pop_1_5: E0E0E0
+    l_pop_1_6: E0E0E0
+    l_pop_1_7: E0E0E0
+    l_pop_1_8: E0E0E0
+    l_pop_1_9: E0E0E0
+    l_gi_5bank_lower: E0E0E0
+    l_gi_5bank_upper: E0E0E0
+    l_gi_right_lower_triangle: E0E0E0
+    l_pop_2_10: E0E0E0
+    l_pop_2_2: E0E0E0
+    l_pop_2_3: E0E0E0
+    l_pop_2_4: E0E0E0
+    l_pop_2_5: E0E0E0
+    l_pop_2_6: E0E0E0
+    l_pop_2_7: E0E0E0
+    l_pop_2_8: E0E0E0
+    l_pop_2_9: E0E0E0
+    l_gi_left_sling_lower: E0E0E0
+    l_gi_left_sling_upper: E0E0E0
+    l_gi_right_return: E0E0E0
+    l_gi_right_sling: E0E0E0
+  fifth_dimension_curse_upper_left_solid:
+    l_upper_left: purple
+  fifth_dimension_curse_upper_center_solid:
+    l_upper_middle: purple
+  fifth_dimension_curse_upper_right_solid:
+    l_upper_right: purple
+  fifth_dimension_curse_upper_targets_off:
+    l_upper_left: off
+    l_upper_middle: off
+    l_upper_right: off
+
+show_player:
+  fifth_dimension_curse_zone_upper_left_bright:
+    fifth_dimension_curse_upper_left_flicker:
+      action: stop
+  fifth_dimension_curse_zone_upper_left_flicker:
+    fifth_dimension_curse_upper_left_flicker:
+      action: play
+      loops: -1
+  fifth_dimension_curse_zone_upper_left_dim:
+    fifth_dimension_curse_upper_left_flicker:
+      action: stop
+  fifth_dimension_curse_zone_upper_right_bright:
+    fifth_dimension_curse_upper_right_flicker:
+      action: stop
+  fifth_dimension_curse_zone_upper_right_flicker:
+    fifth_dimension_curse_upper_right_flicker:
+      action: play
+      loops: -1
+  fifth_dimension_curse_zone_upper_right_dim:
+    fifth_dimension_curse_upper_right_flicker:
+      action: stop
+  fifth_dimension_curse_zone_middle_left_bright:
+    fifth_dimension_curse_middle_left_flicker:
+      action: stop
+  fifth_dimension_curse_zone_middle_left_flicker:
+    fifth_dimension_curse_middle_left_flicker:
+      action: play
+      loops: -1
+  fifth_dimension_curse_zone_middle_left_dim:
+    fifth_dimension_curse_middle_left_flicker:
+      action: stop
+  fifth_dimension_curse_zone_middle_right_bright:
+    fifth_dimension_curse_middle_right_flicker:
+      action: stop
+  fifth_dimension_curse_zone_middle_right_flicker:
+    fifth_dimension_curse_middle_right_flicker:
+      action: play
+      loops: -1
+  fifth_dimension_curse_zone_middle_right_dim:
+    fifth_dimension_curse_middle_right_flicker:
+      action: stop
+  fifth_dimension_curse_zone_lower_left_bright:
+    fifth_dimension_curse_lower_left_flicker:
+      action: stop
+  fifth_dimension_curse_zone_lower_left_flicker:
+    fifth_dimension_curse_lower_left_flicker:
+      action: play
+      loops: -1
+  fifth_dimension_curse_zone_lower_left_dim:
+    fifth_dimension_curse_lower_left_flicker:
+      action: stop
+  fifth_dimension_curse_zone_lower_right_bright:
+    fifth_dimension_curse_lower_right_flicker:
+      action: stop
+  fifth_dimension_curse_zone_lower_right_flicker:
+    fifth_dimension_curse_lower_right_flicker:
+      action: play
+      loops: -1
+  fifth_dimension_curse_zone_lower_right_dim:
+    fifth_dimension_curse_lower_right_flicker:
+      action: stop
+  fifth_dimension_curse_upper_targets_reset:
+    fifth_dimension_curse_upper_left_pulse:
+      action: play
+      loops: -1
+    fifth_dimension_curse_upper_center_pulse:
+      action: play
+      loops: -1
+    fifth_dimension_curse_upper_right_pulse:
+      action: play
+      loops: -1
+  fifth_dimension_curse_upper_left_solid:
+    fifth_dimension_curse_upper_left_pulse:
+      action: stop
+  fifth_dimension_curse_upper_center_solid:
+    fifth_dimension_curse_upper_center_pulse:
+      action: stop
+  fifth_dimension_curse_upper_right_solid:
+    fifth_dimension_curse_upper_right_pulse:
+      action: stop
+  fifth_dimension_curse_upper_targets_complete:
+    fifth_dimension_curse_upper_left_pulse:
+      action: stop
+    fifth_dimension_curse_upper_center_pulse:
+      action: stop
+    fifth_dimension_curse_upper_right_pulse:
+      action: stop
+    fifth_dimension_curse_upper_complete_flash:
+      action: play
+  fifth_dimension_curse_upper_targets_off:
+    fifth_dimension_curse_upper_left_pulse:
+      action: stop
+    fifth_dimension_curse_upper_center_pulse:
+      action: stop
+    fifth_dimension_curse_upper_right_pulse:
+      action: stop
+
+  mode_fifth_dimension_curse_stopping:
+    fifth_dimension_curse_upper_left_flicker:
+      action: stop
+    fifth_dimension_curse_upper_right_flicker:
+      action: stop
+    fifth_dimension_curse_middle_left_flicker:
+      action: stop
+    fifth_dimension_curse_middle_right_flicker:
+      action: stop
+    fifth_dimension_curse_lower_left_flicker:
+      action: stop
+    fifth_dimension_curse_lower_right_flicker:
+      action: stop
+    fifth_dimension_curse_upper_left_pulse:
+      action: stop
+    fifth_dimension_curse_upper_center_pulse:
+      action: stop
+    fifth_dimension_curse_upper_right_pulse:
+      action: stop
+
+shows:
+  fifth_dimension_curse_upper_left_flicker:
+    - duration: 250ms
+      lights:
+        l_gi_ramp: FFFFFF
+        l_gi_top_1: FFFFFF
+        l_gi_top_2: FFFFFF
+        l_pop_1_1: FFFFFF
+        l_pop_1_11: FFFFFF
+        l_pop_1_12: FFFFFF
+    - duration: 250ms
+      lights:
+        l_gi_ramp: 303030
+        l_gi_top_1: 303030
+        l_gi_top_2: 303030
+        l_pop_1_1: 303030
+        l_pop_1_11: 303030
+        l_pop_1_12: 303030
+  fifth_dimension_curse_upper_right_flicker:
+    - duration: 250ms
+      lights:
+        l_gi_a: FFFFFF
+        l_gi_ab: FFFFFF
+        l_gi_bright: FFFFFF
+        l_gi_mid_spider: FFFFFF
+        l_gi_top_3: FFFFFF
+        l_gi_top_4: FFFFFF
+        l_gi_upflip: FFFFFF
+        l_pop_2_1: FFFFFF
+        l_pop_2_11: FFFFFF
+        l_pop_2_12: FFFFFF
+    - duration: 250ms
+      lights:
+        l_gi_a: 303030
+        l_gi_ab: 303030
+        l_gi_bright: 303030
+        l_gi_mid_spider: 303030
+        l_gi_top_3: 303030
+        l_gi_top_4: 303030
+        l_gi_upflip: 303030
+        l_pop_2_1: 303030
+        l_pop_2_11: 303030
+        l_pop_2_12: 303030
+  fifth_dimension_curse_middle_left_flicker:
+    - duration: 250ms
+      lights:
+        l_gi_3bank: FFFFFF
+        l_gi_left_lower: FFFFFF
+        l_gi_left_upper: FFFFFF
+        l_gi_left_upper_flipper: FFFFFF
+        l_gi_spinner: FFFFFF
+        l_pop_1_10: FFFFFF
+        l_pop_1_2: FFFFFF
+        l_pop_1_3: FFFFFF
+        l_pop_1_4: FFFFFF
+        l_pop_1_5: FFFFFF
+        l_pop_1_6: FFFFFF
+        l_pop_1_7: FFFFFF
+        l_pop_1_8: FFFFFF
+        l_pop_1_9: FFFFFF
+    - duration: 250ms
+      lights:
+        l_gi_3bank: 303030
+        l_gi_left_lower: 303030
+        l_gi_left_upper: 303030
+        l_gi_left_upper_flipper: 303030
+        l_gi_spinner: 303030
+        l_pop_1_10: 303030
+        l_pop_1_2: 303030
+        l_pop_1_3: 303030
+        l_pop_1_4: 303030
+        l_pop_1_5: 303030
+        l_pop_1_6: 303030
+        l_pop_1_7: 303030
+        l_pop_1_8: 303030
+        l_pop_1_9: 303030
+  fifth_dimension_curse_middle_right_flicker:
+    - duration: 250ms
+      lights:
+        l_gi_5bank_lower: FFFFFF
+        l_gi_5bank_upper: FFFFFF
+        l_gi_right_lower_triangle: FFFFFF
+        l_pop_2_10: FFFFFF
+        l_pop_2_2: FFFFFF
+        l_pop_2_3: FFFFFF
+        l_pop_2_4: FFFFFF
+        l_pop_2_5: FFFFFF
+        l_pop_2_6: FFFFFF
+        l_pop_2_7: FFFFFF
+        l_pop_2_8: FFFFFF
+        l_pop_2_9: FFFFFF
+    - duration: 250ms
+      lights:
+        l_gi_5bank_lower: 303030
+        l_gi_5bank_upper: 303030
+        l_gi_right_lower_triangle: 303030
+        l_pop_2_10: 303030
+        l_pop_2_2: 303030
+        l_pop_2_3: 303030
+        l_pop_2_4: 303030
+        l_pop_2_5: 303030
+        l_pop_2_6: 303030
+        l_pop_2_7: 303030
+        l_pop_2_8: 303030
+        l_pop_2_9: 303030
+  fifth_dimension_curse_lower_left_flicker:
+    - duration: 250ms
+      lights:
+        l_gi_left_sling_lower: FFFFFF
+        l_gi_left_sling_upper: FFFFFF
+    - duration: 250ms
+      lights:
+        l_gi_left_sling_lower: 303030
+        l_gi_left_sling_upper: 303030
+  fifth_dimension_curse_lower_right_flicker:
+    - duration: 250ms
+      lights:
+        l_gi_right_return: FFFFFF
+        l_gi_right_sling: FFFFFF
+    - duration: 250ms
+      lights:
+        l_gi_right_return: 303030
+        l_gi_right_sling: 303030
+  fifth_dimension_curse_upper_left_pulse:
+    - duration: 750ms
+      lights:
+        l_upper_left: purple
+    - duration: 750ms
+      lights:
+        l_upper_left: 200020
+  fifth_dimension_curse_upper_center_pulse:
+    - duration: 750ms
+      lights:
+        l_upper_middle: purple
+    - duration: 750ms
+      lights:
+        l_upper_middle: 200020
+  fifth_dimension_curse_upper_right_pulse:
+    - duration: 750ms
+      lights:
+        l_upper_right: purple
+    - duration: 750ms
+      lights:
+        l_upper_right: 200020
+  fifth_dimension_curse_upper_complete_flash:
+    - duration: 125ms
+      lights:
+        l_upper_left: purple
+        l_upper_middle: purple
+        l_upper_right: purple
+    - duration: 125ms
+      lights:
+        l_upper_left: off
+        l_upper_middle: off
+        l_upper_right: off
+    - duration: 125ms
+      lights:
+        l_upper_left: purple
+        l_upper_middle: purple
+        l_upper_right: purple
+    - duration: 125ms
+      lights:
+        l_upper_left: off
+        l_upper_middle: off
+        l_upper_right: off
+    - duration: 125ms
+      lights:
+        l_upper_left: purple
+        l_upper_middle: purple
+        l_upper_right: purple
+    - duration: 125ms
+      lights:
+        l_upper_left: off
+        l_upper_middle: off
+        l_upper_right: off
