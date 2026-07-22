@@ -12,7 +12,7 @@ lights:
     #white    
   l_gi_left_upper_flipper:
     number: playfield-1-4
-    tags: gi
+    tags: gi, swami_area_middle_left
     type: grb
     #white    
   l_left_outlane:
@@ -23,12 +23,12 @@ lights:
     #blue    
   l_gi_left_sling_upper:
     number: playfield-1-7
-    tags: gi
+    tags: gi, swami_area_lower_left
     type: grb    
     #white    
   l_gi_left_sling_lower:
     number: playfield-1-8
-    tags: gi
+    tags: gi, swami_area_lower_left
     type: grb   
     #white    
   l_3k:
@@ -75,7 +75,7 @@ lights:
     #blue    
   l_gi_right_lower_triangle:
     number: playfield-1-23
-    tags: gi
+    tags: gi, swami_area_middle_right
     type: grb
     #white    
   l_right_outlane:
@@ -83,112 +83,112 @@ lights:
     #blue    
   l_gi_right_sling:
     number: playfield-1-25
-    tags: gi
+    tags: gi, swami_area_lower_right
     type: grb    
     #white    
   l_gi_right_return:
     number: playfield-1-26
-    tags: gi
+    tags: gi, swami_area_lower_right
     type: grb
     #white    
 
 
   l_pop_1_1:
     number: playfield-2-1  
-    tags: gi    
+    tags: gi, swami_area_upper_left
     #white    
   l_pop_1_2:
     number: playfield-2-2  
-    tags: gi    
+    tags: gi, swami_area_middle_left
     #white    
   l_pop_1_3:
     number: playfield-2-3  
-    tags: gi    
+    tags: gi, swami_area_middle_left
     #white    
   l_pop_1_4:
     number: playfield-2-4  
-    tags: gi    
+    tags: gi, swami_area_middle_left
     #white    
   l_pop_1_5:
     number: playfield-2-5  
-    tags: gi
+    tags: gi, swami_area_middle_left
     #white    
   l_pop_1_6:
     number: playfield-2-6  
-    tags: gi    
+    tags: gi, swami_area_middle_left
     #white    
   l_pop_1_7:
     number: playfield-2-7  
-    tags: gi    
+    tags: gi, swami_area_middle_left
     #white    
   l_pop_1_8:
     number: playfield-2-8  
-    tags: gi    
+    tags: gi, swami_area_middle_left
     #white    
   l_pop_1_9:
     number: playfield-2-9  
-    tags: gi    
+    tags: gi, swami_area_middle_left
     #white    
   l_pop_1_10:
     number: playfield-2-10  
-    tags: gi    
+    tags: gi, swami_area_middle_left
     #white    
   l_pop_1_11:
     number: playfield-2-11
-    tags: gi    
+    tags: gi, swami_area_upper_left
     #white    
   l_pop_1_12:
     number: playfield-2-12
-    tags: gi    
+    tags: gi, swami_area_upper_left
     #white    
     
   l_pop_2_1:
     number: playfield-2-13  
-    tags: gi    
+    tags: gi, swami_area_upper_right
     #white    
   l_pop_2_2:
     number: playfield-2-14  
-    tags: gi    
+    tags: gi, swami_area_middle_right
     #white    
   l_pop_2_3:
     number: playfield-2-15  
-    tags: gi    
+    tags: gi, swami_area_middle_right
     #white
   l_pop_2_4:
     number: playfield-2-16  
-    tags: gi    
+    tags: gi, swami_area_middle_right
     #white    
   l_pop_2_5:
     number: playfield-2-17  
-    tags: gi    
+    tags: gi, swami_area_middle_right
     #white    
   l_pop_2_6:
     number: playfield-2-18 
-    tags: gi    
+    tags: gi, swami_area_middle_right
     #white    
   l_pop_2_7:
     number: playfield-2-19 
-    tags: gi    
+    tags: gi, swami_area_middle_right
     #white    
   l_pop_2_8:
     number: playfield-2-20 
-    tags: gi    
+    tags: gi, swami_area_middle_right
     #white    
   l_pop_2_9:
     number: playfield-2-21 
-    tags: gi    
+    tags: gi, swami_area_middle_right
     #white    
   l_pop_2_10:
     number: playfield-2-22  
-    tags: gi    
+    tags: gi, swami_area_middle_right
     #white    
   l_pop_2_11:
     number: playfield-2-23
-    tags: gi    
+    tags: gi, swami_area_upper_right
     #white    
   l_pop_2_12:
     number: playfield-2-24
-    tags: gi    
+    tags: gi, swami_area_upper_right
     #white    
 
   l_extraball:
@@ -208,12 +208,12 @@ lights:
     #white    
   l_gi_left_upper:
     number: playfield-3-6
-    tags: gi
+    tags: gi, swami_area_middle_left
     type: grb    
     #white    
   l_gi_left_lower:
     number: playfield-3-7
-    tags: gi
+    tags: gi, swami_area_middle_left
     type: grb    
     #white    
   l_left_b:
@@ -224,7 +224,7 @@ lights:
     #white    
   l_gi_3bank:
     number: playfield-3-10
-    tags: gi
+    tags: gi, swami_area_middle_left
     type: grb   
     #white    
   l_5bank_1:
@@ -253,12 +253,12 @@ lights:
     #yellow    
   l_gi_5bank_lower:
     number: playfield-3-19
-    tags: gi
+    tags: gi, swami_area_middle_right
     type: grb   
     #white
   l_gi_5bank_upper:
     number: playfield-3-20
-    tags: gi
+    tags: gi, swami_area_middle_right
     type: grb    
     #white
 
@@ -267,17 +267,17 @@ lights:
     #white    
   l_gi_upflip:
     number: playfield-4-2
-    tags: gi
+    tags: gi, swami_area_upper_right
     type: grb
     #white    
   l_gi_bright:
     number: playfield-4-3
-    tags: gi
+    tags: gi, swami_area_upper_right
     type: grb    
     #white    
   l_gi_ab:
     number: playfield-4-4
-    tags: gi
+    tags: gi, swami_area_upper_right
     type: grb    
     #white    
   l_b_rollover:
@@ -288,7 +288,7 @@ lights:
     #yellow
   l_gi_a:
     number: playfield-4-7
-    tags: gi
+    tags: gi, swami_area_upper_right
     type: grb  
     #white    
   l_star:
@@ -308,7 +308,7 @@ lights:
     #white    
   l_gi_mid_spider:
     number: playfield-4-13
-    tags: gi
+    tags: gi, swami_area_upper_right
     type: grb    
     #white    
   l_3:
@@ -343,32 +343,32 @@ lights:
     #red
   l_gi_ramp:
     number: playfield-4-24
-    tags: gi
+    tags: gi, swami_area_upper_left
     type: grb    
     #white
   l_gi_spinner:
     number: playfield-4-25
-    tags: gi
+    tags: gi, swami_area_middle_left
     type: grb  
     #white
   l_gi_top_1: 
     number: playfield-4-26
-    tags: gi
+    tags: gi, swami_area_upper_left
     type: grb  
     #white
   l_gi_top_2: 
     number: playfield-4-27
-    tags: gi
+    tags: gi, swami_area_upper_left
     type: grb  
     #white
   l_gi_top_3: 
     number: playfield-4-28
-    tags: gi
+    tags: gi, swami_area_upper_right
     type: grb  
     #white
   l_gi_top_4: 
     number: playfield-4-29
-    tags: gi
+    tags: gi, swami_area_upper_right
     type: grb  
     #white
   l_upper_right:

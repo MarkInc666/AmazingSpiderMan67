@@ -67,7 +67,7 @@ class DailyBugleMystery(Mode):
         2: ("goblin", "doc_ock", "mysterio", "scorpion", "parafino"),
         3: ("cerberus", "vulcan", "diana", "cyclops", "centaur"),
         4: ("kingpin", "human_flies", "fifth_avenue_phantom", "enforcers", "diamond_smugglers"),
-        5: ("pardo", "fakir", "scarlet_sorcerer", "super_swami", "frog_ghosts"),
+        5: ("pardo", "fakir", "scarlet_sorcerer", "super_swami", "infinata"),
         6: ("noah_boddy", "dr_magneto", "professor_pretoris", "doctor_dumpty", "dr_von_schlick"),
         7: ("radiation_specialist", "dr_zap", "doctor_cool", "snowman", "ice_monster"),
         8: ("dr_manta", "doctor_atlantean", "sky_master", "plutonians", "antarcticans"),

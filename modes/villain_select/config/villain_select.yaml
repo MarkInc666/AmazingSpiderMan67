@@ -38,7 +38,7 @@ mode_settings:
     - fakir
     - scarlet_sorcerer
     - super_swami
-    - frog_ghosts
+    - infinata
     - noah_boddy
     - dr_magneto
     - professor_pretoris
@@ -362,11 +362,6 @@ show_player:
       action: play
       loops: -1
 
-  villain_select_highlighted_frog_ghosts:
-    villain_select_frog_ghosts_show:
-      action: play
-      loops: -1
-
   villain_select_highlighted_diamond_smugglers:
     villain_select_diamond_smugglers_show:
       action: play
@@ -625,14 +620,6 @@ shows:
       lights:
         gi: off
 
-  villain_select_infinata_show:
-    - duration: 300ms
-      lights:
-        gi: yellow
-    - duration: 300ms
-      lights:
-        gi: off
-
   villain_select_pardo_show:
     - duration: 300ms
       lights:
@@ -721,7 +708,7 @@ shows:
       lights:
         gi: white
 
-  villain_select_frog_ghosts_show:
+  villain_select_infinata_show:
     - duration: 300ms
       lights:
         gi: green

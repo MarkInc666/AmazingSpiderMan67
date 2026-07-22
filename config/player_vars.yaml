@@ -321,6 +321,12 @@ player_vars:
   infinata_state:
     initial_value: 0
     value_type: int
+  infinata_areas_completed:
+    initial_value: 0
+    value_type: int
+  infinata_super_seconds:
+    initial_value: 0
+    value_type: int
   pardo_state:
     initial_value: 0
     value_type: int
@@ -352,9 +358,6 @@ player_vars:
     initial_value: 0
     value_type: int
   blotto_state:
-    initial_value: 0
-    value_type: int
-  frog_ghosts_state:
     initial_value: 0
     value_type: int
   diamond_smugglers_state:
@@ -631,6 +634,15 @@ player_vars:
     initial_value: 0
     value_type: int
   super_swami_bonus:
+    initial_value: 0
+    value_type: int
+  super_swami_areas_restored:
+    initial_value: 0
+    value_type: int
+  super_swami_seconds_left:
+    initial_value: 0
+    value_type: int
+  super_swami_next_value:
     initial_value: 0
     value_type: int
   dumpty_bonus:

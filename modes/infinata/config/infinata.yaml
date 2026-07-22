@@ -1,0 +1,199 @@
+#config_version=6
+
+mode:
+  start_events: start_mode_infinata
+  stop_events:
+    - infinata_mode_complete
+    - ball_ended
+  code: infinata.Infinata
+  priority: 300
+
+widget_player:
+  mode_infinata_started:
+    infinata:
+      action: play
+  infinata_mode_complete:
+    infinata:
+      action: remove
+  mode_infinata_stopping:
+    infinata:
+      action: remove
+
+event_player:
+  s_pop_left_active:
+    - infinata_pops_hit
+  s_pop_right_active:
+    - infinata_pops_hit
+
+  s_left_drops_1_active:
+    infinata_left_drops_hit:
+      switch: left_1
+  s_left_drops_2_active:
+    infinata_left_drops_hit:
+      switch: left_2
+  s_left_drops_3_active:
+    infinata_left_drops_hit:
+      switch: left_3
+
+  s_right_drops_1_active:
+    infinata_right_drops_hit:
+      switch: right_1
+  s_right_drops_2_active:
+    infinata_right_drops_hit:
+      switch: right_2
+  s_right_drops_3_active:
+    infinata_right_drops_hit:
+      switch: right_3
+  s_right_drops_4_active:
+    infinata_right_drops_hit:
+      switch: right_4
+  s_right_drops_5_active:
+    infinata_right_drops_hit:
+      switch: right_5
+
+  s_web_target_left_active:
+    infinata_webs_hit:
+      switch: web_left
+  s_web_target_mid_active:
+    infinata_webs_hit:
+      switch: web_mid
+
+  s_upper_target_left_active:
+    infinata_upper_targets_hit:
+      switch: upper_left
+  s_upper_target_center_active:
+    infinata_upper_targets_hit:
+      switch: upper_center
+  s_upper_target_right_active:
+    infinata_upper_targets_hit:
+      switch: upper_right
+
+  s_saucer_1_active:
+    - infinata_saucer_hit
+    - delayed_kickout_saucer_1
+  s_saucer_2_active:
+    - infinata_saucer_hit
+    - delayed_kickout_saucer_2
+  s_saucer_3_active:
+    - infinata_saucer_hit
+    - delayed_kickout_saucer_3
+
+  mode_infinata_started:
+    - disable_daily_bugle_mystery
+    - clear_saucers_delayed
+    - reset_drops
+  mode_infinata_stopping:
+    - clear_saucers_delayed
+    - reset_drops
+    - enable_daily_bugle_mystery
+    - daily_bugle_restore_state
+
+  drop_target_bank_dt_bank_left_down: drop_target_bank_dt_bank_left_reset
+  drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset
+
+light_player:
+  infinata_light_pops:
+    l_pop_1_1: green
+    l_pop_1_2: green
+    l_pop_1_3: green
+    l_pop_1_4: green
+    l_pop_1_5: green
+    l_pop_1_6: green
+    l_pop_1_7: green
+    l_pop_1_8: green
+    l_pop_1_9: green
+    l_pop_1_10: green
+    l_pop_1_11: green
+    l_pop_1_12: green
+    l_pop_2_1: green
+    l_pop_2_2: green
+    l_pop_2_3: green
+    l_pop_2_4: green
+    l_pop_2_5: green
+    l_pop_2_6: green
+    l_pop_2_7: green
+    l_pop_2_8: green
+    l_pop_2_9: green
+    l_pop_2_10: green
+    l_pop_2_11: green
+    l_pop_2_12: green
+  infinata_unlight_pops:
+    l_pop_1_1: off
+    l_pop_1_2: off
+    l_pop_1_3: off
+    l_pop_1_4: off
+    l_pop_1_5: off
+    l_pop_1_6: off
+    l_pop_1_7: off
+    l_pop_1_8: off
+    l_pop_1_9: off
+    l_pop_1_10: off
+    l_pop_1_11: off
+    l_pop_1_12: off
+    l_pop_2_1: off
+    l_pop_2_2: off
+    l_pop_2_3: off
+    l_pop_2_4: off
+    l_pop_2_5: off
+    l_pop_2_6: off
+    l_pop_2_7: off
+    l_pop_2_8: off
+    l_pop_2_9: off
+    l_pop_2_10: off
+    l_pop_2_11: off
+    l_pop_2_12: off
+  infinata_light_left_drops:
+    l_gi_3bank: green
+  infinata_unlight_left_drops:
+    l_gi_3bank: off
+  infinata_light_right_drops:
+    l_gi_5bank_lower: green
+    l_gi_5bank_upper: green
+  infinata_unlight_right_drops:
+    l_gi_5bank_lower: off
+    l_gi_5bank_upper: off
+  infinata_light_webs:
+    l_left_web_target: green
+    l_mid_web_target: green
+  infinata_unlight_webs:
+    l_left_web_target: off
+    l_mid_web_target: off
+  infinata_light_upper_targets:
+    l_upper_left: green
+    l_upper_middle: green
+    l_upper_right: green
+  infinata_unlight_upper_targets:
+    l_upper_left: off
+    l_upper_middle: off
+    l_upper_right: off
+  infinata_light_saucers:
+    l_1_hole_l: green
+    l_1_hole_r: green
+    l_2_hole_l: green
+    l_2_hole_r: green
+    l_3_hole_l: green
+    l_3_hole_r: green
+  infinata_clear_area_lights:
+    l_gi_3bank: off
+    l_gi_5bank_lower: off
+    l_gi_5bank_upper: off
+    l_left_web_target: off
+    l_mid_web_target: off
+    l_upper_left: off
+    l_upper_middle: off
+    l_upper_right: off
+  infinata_clear_lights:
+    l_gi_3bank: off
+    l_gi_5bank_lower: off
+    l_gi_5bank_upper: off
+    l_left_web_target: off
+    l_mid_web_target: off
+    l_upper_left: off
+    l_upper_middle: off
+    l_upper_right: off
+    l_1_hole_l: off
+    l_1_hole_r: off
+    l_2_hole_l: off
+    l_2_hole_r: off
+    l_3_hole_l: off
+    l_3_hole_r: off

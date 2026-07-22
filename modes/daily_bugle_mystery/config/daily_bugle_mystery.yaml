@@ -164,7 +164,7 @@ sound_player:
       bus: voice
 
   mystery_award_villain_start_ready:
-    jj_that_menace_is_getting_help:
+    sm_objective_spotted:
       action: play
       bus: voice
 
