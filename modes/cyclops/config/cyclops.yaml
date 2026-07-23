@@ -136,3 +136,12 @@ shows:
         l_advance_multiplier: off
         l_mid_multibonus: off
         l_mid_web_target: red
+
+light_player:
+  # Full-playfield GI theme while this mode is active.
+  mode_cyclops_started:
+    gi: FFD020
+
+  mode_cyclops_stopping:
+    gi: E0E0E0
+

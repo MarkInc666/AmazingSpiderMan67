@@ -69,3 +69,12 @@ event_player:
 
   mode_plutonians_stopping:
     - clear_saucers
+
+light_player:
+  # Full-playfield GI theme while this mode is active.
+  mode_plutonians_started:
+    gi: 50FF80
+
+  mode_plutonians_stopping:
+    gi: E0E0E0
+

@@ -109,6 +109,13 @@ show_player:
       loops: 2
 
 light_player:
+  # Full-playfield GI theme while this mode is active.
+  mode_the_fly_started:
+    gi: B8FF20
+
+  mode_the_fly_stopping:
+    gi: E0E0E0
+
   the_fly_saucers_needed:
     l_1: green
     l_2: green

@@ -67,3 +67,12 @@ event_player:
     - drop_target_bank_dt_bank_left_reset
     - drop_target_bank_dt_bank_right_reset
 
+
+light_player:
+  # Full-playfield GI theme while this mode is active.
+  mode_antarcticans_started:
+    gi: C8F0FF
+
+  mode_antarcticans_stopping:
+    gi: E0E0E0
+

@@ -301,20 +301,16 @@ class VillainProgression(Mode):
         )
 
     def _schedule_mini_wizard_gate_open(self, reason=""):
-        """Open rooftop access for a ready chapter mini-wizard using one delayed pulse.
+        """Open rooftop access immediately when the chapter wizard is ready.
 
-        The rooftop diverter/gate coil toggles mechanically, so this must never
-        retry or fire multiple pulses. Use this only when the wizard-ready state
-        is first awarded or restored on a new ball.
+        The rooftop diverter/gate coil toggles mechanically, so this method must
+        only be called when readiness is first awarded or restored on a new ball.
+        A qualifying drop-target hit is no longer required.
         """
         self.delay.remove("mini_wizard_ready_gate_open")
-        self.delay.add(
-            name="mini_wizard_ready_gate_open",
-            ms=500,
-            callback=lambda: self.machine.events.post(
-                "rooftop_diverter_open",
-                reason=reason,
-            ),
+        self.machine.events.post(
+            "rooftop_diverter_open",
+            reason=reason,
         )
 
     def mode_stop(self, **kwargs):

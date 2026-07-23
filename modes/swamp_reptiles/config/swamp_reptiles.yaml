@@ -69,6 +69,13 @@ event_player:
     - swamp_reptiles_clear_all_lights
 
 light_player:
+  # Full-playfield GI theme while this mode is active.
+  mode_swamp_reptiles_started:
+    gi: 408020
+
+  mode_swamp_reptiles_stopping:
+    gi: E0E0E0
+
   swamp_reptiles_left_bank_lit:
     l_3bankbonus: orange
 

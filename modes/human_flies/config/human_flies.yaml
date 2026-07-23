@@ -117,6 +117,13 @@ event_player:
     - drop_target_bank_dt_bank_right_reset
 
 light_player:
+  # Full-playfield GI theme while this mode is active.
+  mode_human_flies_started:
+    gi: B8FF30
+
+  mode_human_flies_stopping:
+    gi: E0E0E0
+
   human_flies_clear_all_lights:
     l_upper_left: off
     l_upper_middle: off

@@ -125,6 +125,13 @@ show_player:
       action: stop
 
 light_player:
+  # Full-playfield GI theme while this mode is active.
+  mode_diamond_smugglers_started:
+    gi: B8FFFF
+
+  mode_diamond_smugglers_stopping:
+    gi: E0E0E0
+
   diamond_smugglers_clear_lights:
     l_1: off
     l_1_hole_l: off

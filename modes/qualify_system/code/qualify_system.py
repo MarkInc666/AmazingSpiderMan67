@@ -108,8 +108,12 @@ class QualifySystem(Mode):
             return
 
         if player["chapter_mini_wizard_ready"] == 1:
-            self.machine.events.post("mini_wizard_start_ready_at_daily_bugle")
-            self.machine.events.post("villain_mini_wizard_gate_opened")
+            # Wizard readiness opens the rooftop gate immediately. Drop hits are
+            # ignored here so they cannot retrigger the mechanical toggle pulse.
+            self.machine.events.post(
+                "villain_drop_ignored_mini_wizard_ready",
+                saucer=saucer,
+            )
             return
 
         hit_var = f"{saucer}_drop_hit_this_cycle"

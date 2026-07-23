@@ -95,3 +95,12 @@ event_player:
   # Keep mini-wizard drop banks playable after they are completed.
   drop_target_bank_dt_bank_left_down: drop_target_bank_dt_bank_left_reset
   drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset
+
+light_player:
+  # Full-playfield GI theme while this mode is active.
+  mode_nature_strikes_back_started:
+    gi: 60C040
+
+  mode_nature_strikes_back_stopping:
+    gi: E0E0E0
+

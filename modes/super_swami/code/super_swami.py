@@ -45,9 +45,6 @@ class SuperSwami(CaseFileMixin, Mode):
         player["active_mode_points"] = 0
         player["active_mode_hits"] = 0
         player["active_mode_major_hits"] = 0
-        player["super_swami_areas_restored"] = 0
-        player["super_swami_seconds_left"] = self.seconds_left
-        player["super_swami_next_value"] = self.base_value
         player[f"{self.MODE_KEY}_state"] = 1
 
         for area_name, switches in self.AREA_SWITCHES.items():
@@ -105,8 +102,6 @@ class SuperSwami(CaseFileMixin, Mode):
             self._score(value)
         player = self.machine.game.player
         player["active_mode_hits"] = len(self.restored)
-        player["super_swami_areas_restored"] = len(self.restored)
-        player["super_swami_next_value"] = self.base_value + self.VALUE_STEP * len(self.restored)
         self.machine.events.post(f"super_swami_restore_{area}")
         self.machine.events.post("reset_mode_message_reminder")
         self.machine.events.post("show_mode_message", message_mode_title=f"{self.AREA_LABELS[area]} RESTORED", message_mode_subtitle=f"{value // 1000}K - {len(self.restored)} OF 6")
@@ -134,7 +129,6 @@ class SuperSwami(CaseFileMixin, Mode):
         if self.mode_done:
             return
         self.seconds_left -= 1
-        self.machine.game.player["super_swami_seconds_left"] = self.seconds_left
         if self.seconds_left <= 0:
             self._fail_mode()
             return

@@ -69,3 +69,12 @@ event_player:
 
   mode_eigor_stopping:
     - clear_saucers
+
+light_player:
+  # Full-playfield GI theme while this mode is active.
+  mode_eigor_started:
+    gi: 90B050
+
+  mode_eigor_stopping:
+    gi: E0E0E0
+

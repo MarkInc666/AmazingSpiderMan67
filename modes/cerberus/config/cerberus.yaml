@@ -79,6 +79,13 @@ event_player:
     - cerberus_clear_all_lights
 
 light_player:
+  # Full-playfield GI theme while this mode is active.
+  mode_cerberus_started:
+    gi: FF8C20
+
+  mode_cerberus_stopping:
+    gi: E0E0E0
+
   cerberus_saucer_1_jackpot_lit:
     l_1_hole_l: yellow
     l_1_hole_r: yellow

@@ -69,3 +69,12 @@ event_player:
 
   mode_sky_master_stopping:
     - clear_saucers
+
+light_player:
+  # Full-playfield GI theme while this mode is active.
+  mode_sky_master_started:
+    gi: 70C8FF
+
+  mode_sky_master_stopping:
+    gi: E0E0E0
+

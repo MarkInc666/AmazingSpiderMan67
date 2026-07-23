@@ -208,6 +208,13 @@ show_player:
       action: stop
 
 light_player:
+  # Full-playfield GI theme while this mode is active.
+  mode_enforcers_started:
+    gi: FFB000
+
+  mode_enforcers_stopping:
+    gi: E0E0E0
+
   enforcers_build_phase_started:
     l_gi_3bank: orange
     l_gi_5bank_lower: orange

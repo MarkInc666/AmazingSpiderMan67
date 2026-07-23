@@ -69,3 +69,12 @@ event_player:
 
   mode_doctor_atlantean_stopping:
     - clear_saucers
+
+light_player:
+  # Full-playfield GI theme while this mode is active.
+  mode_doctor_atlantean_started:
+    gi: 20A8C8
+
+  mode_doctor_atlantean_stopping:
+    gi: E0E0E0
+

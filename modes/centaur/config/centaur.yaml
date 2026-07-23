@@ -81,6 +81,13 @@ coil_player:
       action: pulse
 
 light_player:
+  # Full-playfield GI theme while this mode is active.
+  mode_centaur_started:
+    gi: D09040
+
+  mode_centaur_stopping:
+    gi: E0E0E0
+
   centaur_build_phase_started:
     l_gi_3bank: yellow
     l_gi_5bank_lower: yellow

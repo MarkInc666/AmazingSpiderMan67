@@ -323,3 +323,12 @@ shows:
         l_upper_left: blue
         l_upper_middle: blue
         l_upper_right: blue
+
+light_player:
+  # Full-playfield GI theme while this mode is active.
+  mode_mysterio_started:
+    gi: 7A3DB8
+
+  mode_mysterio_stopping:
+    gi: E0E0E0
+

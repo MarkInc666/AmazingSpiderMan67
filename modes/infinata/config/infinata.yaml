@@ -92,6 +92,13 @@ event_player:
   drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset
 
 light_player:
+  # Full-playfield GI theme while this mode is active.
+  mode_infinata_started:
+    gi: 30C850
+
+  mode_infinata_stopping:
+    gi: E0E0E0
+
   infinata_light_pops:
     l_pop_1_1: green
     l_pop_1_2: green

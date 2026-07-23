@@ -69,3 +69,12 @@ event_player:
 
   mode_brutus_stopping:
     - clear_saucers
+
+light_player:
+  # Full-playfield GI theme while this mode is active.
+  mode_brutus_started:
+    gi: D06030
+
+  mode_brutus_stopping:
+    gi: E0E0E0
+

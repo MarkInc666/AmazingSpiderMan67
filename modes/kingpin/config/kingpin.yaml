@@ -79,6 +79,13 @@ widget_player:
       action: remove
 
 light_player:
+  # Full-playfield GI theme while this mode is active.
+  mode_kingpin_started:
+    gi: 7B2CBF
+
+  mode_kingpin_stopping:
+    gi: E0E0E0
+
   kingpin_clear_lights:
     l_5bank_1: off
     l_5bank_2: off

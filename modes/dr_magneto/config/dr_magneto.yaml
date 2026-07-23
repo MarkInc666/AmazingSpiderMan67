@@ -1,7 +1,6 @@
 #config_version=6
 
-# Matto Magneto placeholder villain mode.
-# Mode idea: Magnet beam pulls lit shot around playfield; spinner stabilizes beam for a jackpot.
+# Dr. Magneto - magnetic sweep rooftop mode.
 
 mode:
   start_events: start_mode_dr_magneto
@@ -26,44 +25,156 @@ widget_player:
       action: remove
 
 event_player:
-  # Common playfield hits. Refine these later when the mode design is built out.
-  s_pop_left_active: dr_magneto_shot_hit
-  s_pop_right_active: dr_magneto_shot_hit
-  s_trispinner_opto_active: dr_magneto_shot_hit
-  s_web_spinner_active: dr_magneto_shot_hit
-  s_star_rollover_active: dr_magneto_shot_hit
-  s_upper_target_left_active: dr_magneto_shot_hit
-  s_upper_target_center_active: dr_magneto_shot_hit
-  s_upper_target_right_active: dr_magneto_shot_hit
+  s_upper_entrance_opto_active:
+    - dr_magneto_upper_entered
 
-  s_left_drops_1_active: dr_magneto_shot_hit
-  s_left_drops_2_active: dr_magneto_shot_hit
-  s_left_drops_3_active: dr_magneto_shot_hit
-  s_right_drops_1_active: dr_magneto_shot_hit
-  s_right_drops_2_active: dr_magneto_shot_hit
-  s_right_drops_3_active: dr_magneto_shot_hit
-  s_right_drops_4_active: dr_magneto_shot_hit
-  s_right_drops_5_active: dr_magneto_shot_hit
+  s_upper_exit_left_opto_active:
+    - dr_magneto_upper_exited
 
-  s_saucer_1_active:
-    - dr_magneto_major_hit
-    - clear_saucers
-  s_saucer_2_active:
-    - dr_magneto_major_hit
-    - clear_saucers
-  s_saucer_3_active:
-    - dr_magneto_major_hit
-    - clear_saucers
-  s_vuk_switch_active: dr_magneto_major_hit
+  s_upper_exit_right_opto_active:
+    - dr_magneto_upper_exited
 
-  drop_target_bank_dt_bank_left_down:
-    - drop_target_bank_dt_bank_left_reset
-  drop_target_bank_dt_bank_right_down:
-    - drop_target_bank_dt_bank_right_reset
+  s_trispinner_opto_active:
+    - dr_magneto_upper_spinner_hit
+
+  s_right_drops_5_active:
+    - dr_magneto_right_drop_5_hit
+
+  s_left_drops_1_active:
+    - dr_magneto_left_drop_1_hit
+
+  # Dr. Magneto does not use saucers; kick them out safely.
+  s_saucer_1_active: clear_saucers_delayed
+  s_saucer_2_active: clear_saucers_delayed
+  s_saucer_3_active: clear_saucers_delayed
 
   mode_dr_magneto_started:
     - rooftop_diverter_open|500ms
-    - clear_saucers
+    - clear_saucers_delayed
+    - dr_magneto_build_gi
+
+  mode_dr_magneto_stopping:
+    - clear_saucers_delayed
+    - dr_magneto_stop_gi
+    - dr_magneto_clear_drop_lights
+
+  dr_magneto_reset_banks:
     - drop_target_bank_dt_bank_left_reset
     - drop_target_bank_dt_bank_right_reset
 
+  dr_magneto_reset_left_bank:
+    - drop_target_bank_dt_bank_left_reset
+
+coil_player:
+  dr_magneto_drop_left_1:
+    c_left_bank_drop_1:
+      action: pulse
+  dr_magneto_drop_left_2:
+    c_left_bank_drop_2:
+      action: pulse
+  dr_magneto_drop_left_3:
+    c_left_bank_drop_3:
+      action: pulse
+  dr_magneto_drop_right_1:
+    c_right_bank_drop_1:
+      action: pulse
+  dr_magneto_drop_right_2:
+    c_right_bank_drop_2:
+      action: pulse
+  dr_magneto_drop_right_3:
+    c_right_bank_drop_3:
+      action: pulse
+  dr_magneto_drop_right_4:
+    c_right_bank_drop_4:
+      action: pulse
+
+show_player:
+  dr_magneto_build_gi:
+    dr_magneto_build_gi:
+      loops: -1
+      priority: 320
+    dr_magneto_main_ready_gi:
+      action: stop
+    dr_magneto_flux_ready_gi:
+      action: stop
+
+  dr_magneto_main_super_ready:
+    dr_magneto_build_gi:
+      action: stop
+    dr_magneto_main_ready_gi:
+      loops: -1
+      priority: 330
+
+  dr_magneto_flux_super_ready:
+    dr_magneto_main_ready_gi:
+      action: stop
+    dr_magneto_flux_ready_gi:
+      loops: -1
+      priority: 340
+
+  dr_magneto_stop_gi:
+    dr_magneto_build_gi:
+      action: stop
+    dr_magneto_main_ready_gi:
+      action: stop
+    dr_magneto_flux_ready_gi:
+      action: stop
+    dr_magneto_restore_gi:
+      loops: 0
+      priority: 350
+
+light_player:
+  dr_magneto_sweep_started:
+    l_spinner: 4060FF
+    l_5bank_1: off
+    l_5bank_2: off
+    l_5bank_3: off
+    l_5bank_4: off
+    l_5bank_5: off
+
+  dr_magneto_main_super_ready:
+    l_5bank_1: off
+    l_5bank_2: off
+    l_5bank_3: off
+    l_5bank_4: off
+    l_5bank_5: white
+
+  dr_magneto_flux_super_ready:
+    l_5bank_5: off
+    l_3bankbonus: green
+
+  dr_magneto_clear_drop_lights:
+    l_spinner: off
+    l_5bank_1: off
+    l_5bank_2: off
+    l_5bank_3: off
+    l_5bank_4: off
+    l_5bank_5: off
+    l_3bankbonus: off
+
+shows:
+  dr_magneto_build_gi:
+    - duration: 1s
+      lights:
+        gi: 4060FF
+
+  dr_magneto_main_ready_gi:
+    - duration: 400ms
+      lights:
+        gi: 4060FF
+    - duration: 400ms
+      lights:
+        gi: 101830
+
+  dr_magneto_flux_ready_gi:
+    - duration: 200ms
+      lights:
+        gi: 4060FF
+    - duration: 200ms
+      lights:
+        gi: 101830
+
+  dr_magneto_restore_gi:
+    - duration: 1s
+      lights:
+        gi: E0E0E0

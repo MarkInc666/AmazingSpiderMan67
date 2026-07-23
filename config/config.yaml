@@ -158,6 +158,11 @@ modes:
   - villain_progression
 
 event_player:
+  # The physical rooftop gate must begin every game in the closed position.
+  # Wizard readiness will open it immediately when earned or restored.
+  game_started:
+    - rooftop_diverter_close
+
   ball_starting:
     - cmd_flippers_enable
     - cmd_autofire_coils_enable

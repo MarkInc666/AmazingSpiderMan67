@@ -365,6 +365,13 @@ shows:
         l_gi_3bank: off
 
 light_player:
+  # Full-playfield GI theme while this mode is active.
+  mode_trubble_unleashed_started:
+    gi: FF70C0
+
+  mode_trubble_unleashed_stopping:
+    gi: E0E0E0
+
   trubble_unleashed_clear_all_lights:
     l_gi_a: off
     l_gi_ramp: off

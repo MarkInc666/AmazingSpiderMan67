@@ -69,3 +69,12 @@ event_player:
 
   mode_snowman_stopping:
     - clear_saucers
+
+light_player:
+  # Full-playfield GI theme while this mode is active.
+  mode_snowman_started:
+    gi: D8F8FF
+
+  mode_snowman_stopping:
+    gi: E0E0E0
+

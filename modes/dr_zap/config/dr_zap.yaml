@@ -69,3 +69,12 @@ event_player:
 
   mode_dr_zap_stopping:
     - clear_saucers
+
+light_player:
+  # Full-playfield GI theme while this mode is active.
+  mode_dr_zap_started:
+    gi: 30A0FF
+
+  mode_dr_zap_stopping:
+    gi: E0E0E0
+

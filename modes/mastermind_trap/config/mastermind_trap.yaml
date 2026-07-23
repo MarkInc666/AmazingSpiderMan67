@@ -339,3 +339,12 @@ shows:
         l_gi_top_2: off
         l_gi_top_3: off
         l_gi_top_4: off
+
+light_player:
+  # Full-playfield GI theme while this mode is active.
+  mode_mastermind_trap_started:
+    gi: 7030A0
+
+  mode_mastermind_trap_stopping:
+    gi: E0E0E0
+

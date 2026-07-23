@@ -69,3 +69,12 @@ event_player:
 
   mode_phantom_from_depths_of_time_stopping:
     - clear_saucers
+
+light_player:
+  # Full-playfield GI theme while this mode is active.
+  mode_phantom_from_depths_of_time_started:
+    gi: 7050A0
+
+  mode_phantom_from_depths_of_time_stopping:
+    gi: E0E0E0
+

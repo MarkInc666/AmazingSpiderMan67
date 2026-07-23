@@ -69,3 +69,12 @@ event_player:
 
   mode_master_vine_stopping:
     - clear_saucers
+
+light_player:
+  # Full-playfield GI theme while this mode is active.
+  mode_master_vine_started:
+    gi: 40A040
+
+  mode_master_vine_stopping:
+    gi: E0E0E0
+

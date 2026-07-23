@@ -98,6 +98,13 @@ coil_player:
       action: pulse
 
 light_player:
+  # Full-playfield GI theme while this mode is active.
+  mode_diana_started:
+    gi: D8D0FF
+
+  mode_diana_stopping:
+    gi: E0E0E0
+
   diana_rearm_phase_started:
     l_spinner: yellow
     l_gi_a: yellow

@@ -68,6 +68,7 @@ class Fakir(CaseFileMixin, Mode):
         self.super_jackpots_collected = 0
         self.total_rubies_collected = 0
         self.mode_points = 0
+        self.incorrect_shots = 0
 
         self.case_files = self.get_case_file_bonuses()
         self._apply_case_file_bonuses()
@@ -217,7 +218,7 @@ class Fakir(CaseFileMixin, Mode):
         if self._inactive() or not self.ruby_active:
             return
 
-        self.machine.game.player["fakir_incorrect_shots"] += 1
+        self.incorrect_shots += 1
         self.machine.events.post("fakir_ruby_timer_expired", target=self.current_target)
         self.machine.events.post("show_mode_message", message_mode_title="RUBY VANISHES", message_mode_subtitle="SHOOT SAUCER AGAIN")
         self._sync_player_vars("RUBY VANISHED", "SHOOT SAUCER")
@@ -324,7 +325,6 @@ class Fakir(CaseFileMixin, Mode):
         player["active_mode_points"] = self.mode_points
         player["active_mode_hits"] = self.total_rubies_collected
         player["active_mode_major_hits"] = self.super_jackpots_collected
-        player["fakir_correct_shots"] = self.total_rubies_collected
         self._update_mode_status()
 
     def _update_mode_status(self):

@@ -79,6 +79,13 @@ event_player:
     - clear_saucers
 
 light_player:
+  # Full-playfield GI theme while this mode is active.
+  mode_pardo_started:
+    gi: 7A3DB8
+
+  mode_pardo_stopping:
+    gi: E0E0E0
+
   pardo_all_lights_off:
     l_left_web_target: off
     l_mid_web_target: off

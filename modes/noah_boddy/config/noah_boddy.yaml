@@ -246,3 +246,12 @@ shows:
     - duration: 120ms
       lights:
         l_5bank_5: off
+
+light_player:
+  # Full-playfield GI theme while this mode is active.
+  mode_noah_boddy_started:
+    gi: 506070
+
+  mode_noah_boddy_stopping:
+    gi: E0E0E0
+

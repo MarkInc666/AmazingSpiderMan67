@@ -69,3 +69,12 @@ event_player:
 
   mode_ice_monster_stopping:
     - clear_saucers
+
+light_player:
+  # Full-playfield GI theme while this mode is active.
+  mode_ice_monster_started:
+    gi: 80C8FF
+
+  mode_ice_monster_stopping:
+    gi: E0E0E0
+

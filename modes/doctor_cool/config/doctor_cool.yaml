@@ -68,3 +68,12 @@ event_player:
     - drop_target_bank_dt_bank_right_reset
 
 
+
+light_player:
+  # Full-playfield GI theme while this mode is active.
+  mode_doctor_cool_started:
+    gi: 50D8FF
+
+  mode_doctor_cool_stopping:
+    gi: E0E0E0
+

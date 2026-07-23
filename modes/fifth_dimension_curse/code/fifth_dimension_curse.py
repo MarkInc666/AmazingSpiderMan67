@@ -55,12 +55,7 @@ class FifthDimensionCurse(Mode):
         player[f"{self.MODE_KEY}_state"] = 1
         player["active_mode_points"] = 0
         player["active_mode_hits"] = 0
-        player["fifth_dimension_curse_active_zones"] = 0
-        player["fifth_dimension_curse_jackpots"] = 0
-        player["fifth_dimension_curse_add_a_balls"] = 0
-        player["fifth_dimension_curse_upper_targets"] = 0
-        player["fifth_dimension_curse_add_a_ball_qualified"] = 0
-        player["fifth_dimension_curse_case_file_bonus"] = self.case_file_bonus
+        player["active_mode_major_hits"] = 0
 
         for zone, switches in self.ZONE_SWITCHES.items():
             for switch in switches:
@@ -144,8 +139,6 @@ class FifthDimensionCurse(Mode):
         self.add_a_ball_qualified = zones >= 3 and self.add_a_balls_awarded < 3
         player = self.machine.game.player
         player["active_mode_hits"] = self.jackpots_collected
-        player["fifth_dimension_curse_jackpots"] = self.jackpots_collected
-        player["fifth_dimension_curse_add_a_ball_qualified"] = int(self.add_a_ball_qualified)
         self.machine.events.post(
             "show_mode_jackpot",
             message_mode_title="CURSE JACKPOT",
@@ -166,7 +159,6 @@ class FifthDimensionCurse(Mode):
         if target not in self.upper_targets_hit:
             self.upper_targets_hit.add(target)
             self.machine.events.post(f"fifth_dimension_curse_upper_{target}_solid")
-            self.machine.game.player["fifth_dimension_curse_upper_targets"] = len(self.upper_targets_hit)
 
         self.machine.events.post(
             "show_mode_message",
@@ -183,9 +175,7 @@ class FifthDimensionCurse(Mode):
         if self.add_a_ball_qualified and self.add_a_balls_awarded < 3:
             self.add_a_balls_awarded += 1
             self.add_a_ball_qualified = False
-            player = self.machine.game.player
-            player["fifth_dimension_curse_add_a_balls"] = self.add_a_balls_awarded
-            player["fifth_dimension_curse_add_a_ball_qualified"] = 0
+            self.machine.game.player["active_mode_major_hits"] = self.add_a_balls_awarded
             self.machine.events.post("fifth_dimension_curse_add_a_ball")
             self.machine.events.post(
                 "show_mode_message",
@@ -197,7 +187,6 @@ class FifthDimensionCurse(Mode):
     def _reset_upper_targets(self, **kwargs):
         self.upper_completion_active = False
         self.upper_targets_hit.clear()
-        self.machine.game.player["fifth_dimension_curse_upper_targets"] = 0
         self.machine.events.post("fifth_dimension_curse_upper_targets_reset")
 
     def _multiball_ended(self, **kwargs):
@@ -213,7 +202,6 @@ class FifthDimensionCurse(Mode):
 
     def _update_gate_and_status(self):
         zones = len(self.active_zones)
-        self.machine.game.player["fifth_dimension_curse_active_zones"] = zones
         if zones:
             self.machine.events.post("rooftop_diverter_open")
         else:

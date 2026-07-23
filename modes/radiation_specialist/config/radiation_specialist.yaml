@@ -69,3 +69,12 @@ event_player:
 
   mode_radiation_specialist_stopping:
     - clear_saucers
+
+light_player:
+  # Full-playfield GI theme while this mode is active.
+  mode_radiation_specialist_started:
+    gi: 80FF20
+
+  mode_radiation_specialist_stopping:
+    gi: E0E0E0
+

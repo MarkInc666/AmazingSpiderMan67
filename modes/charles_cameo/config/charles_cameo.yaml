@@ -69,3 +69,12 @@ event_player:
 
   mode_charles_cameo_stopping:
     - clear_saucers
+
+light_player:
+  # Full-playfield GI theme while this mode is active.
+  mode_charles_cameo_started:
+    gi: FF70B0
+
+  mode_charles_cameo_stopping:
+    gi: E0E0E0
+

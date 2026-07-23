@@ -396,21 +396,6 @@ player_vars:
   fifth_dimension_curse_state:
     initial_value: 0
     value_type: int
-  fifth_dimension_curse_active_zones:
-    initial_value: 0
-    value_type: int
-  fifth_dimension_curse_jackpots:
-    initial_value: 0
-    value_type: int
-  fifth_dimension_curse_add_a_balls:
-    initial_value: 0
-    value_type: int
-  fifth_dimension_curse_upper_targets:
-    initial_value: 0
-    value_type: int
-  fifth_dimension_curse_add_a_ball_qualified:
-    initial_value: 0
-    value_type: int
   night_of_the_robots_state:
     initial_value: 0
     value_type: int
@@ -591,9 +576,6 @@ player_vars:
   mad_science_meltdown_case_file_bonus:
     initial_value: 0
     value_type: int
-  fifth_dimension_curse_case_file_bonus:
-    initial_value: 0
-    value_type: int
   night_of_the_robots_case_file_bonus:
     initial_value: 0
     value_type: int
@@ -649,15 +631,6 @@ player_vars:
     initial_value: 0
     value_type: int
   super_swami_bonus:
-    initial_value: 0
-    value_type: int
-  super_swami_areas_restored:
-    initial_value: 0
-    value_type: int
-  super_swami_seconds_left:
-    initial_value: 0
-    value_type: int
-  super_swami_next_value:
     initial_value: 0
     value_type: int
   dumpty_bonus:
@@ -780,45 +753,6 @@ player_vars:
   diana_state:
     initial_value: 0
     value_type: int
-  diana_arrows_remaining:
-    initial_value: 0
-    value_type: int
-  diana_arrows_used:
-    initial_value: 0
-    value_type: int
-  diana_current_hunt:
-    initial_value: 0
-    value_type: int
-  diana_hunt_seconds:
-    initial_value: 0
-    value_type: int
-  diana_hunt_active:
-    initial_value: 0
-    value_type: int
-  diana_phase:
-    initial_value: rearm
-    value_type: str
-  diana_bullseyes:
-    initial_value: 0
-    value_type: int
-  diana_rubber_hits:
-    initial_value: 0
-    value_type: int
-  diana_spinner_hits:
-    initial_value: 0
-    value_type: int
-  diana_upper_right_exits:
-    initial_value: 0
-    value_type: int
-  diana_safety_net_used:
-    initial_value: 0
-    value_type: int
-  diana_end_bonus:
-    initial_value: 0
-    value_type: int
-  diana_standing_targets:
-    initial_value: 0
-    value_type: int
   final_showdown_state:
     initial_value: 0
     value_type: int
@@ -933,12 +867,6 @@ player_vars:
     initial_value: 0
   master_plan_super_collected:
     initial_value: 0
-  fakir_correct_shots:
-    initial_value: 0
-    value_type: int
-  fakir_incorrect_shots:
-    initial_value: 0
-    value_type: int
   trubble_unleashed_saucer_jackpot:
     initial_value: 0
     value_type: int
@@ -961,15 +889,6 @@ player_vars:
     initial_value: 0
     value_type: int
   trubble_unleashed_lit_saucers:
-    initial_value: 0
-    value_type: int
-  fakir_round:
-    initial_value: 0
-    value_type: int
-  fakir_total_rounds:
-    initial_value: 0
-    value_type: int
-  fakir_next_jackpot:
     initial_value: 0
     value_type: int
   noah_boddy_upper_target_hits:

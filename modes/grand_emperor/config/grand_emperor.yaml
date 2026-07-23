@@ -69,3 +69,12 @@ event_player:
 
   mode_grand_emperor_stopping:
     - clear_saucers
+
+light_player:
+  # Full-playfield GI theme while this mode is active.
+  mode_grand_emperor_started:
+    gi: FFD040
+
+  mode_grand_emperor_stopping:
+    gi: E0E0E0
+

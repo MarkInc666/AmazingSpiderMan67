@@ -267,3 +267,12 @@ shows:
     - duration: 150ms
       lights:
         l_5bank_5: off
+
+light_player:
+  # Full-playfield GI theme while this mode is active.
+  mode_fifth_avenue_phantom_started:
+    gi: 6A40A8
+
+  mode_fifth_avenue_phantom_stopping:
+    gi: E0E0E0
+

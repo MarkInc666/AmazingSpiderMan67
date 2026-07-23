@@ -278,3 +278,12 @@ shows:
     - duration: 250ms
       lights:
         l_3: off
+
+light_player:
+  # Full-playfield GI theme while this mode is active.
+  mode_parafino_started:
+    gi: FF7A20
+
+  mode_parafino_stopping:
+    gi: E0E0E0
+
