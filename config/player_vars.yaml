@@ -49,19 +49,19 @@ player_vars:
     initial_value: 0
     value_type: int
   chapter_4_unlocked:
-    initial_value: 0
+    initial_value: 1
     value_type: int
   chapter_4_collected:
     initial_value: 0
     value_type: int
   chapter_5_unlocked:
-    initial_value: 0
+    initial_value: 1
     value_type: int
   chapter_5_collected:
     initial_value: 0
     value_type: int
   chapter_6_unlocked:
-    initial_value: 0
+    initial_value: 1
     value_type: int
   chapter_6_collected:
     initial_value: 0
