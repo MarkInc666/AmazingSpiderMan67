@@ -51,7 +51,6 @@ class Base(Mode):
         "mode_plutonians_stopping",
         "mode_infinata_stopping",
         "mode_invasion_from_everywhere_stopping",
-        "mode_kingpin_stopping",
         "mode_lizard_stopping",
         "mode_mad_science_meltdown_stopping",
         "mode_master_plan_stopping",

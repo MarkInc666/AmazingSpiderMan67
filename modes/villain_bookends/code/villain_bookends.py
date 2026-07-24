@@ -9,7 +9,7 @@ class VillainBookends(Mode):
         "sinister_surge",
         "mastermind_trap",
         "trubble_unleashed",
-        "master_plan",
+        "crime_wave",
         "fifth_dimension_curse",
         "mad_science_meltdown",
         "nature_strikes_back",
@@ -310,26 +310,6 @@ class VillainBookends(Mode):
             'points_var': 'active_mode_points',
             'state_var': 'centaur_state',
             'song': 'play_song_31',
-        },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Kingpin is running the Crime Wave.
-        #   intro_2: Clear areas and collect Daily Bugle jackpots.
-        #   intro_3: Use add-a-ball to keep the operation alive.
-        #   stat_1_label: AREAS CLEARED
-        'kingpin': {
-            'title': 'KINGPIN',
-            'intro_1': 'Clear crime areas.',
-            'intro_2': 'Cash Bugle jackpots.',
-            'intro_3': 'Add balls to survive.',
-            'summary_title_complete': 'KINGPIN DEFEATED',
-            'summary_title_failed': 'KINGPIN ESCAPED',
-            'stat_1_label': 'AREAS',
-            'stat_1_var': 'kingpin_areas_cleared',
-            'stat_2_label': 'MAX BALLS',
-            'stat_2_var': 'kingpin_max_balls',
-            'points_var': 'active_mode_points',
-            'state_var': 'kingpin_state',
-            'song': 'play_song_51',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Skymaster Brothers are framing Spider-Man.
@@ -791,13 +771,13 @@ class VillainBookends(Mode):
         'desperado': {
             'title': 'DESPERADO',
             'intro_1': 'Desperado rides again.',
-            'intro_2': 'Break his hypnosis.',
-            'intro_3': 'Stop the flying horse.',
+            'intro_2': 'Track five outlaws.',
+            'intro_3': 'Left bank adds time.',
             'summary_title_complete': 'DESPERADO CAPTURED',
             'summary_title_failed': 'DESPERADO ESCAPED',
-            'stat_1_label': 'HITS',
+            'stat_1_label': 'BANK HITS',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'MAJORS',
+            'stat_2_label': 'OUTLAWS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'desperado_state',
@@ -1123,6 +1103,21 @@ class VillainBookends(Mode):
             'state_var': 'master_plan_state',
             'song': 'play_song_43',
         },
+        'crime_wave': {
+            'title': 'CRIME WAVE',
+            'intro_1': 'Light the five crime areas.',
+            'intro_2': 'Three lit areas open the roof.',
+            'intro_3': 'Upper exits collect jackpots.',
+            'summary_title_complete': 'CRIME WAVE STOPPED',
+            'summary_title_failed': 'CRIME WAVE CONTINUES',
+            'stat_1_label': 'AREAS LIT',
+            'stat_1_var': 'active_mode_hits',
+            'stat_2_label': 'JACKPOTS',
+            'stat_2_var': 'active_mode_major_hits',
+            'points_var': 'active_mode_points',
+            'state_var': 'crime_wave_state',
+            'song': 'play_song_43',
+        },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Chapter 7 mini-wizard multiball.
         #   intro_2: Break the curse during multiball.
@@ -1258,12 +1253,12 @@ class VillainBookends(Mode):
         #   intro_3: Finish the final battle to save the city.
         #   stat_1_label: AREAS CLEARED
         'final_showdown': {
-            'title': 'FINAL SHOWDOWN',
-            'intro_1': 'Final city battle.',
-            'intro_2': 'Clear all areas.',
-            'intro_3': 'Save the city.',
-            'summary_title_complete': 'FINAL SHOWDOWN WON',
-            'summary_title_failed': 'FINAL SHOWDOWN LOST',
+            'title': 'KINGPIN',
+            'intro_1': 'Kingpin controls the city.',
+            'intro_2': 'Break his criminal empire.',
+            'intro_3': 'Defeat Kingpin in multiball.',
+            'summary_title_complete': 'KINGPIN DEFEATED',
+            'summary_title_failed': 'KINGPIN RULES',
             'stat_1_label': 'AREAS',
             'stat_1_var': 'final_showdown_areas_cleared',
             'stat_2_label': 'JACKPOTS',

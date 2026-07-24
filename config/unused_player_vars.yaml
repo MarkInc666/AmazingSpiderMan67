@@ -783,19 +783,10 @@ player_vars:
   cowboy_major_hits:
     initial_value: 0
     value_type: int
-  desperado_hits:
-    initial_value: 0
-    value_type: int
-  desperado_major_hits:
-    initial_value: 0
-    value_type: int
   mastermind_trap_hits:
     initial_value: 0
     value_type: int
   trubble_unleashed_hits:
-    initial_value: 0
-    value_type: int
-  crime_wave_crackdown_hits:
     initial_value: 0
     value_type: int
   mad_science_meltdown_hits:
@@ -816,78 +807,9 @@ player_vars:
   time_tossed_showdown_hits:
     initial_value: 0
     value_type: int
-  kingpin_areas_cleared:
-    initial_value: 0
-    value_type: int
-  kingpin_jackpots:
-    initial_value: 0
-    value_type: int
-  kingpin_super_jackpots:
-    initial_value: 0
-    value_type: int
-  kingpin_current_area:
-    initial_value: ''
-    value_type: str
-  kingpin_current_area_display:
-    initial_value: ''
-    value_type: str
-  kingpin_area_progress:
-    initial_value: 0
-    value_type: int
-  kingpin_area_required:
-    initial_value: 0
-    value_type: int
-  kingpin_jackpot_ready:
-    initial_value: 0
-    value_type: int
-  kingpin_jackpot_value:
-    initial_value: 0
-    value_type: int
-  kingpin_super_jackpot_ready:
-    initial_value: 0
-    value_type: int
-  kingpin_super_jackpot_value:
-    initial_value: 0
-    value_type: int
-  kingpin_a_hit:
-    initial_value: 0
-    value_type: int
-  kingpin_b_hit:
-    initial_value: 0
-    value_type: int
-  kingpin_ab_ready:
-    initial_value: 0
-    value_type: int
-  kingpin_upper_left_hits:
-    initial_value: 0
-    value_type: int
-  kingpin_upper_center_hits:
-    initial_value: 0
-    value_type: int
-  kingpin_upper_right_hits:
-    initial_value: 0
-    value_type: int
-  kingpin_area_pops_cleared:
-    initial_value: 0
-    value_type: int
-  kingpin_area_spinner_cleared:
-    initial_value: 0
-    value_type: int
-  kingpin_area_star_cleared:
-    initial_value: 0
-    value_type: int
-  kingpin_area_upper_targets_cleared:
-    initial_value: 0
-    value_type: int
-  kingpin_area_drops_cleared:
-    initial_value: 0
-    value_type: int
   skillshots_awarded:
     initial_value: 0
     value_type: int
   doc_ock_last_jackpot:
-    initial_value: 0
-    value_type: int
-  kingpin_hits_needed:
     initial_value: 0
     value_type: int

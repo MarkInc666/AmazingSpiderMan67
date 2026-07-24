@@ -396,9 +396,6 @@ player_vars:
   mastermind_trap_state:
     initial_value: 0
     value_type: int
-  crime_wave_crackdown_state:
-    initial_value: 0
-    value_type: int
   mad_science_meltdown_state:
     initial_value: 0
     value_type: int
@@ -415,9 +412,6 @@ player_vars:
     initial_value: 0
     value_type: int
   time_tossed_showdown_state:
-    initial_value: 0
-    value_type: int
-  kingpin_state:
     initial_value: 0
     value_type: int
   villain_bookend_title:
@@ -577,9 +571,6 @@ player_vars:
     initial_value: 0
     value_type: int
   trubble_unleashed_case_file_bonus:
-    initial_value: 0
-    value_type: int
-  crime_wave_crackdown_case_file_bonus:
     initial_value: 0
     value_type: int
   mad_science_meltdown_case_file_bonus:
@@ -897,39 +888,6 @@ player_vars:
     initial_value: 0
   noah_boddy_best_jackpot:
     initial_value: 0
-  kingpin_completed_count:
-    initial_value: 0
-    value_type: int
-  kingpin_extra_round_active:
-    initial_value: 0
-    value_type: int
-  kingpin_round:
-    initial_value: 0
-    value_type: int
-  kingpin_round_hits:
-    initial_value: 0
-    value_type: int
-  kingpin_round_hits_allowed:
-    initial_value: 0
-    value_type: int
-  kingpin_target_1_complete:
-    initial_value: 0
-    value_type: int
-  kingpin_target_2_complete:
-    initial_value: 0
-    value_type: int
-  kingpin_target_3_complete:
-    initial_value: 0
-    value_type: int
-  kingpin_target_4_complete:
-    initial_value: 0
-    value_type: int
-  kingpin_target_5_complete:
-    initial_value: 0
-    value_type: int
-  kingpin_timer:
-    initial_value: 0
-    value_type: int
   sinister_surge_a_hit:
     initial_value: 0
     value_type: int
