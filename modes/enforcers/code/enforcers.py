@@ -3,7 +3,7 @@ from modes.common.case_file_mixin import CaseFileMixin
 
 
 class Enforcers(Mode, CaseFileMixin):
-    """Enforcers / Ox villain mode.
+    """The Enforcers villain mode.
 
     Three crime-wave zones build upper target jackpots:
       - Left drops  -> upper left target
@@ -16,7 +16,7 @@ class Enforcers(Mode, CaseFileMixin):
     """
 
     MODE_KEY = "enforcers"
-    DISPLAY_NAME = "Enforcers / Ox"
+    DISPLAY_NAME = "The Enforcers"
 
     ZONES = ("left", "pops", "right")
     ZONE_NAMES = {

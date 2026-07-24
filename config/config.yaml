@@ -103,11 +103,16 @@ modes:
   - diana
   - cyclops
   - centaur
-  - kingpin
-  - human_flies
+  - master_plan
+  - fly_brothers
   - fifth_avenue_phantom
   - enforcers
-  - diamond_smugglers
+  - doctor_cool
+  - harley_clivendon
+  - conquistador
+  - spider_slayer
+  - metal_eating_monster
+  - fiddler
   - pardo
   - fakir
   - scarlet_sorcerer
@@ -118,30 +123,31 @@ modes:
   - professor_pretoris
   - doctor_dumpty
   - dr_von_schlick
-  - radiation_specialist
+  - clive_blotto
   - dr_zap
-  - doctor_cool
+  - voltan_boomer
   - snowman
-  - ice_monster
-  - dr_manta
-  - doctor_atlantean
-  - sky_master
   - plutonians
-  - antarcticans
+  - dr_manta
+  - igor
+  - doctor_atlantean
+  - devargas
+  - molemen
   - charles_cameo
   - brutus
-  - eigor
-  - the_fly
+  - desperado
+  - skymaster
   - swamp_reptiles
-  - phantom_from_depths_of_time
+  - sir_galahad
   - master_vine
   - master_technician
-  - micro_men
-  - grand_emperor
+  - spider_men
+  - von_rantenraven
   - sinister_surge
   - mastermind_trap
   - trubble_unleashed
-  - master_plan
+  - crime_wave
+  - the_web_tightens
   - fifth_dimension_curse
   - mad_science_meltdown
   - nature_strikes_back

@@ -1,0 +1,80 @@
+#config_version=6
+
+# Savage Oddities replacement placeholder villain mode.
+# Mode idea: Robot pirate steals jackpot value; hit lit plunder shots to take it back.
+
+mode:
+  start_events: start_mode_savage_replacement
+  stop_events:
+    - savage_replacement_mode_complete
+    - savage_replacement_mode_completed_summary
+    - ball_ended
+  code: savage_replacement.SavageReplacement
+  priority: 300
+
+widget_player:
+  mode_savage_replacement_started:
+    savage_replacement:
+      action: play
+
+  savage_replacement_mode_complete:
+    savage_replacement:
+      action: remove
+
+  mode_savage_replacement_stopping:
+    savage_replacement:
+      action: remove
+
+event_player:
+  # Common playfield hits. Refine these later when the mode design is built out.
+  s_pop_left_active: savage_replacement_shot_hit
+  s_pop_right_active: savage_replacement_shot_hit
+  s_trispinner_opto_active: savage_replacement_shot_hit
+  s_web_spinner_active: savage_replacement_shot_hit
+  s_star_rollover_active: savage_replacement_shot_hit
+  s_upper_target_left_active: savage_replacement_shot_hit
+  s_upper_target_center_active: savage_replacement_shot_hit
+  s_upper_target_right_active: savage_replacement_shot_hit
+
+  s_left_drops_1_active: savage_replacement_shot_hit
+  s_left_drops_2_active: savage_replacement_shot_hit
+  s_left_drops_3_active: savage_replacement_shot_hit
+  s_right_drops_1_active: savage_replacement_shot_hit
+  s_right_drops_2_active: savage_replacement_shot_hit
+  s_right_drops_3_active: savage_replacement_shot_hit
+  s_right_drops_4_active: savage_replacement_shot_hit
+  s_right_drops_5_active: savage_replacement_shot_hit
+
+  s_saucer_1_active:
+    - savage_replacement_major_hit
+    - clear_saucers
+  s_saucer_2_active:
+    - savage_replacement_major_hit
+    - clear_saucers
+  s_saucer_3_active:
+    - savage_replacement_major_hit
+    - clear_saucers
+  s_vuk_switch_active: savage_replacement_major_hit
+
+  drop_target_bank_dt_bank_left_down:
+    - drop_target_bank_dt_bank_left_reset
+  drop_target_bank_dt_bank_right_down:
+    - drop_target_bank_dt_bank_right_reset
+
+  mode_savage_replacement_started:
+    - rooftop_diverter_open|500ms
+    - clear_saucers
+    - drop_target_bank_dt_bank_left_reset
+    - drop_target_bank_dt_bank_right_reset
+
+  mode_savage_replacement_stopping:
+    - clear_saucers
+
+light_player:
+  # Full-playfield GI theme while this mode is active.
+  mode_savage_replacement_started:
+    gi: 70C8FF
+
+  mode_savage_replacement_stopping:
+    gi: E0E0E0
+

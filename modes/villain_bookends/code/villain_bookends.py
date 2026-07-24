@@ -15,6 +15,7 @@ class VillainBookends(Mode):
         "nature_strikes_back",
         "invasion_from_everywhere",
         "who_is_the_real_villain",
+        "the_web_tightens",
         "time_tossed_showdown",
         "final_showdown",
     }
@@ -331,23 +332,23 @@ class VillainBookends(Mode):
             'song': 'play_song_51',
         },
         # ORIGINAL DISPLAY TEXT:
-        #   intro_1: The Human Flies are framing Spider-Man.
+        #   intro_1: Skymaster Brothers are framing Spider-Man.
         #   intro_2: Hit paired wall-crawler shots before they move.
         #   intro_3: Clear both flies to stop the frame-up.
         #   stat_2_label: MAJOR HITS
-        'human_flies': {
-            'title': 'HUMAN FLIES',
+        'fly_brothers': {
+            'title': 'FLY BROTHERS',
             'intro_1': 'Stop the frame-up.',
             'intro_2': 'Hit paired shots.',
             'intro_3': 'Clear both flies.',
-            'summary_title_complete': 'HUMAN FLIES CAUGHT',
-            'summary_title_failed': 'HUMAN FLIES ESCAPED',
+            'summary_title_complete': 'FLY BROTHERS CAUGHT',
+            'summary_title_failed': 'FLY BROTHERS ESCAPED',
             'stat_1_label': 'AREAS',
             'stat_1_var': 'super_swami_areas_restored',
             'stat_2_label': 'MAJORS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
-            'state_var': 'human_flies_state',
+            'state_var': 'fly_brothers_state',
             'song': 'play_song_32',
         },
         # ORIGINAL DISPLAY TEXT:
@@ -377,8 +378,8 @@ class VillainBookends(Mode):
         #   intro_3: Collect all three, then hit OX at center web.
         #   summary_title_complete: THE GANG IS BROKEN
         'enforcers': {
-            'title': 'ENFORCERS / OX',
-            'intro_1': 'Work crime zones.',
+            'title': 'THE ENFORCERS',
+            'intro_1': 'Battle Cowboy and Ox.',
             'intro_2': 'Light upper jackpots.',
             'intro_3': 'Hit OX at center web.',
             'summary_title_complete': 'GANG BROKEN',
@@ -396,19 +397,19 @@ class VillainBookends(Mode):
         #   intro_2: Complete the 5-bank to start saucer chase.
         #   intro_3: Star rollover lights all saucers briefly.
         #   stat_2_label: BONUS BANKED
-        'diamond_smugglers': {
-            'title': 'DIAMOND SMUGGLERS',
-            'intro_1': 'Drops build Diamonds.',
-            'intro_2': '5-bank starts chase.',
-            'intro_3': 'STAR lights saucers.',
-            'summary_title_complete': 'SMUGGLERS BUSTED',
-            'summary_title_failed': 'SMUGGLERS ESCAPED',
+        'doctor_cool': {
+            'title': 'DOCTOR COOL',
+            'intro_1': 'Drops build frozen diamonds.',
+            'intro_2': '5-bank starts the shipment chase.',
+            'intro_3': 'STAR freezes all three saucers.',
+            'summary_title_complete': 'DOCTOR COOL DEFEATED',
+            'summary_title_failed': 'DIAMONDS SMUGGLED AWAY',
             'stat_1_label': 'SHIPMENTS',
             'stat_1_var': 'active_mode_major_hits',
-            'stat_2_label': 'BANKED',
+            'stat_2_label': 'DIAMONDS',
             'stat_2_var': 'diamond_bonus',
             'points_var': 'active_mode_points',
-            'state_var': 'diamond_smugglers_state',
+            'state_var': 'doctor_cool_state',
             'song': 'play_song_26',
         },
         # ORIGINAL DISPLAY TEXT:
@@ -416,6 +417,37 @@ class VillainBookends(Mode):
         #   intro_2: Complete the moving act shots.
         #   intro_3: Break the control before the act changes.
         #   stat_2_label: MAJOR HITS
+
+        'harley_clivendon': {
+            'title': 'HARLEY CLIVENDON', 'intro_1': 'Break the hypnotic spell.', 'intro_2': 'Expose the hidden scheme.', 'intro_3': 'Complete ten danger shots.',
+            'summary_title_complete': 'CLIVENDON STOPPED', 'summary_title_failed': 'CLIVENDON ESCAPED',
+            'stat_1_label': 'HITS', 'stat_1_var': 'active_mode_hits', 'stat_2_label': 'MAJOR HITS', 'stat_2_var': 'active_mode_major_hits',
+            'points_var': 'active_mode_points', 'state_var': 'harley_clivendon_state', 'song': 'play_song_11',
+        },
+        'conquistador': {
+            'title': 'THE CONQUISTADOR', 'intro_1': 'Find the hidden fort.', 'intro_2': 'Reach the Fountain of Youth.', 'intro_3': 'Complete ten danger shots.',
+            'summary_title_complete': 'FOUNTAIN SECURED', 'summary_title_failed': 'CONQUISTADOR ESCAPED',
+            'stat_1_label': 'HITS', 'stat_1_var': 'active_mode_hits', 'stat_2_label': 'MAJOR HITS', 'stat_2_var': 'active_mode_major_hits',
+            'points_var': 'active_mode_points', 'state_var': 'conquistador_state', 'song': 'play_song_12',
+        },
+        'spider_slayer': {
+            'title': 'SPIDER-SLAYER', 'intro_1': 'The Slayer is tracking you.', 'intro_2': 'Hit shots to evade capture.', 'intro_3': 'Complete ten danger shots.',
+            'summary_title_complete': 'SLAYER DESTROYED', 'summary_title_failed': 'SPIDER-MAN CAPTURED',
+            'stat_1_label': 'HITS', 'stat_1_var': 'active_mode_hits', 'stat_2_label': 'MAJOR HITS', 'stat_2_var': 'active_mode_major_hits',
+            'points_var': 'active_mode_points', 'state_var': 'spider_slayer_state', 'song': 'play_song_13',
+        },
+        'metal_eating_monster': {
+            'title': 'METAL MONSTER', 'intro_1': 'The robot is eating the city.', 'intro_2': 'Attack before it reaches the river.', 'intro_3': 'Complete ten danger shots.',
+            'summary_title_complete': 'MONSTER SCRAPPED', 'summary_title_failed': 'CITY CONSUMED',
+            'stat_1_label': 'HITS', 'stat_1_var': 'active_mode_hits', 'stat_2_label': 'MAJOR HITS', 'stat_2_var': 'active_mode_major_hits',
+            'points_var': 'active_mode_points', 'state_var': 'metal_eating_monster_state', 'song': 'play_song_14',
+        },
+        'fiddler': {
+            'title': 'FIDDLER', 'intro_1': 'Follow the dangerous melody.', 'intro_2': 'Silence the violin.', 'intro_3': 'Complete ten danger shots.',
+            'summary_title_complete': 'FIDDLER SILENCED', 'summary_title_failed': 'FIDDLER ESCAPED',
+            'stat_1_label': 'HITS', 'stat_1_var': 'active_mode_hits', 'stat_2_label': 'RANSOM', 'stat_2_var': 'fiddler_bonus',
+            'points_var': 'active_mode_points', 'state_var': 'fiddler_state', 'song': 'play_song_16',
+        },
         'pardo': {
             'title': 'PARDO',
             'intro_1': 'Five-shot Hypnosis Reel.',
@@ -436,12 +468,12 @@ class VillainBookends(Mode):
         #   intro_2: Lock a saucer ball to open the roof and reveal the real ruby.
         #   intro_3: Collect three Ruby Jackpots, then the fourth reveal is Super.
         'fakir': {
-            'title': 'THE FAKIR',
-            'intro_1': '2-Ball Ruby Heist.',
+            'title': 'THE FANTASTIC FAKIR',
+            'intro_1': 'The Fantastic Fakir begins his Ruby Heist.',
             'intro_2': 'Saucer reveals upper ruby.',
             'intro_3': '3 Rubies light Super.',
-            'summary_title_complete': 'FAKIR DEFEATED',
-            'summary_title_failed': 'FAKIR ESCAPED',
+            'summary_title_complete': 'FANTASTIC FAKIR DEFEATED',
+            'summary_title_failed': 'FANTASTIC FAKIR ESCAPED',
             'stat_1_label': 'RUBIES',
             'stat_1_var': 'active_mode_hits',
             'stat_2_label': 'SUPERS',
@@ -456,12 +488,12 @@ class VillainBookends(Mode):
         #   intro_3: Complete the pattern before the curse spreads.
         #   stat_2_label: MAJOR HITS
         'scarlet_sorcerer': {
-            'title': 'SCARLET SORCERER',
-            'intro_1': 'Sorcery spreads.',
+            'title': 'KOTEP - THE SCARLET SORCERER',
+            'intro_1': 'Kotep, the Scarlet Sorcerer, summons his demons.',
             'intro_2': 'Hit mystic shots.',
             'intro_3': 'Break the curse.',
-            'summary_title_complete': 'SORCERER DEFEATED',
-            'summary_title_failed': 'SORCERER ESCAPED',
+            'summary_title_complete': 'KOTEP DEFEATED',
+            'summary_title_failed': 'KOTEP ESCAPED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
             'stat_2_label': 'MAJORS',
@@ -611,24 +643,24 @@ class VillainBookends(Mode):
             'song': 'play_song_8',
         },
         # ORIGINAL DISPLAY TEXT:
-        #   title: RADIATION SPECIALIST
-        #   intro_1: Radiation is spreading across the city.
-        #   intro_2: Hit charged shots to contain it.
-        #   intro_3: Finish the sequence before the warning peaks.
+        #   title: CLIVE AND BLOTTO
+        #   intro_1: Clive unleashes the shape-changing Blotto.
+        #   intro_2: Hit containment shots before it spreads.
+        #   intro_3: Trap the creature and stop the rampage.
         #   stat_2_label: BONUS BANKED
-        'radiation_specialist': {
-            'title': 'RADIATION',
-            'intro_1': 'Radiation spreads.',
-            'intro_2': 'Hit charged shots.',
-            'intro_3': 'Contain the warning.',
-            'summary_title_complete': 'RADIATION CONTAINED',
-            'summary_title_failed': 'RADIATION ESCAPED',
+        'clive_blotto': {
+            'title': 'CLIVE AND BLOTTO',
+            'intro_1': 'Blotto is spreading.',
+            'intro_2': 'Hit containment shots.',
+            'intro_3': 'Trap the creature.',
+            'summary_title_complete': 'BLOTTO CONTAINED',
+            'summary_title_failed': 'BLOTTO ESCAPED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
             'stat_2_label': 'BANKED',
-            'stat_2_var': 'radiation_bonus',
+            'stat_2_var': 'blotto_bonus',
             'points_var': 'active_mode_points',
-            'state_var': 'radiation_specialist_state',
+            'state_var': 'clive_blotto_state',
             'song': 'play_song_15',
         },
         # ORIGINAL DISPLAY TEXT:
@@ -637,12 +669,12 @@ class VillainBookends(Mode):
         #   intro_3: Break the circuit before it overloads.
         #   stat_2_label: MAJOR HITS
         'dr_zap': {
-            'title': 'DR. ZAP',
+            'title': 'DOCTOR ZAPP',
             'intro_1': 'Zap chains shots.',
             'intro_2': 'Follow the charge.',
             'intro_3': 'Break the circuit.',
-            'summary_title_complete': 'DR. ZAP DEFEATED',
-            'summary_title_failed': 'DR. ZAP ESCAPED',
+            'summary_title_complete': 'DOCTOR ZAPP DEFEATED',
+            'summary_title_failed': 'DOCTOR ZAPP ESCAPED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
             'stat_2_label': 'MAJORS',
@@ -652,23 +684,23 @@ class VillainBookends(Mode):
             'song': 'play_song_38',
         },
         # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Doctor Cool freezes timers and shots.
-        #   intro_2: Thaw the lit shots with spinner and targets.
-        #   intro_3: Cash the jackpot before everything freezes.
+        #   intro_1: Voltan and Boomer hide their robberies inside a violent storm.
+        #   intro_2: Follow the thunder and stop the next strike.
+        #   intro_3: Break up the scheme before the storm passes.
         #   stat_2_label: MAJOR HITS
-        'doctor_cool': {
-            'title': 'DOCTOR COOL',
-            'intro_1': 'Cool freezes shots.',
-            'intro_2': 'Thaw with spinner.',
-            'intro_3': 'Cash before freeze.',
-            'summary_title_complete': 'DOCTOR COOL DEFEATED',
-            'summary_title_failed': 'DOCTOR COOL ESCAPED',
+        'voltan_boomer': {
+            'title': 'VOLTAN AND BOOMER',
+            'intro_1': 'Thunder hides crimes.',
+            'intro_2': 'Follow the storm.',
+            'intro_3': 'Stop the next strike.',
+            'summary_title_complete': 'THUNDER RUMBLE STOPPED',
+            'summary_title_failed': 'VOLTAN AND BOOMER ESCAPED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
             'stat_2_label': 'MAJORS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
-            'state_var': 'doctor_cool_state',
+            'state_var': 'voltan_boomer_state',
             'song': 'play_song_8',
         },
         # ORIGINAL DISPLAY TEXT:
@@ -692,23 +724,23 @@ class VillainBookends(Mode):
             'song': 'play_song_39',
         },
         # ORIGINAL DISPLAY TEXT:
-        #   intro_1: The Ice Monster blocks the city in frozen chaos.
+        #   intro_1: The Plutonians blocks the city in frozen chaos.
         #   intro_2: Hit thaw shots to open scoring.
         #   intro_3: Collect the jackpot before everything freezes.
         #   stat_2_label: MAJOR HITS
-        'ice_monster': {
-            'title': 'THE ICE MONSTER',
+        'plutonians': {
+            'title': 'THE PLUTONIANS',
             'intro_1': 'Ice blocks the city.',
             'intro_2': 'Hit thaw shots.',
-            'intro_3': 'Cash before freeze.',
-            'summary_title_complete': 'ICE MONSTER STOPPED',
-            'summary_title_failed': 'ICE MONSTER ESCAPED',
+            'intro_3': 'Restore their escape.',
+            'summary_title_complete': 'PLUTONIANS STOPPED',
+            'summary_title_failed': 'PLUTONIANS STRANDED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
             'stat_2_label': 'MAJORS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
-            'state_var': 'ice_monster_state',
+            'state_var': 'plutonians_state',
             'song': 'play_song_42',
         },
         # ORIGINAL DISPLAY TEXT:
@@ -752,63 +784,63 @@ class VillainBookends(Mode):
             'song': 'play_song_16',
         },
         # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Sky Master attacks from above the clouds.
+        #   intro_1: Desperado attacks from above the clouds.
         #   intro_2: Find the moving flight path.
         #   intro_3: Hit the lit shots and ground his aircraft.
         #   stat_2_label: MAJOR HITS
-        'sky_master': {
-            'title': 'SKY MASTER',
-            'intro_1': 'Attack from above.',
-            'intro_2': 'Find flight path.',
-            'intro_3': 'Ground his aircraft.',
-            'summary_title_complete': 'SKY MASTER GROUNDED',
-            'summary_title_failed': 'SKY MASTER ESCAPED',
+        'desperado': {
+            'title': 'DESPERADO',
+            'intro_1': 'Desperado rides again.',
+            'intro_2': 'Break his hypnosis.',
+            'intro_3': 'Stop the flying horse.',
+            'summary_title_complete': 'DESPERADO CAPTURED',
+            'summary_title_failed': 'DESPERADO ESCAPED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
             'stat_2_label': 'MAJORS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
-            'state_var': 'sky_master_state',
+            'state_var': 'desperado_state',
             'song': 'play_song_41',
         },
         # ORIGINAL DISPLAY TEXT:
-        #   intro_1: The Plutonians have landed.
+        #   intro_1: A replacement Lost Worlds villain has not been selected yet.
         #   intro_2: Hit invasion shots before they reposition.
         #   intro_3: Stop the attack and save the city.
         #   stat_2_label: BONUS BANKED
-        'plutonians': {
-            'title': 'THE PLUTONIANS',
-            'intro_1': 'Plutonians invade.',
-            'intro_2': 'Hit invasion shots.',
-            'intro_3': 'Stop the attack.',
-            'summary_title_complete': 'PLUTONIANS REPELLED',
-            'summary_title_failed': 'PLUTONIANS ESCAPED',
+        'devargas': {
+            'title': 'DEVARGAS',
+            'intro_1': 'Cloud City is hidden.',
+            'intro_2': 'Defeat the gold eagle.',
+            'intro_3': 'Escape with the secret.',
+            'summary_title_complete': 'DEVARGAS DEFEATED',
+            'summary_title_failed': 'DEVARGAS ESCAPED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
             'stat_2_label': 'BANKED',
-            'stat_2_var': 'plutonians_bonus',
+            'stat_2_var': 'devargas_bonus',
             'points_var': 'active_mode_points',
-            'state_var': 'plutonians_state',
+            'state_var': 'devargas_state',
             'song': 'play_song_52',
         },
         # ORIGINAL DISPLAY TEXT:
-        #   intro_1: The Antarcticans strike from the ice.
+        #   intro_1: Molemen strike from the ice.
         #   intro_2: Hit rescue shots before the freeze spreads.
         #   intro_3: Finish the sequence and escape the trap.
         #   stat_2_label: MAJOR HITS
-        'antarcticans': {
-            'title': 'THE ANTARCTICANS',
-            'intro_1': 'Ice invaders strike.',
-            'intro_2': 'Hit rescue shots.',
-            'intro_3': 'Escape the freeze.',
-            'summary_title_complete': 'ANTARCTICANS STOPPED',
-            'summary_title_failed': 'ANTARCTICANS ESCAPED',
+        'molemen': {
+            'title': 'MOLEMEN',
+            'intro_1': 'Molemen rise below.',
+            'intro_2': 'Seal the tunnels.',
+            'intro_3': 'Stop Mugs Reilly.',
+            'summary_title_complete': 'MOLEMEN STOPPED',
+            'summary_title_failed': 'MOLEMEN ESCAPED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
             'stat_2_label': 'MAJORS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
-            'state_var': 'antarcticans_state',
+            'state_var': 'molemen_state',
             'song': 'play_song_42',
         },
         # ORIGINAL DISPLAY TEXT:
@@ -852,43 +884,43 @@ class VillainBookends(Mode):
             'song': 'play_song_52',
         },
         # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Eigor is smashing through the city.
+        #   intro_1: Igor is smashing through the city.
         #   intro_2: Hit heavy shots to wear him down.
         #   intro_3: Collect the jackpot before he escapes.
         #   stat_2_label: MAJOR HITS
-        'eigor': {
-            'title': 'EIGOR',
-            'intro_1': 'Eigor smashes city.',
+        'igor': {
+            'title': 'IGOR',
+            'intro_1': 'Igor smashes city.',
             'intro_2': 'Hit heavy shots.',
             'intro_3': 'Cash before escape.',
-            'summary_title_complete': 'EIGOR STOPPED',
-            'summary_title_failed': 'EIGOR ESCAPED',
+            'summary_title_complete': 'IGOR STOPPED',
+            'summary_title_failed': 'IGOR ESCAPED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
             'stat_2_label': 'MAJORS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
-            'state_var': 'eigor_state',
+            'state_var': 'igor_state',
             'song': 'play_song_43',
         },
         # ORIGINAL DISPLAY TEXT:
-        #   intro_1: The Fly crawls across the city walls.
+        #   intro_1: Skymaster crawls across the city walls.
         #   intro_2: Track the moving shot and cut him off.
         #   intro_3: Catch him before he slips away.
         #   stat_2_label: MAJOR HITS
-        'the_fly': {
-            'title': 'THE FLY',
-            'intro_1': 'SAUCERS OPEN GATE.',
-            'intro_2': 'HIT 3 ROOF TARGETS.',
+        'skymaster': {
+            'title': 'SKYMASTER',
+            'intro_1': 'SAUCERS REACH THE BLIMP.',
+            'intro_2': 'HIT 3 UPPER TARGETS.',
             'intro_3': 'REMAINING FLIPS BOOST SUPER.',
-            'summary_title_complete': 'FLY CAUGHT',
-            'summary_title_failed': 'FLY ESCAPED',
+            'summary_title_complete': 'SKYMASTER GROUNDED',
+            'summary_title_failed': 'SKYMASTER ESCAPED',
             'stat_1_label': 'JACKPOTS',
             'stat_1_var': 'active_mode_hits',
             'stat_2_label': '',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
-            'state_var': 'the_fly_state',
+            'state_var': 'skymaster_state',
             'song': 'play_song_9',
         },
         # ORIGINAL DISPLAY TEXT:
@@ -919,7 +951,7 @@ class VillainBookends(Mode):
         #   summary_title_complete: PHANTOM DEFEATED
         #   summary_title_failed: PHANTOM ESCAPED
         #   stat_2_label: MAJOR HITS
-        'phantom_from_depths_of_time': {
+        'sir_galahad': {
             'title': 'TIME PHANTOM',
             'intro_1': 'Time Phantom rises.',
             'intro_2': 'Follow time shots.',
@@ -931,7 +963,7 @@ class VillainBookends(Mode):
             'stat_2_label': 'MAJORS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
-            'state_var': 'phantom_from_depths_of_time_state',
+            'state_var': 'sir_galahad_state',
             'song': 'play_song_11',
         },
         # ORIGINAL DISPLAY TEXT:
@@ -976,34 +1008,34 @@ class VillainBookends(Mode):
             'song': 'play_song_45',
         },
         # ORIGINAL DISPLAY TEXT:
-        #   intro_1: The Micro-Men attack from every direction.
+        #   intro_1: The The Spider-Men attack from every direction.
         #   intro_2: Hit tiny targets before they scatter.
         #   intro_3: Clear the swarm and restore the scale.
         #   stat_2_label: MAJOR HITS
-        'micro_men': {
-            'title': 'MICRO-MEN',
-            'intro_1': 'Micro-Men swarm.',
+        'spider_men': {
+            'title': 'SPIDER-MEN',
+            'intro_1': 'The Spider-Men swarm.',
             'intro_2': 'Hit tiny targets.',
             'intro_3': 'Clear the attack.',
-            'summary_title_complete': 'MICRO-MEN STOPPED',
-            'summary_title_failed': 'MICRO-MEN ESCAPED',
+            'summary_title_complete': 'SPIDER-MEN STOPPED',
+            'summary_title_failed': 'SPIDER-MEN ESCAPED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
             'stat_2_label': 'MAJORS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
-            'state_var': 'micro_men_state',
+            'state_var': 'spider_men_state',
             'song': 'play_song_12',
         },
         # ORIGINAL DISPLAY TEXT:
-        #   intro_1: The Grand Emperor commands the final attack.
+        #   intro_1: The Baron Von Rantenraven commands the final attack.
         #   intro_2: Hit invasion shots in order.
         #   intro_3: Stop the command signal before it completes.
         #   stat_2_label: MAJOR HITS
-        'grand_emperor': {
-            'title': 'GRAND EMPEROR',
+        'von_rantenraven': {
+            'title': 'RANTENRAVEN',
             'intro_1': 'Emperor commands all.',
-            'intro_2': 'Hit invasion shots.',
+            'intro_2': 'Identity to be chosen.',
             'intro_3': 'Stop the signal.',
             'summary_title_complete': 'EMPEROR DEFEATED',
             'summary_title_failed': 'EMPEROR ESCAPED',
@@ -1012,7 +1044,7 @@ class VillainBookends(Mode):
             'stat_2_label': 'MAJORS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
-            'state_var': 'grand_emperor_state',
+            'state_var': 'von_rantenraven_state',
             'song': 'play_song_46',
         },
         # ORIGINAL DISPLAY TEXT:
@@ -1077,24 +1109,36 @@ class VillainBookends(Mode):
         #   intro_2: Build headlines and cash Daily Bugle supers.
         #   intro_3: Chapter case files raise the values.
         'master_plan': {
-            'title': 'THE PLOTTER - MASTER PLAN',
-            'intro_1': 'Decode the scheme.',
-            'intro_2': 'Build headlines.',
-            'intro_3': 'Cash Bugle supers.',
+            'title': "THE PLOTTER",
+            'intro_1': 'Pops build information.',
+            'intro_2': 'Spinner reveals a scheme.',
+            'intro_3': 'Stop three, then shoot the VUK.',
             'summary_title_complete': 'MASTER PLAN EXPOSED',
             'summary_title_failed': 'PLOTTER ESCAPED',
-            'stat_1_label': 'HEADLINES',
-            'stat_1_var': 'master_plan_headlines_collected',
-            'stat_2_label': 'SUPERS',
-            'stat_2_var': 'master_plan_super_collected',
+            'stat_1_label': 'INFORMATION',
+            'stat_1_var': 'active_mode_hits',
+            'stat_2_label': 'SCHEMES',
+            'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'master_plan_state',
             'song': 'play_song_43',
         },
         # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Chapter 5 mini-wizard multiball.
+        #   intro_1: Chapter 7 mini-wizard multiball.
         #   intro_2: Break the curse during multiball.
         #   intro_3: Chapter case files raise the values.
+
+        'the_web_tightens': {
+            'title': 'THE WEB TIGHTENS',
+            'intro_1': 'Five hidden threats return.',
+            'intro_2': 'Survive Danger Lurks multiball.',
+            'intro_3': 'Every case file boosts jackpots.',
+            'summary_title_complete': 'THE WEB BROKEN',
+            'summary_title_failed': 'THE WEB TIGHTENS',
+            'stat_1_label': 'HITS', 'stat_1_var': 'active_mode_hits',
+            'stat_2_label': 'STATE', 'stat_2_var': 'the_web_tightens_state',
+            'points_var': 'active_mode_points', 'state_var': 'the_web_tightens_state', 'song': 'play_song_17',
+        },
         'fifth_dimension_curse': {
             'title': 'FIFTH DIMENSION CURSE',
             'intro_1': 'Three-ball multiball.',

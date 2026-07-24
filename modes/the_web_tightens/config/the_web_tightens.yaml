@@ -1,0 +1,107 @@
+#config_version=6
+
+# The Web Tightens placeholder mini-wizard.
+# Danger Lurks mini-wizard multiball.
+# Temporary flow: intro -> 2-ball multiball -> MB end -> summary -> next chapter.
+
+mode:
+  start_events: start_mode_the_web_tightens
+  stop_events:
+    - stop_mode_the_web_tightens
+    - ball_ended
+  code: the_web_tightens.TheWebTightens
+  priority: 800
+
+multiballs:
+  the_web_tightens_multiball:
+    ball_count: 2
+    ball_count_type: total
+    shoot_again: 15s
+    start_events: the_web_tightens_start_multiball
+    stop_events:
+      - stop_mode_the_web_tightens
+
+variable_player:
+  multiball_the_web_tightens_multiball_started:
+    multiball_autoplunge_active:
+      action: set
+      int: 1
+
+  multiball_the_web_tightens_multiball_ended:
+    multiball_autoplunge_active:
+      action: set
+      int: 0
+
+widget_player:
+  mode_the_web_tightens_started:
+    the_web_tightens:
+      action: play
+
+  the_web_tightens_mode_complete:
+    the_web_tightens:
+      action: remove
+
+  mode_the_web_tightens_stopping:
+    the_web_tightens:
+      action: remove
+
+  stop_mode_the_web_tightens:
+    the_web_tightens:
+      action: remove
+
+event_player:
+  s_pop_left_active: the_web_tightens_shot_hit
+  s_pop_right_active: the_web_tightens_shot_hit
+  s_trispinner_opto_active: the_web_tightens_shot_hit
+  s_web_spinner_active: the_web_tightens_shot_hit
+  s_star_rollover_active: the_web_tightens_shot_hit
+  s_upper_target_left_active: the_web_tightens_shot_hit
+  s_upper_target_center_active: the_web_tightens_shot_hit
+  s_upper_target_right_active: the_web_tightens_shot_hit
+  s_left_drops_1_active: the_web_tightens_shot_hit
+  s_left_drops_2_active: the_web_tightens_shot_hit
+  s_left_drops_3_active: the_web_tightens_shot_hit
+  s_right_drops_1_active: the_web_tightens_shot_hit
+  s_right_drops_2_active: the_web_tightens_shot_hit
+  s_right_drops_3_active: the_web_tightens_shot_hit
+  s_right_drops_4_active: the_web_tightens_shot_hit
+  s_right_drops_5_active: the_web_tightens_shot_hit
+  s_saucer_1_active:
+    the_web_tightens_shot_hit:
+    delayed_kickout_saucer_1:
+  s_saucer_2_active:
+    the_web_tightens_shot_hit:
+    delayed_kickout_saucer_2:
+  s_saucer_3_active:
+    the_web_tightens_shot_hit:
+    delayed_kickout_saucer_3:
+  s_vuk_switch_active:
+    - the_web_tightens_shot_hit
+    - up_kick|1.5s
+
+  multiball_the_web_tightens_multiball_ended: the_web_tightens_complete_request
+
+  mode_the_web_tightens_started:
+    - rooftop_diverter_open|500ms
+    - disable_daily_bugle_mystery
+    - clear_saucers_delayed
+    - drop_target_bank_dt_bank_left_reset
+    - drop_target_bank_dt_bank_right_reset
+
+  mode_the_web_tightens_stopping:
+    - enable_daily_bugle_mystery
+    - daily_bugle_restore_state
+    - clear_saucers_delayed
+
+  # Keep mini-wizard drop banks playable after they are completed.
+  drop_target_bank_dt_bank_left_down: drop_target_bank_dt_bank_left_reset
+  drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset
+
+light_player:
+  # Full-playfield GI theme while this mode is active.
+  mode_the_web_tightens_started:
+    gi: 8060FF
+
+  mode_the_web_tightens_stopping:
+    gi: E0E0E0
+

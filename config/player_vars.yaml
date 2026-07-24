@@ -90,6 +90,12 @@ player_vars:
   chapter_10_collected:
     initial_value: 0
     value_type: int
+  chapter_11_unlocked:
+    initial_value: 0
+    value_type: int
+  chapter_11_collected:
+    initial_value: 0
+    value_type: int
   chapter_select_left_visible:
     initial_value: 0
     value_type: int
@@ -291,6 +297,9 @@ player_vars:
   fifth_avenue_phantom_state:
     initial_value: 0
     value_type: int
+  crime_wave_state:
+    initial_value: 0
+
   master_plan_state:
     initial_value: 0
     value_type: int
@@ -306,7 +315,7 @@ player_vars:
   dr_manta_state:
     initial_value: 0
     value_type: int
-  doctor_cool_state:
+  voltan_boomer_state:
     initial_value: 0
     value_type: int
   dr_zap_state:
@@ -360,10 +369,10 @@ player_vars:
   blotto_state:
     initial_value: 0
     value_type: int
-  diamond_smugglers_state:
+  doctor_cool_state:
     initial_value: 0
     value_type: int
-  human_flies_state:
+  fly_brothers_state:
     initial_value: 0
     value_type: int
   charles_cameo_state:
@@ -630,16 +639,19 @@ player_vars:
   diamond_bonus:
     initial_value: 0
     value_type: int
+  fiddler_bonus:
+    initial_value: 0
+    value_type: int
   super_swami_bonus:
     initial_value: 0
     value_type: int
   dumpty_bonus:
     initial_value: 0
     value_type: int
-  radiation_bonus:
+  blotto_bonus:
     initial_value: 0
     value_type: int
-  plutonians_bonus:
+  devargas_bonus:
     initial_value: 0
     value_type: int
   swamp_bonus:
@@ -756,55 +768,55 @@ player_vars:
   final_showdown_state:
     initial_value: 0
     value_type: int
-  human_flies_round:
+  fly_brothers_round:
     initial_value: 0
     value_type: int
-  human_flies_rounds_completed:
+  fly_brothers_rounds_completed:
     initial_value: 0
     value_type: int
-  human_flies_captures:
+  fly_brothers_captures:
     initial_value: 0
     value_type: int
-  human_flies_super_jackpots:
+  fly_brothers_super_jackpots:
     initial_value: 0
     value_type: int
-  human_flies_jackpots:
+  fly_brothers_jackpots:
     initial_value: 0
     value_type: int
-  human_flies_spinner_hits:
+  fly_brothers_spinner_hits:
     initial_value: 0
     value_type: int
-  human_flies_base_jackpot:
+  fly_brothers_base_jackpot:
     initial_value: 0
     value_type: int
-  human_flies_lit_saucers:
+  fly_brothers_lit_saucers:
     initial_value: 0
     value_type: int
-  human_flies_multiplier:
+  fly_brothers_multiplier:
     initial_value: 0
     value_type: int
-  human_flies_last_award:
+  fly_brothers_last_award:
     initial_value: 0
     value_type: int
-  human_flies_shot_assist_used:
+  fly_brothers_shot_assist_used:
     initial_value: 0
     value_type: int
-  human_flies_upper_left_hit:
+  fly_brothers_upper_left_hit:
     initial_value: 0
     value_type: int
-  human_flies_upper_center_hit:
+  fly_brothers_upper_center_hit:
     initial_value: 0
     value_type: int
-  human_flies_upper_right_hit:
+  fly_brothers_upper_right_hit:
     initial_value: 0
     value_type: int
-  human_flies_saucer_1_lit:
+  fly_brothers_saucer_1_lit:
     initial_value: 0
     value_type: int
-  human_flies_saucer_2_lit:
+  fly_brothers_saucer_2_lit:
     initial_value: 0
     value_type: int
-  human_flies_saucer_3_lit:
+  fly_brothers_saucer_3_lit:
     initial_value: 0
     value_type: int
   super_swami_state:
@@ -816,40 +828,34 @@ player_vars:
   dr_von_schlick_state:
     initial_value: 0
     value_type: int
-  radiation_specialist_state:
-    initial_value: 0
-    value_type: int
-  ice_monster_state:
-    initial_value: 0
-    value_type: int
-  doctor_atlantean_state:
-    initial_value: 0
-    value_type: int
-  sky_master_state:
+  clive_blotto_state:
     initial_value: 0
     value_type: int
   plutonians_state:
     initial_value: 0
     value_type: int
-  antarcticans_state:
+  doctor_atlantean_state:
+    initial_value: 0
+    value_type: int
+  molemen_state:
     initial_value: 0
     value_type: int
   brutus_state:
     initial_value: 0
     value_type: int
-  eigor_state:
+  igor_state:
     initial_value: 0
     value_type: int
-  the_fly_state:
+  skymaster_state:
     initial_value: 0
     value_type: int
-  phantom_from_depths_of_time_state:
+  sir_galahad_state:
     initial_value: 0
     value_type: int
-  micro_men_state:
+  spider_men_state:
     initial_value: 0
     value_type: int
-  grand_emperor_state:
+  von_rantenraven_state:
     initial_value: 0
     value_type: int
   invasion_from_everywhere_state:
@@ -862,10 +868,6 @@ player_vars:
   master_technician_spinner_value:
     initial_value: 0
   master_technician_multiplier:
-    initial_value: 0
-  master_plan_headlines_collected:
-    initial_value: 0
-  master_plan_super_collected:
     initial_value: 0
   trubble_unleashed_saucer_jackpot:
     initial_value: 0
@@ -1004,5 +1006,19 @@ player_vars:
     initial_value: 0
     value_type: int
   active_mode_major_hits:
+    initial_value: 0
+    value_type: int
+
+# Chapter 5 - Danger Lurks
+  harley_clivendon_state:
+    initial_value: 0
+    value_type: int
+  conquistador_state:
+    initial_value: 0
+    value_type: int
+  fiddler_state:
+    initial_value: 0
+    value_type: int
+  the_web_tightens_state:
     initial_value: 0
     value_type: int

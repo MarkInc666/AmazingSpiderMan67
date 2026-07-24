@@ -1,0 +1,209 @@
+#config_version=6
+
+# Skymaster — Blimp Assault.
+# Saucers open the roof gate. Entering the upper playfield starts a limited-flip
+# attack on his blimp by hitting all three upper targets. Remaining flips boost the Super.
+
+mode:
+  start_events: start_mode_skymaster
+  stop_events:
+    - skymaster_mode_complete
+    - skymaster_mode_completed_summary
+    - ball_ended
+  code: skymaster.Skymaster
+  priority: 300
+
+widget_player:
+  mode_skymaster_started:
+    skymaster:
+      action: play
+
+  skymaster_mode_complete:
+    skymaster:
+      action: remove
+
+  mode_skymaster_stopping:
+    skymaster:
+      action: remove
+
+event_player:
+  mode_skymaster_started:
+    - disable_daily_bugle_mystery
+    - rooftop_diverter_close
+    - clear_saucers
+    - drop_target_bank_dt_bank_left_reset
+    - drop_target_bank_dt_bank_right_reset
+
+  mode_skymaster_stopping:
+    - enable_daily_bugle_mystery
+    - daily_bugle_restore_state
+    - cmd_upper_flippers_enable
+    - rooftop_diverter_close
+    - clear_saucers
+    - skymaster_all_lights_off
+    - skymaster_stop_all_shows
+
+  drop_target_bank_dt_bank_left_down:
+    - drop_target_bank_dt_bank_left_reset
+
+  drop_target_bank_dt_bank_right_down:
+    - drop_target_bank_dt_bank_right_reset
+
+show_player:
+  skymaster_target_left_needed:
+    skymaster_upper_left_pulse:
+      loops: -1
+  skymaster_target_center_needed:
+    skymaster_upper_center_pulse:
+      loops: -1
+  skymaster_target_right_needed:
+    skymaster_upper_right_pulse:
+      loops: -1
+
+  skymaster_target_left_solid:
+    skymaster_upper_left_pulse:
+      action: stop
+  skymaster_target_center_solid:
+    skymaster_upper_center_pulse:
+      action: stop
+  skymaster_target_right_solid:
+    skymaster_upper_right_pulse:
+      action: stop
+
+  skymaster_target_left_off:
+    skymaster_upper_left_pulse:
+      action: stop
+  skymaster_target_center_off:
+    skymaster_upper_center_pulse:
+      action: stop
+  skymaster_target_right_off:
+    skymaster_upper_right_pulse:
+      action: stop
+
+  skymaster_targets_off:
+    skymaster_upper_left_pulse:
+      action: stop
+    skymaster_upper_center_pulse:
+      action: stop
+    skymaster_upper_right_pulse:
+      action: stop
+
+  skymaster_all_lights_off:
+    skymaster_upper_left_pulse:
+      action: stop
+    skymaster_upper_center_pulse:
+      action: stop
+    skymaster_upper_right_pulse:
+      action: stop
+
+  skymaster_stop_all_shows:
+    skymaster_upper_left_pulse:
+      action: stop
+    skymaster_upper_center_pulse:
+      action: stop
+    skymaster_upper_right_pulse:
+      action: stop
+
+  skymaster_roof_attempt_complete:
+    skymaster_roof_super_flash:
+      loops: 2
+
+light_player:
+  # Full-playfield GI theme while this mode is active.
+  mode_skymaster_started:
+    gi: B8FF20
+
+  mode_skymaster_stopping:
+    gi: E0E0E0
+
+  skymaster_saucers_needed:
+    l_1: green
+    l_2: green
+    l_3: green
+
+  skymaster_saucers_off:
+    l_1: off
+    l_2: off
+    l_3: off
+
+  skymaster_target_left_solid:
+    l_upper_left: white
+  skymaster_target_center_solid:
+    l_upper_middle: white
+  skymaster_target_right_solid:
+    l_upper_right: white
+
+  skymaster_target_left_off:
+    l_upper_left: off
+  skymaster_target_center_off:
+    l_upper_middle: off
+  skymaster_target_right_off:
+    l_upper_right: off
+
+  skymaster_targets_off:
+    l_upper_left: off
+    l_upper_middle: off
+    l_upper_right: off
+
+  skymaster_all_lights_off:
+    l_1: off
+    l_2: off
+    l_3: off
+    l_upper_left: off
+    l_upper_middle: off
+    l_upper_right: off
+
+shows:
+  skymaster_upper_left_pulse:
+    - duration: 100ms
+      lights:
+        l_upper_left: FFFFFF
+    - duration: 100ms
+      lights:
+        l_upper_left: DDFF66
+    - duration: 100ms
+      lights:
+        l_upper_left: AAFF00
+    - duration: 100ms
+      lights:
+        l_upper_left: DDFF66
+
+  skymaster_upper_center_pulse:
+    - duration: 100ms
+      lights:
+        l_upper_middle: FFFFFF
+    - duration: 100ms
+      lights:
+        l_upper_middle: DDFF66
+    - duration: 100ms
+      lights:
+        l_upper_middle: AAFF00
+    - duration: 100ms
+      lights:
+        l_upper_middle: DDFF66
+
+  skymaster_upper_right_pulse:
+    - duration: 100ms
+      lights:
+        l_upper_right: FFFFFF
+    - duration: 100ms
+      lights:
+        l_upper_right: DDFF66
+    - duration: 100ms
+      lights:
+        l_upper_right: AAFF00
+    - duration: 100ms
+      lights:
+        l_upper_right: DDFF66
+
+  skymaster_roof_super_flash:
+    - duration: 100ms
+      lights:
+        l_upper_left: FFFFFF
+        l_upper_middle: FFFFFF
+        l_upper_right: FFFFFF
+    - duration: 100ms
+      lights:
+        l_upper_left: off
+        l_upper_middle: off
+        l_upper_right: off

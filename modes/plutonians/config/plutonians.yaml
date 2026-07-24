@@ -1,7 +1,7 @@
 #config_version=6
 
-# Jesse James Robot placeholder villain mode.
-# Mode idea: Lit target appears briefly; hit before it moves to win quickdraw jackpots.
+# Metal-Eating Monster placeholder villain mode.
+# Mode idea: Monster eats metal targets; hit repair shots or lose scoring areas temporarily.
 
 mode:
   start_events: start_mode_plutonians
@@ -73,7 +73,7 @@ event_player:
 light_player:
   # Full-playfield GI theme while this mode is active.
   mode_plutonians_started:
-    gi: 50FF80
+    gi: 80C8FF
 
   mode_plutonians_stopping:
     gi: E0E0E0

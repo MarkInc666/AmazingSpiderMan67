@@ -1,10 +1,10 @@
 from mpf.core.mode import Mode
 
 """
-Jesse James Robot placeholder villain mode.
+Metal-Eating Monster placeholder villain mode.
 
 Mode idea:
-Lit target appears briefly; hit before it moves to win quickdraw jackpots.
+Monster eats metal targets; hit repair shots or lose scoring areas temporarily.
 
 PLACEHOLDER IMPLEMENTATION
 - Python owns scoring, mode state, player variables, and completion/failure.
@@ -15,7 +15,7 @@ PLACEHOLDER IMPLEMENTATION
 
 class Plutonians(Mode):
     MODE_KEY = "plutonians"
-    DISPLAY_NAME = "Jesse James Robot"
+    DISPLAY_NAME = "Metal-Eating Monster"
     HIT_SCORE = 25_000
     MAJOR_SCORE = 75_000
     HITS_TO_COMPLETE = 10

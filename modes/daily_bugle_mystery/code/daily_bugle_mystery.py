@@ -64,16 +64,17 @@ class DailyBugleMystery(Mode):
     # remains the source of truth for actually starting modes; this is only used
     # to avoid selecting mystery awards that cannot do anything right now.
     CHAPTER_VILLAINS = {
-        1: ("rhino", "sandman", "vulture", "lizard", "electro"),
-        2: ("goblin", "doc_ock", "mysterio", "scorpion", "parafino"),
-        3: ("cerberus", "vulcan", "diana", "cyclops", "centaur"),
-        4: ("kingpin", "human_flies", "fifth_avenue_phantom", "enforcers", "diamond_smugglers"),
-        5: ("pardo", "fakir", "scarlet_sorcerer", "super_swami", "infinata"),
-        6: ("noah_boddy", "dr_magneto", "professor_pretoris", "doctor_dumpty", "dr_von_schlick"),
-        7: ("radiation_specialist", "dr_zap", "doctor_cool", "snowman", "ice_monster"),
-        8: ("dr_manta", "doctor_atlantean", "sky_master", "plutonians", "antarcticans"),
-        9: ("charles_cameo", "brutus", "eigor", "the_fly", "swamp_reptiles"),
-        10: ("phantom_from_depths_of_time", "master_vine", "master_technician", "micro_men", "grand_emperor"),
+        1: ('rhino', 'sandman', 'vulture', 'lizard', 'electro'),
+        2: ('goblin', 'doc_ock', 'mysterio', 'scorpion', 'parafino'),
+        3: ('cerberus', 'vulcan', 'diana', 'cyclops', 'centaur'),
+        4: ('master_plan', 'fly_brothers', 'fifth_avenue_phantom', 'enforcers', 'doctor_cool'),
+        5: ('harley_clivendon', 'conquistador', 'spider_slayer', 'metal_eating_monster', 'fiddler'),
+        6: ('pardo', 'fakir', 'scarlet_sorcerer', 'super_swami', 'infinata'),
+        7: ('noah_boddy', 'dr_magneto', 'professor_pretoris', 'doctor_dumpty', 'dr_von_schlick'),
+        8: ('clive_blotto', 'dr_zap', 'voltan_boomer', 'snowman', 'plutonians'),
+        9: ('dr_manta', 'igor', 'doctor_atlantean', 'devargas', 'molemen'),
+        10: ('charles_cameo', 'brutus', 'desperado', 'skymaster', 'swamp_reptiles'),
+        11: ('sir_galahad', 'master_vine', 'master_technician', 'spider_men', 'von_rantenraven'),
     }
 
     def mode_start(self, **kwargs):

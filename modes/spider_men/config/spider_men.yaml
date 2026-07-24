@@ -1,0 +1,51 @@
+#config_version=6
+
+mode:
+  start_events: start_mode_spider_men
+  stop_events:
+    - spider_men_mode_complete
+    - ball_ended
+  code: spider_men.SpiderMen
+  priority: 300
+
+widget_player:
+  mode_spider_men_started:
+    spider_men:
+      action: play
+
+  spider_men_mode_complete:
+    spider_men:
+      action: remove
+
+  mode_spider_men_stopping:
+    spider_men:
+      action: remove
+
+
+event_player:
+  s_pop_left_active: spider_men_shot_hit
+  s_pop_right_active: spider_men_shot_hit
+  s_left_drops_1_active: spider_men_shot_hit
+  s_left_drops_2_active: spider_men_shot_hit
+  s_left_drops_3_active: spider_men_shot_hit
+  s_right_drops_1_active: spider_men_shot_hit
+  s_right_drops_2_active: spider_men_shot_hit
+  s_right_drops_3_active: spider_men_shot_hit
+  s_right_drops_4_active: spider_men_shot_hit
+  s_right_drops_5_active: spider_men_shot_hit
+  s_web_target_left_active: spider_men_major_hit
+  s_web_target_mid_active: spider_men_major_hit
+  s_star_rollover_active: spider_men_major_hit
+  s_saucer_1_active: clear_saucers
+  s_saucer_2_active: clear_saucers
+  s_saucer_3_active: clear_saucers
+  mode_spider_men_stopping: clear_saucers
+
+light_player:
+  # Full-playfield GI theme while this mode is active.
+  mode_spider_men_started:
+    gi: FF8040
+
+  mode_spider_men_stopping:
+    gi: E0E0E0
+

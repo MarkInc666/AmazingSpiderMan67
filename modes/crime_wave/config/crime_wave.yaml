@@ -1,0 +1,86 @@
+#config_version=6
+
+mode:
+  start_events: start_mode_crime_wave
+  stop_events:
+    - stop_mode_crime_wave
+    - ball_ended
+  code: crime_wave.CrimeWave
+  priority: 800
+
+multiballs:
+  crime_wave_multiball:
+    ball_count: 3
+    ball_count_type: total
+    shoot_again: 20s
+    start_events: crime_wave_start_multiball
+    stop_events:
+      - stop_mode_crime_wave
+
+variable_player:
+  multiball_crime_wave_multiball_started:
+    multiball_autoplunge_active:
+      action: set
+      int: 1
+  multiball_crime_wave_multiball_ended:
+    multiball_autoplunge_active:
+      action: set
+      int: 0
+
+event_player:
+  s_pop_left_active: crime_wave_plotter_hit
+  s_pop_right_active: crime_wave_plotter_hit
+
+  s_upper_target_left_active: crime_wave_fly_hit
+  s_upper_target_center_active: crime_wave_fly_hit
+  s_upper_target_right_active: crime_wave_fly_hit
+
+  s_right_drops_1_active: crime_wave_phantom_hit
+  s_right_drops_2_active: crime_wave_phantom_hit
+  s_right_drops_3_active: crime_wave_phantom_hit
+  s_right_drops_4_active: crime_wave_phantom_hit
+  s_right_drops_5_active: crime_wave_phantom_hit
+
+  s_left_drops_1_active: crime_wave_enforcers_hit
+  s_left_drops_2_active: crime_wave_enforcers_hit
+  s_left_drops_3_active: crime_wave_enforcers_hit
+
+  s_saucer_1_active:
+    crime_wave_saucer_hit:
+      saucer: 1
+  s_saucer_2_active:
+    crime_wave_saucer_hit:
+      saucer: 2
+  s_saucer_3_active:
+    crime_wave_saucer_hit:
+      saucer: 3
+
+  s_upper_exit_left_opto_active: crime_wave_upper_exit_hit
+  s_upper_exit_right_opto_active: crime_wave_upper_exit_hit
+
+  multiball_crime_wave_multiball_ended: crime_wave_complete_request
+
+  mode_crime_wave_started:
+    - clear_saucers_delayed
+    - drop_target_bank_dt_bank_left_reset
+    - drop_target_bank_dt_bank_right_reset
+
+  drop_target_bank_dt_bank_left_down: drop_target_bank_dt_bank_left_reset
+  drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset
+
+widget_player:
+  mode_crime_wave_started:
+    crime_wave:
+      action: play
+  crime_wave_mode_complete:
+    crime_wave:
+      action: remove
+  mode_crime_wave_stopping:
+    crime_wave:
+      action: remove
+
+light_player:
+  mode_crime_wave_started:
+    gi: 8080FF
+  mode_crime_wave_stopping:
+    gi: E0E0E0

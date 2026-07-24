@@ -1,7 +1,9 @@
 #config_version=6
 
-# Doctor Cool placeholder villain mode.
-# Mode idea: Shots freeze one by one; hit thaw shots to restore them and cash freeze jackpot.
+# Doctor Cool villain mode.
+# Complete the right 5-bank to start a cycling saucer chase. Both drop banks
+# build the Diamond Jackpot and reset when completed. Star rollover freezes the
+# chase and lights all three saucers briefly.
 
 mode:
   start_events: start_mode_doctor_cool
@@ -26,54 +28,243 @@ widget_player:
       action: remove
 
 event_player:
-  # Common playfield hits. Refine these later when the mode design is built out.
-  s_pop_left_active: doctor_cool_shot_hit
-  s_pop_right_active: doctor_cool_shot_hit
-  s_trispinner_opto_active: doctor_cool_shot_hit
-  s_web_spinner_active: doctor_cool_shot_hit
-  s_star_rollover_active: doctor_cool_shot_hit
-  s_upper_target_left_active: doctor_cool_shot_hit
-  s_upper_target_center_active: doctor_cool_shot_hit
-  s_upper_target_right_active: doctor_cool_shot_hit
+  s_right_drops_1_active: doctor_cool_right_drop_hit
+  s_right_drops_2_active: doctor_cool_right_drop_hit
+  s_right_drops_3_active: doctor_cool_right_drop_hit
+  s_right_drops_4_active: doctor_cool_right_drop_hit
+  s_right_drops_5_active: doctor_cool_right_drop_hit
 
-  s_left_drops_1_active: doctor_cool_shot_hit
-  s_left_drops_2_active: doctor_cool_shot_hit
-  s_left_drops_3_active: doctor_cool_shot_hit
-  s_right_drops_1_active: doctor_cool_shot_hit
-  s_right_drops_2_active: doctor_cool_shot_hit
-  s_right_drops_3_active: doctor_cool_shot_hit
-  s_right_drops_4_active: doctor_cool_shot_hit
-  s_right_drops_5_active: doctor_cool_shot_hit
+  s_left_drops_1_active: doctor_cool_left_drop_hit
+  s_left_drops_2_active: doctor_cool_left_drop_hit
+  s_left_drops_3_active: doctor_cool_left_drop_hit
 
-  s_saucer_1_active:
-    - doctor_cool_major_hit
-    - clear_saucers
-  s_saucer_2_active:
-    - doctor_cool_major_hit
-    - clear_saucers
-  s_saucer_3_active:
-    - doctor_cool_major_hit
-    - clear_saucers
-  s_vuk_switch_active: doctor_cool_major_hit
+  drop_target_bank_dt_bank_right_down:
+    - doctor_cool_right_bank_complete
 
   drop_target_bank_dt_bank_left_down:
-    - drop_target_bank_dt_bank_left_reset
-  drop_target_bank_dt_bank_right_down:
-    - drop_target_bank_dt_bank_right_reset
+    - doctor_cool_left_bank_complete
+
+  s_saucer_1_active: doctor_cool_saucer_1_hit
+  s_saucer_2_active: doctor_cool_saucer_2_hit
+  s_saucer_3_active: doctor_cool_saucer_3_hit
+
+  s_star_rollover_active: doctor_cool_star_hit
 
   mode_doctor_cool_started:
-    - rooftop_diverter_open|500ms
     - clear_saucers
     - drop_target_bank_dt_bank_left_reset
     - drop_target_bank_dt_bank_right_reset
+    - doctor_cool_clear_lights
 
+  mode_doctor_cool_stopping:
+    - doctor_cool_clear_lights
 
+show_player:
+  doctor_cool_build_phase_started:
+    doctor_cool_right_bank_build:
+      loops: -1
+    doctor_cool_left_bank_build:
+      loops: -1
+
+  doctor_cool_saucer_chase_started:
+    doctor_cool_right_bank_build:
+      action: stop
+    doctor_cool_left_bank_build:
+      action: stop
+
+  doctor_cool_saucer_1_lit:
+    doctor_cool_saucer_1_lit_show:
+      loops: -1
+
+  doctor_cool_saucer_2_lit:
+    doctor_cool_saucer_2_lit_show:
+      loops: -1
+
+  doctor_cool_saucer_3_lit:
+    doctor_cool_saucer_3_lit_show:
+      loops: -1
+
+  doctor_cool_all_saucers_lit:
+    doctor_cool_all_saucers_lit_show:
+      loops: -1
+
+  doctor_cool_wrong_saucer:
+    doctor_cool_wrong_saucer_show:
+      loops: 2
+
+  doctor_cool_jackpot_collected:
+    doctor_cool_all_saucers_lit_show:
+      loops: 3
+
+  doctor_cool_clear_saucer_lights:
+    doctor_cool_saucer_1_lit_show:
+      action: stop
+    doctor_cool_saucer_2_lit_show:
+      action: stop
+    doctor_cool_saucer_3_lit_show:
+      action: stop
+    doctor_cool_all_saucers_lit_show:
+      action: stop
+    doctor_cool_wrong_saucer_show:
+      action: stop
+
+  doctor_cool_clear_lights:
+    doctor_cool_right_bank_build:
+      action: stop
+    doctor_cool_left_bank_build:
+      action: stop
+    doctor_cool_saucer_1_lit_show:
+      action: stop
+    doctor_cool_saucer_2_lit_show:
+      action: stop
+    doctor_cool_saucer_3_lit_show:
+      action: stop
+    doctor_cool_all_saucers_lit_show:
+      action: stop
+    doctor_cool_wrong_saucer_show:
+      action: stop
 
 light_player:
   # Full-playfield GI theme while this mode is active.
   mode_doctor_cool_started:
-    gi: 50D8FF
+    gi: B8FFFF
 
   mode_doctor_cool_stopping:
     gi: E0E0E0
 
+  doctor_cool_clear_lights:
+    l_1: off
+    l_1_hole_l: off
+    l_1_hole_r: off
+    l_2: off
+    l_2_hole_l: off
+    l_2_hole_r: off
+    l_3: off
+    l_3_hole_l: off
+    l_3_hole_r: off
+    l_5bank_1: off
+    l_5bank_2: off
+    l_5bank_3: off
+    l_5bank_4: off
+    l_5bank_5: off
+    l_gi_3bank: off
+
+  doctor_cool_clear_saucer_lights:
+    l_1: off
+    l_1_hole_l: off
+    l_1_hole_r: off
+    l_2: off
+    l_2_hole_l: off
+    l_2_hole_r: off
+    l_3: off
+    l_3_hole_l: off
+    l_3_hole_r: off
+
+shows:
+  doctor_cool_right_bank_build:
+    - duration: 250ms
+      lights:
+        l_5bank_1: white
+        l_5bank_2: white
+        l_5bank_3: white
+        l_5bank_4: white
+        l_5bank_5: white
+    - duration: 250ms
+      lights:
+        l_5bank_1: off
+        l_5bank_2: off
+        l_5bank_3: off
+        l_5bank_4: off
+        l_5bank_5: off
+
+  doctor_cool_left_bank_build:
+    - duration: 250ms
+      lights:
+        l_gi_3bank: yellow
+    - duration: 250ms
+      lights:
+        l_gi_3bank: off
+
+  doctor_cool_saucer_1_lit_show:
+    - duration: 200ms
+      lights:
+        l_1: yellow
+        l_1_hole_l: yellow
+        l_1_hole_r: yellow
+    - duration: 200ms
+      lights:
+        l_1: off
+        l_1_hole_l: off
+        l_1_hole_r: off
+
+  doctor_cool_saucer_2_lit_show:
+    - duration: 200ms
+      lights:
+        l_2: yellow
+        l_2_hole_l: yellow
+        l_2_hole_r: yellow
+    - duration: 200ms
+      lights:
+        l_2: off
+        l_2_hole_l: off
+        l_2_hole_r: off
+
+  doctor_cool_saucer_3_lit_show:
+    - duration: 200ms
+      lights:
+        l_3: yellow
+        l_3_hole_l: yellow
+        l_3_hole_r: yellow
+    - duration: 200ms
+      lights:
+        l_3: off
+        l_3_hole_l: off
+        l_3_hole_r: off
+
+  doctor_cool_all_saucers_lit_show:
+    - duration: 150ms
+      lights:
+        l_1: white
+        l_1_hole_l: white
+        l_1_hole_r: white
+        l_2: white
+        l_2_hole_l: white
+        l_2_hole_r: white
+        l_3: white
+        l_3_hole_l: white
+        l_3_hole_r: white
+    - duration: 150ms
+      lights:
+        l_1: off
+        l_1_hole_l: off
+        l_1_hole_r: off
+        l_2: off
+        l_2_hole_l: off
+        l_2_hole_r: off
+        l_3: off
+        l_3_hole_l: off
+        l_3_hole_r: off
+
+  doctor_cool_wrong_saucer_show:
+    - duration: 100ms
+      lights:
+        l_1: red
+        l_1_hole_l: red
+        l_1_hole_r: red
+        l_2: red
+        l_2_hole_l: red
+        l_2_hole_r: red
+        l_3: red
+        l_3_hole_l: red
+        l_3_hole_r: red
+    - duration: 100ms
+      lights:
+        l_1: off
+        l_1_hole_l: off
+        l_1_hole_r: off
+        l_2: off
+        l_2_hole_l: off
+        l_2_hole_r: off
+        l_3: off
+        l_3_hole_l: off
+        l_3_hole_r: off

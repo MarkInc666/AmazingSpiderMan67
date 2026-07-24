@@ -29,11 +29,11 @@ mode_settings:
     - diana
     - cyclops
     - centaur
-    - kingpin
-    - human_flies
+    - master_plan
+    - fly_brothers
     - fifth_avenue_phantom
     - enforcers
-    - diamond_smugglers
+    - doctor_cool
     - pardo
     - fakir
     - scarlet_sorcerer
@@ -44,26 +44,26 @@ mode_settings:
     - professor_pretoris
     - doctor_dumpty
     - dr_von_schlick
-    - radiation_specialist
+    - clive_blotto
     - dr_zap
-    - doctor_cool
+    - voltan_boomer
     - snowman
-    - ice_monster
-    - dr_manta
-    - doctor_atlantean
-    - sky_master
     - plutonians
-    - antarcticans
+    - dr_manta
+    - igor
+    - doctor_atlantean
+    - devargas
+    - molemen
     - charles_cameo
     - brutus
-    - eigor
-    - the_fly
+    - desperado
+    - skymaster
     - swamp_reptiles
-    - phantom_from_depths_of_time
+    - sir_galahad
     - master_vine
     - master_technician
-    - micro_men
-    - grand_emperor
+    - spider_men
+    - von_rantenraven
 
   next_item_events: villain_carousel_next
   previous_item_events: villain_carousel_previous
@@ -282,8 +282,8 @@ show_player:
       action: play
       loops: -1
 
-  villain_select_highlighted_doctor_cool:
-    villain_select_doctor_cool_show:
+  villain_select_highlighted_voltan_boomer:
+    villain_select_voltan_boomer_show:
       action: play
       loops: -1
 
@@ -362,13 +362,13 @@ show_player:
       action: play
       loops: -1
 
-  villain_select_highlighted_diamond_smugglers:
-    villain_select_diamond_smugglers_show:
+  villain_select_highlighted_doctor_cool:
+    villain_select_doctor_cool_show:
       action: play
       loops: -1
 
-  villain_select_highlighted_human_flies:
-    villain_select_human_flies_show:
+  villain_select_highlighted_fly_brothers:
+    villain_select_fly_brothers_show:
       action: play
       loops: -1
 
@@ -588,7 +588,7 @@ shows:
       lights:
         gi: off
 
-  villain_select_doctor_cool_show:
+  villain_select_voltan_boomer_show:
     - duration: 300ms
       lights:
         gi: blue
@@ -716,7 +716,7 @@ shows:
       lights:
         gi: yellow
 
-  villain_select_diamond_smugglers_show:
+  villain_select_doctor_cool_show:
     - duration: 300ms
       lights:
         gi: green
@@ -724,7 +724,7 @@ shows:
       lights:
         gi: off
 
-  villain_select_human_flies_show:
+  villain_select_fly_brothers_show:
     - duration: 300ms
       lights:
         gi: yellow
