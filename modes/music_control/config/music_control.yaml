@@ -250,3 +250,23 @@ sound_player:
     tall_cool_one:
       bus: music
       loops: -1
+
+  play_music_song_50:
+    clasical_gas:
+      bus: music
+      loops: -1
+
+  play_music_song_51:
+    sleepwalk:
+      bus: music
+      loops: -1
+
+  play_music_song_52:
+    topsy:
+      bus: music
+      loops: -1
+
+  play_music_song_53:
+    moon_godess:
+      bus: music
+      loops: -1

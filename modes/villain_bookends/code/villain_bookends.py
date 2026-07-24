@@ -328,7 +328,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'kingpin_max_balls',
             'points_var': 'active_mode_points',
             'state_var': 'kingpin_state',
-            'song': 'play_song_3',
+            'song': 'play_song_51',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: The Human Flies are framing Spider-Man.
@@ -789,7 +789,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'plutonians_bonus',
             'points_var': 'active_mode_points',
             'state_var': 'plutonians_state',
-            'song': 'play_song_19',
+            'song': 'play_song_52',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: The Antarcticans strike from the ice.
@@ -849,7 +849,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'brutus_state',
-            'song': 'play_song_23',
+            'song': 'play_song_52',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Eigor is smashing through the city.
@@ -952,7 +952,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'master_vine_state',
-            'song': 'play_song_22',
+            'song': 'play_song_53',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Drop targets set the spinner value.
@@ -1032,7 +1032,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'sinister_surge_state',
             'points_var': 'active_mode_points',
             'state_var': 'sinister_surge_state',
-            'song': 'play_song_22',
+            'song': 'play_song_50',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Chapter 2 mini-wizard multiball.
