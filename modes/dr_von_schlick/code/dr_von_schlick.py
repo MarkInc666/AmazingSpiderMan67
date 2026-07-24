@@ -82,6 +82,7 @@ class DrVonSchlick(CaseFileMixin, Mode):
         self.add_mode_event_handler("dr_von_schlick_complete_request", self._complete_mode)
         self.add_mode_event_handler("dr_von_schlick_fail_request", self._fail_mode)
 
+        self.machine.events.post("daily_bugle_cancel_vuk_delay_eject")
         self.machine.events.post("dr_von_schlick_gi_red")
         self.machine.events.post("dr_von_schlick_clear_shot_lights")
         self._light_current_shot()
@@ -90,6 +91,7 @@ class DrVonSchlick(CaseFileMixin, Mode):
         self._sync_vars()
 
     def mode_stop(self, **kwargs):
+        self.machine.events.post("daily_bugle_cancel_vuk_delay_eject")
         for name in ("dr_von_schlick_move_shot", "dr_von_schlick_super_tick"):
             self.delay.remove(name)
         for band in range(1, self.FLOOD_BANDS + 1):
@@ -197,6 +199,7 @@ class DrVonSchlick(CaseFileMixin, Mode):
         self.delay.add(name="dr_von_schlick_super_tick", ms=1000, callback=self._super_tick)
 
     def _vuk_hit(self, **kwargs):
+        self.machine.events.post("daily_bugle_cancel_vuk_delay_eject")
         if self.mode_done:
             return
         if self.phase != "super":
@@ -210,7 +213,7 @@ class DrVonSchlick(CaseFileMixin, Mode):
         for band in range(1, self.FLOOD_BANDS + 1):
             self.delay.add(
                 name=f"dr_von_schlick_flood_{band}",
-                ms=band * 1000,
+                ms=band * 500,
                 callback=lambda band=band: self._flood_band(band),
             )
 

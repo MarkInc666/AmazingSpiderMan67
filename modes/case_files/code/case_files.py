@@ -149,7 +149,7 @@ class CaseFiles(Mode):
         self.machine.game.player["wizard_prep_this_chapter"] += 1
         self.machine.game.player["wizard_prep_level"] = int(self.machine.game.player["case_files_collected_count"])
         self.machine.game.player["wizard_prep_summary"] = "All Case Files collected"
-        self.machine.game.player["wizard_prep_next_award"] = "Wizard Prep complete"
+        self.machine.game.player["wizard_prep_next_award"] = "WIZARD PREP COMPLETE"
 
         self.machine.events.post(
             "case_files_complete",
@@ -264,15 +264,15 @@ class CaseFiles(Mode):
 
         if collected_count >= len(self.CASE_FILES):
             self.machine.game.player["wizard_prep_summary"] = "All Case Files collected"
-            self.machine.game.player["wizard_prep_next_award"] = "Wizard Prep complete"
+            self.machine.game.player["wizard_prep_next_award"] = "WIZARD PREP COMPLETE"
         else:
             next_key = self._next_missing_case_file()
             if next_key:
                 self.machine.game.player["wizard_prep_summary"] = f"{collected_count} / {len(self.CASE_FILES)} Case Files collected"
-                self.machine.game.player["wizard_prep_next_award"] = f"Collect {self.CASE_FILE_LABELS[next_key]}"
+                self.machine.game.player["wizard_prep_next_award"] = f"NEXT: COLLECT {self.CASE_FILE_LABELS[next_key]}"
             else:
                 self.machine.game.player["wizard_prep_summary"] = "Case Files ready"
-                self.machine.game.player["wizard_prep_next_award"] = "Wizard Prep complete"
+                self.machine.game.player["wizard_prep_next_award"] = "WIZARD PREP COMPLETE"
 
     def _next_missing_case_file(self):
         for key in self.CASE_FILES:

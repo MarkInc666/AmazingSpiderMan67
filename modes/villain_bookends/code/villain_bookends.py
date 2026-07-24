@@ -5,6 +5,19 @@ class VillainBookends(Mode):
 
     INTRO_MS = 5000
     SUMMARY_MS = 6000
+    UNSKIPPABLE_SUMMARY_VILLAINS = {
+        "sinister_surge",
+        "mastermind_trap",
+        "trubble_unleashed",
+        "master_plan",
+        "fifth_dimension_curse",
+        "mad_science_meltdown",
+        "nature_strikes_back",
+        "invasion_from_everywhere",
+        "who_is_the_real_villain",
+        "time_tossed_showdown",
+        "final_showdown",
+    }
 
     VILLAINS = {
         # ORIGINAL DISPLAY TEXT:
@@ -1223,6 +1236,7 @@ class VillainBookends(Mode):
         self.current_stage = None
         self.current_done_event = None
         self.current_villain = None
+        self.current_summary_can_skip = False
 
         self.add_mode_event_handler("villain_bookend_intro_request", self._intro_request)
         self.add_mode_event_handler("villain_bookend_summary_request", self._summary_request)
@@ -1259,7 +1273,7 @@ class VillainBookends(Mode):
             callback=self._finish_current_bookend
         )
 
-    def _summary_request(self, villain=None, done_event=None, **kwargs):
+    def _summary_request(self, villain=None, done_event=None, allow_skip=None, **kwargs):
         if villain not in self.VILLAINS:
             self.warning_log("Unknown villain summary requested: %s", villain)
             return
@@ -1279,6 +1293,10 @@ class VillainBookends(Mode):
         self.current_stage = "summary"
         self.current_villain = villain
         self.current_done_event = done_event or f"{villain}_summary_done"
+        if allow_skip is None:
+            self.current_summary_can_skip = self._summary_can_be_skipped(villain)
+        else:
+            self.current_summary_can_skip = bool(allow_skip)
 
         self._set_machine_var("villain_bookend_title", title)
         self._set_machine_var("villain_bookend_line_1", f"{data['stat_1_label']}: {stat_1}")
@@ -1288,7 +1306,8 @@ class VillainBookends(Mode):
         else:
             self._set_machine_var("villain_bookend_line_2", "")
         self._set_machine_var("villain_bookend_line_3", f"POINTS: {points:,}")
-        self._set_machine_var("villain_bookend_footer", "")
+        footer = "HOLD BOTH FLIPPERS TO SPEED UP" if self.current_summary_can_skip else ""
+        self._set_machine_var("villain_bookend_footer", footer)
 
         self.machine.events.post("villain_bookend_intro_hide")
         self.machine.events.post("villain_bookend_summary_show", villain=villain)
@@ -1330,11 +1349,28 @@ class VillainBookends(Mode):
         self.machine.events.post("villain_bookend_intro_hide")
 
     def _skip_current_bookend(self, **kwargs):
-        # Intros may be skipped, but summaries must run for their full duration.
-        # Wizard summaries use this time to drain balls and prepare chapter select.
-        if self.current_stage == "intro":
+        # Intros may always be skipped. Regular villain summaries may be sped up.
+        # Wizard/chapter-transition summaries must run their full duration so the
+        # controlled drain and chapter select setup have time to complete.
+        if self.current_stage == "intro" or (self.current_stage == "summary" and self.current_summary_can_skip):
             self.delay.remove("villain_bookend_done")
             self._finish_current_bookend()
+
+    def _summary_can_be_skipped(self, villain):
+        if villain in self.UNSKIPPABLE_SUMMARY_VILLAINS:
+            return False
+
+        player = self.machine.game.player if self.machine.game else None
+        if not player:
+            return True
+
+        try:
+            if int(player["chapter_select_waiting_for_summary"]) == 1:
+                return False
+        except (KeyError, TypeError, ValueError):
+            pass
+
+        return True
 
     def _finish_current_bookend(self):
         if not self.current_stage:
@@ -1361,6 +1397,7 @@ class VillainBookends(Mode):
         self.current_stage = None
         self.current_villain = None
         self.current_done_event = None
+        self.current_summary_can_skip = False
 
         if done_event:
             self.machine.events.post(done_event, villain=villain)

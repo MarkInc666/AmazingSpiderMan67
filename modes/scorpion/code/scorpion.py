@@ -82,6 +82,10 @@ class Scorpion(CaseFileMixin, Mode):
         self.machine.events.post("update_mode_status", mode_status_title=title, mode_status_value=value)
 
     def mode_stop(self, **kwargs):
+        self.delay.remove("scorpion_prepare_left_bank_after_reset")
+        self.delay.remove("scorpion_prepare_right_bank_after_reset")
+        self.delay.remove("scorpion_next_objective")
+        self.machine.events.post("scorpion_sting_timer_stop")
         self.machine.events.post("hide_mode_status")
         self.clear_active_case_file_helpers()
         super().mode_stop(**kwargs)
@@ -147,6 +151,7 @@ class Scorpion(CaseFileMixin, Mode):
 
         # delay so targets rise fully
         self.delay.add(
+            name="scorpion_prepare_left_bank_after_reset",
             ms=400,
             callback=self.prepare_left_bank_after_reset
         )
@@ -172,6 +177,7 @@ class Scorpion(CaseFileMixin, Mode):
         self.machine.coils["c_right_bank_reset"].pulse()
 
         self.delay.add(
+            name="scorpion_prepare_right_bank_after_reset",
             ms=400,
             callback=self.prepare_right_bank_after_reset
         )
@@ -181,6 +187,9 @@ class Scorpion(CaseFileMixin, Mode):
         self.machine.events.post("show_mode_countdown", message_mode_title="RIGHT EXIT", message_mode_subtitle="RIGHT BANK STING SHOT", message_mode_seconds=5)
 
     def prepare_left_bank_after_reset(self):
+        if self.mode_done or self.state != "sting" or self.active_target_side != "left":
+            return
+
         for i in range(1, 4):
             if i != self.required_target:
                 self.machine.coils[f"c_left_bank_drop_{i}"].pulse()
@@ -189,6 +198,9 @@ class Scorpion(CaseFileMixin, Mode):
         self.machine.events.post("show_mode_message", message_mode_title="STING SHOT", message_mode_subtitle=f"LEFT TARGET {self.required_target}")
 
     def prepare_right_bank_after_reset(self):
+        if self.mode_done or self.state != "sting" or self.active_target_side != "right":
+            return
+
         for i in range(1, 6):
             if i != self.required_target:
                 self.machine.coils[f"c_right_bank_drop_{i}"].pulse()
@@ -251,8 +263,6 @@ class Scorpion(CaseFileMixin, Mode):
 
         self.machine.events.post("scorpion_sting_success")
         self.machine.events.post("show_mode_jackpot", message_mode_title="JACKPOT", message_mode_subtitle="SCORPION STING", message_mode_value=self.jpval)
-        self.delay.remove("scorpion_next_objective")
-        self.delay.add(name="scorpion_next_objective", ms=2000, callback=self.reset_for_next_attempt)
         self.reset_for_next_try()
 
     def award_missed_sting(self):

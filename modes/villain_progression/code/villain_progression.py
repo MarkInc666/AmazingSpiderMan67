@@ -772,16 +772,23 @@ class VillainProgression(Mode):
             player["chapter_case_files_collected"] = 25
 
         bonus = collected * self.CASE_FILE_MINI_WIZARD_BONUS
+        jackpot = self.MINI_WIZARD_BASE_JACKPOT + bonus
         player["mini_wizard_case_file_bonus_per_file"] = self.CASE_FILE_MINI_WIZARD_BONUS
         player["mini_wizard_case_file_bonus"] = bonus
         player["mini_wizard_base_jackpot"] = self.MINI_WIZARD_BASE_JACKPOT
-        player["mini_wizard_jackpot_value"] = self.MINI_WIZARD_BASE_JACKPOT + bonus
+        player["mini_wizard_jackpot_value"] = jackpot
+        player["wizard_prep_summary"] = f"{collected} / 25 CASE FILES   +{bonus:,}"
+        player["wizard_prep_next_award"] = f"MINI-WIZARD JACKPOT {jackpot:,}"
         self.machine.events.post(
             "chapter_case_files_status_changed",
             chapter_case_files_collected=player["chapter_case_files_collected"],
             mini_wizard_case_file_bonus=player["mini_wizard_case_file_bonus"],
             mini_wizard_jackpot_value=player["mini_wizard_jackpot_value"],
+            wizard_prep_summary=player["wizard_prep_summary"],
+            wizard_prep_next_award=player["wizard_prep_next_award"],
         )
+        self.machine.events.post("case_files_status_changed")
+        self.machine.events.post("daily_bugle_widget_update")
 
     def _add_villain_case_files_to_chapter_total(self, villain_key):
         """Bank the active Case Files into the current chapter mini-wizard bonus.
@@ -1319,11 +1326,6 @@ class VillainProgression(Mode):
         player["villain_mode_running_name"] = mini_key
         self._sync_mini_wizard_case_file_bonus()
         self.machine.events.post("case_files_clear_lights")
-        self.machine.events.post(
-            "show_mode_message",
-            message_mode_title="CASE FILE BONUS",
-            message_mode_subtitle=f"{player['chapter_case_files_collected']} / 25  +{player['mini_wizard_case_file_bonus']:,}",
-        )
         self.machine.events.post(
             "chapter_mini_wizard_starting",
             chapter=chapter["key"],

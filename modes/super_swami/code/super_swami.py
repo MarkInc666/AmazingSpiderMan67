@@ -73,9 +73,11 @@ class SuperSwami(CaseFileMixin, Mode):
 
     def mode_stop(self, **kwargs):
         self.delay.remove("super_swami_tick")
+        self.delay.remove("super_swami_open_gate_retry_1")
+        self.delay.remove("super_swami_open_gate_retry_2")
         self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post("super_swami_restore_all_lights")
-        self.machine.events.post("close_gate")
+        self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("clear_saucers")
         self.machine.events.post("drop_target_bank_dt_bank_left_reset")
         self.machine.events.post("drop_target_bank_dt_bank_right_reset")
@@ -111,11 +113,28 @@ class SuperSwami(CaseFileMixin, Mode):
             return
         if self.has_case_file("more_jackpots"):
             self.final_jackpot_lit = True
-            self.machine.events.post("open_gate")
+            self._open_gate_for_blackout_jackpot()
             self.machine.events.post("super_swami_light_vuk")
             self.machine.events.post("show_mode_message", message_mode_title="BLACKOUT JACKPOT", message_mode_subtitle="SHOOT THE VUK", reminder=True)
         else:
             self._complete_mode()
+
+
+    def _open_gate_for_blackout_jackpot(self):
+        """Open roof access for the Blackout Jackpot VUK shot.
+
+        The project uses the state-guarded rooftop_diverter_open event, so
+        repeated requests are safe and help if another cleanup/close event lands
+        at the same time the jackpot is lit.
+        """
+        self.machine.events.post("rooftop_diverter_open")
+        self.delay.add(name="super_swami_open_gate_retry_1", ms=500, callback=self._retry_open_gate)
+        self.delay.add(name="super_swami_open_gate_retry_2", ms=1500, callback=self._retry_open_gate)
+
+    def _retry_open_gate(self, **kwargs):
+        if self.mode_done or not self.final_jackpot_lit:
+            return
+        self.machine.events.post("rooftop_diverter_open")
 
     def _vuk_hit(self, **kwargs):
         if not self.final_jackpot_lit or self.mode_done:

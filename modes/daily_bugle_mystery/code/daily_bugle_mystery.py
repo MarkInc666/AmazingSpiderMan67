@@ -41,6 +41,7 @@ class DailyBugleMystery(Mode):
         "noah_boddy",
         "vulcan",
         "fifth_avenue_phantom",
+        "dr_von_schlick",
     }
 
     EXTRA_BALL_LIGHT_AT = 3
@@ -87,6 +88,7 @@ class DailyBugleMystery(Mode):
 
     def mode_stop(self, **kwargs):
         self.daily_bugle_enabled = False
+        self._cancel_vuk_delay_eject()
         self._release_left_exit_hold(cancel_delay=True, reason="mode_stop")
         super().mode_stop(**kwargs)
 
@@ -97,6 +99,7 @@ class DailyBugleMystery(Mode):
         self.add_mode_event_handler("daily_bugle_rooftop_left_exit", self.rooftop_left_exit)
         self.add_mode_event_handler("daily_bugle_rooftop_right_exit", self.rooftop_right_exit)
         self.add_mode_event_handler("daily_bugle_vuk_collect_request", self.vuk_collect_request)
+        self.add_mode_event_handler("daily_bugle_cancel_vuk_delay_eject", self._cancel_vuk_delay_eject)
         self.add_mode_event_handler("daily_bugle_left_exit_hold_cancel", self.cancel_left_exit_hold)
         self.add_mode_event_handler("flipper_cancel", self.cancel_left_exit_hold)
 
@@ -117,6 +120,7 @@ class DailyBugleMystery(Mode):
 
     def disable_db(self, **kwargs):
         self.daily_bugle_enabled = False
+        self._cancel_vuk_delay_eject()
         self.reset_cycle(post_restore=False)
         self.machine.events.post("daily_bugle_mystery_stop_all")
         self.update_player_vars()
@@ -498,6 +502,11 @@ class DailyBugleMystery(Mode):
             not self._progression_award_blocked()
             and self._has_available_villain_in_current_chapter()
         )
+
+
+    def _cancel_vuk_delay_eject(self, **kwargs):
+        """Cancel pending Daily Bugle VUK ejects so another mode can hold the VUK."""
+        self.delay.remove("daily_bugle_vuk_delay_eject")
 
     def fire_vuk(self):
         self.machine.events.post("up_kick")
