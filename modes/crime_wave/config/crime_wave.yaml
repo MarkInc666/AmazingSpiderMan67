@@ -55,6 +55,10 @@ event_player:
     crime_wave_saucer_hit:
       saucer: 3
 
+  # Daily Bugle Mystery is disabled during this wizard, so Crime Wave must
+  # respond to balls sitting in the VUK and kick them back out itself.
+  s_vuk_switch_active: crime_wave_vuk_hit
+
   s_upper_exit_left_opto_active: crime_wave_upper_exit_hit
   s_upper_exit_right_opto_active: crime_wave_upper_exit_hit
 

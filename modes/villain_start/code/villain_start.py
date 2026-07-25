@@ -78,10 +78,25 @@ class VillainStart(Mode):
                 return
 
         state = self._safe_int(self.machine.game.player[f"{saucer}_state"], 0)
+
+        if self._safe_int(self.machine.game.player["chapter_mini_wizard_ready"], 0) == 1:
+            # A chapter mini-wizard is started from the Daily Bugle VUK, not
+            # from the lower saucers. Do not take the normal villain-start lock
+            # here: that lock sets villain_mode_running=1 while progression
+            # correctly refuses to start a villain, leaving the game in a fake
+            # running state that blocks drop resets and later saucer handling.
+            self.machine.events.post(
+                "villain_progression_request_start",
+                saucer=saucer,
+                source="saucer",
+                state=state,
+                max_choices=state,
+            )
+            return
+
         should_lock = (
             state > 0
             or self._safe_int(self.machine.game.player["final_wizard_ready"], 0) == 1
-            or self._safe_int(self.machine.game.player["chapter_mini_wizard_ready"], 0) == 1
         )
 
         if should_lock:

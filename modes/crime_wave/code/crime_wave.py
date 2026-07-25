@@ -40,6 +40,7 @@ class CrimeWave(Mode):
         self.add_mode_event_handler("crime_wave_enforcers_hit", self._area_hit, area="enforcers")
         self.add_mode_event_handler("crime_wave_saucer_hit", self._saucer_hit)
         self.add_mode_event_handler("crime_wave_upper_exit_hit", self._upper_exit_hit)
+        self.add_mode_event_handler("crime_wave_vuk_hit", self._vuk_hit)
         self.add_mode_event_handler("crime_wave_complete_request", self._complete_mode)
 
         self.machine.events.post("chapter_mini_wizard_started", mini_wizard=self.MODE_KEY)
@@ -58,6 +59,7 @@ class CrimeWave(Mode):
     def mode_stop(self, **kwargs):
         for area in self.AREAS:
             self.delay.remove(f"crime_wave_area_{area}")
+        self.delay.remove("crime_wave_vuk_eject")
         for saucer in tuple(self.held_saucers):
             self._release_saucer(saucer)
         self.machine.events.post("rooftop_diverter_close")
@@ -124,6 +126,21 @@ class CrimeWave(Mode):
         if was_held:
             self.machine.events.post(f"crime_wave_saucer_{saucer}_released")
         self.machine.events.post(self.SAUCER_EJECT_EVENTS[saucer])
+
+
+    def _vuk_hit(self, **kwargs):
+        """Daily Bugle/VUK jackpot collect during Crime Wave.
+
+        Daily Bugle Mystery is disabled during this wizard, so Crime Wave must
+        own VUK switch response and kick the ball out itself.
+        """
+        self.delay.remove("crime_wave_vuk_eject")
+        self.delay.add(
+            name="crime_wave_vuk_eject",
+            ms=1500,
+            callback=lambda: self.machine.events.post("up_kick"),
+        )
+        self._upper_exit_hit(**kwargs)
 
     def _upper_exit_hit(self, **kwargs):
         if self.mode_done or not self.lit_areas:

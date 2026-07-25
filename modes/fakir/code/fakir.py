@@ -93,6 +93,7 @@ class Fakir(CaseFileMixin, Mode):
 
         self._sync_player_vars("SHOOT SAUCERS", "FAKE RUBIES")
         self.machine.events.post("fakir_startup_complete")
+        self._show_saucers_available()
 
     def mode_stop(self, **kwargs):
         self.machine.events.post("hide_mode_status")
@@ -139,7 +140,9 @@ class Fakir(CaseFileMixin, Mode):
 
         self._score(self.SAUCER_LOCK_SCORE)
         self._sync_player_vars(title, self.TARGET_NAMES[self.current_target])
+        self.machine.events.post("fakir_saucers_off")
         self.machine.events.post("fakir_fake_ruby_locked", saucer=saucer, target=self.current_target, value=self.current_jackpot_value)
+        self.machine.events.post(f"fakir_saucer_{saucer}_locked")
         self.machine.events.post("rooftop_diverter_open")
         self.machine.events.post("show_mode_message", message_mode_title="FAKE RUBY!", message_mode_subtitle=f"{self.TARGET_NAMES[self.current_target]}", message_mode_value=self.current_jackpot_value)
         self._light_current_target()
@@ -252,10 +255,15 @@ class Fakir(CaseFileMixin, Mode):
             self._release_saucer(released_saucer)
 
         if not self.mode_done:
+            self._show_saucers_available()
             if self.super_qualified and not self.super_collected:
                 self._sync_player_vars("SUPER READY", "SHOOT SAUCER")
             else:
                 self._sync_player_vars("SHOOT SAUCERS", "FAKE RUBIES")
+
+    def _show_saucers_available(self):
+        if not self._inactive() and not self.ruby_active:
+            self.machine.events.post("fakir_saucers_available")
 
     def _restore_base_gi(self, **kwargs):
         if not self._inactive() and not self.ruby_active:

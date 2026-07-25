@@ -147,6 +147,9 @@ light_player:
     l_upper_left: off
     l_upper_middle: off
     l_upper_right: off
+    l_1: off
+    l_2: off
+    l_3: off
     l_1_hole_l: off
     l_1_hole_r: off
     l_2_hole_l: off
@@ -168,13 +171,53 @@ light_player:
     l_upper_middle: FF4444
     l_upper_right: FF4444
 
+  fakir_saucers_available:
+    l_1: yellow
+    l_1_hole_l: red
+    l_1_hole_r: red
+    l_2: yellow
+    l_2_hole_l: red
+    l_2_hole_r: red
+    l_3: yellow
+    l_3_hole_l: red
+    l_3_hole_r: red
+
+  fakir_saucers_off:
+    l_1: off
+    l_1_hole_l: off
+    l_1_hole_r: off
+    l_2: off
+    l_2_hole_l: off
+    l_2_hole_r: off
+    l_3: off
+    l_3_hole_l: off
+    l_3_hole_r: off
+
   fakir_fake_ruby_locked:
-    l_1_hole_l: FF8888
-    l_1_hole_r: FF8888
-    l_2_hole_l: FF8888
-    l_2_hole_r: FF8888
-    l_3_hole_l: FF8888
-    l_3_hole_r: FF8888
+    l_1: off
+    l_1_hole_l: off
+    l_1_hole_r: off
+    l_2: off
+    l_2_hole_l: off
+    l_2_hole_r: off
+    l_3: off
+    l_3_hole_l: off
+    l_3_hole_r: off
+
+  fakir_saucer_1_locked:
+    l_1: white
+    l_1_hole_l: red
+    l_1_hole_r: red
+
+  fakir_saucer_2_locked:
+    l_2: white
+    l_2_hole_l: red
+    l_2_hole_r: red
+
+  fakir_saucer_3_locked:
+    l_3: white
+    l_3_hole_l: red
+    l_3_hole_r: red
 
 shows:
   fakir_base_gi:

@@ -390,7 +390,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'diamond_bonus',
             'points_var': 'active_mode_points',
             'state_var': 'doctor_cool_state',
-            'song': 'play_song_26',
+            'song': 'play_song_47',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Pardo commands a mystic performance.

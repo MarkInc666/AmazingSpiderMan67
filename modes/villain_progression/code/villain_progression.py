@@ -871,6 +871,7 @@ class VillainProgression(Mode):
             self.machine.events.post("villain_saucer_ignored_mini_wizard_ready", saucer=saucer, source=source)
             self.machine.events.post("villain_mini_wizard_shoot_vuk", saucer=saucer, source=source)
             self.machine.events.post("clear_saucers_delayed")
+            self.machine.events.post("reset_drops")
             return
 
         if state <= 0:
