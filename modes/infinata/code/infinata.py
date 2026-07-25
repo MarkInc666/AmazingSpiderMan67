@@ -32,6 +32,7 @@ class Infinata(CaseFileMixin, Mode):
         self.shot_assist_used = False
         self.active_area = None
         self.area_progress = set()
+        self.roof_gate_requested = False
 
         self.case_files = self.get_case_file_bonuses()
         area_count = self.MORE_JACKPOTS_AREAS if self.has_case_file("more_jackpots") else self.REQUIRED_AREAS
@@ -70,6 +71,7 @@ class Infinata(CaseFileMixin, Mode):
 
     def mode_stop(self, **kwargs):
         self.delay.remove("infinata_super_tick")
+        self._close_roof_gate_if_requested()
         self.machine.events.post("infinata_clear_lights")
         self.machine.events.post("clear_saucers_delayed")
         self.machine.events.post("reset_drops")
@@ -86,6 +88,10 @@ class Infinata(CaseFileMixin, Mode):
         self.active_area = self.selected_areas[self.completed_areas]
         self.area_progress = set()
         self.machine.events.post("infinata_clear_area_lights")
+        if self.active_area == "upper_targets":
+            self._open_roof_gate_for_upper_targets()
+        else:
+            self._close_roof_gate_if_requested()
         self.machine.events.post(f"infinata_light_{self.active_area}")
         self._show_message("BANISH THE CREATURES", self.active_area.replace("_", " ").upper(), reminder=True)
         self._sync_vars()
@@ -125,6 +131,8 @@ class Infinata(CaseFileMixin, Mode):
             return
         area = self.active_area
         self.machine.events.post(f"infinata_unlight_{area}")
+        if area == "upper_targets":
+            self._close_roof_gate_if_requested()
         value = self.area_values[min(self.completed_areas, len(self.area_values) - 1)]
         self.completed_areas += 1
         self._score(value)
@@ -205,6 +213,18 @@ class Infinata(CaseFileMixin, Mode):
         self.machine.game.player["score"] += points
         self.mode_points += points
         self._sync_vars()
+
+    def _open_roof_gate_for_upper_targets(self):
+        if self.roof_gate_requested:
+            return
+        self.roof_gate_requested = True
+        self.machine.events.post("rooftop_diverter_open")
+
+    def _close_roof_gate_if_requested(self):
+        if not self.roof_gate_requested:
+            return
+        self.roof_gate_requested = False
+        self.machine.events.post("rooftop_diverter_close")
 
     def _sync_vars(self):
         player = self.machine.game.player

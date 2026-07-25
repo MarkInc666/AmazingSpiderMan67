@@ -84,3 +84,52 @@ light_player:
     gi: 8080FF
   mode_crime_wave_stopping:
     gi: E0E0E0
+
+  crime_wave_saucers_available:
+    l_1: green
+    l_1_hole_l: red
+    l_1_hole_r: red
+    l_2: green
+    l_2_hole_l: red
+    l_2_hole_r: red
+    l_3: green
+    l_3_hole_l: red
+    l_3_hole_r: red
+
+  crime_wave_saucer_1_held:
+    l_1: yellow
+    l_1_hole_l: red
+    l_1_hole_r: red
+  crime_wave_saucer_1_released:
+    l_1: green
+    l_1_hole_l: red
+    l_1_hole_r: red
+
+  crime_wave_saucer_2_held:
+    l_2: yellow
+    l_2_hole_l: red
+    l_2_hole_r: red
+  crime_wave_saucer_2_released:
+    l_2: green
+    l_2_hole_l: red
+    l_2_hole_r: red
+
+  crime_wave_saucer_3_held:
+    l_3: yellow
+    l_3_hole_l: red
+    l_3_hole_r: red
+  crime_wave_saucer_3_released:
+    l_3: green
+    l_3_hole_l: red
+    l_3_hole_r: red
+
+  crime_wave_clear_saucer_lights:
+    l_1: off
+    l_1_hole_l: off
+    l_1_hole_r: off
+    l_2: off
+    l_2_hole_l: off
+    l_2_hole_r: off
+    l_3: off
+    l_3_hole_l: off
+    l_3_hole_r: off

@@ -128,6 +128,46 @@ widget_player:
 
 
 
+
+light_player:
+  sinister_surge_saucer_hold_started{saucer=="saucer_1"}:
+    l_1: yellow
+    l_1_hole_l: red
+    l_1_hole_r: red
+  sinister_surge_saucer_released{saucer=="saucer_1"}:
+    l_1: off
+    l_1_hole_l: off
+    l_1_hole_r: off
+
+  sinister_surge_saucer_hold_started{saucer=="saucer_2"}:
+    l_2: yellow
+    l_2_hole_l: red
+    l_2_hole_r: red
+  sinister_surge_saucer_released{saucer=="saucer_2"}:
+    l_2: off
+    l_2_hole_l: off
+    l_2_hole_r: off
+
+  sinister_surge_saucer_hold_started{saucer=="saucer_3"}:
+    l_3: yellow
+    l_3_hole_l: red
+    l_3_hole_r: red
+  sinister_surge_saucer_released{saucer=="saucer_3"}:
+    l_3: off
+    l_3_hole_l: off
+    l_3_hole_r: off
+
+  mode_sinister_surge_stopping:
+    l_1: off
+    l_1_hole_l: off
+    l_1_hole_r: off
+    l_2: off
+    l_2_hole_l: off
+    l_2_hole_r: off
+    l_3: off
+    l_3_hole_l: off
+    l_3_hole_r: off
+
 show_player:
 
   sinister_surge_clear_area_lights:

@@ -7,14 +7,29 @@ mode:
   priority: 120
 
 widget_player:
-  case_files_status_changed:
+  case_files_status_changed{current_player.chapter_mini_wizard_ready != 1 and current_player.mini_wizard_daily_bugle_ready != 1 and current_player.mini_wizard_vuk_hold_active != 1 and current_player.final_wizard_ready != 1}:
     daily_bugle_ready:
       action: play
       key: daily_bugle_ready
 
-  case_files_active_helpers_changed:
+  case_files_active_helpers_changed{current_player.chapter_mini_wizard_ready != 1 and current_player.mini_wizard_daily_bugle_ready != 1 and current_player.mini_wizard_vuk_hold_active != 1 and current_player.final_wizard_ready != 1}:
     daily_bugle_ready:
       action: play
+      key: daily_bugle_ready
+
+  case_files_status_changed{current_player.chapter_mini_wizard_ready == 1 or current_player.mini_wizard_daily_bugle_ready == 1 or current_player.mini_wizard_vuk_hold_active == 1 or current_player.final_wizard_ready == 1}:
+    daily_bugle_ready:
+      action: remove
+      key: daily_bugle_ready
+
+  case_files_active_helpers_changed{current_player.chapter_mini_wizard_ready == 1 or current_player.mini_wizard_daily_bugle_ready == 1 or current_player.mini_wizard_vuk_hold_active == 1 or current_player.final_wizard_ready == 1}:
+    daily_bugle_ready:
+      action: remove
+      key: daily_bugle_ready
+
+  case_files_hidden_for_wizard:
+    daily_bugle_ready:
+      action: remove
       key: daily_bugle_ready
 
 event_player:

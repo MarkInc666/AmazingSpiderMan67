@@ -128,6 +128,46 @@ widget_player:
       expire: 5s
 
 
+
+light_player:
+  final_showdown_saucer_hold_started{saucer=="saucer_1"}:
+    l_1: yellow
+    l_1_hole_l: red
+    l_1_hole_r: red
+  final_showdown_saucer_released{saucer=="saucer_1"}:
+    l_1: off
+    l_1_hole_l: off
+    l_1_hole_r: off
+
+  final_showdown_saucer_hold_started{saucer=="saucer_2"}:
+    l_2: yellow
+    l_2_hole_l: red
+    l_2_hole_r: red
+  final_showdown_saucer_released{saucer=="saucer_2"}:
+    l_2: off
+    l_2_hole_l: off
+    l_2_hole_r: off
+
+  final_showdown_saucer_hold_started{saucer=="saucer_3"}:
+    l_3: yellow
+    l_3_hole_l: red
+    l_3_hole_r: red
+  final_showdown_saucer_released{saucer=="saucer_3"}:
+    l_3: off
+    l_3_hole_l: off
+    l_3_hole_r: off
+
+  mode_final_showdown_stopping:
+    l_1: off
+    l_1_hole_l: off
+    l_1_hole_r: off
+    l_2: off
+    l_2_hole_l: off
+    l_2_hole_r: off
+    l_3: off
+    l_3_hole_l: off
+    l_3_hole_r: off
+
 show_player:
 
   final_showdown_clear_area_lights:

@@ -95,6 +95,9 @@ class Base(Mode):
         self.add_mode_event_handler("hide_mode_message", self._hide_mode_message, priority=10000)
         self.add_mode_event_handler("reset_mode_message_reminder", self._reset_mode_message_reminder, priority=10000)
         self.add_mode_event_handler("cancel_mode_message_reminder", self._cancel_mode_message_reminder, priority=10000)
+        self.add_mode_event_handler("ball_will_end", self._clear_mode_display_context, priority=10000)
+        self.add_mode_event_handler("ball_ending", self._clear_mode_display_context, priority=10000)
+        self.add_mode_event_handler("ball_ended", self._clear_mode_display_context, priority=10000)
 
         self.add_mode_event_handler("show_mode_status", self._sync_mode_status_vars, priority=10000)
         self.add_mode_event_handler("update_mode_status", self._sync_mode_status_vars, priority=10000)
@@ -104,6 +107,7 @@ class Base(Mode):
         for stop_event in self.MODE_DISPLAY_CLEAR_EVENTS:
             self.add_mode_event_handler(stop_event, self._clear_mode_display_context, priority=10000)
 
+        self._display_context_generation = 0
         self._clear_mode_message_vars()
         self._clear_mode_status_vars()
 
@@ -129,6 +133,7 @@ class Base(Mode):
                 message_mode_value=message_mode_value,
                 message_mode_seconds=message_mode_seconds,
             )
+            self._reminder_generation = self._current_display_generation()
             self._schedule_mode_message_reminder()
         elif getattr(self, "_reminder_payload", None):
             # A temporary jackpot/completion message pauses the objective reminder.
@@ -160,6 +165,7 @@ class Base(Mode):
             self._cancel_countdown()
             return
 
+        self._message_countdown_generation = self._current_display_generation()
         self._message_countdown_remaining = seconds
         self._message_countdown_status_title = self._display_text(mode_status_title or "SECONDS LEFT")
         status_value = mode_status_value if mode_status_value not in (None, "") else seconds
@@ -212,6 +218,8 @@ class Base(Mode):
         )
 
     def _mode_message_countdown_tick(self):
+        if getattr(self, "_message_countdown_generation", None) != self._current_display_generation():
+            return
         remaining = getattr(self, "_message_countdown_remaining", 0)
         remaining = max(0, int(remaining) - 1)
         self._message_countdown_remaining = remaining
@@ -232,6 +240,8 @@ class Base(Mode):
             )
 
     def _hide_countdown_widgets(self):
+        if getattr(self, "_message_countdown_generation", None) != self._current_display_generation():
+            return
         self.machine.events.post("hide_mode_message")
         self.machine.events.post("hide_mode_status")
 
@@ -244,9 +254,11 @@ class Base(Mode):
         widget. Clearing the context here keeps stopped modes from updating the
         shared message/status widgets.
         """
+        self._bump_display_generation()
         self._cancel_countdown()
         self.delay.remove(self.REMINDER_DELAY_NAME)
         self._reminder_payload = None
+        self._reminder_generation = None
         self._clear_mode_message_vars()
         self._clear_mode_status_vars()
         self.machine.events.post("mode_display_context_cleared")
@@ -257,9 +269,13 @@ class Base(Mode):
 
     def _schedule_mode_message_reminder(self):
         self.delay.remove(self.REMINDER_DELAY_NAME)
+        if getattr(self, "_reminder_payload", None):
+            self._reminder_generation = self._current_display_generation()
         self.delay.add(name=self.REMINDER_DELAY_NAME, ms=self.REMINDER_INTERVAL_MS, callback=self._show_mode_message_reminder)
 
     def _show_mode_message_reminder(self):
+        if getattr(self, "_reminder_generation", None) != self._current_display_generation():
+            return
         payload = getattr(self, "_reminder_payload", None)
         if not payload:
             return
@@ -272,6 +288,7 @@ class Base(Mode):
     def _cancel_mode_message_reminder(self, **kwargs):
         self.delay.remove(self.REMINDER_DELAY_NAME)
         self._reminder_payload = None
+        self._reminder_generation = None
 
     def _hide_mode_status(self, **kwargs):
         self._cancel_countdown()
@@ -280,11 +297,14 @@ class Base(Mode):
     def _cancel_countdown(self):
         self.delay.remove(self.COUNTDOWN_DELAY_NAME)
         self._message_countdown_remaining = 0
+        self._message_countdown_generation = None
 
     def mode_stop(self, **kwargs):
+        self._bump_display_generation()
         self._cancel_countdown()
         self.delay.remove(self.REMINDER_DELAY_NAME)
         self._reminder_payload = None
+        self._reminder_generation = None
         super().mode_stop(**kwargs)
 
     def _clear_mode_message_vars(self):
@@ -300,6 +320,12 @@ class Base(Mode):
             mode_status_title=" ",
             mode_status_value=" ",
         )
+
+    def _current_display_generation(self):
+        return getattr(self, "_display_context_generation", 0)
+
+    def _bump_display_generation(self):
+        self._display_context_generation = self._current_display_generation() + 1
 
     @staticmethod
     def _parse_seconds(value):

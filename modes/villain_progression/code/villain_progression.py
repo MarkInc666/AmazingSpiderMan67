@@ -829,12 +829,6 @@ class VillainProgression(Mode):
             jackpot=player["mini_wizard_jackpot_value"],
         )
 
-        if count > 0:
-            self.machine.events.post(
-                "show_mode_message",
-                message_mode_title="CASE FILES BANKED",
-                message_mode_subtitle=f"{player['chapter_case_files_collected']} / 25  +{player['mini_wizard_case_file_bonus']:,}",
-            )
 
     def _reset_chapter_case_file_bonus(self):
         """Reset the chapter-local Case File total after a mini-wizard/chapter ends."""

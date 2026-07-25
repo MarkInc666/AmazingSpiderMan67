@@ -52,6 +52,7 @@ class CrimeWave(Mode):
             reminder=True,
         )
         self._update_status()
+        self.machine.events.post("crime_wave_saucers_available")
         self.machine.events.post("crime_wave_start_multiball")
 
     def mode_stop(self, **kwargs):
@@ -62,6 +63,7 @@ class CrimeWave(Mode):
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("enable_daily_bugle_mystery")
         self.machine.events.post("daily_bugle_restore_state")
+        self.machine.events.post("crime_wave_clear_saucer_lights")
         self.machine.events.post("crime_wave_clear_lights")
         player = self.machine.game.player if self.machine.game else None
         if player and player["mini_wizard_current_key"] == self.MODE_KEY:
@@ -104,6 +106,7 @@ class CrimeWave(Mode):
             return
         self._area_hit("doctor_cool")
         self.held_saucers.add(saucer)
+        self.machine.events.post(f"crime_wave_saucer_{saucer}_held")
         self.delay.remove(f"crime_wave_saucer_{saucer}")
         self.delay.add(
             name=f"crime_wave_saucer_{saucer}",
@@ -116,7 +119,10 @@ class CrimeWave(Mode):
 
     def _release_saucer(self, saucer, **kwargs):
         self.delay.remove(f"crime_wave_saucer_{saucer}")
+        was_held = saucer in self.held_saucers
         self.held_saucers.discard(saucer)
+        if was_held:
+            self.machine.events.post(f"crime_wave_saucer_{saucer}_released")
         self.machine.events.post(self.SAUCER_EJECT_EVENTS[saucer])
 
     def _upper_exit_hit(self, **kwargs):

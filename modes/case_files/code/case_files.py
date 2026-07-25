@@ -201,6 +201,12 @@ class CaseFiles(Mode):
         if not self.case_files_logic_active:
             return
 
+        if self._case_files_hidden_for_wizard():
+            self.machine.events.post("case_files_clear_lights")
+            self.machine.events.post("case_files_hidden_for_wizard")
+            self.machine.events.post("daily_bugle_widget_remove")
+            return
+
         if self._case_files_locked():
             self.machine.events.post("case_files_clear_lights")
             self._publish_widget_vars()
@@ -281,6 +287,11 @@ class CaseFiles(Mode):
         return None
 
     def _publish_widget_vars(self):
+        if self._case_files_hidden_for_wizard():
+            self.machine.events.post("case_files_hidden_for_wizard")
+            self.machine.events.post("daily_bugle_widget_remove")
+            return
+
         self._refresh_counts()
 
         for index, key in enumerate(self.CASE_FILES, start=1):
@@ -301,6 +312,46 @@ class CaseFiles(Mode):
         without changing case-file data.
         """
         self.machine.events.post("case_files_cleared")
+
+    def _case_files_hidden_for_wizard(self):
+        """Hide the Case Files/Daily Bugle panel for wizard-ready/wizard flow."""
+        player = self.machine.game.player if self.machine.game else None
+        if not player:
+            return False
+
+        hide_vars = (
+            "chapter_mini_wizard_ready",
+            "mini_wizard_daily_bugle_ready",
+            "mini_wizard_vuk_hold_active",
+            "final_wizard_ready",
+        )
+
+        for var_name in hide_vars:
+            try:
+                if self._safe_int(player[var_name], 0) == 1:
+                    return True
+            except Exception:
+                pass
+
+        # Once a mini-wizard/final wizard is actually running, villain_mode_running
+        # is also true. Use the current-key/state names so normal villain modes can
+        # still show active Case File helpers.
+        try:
+            current_key = str(player["villain_current_key"] or "")
+        except Exception:
+            current_key = ""
+
+        if current_key:
+            if current_key == "final_showdown":
+                return True
+            try:
+                mini_key = str(player["mini_wizard_current_key"] or "")
+            except Exception:
+                mini_key = ""
+            if mini_key and current_key == mini_key:
+                return True
+
+        return False
 
     def _case_files_locked(self):
         """Return True when case-file switch logic should be ignored.

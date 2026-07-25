@@ -54,21 +54,41 @@ show_player:
     foswell_saucer_1_lit:
       loops: -1
 
+  master_plan_saucer_1_collected:
+    foswell_saucer_1_lit:
+      action: stop
+
   master_plan_saucer_2_lit:
     foswell_saucer_2_lit:
       loops: -1
+
+  master_plan_saucer_2_collected:
+    foswell_saucer_2_lit:
+      action: stop
 
   master_plan_saucer_3_lit:
     foswell_saucer_3_lit:
       loops: -1
 
+  master_plan_saucer_3_collected:
+    foswell_saucer_3_lit:
+      action: stop
+
   master_plan_super_lit_show:
     foswell_vuk_super_lit:
       loops: -1
 
+  master_plan_super_collected:
+    foswell_vuk_super_lit:
+      action: stop
+
   master_plan_back_page_lit_show:
     foswell_back_page_lit:
       loops: -1
+
+  master_plan_back_page_collected:
+    foswell_back_page_lit:
+      action: stop
 
   master_plan_clear_lights:
     foswell_saucer_1_lit:

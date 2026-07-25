@@ -174,12 +174,15 @@ light_player:
     l_upper_middle: off
     l_upper_right: off
   infinata_light_saucers:
-    l_1_hole_l: green
-    l_1_hole_r: green
-    l_2_hole_l: green
-    l_2_hole_r: green
-    l_3_hole_l: green
-    l_3_hole_r: green
+    l_1: green
+    l_1_hole_l: red
+    l_1_hole_r: red
+    l_2: green
+    l_2_hole_l: red
+    l_2_hole_r: red
+    l_3: green
+    l_3_hole_l: red
+    l_3_hole_r: red
   infinata_clear_area_lights:
     l_gi_3bank: off
     l_gi_5bank_lower: off
@@ -198,9 +201,12 @@ light_player:
     l_upper_left: off
     l_upper_middle: off
     l_upper_right: off
+    l_1: off
     l_1_hole_l: off
     l_1_hole_r: off
+    l_2: off
     l_2_hole_l: off
     l_2_hole_r: off
+    l_3: off
     l_3_hole_l: off
     l_3_hole_r: off

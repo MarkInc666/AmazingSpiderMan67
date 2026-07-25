@@ -52,9 +52,49 @@ widget_player:
       action: remove
       key: daily_bugle_ready
 
-  daily_bugle_widget_update:
+  daily_bugle_widget_update{current_player.chapter_mini_wizard_ready != 1 and current_player.mini_wizard_daily_bugle_ready != 1 and current_player.mini_wizard_vuk_hold_active != 1 and current_player.final_wizard_ready != 1}:
     daily_bugle_ready:
       action: play
+      key: daily_bugle_ready
+
+  daily_bugle_widget_update{current_player.chapter_mini_wizard_ready == 1 or current_player.mini_wizard_daily_bugle_ready == 1 or current_player.mini_wizard_vuk_hold_active == 1 or current_player.final_wizard_ready == 1}:
+    daily_bugle_ready:
+      action: remove
+      key: daily_bugle_ready
+
+  chapter_mini_wizard_ready:
+    daily_bugle_ready:
+      action: remove
+      key: daily_bugle_ready
+
+  chapter_mini_wizard_lit_at_daily_bugle:
+    daily_bugle_ready:
+      action: remove
+      key: daily_bugle_ready
+
+  chapter_mini_wizard_starting:
+    daily_bugle_ready:
+      action: remove
+      key: daily_bugle_ready
+
+  chapter_mini_wizard_started:
+    daily_bugle_ready:
+      action: remove
+      key: daily_bugle_ready
+
+  final_wizard_ready:
+    daily_bugle_ready:
+      action: remove
+      key: daily_bugle_ready
+
+  villain_progression_start_final_wizard:
+    daily_bugle_ready:
+      action: remove
+      key: daily_bugle_ready
+
+  case_files_hidden_for_wizard:
+    daily_bugle_ready:
+      action: remove
       key: daily_bugle_ready
 
 

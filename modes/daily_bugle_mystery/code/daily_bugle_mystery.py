@@ -60,6 +60,21 @@ class DailyBugleMystery(Mode):
         "mystery_award_start_next_villain",
     ]
 
+    AWARD_MESSAGES = {
+        "mystery_award_ball_save": ("BALL SAVE", "LIT"),
+        "mystery_award_start_super_spinner": ("SUPER SPINNER", "20 SECONDS"),
+        "mystery_award_advance_bonus_multiplier": ("BONUS X", "ADVANCED"),
+        "mystery_award_collect_bonus": ("BONUS", "COLLECTED"),
+        "mystery_award_hold_bonus": ("HOLD BONUS", "AWARDED"),
+        "mystery_award_start_super_pops": ("SUPER POPS", "20 SECONDS"),
+        "mystery_award_million_points": ("MYSTERY AWARD", "1,000,000"),
+        "mystery_award_villain_start_ready": ("VILLAIN READY", "SAUCERS MAXED"),
+        "mystery_award_start_next_villain": ("START NEXT VILLAIN", "SEARCHING..."),
+        "mystery_award_light_extra_ball": ("EXTRA BALL", "LIT"),
+        "mystery_award_light_right_extra_ball": ("EXTRA BALL", "RIGHT BANK LIT"),
+        "mystery_award_award_extra_ball": ("EXTRA BALL", "AWARDED"),
+    }
+
     # Lightweight copy of the current chapter villain order. VillainProgression
     # remains the source of truth for actually starting modes; this is only used
     # to avoid selecting mystery awards that cannot do anything right now.
@@ -439,7 +454,7 @@ class DailyBugleMystery(Mode):
                 # not award it during wizard-ready, chapter-select, villain
                 # select, or active-mode states.
                 if self._can_ready_villain_award():
-                    self.machine.events.post(award_event)
+                    self._post_mystery_award(award_event)
                     return
 
             elif award_event == "mystery_award_start_next_villain":
@@ -447,22 +462,34 @@ class DailyBugleMystery(Mode):
                 # when there is at least one unplayed villain in the current
                 # chapter and no progression flow is already active.
                 if self._can_start_next_villain_award():
-                    self.machine.events.post(award_event)
+                    self._post_mystery_award(award_event)
                     return
 
             elif award_event == "mystery_award_hold_bonus":
                 hold_bonus = player["hold_bonus"]
                 if hold_bonus == 0:
-                    self.machine.events.post(award_event)
+                    self._post_mystery_award(award_event)
                     return
 
             else:
-                self.machine.events.post(award_event)
+                self._post_mystery_award(award_event)
                 return
 
         # Safe fallback if every random choice was filtered out.
-        self.machine.events.post("mystery_award_million_points")
+        self._post_mystery_award("mystery_award_million_points")
 
+    def _post_mystery_award(self, award_event):
+        """Show a readable mystery award message, then post the award event."""
+        self._post_mystery_award_message(award_event)
+        self.machine.events.post(award_event)
+
+    def _post_mystery_award_message(self, award_event):
+        title, subtitle = self.AWARD_MESSAGES.get(award_event, ("MYSTERY AWARD", ""))
+        self.machine.events.post(
+            "show_mode_message",
+            message_mode_title=title,
+            message_mode_subtitle=subtitle,
+        )
 
     def _progression_award_blocked(self):
         player = self.machine.game.player if self.machine.game else None
@@ -513,13 +540,13 @@ class DailyBugleMystery(Mode):
         self.machine.events.post("up_kick")
 
     def light_extra_ball(self):
-        self.machine.events.post("mystery_award_light_extra_ball")
+        self._post_mystery_award("mystery_award_light_extra_ball")
 
     def light_right_extra_ball(self):
-        self.machine.events.post("mystery_award_light_right_extra_ball")
+        self._post_mystery_award("mystery_award_light_right_extra_ball")
 
     def award_extra_ball(self):
-        self.machine.events.post("mystery_award_award_extra_ball")
+        self._post_mystery_award("mystery_award_award_extra_ball")
 
     def reset_cycle(self, post_restore=True, **kwargs):
         self.a_hit = False
