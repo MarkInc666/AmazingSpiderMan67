@@ -22,6 +22,7 @@ class Fakir(CaseFileMixin, Mode):
     NORMAL_RUBY_TIMER_MS = 10_000
     MORE_TIME_RUBY_TIMER_MS = 15_000
     SAUCER_EJECT_SAFETY_NET_MS = 650
+    EXTRA_SAUCER_EJECT_MS = 350
     GI_RESTORE_AFTER_JACKPOT_MS = 650
 
     SAUCER_KICKOUTS = {
@@ -100,6 +101,8 @@ class Fakir(CaseFileMixin, Mode):
         self.delay.remove("fakir_ruby_timer")
         self.delay.remove("fakir_restore_base_gi")
         self.delay.remove("fakir_safety_net_after_kickout")
+        for saucer in self.SAUCER_KICKOUTS:
+            self.delay.remove(f"fakir_extra_saucer_{saucer}_eject")
         self._release_locked_saucer()
         self.machine.events.post("fakir_all_lights_off")
         self.machine.events.post("fakir_stop_all_gi")
@@ -119,7 +122,18 @@ class Fakir(CaseFileMixin, Mode):
             self.shot_assist_available = True
 
     def _saucer_hit(self, saucer, **kwargs):
-        if self._inactive() or self.ruby_active:
+        if self._inactive():
+            self._eject_extra_saucer(saucer)
+            return
+
+        # Fakir holds exactly one saucer while the real-ruby shot is active.
+        # In 2-ball play, any other saucer hit during that hold is the live
+        # ball getting trapped; kick it back out instead of starting/stacking a
+        # second ruby attempt. Ignore the already-held saucer so switch chatter
+        # does not release the parked ball early.
+        if self.ruby_active:
+            if saucer != self.locked_saucer:
+                self._eject_extra_saucer(saucer)
             return
 
         self.locked_saucer = saucer
@@ -281,6 +295,18 @@ class Fakir(CaseFileMixin, Mode):
                     ms=self.SAUCER_EJECT_SAFETY_NET_MS,
                     callback=self._start_safety_net_ball_save,
                 )
+
+    def _eject_extra_saucer(self, saucer, **kwargs):
+        kickout = self.SAUCER_KICKOUTS.get(saucer)
+        if not kickout:
+            return
+        delay_name = f"fakir_extra_saucer_{saucer}_eject"
+        self.delay.remove(delay_name)
+        self.delay.add(
+            name=delay_name,
+            ms=self.EXTRA_SAUCER_EJECT_MS,
+            callback=lambda: self.machine.events.post(kickout),
+        )
 
     def _release_locked_saucer(self):
         if self.locked_saucer:

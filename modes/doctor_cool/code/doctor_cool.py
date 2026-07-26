@@ -5,10 +5,11 @@ from modes.common.case_file_mixin import CaseFileMixin
 class DoctorCool(Mode, CaseFileMixin):
     """Doctor Cool villain mode.
 
-    Build the frozen-diamond jackpot with both drop banks. Completing the right
-    5-bank starts a cycling shipment chase across the saucers. The lit saucer
-    collects the frozen shipment; wrong saucers are decoys. The STAR rollover
-    freezes the chase and lights all three saucers for a short collect window.
+    Build the frozen-diamond jackpot with both drop banks. Any right drop starts
+    a cycling shipment chase across the saucers; additional drops keep increasing
+    the jackpot. The lit saucer collects the frozen shipment; wrong saucers are
+    decoys. The STAR rollover freezes the chase and lights all three saucers for
+    a short collect window.
     """
 
     MODE_KEY = "doctor_cool"
@@ -30,8 +31,8 @@ class DoctorCool(Mode, CaseFileMixin):
     DIAMOND_STAR_BONUS_BANK = 100_000
 
     SAUCER_CYCLE_MS_BY_ROUND = (750, 500, 350, 300)
-    NORMAL_REQUIRED_JACKPOTS = 3
-    MORE_JACKPOTS_REQUIRED_JACKPOTS = 4
+    NORMAL_REQUIRED_JACKPOTS = 1
+    MORE_JACKPOTS_REQUIRED_JACKPOTS = 2
 
     SAUCER_KICK_EVENTS = {
         1: "delayed_kickout_saucer_1",
@@ -100,7 +101,7 @@ class DoctorCool(Mode, CaseFileMixin):
     def _apply_case_file_effects(self):
         self.publish_case_file_bonus_events(self.MODE_KEY)
         self.publish_active_case_file_helpers([
-            ("more_jackpots", "4TH FROZEN SHIPMENT ADDED"),
+            ("more_jackpots", "2ND FROZEN SHIPMENT ADDED"),
             ("bigger_jackpots", "FROZEN DIAMOND VALUES INCREASED"),
             ("more_time", "STAR FREEZE 15 SECONDS"),
             ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
@@ -137,13 +138,14 @@ class DoctorCool(Mode, CaseFileMixin):
             message_mode_value=self.jackpot_value,
         )
 
+        if bank == "right" and not self.saucer_chase_active and self.jackpots_collected < self.required_jackpots:
+            self._start_saucer_chase()
+
     def _right_bank_complete(self, **kwargs):
         if self.mode_done:
             return
         self.machine.events.post("drop_target_bank_dt_bank_right_reset")
         self.machine.events.post("doctor_cool_right_bank_completed")
-        if not self.saucer_chase_active:
-            self._start_saucer_chase()
 
     def _left_bank_complete(self, **kwargs):
         if self.mode_done:
@@ -198,7 +200,7 @@ class DoctorCool(Mode, CaseFileMixin):
             return
 
         if not self.saucer_chase_active:
-            self.machine.events.post("show_mode_message", message_mode_title="NO FROZEN SHIPMENT", message_mode_subtitle="COMPLETE 5-BANK")
+            self.machine.events.post("show_mode_message", message_mode_title="NO FROZEN SHIPMENT", message_mode_subtitle="HIT A RIGHT DROP")
             self._kick_saucer(saucer)
             return
 
@@ -337,7 +339,7 @@ class DoctorCool(Mode, CaseFileMixin):
     def _update_mode_status(self):
         if self.saucer_chase_active:
             title = "DIAMOND CHASE"
-            value = f"JACKPOTS {self.jackpots_collected}"
+            value = f"JACKPOTS {self.jackpots_collected}/{self.required_jackpots}"
         else:
             title = "DROP HITS / JACKPOTS"
             value = f"{self.drop_hits} / {self.jackpots_collected}"

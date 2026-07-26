@@ -1278,9 +1278,24 @@ class VillainProgression(Mode):
 
         # If that summary finished the fifth villain in the chapter, make the
         # chapter mini-wizard immediately available at the Daily Bugle VUK.
-        # Do this after villain_bookends has posted reset_daily_bugle_state so
-        # the gate/open state is not immediately wiped out by summary cleanup.
+        #
+        # Important: _villain_mode_finished() recalculates with post_events=False
+        # before the summary so the status widget can show the updated chapter
+        # count without opening the gate during the bookend. That means
+        # chapter_mini_wizard_ready may already be 1 by the time we get here.
+        # Reassert the Daily Bugle/VUK-ready state after summary cleanup even if
+        # this is not a fresh 0->1 transition; otherwise no gate-open event is
+        # posted and the player sees WIZ READY with a closed gate.
         self._check_chapter_complete()
+        if (
+            self._safe_int(player["chapter_mini_wizard_ready"], 0) == 1
+            and self._safe_int(player["chapter_select_needed"], 0) == 0
+            and self._safe_int(player["chapter_select_active"], 0) == 0
+        ):
+            self._mini_wizard_ready_at_daily_bugle(
+                post_restore=False,
+                reason="villain_summary_done",
+            )
         self._restore_state()
         self._schedule_case_files_restore(reason="villain_summary_done")
 

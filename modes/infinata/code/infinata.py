@@ -61,6 +61,7 @@ class Infinata(CaseFileMixin, Mode):
         for area in self.AREAS:
             self.add_mode_event_handler(f"infinata_{area}_hit", self._area_hit, area=area)
         self.add_mode_event_handler("infinata_saucer_hit", self._saucer_hit)
+        self.add_mode_event_handler("infinata_vuk_hit", self._vuk_hit)
         self.add_mode_event_handler("infinata_complete_request", self._complete_mode)
         self.add_mode_event_handler("infinata_fail_request", self._fail_mode)
 
@@ -71,6 +72,7 @@ class Infinata(CaseFileMixin, Mode):
 
     def mode_stop(self, **kwargs):
         self.delay.remove("infinata_super_tick")
+        self.delay.remove("infinata_vuk_eject")
         self._close_roof_gate_if_requested()
         self.machine.events.post("infinata_clear_lights")
         self.machine.events.post("clear_saucers_delayed")
@@ -181,6 +183,22 @@ class Infinata(CaseFileMixin, Mode):
         if self.active_area:
             subtitle = f"OPTIONAL {self.active_area.replace('_', ' ').upper()} - OR SAUCER"
         self.machine.events.post("show_mode_countdown", message_mode_title="INFINATA SUPER", message_mode_subtitle=subtitle, message_mode_value="", message_mode_seconds=self.super_seconds_left)
+
+
+    def _vuk_hit(self, **kwargs):
+        """Kick balls out of the Daily Bugle VUK while Infinata owns the mode.
+
+        Daily Bugle Mystery is disabled during villain play, so Infinata must
+        provide the VUK response itself. This is especially important when the
+        rooftop gate is open for the upper-target area and the VUK is acting as
+        the feed to the upper playfield.
+        """
+        self.delay.remove("infinata_vuk_eject")
+        self.delay.add(
+            name="infinata_vuk_eject",
+            ms=1000,
+            callback=lambda: self.machine.events.post("up_kick"),
+        )
 
     def _saucer_hit(self, **kwargs):
         if self.mode_done or self.phase != "super":

@@ -1,8 +1,8 @@
 #config_version=6
 
 # Doctor Cool villain mode.
-# Complete the right 5-bank to start a cycling saucer chase. Both drop banks
-# build the Diamond Jackpot and reset when completed. Star rollover freezes the
+# Hit any right drop to start a cycling saucer chase. Additional drops build the
+# Diamond Jackpot and banks reset when completed. Star rollover freezes the
 # chase and lights all three saucers briefly.
 
 mode:

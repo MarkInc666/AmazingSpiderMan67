@@ -78,6 +78,10 @@ event_player:
     - infinata_saucer_hit
     - delayed_kickout_saucer_3
 
+  # Daily Bugle Mystery is disabled during Infinata, so the mode must
+  # respond to VUK balls itself and kick them to the upper playfield.
+  s_vuk_switch_active: infinata_vuk_hit
+
   mode_infinata_started:
     - disable_daily_bugle_mystery
     - clear_saucers_delayed
