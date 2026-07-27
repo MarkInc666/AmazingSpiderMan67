@@ -230,7 +230,7 @@ class DrVonSchlick(CaseFileMixin, Mode):
                 message_mode_subtitle="SUPER JACKPOT",
                 message_mode_value=self.SUPER_VALUE,
             )
-            self.machine.events.post("up_kick")
+            self.machine.events.post("villain_summary_hold_vuk_until_done")
             self._complete_mode()
 
     def _complete_mode(self, **kwargs):

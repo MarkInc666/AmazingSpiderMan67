@@ -1,21 +1,26 @@
+import random
+
 from mpf.core.mode import Mode
 
 
 class MasterTechnician(Mode):
 
     DROP_SCORE = 25000
-    SPINNER_BASE = 1000
-    RIGHT_DROP_VALUE = 10000
+    SPINNER_BASE = 50000
+    SPINNER_PER_DROP = 50000
+    SPINNER_MAX = 400000
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
 
         self.left_down = set()
         self.right_down = set()
+        self.pending_inlane_drop = None
 
         self.add_mode_event_handler("master_technician_start", self.met_start)
-
         self.add_mode_event_handler("master_technician_spinner_hit", self.spinner_hit)
+        self.add_mode_event_handler("master_technician_saucer_hit", self.saucer_hit)
+        self.add_mode_event_handler("master_technician_inlane_hit", self.inlane_hit)
 
         for target in range(1, 4):
             self.add_mode_event_handler(
@@ -37,8 +42,14 @@ class MasterTechnician(Mode):
 
     def met_start(self, **kwargs):
         self.update_player_vars()
+        self._update_saucer_guidance()
 
     def left_drop_hit(self, target, **kwargs):
+        key = f"left_{target}"
+        if self.pending_inlane_drop == key:
+            self.pending_inlane_drop = None
+            self.delay.remove("master_technician_inlane_drop_guard")
+
         if target in self.left_down:
             return
 
@@ -48,6 +59,11 @@ class MasterTechnician(Mode):
         self.after_drop_hit()
 
     def right_drop_hit(self, target, **kwargs):
+        key = f"right_{target}"
+        if self.pending_inlane_drop == key:
+            self.pending_inlane_drop = None
+            self.delay.remove("master_technician_inlane_drop_guard")
+
         if target in self.right_down:
             return
 
@@ -56,18 +72,55 @@ class MasterTechnician(Mode):
         self.machine.events.post("master_technician_drop_scored")
         self.after_drop_hit()
 
+
+    def inlane_hit(self, **kwargs):
+        """Knock down one random standing target from either bank."""
+        if self.pending_inlane_drop is not None:
+            return
+
+        standing = [
+            *(f"left_{target}" for target in range(1, 4) if target not in self.left_down),
+            *(f"right_{target}" for target in range(1, 6) if target not in self.right_down),
+        ]
+        if not standing:
+            return
+
+        target_key = random.choice(standing)
+        self.pending_inlane_drop = target_key
+        self.delay.reset(
+            name="master_technician_inlane_drop_guard",
+            ms=1000,
+            callback=self._clear_inlane_drop_guard,
+        )
+        self.machine.drop_targets[f"dt_{target_key}"].knockdown()
+        self.machine.events.post("master_technician_inlane_advance")
+
+    def _clear_inlane_drop_guard(self):
+        # Allow another inlane attempt if the physical target did not register.
+        self.pending_inlane_drop = None
+
+    def saucer_hit(self, **kwargs):
+        """Reset only the left three-bank and preserve right-bank progress."""
+        if self.left_down:
+            self.left_down.clear()
+            self.machine.events.post("drop_target_bank_dt_bank_left_reset")
+            self.machine.events.post("master_technician_left_bank_reset")
+            self.update_player_vars()
+            self._update_saucer_guidance()
+
     def after_drop_hit(self):
         self.update_player_vars()
+        self._update_saucer_guidance()
 
-        # If either bank completes, mode ends.
-        if len(self.left_down) >= 3 or len(self.right_down) >= 5:
+        # All eight physical drops must be down at once to complete the mode.
+        if self.total_drops_down() >= 8:
             player = self.machine.game.player
             player["master_technician_state"] = 2
             self.machine.events.post("master_technician_mode_complete")
             return
 
-        # Warning if either bank has only one target left.
-        if len(self.left_down) == 2 or len(self.right_down) == 4:
+        # Warn when only one target remains.
+        if self.total_drops_down() == 7:
             self.machine.events.post("master_technician_danger_warning")
 
     def spinner_hit(self, **kwargs):
@@ -79,34 +132,36 @@ class MasterTechnician(Mode):
 
         self.machine.events.post("master_technician_spinner_scored")
 
+    def total_drops_down(self):
+        return len(self.left_down) + len(self.right_down)
+
     def calculate_multiplier(self):
-        left_count = len(self.left_down)
-
-        if left_count == 0:
-            return 1
-        if left_count == 1:
-            return 2
-
-        # 2 down = max multiplier.
-        # 3 down ends the mode.
-        return 5
+        # Retained for the existing player variable/display contract.
+        return self.total_drops_down() + 1
 
     def calculate_spinner_value(self):
-        multiplier = self.calculate_multiplier()
-        right_count = len(self.right_down)
+        # 50K base plus 50K per down target, capped at 400K.
+        return min(
+            self.SPINNER_MAX,
+            self.SPINNER_BASE + (self.SPINNER_PER_DROP * self.total_drops_down())
+        )
 
-        value = right_count * self.RIGHT_DROP_VALUE * multiplier
-
-        if value < self.SPINNER_BASE:
-            return self.SPINNER_BASE
-
-        return value
+    def _update_saucer_guidance(self):
+        event = (
+            "master_technician_light_saucers"
+            if self.left_down
+            else "master_technician_clear_saucers"
+        )
+        self.machine.events.post(event)
 
     def _update_mode_status(self):
         self.machine.events.post(
             "update_mode_status",
-            mode_status_title="LEFT / RIGHT DROPS",
-            mode_status_value=f"{len(self.left_down)}/3 / {len(self.right_down)}/5  SPIN {self.calculate_spinner_value():,}",
+            mode_status_title="DROP TARGETS",
+            mode_status_value=(
+                f"{self.total_drops_down()}/8 DOWN  "
+                f"SPIN {self.calculate_spinner_value():,}"
+            ),
         )
 
     def update_player_vars(self):

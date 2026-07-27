@@ -107,6 +107,14 @@ widget_player:
       action: play
       expire: 3s
 
+  ball_ending:
+    final_showdown_area_status:
+      action: remove
+
+  mode_final_showdown_stopping:
+    final_showdown_area_status:
+      action: remove
+
   xfinal_showdown_jackpot_lit:
     final_showdown_jackpot_lit:
       action: play

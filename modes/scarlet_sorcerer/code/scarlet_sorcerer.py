@@ -299,6 +299,7 @@ class ScarletSorcerer(CaseFileMixin, Mode):
         self._sync_vars()
         self.machine.events.post("scarlet_sorcerer_scepter_destroyed", value=self.scepter_super_value)
         self._show_jackpot("SUPER JACKPOT", self.scepter_super_value, "SCEPTER DESTROYED")
+        self.machine.events.post("villain_summary_hold_vuk_until_done")
         self._complete_mode()
 
     def _complete_mode(self, **kwargs):

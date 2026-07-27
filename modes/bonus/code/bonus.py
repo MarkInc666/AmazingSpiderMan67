@@ -28,7 +28,6 @@ class Bonus(MpfBonus):
     ]
 
     MODE_BONUS_ENTRIES = [
-        ("held_bonus", "HELD BONUS", True),
         ("vulture_bonus", "VULTURE FLIGHT", False),
         ("goblin_bonus", "GOBLIN CHAOS", False),
         ("vulcan_bonus", "VULCAN ERUPTION", False),
@@ -40,6 +39,9 @@ class Bonus(MpfBonus):
         ("devargas_bonus", "LOST WORLDS PLACEHOLDER", False),
         ("swamp_bonus", "SWAMP REPTILES", False),
         ("technician_bonus", "TECHNICIAN TRAP", False),
+        # A carried bonus is always the final counted bonus entry before the
+        # player-score hold. It is consumed only after being awarded.
+        ("held_bonus", "HELD BONUS", True),
     ]
 
     MULTIPLIER_LIGHTS = {
@@ -56,6 +58,7 @@ class Bonus(MpfBonus):
     NEXT_CYCLE_DELAY_MS = 260
     MODE_PAGE_DELAY_MS = 1100
     MODE_STEP_MS = 850
+    HELD_BONUS_DISPLAY_MS = 1100
     FINAL_SCORE_HOLD_MS = 2500
 
     def mode_start(self, **kwargs):
@@ -75,7 +78,22 @@ class Bonus(MpfBonus):
             callback=self._begin_bonus_sequence,
         )
 
+    def mode_stop(self, **kwargs):
+        # Prevent delayed bonus callbacks from updating the slide after the
+        # mode has begun stopping.
+        self._bonus_running = False
+        Mode.mode_stop(self, **kwargs)
+
+    def _sequence_available(self):
+        if not getattr(self, "_bonus_running", False):
+            return False
+        if not self.machine.game:
+            return False
+        return getattr(self, "_player", None) is self.machine.game.player
+
     def _begin_bonus_sequence(self):
+        if not self._sequence_available():
+            return
         self._lit_buckets = self._build_lit_bucket_list()
         self._regular_total = 0
         self._final_total = 0
@@ -114,12 +132,16 @@ class Bonus(MpfBonus):
         return list(reversed(lit))
 
     def _start_regular_or_mode_bonus(self):
+        if not self._sequence_available():
+            return
         if self._lit_buckets:
             self._start_regular_pass()
         else:
             self._finish_regular_bonus()
 
     def _start_regular_pass(self):
+        if not self._sequence_available():
+            return
         self._bucket_index = 0
         self._relight_lit_bonus_buckets()
 
@@ -139,6 +161,8 @@ class Bonus(MpfBonus):
         )
 
     def _count_next_bonus_bucket(self):
+        if not self._sequence_available():
+            return
         if self._bucket_index >= len(self._lit_buckets):
             self._finish_regular_pass()
             return
@@ -166,6 +190,8 @@ class Bonus(MpfBonus):
         )
 
     def _finish_regular_pass(self):
+        if not self._sequence_available():
+            return
         self._turn_off_multiplier_light_for_pass(self._current_pass)
         self._current_pass += 1
 
@@ -183,6 +209,8 @@ class Bonus(MpfBonus):
             )
 
     def _finish_regular_bonus(self):
+        if not self._sequence_available():
+            return
         self._turn_off_all_bonus_bucket_lights()
         self.delay.add(
             name="asm_bonus_start_mode_page",
@@ -191,6 +219,8 @@ class Bonus(MpfBonus):
         )
 
     def _start_mode_bonus_page(self):
+        if not self._sequence_available():
+            return
         self._mode_entries = self._build_mode_entries()
         self._mode_index = 0
 
@@ -222,6 +252,8 @@ class Bonus(MpfBonus):
         return entries
 
     def _count_next_mode_entry(self):
+        if not self._sequence_available():
+            return
         if self._mode_index >= len(self._mode_entries):
             self.delay.add(
                 name="asm_bonus_finalize",
@@ -254,25 +286,47 @@ class Bonus(MpfBonus):
         )
 
     def _handle_hold_bonus(self):
+        if not self._sequence_available():
+            return
+
+        held_entry_was_shown = False
+
         if self._hold_bonus_earned:
             if self._is_last_ball():
+                # There is no future ball on which to collect the held value.
+                # Award the entire current bonus a second time now and present
+                # it as the final HELD BONUS entry.
                 self._player["score"] += self._final_total
                 self._player["held_bonus"] = 0
-                self._show_bonus_entry("hold_bonus", "HOLD BONUS", self._final_total)
+                self._show_bonus_entry("held_bonus", "HELD BONUS", self._final_total)
                 self.machine.events.post("asm_hold_bonus_awarded", total=self._final_total)
             else:
+                # Bank the current total for the next ball. Do not award it
+                # again now and do not show an amount until it is collected.
                 self._player["held_bonus"] = self._final_total
-                self._show_bonus_entry("bonus_held", "BONUS HELD", self._final_total)
+                self._show_bonus_entry("hold_bonus", "HOLD BONUS", "")
                 self.machine.events.post("asm_bonus_held", total=self._final_total)
+            held_entry_was_shown = True
         else:
+            # A carried held bonus, when present, was already consumed by the
+            # final mode-bonus entry during this count.
             self._player["held_bonus"] = 0
 
         self._player["hold_bonus"] = 0
         self._reset_regular_bonus_state()
 
         self.machine.events.post("asm_bonus_total_awarded", total=self._final_total)
-        self._show_bonus_entry("final_score_hold", "PLAYER SCORE", int(self._player["score"]))
 
+        self.delay.add(
+            name="asm_bonus_show_final_score",
+            ms=self.HELD_BONUS_DISPLAY_MS if held_entry_was_shown else 0,
+            callback=self._show_final_score,
+        )
+
+    def _show_final_score(self):
+        if not self._sequence_available():
+            return
+        self._show_bonus_entry("final_score_hold", "PLAYER SCORE", int(self._player["score"]))
         self.delay.add(
             name="asm_bonus_finish",
             ms=self.FINAL_SCORE_HOLD_MS,
@@ -313,6 +367,8 @@ class Bonus(MpfBonus):
             self._set_bonus_light(light_name, False)
 
     def _show_bonus_entry(self, entry, text, score):
+        if not self._sequence_available():
+            return
         self.machine.events.post(
             "bonus_entry",
             entry=entry,
@@ -327,6 +383,9 @@ class Bonus(MpfBonus):
             return False
 
     def _finish_bonus(self):
+        if not self._sequence_available():
+            return
+        self._bonus_running = False
         # Let MPF's mode wait queue be cleared by the mode lifecycle.
         # Clearing it manually here can double-clear and raise "Not locked".
         self.stop()

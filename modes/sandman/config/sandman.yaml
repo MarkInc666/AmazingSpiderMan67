@@ -174,80 +174,80 @@ shows:
     - duration: 250ms
       lights:
         l_5bank_1: 00A000
-        l_5bank_2: blue
-        l_5bank_3: blue
-        l_5bank_4: blue
-        l_5bank_5: blue
+        l_5bank_2: 0000BF
+        l_5bank_3: 0000BF
+        l_5bank_4: 0000BF
+        l_5bank_5: 0000BF
     - duration: 250ms
       lights:
         l_5bank_1: white
-        l_5bank_2: blue
-        l_5bank_3: blue
-        l_5bank_4: blue
-        l_5bank_5: blue
+        l_5bank_2: 0000BF
+        l_5bank_3: 0000BF
+        l_5bank_4: 0000BF
+        l_5bank_5: 0000BF
 
   sandman_flash_2_show:
     - duration: 250ms
       lights:
-        l_5bank_1: blue
+        l_5bank_1: 0000BF
         l_5bank_2: 00A000
-        l_5bank_3: blue
-        l_5bank_4: blue
-        l_5bank_5: blue
+        l_5bank_3: 0000BF
+        l_5bank_4: 0000BF
+        l_5bank_5: 0000BF
     - duration: 250ms
       lights:
-        l_5bank_1: blue
+        l_5bank_1: 0000BF
         l_5bank_2: white
-        l_5bank_3: blue
-        l_5bank_4: blue
-        l_5bank_5: blue
+        l_5bank_3: 0000BF
+        l_5bank_4: 0000BF
+        l_5bank_5: 0000BF
 
   sandman_flash_3_show:
     - duration: 250ms
       lights:
-        l_5bank_1: blue
-        l_5bank_2: blue
+        l_5bank_1: 0000BF
+        l_5bank_2: 0000BF
         l_5bank_3: 00A000
-        l_5bank_4: blue
-        l_5bank_5: blue
+        l_5bank_4: 0000BF
+        l_5bank_5: 0000BF
     - duration: 250ms
       lights:
-        l_5bank_1: blue
-        l_5bank_2: blue
+        l_5bank_1: 0000BF
+        l_5bank_2: 0000BF
         l_5bank_3: white
-        l_5bank_4: blue
-        l_5bank_5: blue
+        l_5bank_4: 0000BF
+        l_5bank_5: 0000BF
 
   sandman_flash_4_show:
     - duration: 250ms
       lights:
-        l_5bank_1: blue
-        l_5bank_2: blue
-        l_5bank_3: blue
+        l_5bank_1: 0000BF
+        l_5bank_2: 0000BF
+        l_5bank_3: 0000BF
         l_5bank_4: 00A000
-        l_5bank_5: blue
+        l_5bank_5: 0000BF
     - duration: 250ms
       lights:
-        l_5bank_1: blue
-        l_5bank_2: blue
-        l_5bank_3: blue
+        l_5bank_1: 0000BF
+        l_5bank_2: 0000BF
+        l_5bank_3: 0000BF
         l_5bank_4: white
-        l_5bank_5: blue
+        l_5bank_5: 0000BF
 
   sandman_flash_5_show:
     - duration: 250ms
       lights:
-        l_5bank_1: blue
-        l_5bank_2: blue
-        l_5bank_3: blue
-        l_5bank_4: blue
+        l_5bank_1: 0000BF
+        l_5bank_2: 0000BF
+        l_5bank_3: 0000BF
+        l_5bank_4: 0000BF
         l_5bank_5: 00A000
     - duration: 250ms
       lights:
-        l_5bank_1: blue
-        l_5bank_2: blue
-        l_5bank_3: blue
-        l_5bank_4: blue
+        l_5bank_1: 0000BF
+        l_5bank_2: 0000BF
+        l_5bank_3: 0000BF
+        l_5bank_4: 0000BF
         l_5bank_5: white
 
   sandman_bank_complete_show:

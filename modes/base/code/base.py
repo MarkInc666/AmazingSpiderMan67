@@ -95,9 +95,10 @@ class Base(Mode):
         self.add_mode_event_handler("hide_mode_message", self._hide_mode_message, priority=10000)
         self.add_mode_event_handler("reset_mode_message_reminder", self._reset_mode_message_reminder, priority=10000)
         self.add_mode_event_handler("cancel_mode_message_reminder", self._cancel_mode_message_reminder, priority=10000)
-        self.add_mode_event_handler("ball_will_end", self._clear_mode_display_context, priority=10000)
-        self.add_mode_event_handler("ball_ending", self._clear_mode_display_context, priority=10000)
-        self.add_mode_event_handler("ball_ended", self._clear_mode_display_context, priority=10000)
+        self.add_mode_event_handler("ball_starting", self._unlock_mode_display_context, priority=10000)
+        self.add_mode_event_handler("ball_will_end", self._lock_and_clear_mode_display_context, priority=10000)
+        self.add_mode_event_handler("ball_ending", self._lock_and_clear_mode_display_context, priority=10000)
+        self.add_mode_event_handler("ball_ended", self._lock_and_clear_mode_display_context, priority=10000)
 
         self.add_mode_event_handler("show_mode_status", self._sync_mode_status_vars, priority=10000)
         self.add_mode_event_handler("update_mode_status", self._sync_mode_status_vars, priority=10000)
@@ -108,6 +109,7 @@ class Base(Mode):
             self.add_mode_event_handler(stop_event, self._clear_mode_display_context, priority=10000)
 
         self._display_context_generation = 0
+        self._ball_end_display_lock = False
         self._clear_mode_message_vars()
         self._clear_mode_status_vars()
 
@@ -120,6 +122,8 @@ class Base(Mode):
         reminder=False,
         **kwargs,
     ):
+        if getattr(self, "_ball_end_display_lock", False):
+            return
         self._set_mode_message_vars(
             message_mode_title=message_mode_title,
             message_mode_subtitle=message_mode_subtitle,
@@ -153,6 +157,8 @@ class Base(Mode):
         mode_status_value="",
         **kwargs,
     ):
+        if getattr(self, "_ball_end_display_lock", False):
+            return
         self._set_mode_message_vars(
             message_mode_title=message_mode_title,
             message_mode_subtitle=message_mode_subtitle,
@@ -195,6 +201,8 @@ class Base(Mode):
         mode_status_value="",
         **kwargs,
     ):
+        if getattr(self, "_ball_end_display_lock", False):
+            return
         self._set_mode_status_vars(
             mode_status_title=mode_status_title,
             mode_status_value=mode_status_value,
@@ -244,6 +252,16 @@ class Base(Mode):
             return
         self.machine.events.post("hide_mode_message")
         self.machine.events.post("hide_mode_status")
+
+    def _lock_and_clear_mode_display_context(self, **kwargs):
+        """Block new gameplay messages as soon as ball teardown begins."""
+        self._ball_end_display_lock = True
+        self._clear_mode_display_context(**kwargs)
+
+    def _unlock_mode_display_context(self, **kwargs):
+        """Allow gameplay messages again for the newly starting ball."""
+        self._ball_end_display_lock = False
+        self._clear_mode_display_context(**kwargs)
 
     def _clear_mode_display_context(self, **kwargs):
         """Cancel stale temporary display work when a gameplay mode stops.

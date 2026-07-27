@@ -45,6 +45,11 @@ event_player:
   s_web_spinner_active:
     - master_technician_spinner_hit
 
+  s_inlane_l_active:
+    - master_technician_inlane_hit
+  s_inlane_r_active:
+    - master_technician_inlane_hit
+
   s_left_drops_1_active:
     - master_technician_left_drop_1_hit
   s_left_drops_2_active:
@@ -63,6 +68,51 @@ event_player:
   s_right_drops_5_active:
     - master_technician_right_drop_5_hit
 
+  s_saucer_1_active:
+    - master_technician_saucer_hit
+    - delayed_kickout_saucer_1
+  s_saucer_2_active:
+    - master_technician_saucer_hit
+    - delayed_kickout_saucer_2
+  s_saucer_3_active:
+    - master_technician_saucer_hit
+    - delayed_kickout_saucer_3
+
+
+light_player:
+  master_technician_light_saucers:
+    l_1: green
+    l_1_hole_l: red
+    l_1_hole_r: red
+    l_2: green
+    l_2_hole_l: red
+    l_2_hole_r: red
+    l_3: green
+    l_3_hole_l: red
+    l_3_hole_r: red
+
+  master_technician_clear_saucers:
+    l_1: off
+    l_1_hole_l: off
+    l_1_hole_r: off
+    l_2: off
+    l_2_hole_l: off
+    l_2_hole_r: off
+    l_3: off
+    l_3_hole_l: off
+    l_3_hole_r: off
+
+  mode_master_technician_stopping:
+    l_1: off
+    l_1_hole_l: off
+    l_1_hole_r: off
+    l_2: off
+    l_2_hole_l: off
+    l_2_hole_r: off
+    l_3: off
+    l_3_hole_l: off
+    l_3_hole_r: off
+
 show_player:
   master_technician_start:
     master_technician_base_show:
@@ -73,6 +123,10 @@ show_player:
       loops: 1
 
   master_technician_drop_scored:
+    master_technician_drop_show:
+      loops: 1
+
+  master_technician_inlane_advance:
     master_technician_drop_show:
       loops: 1
 

@@ -49,6 +49,7 @@ class Fakir(CaseFileMixin, Mode):
         self.delay = DelayManager(self.machine)
         self.mode_done = False
         self.ruby_active = False
+        self.ruby_timer_started = False
         self.locked_saucer = None
         self.current_target = None
         self.current_award_is_super = False
@@ -86,6 +87,7 @@ class Fakir(CaseFileMixin, Mode):
         self.add_mode_event_handler("fakir_saucer_2_hit", self._saucer_hit, saucer=2)
         self.add_mode_event_handler("fakir_saucer_3_hit", self._saucer_hit, saucer=3)
         self.add_mode_event_handler("fakir_spinner_hit", self._spinner_hit)
+        self.add_mode_event_handler("fakir_upper_entered", self._upper_entered)
         self.add_mode_event_handler("fakir_upper_left_hit", self._upper_target_hit, target="left")
         self.add_mode_event_handler("fakir_upper_center_hit", self._upper_target_hit, target="center")
         self.add_mode_event_handler("fakir_upper_right_hit", self._upper_target_hit, target="right")
@@ -151,6 +153,7 @@ class Fakir(CaseFileMixin, Mode):
         self.shot_assist_active = self.shot_assist_available
         self.shot_assist_available = False
         self.ruby_active = True
+        self.ruby_timer_started = False
 
         self._score(self.SAUCER_LOCK_SCORE)
         self._sync_player_vars(title, self.TARGET_NAMES[self.current_target])
@@ -161,8 +164,13 @@ class Fakir(CaseFileMixin, Mode):
         self.machine.events.post("show_mode_message", message_mode_title="FAKE RUBY!", message_mode_subtitle=f"{self.TARGET_NAMES[self.current_target]}", message_mode_value=self.current_jackpot_value)
         self._light_current_target()
 
-        self.delay.remove("fakir_ruby_timer")
-        self.delay.add(
+    def _upper_entered(self, **kwargs):
+        """Start the Ruby timer only once the live ball reaches the roof."""
+        if self._inactive() or not self.ruby_active or self.ruby_timer_started:
+            return
+
+        self.ruby_timer_started = True
+        self.delay.reset(
             name="fakir_ruby_timer",
             ms=self.ruby_timer_ms,
             callback=self._ruby_timer_expired,
@@ -258,6 +266,7 @@ class Fakir(CaseFileMixin, Mode):
 
         released_saucer = self.locked_saucer
         self.ruby_active = False
+        self.ruby_timer_started = False
         self.locked_saucer = None
         self.current_target = None
         self.current_award_is_super = False

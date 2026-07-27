@@ -45,9 +45,9 @@ class CustomBonus(Mode):
 
         player["score"] += self.grand_total
 
-        for var_name in self.BANKED_BONUS_VARS:
-            player[var_name] = 0
-
+        # Mode bonuses are persistent player achievements. Collect Bonus may
+        # award their current values immediately, but must not consume them;
+        # they are awarded again during every later end-of-ball bonus count.
         if not player["hold_bonus"]:
             player["bonus_count"] = 0
             player["bonus_multiplier"] = 1

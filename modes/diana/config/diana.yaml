@@ -111,19 +111,19 @@ light_player:
     l_gi_ramp: yellow
 
   diana_hunt_1_staged:
-    l_5bank_1: red
+    l_5bank_1: green
     l_5bank_2: off
-    l_5bank_3: red
+    l_5bank_3: green
     l_5bank_4: off
-    l_5bank_5: red
+    l_5bank_5: green
     l_gi_5bank_lower: red
     l_gi_5bank_upper: red
 
   diana_hunt_2_staged:
     l_5bank_1: off
-    l_5bank_2: orange
+    l_5bank_2: green
     l_5bank_3: off
-    l_5bank_4: orange
+    l_5bank_4: green
     l_5bank_5: off
     l_gi_5bank_lower: orange
     l_gi_5bank_upper: orange
@@ -131,7 +131,7 @@ light_player:
   diana_hunt_3_staged:
     l_5bank_1: off
     l_5bank_2: off
-    l_5bank_3: white
+    l_5bank_3: green
     l_5bank_4: off
     l_5bank_5: off
     l_gi_5bank_lower: white

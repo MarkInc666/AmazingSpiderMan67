@@ -40,7 +40,6 @@ event_player:
 
   s_vuk_switch_active:
     - scarlet_sorcerer_vuk_hit
-    - up_kick|1s
 
   # Scarlet Sorcerer does not use the three lower saucers. Always kick them out.
   s_saucer_1_active: delayed_kickout_saucer_1

@@ -141,7 +141,7 @@ class SuperSwami(CaseFileMixin, Mode):
             return
         self._score(self.MORE_JACKPOTS_VALUE)
         self.machine.events.post("show_mode_message", message_mode_title="BLACKOUT JACKPOT", message_mode_subtitle="500K")
-        self.machine.events.post("clear_vuk")
+        self.machine.events.post("villain_summary_hold_vuk_until_done")
         self._complete_mode()
 
     def _timer_tick(self, **kwargs):

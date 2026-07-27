@@ -404,6 +404,96 @@ show_player:
 
 
 # Placeholder shows. Replace/merge with your real light shows if needed.
+  villain_select_highlighted_diana:
+    villain_select_diana_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_harley_clivendon:
+    villain_select_harley_clivendon_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_conquistador:
+    villain_select_conquistador_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_fiddler:
+    villain_select_fiddler_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_super_swami:
+    villain_select_super_swami_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_professor_pretoris:
+    villain_select_professor_pretoris_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_dr_von_schlick:
+    villain_select_dr_von_schlick_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_clive_blotto:
+    villain_select_clive_blotto_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_plutonians:
+    villain_select_plutonians_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_igor:
+    villain_select_igor_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_doctor_atlantean:
+    villain_select_doctor_atlantean_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_molemen:
+    villain_select_molemen_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_brutus:
+    villain_select_brutus_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_skymaster:
+    villain_select_skymaster_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_sir_galahad:
+    villain_select_sir_galahad_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_master_technician:
+    villain_select_master_technician_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_spider_men:
+    villain_select_spider_men_show:
+      action: play
+      loops: -1
+
+  villain_select_highlighted_von_rantenraven:
+    villain_select_von_rantenraven_show:
+      action: play
+      loops: -1
+
 shows:
   villain_select_ready_show:
     - duration: 500ms
@@ -780,3 +870,146 @@ shows:
       lights:
         gi: yellow
 
+  villain_select_diana_show:
+    - duration: 300ms
+      lights:
+        gi: white
+    - duration: 300ms
+      lights:
+        gi: blue
+
+  villain_select_harley_clivendon_show:
+    - duration: 300ms
+      lights:
+        gi: green
+    - duration: 300ms
+      lights:
+        gi: yellow
+
+  villain_select_conquistador_show:
+    - duration: 300ms
+      lights:
+        gi: yellow
+    - duration: 300ms
+      lights:
+        gi: off
+
+  villain_select_fiddler_show:
+    - duration: 300ms
+      lights:
+        gi: blue
+    - duration: 300ms
+      lights:
+        gi: white
+
+  villain_select_super_swami_show:
+    - duration: 300ms
+      lights:
+        gi: green
+    - duration: 300ms
+      lights:
+        gi: off
+
+  villain_select_professor_pretoris_show:
+    - duration: 300ms
+      lights:
+        gi: white
+    - duration: 300ms
+      lights:
+        gi: blue
+
+  villain_select_dr_von_schlick_show:
+    - duration: 300ms
+      lights:
+        gi: green
+    - duration: 300ms
+      lights:
+        gi: yellow
+
+  villain_select_clive_blotto_show:
+    - duration: 300ms
+      lights:
+        gi: yellow
+    - duration: 300ms
+      lights:
+        gi: off
+
+  villain_select_plutonians_show:
+    - duration: 300ms
+      lights:
+        gi: blue
+    - duration: 300ms
+      lights:
+        gi: white
+
+  villain_select_igor_show:
+    - duration: 300ms
+      lights:
+        gi: green
+    - duration: 300ms
+      lights:
+        gi: off
+
+  villain_select_doctor_atlantean_show:
+    - duration: 300ms
+      lights:
+        gi: white
+    - duration: 300ms
+      lights:
+        gi: blue
+
+  villain_select_molemen_show:
+    - duration: 300ms
+      lights:
+        gi: green
+    - duration: 300ms
+      lights:
+        gi: yellow
+
+  villain_select_brutus_show:
+    - duration: 300ms
+      lights:
+        gi: yellow
+    - duration: 300ms
+      lights:
+        gi: off
+
+  villain_select_skymaster_show:
+    - duration: 300ms
+      lights:
+        gi: blue
+    - duration: 300ms
+      lights:
+        gi: white
+
+  villain_select_sir_galahad_show:
+    - duration: 300ms
+      lights:
+        gi: green
+    - duration: 300ms
+      lights:
+        gi: off
+
+  villain_select_master_technician_show:
+    - duration: 300ms
+      lights:
+        gi: white
+    - duration: 300ms
+      lights:
+        gi: blue
+
+  villain_select_spider_men_show:
+    - duration: 300ms
+      lights:
+        gi: green
+    - duration: 300ms
+      lights:
+        gi: yellow
+
+  villain_select_von_rantenraven_show:
+    - duration: 300ms
+      lights:
+        gi: yellow
+    - duration: 300ms
+      lights:
+        gi: off

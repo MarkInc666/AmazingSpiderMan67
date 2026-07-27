@@ -31,8 +31,8 @@ class VillainBookends(Mode):
             'intro_1': 'Build Rage Value with Pops.',
             'intro_2': 'All Switches Stock up Rage',
             'intro_3': 'Collect Jackpots at B',
-            'summary_title_complete': 'RHINO DEFEATED',
-            'summary_title_failed': 'RHINO ESCAPED',
+            'summary_title_complete': 'RHINO BASH DEFEATED',
+            'summary_title_failed': 'RHINO BASH ESCAPED',
             'stat_1_label': 'Biggest Jackpot',
             'stat_1_var': 'rhino_best_jackpot_value',
             'stat_2_label': 'BEST RAGE',
@@ -85,12 +85,12 @@ class VillainBookends(Mode):
         #   intro_2: Deliver it to the lit web targets.
         #   intro_3: Move fast before the serum value drains.
         'lizard': {
-            'title': 'THE LIZARD',
+            'title': 'GREEN LIZARD',
             'intro_1': 'Make serum at STAR.',
             'intro_2': 'Deliver to web shots.',
             'intro_3': 'Hurry before it decays.',
-            'summary_title_complete': 'LIZARD CURED',
-            'summary_title_failed': 'LIZARD ESCAPED',
+            'summary_title_complete': 'GREEN LIZARD CURED',
+            'summary_title_failed': 'GREEN LIZARD ESCAPED',
             'stat_1_label': 'DELIVERIES',
             'stat_1_var': 'lizard_deliveries_made',
             'stat_2_label': 'BEST VALUE',
@@ -301,8 +301,8 @@ class VillainBookends(Mode):
             'intro_1': 'Drops build JP.',
             'intro_2': 'Four drops open roof.',
             'intro_3': 'Exit left for final.',
-            'summary_title_complete': 'CENTAUR TRAPPED',
-            'summary_title_failed': 'CENTAUR ESCAPED',
+            'summary_title_complete': 'CENTAUR CHARGE TRAPPED',
+            'summary_title_failed': 'CENTAUR CHARGE ESCAPED',
             'stat_1_label': 'DROPS',
             'stat_1_var': 'centaur_drops_down',
             'stat_2_label': 'BEST JP',
@@ -342,8 +342,8 @@ class VillainBookends(Mode):
             'intro_1': 'Drop right bank.',
             'intro_2': 'Reveal the hideout.',
             'intro_3': 'Catch him fast.',
-            'summary_title_complete': 'PHANTOM CAUGHT',
-            'summary_title_failed': 'PHANTOM VANISHED',
+            'summary_title_complete': '5TH AVE PHANTOM CAUGHT',
+            'summary_title_failed': '5TH AVE PHANTOM VANISHED',
             'stat_1_label': 'JACKPOTS',
             'stat_1_var': 'fifth_avenue_phantom_jackpots',
             'stat_2_label': 'BEST JP',
@@ -418,7 +418,7 @@ class VillainBookends(Mode):
         },
         'metal_eating_monster': {
             'title': 'METAL MONSTER', 'intro_1': 'The robot is eating the city.', 'intro_2': 'Attack before it reaches the river.', 'intro_3': 'Complete ten danger shots.',
-            'summary_title_complete': 'MONSTER SCRAPPED', 'summary_title_failed': 'CITY CONSUMED',
+            'summary_title_complete': 'METAL MONSTER SCRAPPED', 'summary_title_failed': 'METAL MONSTER ESCAPED',
             'stat_1_label': 'HITS', 'stat_1_var': 'active_mode_hits', 'stat_2_label': 'MAJOR HITS', 'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points', 'state_var': 'metal_eating_monster_state', 'song': 'play_song_14',
         },
@@ -468,7 +468,7 @@ class VillainBookends(Mode):
         #   intro_3: Complete the pattern before the curse spreads.
         #   stat_2_label: MAJOR HITS
         'scarlet_sorcerer': {
-            'title': 'KOTEP - THE SCARLET SORCERER',
+            'title': 'KOTEP',
             'intro_1': 'Kotep, the Scarlet Sorcerer, summons his demons.',
             'intro_2': 'Hit mystic shots.',
             'intro_3': 'Break the curse.',
@@ -569,12 +569,12 @@ class VillainBookends(Mode):
         #   intro_3: Beat the sequence and restore the landmark.
         #   stat_2_label: MAJOR HITS
         'professor_pretoris': {
-            'title': 'PROF. PRETORIS',
+            'title': 'PROFESSOR PRETORIS',
             'intro_1': 'The reactor is overheating.',
             'intro_2': 'Spin to flood it blue.',
             'intro_3': 'Then hit the web Super.',
-            'summary_title_complete': 'PRETORIS STOPPED',
-            'summary_title_failed': 'PRETORIS ESCAPED',
+            'summary_title_complete': 'PROFESSOR PRETORIS STOPPED',
+            'summary_title_failed': 'PROFESSOR PRETORIS ESCAPED',
             'stat_1_label': 'BANDS FLOODED',
             'stat_1_var': 'active_mode_hits',
             'stat_2_label': 'SUPERS',
@@ -809,12 +809,12 @@ class VillainBookends(Mode):
         #   intro_3: Finish the sequence and escape the trap.
         #   stat_2_label: MAJOR HITS
         'molemen': {
-            'title': 'MOLEMEN',
+            'title': 'THE MOLEMEN',
             'intro_1': 'Molemen rise below.',
             'intro_2': 'Seal the tunnels.',
             'intro_3': 'Stop Mugs Reilly.',
-            'summary_title_complete': 'MOLEMEN STOPPED',
-            'summary_title_failed': 'MOLEMEN ESCAPED',
+            'summary_title_complete': 'THE MOLEMEN STOPPED',
+            'summary_title_failed': 'THE MOLEMEN ESCAPED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
             'stat_2_label': 'MAJORS',
@@ -932,12 +932,12 @@ class VillainBookends(Mode):
         #   summary_title_failed: PHANTOM ESCAPED
         #   stat_2_label: MAJOR HITS
         'sir_galahad': {
-            'title': 'TIME PHANTOM',
-            'intro_1': 'Time Phantom rises.',
-            'intro_2': 'Follow time shots.',
-            'intro_3': 'Stop him before fade.',
-            'summary_title_complete': 'TIME PHANTOM BEATEN',
-            'summary_title_failed': 'TIME PHANTOM ESCAPED',
+            'title': 'SIR GALAHAD',
+            'intro_1': 'Sir Galahad arrives from another age.',
+            'intro_2': 'Follow the time-tossed shots.',
+            'intro_3': 'Defeat him before he fades.',
+            'summary_title_complete': 'SIR GALAHAD DEFEATED',
+            'summary_title_failed': 'SIR GALAHAD ESCAPED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
             'stat_2_label': 'MAJORS',
@@ -993,12 +993,12 @@ class VillainBookends(Mode):
         #   intro_3: Clear the swarm and restore the scale.
         #   stat_2_label: MAJOR HITS
         'spider_men': {
-            'title': 'SPIDER-MEN',
+            'title': 'THE SPIDER-MEN',
             'intro_1': 'The Spider-Men swarm.',
             'intro_2': 'Hit tiny targets.',
             'intro_3': 'Clear the attack.',
-            'summary_title_complete': 'SPIDER-MEN STOPPED',
-            'summary_title_failed': 'SPIDER-MEN ESCAPED',
+            'summary_title_complete': 'THE SPIDER-MEN STOPPED',
+            'summary_title_failed': 'THE SPIDER-MEN ESCAPED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
             'stat_2_label': 'MAJORS',
@@ -1013,12 +1013,12 @@ class VillainBookends(Mode):
         #   intro_3: Stop the command signal before it completes.
         #   stat_2_label: MAJOR HITS
         'von_rantenraven': {
-            'title': 'RANTENRAVEN',
+            'title': 'BARON VON RANTENRAVEN',
             'intro_1': 'Emperor commands all.',
             'intro_2': 'Identity to be chosen.',
             'intro_3': 'Stop the signal.',
-            'summary_title_complete': 'EMPEROR DEFEATED',
-            'summary_title_failed': 'EMPEROR ESCAPED',
+            'summary_title_complete': 'BARON VON RANTENRAVEN DEFEATED',
+            'summary_title_failed': 'BARON VON RANTENRAVEN ESCAPED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
             'stat_2_label': 'MAJORS',
@@ -1276,12 +1276,23 @@ class VillainBookends(Mode):
         self.current_done_event = None
         self.current_villain = None
         self.current_summary_can_skip = False
+        self.summary_vuk_release_pending = False
 
         self.add_mode_event_handler("villain_bookend_intro_request", self._intro_request)
         self.add_mode_event_handler("villain_bookend_summary_request", self._summary_request)
         self.add_mode_event_handler("flipper_cancel", self._skip_current_bookend)
         self.add_mode_event_handler("villain_bookend_intro_hold_request", self._intro_hold_request)
         self.add_mode_event_handler("villain_bookend_intro_hold_release", self._intro_hold_release)
+        self.add_mode_event_handler("villain_summary_hold_vuk_until_done", self._hold_vuk_until_summary_done)
+
+
+    def _hold_vuk_until_summary_done(self, **kwargs):
+        """Hold a mode-ending VUK ball until the villain summary finishes.
+
+        The winning mode owns the collect, but VillainBookends owns the exact
+        end of the summary for both timeout and flipper speedup paths.
+        """
+        self.summary_vuk_release_pending = True
 
     def _intro_request(self, villain=None, start_event=None, **kwargs):
         if villain not in self.VILLAINS:
@@ -1431,6 +1442,9 @@ class VillainBookends(Mode):
             self.machine.events.post("reset_drops")
             self.machine.events.post("villain_bookend_summary_hide")
             self.machine.events.post("villain_bookend_summary_done", villain=villain)
+            if self.summary_vuk_release_pending:
+                self.summary_vuk_release_pending = False
+                self.machine.events.post("up_kick")
 
         self.machine.events.post("clear_saucers_delayed")
         self.current_stage = None

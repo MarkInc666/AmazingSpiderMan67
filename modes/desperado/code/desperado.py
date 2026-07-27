@@ -95,16 +95,15 @@ class Desperado(Mode, CaseFileMixin):
         self.add_mode_event_handler("desperado_timer_expired", self._timer_expired)
 
     def _start_timer(self):
-        self.delay.remove("desperado_timer_tick")
-        self.delay.add(name="desperado_timer_tick", ms=1000, callback=self._timer_tick)
+        # Desperado owns one countdown. Resetting the same named delay keeps
+        # round changes and time awards from creating parallel timer chains.
+        self.delay.reset(name="desperado_timer_tick", ms=1000, callback=self._timer_tick)
 
     def _timer_tick(self):
         if self.mode_done:
             return
         self.remaining_seconds -= 1
-        self.machine.events.post(
-            "update_mode_status", mode_status_title="SECONDS LEFT", mode_status_value=max(0, self.remaining_seconds)
-        )
+        self._show_timer_status()
         if self.remaining_seconds <= 0:
             self.machine.events.post("desperado_timer_expired")
             return
@@ -123,6 +122,7 @@ class Desperado(Mode, CaseFileMixin):
         self.remaining_seconds += self.LEFT_BANK_TIME_ADD
         self.machine.events.post("desperado_time_added", seconds=self.LEFT_BANK_TIME_ADD)
         self._show_message("PURSUIT EXTENDED", "LEFT BANK COMPLETE", value=f"+{self.LEFT_BANK_TIME_ADD}s")
+        self._show_timer_status()
         self.machine.events.post("drop_target_bank_dt_bank_left_reset")
 
     def _right_drop_hit(self, target, **kwargs):
@@ -222,10 +222,12 @@ class Desperado(Mode, CaseFileMixin):
     def _start_round(self):
         allowed = self._hits_allowed()
         self.machine.events.post("desperado_round_started", round=self.round_number, allowed=allowed)
+        # Do not use show_mode_countdown here. That shared display event owns
+        # its own one-second countdown, which used to run alongside this mode's
+        # Python timer and become stale when the left bank added time.
         self._show_message(
             "DESPERADO", f"ROUND {self.round_number}: {allowed} SHOT{'S' if allowed != 1 else ''}",
-            value=f"{self._completed_count()}/5 OUTLAWS", seconds=self.remaining_seconds,
-            event="show_mode_countdown", reminder=True,
+            value=f"{self._completed_count()}/5 OUTLAWS", reminder=True,
         )
         self._show_status()
 
@@ -234,6 +236,13 @@ class Desperado(Mode, CaseFileMixin):
             "update_mode_status",
             mode_status_title=f"ROUND {self.round_number}",
             mode_status_value=f"{self._completed_count()}/5  {self.round_hits}/{self._hits_allowed()}",
+        )
+
+    def _show_timer_status(self):
+        self.machine.events.post(
+            "update_mode_status",
+            mode_status_title="SECONDS LEFT",
+            mode_status_value=max(0, self.remaining_seconds),
         )
 
     def _drop_targets(self, excluding=None):

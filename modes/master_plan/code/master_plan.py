@@ -199,8 +199,8 @@ class MasterPlan(CaseFileMixin, Mode):
         self._schedule_vuk_tick()
 
     def _vuk_hit(self, **kwargs):
-        self.machine.events.post("up_kick")
         if self.mode_done or not self.vuk_lit or self.vuk_collected:
+            self.machine.events.post("up_kick")
             return
 
         self.vuk_collected = True
@@ -218,6 +218,7 @@ class MasterPlan(CaseFileMixin, Mode):
                 message_mode_value=self.SUPER_VALUE,
             )
             self._update_status()
+            self.machine.events.post("up_kick")
             return
 
         self.machine.events.post(
@@ -226,6 +227,7 @@ class MasterPlan(CaseFileMixin, Mode):
             message_mode_subtitle="THE PLOTTER DEFEATED",
             message_mode_value=self.SUPER_VALUE,
         )
+        self.machine.events.post("villain_summary_hold_vuk_until_done")
         self._complete_mode()
 
     def _back_page_hit(self, **kwargs):
