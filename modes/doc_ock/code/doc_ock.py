@@ -31,6 +31,8 @@ class doc_ock(CaseFileMixin, Mode):
     MORE_TIME_ARM_RELEASE_DELAY_ADD_MS = 2_000
     TIMED_RELEASE_DELAY_NAME = "doc_ock_timed_release"
     MAX_BREAKOUT_TARGETS = 6
+    JACKPOT_COLLECT_GUARD_MS = 750
+    JACKPOT_COLLECT_GUARD_DELAY_NAME = "doc_ock_jackpot_collect_guard"
 
     LANE_LIGHTS = {
         1: "l_left_outlane",
@@ -60,6 +62,7 @@ class doc_ock(CaseFileMixin, Mode):
         self.locked_arms = [True, False, False, False]
 
         self.jackpot_lit = 1
+        self.jackpot_collect_guard = False
         self.mode_done = False
         self.jackpots_collected = 0
         self.active_breakouts = set()
@@ -111,6 +114,8 @@ class doc_ock(CaseFileMixin, Mode):
 
     def mode_stop(self, **kwargs):
         self.machine.events.post("hide_mode_status")
+        if hasattr(self, "delay"):
+            self.delay.remove(self.JACKPOT_COLLECT_GUARD_DELAY_NAME)
         self.stop_timed_release()
         self.clear_active_case_file_helpers()
         super().mode_stop(**kwargs)
@@ -231,10 +236,31 @@ class doc_ock(CaseFileMixin, Mode):
         if sum(self.locked_arms) > 0:
             self.machine.events.post("doc_ock_jackpot_lit")
 
+    def _clear_jackpot_collect_guard(self, **kwargs):
+        self.jackpot_collect_guard = False
+
+    def _start_jackpot_collect_guard(self):
+        self.jackpot_collect_guard = True
+        self.delay.remove(self.JACKPOT_COLLECT_GUARD_DELAY_NAME)
+        self.delay.add(
+            name=self.JACKPOT_COLLECT_GUARD_DELAY_NAME,
+            ms=self.JACKPOT_COLLECT_GUARD_MS,
+            callback=self._clear_jackpot_collect_guard,
+        )
+
     def jackpot_request(self, **kwargs):
         if self.mode_done:
             return
         if self.machine.game.player["villain_mode_in_summary"] == True: return
+
+        # Physical web target hits can produce rapid repeated active events,
+        # and a glancing shot can catch both web targets almost back-to-back.
+        # Consume the jackpot immediately and briefly ignore additional web
+        # target requests from the same physical shot so one hit cannot score
+        # multiple jackpots or immediately overwrite the jackpot message.
+        if self.jackpot_collect_guard:
+            return
+
         if self.jackpot_lit == 0:
             self.machine.events.post("doc_ock_jackpot_not_lit")
             self.machine.events.post("show_mode_message", message_mode_title="SHOOT SPINNER", message_mode_subtitle="WEB TARGET NOT READY")
@@ -247,6 +273,7 @@ class doc_ock(CaseFileMixin, Mode):
             return
 
         self.jackpot_lit = 0
+        self._start_jackpot_collect_guard()
         jp_value = self.doc_ock_jackpot_base_value * (5-locked) * self.doc_ock_jackpot_spinner_multi
         
         if self.first_jackpot_maxed == True:
