@@ -441,7 +441,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'pardo_state',
-            'song': 'play_song_13',
+            'song': 'play_song_53',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Two-ball multiball: the saucers hide fake rubies.

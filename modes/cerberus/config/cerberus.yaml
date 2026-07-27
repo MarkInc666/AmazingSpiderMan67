@@ -86,17 +86,18 @@ light_player:
   mode_cerberus_stopping:
     gi: E0E0E0
 
+  # Hole lamps sit behind red lenses, so use red for lit jackpots.
   cerberus_saucer_1_jackpot_lit:
-    l_1_hole_l: yellow
-    l_1_hole_r: yellow
+    l_1_hole_l: red
+    l_1_hole_r: red
 
   cerberus_saucer_2_jackpot_lit:
-    l_2_hole_l: yellow
-    l_2_hole_r: yellow
+    l_2_hole_l: red
+    l_2_hole_r: red
 
   cerberus_saucer_3_jackpot_lit:
-    l_3_hole_l: yellow
-    l_3_hole_r: yellow
+    l_3_hole_l: red
+    l_3_hole_r: red
 
   cerberus_saucer_1_jackpot_off:
     l_1_hole_l: off
@@ -110,22 +111,23 @@ light_player:
     l_3_hole_l: off
     l_3_hole_r: off
 
-  cerberus_saucer_1_double_lit:
-    l_1: white
+  # Green number inserts mark the corresponding 3X jackpot.
+  cerberus_saucer_1_triple_lit:
+    l_1: green
 
-  cerberus_saucer_2_double_lit:
-    l_2: white
+  cerberus_saucer_2_triple_lit:
+    l_2: green
 
-  cerberus_saucer_3_double_lit:
-    l_3: white
+  cerberus_saucer_3_triple_lit:
+    l_3: green
 
-  cerberus_saucer_1_double_off:
+  cerberus_saucer_1_triple_off:
     l_1: off
 
-  cerberus_saucer_2_double_off:
+  cerberus_saucer_2_triple_off:
     l_2: off
 
-  cerberus_saucer_3_double_off:
+  cerberus_saucer_3_triple_off:
     l_3: off
 
   cerberus_clear_all_lights:
