@@ -1,7 +1,7 @@
 #config_version=6
 
 # Diana - Archery Volley
-# Limited arrows/flips. Rearm on the upper playfield, then exit upper-left to start timed right-bank Hunt windows.
+# Limited arrows/flips. Upper entry stages a Hunt; either upper exit prompts the player, and the first right-bank hit starts the timer.
 
 mode:
   start_events: start_mode_diana
@@ -54,7 +54,7 @@ event_player:
   s_right_drops_5_active:
     - diana_right_drop_5_hit
 
-  # Repeatable 25K/50K arrow shot during active Hunt windows.
+  # Repeatable 50K/100K arrow shot. The first rubber hit also starts the Hunt timer.
   s_right_drops_rubber_active:
     - diana_right_rubber_hit
 
@@ -63,18 +63,7 @@ event_player:
   s_saucer_2_active: clear_saucers
   s_saucer_3_active: clear_saucers
 
-  # Flipper-cancel the post hold. The Hunt timer starts only after the post drops.
-  s_left_flipper_active{device.switches.s_right_flipper.state == 1}:
-    - diana_post_hold_cancel
-
-  s_right_flipper_active{device.switches.s_left_flipper.state == 1}:
-    - diana_post_hold_cancel
-
-  mode_diana_started:
-    - clear_saucers
-    - reset_5bank
-    - rooftop_diverter_open|500ms
-    - diana_rearm_phase_started
+  # Double-flipper post release is handled in Diana Python so the chord costs no arrows.
 
   mode_diana_stopping:
     - clear_saucers
@@ -98,17 +87,33 @@ coil_player:
       action: pulse
 
 light_player:
-  # Full-playfield GI theme while this mode is active.
+  # Normal Diana GI before and between Hunts.
   mode_diana_started:
     gi: D8D0FF
 
-  mode_diana_stopping:
-    gi: E0E0E0
-
   diana_rearm_phase_started:
+    gi: D8D0FF
     l_spinner: yellow
     l_gi_a: yellow
     l_gi_ramp: yellow
+
+  # Red full-playfield GI begins as soon as a Hunt is staged and remains red
+  # while waiting for the first right-bank hit and throughout the timer.
+  diana_hunt_mode_on:
+    gi: red
+    l_spinner: off
+    l_gi_a: off
+    l_gi_ramp: off
+
+  diana_hunt_mode_off:
+    gi: D8D0FF
+    l_5bank_1: off
+    l_5bank_2: off
+    l_5bank_3: off
+    l_5bank_4: off
+    l_5bank_5: off
+    l_gi_5bank_lower: off
+    l_gi_5bank_upper: off
 
   diana_hunt_1_staged:
     l_5bank_1: green
@@ -125,8 +130,8 @@ light_player:
     l_5bank_3: off
     l_5bank_4: green
     l_5bank_5: off
-    l_gi_5bank_lower: orange
-    l_gi_5bank_upper: orange
+    l_gi_5bank_lower: red
+    l_gi_5bank_upper: red
 
   diana_hunt_3_staged:
     l_5bank_1: off
@@ -134,16 +139,22 @@ light_player:
     l_5bank_3: green
     l_5bank_4: off
     l_5bank_5: off
-    l_gi_5bank_lower: white
-    l_gi_5bank_upper: white
+    l_gi_5bank_lower: red
+    l_gi_5bank_upper: red
 
-  diana_bullseye_awarded:
-    l_gi_5bank_lower: white
-    l_gi_5bank_upper: white
+  diana_target_1_collected:
+    l_5bank_1: off
+  diana_target_2_collected:
+    l_5bank_2: off
+  diana_target_3_collected:
+    l_5bank_3: off
+  diana_target_4_collected:
+    l_5bank_4: off
+  diana_target_5_collected:
+    l_5bank_5: off
 
-  diana_rubber_arrow_awarded:
-    l_gi_5bank_lower: yellow
-    l_gi_5bank_upper: yellow
+  mode_diana_stopping:
+    gi: E0E0E0
 
   diana_clear_all_lights:
     l_spinner: off
