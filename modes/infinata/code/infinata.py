@@ -12,7 +12,7 @@ class Infinata(CaseFileMixin, Mode):
     AREAS = ("pops", "left_drops", "right_drops", "webs", "upper_targets")
     REQUIRED_AREAS = 3
     MORE_JACKPOTS_AREAS = 4
-    POP_HITS_REQUIRED = 5
+    POP_HITS_REQUIRED = 2
     AREA_VALUES = (200_000, 300_000, 400_000, 500_000)
     BIGGER_AREA_VALUES = (300_000, 450_000, 600_000, 750_000)
     SUPER_VALUE = 1_000_000
@@ -111,18 +111,27 @@ class Infinata(CaseFileMixin, Mode):
                 self._complete_active_area(assisted=True)
             return
 
-        if area == "pops":
-            token = f"pop_{len(self.area_progress) + 1}"
-            self.area_progress.add(token)
-            if len(self.area_progress) >= self.POP_HITS_REQUIRED:
-                self._complete_active_area()
-            else:
-                self._sync_vars()
+        if not switch:
             return
 
-        if switch:
-            self.area_progress.add(switch)
-        needed = {"left_drops": 3, "right_drops": 5, "webs": 2, "upper_targets": 3}[area]
+        # Multi-shot areas require unique switches. Repeat hits on an already
+        # counted pop or web target do not advance progress.
+        if switch in self.area_progress:
+            return
+
+        self.area_progress.add(switch)
+
+        if area == "pops":
+            self.machine.events.post(f"infinata_{switch}_complete")
+            needed = self.POP_HITS_REQUIRED
+        elif area == "webs":
+            self.machine.events.post(f"infinata_{switch}_complete")
+            needed = 2
+        else:
+            # Either drop bank and the three upper targets each act as one
+            # grouped shot: any valid switch completes that area.
+            needed = 1
+
         if len(self.area_progress) >= needed:
             self._complete_active_area()
         else:

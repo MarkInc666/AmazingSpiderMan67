@@ -24,23 +24,23 @@ class Pardo(CaseFileMixin, Mode):
     BIGGER_JACKPOT_STEP = 75_000
     BAD_SHOT_SCORE = 10_000
 
-    NORMAL_REVEAL_MS = 750
-    MORE_TIME_REVEAL_MS = 2_000
+    NORMAL_REVEAL_MS = 2_000
+    MORE_TIME_REVEAL_MS = 4_000
+    REVEAL_FLASH_INTERVAL_MS = 250
 
     SHOT_GROUPS = [
         "left_web",
         "center_web",
-        "upper_spinner",
         "upper_target_left",
         "upper_target_center",
         "upper_target_right",
         "left_drops",
         "right_drops",
-        "pops",
+        "pop_left",
+        "pop_right",
     ]
 
     UPPER_GROUPS = {
-        "upper_spinner",
         "upper_target_left",
         "upper_target_center",
         "upper_target_right",
@@ -60,6 +60,7 @@ class Pardo(CaseFileMixin, Mode):
         self.current_groups = []
         self.correct_group = None
         self.first_round_all_good = False
+        self.reveal_flash_on = False
         self.reveal_ms = self.NORMAL_REVEAL_MS
         self.jackpot_value = self.BASE_JACKPOT_VALUE
         self.jackpot_step = self.JACKPOT_STEP
@@ -92,6 +93,7 @@ class Pardo(CaseFileMixin, Mode):
     def mode_stop(self, **kwargs):
         self.machine.events.post("hide_mode_status")
         self.delay.remove("pardo_hide_reveal")
+        self.delay.remove("pardo_reveal_flash")
         self.machine.events.post("pardo_all_lights_off")
         self.machine.events.post("rooftop_diverter_close")
         self.clear_active_case_file_helpers()
@@ -117,11 +119,7 @@ class Pardo(CaseFileMixin, Mode):
     def _spinner_switch(self, **kwargs):
         if self._inactive():
             return
-
         self._reveal_current_round()
-
-        # The upper spinner may also be one of the three hidden choices.
-        self._shot_hit(group="upper_spinner")
 
     def _start_next_round(self):
         self.round_awarding = False
@@ -146,7 +144,7 @@ class Pardo(CaseFileMixin, Mode):
             jackpot=self.jackpot_value,
             incorrect=self.incorrect_shots,
         )
-        self.machine.events.post("show_mode_message", message_mode_title="HYPNOSIS REEL", message_mode_subtitle=f"{self.round_number} OF {self.rounds_to_play}", message_mode_value=self.jackpot_value)
+        self.machine.events.post("show_mode_message", message_mode_title="HYPNOSIS REEL", message_mode_subtitle="SPIN TO REVEAL", message_mode_value=self.jackpot_value)
         self._show_hidden_round()
         self._update_rooftop_diverter()
 
@@ -162,6 +160,7 @@ class Pardo(CaseFileMixin, Mode):
 
         self.round_awarding = True
         self.delay.remove("pardo_hide_reveal")
+        self.delay.remove("pardo_reveal_flash")
 
         if is_correct:
             self._collect_jackpot(group)
@@ -208,24 +207,43 @@ class Pardo(CaseFileMixin, Mode):
         if self._inactive() or not self.current_groups:
             return
 
+        self.delay.remove("pardo_hide_reveal")
+        self.delay.remove("pardo_reveal_flash")
         self.machine.events.post("pardo_all_lights_off")
         self.machine.events.post("show_mode_message", message_mode_title="SPINNER REVEAL", message_mode_subtitle="WATCH CLOSELY")
 
         all_good = self.first_round_all_good and self.round_number == 1
         for group in self.current_groups:
-            if all_good or group == self.correct_group:
-                self.machine.events.post(f"pardo_reveal_good_{group}")
-            else:
+            if not (all_good or group == self.correct_group):
                 self.machine.events.post(f"pardo_reveal_bad_{group}")
 
-        self.delay.remove("pardo_hide_reveal")
+        self.reveal_flash_on = False
+        self._toggle_good_reveal_flash()
         self.delay.add(
             name="pardo_hide_reveal",
             ms=self.reveal_ms,
             callback=self._show_hidden_round,
         )
 
+    def _toggle_good_reveal_flash(self):
+        if self._inactive() or not self.current_groups:
+            return
+
+        self.reveal_flash_on = not self.reveal_flash_on
+        all_good = self.first_round_all_good and self.round_number == 1
+        event_prefix = "pardo_reveal_good_on" if self.reveal_flash_on else "pardo_reveal_good_off"
+        for group in self.current_groups:
+            if all_good or group == self.correct_group:
+                self.machine.events.post(f"{event_prefix}_{group}")
+
+        self.delay.reset(
+            name="pardo_reveal_flash",
+            ms=self.REVEAL_FLASH_INTERVAL_MS,
+            callback=self._toggle_good_reveal_flash,
+        )
+
     def _show_hidden_round(self, **kwargs):
+        self.delay.remove("pardo_reveal_flash")
         if self._inactive() or not self.current_groups:
             return
 
@@ -280,7 +298,7 @@ class Pardo(CaseFileMixin, Mode):
 
     def _update_mode_status(self):
         title = "CORRECT / WRONG"
-        value = f"{self.correct_shots}/5 / {self.incorrect_shots}/7"
+        value = f"{self.correct_shots}/{self.rounds_to_play} / {self.incorrect_shots}/{self.MAX_INCORRECT_SHOTS}"
         self.machine.events.post("update_mode_status", mode_status_title=title, mode_status_value=value)
 
     def _inactive(self):

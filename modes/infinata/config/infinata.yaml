@@ -21,9 +21,11 @@ widget_player:
 
 event_player:
   s_pop_left_active:
-    - infinata_pops_hit
+    infinata_pops_hit:
+      switch: pop_left
   s_pop_right_active:
-    - infinata_pops_hit
+    infinata_pops_hit:
+      switch: pop_right
 
   s_left_drops_1_active:
     infinata_left_drops_hit:
@@ -95,40 +97,217 @@ event_player:
   drop_target_bank_dt_bank_left_down: drop_target_bank_dt_bank_left_reset
   drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset
 
+show_player:
+  infinata_light_pops:
+    infinata_pop_left_flash_show:
+      loops: -1
+    infinata_pop_right_flash_show:
+      loops: -1
+  infinata_pop_left_complete:
+    infinata_pop_left_flash_show:
+      action: stop
+  infinata_pop_right_complete:
+    infinata_pop_right_flash_show:
+      action: stop
+
+  infinata_light_webs:
+    infinata_web_left_flash_show:
+      loops: -1
+    infinata_web_mid_flash_show:
+      loops: -1
+  infinata_web_left_complete:
+    infinata_web_left_flash_show:
+      action: stop
+  infinata_web_mid_complete:
+    infinata_web_mid_flash_show:
+      action: stop
+
+  infinata_light_upper_targets:
+    infinata_upper_targets_flash_show:
+      loops: -1
+
+  infinata_light_left_drops:
+    infinata_left_bank_flash_show:
+      loops: -1
+
+  infinata_light_right_drops:
+    infinata_right_bank_flash_show:
+      loops: -1
+
+  infinata_clear_area_lights:
+    infinata_pop_left_flash_show:
+      action: stop
+    infinata_pop_right_flash_show:
+      action: stop
+    infinata_web_left_flash_show:
+      action: stop
+    infinata_web_mid_flash_show:
+      action: stop
+    infinata_upper_targets_flash_show:
+      action: stop
+    infinata_left_bank_flash_show:
+      action: stop
+    infinata_right_bank_flash_show:
+      action: stop
+
+  infinata_clear_lights:
+    infinata_pop_left_flash_show:
+      action: stop
+    infinata_pop_right_flash_show:
+      action: stop
+    infinata_web_left_flash_show:
+      action: stop
+    infinata_web_mid_flash_show:
+      action: stop
+    infinata_upper_targets_flash_show:
+      action: stop
+    infinata_left_bank_flash_show:
+      action: stop
+    infinata_right_bank_flash_show:
+      action: stop
+
+  mode_infinata_stopping:
+    infinata_pop_left_flash_show:
+      action: stop
+    infinata_pop_right_flash_show:
+      action: stop
+    infinata_web_left_flash_show:
+      action: stop
+    infinata_web_mid_flash_show:
+      action: stop
+    infinata_upper_targets_flash_show:
+      action: stop
+    infinata_left_bank_flash_show:
+      action: stop
+    infinata_right_bank_flash_show:
+      action: stop
+
 light_player:
-  # Full-playfield GI theme while this mode is active.
+  # Purple GI contrasts with the flashing green qualified shots.
   mode_infinata_started:
-    gi: 30C850
+    gi: 6030A0
 
   mode_infinata_stopping:
     gi: E0E0E0
 
-  infinata_light_pops:
-    l_pop_1_1: green
-    l_pop_1_2: green
-    l_pop_1_3: green
-    l_pop_1_4: green
-    l_pop_1_5: green
-    l_pop_1_6: green
-    l_pop_1_7: green
-    l_pop_1_8: green
-    l_pop_1_9: green
-    l_pop_1_10: green
-    l_pop_1_11: green
-    l_pop_1_12: green
-    l_pop_2_1: green
-    l_pop_2_2: green
-    l_pop_2_3: green
-    l_pop_2_4: green
-    l_pop_2_5: green
-    l_pop_2_6: green
-    l_pop_2_7: green
-    l_pop_2_8: green
-    l_pop_2_9: green
-    l_pop_2_10: green
-    l_pop_2_11: green
-    l_pop_2_12: green
+  infinata_pop_left_complete:
+    l_pop_1_1: 00BF00
+    l_pop_1_2: 00BF00
+    l_pop_1_3: 00BF00
+    l_pop_1_4: 00BF00
+    l_pop_1_5: 00BF00
+    l_pop_1_6: 00BF00
+    l_pop_1_7: 00BF00
+    l_pop_1_8: 00BF00
+    l_pop_1_9: 00BF00
+    l_pop_1_10: 00BF00
+    l_pop_1_11: 00BF00
+    l_pop_1_12: 00BF00
+  infinata_pop_right_complete:
+    l_pop_2_1: 00BF00
+    l_pop_2_2: 00BF00
+    l_pop_2_3: 00BF00
+    l_pop_2_4: 00BF00
+    l_pop_2_5: 00BF00
+    l_pop_2_6: 00BF00
+    l_pop_2_7: 00BF00
+    l_pop_2_8: 00BF00
+    l_pop_2_9: 00BF00
+    l_pop_2_10: 00BF00
+    l_pop_2_11: 00BF00
+    l_pop_2_12: 00BF00
+
+  infinata_web_left_complete:
+    l_left_web_target: 00BF00
+  infinata_web_mid_complete:
+    l_mid_web_target: 00BF00
+
   infinata_unlight_pops:
+    l_pop_1_1: 6030A0
+    l_pop_1_2: 6030A0
+    l_pop_1_3: 6030A0
+    l_pop_1_4: 6030A0
+    l_pop_1_5: 6030A0
+    l_pop_1_6: 6030A0
+    l_pop_1_7: 6030A0
+    l_pop_1_8: 6030A0
+    l_pop_1_9: 6030A0
+    l_pop_1_10: 6030A0
+    l_pop_1_11: 6030A0
+    l_pop_1_12: 6030A0
+    l_pop_2_1: 6030A0
+    l_pop_2_2: 6030A0
+    l_pop_2_3: 6030A0
+    l_pop_2_4: 6030A0
+    l_pop_2_5: 6030A0
+    l_pop_2_6: 6030A0
+    l_pop_2_7: 6030A0
+    l_pop_2_8: 6030A0
+    l_pop_2_9: 6030A0
+    l_pop_2_10: 6030A0
+    l_pop_2_11: 6030A0
+    l_pop_2_12: 6030A0
+  infinata_unlight_left_drops:
+    l_gi_3bank: 6030A0
+    l_3bankbonus: off
+  infinata_unlight_right_drops:
+    l_gi_5bank_lower: 6030A0
+    l_gi_5bank_upper: 6030A0
+  infinata_unlight_webs:
+    l_left_web_target: off
+    l_mid_web_target: off
+  infinata_unlight_upper_targets:
+    l_upper_left: off
+    l_upper_middle: off
+    l_upper_right: off
+
+  infinata_light_saucers:
+    l_1: green
+    l_1_hole_l: red
+    l_1_hole_r: red
+    l_2: green
+    l_2_hole_l: red
+    l_2_hole_r: red
+    l_3: green
+    l_3_hole_l: red
+    l_3_hole_r: red
+
+  infinata_clear_area_lights:
+    l_pop_1_1: 6030A0
+    l_pop_1_2: 6030A0
+    l_pop_1_3: 6030A0
+    l_pop_1_4: 6030A0
+    l_pop_1_5: 6030A0
+    l_pop_1_6: 6030A0
+    l_pop_1_7: 6030A0
+    l_pop_1_8: 6030A0
+    l_pop_1_9: 6030A0
+    l_pop_1_10: 6030A0
+    l_pop_1_11: 6030A0
+    l_pop_1_12: 6030A0
+    l_pop_2_1: 6030A0
+    l_pop_2_2: 6030A0
+    l_pop_2_3: 6030A0
+    l_pop_2_4: 6030A0
+    l_pop_2_5: 6030A0
+    l_pop_2_6: 6030A0
+    l_pop_2_7: 6030A0
+    l_pop_2_8: 6030A0
+    l_pop_2_9: 6030A0
+    l_pop_2_10: 6030A0
+    l_pop_2_11: 6030A0
+    l_pop_2_12: 6030A0
+    l_gi_3bank: 6030A0
+    l_3bankbonus: off
+    l_gi_5bank_lower: 6030A0
+    l_gi_5bank_upper: 6030A0
+    l_left_web_target: off
+    l_mid_web_target: off
+    l_upper_left: off
+    l_upper_middle: off
+    l_upper_right: off
+
+  infinata_clear_lights:
     l_pop_1_1: off
     l_pop_1_2: off
     l_pop_1_3: off
@@ -153,51 +332,8 @@ light_player:
     l_pop_2_10: off
     l_pop_2_11: off
     l_pop_2_12: off
-  infinata_light_left_drops:
-    l_gi_3bank: green
-  infinata_unlight_left_drops:
     l_gi_3bank: off
-  infinata_light_right_drops:
-    l_gi_5bank_lower: green
-    l_gi_5bank_upper: green
-  infinata_unlight_right_drops:
-    l_gi_5bank_lower: off
-    l_gi_5bank_upper: off
-  infinata_light_webs:
-    l_left_web_target: green
-    l_mid_web_target: green
-  infinata_unlight_webs:
-    l_left_web_target: off
-    l_mid_web_target: off
-  infinata_light_upper_targets:
-    l_upper_left: green
-    l_upper_middle: green
-    l_upper_right: green
-  infinata_unlight_upper_targets:
-    l_upper_left: off
-    l_upper_middle: off
-    l_upper_right: off
-  infinata_light_saucers:
-    l_1: green
-    l_1_hole_l: red
-    l_1_hole_r: red
-    l_2: green
-    l_2_hole_l: red
-    l_2_hole_r: red
-    l_3: green
-    l_3_hole_l: red
-    l_3_hole_r: red
-  infinata_clear_area_lights:
-    l_gi_3bank: off
-    l_gi_5bank_lower: off
-    l_gi_5bank_upper: off
-    l_left_web_target: off
-    l_mid_web_target: off
-    l_upper_left: off
-    l_upper_middle: off
-    l_upper_right: off
-  infinata_clear_lights:
-    l_gi_3bank: off
+    l_3bankbonus: off
     l_gi_5bank_lower: off
     l_gi_5bank_upper: off
     l_left_web_target: off
@@ -214,3 +350,113 @@ light_player:
     l_3: off
     l_3_hole_l: off
     l_3_hole_r: off
+
+shows:
+  infinata_pop_left_flash_show:
+    - duration: 300ms
+      lights:
+        l_pop_1_1: green
+        l_pop_1_2: green
+        l_pop_1_3: green
+        l_pop_1_4: green
+        l_pop_1_5: green
+        l_pop_1_6: green
+        l_pop_1_7: green
+        l_pop_1_8: green
+        l_pop_1_9: green
+        l_pop_1_10: green
+        l_pop_1_11: green
+        l_pop_1_12: green
+    - duration: 300ms
+      lights:
+        l_pop_1_1: off
+        l_pop_1_2: off
+        l_pop_1_3: off
+        l_pop_1_4: off
+        l_pop_1_5: off
+        l_pop_1_6: off
+        l_pop_1_7: off
+        l_pop_1_8: off
+        l_pop_1_9: off
+        l_pop_1_10: off
+        l_pop_1_11: off
+        l_pop_1_12: off
+
+  infinata_pop_right_flash_show:
+    - duration: 300ms
+      lights:
+        l_pop_2_1: green
+        l_pop_2_2: green
+        l_pop_2_3: green
+        l_pop_2_4: green
+        l_pop_2_5: green
+        l_pop_2_6: green
+        l_pop_2_7: green
+        l_pop_2_8: green
+        l_pop_2_9: green
+        l_pop_2_10: green
+        l_pop_2_11: green
+        l_pop_2_12: green
+    - duration: 300ms
+      lights:
+        l_pop_2_1: off
+        l_pop_2_2: off
+        l_pop_2_3: off
+        l_pop_2_4: off
+        l_pop_2_5: off
+        l_pop_2_6: off
+        l_pop_2_7: off
+        l_pop_2_8: off
+        l_pop_2_9: off
+        l_pop_2_10: off
+        l_pop_2_11: off
+        l_pop_2_12: off
+
+  infinata_web_left_flash_show:
+    - duration: 300ms
+      lights:
+        l_left_web_target: green
+    - duration: 300ms
+      lights:
+        l_left_web_target: off
+
+  infinata_web_mid_flash_show:
+    - duration: 300ms
+      lights:
+        l_mid_web_target: green
+    - duration: 300ms
+      lights:
+        l_mid_web_target: off
+
+  infinata_upper_targets_flash_show:
+    - duration: 300ms
+      lights:
+        l_upper_left: green
+        l_upper_middle: green
+        l_upper_right: green
+    - duration: 300ms
+      lights:
+        l_upper_left: off
+        l_upper_middle: off
+        l_upper_right: off
+
+  infinata_left_bank_flash_show:
+    - duration: 300ms
+      lights:
+        l_gi_3bank: green
+        l_3bankbonus: green
+    - duration: 300ms
+      lights:
+        l_gi_3bank: off
+        l_3bankbonus: off
+
+  infinata_right_bank_flash_show:
+    - duration: 300ms
+      lights:
+        l_gi_5bank_lower: green
+        l_gi_5bank_upper: green
+    - duration: 300ms
+      lights:
+        l_gi_5bank_lower: off
+        l_gi_5bank_upper: off
+

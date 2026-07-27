@@ -83,6 +83,7 @@ class DoctorCool(Mode, CaseFileMixin):
         self.delay.remove("doctor_cool_saucer_cycle")
         self.delay.remove("doctor_cool_star_freeze")
         self.delay.remove("doctor_cool_resume_chase")
+        self.delay.remove("doctor_cool_vuk_eject")
         self.clear_active_case_file_helpers()
         self.machine.events.post("doctor_cool_clear_lights")
         super().mode_stop(**kwargs)
@@ -96,6 +97,7 @@ class DoctorCool(Mode, CaseFileMixin):
         self.add_mode_event_handler("doctor_cool_saucer_2_hit", self._saucer_hit, saucer=2)
         self.add_mode_event_handler("doctor_cool_saucer_3_hit", self._saucer_hit, saucer=3)
         self.add_mode_event_handler("doctor_cool_star_hit", self._star_hit)
+        self.add_mode_event_handler("doctor_cool_vuk_hit", self._vuk_hit)
         self.add_mode_event_handler("doctor_cool_complete_request", self._complete_mode)
 
     def _apply_case_file_effects(self):
@@ -305,6 +307,25 @@ class DoctorCool(Mode, CaseFileMixin):
         self.machine.events.post("doctor_cool_clear_saucer_lights")
         self._sync_vars()
         self._cycle_saucer()
+
+
+    def _vuk_hit(self, **kwargs):
+        """Eject a VUK ball while Doctor Cool owns the closed rooftop gate.
+
+        Daily Bugle Mystery is disabled for the duration of this mode so A+B
+        cannot reopen the gate. Doctor Cool does not score or collect anything
+        at the VUK; it only provides a safe delayed feed back to the playfield.
+        """
+        self.delay.reset(
+            name="doctor_cool_vuk_eject",
+            ms=1_000,
+            callback=self._eject_vuk,
+        )
+
+    def _eject_vuk(self):
+        if self.mode_done:
+            return
+        self.machine.events.post("up_kick")
 
     def _complete_mode(self, **kwargs):
         if not self.mode_done:

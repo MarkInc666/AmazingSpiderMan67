@@ -49,8 +49,11 @@ event_player:
   s_saucer_3_active: doctor_cool_saucer_3_hit
 
   s_star_rollover_active: doctor_cool_star_hit
+  s_vuk_switch_active: doctor_cool_vuk_hit
 
   mode_doctor_cool_started:
+    - rooftop_diverter_close
+    - disable_daily_bugle_mystery
     - clear_saucers
     - drop_target_bank_dt_bank_left_reset
     - drop_target_bank_dt_bank_right_reset
@@ -58,6 +61,8 @@ event_player:
 
   mode_doctor_cool_stopping:
     - doctor_cool_clear_lights
+    - enable_daily_bugle_mystery
+    - daily_bugle_restore_state
 
 show_player:
   doctor_cool_build_phase_started:
