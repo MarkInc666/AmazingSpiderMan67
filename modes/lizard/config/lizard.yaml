@@ -76,7 +76,7 @@ event_player:
 timers:
 
   lizard_delivery_timer:
-    start_value: 12
+    start_value: 16
     end_value: 0
     direction: down
     tick_interval: 1s
@@ -86,8 +86,19 @@ timers:
       - event: lizard_delivery_timer_stop
         action: stop
 
+  lizard_delivery_timer_more_time:
+    start_value: 20
+    end_value: 0
+    direction: down
+    tick_interval: 1s
+    control_events:
+      - event: lizard_delivery_timer_more_time_start
+        action: restart
+      - event: lizard_delivery_timer_more_time_stop
+        action: stop
+
   lizard_followup_timer:
-    start_value: 5
+    start_value: 10
     end_value: 0
     direction: down
     tick_interval: 1s
@@ -209,31 +220,19 @@ show_player:
 shows:
 
   lizard_gi_show:
-    - duration: 400ms
+    - duration: 500ms
       lights:
-        gi: B0FFB0
-    - duration: 200ms
-      lights:
-        gi: D0FFD0
-    - duration: 100ms
-      lights:
-        gi: FFFFFF
+        gi: FF0000
 
   lizard_gi_hurry_show:
-    - duration: 400ms
+    - duration: 500ms
       lights:
-        gi: FFFFB0
-    - duration: 200ms
-      lights:
-        gi: FFFFD0
-    - duration: 100ms
-      lights:
-        gi: FFFFFF
+        gi: 00FF00
 
   lizard_serum_star_show:
     - duration: 500ms
       lights:
-        l_star: white
+        l_star: red
     - duration: 500ms
       lights:
         l_star: off
@@ -241,18 +240,18 @@ shows:
   lizard_left_web_show:
     - duration: 250ms
       lights:
-        l_left_web_target: green
+        l_left_web_target: purple
     - duration: 250ms
       lights:
-        l_left_web_target: white
+        l_left_web_target: off
 
   lizard_center_web_show:
     - duration: 250ms
       lights:
-        l_mid_web_target: green
+        l_mid_web_target: purple
     - duration: 250ms
       lights:
-        l_mid_web_target: white
+        l_mid_web_target: off
 
   lizard_delivery_success_show:
     - duration: 150ms

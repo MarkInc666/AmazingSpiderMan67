@@ -11,52 +11,40 @@ mode:
 
 variable_player:
   sandman_regular_hit:
-    score: 5000
+    score: 25000
     active_mode_points:
       action: add
-      int: 5000
+      int: 25000
 
   sandman_flashing_hit:
-    score: 50000
-    active_mode_points:
-      action: add
-      int: 50000
-
-  sandman_any_5_flashing_jackpot:
-    score: 250000
-    active_mode_points:
-      action: add
-      int: 250000
-
-  sandman_any_10_flashing_jackpot:
-    score: 750000
-    active_mode_points:
-      action: add
-      int: 750000
-
-  sandman_2_in_a_row_jackpot:
-    score: 100000
-    active_mode_points:
-      action: add
-      int: 100000
-
-  sandman_3_in_a_row_jackpot:
     score: 200000
     active_mode_points:
       action: add
       int: 200000
 
-  sandman_4_in_a_row_jackpot:
+  sandman_2_in_a_row_jackpot:
+    score: 500000
+    active_mode_points:
+      action: add
+      int: 500000
+
+  sandman_3_in_a_row_jackpot:
     score: 1000000
     active_mode_points:
       action: add
       int: 1000000
 
-  sandman_5_in_a_row_jackpot:
+  sandman_4_in_a_row_jackpot:
     score: 2000000
     active_mode_points:
       action: add
       int: 2000000
+
+  sandman_5_in_a_row_jackpot:
+    score: 5000000
+    active_mode_points:
+      action: add
+      int: 5000000
 
 
 sound_player:
@@ -114,6 +102,14 @@ event_player:
 
 show_player:
   mode_sandman_started:
+    sandman_gi_show:
+      loops: -1
+
+  sandman_gi_sync_stop:
+    sandman_gi_show:
+      action: stop
+
+  sandman_gi_sync_start:
     sandman_gi_show:
       loops: -1
 
@@ -267,9 +263,9 @@ shows:
         l_5bank_5: white
 
   sandman_gi_show:
-    - duration: 250ms
+    - duration: 750ms
       lights:
         gi: yellow
-    - duration: 150ms
+    - duration: 250ms
       lights:
         gi: white

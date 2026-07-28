@@ -1,11 +1,14 @@
 🏖️ Sandman
-Mode idea: “Shifting Sands” 
-- moving drops
-- raise right drops, all 5 LEDs light up, the leftmost LED flashing
-- points: flashing one worth 50K, others 1K.
-- drop one at a time every 3 seconds (L to R)
-  - if next drop already down, move to next one 
-- every 5 completed while they are flashing will be a 250K JP
-- if 5 completed L to R - 500K JP
-- once all are down, reset bank 
-- repeat 3 times
+Mode idea: “Shifting Sands”
+
+- Raise the right 5-bank and flash one moving target.
+- The target advances every 3 seconds, or every 5 seconds with More Time.
+- When the timer expires, the currently flashing target auto-drops and the light advances.
+- The right-bank rubber restarts the current move timer.
+- Non-flashing drops score 25K.
+- Flashing drops score 200K, or 350K with Bigger Jackpots.
+- Consecutive flashing hits award 500K / 1M / 2M / 5M for runs of 2 / 3 / 4 / 5.
+- Clear 3 banks, or 4 with More Jackpots.
+- Shot Assist scores the first timed auto-drop as a flashing hit.
+- GI pulses yellow for 750 ms and white for 250 ms, restarted with each shift timer.
+- Active target flashes green/white; other standing target inserts remain dim blue.

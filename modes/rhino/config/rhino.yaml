@@ -25,10 +25,6 @@ widget_player:
       action: remove
 
 event_player:
-  mode_rhino_started:
-    - rooftop_diverter_open|500ms
-
-
   drop_target_bank_dt_bank_left_down:
     - drop_target_bank_dt_bank_left_reset
 
@@ -196,6 +192,7 @@ shows:
   rhino_rage_1:
     - duration: 1s
       lights:
+        gi: FFD000
         l_pop_1_1: yellow
         l_pop_1_2: off
         l_pop_1_3: yellow
@@ -224,6 +221,7 @@ shows:
   rhino_rage_2:
     - duration: 1s
       lights:
+        gi: FF9A00
         l_pop_1_1: yellow
         l_pop_1_2: yellow
         l_pop_1_3: yellow
@@ -252,6 +250,7 @@ shows:
   rhino_rage_3:
     - duration: 1s
       lights:
+        gi: FF6500
         l_pop_1_1: orange
         l_pop_1_2: orange
         l_pop_1_3: orange
@@ -280,6 +279,7 @@ shows:
   rhino_rage_4:
     - duration: 500ms
       lights:
+        gi: FF3000
         l_pop_1_1: orange
         l_pop_1_2: orange
         l_pop_1_3: orange
@@ -306,6 +306,7 @@ shows:
         l_pop_2_12: orange
     - duration: 500ms
       lights:
+        gi: FF1800
         l_pop_1_1: F09010
         l_pop_1_2: F09010
         l_pop_1_3: F09010
@@ -334,6 +335,7 @@ shows:
   rhino_rage_5:
     - duration: 150ms
       lights:
+        gi: red
         l_pop_1_1: red
         l_pop_1_2: red
         l_pop_1_3: red

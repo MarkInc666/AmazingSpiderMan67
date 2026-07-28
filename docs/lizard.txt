@@ -1,12 +1,26 @@
 Lizard Mode: “Serum Chase”
 
-Rules:
+Core rules:
+- The rooftop gate stays closed for the entire mode.
+- The player gets exactly two serum delivery attempts.
+- During serum collection, GI is red and the red star rollover flashes.
+- Hitting the star immediately starts the delivery timer and changes GI to green.
+- Both deliveries are made at the left web target, which flashes purple.
+- A missed/expired serum consumes that delivery attempt.
 
-star rollover to collect serum
+Delivery scoring:
+- Base timer: 16 seconds.
+- More Time: 20 seconds.
+- Base delivery jackpot: 1,000,000.
+- Bigger Jackpots: 1,500,000 starting value.
+- Base decay: 100,000 per second.
+- More Time decay: 50,000 per second.
+- Delivery value cannot fall below 100,000.
+- The second attempt resets to the full starting value and a fresh timer.
 
-Once serum is collected, a delivery target lights
-s_web_target_left then next time s_web_target_mid
-You have 12 seconds to deliver serum
-Successful delivery scores and advances cure progress
-Fail timer = serum expires, collect again
-Deliver serum 2 times to complete Lizard
+Case Files:
+- More Jackpots: after a successful left-web delivery, the center web flashes purple for an extra jackpot worth 50% of the collected value. It remains available for 10 seconds or until the star is hit to begin the next serum attempt.
+- Bigger Jackpots: raises the starting delivery value to 1,500,000.
+- More Time: adds 4 seconds and slows decay to 50,000 per second.
+- Safety Net: saves the first expired serum.
+- Shot Assist: during either active delivery, the main-playfield spinner or the left B rollover counts as the left-web delivery. The upper trispinner does not count.

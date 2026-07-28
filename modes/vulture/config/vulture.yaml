@@ -53,9 +53,13 @@ widget_player:
 event_player:
   mode_vulture_started:
     - rooftop_diverter_open|500ms
-    - clear_saucers
+    - clear_saucers_delayed
     - vulture_show_targets
-    
+
+  mode_vulture_stopping:
+    - rooftop_diverter_close
+    - vulture_gi_stop
+
   drop_target_bank_dt_bank_left_down:
     - drop_target_bank_dt_bank_left_reset
 
@@ -63,22 +67,19 @@ event_player:
     - drop_target_bank_dt_bank_right_reset
 
   s_saucer_1_active:
-    - clear_saucers
-    
+    - clear_saucers_delayed
+
   s_saucer_2_active:
-    - clear_saucers
-    
+    - clear_saucers_delayed
+
   s_saucer_3_active:
-    - clear_saucers    
+    - clear_saucers_delayed
 
   timer_vulture_mode_timer_complete{current_player.multiball_autoplunge_active == 0}:
     - vulture_mode_complete
 
   multiball_vulture_add_a_ball_ended{current_player.vulture_time_expired == 1}:
     - vulture_mode_complete
-
-  timer_vulture_idle_timer_complete:
-    - vulture_idle_decay
 
   s_upper_entrance_opto_active:
     - vulture_upper_entered
@@ -91,6 +92,9 @@ event_player:
   s_upper_exit_right_opto_active:
     - vulture_upper_exited
     - vulture_upper_switch_hit
+
+  s_inlane_m_r_active:
+    - vulture_gi_lower
 
   s_upper_target_left_active:
     - vulture_upper_switch_hit
@@ -120,74 +124,80 @@ timers:
       - event: vulture_mode_complete
         action: stop
 
-  vulture_idle_timer:
-    start_value: 3
-    end_value: 0
-    direction: down
-    tick_interval: 1s
-    control_events:
-      - event: vulture_upper_switch_hit
-        action: restart
-      - event: vulture_restart_idle_timer
-        action: restart
-      - event: vulture_mode_complete
-        action: stop
-
 show_player:
-
-  vulture_show_left_yellow:
-    vulture_left_yellow:
+  vulture_show_left_green:
+    vulture_left_green:
       loops: -1
 
-  vulture_show_left_orange:
-    vulture_left_yellow:
+  vulture_show_left_yellow:
+    vulture_left_green:
       action: stop
-    vulture_left_orange:
+    vulture_left_yellow:
       loops: -1
 
   vulture_show_left_red:
-    vulture_left_yellow:
+    vulture_left_green:
       action: stop
-    vulture_left_orange:
+    vulture_left_yellow:
       action: stop
     vulture_left_red:
       loops: -1
 
-  vulture_show_center_yellow:
-    vulture_center_yellow:
+  vulture_show_center_green:
+    vulture_center_green:
       loops: -1
 
-  vulture_show_center_orange:
-    vulture_center_yellow:
+  vulture_show_center_yellow:
+    vulture_center_green:
       action: stop
-    vulture_center_orange:
+    vulture_center_yellow:
       loops: -1
 
   vulture_show_center_red:
-    vulture_center_yellow:
+    vulture_center_green:
       action: stop
-    vulture_center_orange:
+    vulture_center_yellow:
       action: stop
     vulture_center_red:
       loops: -1
 
-  vulture_show_right_yellow:
-    vulture_right_yellow:
+  vulture_show_right_green:
+    vulture_right_green:
       loops: -1
 
-  vulture_show_right_orange:
-    vulture_right_yellow:
+  vulture_show_right_yellow:
+    vulture_right_green:
       action: stop
-    vulture_right_orange:
+    vulture_right_yellow:
       loops: -1
 
   vulture_show_right_red:
-    vulture_right_yellow:
+    vulture_right_green:
       action: stop
-    vulture_right_orange:
+    vulture_right_yellow:
       action: stop
     vulture_right_red:
       loops: -1
+
+  vulture_gi_lower:
+    vulture_gi_upper_show:
+      action: stop
+    vulture_gi_lower_show:
+      loops: -1
+      priority: 320
+
+  vulture_gi_upper:
+    vulture_gi_lower_show:
+      action: stop
+    vulture_gi_upper_show:
+      loops: -1
+      priority: 320
+
+  vulture_gi_stop:
+    vulture_gi_lower_show:
+      action: stop
+    vulture_gi_upper_show:
+      action: stop
 
   vulture_two_balls_upper:
     vulture_two_balls_upper_show:
@@ -198,70 +208,84 @@ show_player:
       loops: 1
 
   vulture_mode_complete:
-    vulture_left_yellow:
+    vulture_left_green:
       action: stop
-    vulture_left_orange:
+    vulture_left_yellow:
       action: stop
     vulture_left_red:
       action: stop
-    vulture_center_yellow:
+    vulture_center_green:
       action: stop
-    vulture_center_orange:
+    vulture_center_yellow:
       action: stop
     vulture_center_red:
       action: stop
-    vulture_right_yellow:
+    vulture_right_green:
       action: stop
-    vulture_right_orange:
+    vulture_right_yellow:
       action: stop
     vulture_right_red:
       action: stop
+    vulture_gi_lower_show:
+      action: stop
+    vulture_gi_upper_show:
+      action: stop
 
 shows:
+  vulture_left_green:
+    - duration: 1s
+      lights:
+        l_upper_left: green
+
   vulture_left_yellow:
     - duration: 1s
       lights:
         l_upper_left: D0D020
-
-  vulture_left_orange:
-    - duration: 1s
-      lights:
-        l_upper_left: orange
 
   vulture_left_red:
     - duration: 1s
       lights:
         l_upper_left: red
 
+  vulture_center_green:
+    - duration: 1s
+      lights:
+        l_upper_middle: green
+
   vulture_center_yellow:
     - duration: 1s
       lights:
         l_upper_middle: D0D020
-
-  vulture_center_orange:
-    - duration: 1s
-      lights:
-        l_upper_middle: orange
 
   vulture_center_red:
     - duration: 1s
       lights:
         l_upper_middle: red
 
+  vulture_right_green:
+    - duration: 1s
+      lights:
+        l_upper_right: green
+
   vulture_right_yellow:
     - duration: 1s
       lights:
         l_upper_right: D0D020
 
-  vulture_right_orange:
-    - duration: 1s
-      lights:
-        l_upper_right: orange
-
   vulture_right_red:
     - duration: 1s
       lights:
         l_upper_right: red
+
+  vulture_gi_lower_show:
+    - duration: 1s
+      lights:
+        gi: D0D020
+
+  vulture_gi_upper_show:
+    - duration: 1s
+      lights:
+        gi: 4080F0
 
   vulture_add_a_ball_show:
     - duration: 150ms

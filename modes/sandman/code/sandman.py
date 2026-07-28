@@ -21,8 +21,8 @@ from mpf.core.delays import DelayManager
 class Sandman(CaseFileMixin, Mode):
 
     BANK_TARGETS = [1, 2, 3, 4, 5]
-    MAX_BANKS = 3
-    MOVE_INTERVAL_MS = 3000
+    BASE_MAX_BANKS = 3
+    BASE_MOVE_INTERVAL_MS = 3000
     RESET_SETTLE_MS = 500
 
     def mode_start(self, **kwargs):
@@ -41,7 +41,8 @@ class Sandman(CaseFileMixin, Mode):
         self.flash_hits = 0
         self.shot_assist = False
         self.mode_done = False
-        self.awarded_run_jackpots = set()
+        self.max_banks = self.BASE_MAX_BANKS
+        self.move_interval_ms = self.BASE_MOVE_INTERVAL_MS
 
         self.case_files = self.get_case_file_bonuses()
         self._apply_case_file_bonuses()
@@ -92,20 +93,20 @@ class Sandman(CaseFileMixin, Mode):
         self.machine.events.post(
             "show_mode_status",
             mode_status_title=f"FLASH DROP {physical_target}",
-            mode_status_value=f"BANK {self.banks_completed + 1} OF {self.MAX_BANKS}  RUN {len(self.hit_order)}",
+            mode_status_value=f"BANK {self.banks_completed + 1} OF {self.max_banks}  RUN {len(self.hit_order)}",
         )
 
     def _apply_case_file_bonuses(self):
         self.case_file_bigger_jackpots = False
 
         if self.has_case_file("more_jackpots"):
-            self.MAX_BANKS += 1
+            self.max_banks += 1
 
         if self.has_case_file("bigger_jackpots"):
             self.case_file_bigger_jackpots = True
 
         if self.has_case_file("more_time"):
-            self.MOVE_INTERVAL_MS += 1500
+            self.move_interval_ms = 5000
 
         if self.has_case_file("safety_net"):
             self.machine.events.post("start_case_file_ball_save")
@@ -149,9 +150,13 @@ class Sandman(CaseFileMixin, Mode):
             return
 
         self.delay.remove("sandman_shift")
+        # Restart the GI pulse with every target timer so its white 250 ms tick
+        # remains visibly synchronized to the moving-target countdown.
+        self.machine.events.post("sandman_gi_sync_stop")
+        self.machine.events.post("sandman_gi_sync_start")
         self.delay.add(
             name="sandman_shift",
-            ms=self.MOVE_INTERVAL_MS,
+            ms=self.move_interval_ms,
             callback=self.shift_flash
         )
 
@@ -224,8 +229,8 @@ class Sandman(CaseFileMixin, Mode):
             self._show_message("FLASHING HIT!", f"RUN: {len(self.hit_order)}", event="show_mode_jackpot")
             self.machine.events.post("sandman_flashing_hit")
             if getattr(self, "case_file_bigger_jackpots", False):
-                self.machine.game.player["score"] += 25000
-                self.machine.game.player["active_mode_points"] += 25000
+                self.machine.game.player["score"] += 150000
+                self.machine.game.player["active_mode_points"] += 150000
                 self.machine.events.post("sandman_case_file_bonus_score")
         else:
             self._show_message("SANDMAN SHIFTED", "HIT THE FLASHING TARGET")
@@ -253,50 +258,19 @@ class Sandman(CaseFileMixin, Mode):
 
 
     def award_points(self):
-
-        if self.flash_hits == 5 and "5_flash" not in self.awarded_run_jackpots:
-            self.awarded_run_jackpots.add("5_flash")
-            self._show_message("SANDMAN JACKPOT", "5 FLASHING HITS", value=750000, event="show_mode_jackpot")
-            self.machine.events.post("sandman_5_flashing_jackpot")
-
-        if self.flash_hits == 10 and "10_flash" not in self.awarded_run_jackpots:
-            self.awarded_run_jackpots.add("10_flash")
-            self._show_message("SANDMAN JACKPOT", "10 FLASHING HITS", value=1500000, event="show_mode_jackpot")
-            self.machine.events.post("sandman_10_flashing_jackpot")
-
-        if self.hit_order == [1, 2, 3, 4, 5]:
+        """Award the milestone reached by the current consecutive flashing run."""
+        run = len(self.hit_order)
+        if run == 2:
+            self.machine.events.post("sandman_2_in_a_row_jackpot")
+        elif run == 3:
+            self.machine.events.post("sandman_3_in_a_row_jackpot")
+        elif run == 4:
+            self.machine.events.post("sandman_4_in_a_row_jackpot")
+        elif run == 5:
             self.machine.events.post("sandman_5_in_a_row_jackpot")
-            if self.sandman_best_run < 5: self.sandman_best_run = 5
-            
-        if self.hit_order == [1, 2, 3, 4]:
-            self.machine.events.post("sandman_4_in_a_row_jackpot")
-            if self.sandman_best_run < 4: self.sandman_best_run = 4
-        if self.hit_order == [2, 3, 4, 5]:
-            self.machine.events.post("sandman_4_in_a_row_jackpot")
-            if self.sandman_best_run < 4: self.sandman_best_run = 4
-           
-        if self.hit_order == [1, 2, 3]:
-            self.machine.events.post("sandman_3_in_a_row_jackpot")
-            if self.sandman_best_run < 3: self.sandman_best_run = 3
-        if self.hit_order == [2, 3, 4]:
-            self.machine.events.post("sandman_3_in_a_row_jackpot")
-            if self.sandman_best_run < 3: self.sandman_best_run = 3
-        if self.hit_order == [3, 4, 5]:
-            self.machine.events.post("sandman_3_in_a_row_jackpot")
-            if self.sandman_best_run < 3: self.sandman_best_run = 3
 
-        if self.hit_order == [1, 2]:
-            self.machine.events.post("sandman_2_in_a_row_jackpot")
-            if self.sandman_best_run < 2: self.sandman_best_run = 2
-        if self.hit_order == [2, 3]:
-            self.machine.events.post("sandman_2_in_a_row_jackpot")
-            if self.sandman_best_run < 2: self.sandman_best_run = 2
-        if self.hit_order == [3, 4]:
-            self.machine.events.post("sandman_2_in_a_row_jackpot")
-            if self.sandman_best_run < 2: self.sandman_best_run = 2
-        if self.hit_order == [4, 5]:
-            self.machine.events.post("sandman_2_in_a_row_jackpot")
-            if self.sandman_best_run < 2: self.sandman_best_run = 2
+        if run > self.sandman_best_run:
+            self.sandman_best_run = run
 
 
     def complete_bank(self):
@@ -307,12 +281,12 @@ class Sandman(CaseFileMixin, Mode):
         self.direction = 1 - self.direction
 
         self.banks_completed += 1
-        self._show_message("BANK CLEARED", f"{self.banks_completed} OF {self.MAX_BANKS}", event="show_mode_jackpot")
+        self._show_message("BANK CLEARED", f"{self.banks_completed} OF {self.max_banks}", event="show_mode_jackpot")
         self.machine.events.post("sandman_bank_complete")
 
         self.update_player_vars()
 
-        if self.banks_completed >= self.MAX_BANKS:
+        if self.banks_completed >= self.max_banks:
             self.mode_done = True
             self._show_message("SANDMAN DEFEATED", "MODE COMPLETE", event="show_mode_jackpot")
             self.machine.events.post("sandman_mode_complete")

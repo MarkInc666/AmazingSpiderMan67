@@ -1,13 +1,29 @@
-🦅 Vulture
-Mode idea: “Sky Attack”
-- gate to upper opens and remains open
-- upper playfield spinner value based on 3 upper playfield targets 
-- timer starts when entering upper playfield for the first time - 40s
-- targets go from yellow, orange, red 
-- after 3 seconds of no switch hits, all 3 drop back one step R-O-Y
-- spinner value R - 25K, O - 10K, Y - 5K 
-- this gives max 75K, min 15K per spin
-- all three red, add-a-ball.  
-- both balls on rooftop - double scoring
-- can re-enter if exited before timer expired 
-- live points scored during spins but also collected as bonus on ball end (tilting loses bonus)
+VULTURE — SKY ATTACK
+
+Core flow
+- Vulture opens the rooftop gate for the duration of the mode.
+- The 40-second mode timer starts on the first upper-playfield entry.
+- If add-a-ball multiball is active when time expires, the mode continues until multiball ends.
+- If multiball is not active at time expiry, the mode ends immediately.
+
+Upper targets
+- Each upper target advances independently through GREEN, YELLOW, and RED.
+- Every target hit scores 50K.
+- Four seconds without upper-playfield activity drops every target above green by one stage.
+- More Time increases decay time to six seconds.
+- Shot Assist makes the first upper-target hit advance all three targets by one stage. The hit target advances only once.
+- Reaching all three red awards the one-time automatic add-a-ball.
+
+Upper spinner
+- Each spin scores the combined value of all three target stages:
+  GREEN 10K / YELLOW 25K / RED 50K.
+- Bigger Jackpots doubles stage values to 20K / 50K / 100K.
+- Two balls on the upper playfield doubles the total spinner value again.
+- More Jackpots adds 100K per spin while all three targets are red.
+- Spinner scoring is also banked into vulture_bonus for end-of-ball bonus.
+
+GI
+- Base/lower-playfield GI is yellow.
+- Upper-playfield entry changes GI to blue 4080F0.
+- Either upper exit or the middle-right A rollover returns GI to yellow.
+- Normal GI control is restored when Vulture ends.
