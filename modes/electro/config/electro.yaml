@@ -82,7 +82,7 @@ event_player:
 
   electro_startup_complete:
     - reset_drops
-    - clear_saucers
+    - clear_saucers_delayed
 
   drop_target_bank_dt_bank_left_down:
     - drop_target_bank_dt_bank_left_reset
@@ -91,7 +91,7 @@ event_player:
     - drop_target_bank_dt_bank_right_reset
 
   electro_saucers_hit:
-    - clear_saucers  
+    - clear_saucers_delayed
 
 
   # -------------------------------
@@ -110,6 +110,7 @@ event_player:
   # Timer completions -> Python
   # -------------------------------
   timer_electro_shot_timer_complete: electro_lit_shot_timeout
+  timer_electro_shot_assist_timer_complete: electro_lit_shot_timeout
   timer_electro_super_timer_complete: electro_super_timeout
 
 
@@ -181,6 +182,17 @@ timers:
       - event: electro_shot_timer_start
         action: restart
       - event: electro_shot_timer_stop
+        action: stop
+
+  electro_shot_assist_timer:
+    start_value: 8
+    end_value: 0
+    direction: down
+    tick_interval: 1s
+    control_events:
+      - event: electro_shot_assist_timer_start
+        action: restart
+      - event: electro_shot_assist_timer_stop
         action: stop
 
   electro_super_timer:

@@ -1,15 +1,29 @@
 ⚡ Electro
-Mode idea: “Power Surge”
+Mode: “Power Surge”
 
-- gate opens allowing upper access when a rooftop shot is lit (targets or trispinner)
-- traveling shots - like electricity - random locations - light shows trace movement
-- shot locations:
-  Left web target,  spinner , saucers, (any drop at left bank),  
-  upper web target, (any drop at right bank), 
-  any upper playfield target, upper spinner
-- Timed 5? seconds 
-  - if not hit, LED sparks out and shot appears somewhere else that has not been disabled 
-  - if hit, collect JP (super JP for last spark) and shot disables
-  - shot moves randomly, until all shots disabled, or last shot times out
+Core flow
+- A spark travels randomly among eight shot groups:
+  left web, main spinner, left drops, saucers, center web,
+  upper spinner, upper targets, and right drops.
+- Normal spark windows last 5 seconds.
+- If the lit shot is missed, it remains available and the spark moves.
+- Every new or moved spark resets to its maximum jackpot value before
+  the once-per-second value decay starts again.
+- Collected shot groups are disabled until one final group remains.
+- The final group becomes a 10-second Super Jackpot.
 
+Scoring
+- Normal spark starts at 250K and falls 10K per second to a 50K floor.
+- Bigger Jackpots starts normal sparks at 300K and raises the Super
+  Jackpot from 1M to 1.25M.
+- More Time halves the normal jackpot decay rate.
+- More Jackpots returns the first collected group to the pool, allowing
+  one additional normal spark jackpot before the Super.
+- Shot Assist makes the first normal spark window last 8 seconds.
 
+Presentation and devices
+- Existing Electro light-show timing is retained.
+- The Super uses the SUPER SURGE LIT 10-second countdown and persistent
+  SUPER SPARK status showing the required shot.
+- The rooftop gate opens only for upper-playfield spark shots.
+- Saucer groups use delayed clearing.

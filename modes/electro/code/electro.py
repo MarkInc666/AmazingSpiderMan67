@@ -20,30 +20,43 @@ import random
     "state_var": "electro_state",
 """
 
+
 class Electro(CaseFileMixin, Mode):
 
-    NORMAL_JACKPOT_VALUE = 250000
-    SUPER_JACKPOT_VALUE = 1000000    
+    BASE_NORMAL_JACKPOT_VALUE = 250000
+    BASE_SUPER_JACKPOT_VALUE = 1000000
+    MIN_NORMAL_JACKPOT_VALUE = 50000
+    NORMAL_VALUE_DECAY = 10000
+    NORMAL_SHOT_SECONDS = 5
+    SHOT_ASSIST_SECONDS = 8
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
 
         self.delay = DelayManager(self.machine)
         self.case_files = self.get_case_file_bonuses()
+
+        # Instance values prevent Case File bonuses from leaking across starts.
+        self.normal_jackpot_value = self.BASE_NORMAL_JACKPOT_VALUE
+        self.super_jackpot_value = self.BASE_SUPER_JACKPOT_VALUE
+
+        self.case_file_extra_spark_available = False
+        self.case_file_slow_value_drain = False
+        self.case_file_value_tick_toggle = False
+        self.case_file_shot_assist_available = False
         self._apply_case_file_bonuses()
+
         self.publish_case_file_bonus_events("electro")
         self.publish_active_case_file_helpers([
             ("more_jackpots", "EXTRA SPARK JACKPOT AVAILABLE"),
             ("bigger_jackpots", "SPARK JACKPOTS BOOSTED"),
             ("more_time", "SPARK VALUE DRAINS SLOWER"),
             ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
-            ("shot_assist", "NEXT SPARK HELD LONGER"),
+            ("shot_assist", "FIRST SPARK HELD LONGER"),
         ])
         self._show_message("POWER SURGE", "HIT THE LIT SPARK", reminder=True)
 
-
         self.value_deduct = 0
-
         self.super_active = False
         self.current_shot = None
         self.mode_done = False
@@ -76,8 +89,11 @@ class Electro(CaseFileMixin, Mode):
 
         self.begin_power_surge()
 
-
     def mode_stop(self, **kwargs):
+        self.machine.events.post("electro_shot_timer_stop")
+        self.machine.events.post("electro_shot_assist_timer_stop")
+        self.machine.events.post("electro_value_timer_stop")
+        self.machine.events.post("electro_super_timer_stop")
         self.machine.events.post("hide_mode_status")
         self.clear_active_case_file_helpers()
         self.machine.events.post("cancel_mode_message_reminder")
@@ -115,16 +131,12 @@ class Electro(CaseFileMixin, Mode):
         return labels.get(shot.name, shot.name.upper())
 
     def _apply_case_file_bonuses(self):
-        self.case_file_extra_spark_available = False
-        self.case_file_slow_value_drain = False
-        self.case_file_value_tick_toggle = False
-
         if self.has_case_file("more_jackpots"):
             self.case_file_extra_spark_available = True
 
         if self.has_case_file("bigger_jackpots"):
-            self.NORMAL_JACKPOT_VALUE += 50000
-            self.SUPER_JACKPOT_VALUE += 250000
+            self.normal_jackpot_value += 50000
+            self.super_jackpot_value += 250000
 
         if self.has_case_file("more_time"):
             self.case_file_slow_value_drain = True
@@ -133,7 +145,7 @@ class Electro(CaseFileMixin, Mode):
             self.machine.events.post("start_case_file_ball_save")
 
         if self.has_case_file("shot_assist"):
-            self.machine.events.post("electro_case_file_next_spark_held")
+            self.case_file_shot_assist_available = True
 
     def begin_power_surge(self):
         self.super_active = False
@@ -148,14 +160,23 @@ class Electro(CaseFileMixin, Mode):
         self.pick_next_lit_shot()
 
     def value_tick(self, **kwargs):
-        #250,000 - 20 X 10,000 = 50,000 base
-        if getattr(self, "case_file_slow_value_drain", False):
+        if self.super_active or not self.current_shot or not self.current_shot.is_lit:
+            return
+
+        if self.case_file_slow_value_drain:
             self.case_file_value_tick_toggle = not self.case_file_value_tick_toggle
             if self.case_file_value_tick_toggle:
                 return
 
-        if self.value_deduct < 20:
-            self.value_deduct += 1 
+        current_value = self._current_normal_jackpot_value()
+        if current_value > self.MIN_NORMAL_JACKPOT_VALUE:
+            self.value_deduct += 1
+
+    def _current_normal_jackpot_value(self):
+        return max(
+            self.MIN_NORMAL_JACKPOT_VALUE,
+            self.normal_jackpot_value - self.NORMAL_VALUE_DECAY * self.value_deduct,
+        )
 
     def active_shots(self):
         return [shot for shot in self.shots if not shot.disabled]
@@ -165,36 +186,52 @@ class Electro(CaseFileMixin, Mode):
             return
 
         self.awaiting_next_shot = False
+        previous_location = self.current_shot.group if self.current_shot else "lower"
         self.stop_current_lit_shot()
 
         active = self.active_shots()
 
-        if len(active) <= 0:
+        if not active:
             self._complete_mode()
             return
 
         if len(active) == 1:
             self.start_super_jackpot(active[0])
             return
-        if self.current_shot:
-            previous_location = self.current_shot.group
-        else:
-            previous_location = "lower"
-        
+
         self.current_shot = random.choice(active)
         self.current_shot.is_lit = True
 
-        self._show_message("HIT THE SPARK", self._shot_label(self.current_shot), seconds=5, event="show_mode_countdown")
+        # Every newly selected or moved spark starts again at maximum value.
+        self.value_deduct = 0
+        self.case_file_value_tick_toggle = False
+
+        shot_seconds = self.NORMAL_SHOT_SECONDS
+        if self.case_file_shot_assist_available:
+            shot_seconds = self.SHOT_ASSIST_SECONDS
+            self.case_file_shot_assist_available = False
+            self.machine.events.post("electro_case_file_next_spark_held")
+            self.machine.events.post("electro_shot_assist_timer_start")
+        else:
+            self.machine.events.post("electro_shot_timer_start")
+
+        self._show_message(
+            "HIT THE SPARK",
+            self._shot_label(self.current_shot),
+            value=self._current_normal_jackpot_value(),
+            seconds=shot_seconds,
+            event="show_mode_countdown",
+        )
         self.machine.events.post("electro_lit_shot_changed")
         self.machine.events.post(f"electro_lite_{self.current_shot.name}")
-        self.machine.events.post("electro_shot_timer_start")
-        
+
         if previous_location == "upper" and self.current_shot.group != "upper":
             self.machine.events.post("rooftop_diverter_close")
         if previous_location != "upper" and self.current_shot.group == "upper":
             self.machine.events.post("rooftop_diverter_open")
 
         self.machine.events.post("electro_value_timer_start")
+        self._update_status()
 
     def _set_gate_for_shot(self, shot):
         if shot and shot.group == "upper":
@@ -208,20 +245,17 @@ class Electro(CaseFileMixin, Mode):
             self.machine.events.post(f"electro_stop_{self.current_shot.name}")
 
         self.machine.events.post("electro_shot_timer_stop")
+        self.machine.events.post("electro_shot_assist_timer_stop")
+        self.machine.events.post("electro_value_timer_stop")
 
     def lit_shot_timeout(self, **kwargs):
-        if self.mode_done:
+        if self.mode_done or self.super_active:
             return
 
-        if self.super_active:
-            return
-
-        # Ignore stale timer completions that arrive during the jackpot award pause.
-        # This prevents the next lit shot from being immediately advanced again.
         if self.awaiting_next_shot or not self.current_shot or not self.current_shot.is_lit:
             return
 
-        # Timeout means the shot remains active, but the spark moves elsewhere.
+        # The uncollected shot stays in the pool; the spark moves and resets to max.
         self._show_message("SPARK MOVED", "FIND THE NEW SHOT")
         self.pick_next_lit_shot()
 
@@ -229,43 +263,38 @@ class Electro(CaseFileMixin, Mode):
         if self.mode_done:
             return
 
-        if self.machine.game.player["villain_mode_in_summary"] == True: return
-       
+        if self.machine.game.player["villain_mode_in_summary"] is True:
+            return
+
         if not shot_name:
             return
-        
-        shot = self.shots_by_name.get(shot_name)
 
+        shot = self.shots_by_name.get(shot_name)
         if not shot or shot.disabled:
             return
 
-        self.machine.events.post("electro_value_timer_stop")
-
         if self.super_active:
             if shot == self.current_shot:
+                self.machine.events.post("electro_super_timer_stop")
                 self.collect_super()
             return
 
+        # Unlit shots do not pause or stop the active spark's value decay.
         if shot != self.current_shot:
             return
 
+        self.machine.events.post("electro_value_timer_stop")
         self.collect_normal_jackpot(shot)
 
     def collect_normal_jackpot(self, shot):
-        if self.mode_done or shot.name in self.collected_jackpot_shots:
+        if self.mode_done:
             return
 
-        # Stop the active shot timer immediately. If the shot was hit near the end
-        # of the countdown, a pending timeout event can otherwise move the next
-        # spark almost immediately after it appears.
         self.machine.events.post("electro_shot_timer_stop")
+        self.machine.events.post("electro_shot_assist_timer_stop")
         self.awaiting_next_shot = True
 
-        self.collected_jackpot_shots.add(shot.name)
-        shot.disabled = True
-        shot.is_lit = False
-
-        jackpot_value = self.NORMAL_JACKPOT_VALUE - 10000 * self.value_deduct
+        jackpot_value = self._current_normal_jackpot_value()
         self.machine.game.player["score"] += jackpot_value
         self.active_mode_points += jackpot_value
         self.machine.game.player["active_mode_points"] = self.active_mode_points
@@ -275,29 +304,28 @@ class Electro(CaseFileMixin, Mode):
         self.machine.game.player["electro_best_spark"] = self.electro_best_spark
 
         self._show_message("ELECTRO JACKPOT", self._shot_label(shot), value=jackpot_value, event="show_mode_jackpot")
-        self._update_status()
         self.machine.events.post("electro_jackpot_collected")
-        self.value_deduct = 0
 
-        if getattr(self, "case_file_extra_spark_available", False):
+        if self.case_file_extra_spark_available:
+            # More Jackpots grants one extra normal collect by returning this shot
+            # to the available pool instead of permanently disabling it.
             self.case_file_extra_spark_available = False
+            shot.disabled = False
             self.machine.events.post("electro_case_file_extra_spark_used")
         else:
             shot.disabled = True
-        shot.is_lit = False
+            self.collected_jackpot_shots.add(shot.name)
+            self.machine.events.post(f"electro_deactivate_{shot.name}")
 
+        shot.is_lit = False
         self.machine.events.post(f"electro_stop_{shot.name}")
-        self.machine.events.post(f"electro_deactivate_{shot.name}")
+        self.value_deduct = 0
+        self._update_status()
 
         self.delay.remove("next_shot_delay")
-        self.delay.add(
-            name="next_shot_delay",
-            ms=1000,
-            callback=self.delayed_next_shot
-        )
+        self.delay.add(name="next_shot_delay", ms=1000, callback=self.delayed_next_shot)
 
     def delayed_next_shot(self, **kwargs):
-        self.machine.events.post("electro_shot_timer_stop")
         self.awaiting_next_shot = False
         self.pick_next_lit_shot()
 
@@ -309,15 +337,20 @@ class Electro(CaseFileMixin, Mode):
         self.current_shot.is_lit = True
         self.current_shot.is_jackpot = True
 
-        #for the "GET THE SUPER JACKPOT FOR XXXX" widget
-        self.machine.game.player["electro_super_jackpot_value"] = self.SUPER_JACKPOT_VALUE
-
+        self.machine.game.player["electro_super_jackpot_value"] = self.super_jackpot_value
         self._set_gate_for_shot(shot)
 
-        self._show_message("SUPER SURGE LIT", self._shot_label(shot), value=self.SUPER_JACKPOT_VALUE, seconds=10, event="show_mode_countdown")
+        self._show_message(
+            "SUPER SURGE LIT",
+            self._shot_label(shot),
+            value=self.super_jackpot_value,
+            seconds=10,
+            event="show_mode_countdown",
+        )
         self.machine.events.post("electro_super_lit")
         self.machine.events.post(f"electro_super_lite_{shot.name}")
         self.machine.events.post("electro_super_timer_start")
+        self._update_status()
 
     def collect_super(self):
         if self.mode_done:
@@ -329,7 +362,6 @@ class Electro(CaseFileMixin, Mode):
 
         self.machine.game.player["electro_super_jackpot"] = self.electro_super_jackpot
         self.machine.game.player["active_mode_points"] = self.active_mode_points
-
         self.machine.game.player["score"] += self.electro_super_jackpot
 
         self.current_shot.is_lit = False
@@ -347,9 +379,9 @@ class Electro(CaseFileMixin, Mode):
         self._show_message("SUPER MISSED", "ELECTRO ESCAPES")
         self.machine.events.post("electro_super_missed")
         self.machine.events.post("electro_mode_complete")
+
     def _complete_mode(self, **kwargs):
         if self.mode_done:
             return
         self.mode_done = True
         self.machine.events.post("electro_mode_complete")
-
