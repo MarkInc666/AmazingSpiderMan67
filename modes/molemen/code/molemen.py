@@ -15,7 +15,7 @@ PLACEHOLDER IMPLEMENTATION
 
 class Molemen(Mode):
     MODE_KEY = "molemen"
-    DISPLAY_NAME = "Molemen"
+    DISPLAY_NAME = "The Molemen"
     HIT_SCORE = 25_000
     MAJOR_SCORE = 75_000
     HITS_TO_COMPLETE = 10

@@ -391,7 +391,7 @@ Shot Assist: Start one surge shot lit.
 
 ---
 
-### Master Plan
+### The Plotter
 
 **Theme:** Puzzle / strategy mini-wizard.
 
@@ -404,7 +404,7 @@ Wrong shots shuffle the plan.
 This is where **limited flipper presses** fits extremely well.
 
 ```text
-MASTER PLAN
+THE PLOTTER
 FLIPS LEFT: 30
 COMPLETE THE SEQUENCE
 ```
@@ -511,7 +511,7 @@ Meteor mode:
 Monster Island or Kingpin
 
 Limited flipper presses:
-Master Plan or Blackwell
+The Plotter or Blackwell
 
 Pop-up post:
 Ox, Centaur, Kingpin, or Daily Bugle return loop

@@ -37,7 +37,7 @@ class Bonus(MpfBonus):
         ("dumpty_bonus", "DUMPTY DEVICES", False),
         ("blotto_bonus", "BLOTTO RAMPAGE", False),
         ("devargas_bonus", "LOST WORLDS PLACEHOLDER", False),
-        ("swamp_bonus", "SWAMP REPTILES", False),
+        ("swamp_bonus", "CONNER'S REPTILES", False),
         ("technician_bonus", "TECHNICIAN TRAP", False),
         # A carried bonus is always the final counted bonus entry before the
         # player-score hold. It is consumed only after being awarded.

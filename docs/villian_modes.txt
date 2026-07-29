@@ -93,7 +93,7 @@ Plutonians
 Infinata
 Vulcan
 Matto Magneto
-Metal-Eating Monster
+Metal-Eating Robot
 ```
 
 ### Mini-Wizard: **Invasion from Beyond**
@@ -111,7 +111,7 @@ Each villain controls a different energy zone:
 - Infinata = moving shot
 - Vulcan = fire/heat shots
 - Matto Magneto = magnetized/randomized shots
-- Metal-Eating Monster = drop banks
+- Metal-Eating Robot = drop banks
 
 Complete all 5 zones to light Cosmic Jackpot.
 Victory lap: all major shots lit for 50K.
@@ -138,7 +138,7 @@ Mysterio
 Green Goblin
 Scorpion
 Parafino
-Mini-Wizard: Master Plan
+Mini-Wizard: The Plotter
 
 Chapter 3 — Monsters
 Centaur
@@ -177,7 +177,7 @@ Plutonians
 Infinata
 Vulcan
 Matto Magneto
-Metal-Eating Monster
+Metal-Eating Robot
 Mini-Wizard: Invasion from Beyond
 
 Final Wizard
@@ -333,7 +333,7 @@ Here are the **remaining villains/antagonists from your larger list** after the 
 | **Kotep**                 | Ancient/mystic-themed villain; could fit a mythology chapter.                            |
 | **Master Technician**     | Strong tech-mode candidate; pairs well with Smythe/Spider-Slayer.                        |
 | **Plotter**               | Crime planner; fits Crime Wave, but maybe not distinct enough for a full mode.           |
-| **Professor Pretoris**    | Science villain; could fit Mad Doctors or Strange Science.                               |
+| **Professor Pretorius**    | Science villain; could fit Mad Doctors or Strange Science.                               |
 | **Radiation Specialist**  | Good science hazard mode candidate; spinner/energy meter idea.                           |
 | **Red Dog Melvin**        | Crime/gangster flavor; likely minor Crime Wave candidate.                                |
 | **Scarf**                 | Street-crime or gimmick villain; probably a short/simple mode.                           |
@@ -363,7 +363,7 @@ Henry Smythe
 Spider-Slayer
 Master Technician
 Radiation Specialist
-Professor Pretoris
+Professor Pretorius
 ```
 
 Mini-wizard: **Techno-Terror**

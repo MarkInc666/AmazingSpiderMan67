@@ -1,7 +1,7 @@
 from mpf.core.mode import Mode
 
 """
-Metal-Eating Monster placeholder villain mode.
+Metal-Eating Robot placeholder villain mode.
 
 Mode idea:
 Monster eats metal targets; hit repair shots or lose scoring areas temporarily.
@@ -13,9 +13,9 @@ PLACEHOLDER IMPLEMENTATION
 """
 
 
-class MetalEatingMonster(Mode):
-    MODE_KEY = "metal_eating_monster"
-    DISPLAY_NAME = "Metal-Eating Monster"
+class MetalEatingRobot(Mode):
+    MODE_KEY = "metal_eating_robot"
+    DISPLAY_NAME = "Metal-Eating Robot"
     HIT_SCORE = 25_000
     MAJOR_SCORE = 75_000
     HITS_TO_COMPLETE = 10

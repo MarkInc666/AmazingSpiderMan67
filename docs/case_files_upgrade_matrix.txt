@@ -153,7 +153,7 @@ Case File 3 (More Time): Extend surge phase
 Case File 4 (Safety Net): One drain / save window
 Case File 5 (Shot Assist): Start one surge shot lit
 
-Master Plan
+The Plotter
 Case File 1 (More Jackpots): Add one extra plan jackpot
 Case File 2 (Bigger Jackpots): Increase plan value
 Case File 3 (More Time): Extend planning timer

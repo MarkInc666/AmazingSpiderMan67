@@ -10,7 +10,7 @@ class CrimeWave(Mode):
     SAUCER_HOLD_MS = 15_000
     BASE_JACKPOT_PER_AREA = 250_000
 
-    AREAS = ("plotter", "fly_brothers", "phantom", "enforcers", "doctor_cool")
+    AREAS = ("plotter", "fly_twins", "phantom", "enforcers", "doctor_cool")
     SAUCER_EJECT_EVENTS = {
         1: "delayed_kickout_saucer_1",
         2: "delayed_kickout_saucer_2",
@@ -35,7 +35,7 @@ class CrimeWave(Mode):
         player["active_mode_major_hits"] = 0
 
         self.add_mode_event_handler("crime_wave_plotter_hit", self._area_hit, area="plotter")
-        self.add_mode_event_handler("crime_wave_fly_hit", self._area_hit, area="fly_brothers")
+        self.add_mode_event_handler("crime_wave_fly_hit", self._area_hit, area="fly_twins")
         self.add_mode_event_handler("crime_wave_phantom_hit", self._area_hit, area="phantom")
         self.add_mode_event_handler("crime_wave_enforcers_hit", self._area_hit, area="enforcers")
         self.add_mode_event_handler("crime_wave_saucer_hit", self._saucer_hit)

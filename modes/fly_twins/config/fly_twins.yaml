@@ -1,0 +1,356 @@
+#config_version=6
+
+mode:
+  start_events: start_mode_fly_twins
+  stop_events:
+    - fly_twins_mode_complete
+    - fly_twins_mode_completed_summary
+    - ball_ended
+  code: fly_twins.FlyTwins
+  priority: 500
+
+multiballs:
+  fly_twins_multiball:
+    ball_count: 2
+    ball_count_type: total
+    shoot_again: 10s
+    start_events: fly_twins_start_multiball
+    stop_events:
+      - fly_twins_mode_completed_summary
+      - ball_ended
+
+  fly_twins_more_time_multiball:
+    ball_count: 2
+    ball_count_type: total
+    shoot_again: 20s
+    start_events: fly_twins_start_more_time_multiball
+    stop_events:
+      - fly_twins_mode_completed_summary
+      - ball_ended
+
+variable_player:
+  multiball_fly_twins_multiball_started:
+    multiball_autoplunge_active:
+      action: set
+      int: 1
+
+  multiball_fly_twins_more_time_multiball_started:
+    multiball_autoplunge_active:
+      action: set
+      int: 1
+
+  multiball_fly_twins_multiball_ended:
+    multiball_autoplunge_active:
+      action: set
+      int: 0
+
+  multiball_fly_twins_more_time_multiball_ended:
+    multiball_autoplunge_active:
+      action: set
+      int: 0
+
+widget_player:
+  mode_fly_twins_started:
+    fly_twins:
+      action: play
+
+  fly_twins_mode_complete:
+    fly_twins:
+      action: remove
+
+  mode_fly_twins_stopping:
+    fly_twins:
+      action: remove
+
+event_player:
+  mode_fly_twins_started:
+    - fly_twins_upper_access_needed|500ms
+    - clear_saucers_delayed
+    - fly_twins_clear_all_lights
+
+  mode_fly_twins_stopping:
+    - fly_twins_clear_all_lights
+    - rooftop_diverter_close
+  fly_twins_upper_access_needed:
+    - rooftop_diverter_open
+
+  fly_twins_upper_access_complete:
+    - rooftop_diverter_close
+
+
+  fly_twins_mode_complete:
+    villain_bookend_summary_request:
+      villain: fly_twins
+      done_event: fly_twins_mode_completed_summary
+
+  multiball_fly_twins_multiball_ended:
+    - fly_twins_multiball_ended
+
+  multiball_fly_twins_more_time_multiball_ended:
+    - fly_twins_multiball_ended
+
+  s_upper_target_left_active:
+    - fly_twins_upper_target_left_hit
+
+  s_upper_target_center_active:
+    - fly_twins_upper_target_center_hit
+
+  s_upper_target_right_active:
+    - fly_twins_upper_target_right_hit
+
+  s_trispinner_opto_active:
+    - fly_twins_upper_spinner_hit
+
+  s_saucer_1_active:
+    - fly_twins_saucer_1_hit
+
+  s_saucer_2_active:
+    - fly_twins_saucer_2_hit
+
+  s_saucer_3_active:
+    - fly_twins_saucer_3_hit
+
+  drop_target_bank_dt_bank_left_down:
+    - drop_target_bank_dt_bank_left_reset
+
+  drop_target_bank_dt_bank_right_down:
+    - drop_target_bank_dt_bank_right_reset
+
+light_player:
+  # Full-playfield GI theme while this mode is active.
+  mode_fly_twins_started:
+    gi: B8FF30
+
+  mode_fly_twins_stopping:
+    gi: E0E0E0
+
+  fly_twins_clear_all_lights:
+    l_upper_left: off
+    l_upper_middle: off
+    l_upper_right: off
+    l_1: off
+    l_2: off
+    l_3: off
+    l_spinner: off
+
+  fly_twins_round_started:
+    l_upper_left: yellow
+    l_upper_middle: yellow
+    l_upper_right: yellow
+    l_spinner: yellow
+
+  fly_twins_round_reset:
+    l_upper_left: yellow
+    l_upper_middle: yellow
+    l_upper_right: yellow
+    l_1: off
+    l_2: off
+    l_3: off
+
+  fly_twins_upper_left_complete:
+    l_upper_left: green
+
+  fly_twins_upper_center_complete:
+    l_upper_middle: green
+
+  fly_twins_upper_right_complete:
+    l_upper_right: green
+
+  fly_twins_saucer_1_lit:
+    l_1: yellow
+
+  fly_twins_saucer_2_lit:
+    l_2: yellow
+
+  fly_twins_saucer_3_lit:
+    l_3: yellow
+
+  fly_twins_shot_assist_used:
+    l_upper_left: green
+    l_upper_middle: green
+    l_upper_right: green
+    l_1: yellow
+    l_2: yellow
+    l_3: yellow
+
+  fly_twins_super_jackpot_collected:
+    l_1: white
+    l_2: white
+    l_3: white
+
+show_player:
+  fly_twins_round_started:
+    fly_twins_upper_left_available_show:
+      action: play
+      loops: -1
+      speed: 2
+    fly_twins_upper_center_available_show:
+      action: play
+      loops: -1
+      speed: 2
+    fly_twins_upper_right_available_show:
+      action: play
+      loops: -1
+      speed: 2
+    fly_twins_spinner_build_show:
+      action: play
+      loops: -1
+      speed: 2
+
+  fly_twins_round_reset:
+    fly_twins_saucer_1_lit_show:
+      action: stop
+    fly_twins_saucer_2_lit_show:
+      action: stop
+    fly_twins_saucer_3_lit_show:
+      action: stop
+    fly_twins_upper_left_available_show:
+      action: play
+      loops: -1
+      speed: 2
+    fly_twins_upper_center_available_show:
+      action: play
+      loops: -1
+      speed: 2
+    fly_twins_upper_right_available_show:
+      action: play
+      loops: -1
+      speed: 2
+
+  fly_twins_upper_left_complete:
+    fly_twins_upper_left_available_show:
+      action: stop
+    fly_twins_saucer_1_lit_show:
+      action: play
+      loops: -1
+      speed: 2
+  fly_twins_upper_center_complete:
+    fly_twins_upper_center_available_show:
+      action: stop
+    fly_twins_saucer_2_lit_show:
+      action: play
+      loops: -1
+      speed: 2
+  fly_twins_upper_right_complete:
+    fly_twins_upper_right_available_show:
+      action: stop
+    fly_twins_saucer_3_lit_show:
+      action: play
+      loops: -1
+      speed: 2
+
+  fly_twins_shot_assist_used:
+    fly_twins_upper_left_available_show:
+      action: stop
+    fly_twins_upper_center_available_show:
+      action: stop
+    fly_twins_upper_right_available_show:
+      action: stop
+    fly_twins_saucer_1_lit_show:
+      action: play
+      loops: -1
+      speed: 2
+    fly_twins_saucer_2_lit_show:
+      action: play
+      loops: -1
+      speed: 2
+    fly_twins_saucer_3_lit_show:
+      action: play
+      loops: -1
+      speed: 2
+
+  fly_twins_brother_captured:
+    fly_twins_saucer_1_lit_show:
+      action: stop
+    fly_twins_saucer_2_lit_show:
+      action: stop
+    fly_twins_saucer_3_lit_show:
+      action: stop
+  fly_twins_super_jackpot_collected:
+    fly_twins_saucer_1_lit_show:
+      action: stop
+    fly_twins_saucer_2_lit_show:
+      action: stop
+    fly_twins_saucer_3_lit_show:
+      action: stop
+
+  fly_twins_clear_all_lights:
+    fly_twins_upper_left_available_show:
+      action: stop
+    fly_twins_upper_center_available_show:
+      action: stop
+    fly_twins_upper_right_available_show:
+      action: stop
+    fly_twins_spinner_build_show:
+      action: stop
+    fly_twins_saucer_1_lit_show:
+      action: stop
+    fly_twins_saucer_2_lit_show:
+      action: stop
+    fly_twins_saucer_3_lit_show:
+      action: stop
+
+shows:
+  fly_twins_upper_left_available_show:
+    - duration: 250ms
+      lights:
+        l_upper_left: yellow
+    - duration: 250ms
+      lights:
+        l_upper_left: off
+  fly_twins_upper_center_available_show:
+    - duration: 250ms
+      lights:
+        l_upper_middle: yellow
+    - duration: 250ms
+      lights:
+        l_upper_middle: off
+  fly_twins_upper_right_available_show:
+    - duration: 250ms
+      lights:
+        l_upper_right: yellow
+    - duration: 250ms
+      lights:
+        l_upper_right: off
+
+  fly_twins_spinner_build_show:
+    - duration: 350ms
+      lights:
+        l_gi_a: yellow
+    - duration: 350ms
+      lights:
+        l_gi_a: off
+
+  fly_twins_saucer_1_lit_show:
+    - duration: 180ms
+      lights:
+        l_1: green
+        l_1_hole_l: red
+        l_1_hole_r: red
+    - duration: 180ms
+      lights:
+        l_1: off
+        l_1_hole_l: off
+        l_1_hole_r: off
+  fly_twins_saucer_2_lit_show:
+    - duration: 180ms
+      lights:
+        l_2: green
+        l_2_hole_l: red
+        l_2_hole_r: red
+    - duration: 180ms
+      lights:
+        l_2: off
+        l_2_hole_l: off
+        l_2_hole_r: off
+  fly_twins_saucer_3_lit_show:
+    - duration: 180ms
+      lights:
+        l_3: green
+        l_3_hole_l: red
+        l_3_hole_r: red
+    - duration: 180ms
+      lights:
+        l_3: off
+        l_3_hole_l: off
+        l_3_hole_r: off

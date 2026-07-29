@@ -29,24 +29,24 @@ mode_settings:
     - diana
     - cyclops
     - centaur
-    - master_plan
-    - fly_brothers
+    - plotter
+    - fly_twins
     - fifth_avenue_phantom
     - enforcers
     - doctor_cool
     - pardo
     - fakir
-    - scarlet_sorcerer
+    - kotep
     - super_swami
     - infinata
     - noah_boddy
     - dr_magneto
-    - professor_pretoris
+    - professor_pretorius
     - doctor_dumpty
     - dr_von_schlick
     - clive_blotto
-    - dr_zap
-    - voltan_boomer
+    - dr_zapp
+    - bolton_boomer
     - snowman
     - plutonians
     - dr_manta
@@ -58,7 +58,7 @@ mode_settings:
     - brutus
     - desperado
     - skymaster
-    - swamp_reptiles
+    - conners_reptiles
     - sir_galahad
     - master_vine
     - master_technician
@@ -237,8 +237,8 @@ show_player:
       action: play
       loops: -1
 
-  villain_select_highlighted_swamp_reptiles:
-    villain_select_swamp_reptiles_show:
+  villain_select_highlighted_conners_reptiles:
+    villain_select_conners_reptiles_show:
       action: play
       loops: -1
 
@@ -262,8 +262,8 @@ show_player:
       action: play
       loops: -1
 
-  villain_select_highlighted_master_plan:
-    villain_select_master_plan_show:
+  villain_select_highlighted_plotter:
+    villain_select_plotter_show:
       action: play
       loops: -1
 
@@ -282,13 +282,13 @@ show_player:
       action: play
       loops: -1
 
-  villain_select_highlighted_voltan_boomer:
-    villain_select_voltan_boomer_show:
+  villain_select_highlighted_bolton_boomer:
+    villain_select_bolton_boomer_show:
       action: play
       loops: -1
 
-  villain_select_highlighted_dr_zap:
-    villain_select_dr_zap_show:
+  villain_select_highlighted_dr_zapp:
+    villain_select_dr_zapp_show:
       action: play
       loops: -1
 
@@ -297,8 +297,8 @@ show_player:
       action: play
       loops: -1
 
-  villain_select_highlighted_scarlet_sorcerer:
-    villain_select_scarlet_sorcerer_show:
+  villain_select_highlighted_kotep:
+    villain_select_kotep_show:
       action: play
       loops: -1
 
@@ -347,8 +347,8 @@ show_player:
       action: play
       loops: -1
 
-  villain_select_highlighted_metal_eating_monster:
-    villain_select_metal_eating_monster_show:
+  villain_select_highlighted_metal_eating_robot:
+    villain_select_metal_eating_robot_show:
       action: play
       loops: -1
 
@@ -367,8 +367,8 @@ show_player:
       action: play
       loops: -1
 
-  villain_select_highlighted_fly_brothers:
-    villain_select_fly_brothers_show:
+  villain_select_highlighted_fly_twins:
+    villain_select_fly_twins_show:
       action: play
       loops: -1
 
@@ -429,8 +429,8 @@ show_player:
       action: play
       loops: -1
 
-  villain_select_highlighted_professor_pretoris:
-    villain_select_professor_pretoris_show:
+  villain_select_highlighted_professor_pretorius:
+    villain_select_professor_pretorius_show:
       action: play
       loops: -1
 
@@ -606,7 +606,7 @@ shows:
       lights:
         gi: off
 
-  villain_select_swamp_reptiles_show:
+  villain_select_conners_reptiles_show:
     - duration: 300ms
       lights:
         gi: blue
@@ -646,7 +646,7 @@ shows:
       lights:
         gi: off
 
-  villain_select_master_plan_show:
+  villain_select_plotter_show:
     - duration: 300ms
       lights:
         gi: blue
@@ -678,7 +678,7 @@ shows:
       lights:
         gi: off
 
-  villain_select_voltan_boomer_show:
+  villain_select_bolton_boomer_show:
     - duration: 300ms
       lights:
         gi: blue
@@ -686,7 +686,7 @@ shows:
       lights:
         gi: white
 
-  villain_select_dr_zap_show:
+  villain_select_dr_zapp_show:
     - duration: 300ms
       lights:
         gi: green
@@ -702,7 +702,7 @@ shows:
       lights:
         gi: blue
 
-  villain_select_scarlet_sorcerer_show:
+  villain_select_kotep_show:
     - duration: 300ms
       lights:
         gi: green
@@ -774,7 +774,7 @@ shows:
       lights:
         gi: blue
 
-  villain_select_metal_eating_monster_show:
+  villain_select_metal_eating_robot_show:
     - duration: 300ms
       lights:
         gi: green
@@ -814,7 +814,7 @@ shows:
       lights:
         gi: off
 
-  villain_select_fly_brothers_show:
+  villain_select_fly_twins_show:
     - duration: 300ms
       lights:
         gi: yellow
@@ -910,7 +910,7 @@ shows:
       lights:
         gi: off
 
-  villain_select_professor_pretoris_show:
+  villain_select_professor_pretorius_show:
     - duration: 300ms
       lights:
         gi: white

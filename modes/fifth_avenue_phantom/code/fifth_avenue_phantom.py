@@ -27,7 +27,7 @@ Case Files:
 
 class FifthAvenuePhantom(CaseFileMixin, Mode):
     MODE_KEY = "fifth_avenue_phantom"
-    DISPLAY_NAME = "Fifth Avenue Phantom"
+    DISPLAY_NAME = "The Fifth Avenue Phantom"
 
     TOTAL_ROUNDS = 5
     MORE_JACKPOTS_TOTAL_ROUNDS = 6

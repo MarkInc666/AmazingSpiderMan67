@@ -282,7 +282,7 @@ player_vars:
   cyclops_state:
     initial_value: 0
     value_type: int
-  swamp_reptiles_state:
+  conners_reptiles_state:
     initial_value: 0
     value_type: int
   noah_boddy_state:
@@ -300,7 +300,7 @@ player_vars:
   crime_wave_state:
     initial_value: 0
 
-  master_plan_state:
+  plotter_state:
     initial_value: 0
     value_type: int
   doctor_dumpty_state:
@@ -315,16 +315,16 @@ player_vars:
   dr_manta_state:
     initial_value: 0
     value_type: int
-  voltan_boomer_state:
+  bolton_boomer_state:
     initial_value: 0
     value_type: int
-  dr_zap_state:
+  dr_zapp_state:
     initial_value: 0
     value_type: int
   fakir_state:
     initial_value: 0
     value_type: int
-  scarlet_sorcerer_state:
+  kotep_state:
     initial_value: 0
     value_type: int
   infinata_state:
@@ -360,7 +360,7 @@ player_vars:
   snowman_state:
     initial_value: 0
     value_type: int
-  metal_eating_monster_state:
+  metal_eating_robot_state:
     initial_value: 0
     value_type: int
   master_vine_state:
@@ -372,7 +372,7 @@ player_vars:
   doctor_cool_state:
     initial_value: 0
     value_type: int
-  fly_brothers_state:
+  fly_twins_state:
     initial_value: 0
     value_type: int
   charles_cameo_state:
@@ -759,61 +759,61 @@ player_vars:
   final_showdown_state:
     initial_value: 0
     value_type: int
-  fly_brothers_round:
+  fly_twins_round:
     initial_value: 0
     value_type: int
-  fly_brothers_rounds_completed:
+  fly_twins_rounds_completed:
     initial_value: 0
     value_type: int
-  fly_brothers_captures:
+  fly_twins_captures:
     initial_value: 0
     value_type: int
-  fly_brothers_super_jackpots:
+  fly_twins_super_jackpots:
     initial_value: 0
     value_type: int
-  fly_brothers_jackpots:
+  fly_twins_jackpots:
     initial_value: 0
     value_type: int
-  fly_brothers_spinner_hits:
+  fly_twins_spinner_hits:
     initial_value: 0
     value_type: int
-  fly_brothers_base_jackpot:
+  fly_twins_base_jackpot:
     initial_value: 0
     value_type: int
-  fly_brothers_lit_saucers:
+  fly_twins_lit_saucers:
     initial_value: 0
     value_type: int
-  fly_brothers_multiplier:
+  fly_twins_multiplier:
     initial_value: 0
     value_type: int
-  fly_brothers_last_award:
+  fly_twins_last_award:
     initial_value: 0
     value_type: int
-  fly_brothers_shot_assist_used:
+  fly_twins_shot_assist_used:
     initial_value: 0
     value_type: int
-  fly_brothers_upper_left_hit:
+  fly_twins_upper_left_hit:
     initial_value: 0
     value_type: int
-  fly_brothers_upper_center_hit:
+  fly_twins_upper_center_hit:
     initial_value: 0
     value_type: int
-  fly_brothers_upper_right_hit:
+  fly_twins_upper_right_hit:
     initial_value: 0
     value_type: int
-  fly_brothers_saucer_1_lit:
+  fly_twins_saucer_1_lit:
     initial_value: 0
     value_type: int
-  fly_brothers_saucer_2_lit:
+  fly_twins_saucer_2_lit:
     initial_value: 0
     value_type: int
-  fly_brothers_saucer_3_lit:
+  fly_twins_saucer_3_lit:
     initial_value: 0
     value_type: int
   super_swami_state:
     initial_value: 0
     value_type: int
-  professor_pretoris_state:
+  professor_pretorius_state:
     initial_value: 0
     value_type: int
   dr_von_schlick_state:
@@ -852,9 +852,9 @@ player_vars:
   invasion_from_everywhere_state:
     initial_value: 0
     value_type: int
-  swamp_reptiles_jackpots_collected:
+  conners_reptiles_jackpots_collected:
     initial_value: 0
-  swamp_reptiles_pop_hits:
+  conners_reptiles_pop_hits:
     initial_value: 0
   master_technician_spinner_value:
     initial_value: 0

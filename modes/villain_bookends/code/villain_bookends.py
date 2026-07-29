@@ -316,19 +316,19 @@ class VillainBookends(Mode):
         #   intro_2: Hit paired wall-crawler shots before they move.
         #   intro_3: Clear both flies to stop the frame-up.
         #   stat_2_label: MAJOR HITS
-        'fly_brothers': {
-            'title': 'FLY BROTHERS',
+        'fly_twins': {
+            'title': 'THE FLY TWINS',
             'intro_1': 'Stop the frame-up.',
             'intro_2': 'Hit paired shots.',
             'intro_3': 'Clear both flies.',
-            'summary_title_complete': 'FLY BROTHERS CAUGHT',
-            'summary_title_failed': 'FLY BROTHERS ESCAPED',
+            'summary_title_complete': 'THE FLY TWINS CAUGHT',
+            'summary_title_failed': 'THE FLY TWINS ESCAPED',
             'stat_1_label': 'AREAS',
             'stat_1_var': 'super_swami_areas_restored',
             'stat_2_label': 'MAJORS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
-            'state_var': 'fly_brothers_state',
+            'state_var': 'fly_twins_state',
             'song': 'play_song_32',
         },
         # ORIGINAL DISPLAY TEXT:
@@ -416,11 +416,11 @@ class VillainBookends(Mode):
             'stat_1_label': 'HITS', 'stat_1_var': 'active_mode_hits', 'stat_2_label': 'MAJOR HITS', 'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points', 'state_var': 'spider_slayer_state', 'song': 'play_song_13',
         },
-        'metal_eating_monster': {
+        'metal_eating_robot': {
             'title': 'METAL MONSTER', 'intro_1': 'The robot is eating the city.', 'intro_2': 'Attack before it reaches the river.', 'intro_3': 'Complete ten danger shots.',
             'summary_title_complete': 'METAL MONSTER SCRAPPED', 'summary_title_failed': 'METAL MONSTER ESCAPED',
             'stat_1_label': 'HITS', 'stat_1_var': 'active_mode_hits', 'stat_2_label': 'MAJOR HITS', 'stat_2_var': 'active_mode_major_hits',
-            'points_var': 'active_mode_points', 'state_var': 'metal_eating_monster_state', 'song': 'play_song_14',
+            'points_var': 'active_mode_points', 'state_var': 'metal_eating_robot_state', 'song': 'play_song_14',
         },
         'fiddler': {
             'title': 'FIDDLER', 'intro_1': 'Follow the dangerous melody.', 'intro_2': 'Silence the violin.', 'intro_3': 'Complete ten danger shots.',
@@ -463,13 +463,13 @@ class VillainBookends(Mode):
             'song': 'play_song_34',
         },
         # ORIGINAL DISPLAY TEXT:
-        #   intro_1: The Scarlet Sorcerer summons strange magic.
+        #   intro_1: The Kotep summons strange magic.
         #   intro_2: Hit the lit mystic shots to break the spell.
         #   intro_3: Complete the pattern before the curse spreads.
         #   stat_2_label: MAJOR HITS
-        'scarlet_sorcerer': {
+        'kotep': {
             'title': 'KOTEP',
-            'intro_1': 'Kotep, the Scarlet Sorcerer, summons his demons.',
+            'intro_1': 'Kotep, the Kotep, summons his demons.',
             'intro_2': 'Hit mystic shots.',
             'intro_3': 'Break the curse.',
             'summary_title_complete': 'KOTEP DEFEATED',
@@ -479,7 +479,7 @@ class VillainBookends(Mode):
             'stat_2_label': 'MAJORS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
-            'state_var': 'scarlet_sorcerer_state',
+            'state_var': 'kotep_state',
             'song': 'play_song_11',
         },
         # ORIGINAL DISPLAY TEXT:
@@ -568,7 +568,7 @@ class VillainBookends(Mode):
         #   intro_2: Solve the shot puzzle before the ray fires.
         #   intro_3: Beat the sequence and restore the landmark.
         #   stat_2_label: MAJOR HITS
-        'professor_pretoris': {
+        'professor_pretorius': {
             'title': 'PROFESSOR PRETORIS',
             'intro_1': 'The reactor is overheating.',
             'intro_2': 'Spin to flood it blue.',
@@ -580,7 +580,7 @@ class VillainBookends(Mode):
             'stat_2_label': 'SUPERS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
-            'state_var': 'professor_pretoris_state',
+            'state_var': 'professor_pretorius_state',
             'song': 'play_song_28',
         },
         # ORIGINAL DISPLAY TEXT:
@@ -648,7 +648,7 @@ class VillainBookends(Mode):
         #   intro_2: Follow the lit charge pattern.
         #   intro_3: Break the circuit before it overloads.
         #   stat_2_label: MAJOR HITS
-        'dr_zap': {
+        'dr_zapp': {
             'title': 'DOCTOR ZAPP',
             'intro_1': 'Zap chains shots.',
             'intro_2': 'Follow the charge.',
@@ -660,27 +660,27 @@ class VillainBookends(Mode):
             'stat_2_label': 'MAJORS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
-            'state_var': 'dr_zap_state',
+            'state_var': 'dr_zapp_state',
             'song': 'play_song_38',
         },
         # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Voltan and Boomer hide their robberies inside a violent storm.
+        #   intro_1: Bolton and Boomer hide their robberies inside a violent storm.
         #   intro_2: Follow the thunder and stop the next strike.
         #   intro_3: Break up the scheme before the storm passes.
         #   stat_2_label: MAJOR HITS
-        'voltan_boomer': {
-            'title': 'VOLTAN AND BOOMER',
+        'bolton_boomer': {
+            'title': 'BOLTON AND BOOMER',
             'intro_1': 'Thunder hides crimes.',
             'intro_2': 'Follow the storm.',
             'intro_3': 'Stop the next strike.',
             'summary_title_complete': 'THUNDER RUMBLE STOPPED',
-            'summary_title_failed': 'VOLTAN AND BOOMER ESCAPED',
+            'summary_title_failed': 'BOLTON AND BOOMER ESCAPED',
             'stat_1_label': 'HITS',
             'stat_1_var': 'active_mode_hits',
             'stat_2_label': 'MAJORS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
-            'state_var': 'voltan_boomer_state',
+            'state_var': 'bolton_boomer_state',
             'song': 'play_song_8',
         },
         # ORIGINAL DISPLAY TEXT:
@@ -904,23 +904,23 @@ class VillainBookends(Mode):
             'song': 'play_song_9',
         },
         # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Swamp Reptiles are loose in the city.
+        #   intro_1: Conner's Reptiles are loose in the city.
         #   intro_2: Hit pops to light Rampage Jackpots.
         #   intro_3: Collect the Super Jackpot at the saucer.
         #   stat_2_label: BONUS BANKED
-        'swamp_reptiles': {
-            'title': 'SWAMP REPTILES',
+        'conners_reptiles': {
+            'title': "CONNER'S REPTILES",
             'intro_1': 'Reptiles run wild.',
             'intro_2': 'Pops light jackpots.',
             'intro_3': 'Saucer scores Super.',
             'summary_title_complete': 'REPTILES CAPTURED',
             'summary_title_failed': 'REPTILES ESCAPED',
             'stat_1_label': 'RAMPAGE JPS',
-            'stat_1_var': 'swamp_reptiles_jackpots_collected',
+            'stat_1_var': 'conners_reptiles_jackpots_collected',
             'stat_2_label': 'BANKED',
             'stat_2_var': 'swamp_bonus',
             'points_var': 'active_mode_points',
-            'state_var': 'swamp_reptiles_state',
+            'state_var': 'conners_reptiles_state',
             'song': 'play_song_44',
         },
         # ORIGINAL DISPLAY TEXT:
@@ -988,7 +988,7 @@ class VillainBookends(Mode):
             'song': 'play_song_45',
         },
         # ORIGINAL DISPLAY TEXT:
-        #   intro_1: The The Spider-Men attack from every direction.
+        #   intro_1: The Spider-Men attack from every direction.
         #   intro_2: Hit tiny targets before they scatter.
         #   intro_3: Clear the swarm and restore the scale.
         #   stat_2_label: MAJOR HITS
@@ -1088,19 +1088,19 @@ class VillainBookends(Mode):
         #   intro_1: Decode the Plotter’s scheme.
         #   intro_2: Build headlines and cash Daily Bugle supers.
         #   intro_3: Chapter case files raise the values.
-        'master_plan': {
+        'plotter': {
             'title': "THE PLOTTER",
             'intro_1': 'Pops build information.',
             'intro_2': 'Spinner reveals a scheme.',
             'intro_3': 'Stop three, then shoot the VUK.',
-            'summary_title_complete': 'MASTER PLAN EXPOSED',
+            'summary_title_complete': 'THE PLOTTER EXPOSED',
             'summary_title_failed': 'PLOTTER ESCAPED',
             'stat_1_label': 'INFORMATION',
             'stat_1_var': 'active_mode_hits',
             'stat_2_label': 'SCHEMES',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
-            'state_var': 'master_plan_state',
+            'state_var': 'plotter_state',
             'song': 'play_song_43',
         },
         'crime_wave': {

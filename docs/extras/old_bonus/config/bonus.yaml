@@ -180,7 +180,7 @@ mode_settings:
       skip_if_zero: true
 
     - entry: swamp_bonus
-      text: "SWAMP REPTILES"
+      text: "CONNER'S REPTILES"
       player_score_entry: swamp_bonus
       score: 1
       reset_player_score_entry: false
