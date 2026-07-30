@@ -2,36 +2,46 @@ PARAFINO: MELT THE WAX
 
 Start 2-ball multiball.
 
-Raise Heat in three city zones:
-- Left Drops
-- Pop Bumpers
-- Right Drops
+Three areas independently build lit saucer jackpots:
+- Left Drops -> Saucer 1
+- Pop Bumpers -> Saucer 2
+- Right Drops -> Saucer 3
 
-Each hit scores 20K and raises that zone’s Heat by 1.
+Every qualifying area hit:
+- scores an extra 5K
+- increases that area's hit count by 1
+- lights the matching saucer jackpot
 
-If a zone is not hit for 4 seconds, its Heat drops by 1.
+Jackpot value:
+- 100K x area hits normally
+- 150K x area hits with Bigger Jackpots
+- area hits cap at 20
 
-Heat Levels:
-0 Icy Blue
-1 Blue-White
-2 White
-3 Warm White
-4 Orange
-5 Red
+Shot Assist makes the first hit in each area count as two hits.
 
-When a zone reaches Heat Level 5, its saucer Jackpot lights:
-- Saucer 1 = Left Drops
-- Saucer 2 = Pops
-- Saucer 3 = Right Drops
+Add-a-ball:
+- the matching number insert lights after 3 area hits
+- More Time lights it after 2 area hits
+- each area can award add-a-ball only once per Parafino mode
 
-Lit saucer Jackpot = 200K × balls in play.
+Collecting a lit saucer:
+- awards WAX JACKPOT at the area's current value
+- resets that area's hit count to 0
+- awards add-a-ball when the number insert was qualified
+- ejects the ball after about 2 seconds
 
-The first Jackpot collected at each saucer also adds a ball.
-Each saucer can add a ball only once.
+With More Jackpots, the first collect in each area preserves the same lit jackpot value for one extra collect. The hit count and add-a-ball qualification still reset immediately after the first collect.
 
-Unlit saucers score 50K.
+Safety Net starts a 10-second ball save after the initial multiball save ends.
 
-After all 3 saucer Jackpots are collected, all Heat zones reset to 0.
-Jackpots can be built again, but add-a-balls do not reset.
+Persistent status shows:
+LEFT {hits}X  POPS {hits}X  RIGHT {hits}X
 
-Mode ends when multiball ends.
+The saucer inserts show lit jackpots. Number inserts show add-a-ball readiness.
+
+Mode ends immediately when multiball returns to one ball.
+
+Summary:
+- Mode Score
+- Biggest JP
+- Jackpots Collected

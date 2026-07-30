@@ -1,82 +1,104 @@
-# 🧪 GOBLIN CHAOS MULTIBALL
+# GREEN GOBLIN — CHAOS MULTIBALL
 
-### Start:
+## Start
 
-* 2-ball multiball begins
-* Chaos Bonus = 0
-* Chaos Bonus Banked = 0
+- Start two-ball Chaos Multiball.
+- Chaos Bonus starts at 250K.
+- Chaos Bonus persists throughout the mode and is clamped between 50K and 1M.
+- Goblin Bonus starts at 0 and has no cap.
+- The mode ends when multiball returns to one ball.
 
-### During Chaos:
+## Unsafe Chaos
 
-* 3 random shots solid
-* 3 random shots flashing
-* shots becomes active
-* after 6 sec all off
-* pause for 2 sec
-* repeat
+- GI is red.
+- All six shot areas are solid:
+  - Star
+  - Pops
+  - Left web
+  - Right web
+  - Left drops
+  - Right drops
+- Saucers remain lit.
+- Each unsafe shot scores 20K immediately.
+- Each unsafe hit subtracts 150K from Chaos Bonus, never below 50K.
+- Chaos Bonus is displayed persistently in the mode-status area.
 
-### Shot scoring:
+## Saucer Bank
 
-#### flashing hit:
+Hitting any saucer during unsafe mode:
 
-* 50K live score
-* +100K Chaos Bonus
-* shot becomes inactive
+- Banks the current Chaos Bonus into the uncapped Goblin Bonus.
+- Does not reset Chaos Bonus.
+- Holds that ball in the saucer.
+- Immediately starts the safe phase.
 
-#### solid hit:
+Chaos Bonus can only be banked during unsafe mode.
 
-* penalty shot
-* only 2K live score
-* deduct 100K from Chaos Bonus
-* but never below Chaos Bonus Banked
-* shot becomes inactive
+## Safe Jackpots
 
----
+- GI is green.
+- All six shot areas flash.
+- Saucers remain lit.
+- The held ball stays for 10 seconds.
+- More Time extends the safe phase to 15 seconds.
+- The persistent mode-status area shows the live time remaining.
+- The safe phase ends when the timer expires or all six areas are collected.
+- At the end of the safe phase, the held ball releases and the temporary message reads `MORE CHAOS!`.
 
-# 🧠 SAUCER = CHAOS STABILIZER
+Each safe area can be collected once per safe phase.
 
-When either ball enters saucer:
+### Immediate safe-shot score
 
-* if current Chaos Bonus is greater than bank, set Chaos Bonus Bank
-* else set Chaos Bonus to Chaos Bonus Bank 
-* held ball stays for 10 sec
-* no penalty shots during hold window
-* all currently active flashing shots stay flashing, solid shots turn off
-* player gets controlled single-ball harvest time
+- Base: 100K per shot.
+- More Jackpots: 150K per shot.
 
-Then:
+### Chaos Bonus added by safe shots
 
-* saucer eject
-* random chaos pattern resumes
+Base sequence:
 
-Each time saucer lock occurs:
+- 100K
+- 125K
+- 150K
+- 175K
+- 200K
+- 225K
 
-* next hold time decreases by 1 second down to min 5 seconds
+With Bigger Jackpots:
 
-Players understand:
-“I secured my gains, now I can push higher.”
+- 150K
+- 175K
+- 200K
+- 225K
+- 250K
+- 275K
 
----
+The sequence resets at the beginning of every safe phase. Chaos Bonus remains capped at 1M.
 
-### Chaos Bonus:
+## Safe-shot messages
 
-* banked bonus is paid out at end of ball
+The persistent countdown stays visible in the mode-status area. Temporary award messages use the separate shared-message area:
 
----
+1. `SAFE JACKPOT - 100K` or `SAFE JACKPOT - 150K` for one second.
+2. `CHAOS BONUS NOW` with the updated value for one second.
 
+## Second saucer during safe mode
 
+If another ball enters a different saucer while one ball is already held:
 
+- Score 50K silently.
+- Show `NO NO NO`.
+- Eject the second ball.
+- Do not bank Chaos Bonus.
+- Do not restart or extend the safe timer.
 
-# SCORING ARC EXAMPLE
+## Case Files
 
-* build Chaos to 300K
-* saucer locks 300K
-* controlled 10 sec builds to 550K
-* eject chaos resumes
-* solid hits knock back to 450K but not below 300K
-* build to 700K
-* drain one ball, continue mode/end ball eventually collect
+- More Jackpots: safe shots score 150K immediately instead of 100K.
+- Bigger Jackpots: safe-shot Chaos Bonus sequence becomes 150K through 275K.
+- More Time: safe phase lasts 15 seconds instead of 10.
+- Safety Net: start a one-time 10-second ball save after the first proper safe-phase saucer release.
+- Shot Assist: consumed on the first physical safe-shot hit; it automatically awards one random remaining safe area using the next value in the sequence.
 
-This is compelling.
+## Bonus payout
 
----
+Every valid unsafe-phase saucer bank adds the current Chaos Bonus to Goblin Bonus. Goblin Bonus is added to the normal end-of-ball mode bonus when Goblin ends or the ball ends.

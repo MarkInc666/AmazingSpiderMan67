@@ -31,16 +31,16 @@ event_player:
   mode_scorpion_started:
     - rooftop_diverter_open|500ms
     - scorpion_build_phase_started
-    - clear_saucers
+    - clear_saucers_delayed
 
   s_saucer_1_active:
-    - clear_saucers
+    - clear_saucers_delayed
     
   s_saucer_2_active:
-    - clear_saucers
+    - clear_saucers_delayed
     
   s_saucer_3_active:
-    - clear_saucers    
+    - clear_saucers_delayed
 
 
   # Upper spinner builds venom
@@ -72,24 +72,7 @@ event_player:
   s_right_drops_5_active:
     - scorpion_right_drop_5_hit
 
-  timer_scorpion_sting_timer_complete:
-    - scorpion_sting_timeout
-
     
-timers:
-  scorpion_sting_timer:
-    start_value: 7
-    end_value: 0
-    direction: down
-    tick_interval: 1s
-    control_events:
-      - event: scorpion_sting_timer_start
-        action: restart
-      - event: scorpion_sting_timer_stop
-        action: stop
-      - event: scorpion_mode_complete
-        action: stop
-
 show_player:
   scorpion_build_phase_started:
     scorpion_build_show:
@@ -239,74 +222,96 @@ shows:
         l_gi_a: green
 
   scorpion_safe_sting_show:
-    - duration: 200ms
+    - duration: 250ms
       lights:
         l_3bankbonus: green
-    - duration: 200ms
+        l_gi_3bank: green
+    - duration: 250ms
       lights:
         l_3bankbonus: off
+        l_gi_3bank: off
 
   scorpion_right_sting_target_1_show:
-    - duration: 200ms
+    - duration: 250ms
       lights:
         l_5bank_1: green
-    - duration: 200ms
+        l_gi_5bank_lower: green
+        l_gi_5bank_upper: green
+    - duration: 250ms
       lights:
         l_5bank_1: off
+        l_gi_5bank_lower: off
+        l_gi_5bank_upper: off
 
   scorpion_right_sting_target_2_show:
-    - duration: 200ms
+    - duration: 250ms
       lights:
         l_5bank_2: green
-    - duration: 200ms
+        l_gi_5bank_lower: green
+        l_gi_5bank_upper: green
+    - duration: 250ms
       lights:
         l_5bank_2: off
+        l_gi_5bank_lower: off
+        l_gi_5bank_upper: off
 
   scorpion_right_sting_target_3_show:
-    - duration: 200ms
+    - duration: 250ms
       lights:
         l_5bank_3: green
-    - duration: 200ms
+        l_gi_5bank_lower: green
+        l_gi_5bank_upper: green
+    - duration: 250ms
       lights:
         l_5bank_3: off
+        l_gi_5bank_lower: off
+        l_gi_5bank_upper: off
 
   scorpion_right_sting_target_4_show:
-    - duration: 200ms
+    - duration: 250ms
       lights:
         l_5bank_4: green
-    - duration: 200ms
+        l_gi_5bank_lower: green
+        l_gi_5bank_upper: green
+    - duration: 250ms
       lights:
         l_5bank_4: off
+        l_gi_5bank_lower: off
+        l_gi_5bank_upper: off
 
   scorpion_right_sting_target_5_show:
-    - duration: 200ms
+    - duration: 250ms
       lights:
         l_5bank_5: green
-    - duration: 200ms
+        l_gi_5bank_lower: green
+        l_gi_5bank_upper: green
+    - duration: 250ms
       lights:
         l_5bank_5: off
+        l_gi_5bank_lower: off
+        l_gi_5bank_upper: off
 
   scorpion_success_show:
-    - duration: 150ms
+    - duration: 250ms
       lights:
         gi: green
-    - duration: 150ms
+    - duration: 250ms
       lights:
         gi: yellow
 
   scorpion_fail_show:
-    - duration: 150ms
+    - duration: 250ms
       lights:
         gi: red
-    - duration: 150ms
+    - duration: 250ms
       lights:
         gi: off
 
   scorpion_complete_show:
-    - duration: 150ms
+    - duration: 250ms
       lights:
         gi: green
-    - duration: 150ms
+    - duration: 250ms
       lights:
         gi: white
         

@@ -15,8 +15,9 @@ class Parafino(CaseFileMixin, Mode):
     - Right drops -> Saucer 3
 
     Each zone starts unlit with no jackpot value.
-    Each zone hit adds 100K and lights that zone's saucer.
-    Bigger Jackpot case file makes each hit add 150K.
+    Each zone hit adds one count and lights that zone's saucer.
+    Jackpot value is 100K x hits, or 150K x hits with Bigger Jackpots.
+    Zone hit counts cap at 20.
 
     At 3 zone hits, that zone's saucer qualifies add-a-ball.
     Faster Meltdown case file qualifies add-a-ball at 2 hits.
@@ -25,9 +26,9 @@ class Parafino(CaseFileMixin, Mode):
     If add-a-ball is qualified and not already collected for that zone,
     the saucer also awards add-a-ball.
 
-    After saucer collect, that zone normally resets to unlit / 0.
-    With More Jackpots, the first collect per zone does not reset;
-    that zone stays lit at the same value for one extra collect.
+    Every saucer collect resets that zone's hit count and add-a-ball qualification.
+    With More Jackpots, the first collect preserves the same lit jackpot value
+    for one extra collect even though the hit count resets.
 
     Uncollected zone value is lost when the mode ends.
     Mode ends when multiball ends.
@@ -40,6 +41,7 @@ class Parafino(CaseFileMixin, Mode):
     ADD_BALL_HIT_THRESHOLD_FAST = 2
     SAUCER_EJECT_DELAY_MS = 2_000
     SAFETY_NET_DELAY_MS = 20_000
+    MAX_ZONE_HITS = 20
 
     ZONES = {
         "left": {
@@ -108,7 +110,7 @@ class Parafino(CaseFileMixin, Mode):
             ("more_jackpots", "SAUCERS HOLD VALUE FOR EXTRA COLLECT"),
             ("bigger_jackpots", "ZONE HITS BUILD 150K"),
             ("more_time", "FASTER MELTDOWN: 2 HITS FOR ADD-A-BALL"),
-            ("safety_net", "SAFETY NET AFTER MULTIBALL SAVE"),
+            ("safety_net", "10 SECOND SAFETY NET AFTER MULTIBALL SAVE"),
             ("shot_assist", "FIRST ZONE HITS COUNT DOUBLE"),
         ])
 
@@ -129,12 +131,13 @@ class Parafino(CaseFileMixin, Mode):
 
     def _update_mode_status(self):
         player = self.machine.game.player
-        lit = sum(int(player[zone["lit_var"]]) for zone in self.ZONES.values())
-        jackpots = sum(int(player[zone["jackpots_var"]]) for zone in self.ZONES.values())
+        left_hits = int(player[self.ZONES["left"]["hits_var"]])
+        pops_hits = int(player[self.ZONES["pops"]["hits_var"]])
+        right_hits = int(player[self.ZONES["right"]["hits_var"]])
         self.machine.events.post(
             "update_mode_status",
-            mode_status_title="SAUCERS LIT / JACKPOTS",
-            mode_status_value=f"{lit} OF 3 / {jackpots}",
+            mode_status_title="PARAFINO",
+            mode_status_value=f"LEFT {left_hits}X  POPS {pops_hits}X  RIGHT {right_hits}X",
         )
 
     def mode_stop(self, **kwargs):
@@ -142,9 +145,12 @@ class Parafino(CaseFileMixin, Mode):
         self.clear_active_case_file_helpers()
         self.mode_exiting = True
         self.delay.remove("parafino_start_safety_net")
+        self.delay.remove("parafino_ball_added_message")
+        for saucer in self.SAUCER_EJECT_EVENTS:
+            self.delay.remove(f"parafino_eject_{saucer}")
 
         self.machine.events.post("parafino_clear_all_lights")
-        self.machine.events.post("clear_saucers")
+        self.machine.events.post("clear_saucers_delayed")
         self.machine.events.post("rooftop_diverter_close")
 
         super().mode_stop(**kwargs)
@@ -206,6 +212,7 @@ class Parafino(CaseFileMixin, Mode):
         player["parafino_total_jackpots"] = 0
         player["parafino_jackpot_value"] = 0
         player["parafino_last_jackpot_value"] = 0
+        player["parafino_biggest_jackpot"] = 0
 
         # Compatibility / display vars from the old heat version.
         player["parafino_heat_hits"] = 0
@@ -254,11 +261,21 @@ class Parafino(CaseFileMixin, Mode):
             hits_to_add = 2
             self.machine.events.post("parafino_case_file_shot_assist_used", zone=zone)
 
-        for _ in range(hits_to_add):
-            player[data["hits_var"]] += 1
-            player[data["value_var"]] += self.zone_build_value
-            player["parafino_zone_hits"] += 1
-            player["parafino_heat_hits"] += 1
+        old_hits = int(player[data["hits_var"]])
+        new_hits = min(self.MAX_ZONE_HITS, old_hits + hits_to_add)
+        actual_hits_added = new_hits - old_hits
+        player[data["hits_var"]] = new_hits
+
+        extra_collect_pending = (
+            self.case_file_extra_collects and
+            player[data["extra_collect_used_var"]] == 1 and
+            player[data["lit_var"]] == 1
+        )
+        if not extra_collect_pending:
+            player[data["value_var"]] = new_hits * self.zone_build_value
+
+        player["parafino_zone_hits"] += actual_hits_added
+        player["parafino_heat_hits"] += actual_hits_added
 
         player[data["lit_var"]] = 1
         player["parafino_jackpot_value"] = player[data["value_var"]]
@@ -329,6 +346,7 @@ class Parafino(CaseFileMixin, Mode):
         player["parafino_jackpots"] += 1
         player["parafino_total_jackpots"] += 1
         player["parafino_last_jackpot_value"] = value
+        player["parafino_biggest_jackpot"] = max(int(player["parafino_biggest_jackpot"]), value)
         player["parafino_jackpot_value"] = value
 
         add_ball_awarded = False
@@ -352,11 +370,14 @@ class Parafino(CaseFileMixin, Mode):
             add_ball_awarded=add_ball_awarded,
         )
         self._update_mode_status()
-        self.machine.events.post("show_mode_jackpot", message_mode_title="WAX JACKPOT", message_mode_subtitle=data["display"], message_mode_value=value)
+        self.machine.events.post("show_mode_jackpot", message_mode_title="WAX JACKPOT", message_mode_subtitle="", message_mode_value=value)
 
         if self.case_file_extra_collects and player[data["extra_collect_used_var"]] == 0:
             player[data["extra_collect_used_var"]] = 1
+            player[data["hits_var"]] = 0
+            player[data["add_ball_qualified_var"]] = 0
             player[data["lit_var"]] = 1
+            self.machine.events.post(f"parafino_{data['saucer']}_add_ball_clear")
             self.machine.events.post(
                 "parafino_case_file_extra_collect_ready",
                 zone=zone,
@@ -364,9 +385,11 @@ class Parafino(CaseFileMixin, Mode):
                 value=value,
             )
             self.machine.events.post("show_mode_message", message_mode_title="EXTRA COLLECT READY", message_mode_subtitle=data["display"], message_mode_value=value)
+            self._update_mode_status()
             return
 
         self._reset_zone(zone)
+        self._update_mode_status()
 
 
     def _show_ball_added_message(self):
@@ -434,16 +457,13 @@ class Parafino(CaseFileMixin, Mode):
         self.info_log("Parafino multiball ended.")
         self.mode_exiting = True
         self.delay.remove("parafino_start_safety_net")
-
+        self.delay.remove("parafino_ball_added_message")
         for saucer in self.SAUCER_EJECT_EVENTS:
-            self._eject_saucer(saucer)
+            self.delay.remove(f"parafino_eject_{saucer}")
 
-        if self.machine.game.player["parafino_total_jackpots"] >= 3:
-            self.machine.game.player["parafino_state"] = 2
-            self.machine.events.post("parafino_mode_complete")
-        else:
-            self.machine.game.player["parafino_state"] = 2
-            self.machine.events.post("parafino_mode_complete")
+        self.machine.events.post("clear_saucers_delayed")
+        self.machine.game.player["parafino_state"] = 2
+        self.machine.events.post("parafino_mode_complete")
 
     def _score(self, points):
         if points <= 0:

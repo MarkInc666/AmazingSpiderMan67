@@ -9,7 +9,6 @@ mode:
   code: goblin.Goblin
   priority: 500
 
-
 multiballs:
   goblin_chaos_multiball:
     ball_count: 2
@@ -25,31 +24,30 @@ sound_player:
     flockaway:
       action: play
       bus: effects
-
   goblin_solid_shot_score:
     quark_lose_petal:
       action: play
       bus: effects
-
   goblin_hold_started:
     phew2:
       action: play
       bus: voice
 
-
 widget_player:
   mode_goblin_started:
     goblin:
       action: play
-
   goblin_mode_ended:
     goblin:
       action: remove
-
   mode_goblin_stopping:
     goblin:
       action: remove
-
+  goblin_show_temp_message:
+    mode_message:
+      action: play
+      expire: 1s
+      priority: 2600
 
 shots:
   gob_right_drop_1:
@@ -62,7 +60,6 @@ shots:
     switch: s_right_drops_4
   gob_right_drop_5:
     switch: s_right_drops_5
-
   gob_left_drop_1:
     switch: s_left_drops_1
   gob_left_drop_2:
@@ -70,235 +67,279 @@ shots:
   gob_left_drop_3:
     switch: s_left_drops_3
 
-  gob_upper_target_left:
-    switch: s_upper_target_left
-  gob_upper_target_center:
-    switch: s_upper_target_center
-  gob_upper_target_right:
-    switch: s_upper_target_right
-
 shot_groups:
   gob_right_drops:
     shots: gob_right_drop_1, gob_right_drop_2, gob_right_drop_3, gob_right_drop_4, gob_right_drop_5
-
   gob_left_drops:
     shots: gob_left_drop_1, gob_left_drop_2, gob_left_drop_3
-
-  gob_upper_targets:
-    shots: gob_upper_target_left, gob_upper_target_center, gob_upper_target_right
-
 
 event_player:
   drop_target_bank_dt_bank_left_down:
     - drop_target_bank_dt_bank_left_reset
-
   drop_target_bank_dt_bank_right_down:
     - drop_target_bank_dt_bank_right_reset
-
-  # real playfield input -> Python shot events
   s_web_target_left_active: goblin_left_web_hit
   s_web_target_mid_active: goblin_right_web_hit
   s_star_rollover_active: goblin_star_hit
   s_pop_left_active: goblin_pops_hit
   s_pop_right_active: goblin_pops_hit
-  gob_left_drops_hit: goblin_left_drops_hit
-  gob_right_drops_hit: goblin_right_drops_hit
-
-  # Saucers stabilize chaos and hold/eject from Python.
-  # These use separate events to avoid relying on parameterized event_player syntax.
   s_saucer_1_active: goblin_saucer_1_hit
   s_saucer_2_active: goblin_saucer_2_hit
   s_saucer_3_active: goblin_saucer_3_hit
 
 show_player:
-
-  goblin_flashing_shot_score:
-    goblin_gi_red_flash_show:
-      loops: 2
-
-  goblin_solid_shot_score:
-    goblin_gi_green_flash_show:
-      loops: 2
-
-  mode_goblin_started:
-    goblin_mode_start_show:
-      loops: 0
-
+  goblin_lite_star:
+    goblin_star_flash_show:
+      loops: -1
+  goblin_solid_star:
+    goblin_star_solid_show:
+      loops: -1
+  goblin_stop_star:
+    goblin_star_flash_show:
+      action: stop
+    goblin_star_solid_show:
+      action: stop
+  goblin_lite_pops:
+    goblin_pops_flash_show:
+      loops: -1
+  goblin_solid_pops:
+    goblin_pops_solid_show:
+      loops: -1
+  goblin_stop_pops:
+    goblin_pops_flash_show:
+      action: stop
+    goblin_pops_solid_show:
+      action: stop
   goblin_lite_left_web:
     goblin_left_web_flash_show:
       loops: -1
-  goblin_lite_right_web:
-    goblin_right_web_flash_show:
-      loops: -1
-  goblin_lite_spinner:
-    goblin_spinner_flash_show:
-      loops: -1
-  goblin_lite_left_drops:
-    goblin_left_drops_flash_show:
-      loops: -1
-  goblin_lite_right_drops:
-    goblin_right_drops_flash_show:
-      loops: -1
-  goblin_lite_upper_spinner:
-    goblin_upper_spinner_flash_show:
-      loops: -1
-  goblin_lite_saucers:
-    goblin_saucers_flash_show:
-      loops: -1
-  goblin_lite_upper_target:
-    goblin_upper_target_flash_show:
-      loops: -1
-
   goblin_solid_left_web:
     goblin_left_web_solid_show:
       loops: -1
-  goblin_solid_right_web:
-    goblin_right_web_solid_show:
-      loops: -1
-  goblin_solid_spinner:
-    goblin_spinner_solid_show:
-      loops: -1
-  goblin_solid_left_drops:
-    goblin_left_drops_solid_show:
-      loops: -1
-  goblin_solid_right_drops:
-    goblin_right_drops_solid_show:
-      loops: -1
-  goblin_solid_upper_spinner:
-    goblin_upper_spinner_solid_show:
-      loops: -1
-  goblin_solid_saucers:
-    goblin_saucers_solid_show:
-      loops: -1
-  goblin_solid_upper_target:
-    goblin_upper_target_solid_show:
-      loops: -1
-
   goblin_stop_left_web:
     goblin_left_web_flash_show:
       action: stop
     goblin_left_web_solid_show:
       action: stop
-
+  goblin_lite_right_web:
+    goblin_right_web_flash_show:
+      loops: -1
+  goblin_solid_right_web:
+    goblin_right_web_solid_show:
+      loops: -1
   goblin_stop_right_web:
     goblin_right_web_flash_show:
       action: stop
     goblin_right_web_solid_show:
       action: stop
-
-  goblin_stop_spinner:
-    goblin_spinner_flash_show:
-      action: stop
-    goblin_spinner_solid_show:
-      action: stop
-
+  goblin_lite_left_drops:
+    goblin_left_drops_flash_show:
+      loops: -1
+  goblin_solid_left_drops:
+    goblin_left_drops_solid_show:
+      loops: -1
   goblin_stop_left_drops:
     goblin_left_drops_flash_show:
       action: stop
     goblin_left_drops_solid_show:
       action: stop
-
+  goblin_lite_right_drops:
+    goblin_right_drops_flash_show:
+      loops: -1
+  goblin_solid_right_drops:
+    goblin_right_drops_solid_show:
+      loops: -1
   goblin_stop_right_drops:
     goblin_right_drops_flash_show:
       action: stop
     goblin_right_drops_solid_show:
       action: stop
-
-  goblin_stop_upper_spinner:
-    goblin_upper_spinner_flash_show:
+  goblin_lite_saucers:
+    goblin_saucers_lit_show:
+      loops: -1
+  goblin_gi_unsafe:
+    goblin_gi_safe_show:
       action: stop
-    goblin_upper_spinner_solid_show:
+    goblin_gi_unsafe_show:
+      loops: -1
+  goblin_gi_safe:
+    goblin_gi_unsafe_show:
       action: stop
-
-  goblin_stop_saucers:
-    goblin_saucers_flash_show:
+    goblin_gi_safe_show:
+      loops: -1
+  goblin_gi_stop:
+    goblin_gi_unsafe_show:
       action: stop
-    goblin_saucers_solid_show:
+    goblin_gi_safe_show:
       action: stop
-
-  goblin_stop_upper_target:
-    goblin_upper_target_flash_show:
-      action: stop
-    goblin_upper_target_solid_show:
-      action: stop
-
   goblin_mode_ended:
+    goblin_star_flash_show:
+      action: stop
+    goblin_star_solid_show:
+      action: stop
+    goblin_pops_flash_show:
+      action: stop
+    goblin_pops_solid_show:
+      action: stop
     goblin_left_web_flash_show:
-      action: stop
-    goblin_right_web_flash_show:
-      action: stop
-    goblin_spinner_flash_show:
-      action: stop
-    goblin_left_drops_flash_show:
-      action: stop
-    goblin_right_drops_flash_show:
-      action: stop
-    goblin_upper_spinner_flash_show:
-      action: stop
-    goblin_saucers_flash_show:
-      action: stop
-    goblin_upper_target_flash_show:
       action: stop
     goblin_left_web_solid_show:
       action: stop
+    goblin_right_web_flash_show:
+      action: stop
     goblin_right_web_solid_show:
       action: stop
-    goblin_spinner_solid_show:
+    goblin_left_drops_flash_show:
       action: stop
     goblin_left_drops_solid_show:
       action: stop
+    goblin_right_drops_flash_show:
+      action: stop
     goblin_right_drops_solid_show:
       action: stop
-    goblin_upper_spinner_solid_show:
+    goblin_saucers_lit_show:
       action: stop
-    goblin_saucers_solid_show:
+    goblin_gi_unsafe_show:
       action: stop
-    goblin_upper_target_solid_show:
+    goblin_gi_safe_show:
       action: stop
-
 
 shows:
+  goblin_star_flash_show:
+    - duration: 120ms
+      lights:
+        l_star: green
+    - duration: 120ms
+      lights:
+        l_star: off
+
+  goblin_star_solid_show:
+    - duration: -1
+      lights:
+        l_star: green
+
+  goblin_pops_flash_show:
+    - duration: 120ms
+      lights:
+        l_pop_1_1: green
+        l_pop_1_2: green
+        l_pop_1_3: green
+        l_pop_1_4: green
+        l_pop_1_5: green
+        l_pop_1_6: green
+        l_pop_1_7: green
+        l_pop_1_8: green
+        l_pop_1_9: green
+        l_pop_1_10: green
+        l_pop_1_11: green
+        l_pop_1_12: green
+        l_pop_2_1: green
+        l_pop_2_2: green
+        l_pop_2_3: green
+        l_pop_2_4: green
+        l_pop_2_5: green
+        l_pop_2_6: green
+        l_pop_2_7: green
+        l_pop_2_8: green
+        l_pop_2_9: green
+        l_pop_2_10: green
+        l_pop_2_11: green
+        l_pop_2_12: green
+    - duration: 120ms
+      lights:
+        l_pop_1_1: off
+        l_pop_1_2: off
+        l_pop_1_3: off
+        l_pop_1_4: off
+        l_pop_1_5: off
+        l_pop_1_6: off
+        l_pop_1_7: off
+        l_pop_1_8: off
+        l_pop_1_9: off
+        l_pop_1_10: off
+        l_pop_1_11: off
+        l_pop_1_12: off
+        l_pop_2_1: off
+        l_pop_2_2: off
+        l_pop_2_3: off
+        l_pop_2_4: off
+        l_pop_2_5: off
+        l_pop_2_6: off
+        l_pop_2_7: off
+        l_pop_2_8: off
+        l_pop_2_9: off
+        l_pop_2_10: off
+        l_pop_2_11: off
+        l_pop_2_12: off
+
+  goblin_pops_solid_show:
+    - duration: -1
+      lights:
+        l_pop_1_1: green
+        l_pop_1_2: green
+        l_pop_1_3: green
+        l_pop_1_4: green
+        l_pop_1_5: green
+        l_pop_1_6: green
+        l_pop_1_7: green
+        l_pop_1_8: green
+        l_pop_1_9: green
+        l_pop_1_10: green
+        l_pop_1_11: green
+        l_pop_1_12: green
+        l_pop_2_1: green
+        l_pop_2_2: green
+        l_pop_2_3: green
+        l_pop_2_4: green
+        l_pop_2_5: green
+        l_pop_2_6: green
+        l_pop_2_7: green
+        l_pop_2_8: green
+        l_pop_2_9: green
+        l_pop_2_10: green
+        l_pop_2_11: green
+        l_pop_2_12: green
 
   goblin_left_web_flash_show:
     - duration: 120ms
       lights:
-        l_left_web_target: yellow
+        l_left_web_target: green
     - duration: 120ms
+      lights:
+        l_left_web_target: off
+
+  goblin_left_web_solid_show:
+    - duration: -1
       lights:
         l_left_web_target: green
 
   goblin_right_web_flash_show:
     - duration: 120ms
       lights:
-        l_mid_web_target: yellow
+        l_mid_web_target: green
     - duration: 120ms
+      lights:
+        l_mid_web_target: off
+
+  goblin_right_web_solid_show:
+    - duration: -1
       lights:
         l_mid_web_target: green
-
-  goblin_spinner_flash_show:
-    - duration: 120ms
-      lights:
-        l_spinner: yellow
-    - duration: 120ms
-      lights:
-        l_spinner: green
 
   goblin_left_drops_flash_show:
     - duration: 120ms
       lights:
-        l_3bankbonus: yellow
+        l_3bankbonus: green
     - duration: 120ms
+      lights:
+        l_3bankbonus: off
+
+  goblin_left_drops_solid_show:
+    - duration: -1
       lights:
         l_3bankbonus: green
 
   goblin_right_drops_flash_show:
-    - duration: 120ms
-      lights:
-        l_5bank_1: yellow
-        l_5bank_2: yellow
-        l_5bank_3: yellow
-        l_5bank_4: yellow
-        l_5bank_5: yellow
     - duration: 120ms
       lights:
         l_5bank_1: green
@@ -306,70 +347,13 @@ shows:
         l_5bank_3: green
         l_5bank_4: green
         l_5bank_5: green
-
-  goblin_upper_spinner_flash_show:
     - duration: 120ms
       lights:
-        l_gi_a: yellow
-    - duration: 120ms
-      lights:
-        l_gi_a: green
-
-  goblin_saucers_flash_show:
-    - duration: 180ms
-      lights:
-        l_1_hole_l: red
-        l_1: green
-        l_1_hole_r: red
-        l_2_hole_l: red
-        l_2: green
-        l_2_hole_r: red
-        l_3_hole_l: red
-        l_3: green
-        l_3_hole_r: red
-    - duration: 180ms
-      lights:
-        l_1_hole_l: off
-        l_1: off
-        l_1_hole_r: off
-        l_2_hole_l: off
-        l_2: off
-        l_2_hole_r: off
-        l_3_hole_l: off
-        l_3: off
-        l_3_hole_r: off
-
-  goblin_upper_target_flash_show:
-    - duration: 120ms
-      lights:
-        l_upper_left: yellow
-        l_upper_middle: yellow
-        l_upper_right: yellow
-    - duration: 120ms
-      lights:
-        l_upper_left: green
-        l_upper_middle: green
-        l_upper_right: green
-
-  goblin_left_web_solid_show:
-    - duration: -1
-      lights:
-        l_left_web_target: green
-
-  goblin_right_web_solid_show:
-    - duration: -1
-      lights:
-        l_mid_web_target: green
-
-  goblin_spinner_solid_show:
-    - duration: -1
-      lights:
-        l_spinner: green
-
-  goblin_left_drops_solid_show:
-    - duration: -1
-      lights:
-        l_3bankbonus: green
+        l_5bank_1: off
+        l_5bank_2: off
+        l_5bank_3: off
+        l_5bank_4: off
+        l_5bank_5: off
 
   goblin_right_drops_solid_show:
     - duration: -1
@@ -380,12 +364,7 @@ shows:
         l_5bank_4: green
         l_5bank_5: green
 
-  goblin_upper_spinner_solid_show:
-    - duration: -1
-      lights:
-        l_gi_a: green
-
-  goblin_saucers_solid_show:
+  goblin_saucers_lit_show:
     - duration: -1
       lights:
         l_1_hole_l: red
@@ -397,31 +376,11 @@ shows:
         l_3_hole_l: red
         l_3: green
         l_3_hole_r: red
-
-  goblin_upper_target_solid_show:
+  goblin_gi_unsafe_show:
     - duration: -1
-      lights:
-        l_upper_left: green
-        l_upper_middle: green
-        l_upper_right: green        
-
-  goblin_mode_start_show:
-    - duration: -1
-      lights:
-        gi: green
-
-  goblin_gi_red_flash_show:
-    - duration: 200ms
       lights:
         gi: red
-    - duration: 200ms
-      lights:
-        gi: yellow
-
-  goblin_gi_green_flash_show:
-    - duration: 200ms
+  goblin_gi_safe_show:
+    - duration: -1
       lights:
         gi: green
-    - duration: 200ms
-      lights:
-        gi: yellow

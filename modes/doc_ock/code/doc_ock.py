@@ -1,85 +1,61 @@
 from mpf.core.mode import Mode
-from modes.common.case_file_mixin import CaseFileMixin
 from mpf.core.delays import DelayManager
+from modes.common.case_file_mixin import CaseFileMixin
 import random
 
-# rollovers to lock arms (1 to 4)
-# spinner increases JP multiplier, enables jackpot
-# collect JP = base*spins*(5-locks) (resets spins)
-# JP collect adds breakout targets (to avoid)
-# breakout targets release an arm
-# after 2 jackpots, timed arm release starts
-# all arms released, mode ends
-"""
-    "title": "DOC OCK",
-    "intro_1": "Lock tentacle arms with rollovers.",
-    "intro_2": "Shoot web targets for Jackpot.",
-    "intro_3": "Spinner increases the multiplier.",
-    "summary_title_complete": "DOC OCK DEFEATED",
-    "summary_title_failed": "DOC OCK ESCAPED",
-    "stat_1_label": "ARMS LOCKED",
-    "stat_1_var": "doc_ock_max_arms_locked",
-    "stat_2_label": "JACKPOTS",
-    "stat_2_var": "doc_ock_jackpots",
-    "points_var": "active_mode_points",
-    "state_var": "doc_ock_state",
-"""
-class doc_ock(CaseFileMixin, Mode):
 
+class doc_ock(CaseFileMixin, Mode):
     JACKPOTS_BEFORE_TIMED_RELEASE = 2
     DEFAULT_ARM_RELEASE_DELAY_MS = 10_000
-    MORE_TIME_ARM_RELEASE_DELAY_ADD_MS = 2_000
+    MORE_TIME_ARM_RELEASE_DELAY_MS = 15_000
     TIMED_RELEASE_DELAY_NAME = "doc_ock_timed_release"
-    MAX_BREAKOUT_TARGETS = 6
-    JACKPOT_COLLECT_GUARD_MS = 750
+    TIMED_RELEASE_WARNING_DELAY_NAME = "doc_ock_timed_release_warning"
+    SPINNER_SETTLE_DELAY_NAME = "doc_ock_spinner_settle"
+    SPINNER_VALUE_DELAY_NAME = "doc_ock_spinner_value"
+    COMPLETION_HOLD_DELAY_NAME = "doc_ock_completion_hold"
     JACKPOT_COLLECT_GUARD_DELAY_NAME = "doc_ock_jackpot_collect_guard"
-
-    LANE_LIGHTS = {
-        1: "l_left_outlane",
-        2: "l_left_inlane",
-        3: "l_right_inlane",
-        4: "l_right_outlane",
-    }
-    
+    JACKPOT_COLLECT_GUARD_MS = 750
+    MAX_BREAKOUT_TARGETS = 6
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
-
         self.delay = DelayManager(self.machine)
-        self.doc_ock_arm_release_delay_ms = self.DEFAULT_ARM_RELEASE_DELAY_MS
-        self.timed_release_running = False
+        self.case_files = self.get_case_file_bonuses()
 
-        self.doc_ock_jackpot_unlit_value = 25000       
-        self.doc_ock_jackpot_base_value = 100000
-        self.doc_ock_jackpot_spinner_multi = 1
-        self.doc_ock_arm_locked_score = 50000
-        self.doc_ock_arm_relocked_score = 10000
-        self.doc_ock_left_bank_complete_score = 50000
-        self.doc_ock_left_bank_all_locked_score = 100000
+        self.doc_ock_arm_release_delay_ms = (
+            self.MORE_TIME_ARM_RELEASE_DELAY_MS
+            if self.has_case_file("more_time")
+            else self.DEFAULT_ARM_RELEASE_DELAY_MS
+        )
+        self.doc_ock_jackpot_base_value = 75_000 if self.has_case_file("bigger_jackpots") else 50_000
+        self.doc_ock_jackpot_unlit_value = 25_000
+        self.doc_ock_breakout_value = 50_000
+        self.doc_ock_rollover_value = 10_000
+        self.doc_ock_left_bank_complete_score = 50_000
+        self.doc_ock_left_bank_all_locked_score = 100_000
 
-        # Start with one arm already disabled/locked.
-        # False = free, True = locked
-        self.locked_arms = [True, False, False, False]
+        self.doc_ock_jackpot_spinner_multi = 10 if self.has_case_file("shot_assist") else 1
+        self.locked_arms = [False, False, False, False]
+        for arm_index in random.sample(range(4), 2):
+            self.locked_arms[arm_index] = True
 
-        self.jackpot_lit = 1
+        self.jackpot_lit = True
         self.jackpot_collect_guard = False
-        self.mode_done = False
+        self.timed_release_running = False
+        self.mode_finishing = False
         self.jackpots_collected = 0
         self.active_breakouts = set()
-        self.doc_ock_max_arms_locked = 1
-        self.doc_ock_jackpots = 0
+        self.doc_ock_max_arms_locked = 2
         self.active_mode_points = 0
-        self.first_jackpot_maxed = False
-        
-        self.case_files = self.get_case_file_bonuses()
-        self._apply_case_file_bonuses()
+        self.safety_net_used = False
+
         self.publish_case_file_bonus_events("doc_ock")
         self.publish_active_case_file_helpers([
-            ("more_jackpots", "EXTRA BREAKOUT JACKPOT AVAILABLE"),
+            ("more_jackpots", "2 SAFE JACKPOTS"),
             ("bigger_jackpots", "BIGGER DOC OCK JACKPOTS"),
             ("more_time", "ARM RELEASE DELAYED"),
-            ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
-            ("shot_assist", "EXTRA ARM LOCKED"),
+            ("safety_net", "10 SECOND BALL SAVE"),
+            ("shot_assist", "+10X SHOT ASSIST"),
         ])
 
         self.add_mode_event_handler("doc_ock_spinner_hit", self.doc_ock_spinner)
@@ -91,405 +67,331 @@ class doc_ock(CaseFileMixin, Mode):
         self.add_mode_event_handler("doc_ock_start_timed_release", self.start_timed_release)
         self.add_mode_event_handler("doc_ock_stop_timed_release", self.stop_timed_release)
 
-        for arm in [1, 2, 3, 4]:
+        for arm in range(1, 5):
+            self.add_mode_event_handler(f"doc_ock_arm_{arm}_hit", self.arm_hit, arm=arm)
+        for breakout in range(1, 7):
             self.add_mode_event_handler(
-                f"doc_ock_arm_{arm}_hit",
-                self.arm_hit,
-                arm=arm
+                f"doc_ock_breakout_{breakout}_request", self.breakout_hit, breakout=breakout
             )
 
-        for breakout in [1, 2, 3, 4, 5, 6]:
-            self.add_mode_event_handler(
-                f"doc_ock_breakout_{breakout}_request",
-                self.breakout_hit,
-                breakout=breakout
-            )
-            
         self.update_player_vars()
-
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("doc_ock_startup_complete")
-        self.machine.events.post("show_mode_message", message_mode_title="LOCK THE ARMS", message_mode_subtitle="ROLLOVERS THEN WEB TARGETS")
-
+        self.machine.events.post(
+            "show_mode_message_long",
+            message_mode_title="DOCTOR OCTOPUS",
+            message_mode_subtitle="LOCK THE ARMS - COLLECT WEB JACKPOTS",
+        )
 
     def mode_stop(self, **kwargs):
         self.machine.events.post("hide_mode_status")
         if hasattr(self, "delay"):
-            self.delay.remove(self.JACKPOT_COLLECT_GUARD_DELAY_NAME)
-        self.stop_timed_release()
+            for name in (
+                self.TIMED_RELEASE_DELAY_NAME,
+                self.TIMED_RELEASE_WARNING_DELAY_NAME,
+                self.SPINNER_SETTLE_DELAY_NAME,
+                self.SPINNER_VALUE_DELAY_NAME,
+                self.COMPLETION_HOLD_DELAY_NAME,
+                self.JACKPOT_COLLECT_GUARD_DELAY_NAME,
+            ):
+                self.delay.remove(name)
+        self.timed_release_running = False
         self.clear_active_case_file_helpers()
         super().mode_stop(**kwargs)
 
-    def _apply_case_file_bonuses(self):
-        if self.has_case_file("more_jackpots"):
-            self.JACKPOTS_BEFORE_TIMED_RELEASE += 2
+    def _rules_active(self):
+        return not self.mode_finishing and not self.machine.game.player["villain_mode_in_summary"]
 
-        if self.has_case_file("bigger_jackpots"):
-            self.doc_ock_jackpot_base_value += 100000
+    def _award_points(self, value):
+        value = int(value)
+        self.machine.game.player["score"] += value
+        self.active_mode_points += value
+        self.machine.game.player["active_mode_points"] = self.active_mode_points
 
-        if self.has_case_file("more_time"):
-            self.doc_ock_arm_release_delay_ms += self.MORE_TIME_ARM_RELEASE_DELAY_ADD_MS
+    def _cancel_spinner_messages(self):
+        self.delay.remove(self.SPINNER_SETTLE_DELAY_NAME)
+        self.delay.remove(self.SPINNER_VALUE_DELAY_NAME)
 
-        if self.has_case_file("safety_net"):
-            self.machine.events.post("start_case_file_ball_save")
-
-        if self.has_case_file("shot_assist"):
-            self.first_jackpot_maxed = True
+    def _post_high_priority_message(self, title, subtitle=None, value=None, long=False):
+        self._cancel_spinner_messages()
+        event = "show_mode_message_long" if long else "show_mode_message"
+        kwargs = {"message_mode_title": title}
+        if subtitle is not None:
+            kwargs["message_mode_subtitle"] = subtitle
+        if value is not None:
+            kwargs["message_mode_value"] = value
+        self.machine.events.post(event, **kwargs)
 
     def doc_ock_start_arms(self, **kwargs):
         self.refresh_lane_lights()
-        self.check_jackpot_lit()
-
-    def doc_ock_spinner(self, **kwargs):
-        if self.machine.game.player["villain_mode_in_summary"] == True: return
-        self.jackpot_lit = 1
-        self.check_jackpot_lit()
-        self.doc_ock_jackpot_spinner_multi = self.doc_ock_jackpot_spinner_multi + 1
-        self.update_player_vars()
-        
-        self.machine.events.post(
-            "doc_ock_spinner_multiplier_increased",
-            multiplier=self.doc_ock_jackpot_spinner_multi
-        )
-        self.machine.events.post("show_mode_message", message_mode_title="SPINNER MULTIPLIER", message_mode_subtitle="DOC OCK JACKPOT", message_mode_value=f"{self.doc_ock_jackpot_spinner_multi}X")
+        self._set_jackpot_lit(True)
 
     def rotate_left(self, **kwargs):
-        if self.machine.game.player["villain_mode_in_summary"] == True: return
+        if not self._rules_active():
+            return
         self.locked_arms = self.locked_arms[1:] + self.locked_arms[:1]
         self.refresh_lane_lights()
 
     def rotate_right(self, **kwargs):
-        if self.machine.game.player["villain_mode_in_summary"] == True: return
+        if not self._rules_active():
+            return
         self.locked_arms = self.locked_arms[-1:] + self.locked_arms[:-1]
         self.refresh_lane_lights()
 
     def refresh_lane_lights(self):
-        for arm in [1, 2, 3, 4]:
-            if self.locked_arms[arm-1]:
-                self.machine.events.post(f"doc_ock_arm_{arm}_solid")
-            else:
-                self.machine.events.post(f"doc_ock_arm_{arm}_pulse")
+        for arm in range(1, 5):
+            state = "solid" if self.locked_arms[arm - 1] else "pulse"
+            self.machine.events.post(f"doc_ock_arm_{arm}_{state}")
 
-    def arm_hit(self, arm, **kwargs):
-        if self.machine.game.player["villain_mode_in_summary"] == True: return
-        self.jackpot_lit = 1        
-        #already locked
-        if self.locked_arms[arm-1]:
-            self.machine.game.player["score"] += self.doc_ock_arm_relocked_score
-            self.active_mode_points += self.doc_ock_arm_relocked_score
-            self.check_jackpot_lit()
-            self.machine.events.post("show_mode_message", message_mode_title="ARM ALREADY LOCKED", message_mode_subtitle="KEEP BUILDING JACKPOT")
-            return
-
-        self.machine.game.player["score"] += self.doc_ock_arm_locked_score
-        self.active_mode_points += self.doc_ock_arm_locked_score
-        self.machine.game.player["active_mode_points"] = self.active_mode_points
-
-        self._lock_arm_index(arm - 1)
-        if self.jackpots_collected >= self.JACKPOTS_BEFORE_TIMED_RELEASE:
-            self.start_timed_release(show_countdown=False)
-
-        self.machine.events.post("doc_ock_arm_locked_score")
-        self.machine.events.post("show_mode_message", message_mode_title="ARM LOCKED", message_mode_subtitle=f"{sum(self.locked_arms)} ARMS LOCKED")
-        self.check_jackpot_lit()
-        self.update_player_vars()        
-
-    def _lock_arm_index(self, arm_index):
-        self.locked_arms[arm_index] = True
-        self.refresh_lane_lights()
-
-        locked_count = sum(self.locked_arms)
-        self.doc_ock_max_arms_locked = max(self.doc_ock_max_arms_locked, locked_count)
-        self.machine.game.player["doc_ock_max_arms_locked"] = self.doc_ock_max_arms_locked
-
-    def _lock_next_free_arm(self):
-        for arm_index, locked in enumerate(self.locked_arms):
-            if not locked:
-                self._lock_arm_index(arm_index)
-                return arm_index + 1
-        return None
-
-    def left_bank_complete(self, **kwargs):
-        if self.machine.game.player["villain_mode_in_summary"] == True:
-            return
-
-        self.jackpot_lit = 1
-        locked_arm = self._lock_next_free_arm()
-
-        if locked_arm is None:
-            award = self.doc_ock_left_bank_all_locked_score
-            self.machine.events.post("show_mode_message", message_mode_title="JACKPOT READY", message_mode_subtitle="ALL ARMS LOCKED")
-        else:
-            award = self.doc_ock_left_bank_complete_score
-            self.machine.events.post("doc_ock_arm_locked_score")
-            if self.jackpots_collected >= self.JACKPOTS_BEFORE_TIMED_RELEASE:
-                self.start_timed_release(show_countdown=False)
-            self.machine.events.post("show_mode_message", message_mode_title="BANK COMPLETE", message_mode_subtitle=f"ARM {locked_arm} LOCKED - JACKPOT LIT")
-
-        self.machine.game.player["score"] += award
-        self.active_mode_points += award
-        self.machine.game.player["active_mode_points"] = self.active_mode_points
-        self.check_jackpot_lit()
+    def _set_jackpot_lit(self, lit):
+        self.jackpot_lit = bool(lit)
+        if self.jackpot_lit and sum(self.locked_arms) > 0:
+            self.machine.events.post("doc_ock_jackpot_lit")
         self.update_player_vars()
 
-    def check_jackpot_lit(self):
-        if sum(self.locked_arms) > 0:
-            self.machine.events.post("doc_ock_jackpot_lit")
+    def arm_hit(self, arm, **kwargs):
+        if not self._rules_active():
+            return
+        self._award_points(self.doc_ock_rollover_value)
+        self._set_jackpot_lit(True)
+
+        if self.locked_arms[arm - 1]:
+            return
+
+        self._lock_arm_index(arm - 1)
+        self.machine.events.post("doc_ock_arm_locked_score")
+        self._post_high_priority_message("ARM LOCKED")
+
+    def _lock_arm_index(self, arm_index):
+        if self.locked_arms[arm_index]:
+            return False
+        self.locked_arms[arm_index] = True
+        self.doc_ock_max_arms_locked = max(self.doc_ock_max_arms_locked, sum(self.locked_arms))
+        self.machine.game.player["doc_ock_max_arms_locked"] = self.doc_ock_max_arms_locked
+        self.refresh_lane_lights()
+        self._set_jackpot_lit(True)
+        if self.timed_release_running:
+            self.start_timed_release(force_reset=True)
+        return True
+
+    def _lock_random_free_arm(self):
+        free = [index for index, locked in enumerate(self.locked_arms) if not locked]
+        if not free:
+            return False
+        return self._lock_arm_index(random.choice(free))
+
+    def left_bank_complete(self, **kwargs):
+        if not self._rules_active():
+            return
+        locked_new_arm = self._lock_random_free_arm()
+        award = self.doc_ock_left_bank_complete_score if locked_new_arm else self.doc_ock_left_bank_all_locked_score
+        self._award_points(award)
+        self._set_jackpot_lit(True)
+        if locked_new_arm:
+            self.machine.events.post("doc_ock_arm_locked_score")
+            self._post_high_priority_message("ARM LOCKED")
+
+    def doc_ock_spinner(self, **kwargs):
+        if not self._rules_active():
+            return
+        self.doc_ock_jackpot_spinner_multi += 1
+        self._set_jackpot_lit(True)
+        self.machine.events.post(
+            "doc_ock_spinner_multiplier_increased", multiplier=self.doc_ock_jackpot_spinner_multi
+        )
+        self._cancel_spinner_messages()
+        self.delay.add(
+            name=self.SPINNER_SETTLE_DELAY_NAME,
+            ms=1000,
+            callback=self._show_spinner_multiplier,
+        )
+
+    def _show_spinner_multiplier(self, **kwargs):
+        if not self._rules_active():
+            return
+        self.machine.events.post(
+            "show_mode_message",
+            message_mode_title=f"MULTIPLIER {self.doc_ock_jackpot_spinner_multi}X",
+        )
+        self.delay.add(
+            name=self.SPINNER_VALUE_DELAY_NAME,
+            ms=1000,
+            callback=self._show_spinner_jackpot_value,
+        )
+
+    def _show_spinner_jackpot_value(self, **kwargs):
+        if not self._rules_active():
+            return
+        value = self.calculate_next_jackpot()
+        if value > 0:
+            self.machine.events.post(
+                "show_mode_message",
+                message_mode_title="NEXT WEB JACKPOT",
+                message_mode_value=value,
+            )
 
     def _clear_jackpot_collect_guard(self, **kwargs):
         self.jackpot_collect_guard = False
 
-    def _start_jackpot_collect_guard(self):
+    def jackpot_request(self, **kwargs):
+        if not self._rules_active() or self.jackpot_collect_guard:
+            return
+        if not self.jackpot_lit:
+            self._award_points(self.doc_ock_jackpot_unlit_value)
+            self.machine.events.post("doc_ock_jackpot_not_lit")
+            return
+
+        locked = sum(self.locked_arms)
+        if locked <= 0:
+            return
+
+        collected_multiplier = self.doc_ock_jackpot_spinner_multi
+        collected_value = self.doc_ock_jackpot_base_value * (5 - locked) * collected_multiplier
+
         self.jackpot_collect_guard = True
-        self.delay.remove(self.JACKPOT_COLLECT_GUARD_DELAY_NAME)
         self.delay.add(
             name=self.JACKPOT_COLLECT_GUARD_DELAY_NAME,
             ms=self.JACKPOT_COLLECT_GUARD_MS,
             callback=self._clear_jackpot_collect_guard,
         )
-
-    def jackpot_request(self, **kwargs):
-        if self.mode_done:
-            return
-        if self.machine.game.player["villain_mode_in_summary"] == True: return
-
-        # Physical web target hits can produce rapid repeated active events,
-        # and a glancing shot can catch both web targets almost back-to-back.
-        # Consume the jackpot immediately and briefly ignore additional web
-        # target requests from the same physical shot so one hit cannot score
-        # multiple jackpots or immediately overwrite the jackpot message.
-        if self.jackpot_collect_guard:
-            return
-
-        if self.jackpot_lit == 0:
-            self.machine.events.post("doc_ock_jackpot_not_lit")
-            self.machine.events.post("show_mode_message", message_mode_title="SHOOT SPINNER", message_mode_subtitle="WEB TARGET NOT READY")
-            self.machine.game.player["score"] += self.doc_ock_jackpot_unlit_value
-            self.active_mode_points += self.doc_ock_jackpot_unlit_value
-            return
-            
-        locked = sum(self.locked_arms)
-        if locked <= 0:
-            return
-
-        self.jackpot_lit = 0
-        self._start_jackpot_collect_guard()
-        jp_value = self.doc_ock_jackpot_base_value * (5-locked) * self.doc_ock_jackpot_spinner_multi
-        
-        if self.first_jackpot_maxed == True:
-            self.first_jackpot_maxed = False
-            jp_value = self.doc_ock_jackpot_base_value * 100  #maxed value 
-
-        self.machine.game.player["score"] += jp_value
-        self.machine.game.player["doc_ock_last_jackpot"] = jp_value
-        self.active_mode_points += jp_value
-        self.machine.game.player["active_mode_points"] = self.active_mode_points
-
-        self.doc_ock_jackpots += 1
-        self.machine.game.player["doc_ock_jackpots"] = self.doc_ock_jackpots
-    
-        self.machine.events.post("doc_ock_jackpot_award")
-        self.machine.events.post("show_mode_jackpot", message_mode_title="DOC OCK JACKPOT", message_mode_subtitle="TENTACLE LOCKDOWN", message_mode_value=jp_value)
-        #self.machine.events.post("doc_ock_jackpot_collected")
-
-        self.doc_ock_jackpot_spinner_multi = 1
+        self._cancel_spinner_messages()
+        self.jackpot_lit = False
+        self._award_points(collected_value)
         self.jackpots_collected += 1
-        self.jackpot_lit = 0
+        self.machine.game.player["doc_ock_jackpots"] = self.jackpots_collected
+        self.machine.game.player["doc_ock_last_jackpot"] = collected_value
+
+        self.machine.events.post("doc_ock_jackpot_award")
+        self.machine.events.post(
+            "show_mode_jackpot",
+            message_mode_title="WEB JACKPOT",
+            message_mode_value=collected_value,
+        )
+
+        self.doc_ock_jackpot_spinner_multi = self.jackpots_collected + 1
+
+        safe_jackpot = self.has_case_file("more_jackpots") and self.jackpots_collected <= 2
+        if not safe_jackpot:
+            self.spawn_breakout_target()
+
+        if self.jackpots_collected >= self.JACKPOTS_BEFORE_TIMED_RELEASE and not self.timed_release_running:
+            self.start_timed_release()
         self.update_player_vars()
 
-        # Keep the jackpot message clean. Apply the follow-up gameplay state
-        # silently so BREAKOUT LIT / ARM BREAKING FREE does not replace the
-        # jackpot award on screen.
-        self._post_jackpot_followup(show_messages=False)
-
-        self.check_mode_over()
-
-
-    def _post_jackpot_followup(self, show_messages=True, **kwargs):
-        if self.mode_done:
+    def spawn_breakout_target(self):
+        available = [target for target in range(1, 7) if target not in self.active_breakouts]
+        if not available:
             return
-
-        if self.machine.game.player["villain_mode_in_summary"] == True:
-            return
-
-        self.spawn_breakout_target(show_message=show_messages)
+        target = random.choice(available)
+        self.active_breakouts.add(target)
+        self.machine.events.post(f"doc_ock_breakout_{target}_lit")
         self.update_player_vars()
-
-        if self.jackpots_collected >= self.JACKPOTS_BEFORE_TIMED_RELEASE:
-            self.start_timed_release(show_countdown=show_messages)
-
-    def spawn_breakout_target(self, show_message=True):
-        if len(self.active_breakouts) >= self.MAX_BREAKOUT_TARGETS:
-            return
-
-        available = [1, 2, 3, 4, 5, 6]
-        random.shuffle(available)
-
-        for target in available:
-            if target not in self.active_breakouts:
-                self.active_breakouts.add(target)
-                self.machine.events.post(f"doc_ock_breakout_{target}_lit")
-                if show_message:
-                    self.machine.events.post("show_mode_message", message_mode_title="BREAKOUT LIT", message_mode_subtitle=f"TARGET {target}")
-                return
 
     def breakout_hit(self, breakout, **kwargs):
-        if self.mode_done:
+        if not self._rules_active() or breakout not in self.active_breakouts:
             return
-
-        if self.machine.game.player["villain_mode_in_summary"] == True:
-            return
-
-        if breakout not in self.active_breakouts:
-            return
-
-        # Consume the breakout target before doing anything else. Some
-        # physical switches, especially saucers during kickout, can post
-        # repeated active events from one shot. If the target stays active,
-        # one physical breakout can release multiple arms and incorrectly
-        # finish the mode.
         self.active_breakouts.remove(breakout)
         self.machine.events.post(f"doc_ock_breakout_{breakout}_collected")
+        self._award_points(self.doc_ock_breakout_value)
+        self._release_random_locked_arm()
 
-        released = self.release_random_locked_arm()
-        if not released:
-            self.update_player_vars()
-            self.check_mode_over()
+    def start_timed_release(self, force_reset=False, **kwargs):
+        if not self._rules_active() or self.jackpots_collected < self.JACKPOTS_BEFORE_TIMED_RELEASE:
             return
-
-        self.update_player_vars()
-        self.machine.events.post("doc_ock_breakout_hit")
-        self.machine.events.post("show_mode_message", message_mode_title="ARM RELEASED", message_mode_subtitle="LOCK IT AGAIN")
-        self.check_mode_over()
-
-    def start_timed_release(self, show_countdown=True, **kwargs):
-        if self.machine.game.player["villain_mode_in_summary"] == True:
-            return
-
-        if self.jackpots_collected < self.JACKPOTS_BEFORE_TIMED_RELEASE:
-            return
-
         if sum(self.locked_arms) <= 0:
+            return
+        if self.timed_release_running and not force_reset:
             return
 
         self.timed_release_running = True
-        self.machine.game.player["doc_ock_arm_release_delay_ms"] = self.doc_ock_arm_release_delay_ms
-        self.machine.game.player["doc_ock_arm_release_delay_seconds"] = self.doc_ock_arm_release_delay_ms / 1000
-        self.machine.events.post(
-            "doc_ock_timed_release_started",
-            delay_ms=self.doc_ock_arm_release_delay_ms,
-            delay_seconds=self.doc_ock_arm_release_delay_ms / 1000,
-        )
-        if show_countdown:
-            self.machine.events.post("show_mode_countdown", message_mode_title="TIMED RELEASE", message_mode_subtitle="ARM BREAKING FREE", message_mode_seconds=int(self.doc_ock_arm_release_delay_ms / 1000))
         self.delay.remove(self.TIMED_RELEASE_DELAY_NAME)
+        self.delay.remove(self.TIMED_RELEASE_WARNING_DELAY_NAME)
+        self.delay.add(
+            name=self.TIMED_RELEASE_WARNING_DELAY_NAME,
+            ms=self.doc_ock_arm_release_delay_ms // 2,
+            callback=self._timed_release_warning,
+        )
         self.delay.add(
             name=self.TIMED_RELEASE_DELAY_NAME,
             ms=self.doc_ock_arm_release_delay_ms,
             callback=self.timed_release,
         )
 
+    def _timed_release_warning(self, **kwargs):
+        if self._rules_active() and self.timed_release_running:
+            self._post_high_priority_message("DOC OCK IS ABOUT TO BREAK FREE!")
+
     def stop_timed_release(self, **kwargs):
         self.timed_release_running = False
         if hasattr(self, "delay"):
             self.delay.remove(self.TIMED_RELEASE_DELAY_NAME)
+            self.delay.remove(self.TIMED_RELEASE_WARNING_DELAY_NAME)
 
     def timed_release(self, **kwargs):
-        if self.machine.game.player["villain_mode_in_summary"] == True:
+        if not self._rules_active() or not self.timed_release_running:
             self.stop_timed_release()
             return
+        self._release_random_locked_arm()
+        if self._rules_active() and sum(self.locked_arms) > 0:
+            self.timed_release_running = False
+            self.start_timed_release()
 
-        if self.jackpots_collected < self.JACKPOTS_BEFORE_TIMED_RELEASE:
-            self.stop_timed_release()
-            return
+    def _release_random_locked_arm(self):
+        locked = [index for index, state in enumerate(self.locked_arms) if state]
+        if not locked:
+            self._begin_completion()
+            return False
+        self.locked_arms[random.choice(locked)] = False
+        self.refresh_lane_lights()
+        self.machine.events.post("doc_ock_breakout_hit")
+        self._post_high_priority_message("AN ARM BROKE FREE!")
 
-        if not self.timed_release_running:
-            return
-
-        released = self.release_random_locked_arm()
-
-        if not released:
-            self.stop_timed_release()
-            self.check_mode_over()
-            return
+        if self.has_case_file("safety_net") and not self.safety_net_used:
+            self.safety_net_used = True
+            self.machine.events.post("start_case_file_ball_save")
 
         self.update_player_vars()
-        self.machine.events.post("doc_ock_timed_release_complete")
-        self.machine.events.post("doc_ock_breakout_hit")
-        self.machine.events.post("show_mode_message", message_mode_title="ARM RELEASED", message_mode_subtitle="DOC OCK BREAKS FREE")
-
-        if self.check_mode_over():
-            self.stop_timed_release()
-            return
-
-        self.start_timed_release()
-
-    def release_random_locked_arm(self):
-        locked = [i for i, val in enumerate(self.locked_arms) if val]
-
-        if not locked:
-            return False
-
-        arm = random.choice(locked)
-        self.locked_arms[arm] = False
-        self.refresh_lane_lights()
+        if sum(self.locked_arms) <= 0:
+            self._begin_completion()
         return True
 
-    def check_mode_over(self):
-        if self.mode_done:
-            return True
+    def _begin_completion(self):
+        if self.mode_finishing:
+            return
+        self.mode_finishing = True
+        self.stop_timed_release()
+        self._cancel_spinner_messages()
+        self.machine.events.post("hide_mode_status")
+        self._post_high_priority_message("DOCTOR OCTOPUS HAS BROKEN FREE!", long=True)
+        self.delay.add(
+            name=self.COMPLETION_HOLD_DELAY_NAME,
+            ms=2000,
+            callback=self._complete_mode,
+        )
 
-        if sum(self.locked_arms) <= 0:
-            self.mode_done = True
-            self.machine.events.post("doc_ock_mode_complete")
-            self.machine.events.post("doc_ock_stop_timed_release")
-            return True
-        return False
+    def _complete_mode(self, **kwargs):
+        if not self.mode_finishing:
+            return
+        self.machine.events.post("doc_ock_mode_complete")
 
     def update_player_vars(self):
         player = self.machine.game.player
-
         player["doc_ock_locked_arms"] = sum(self.locked_arms)
         player["doc_ock_spinner_multi"] = self.doc_ock_jackpot_spinner_multi
         player["doc_ock_jackpots_collected"] = self.jackpots_collected
+        player["doc_ock_jackpots"] = self.jackpots_collected
         player["doc_ock_active_breakouts"] = len(self.active_breakouts)
-
         player["doc_ock_next_jackpot"] = self.calculate_next_jackpot()
-
-        self._update_mode_status()
-
-        self.machine.events.post(
-            "doc_ock_next_jackpot_changed",
-            value=player["doc_ock_next_jackpot"],
-            locked_arms=player["doc_ock_locked_arms"],
-            multiplier=player["doc_ock_spinner_multi"],
-            jackpot_lit=self.jackpot_lit,
-        )
-    
-    def _update_mode_status(self):
-        locked = sum(self.locked_arms)
-        if self.active_breakouts:
-            title = "BREAKOUTS / ARMS"
-            value = f"{len(self.active_breakouts)} / {locked} LOCKED"
-        elif self.jackpot_lit:
-            title = "WEB JACKPOT / ARMS"
-            value = f"{self.jackpots_collected} / {locked} LOCKED"
-        else:
-            title = "LOCK THE ARMS"
-            value = f"{locked} OF 4 LOCKED"
-        self.machine.events.post("update_mode_status", mode_status_title=title, mode_status_value=value)
+        player["active_mode_points"] = self.active_mode_points
+        if not self.mode_finishing:
+            self.machine.events.post(
+                "update_mode_status",
+                mode_status_title="DOCTOR OCTOPUS",
+                mode_status_value=f"{sum(self.locked_arms)} ARMS LOCKED",
+            )
 
     def calculate_next_jackpot(self):
         locked = sum(self.locked_arms)
-
-        if locked <= 0:
+        if locked <= 0 or not self.jackpot_lit:
             return 0
-
-        if self.jackpot_lit == 0:
-            return 0
-
-        return (
-            self.doc_ock_jackpot_base_value
-            * (5 - locked)
-            * self.doc_ock_jackpot_spinner_multi
-        )
+        return self.doc_ock_jackpot_base_value * (5 - locked) * self.doc_ock_jackpot_spinner_multi

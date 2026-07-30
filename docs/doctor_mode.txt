@@ -1,15 +1,32 @@
-🧠 Doctor Octopus
-Mode idea: “Tentacle Lockdown”
+Doctor Octopus - Tentacle Lockdown
 
-- Mechanical arms = 4 in/out lanes
-- start with one arm disabled
-- slow dim pulsing lights, solid if disabled 
-- flippers rotate lights 
-- disable an arm (collect small points) + lights the JP shot
-- spinner increases JP value, lights JP shots  
-- spinner shot leads to dangerous top where breakout shots are
-- collect JP (base X (5-number of disabled arms) X spinner) at web targets 
-- collecting JP adds another breakout target 
-- breakout target releases an arm
-- after 2 jackpots, timed arm releases - every 10 seconds arm releases
-- all arms released - mode over
+Core rules
+- Start with two random arms locked and the web jackpot lit.
+- Flippers rotate the four arm assignments across the lane rollovers.
+- Any rollover scores 10K. A free-arm rollover locks that arm; a locked-arm hit keeps it locked.
+- Completing the left bank locks one random free arm when available and always relights the web jackpot.
+- The spinner scores through the normal base game, adds +1X per spin, and relights the web jackpot.
+- After one second without another spin, show the multiplier and then the next web jackpot value.
+- Web Jackpot = base value x (5 - locked arms) x spinner multiplier. Base is 50K.
+- An unlit web target scores 25K.
+- Collecting a web jackpot resets the multiplier to 2X after jackpot 1, 3X after jackpot 2, 4X after jackpot 3, and so on.
+- Each jackpot lights one random currently unlit breakout shot. Multiple breakouts may remain lit.
+- A breakout scores 50K silently and frees one random locked arm.
+- After two jackpots, one arm automatically breaks free every 10 seconds. Locking an arm resets the countdown.
+- Five seconds into the countdown, show DOC OCK IS ABOUT TO BREAK FREE!
+- When the final arm breaks free, Doctor Octopus scoring stops for a two-second live-ball hold, then the normal villain summary begins.
+
+Case files
+- More Jackpots: the first two web jackpots do not light breakouts.
+- Bigger Jackpots: base web jackpot value is 75K.
+- More Time: automatic release interval is 15 seconds; warning occurs halfway through.
+- Safety Net: one-time 10-second ball save when the first arm is freed.
+- Shot Assist: start the mode at 10X.
+
+Display
+- Persistent status: X ARMS LOCKED.
+- Arm lock: ARM LOCKED.
+- Web collect: WEB JACKPOT - value.
+- Arm release: AN ARM BROKE FREE!
+- Final release: DOCTOR OCTOPUS HAS BROKEN FREE!
+- Summary uses the standard villain layout with final mode score and JACKPOTS: count.
