@@ -7,7 +7,6 @@ from modes.common.case_file_mixin import CaseFileMixin
 
 class Scorpion(CaseFileMixin, Mode):
     """Scorpion: build Venom, choose an exit, then hit one staged drop."""
-
     VENOM_READY_HITS = 2
     BASE_MAX_ATTEMPTS = 3
     BASE_STING_SECONDS = 8
@@ -21,7 +20,6 @@ class Scorpion(CaseFileMixin, Mode):
 
         self.delay = DelayManager(self.machine)
         self.case_files = self.get_case_file_bonuses()
-
         self.max_attempts = (
             self.BASE_MAX_ATTEMPTS + 1
             if self.has_case_file("more_jackpots")
@@ -34,7 +32,6 @@ class Scorpion(CaseFileMixin, Mode):
         )
         self.bigger_multiplier = 1.5 if self.has_case_file("bigger_jackpots") else 1.0
         self.shot_assist_available = self.has_case_file("shot_assist")
-
         self.venom_hits = 0
         self.attempts_used = 0
         self.state = "build"
@@ -43,12 +40,12 @@ class Scorpion(CaseFileMixin, Mode):
         self.active_target_side = None
         self.required_target = None
         self.seconds_left = 0
+        self.rubber_enabled = False
 
         self.scorpion_stings = 0
         self.scorpion_biggest_jackpot = 0
         self.active_mode_points = 0
         self._sync_player_vars()
-
         self.publish_case_file_bonus_events("scorpion")
         self.publish_active_case_file_helpers([
             ("more_jackpots", "EXTRA STING ATTEMPT AVAILABLE"),
@@ -57,14 +54,12 @@ class Scorpion(CaseFileMixin, Mode):
             ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
             ("shot_assist", "FIRST RUBBER COUNTS AS TARGET"),
         ])
-
         if self.has_case_file("safety_net"):
             self.machine.events.post("start_case_file_ball_save")
 
         self.add_mode_event_handler("scorpion_spinner_hit", self.spinner_hit)
         self.add_mode_event_handler("scorpion_right_exit_chosen", self.right_exit_chosen)
         self.add_mode_event_handler("scorpion_left_exit_chosen", self.left_exit_chosen)
-
         for i in range(1, 4):
             self.add_mode_event_handler(
                 f"scorpion_left_drop_{i}_hit", self.left_drop_hit, target=i
@@ -76,7 +71,6 @@ class Scorpion(CaseFileMixin, Mode):
 
         self.add_mode_event_handler("s_left_drops_rubber_active", self.sting_rubber_left)
         self.add_mode_event_handler("s_right_drops_rubber_active", self.sting_rubber_right)
-
         self.machine.events.post(
             "show_mode_message",
             message_mode_title="BUILD VENOM",
@@ -89,10 +83,12 @@ class Scorpion(CaseFileMixin, Mode):
         for name in (
             "scorpion_prepare_left_bank_after_reset",
             "scorpion_prepare_right_bank_after_reset",
+            "scorpion_enable_rubber",
             "scorpion_sting_tick",
             "scorpion_complete_hold",
         ):
             self.delay.remove(name)
+        self.rubber_enabled = False
         self.machine.events.post("scorpion_sting_lights_off")
         self.machine.events.post("hide_mode_status")
         self.clear_active_case_file_helpers()
@@ -139,7 +135,6 @@ class Scorpion(CaseFileMixin, Mode):
         self._add_score(self.SPINNER_SCORE)
         if self.state != "build":
             return
-
         self.venom_hits = min(self.VENOM_READY_HITS, self.venom_hits + 1)
         self.machine.events.post("scorpion_spinner_build")
         self.machine.events.post(
@@ -148,7 +143,6 @@ class Scorpion(CaseFileMixin, Mode):
             message_mode_subtitle=f"{self.venom_hits}/{self.VENOM_READY_HITS}",
             message_mode_value=self.SPINNER_SCORE,
         )
-
         if self.venom_hits >= self.VENOM_READY_HITS:
             self.state = "ready"
             self.machine.events.post("scorpion_sting_ready")
@@ -170,11 +164,14 @@ class Scorpion(CaseFileMixin, Mode):
     def _start_sting(self, side):
         if self.mode_done or not self.scoring_enabled or self.state != "ready":
             return
-
         self.machine.events.post("scorpion_sting_lights_off")
         self.state = "sting"
         self.active_target_side = side
         self.seconds_left = self.sting_seconds
+
+        # Ignore mechanical vibration/bounce while the selected bank resets
+        # and the non-required drops are knocked down.
+        self.rubber_enabled = False
 
         if side == "left":
             self.required_target = random.randint(1, 3)
@@ -195,12 +192,23 @@ class Scorpion(CaseFileMixin, Mode):
             )
             self.machine.events.post("scorpion_hard_sting_started")
 
+        self.delay.reset(
+            name="scorpion_enable_rubber",
+            ms=1000,
+            callback=self._enable_rubber,
+        )
+
         self._update_mode_status()
         self.delay.reset(
             name="scorpion_sting_tick",
             ms=1000,
             callback=self._sting_tick,
         )
+
+    def _enable_rubber(self):
+        if self.mode_done or self.state != "sting":
+            return
+        self.rubber_enabled = True
 
     def _sting_tick(self):
         if self.mode_done or self.state != "sting":
@@ -253,11 +261,19 @@ class Scorpion(CaseFileMixin, Mode):
             self._resolve_attempt(result="target")
 
     def sting_rubber_left(self, **kwargs):
-        if self.state == "sting" and self.active_target_side == "left":
+        if (
+            self.rubber_enabled
+            and self.state == "sting"
+            and self.active_target_side == "left"
+        ):
             self._resolve_rubber()
 
     def sting_rubber_right(self, **kwargs):
-        if self.state == "sting" and self.active_target_side == "right":
+        if (
+            self.rubber_enabled
+            and self.state == "sting"
+            and self.active_target_side == "right"
+        ):
             self._resolve_rubber()
 
     def _resolve_rubber(self):
@@ -275,10 +291,11 @@ class Scorpion(CaseFileMixin, Mode):
         if self.mode_done or self.state != "sting":
             return
 
+        self.rubber_enabled = False
+        self.delay.remove("scorpion_enable_rubber")
         self.state = "awarding"
         self.delay.remove("scorpion_sting_tick")
         self.machine.events.post("scorpion_sting_lights_off")
-
         if result == "target":
             value = self._award_for_attempt(self.FULL_AWARDS)
             self._add_score(value)
@@ -306,7 +323,6 @@ class Scorpion(CaseFileMixin, Mode):
                 "show_mode_message",
                 message_mode_title="STING MISSED",
             )
-
         self.attempts_used += 1
         self.venom_hits = 0
         self.active_target_side = None
@@ -316,7 +332,6 @@ class Scorpion(CaseFileMixin, Mode):
         if self.attempts_used >= self.max_attempts:
             self._begin_completion_hold()
             return
-
         self.state = "build"
         self.machine.events.post("scorpion_build_phase_started")
         self.machine.events.post(
@@ -333,6 +348,8 @@ class Scorpion(CaseFileMixin, Mode):
         self.mode_done = True
         self.state = "complete_hold"
         self.scoring_enabled = False
+        self.rubber_enabled = False
+        self.delay.remove("scorpion_enable_rubber")
         self.machine.events.post("hide_mode_status")
         self.machine.events.post("scorpion_sting_lights_off")
         self.machine.events.post(
