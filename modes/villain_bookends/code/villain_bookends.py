@@ -206,9 +206,9 @@ class VillainBookends(Mode):
             'intro_3': 'ADD-A-BALL and JACKPOTS at Saucers.',
             'summary_title_complete': 'PARAFINO DEFEATED',
             'summary_title_failed': 'PARAFINO ESCAPED',
-            'stat_1_label': 'BIGGEST JP',
-            'stat_1_var': 'parafino_biggest_jackpot',
-            'stat_2_label': 'JACKPOTS COLLECTED',
+            'stat_1_label': 'ZONE HITS',
+            'stat_1_var': 'parafino_zone_hits',
+            'stat_2_label': 'JACKPOTS',
             'stat_2_var': 'parafino_total_jackpots',
             'points_var': 'active_mode_points',
             'state_var': 'parafino_state',
@@ -392,12 +392,6 @@ class VillainBookends(Mode):
             'state_var': 'doctor_cool_state',
             'song': 'play_song_47',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Pardo commands a mystic performance.
-        #   intro_2: Complete the moving act shots.
-        #   intro_3: Break the control before the act changes.
-        #   stat_2_label: MAJOR HITS
-
         'harley_clivendon': {
             'title': 'HARLEY CLIVENDON', 'intro_1': 'Break the hypnotic spell.', 'intro_2': 'Expose the hidden scheme.', 'intro_3': 'Complete ten danger shots.',
             'summary_title_complete': 'CLIVENDON STOPPED', 'summary_title_failed': 'CLIVENDON ESCAPED',
@@ -405,15 +399,15 @@ class VillainBookends(Mode):
             'points_var': 'active_mode_points', 'state_var': 'harley_clivendon_state', 'song': 'play_song_11',
         },
         'conquistador': {
-            'title': 'THE CONQUISTADOR', 'intro_1': 'Find the hidden fort.', 'intro_2': 'Reach the Fountain of Youth.', 'intro_3': 'Complete ten danger shots.',
-            'summary_title_complete': 'FOUNTAIN SECURED', 'summary_title_failed': 'CONQUISTADOR ESCAPED',
-            'stat_1_label': 'HITS', 'stat_1_var': 'active_mode_hits', 'stat_2_label': 'MAJOR HITS', 'stat_2_var': 'active_mode_major_hits',
-            'points_var': 'active_mode_points', 'state_var': 'conquistador_state', 'song': 'play_song_12',
+            'title': 'THE CONQUISTADOR', 'intro_1': 'Complete the left bank.', 'intro_2': 'Spin to find the Fountain.', 'intro_3': 'Build and collect at center web.',
+            'summary_title_complete': 'FOUNTAIN FOUND', 'summary_title_failed': 'FOUNTAIN NOT FOUND',
+            'stat_1_label': 'FOUNTAIN JP', 'stat_1_var': 'conquistador_jackpot_points', 'stat_2_label': 'SPEED BONUS', 'stat_2_var': 'conquistador_speed_bonus',
+            'points_var': 'active_mode_points', 'state_var': 'conquistador_state', 'song': 'play_song_54',
         },
         'spider_slayer': {
-            'title': 'SPIDER-SLAYER', 'intro_1': 'The Slayer is tracking you.', 'intro_2': 'Hit shots to evade capture.', 'intro_3': 'Complete ten danger shots.',
-            'summary_title_complete': 'SLAYER DESTROYED', 'summary_title_failed': 'SPIDER-MAN CAPTURED',
-            'stat_1_label': 'HITS', 'stat_1_var': 'active_mode_hits', 'stat_2_label': 'MAJOR HITS', 'stat_2_var': 'active_mode_major_hits',
+            'title': 'SPIDER-SLAYER', 'intro_1': 'The Slayer is tracking you.', 'intro_2': 'Hit lit shots to expose it.', 'intro_3': 'Destroy it at the Daily Bugle.',
+            'summary_title_complete': 'SLAYER DESTROYED', 'summary_title_failed': 'SLAYER ESCAPED',
+            'stat_1_label': 'SLAYER JP', 'stat_1_var': 'spider_slayer_jackpot', 'stat_2_label': 'HUNT TIME', 'stat_2_var': 'spider_slayer_hunt_time',
             'points_var': 'active_mode_points', 'state_var': 'spider_slayer_state', 'song': 'play_song_13',
         },
         'metal_eating_robot': {
@@ -1323,6 +1317,16 @@ class VillainBookends(Mode):
             callback=self._finish_current_bookend
         )
 
+    @staticmethod
+    def _format_summary_value(value):
+        if isinstance(value, bool):
+            return str(value)
+        if isinstance(value, int):
+            return f"{value:,}"
+        if isinstance(value, float) and value.is_integer():
+            return f"{int(value):,}"
+        return str(value)
+
     def _summary_request(self, villain=None, done_event=None, allow_skip=None, **kwargs):
         if villain not in self.VILLAINS:
             self.warning_log("Unknown villain summary requested: %s", villain)
@@ -1349,10 +1353,10 @@ class VillainBookends(Mode):
             self.current_summary_can_skip = bool(allow_skip)
 
         self._set_machine_var("villain_bookend_title", title)
-        self._set_machine_var("villain_bookend_line_1", f"{data['stat_1_label']}: {stat_1}")
+        self._set_machine_var("villain_bookend_line_1", f"{data['stat_1_label']}: {self._format_summary_value(stat_1)}")
         stat_2_label = data.get('stat_2_label', '')
         if stat_2_label:
-            self._set_machine_var("villain_bookend_line_2", f"{stat_2_label}: {stat_2}")
+            self._set_machine_var("villain_bookend_line_2", f"{stat_2_label}: {self._format_summary_value(stat_2)}")
         else:
             self._set_machine_var("villain_bookend_line_2", "")
         self._set_machine_var("villain_bookend_line_3", f"POINTS: {points:,}")

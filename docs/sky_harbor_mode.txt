@@ -1,0 +1,25 @@
+BARON VON RANTENRAVEN — SKY HARBOR
+
+Gameplay identity
+- Limited-flip rooftop precision mode.
+- Distinct from Vulture, whose upper-playfield identity is spinner volume and value building.
+
+Flow
+1. Hit any saucer to open roof access.
+2. Enter the upper playfield to begin a Sky Harbor assault with 10 flips.
+3. Hit all three unique upper targets before the flips run out.
+4. The first two unique targets award jackpots.
+5. The third unique target awards the Super Jackpot, boosted by remaining flips, and completes the mode.
+6. Re-hitting a completed target scores 250K.
+7. Running out of flips ends that roof attempt; the player can qualify another attempt after returning downstairs.
+
+Case files
+- More Time: 15 flips instead of 10.
+- Bigger Jackpots: raises target jackpots, Super base, and remaining-flip bonus.
+- More Jackpots: repeated completed targets score 500K instead of 250K.
+- Safety Net: starts the case-file ball save at mode start.
+- Shot Assist: the first unique target also spots another unhit target.
+
+Skymaster
+- The former limited-flip roof-target rules have been removed from Skymaster.
+- Skymaster remains a placeholder until a distinct mechanic is selected.

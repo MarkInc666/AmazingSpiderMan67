@@ -7,7 +7,7 @@ class MastermindTrap(Mode):
     Rules:
     - Start 2-ball multiball.
     - Five villain trap objectives are available at once:
-        Goblin: complete the right 5-bank.
+        Lizard: complete the right 5-bank.
         Doc Ock: hit all three upper targets.
         Mysterio: collect all three saucers.
         Scorpion: spin 10 times, then hit the star.
@@ -31,7 +31,7 @@ class MastermindTrap(Mode):
     SCORPION_SPINS_REQUIRED = 10
     PARAFINO_POP_HITS_REQUIRED = 15
 
-    TRAPS = ("goblin", "doc_ock", "mysterio", "scorpion", "parafino")
+    TRAPS = ("lizard", "doc_ock", "mysterio", "scorpion", "parafino")
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
@@ -242,8 +242,8 @@ class MastermindTrap(Mode):
     def _right_bank_complete(self, **kwargs):
         if self.mode_done:
             return
-        if "goblin" not in self.completed_traps:
-            self._complete_trap("goblin", "GOBLIN TRAP", "Right bank smashed")
+        if "lizard" not in self.completed_traps:
+            self._complete_trap("lizard", "LIZARD TRAP", "Right bank smashed")
         else:
             self._minor_hit(100_000)
 

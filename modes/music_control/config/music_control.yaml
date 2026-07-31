@@ -270,3 +270,8 @@ sound_player:
     moon_godess:
       bus: music
       loops: -1
+
+  play_music_song_54:
+    conquistador:
+      bus: music
+      loops: -1      

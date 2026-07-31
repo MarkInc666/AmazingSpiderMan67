@@ -1,0 +1,31 @@
+SPIDER-SLAYER — HUNT MODE
+
+Build phase
+- One random shot category starts lit.
+- Successful lit shots score 50,000 and add another lit category; earlier lit shots remain active.
+- Bigger Jackpots raises successful lit shots to 75,000.
+- Hunt Time begins on the first successful lit shot and stops on the fifteenth.
+- Shot Assist makes the first successful hit add two new lit categories instead of one.
+- Categories: left web, center web, left sling, right sling, left pop, right pop, left bank, right bank, star, and any saucer.
+- Any target or rubber in a bank counts for its bank category. Bank resets remain normal.
+
+Slayer Jackpot
+- The fifteenth successful shot clears all hunt lights, opens the rooftop gate, and lights the Daily Bugle VUK.
+- Base Slayer Jackpot is 2,000,000 and falls by 100,000 per second to a 100,000 minimum.
+- Bigger Jackpots starts it at 2,500,000.
+- More Time reduces the decay to 50,000 per second.
+- More Jackpots freezes the full starting value for ten seconds before decay begins.
+- Safety Net starts a ten-second, one-ball save when the VUK lights.
+- The display shows the falling jackpot value only; there is no separate timer.
+- Collecting the VUK destroys the Spider-Slayer and ends the mode.
+
+Lighting
+- Dark red GI during the hunt.
+- Active shots pulse red. Bank categories use bank GI lights.
+- Successful shots flash the playfield red.
+- At fifteen hits, build lights turn off, GI changes green, and the Daily Bugle/VUK area flashes green.
+
+Summary
+- MODE SCORE
+- SLAYER JP
+- HUNT TIME (first successful shot through fifteenth successful shot)

@@ -127,7 +127,7 @@ Good reason to include it: this chapter can be flashy and high-energy, with GI c
 Chapter 1 — Classic Rogues
 Rhino
 Vulture
-Lizard
+Green Goblin
 Sandman
 Electro
 Mini-Wizard: Sinister Surge
@@ -135,7 +135,7 @@ Mini-Wizard: Sinister Surge
 Chapter 2 — Masterminds
 Doctor Octopus
 Mysterio
-Green Goblin
+Green Lizard
 Scorpion
 Parafino
 Mini-Wizard: The Plotter

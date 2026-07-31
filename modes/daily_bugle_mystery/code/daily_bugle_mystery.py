@@ -79,8 +79,8 @@ class DailyBugleMystery(Mode):
     # remains the source of truth for actually starting modes; this is only used
     # to avoid selecting mystery awards that cannot do anything right now.
     CHAPTER_VILLAINS = {
-        1: ('rhino', 'sandman', 'vulture', 'lizard', 'electro'),
-        2: ('goblin', 'doc_ock', 'mysterio', 'scorpion', 'parafino'),
+        1: ('rhino', 'sandman', 'vulture', 'goblin', 'electro'),
+        2: ('lizard', 'doc_ock', 'mysterio', 'scorpion', 'parafino'),
         3: ('cerberus', 'vulcan', 'diana', 'cyclops', 'centaur'),
         4: ('plotter', 'fly_twins', 'fifth_avenue_phantom', 'enforcers', 'doctor_cool'),
         5: ('harley_clivendon', 'conquistador', 'spider_slayer', 'metal_eating_robot', 'fiddler'),

@@ -1,7 +1,7 @@
 #config_version=6
 
 # Mastermind Trap mini-wizard.
-# Chapter 2 wizard: Goblin, Doc Ock, Mysterio, Scorpion, and Parafino traps.
+# Chapter 2 wizard: Lizard, Doc Ock, Mysterio, Scorpion, and Parafino traps.
 # Uses chapter case-file bonus only. Active case-file powers are not used.
 
 mode:
@@ -141,7 +141,7 @@ show_player:
       action: play
       loops: 1
 
-  mastermind_trap_goblin_trap_complete:
+  mastermind_trap_lizard_trap_complete:
     mastermind_trap_right_bank_show:
       action: stop
   mastermind_trap_doc_ock_trap_complete:

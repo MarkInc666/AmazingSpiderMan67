@@ -345,6 +345,18 @@ player_vars:
   spider_slayer_state:
     initial_value: 0
     value_type: int
+  spider_slayer_hits:
+    initial_value: 0
+    value_type: int
+  spider_slayer_jackpot:
+    initial_value: 0
+    value_type: int
+  spider_slayer_hunt_time_tenths:
+    initial_value: 0
+    value_type: int
+  spider_slayer_hunt_time:
+    initial_value: "0.0 SEC"
+    value_type: str
   henry_smythe_state:
     initial_value: 0
     value_type: int

@@ -191,7 +191,7 @@ class VillainProgression(Mode):
         'master_vine': {'chapter': 11, 'name': 'Master Vine', 'start_event': 'start_mode_master_vine'},
         'master_technician': {'chapter': 11, 'name': 'Master Technician', 'start_event': 'start_mode_master_technician'},
         'spider_men': {'chapter': 11, 'name': 'The Spider-Men', 'start_event': 'start_mode_spider_men'},
-        'von_rantenraven': {'chapter': 11, 'name': 'Rantenraven', 'start_event': 'start_mode_von_rantenraven'},
+        'von_rantenraven': {'chapter': 11, 'name': 'Baron von Rantenraven', 'start_event': 'start_mode_von_rantenraven'},
     }
 
     FINAL_WIZARD_KEY = "final_showdown"

@@ -1,8 +1,5 @@
 #config_version=6
 
-# Conquistador placeholder villain mode.
-# Mode idea: FIND THE FOUNTAIN.
-
 mode:
   start_events: start_mode_conquistador
   stop_events:
@@ -16,65 +13,125 @@ widget_player:
   mode_conquistador_started:
     conquistador:
       action: play
-
   conquistador_mode_complete:
     conquistador:
       action: remove
-
   mode_conquistador_stopping:
     conquistador:
       action: remove
 
+ball_saves:
+  conquistador_safety_net:
+    active_time: 10s
+    hurry_up_time: 3s
+    grace_period: 1s
+    balls_to_save: -1
+    auto_launch: true
+    enable_events: conquistador_enable_safety_net
+    disable_events:
+      - conquistador_disable_safety_net
+      - conquistador_mode_complete
+      - mode_conquistador_stopping
+      - ball_ending
+
 event_player:
-  # Common playfield hits. Refine these later when the mode design is built out.
-  s_pop_left_active: conquistador_shot_hit
-  s_pop_right_active: conquistador_shot_hit
-  s_trispinner_opto_active: conquistador_shot_hit
-  s_web_spinner_active: conquistador_shot_hit
-  s_star_rollover_active: conquistador_shot_hit
-  s_upper_target_left_active: conquistador_shot_hit
-  s_upper_target_center_active: conquistador_shot_hit
-  s_upper_target_right_active: conquistador_shot_hit
+  s_left_drops_1_active: conquistador_left_drop_hit
+  s_left_drops_2_active: conquistador_left_drop_hit
+  s_left_drops_3_active: conquistador_left_drop_hit
+  drop_target_bank_dt_bank_left_down: conquistador_left_bank_complete
 
-  s_left_drops_1_active: conquistador_shot_hit
-  s_left_drops_2_active: conquistador_shot_hit
-  s_left_drops_3_active: conquistador_shot_hit
-  s_right_drops_1_active: conquistador_shot_hit
-  s_right_drops_2_active: conquistador_shot_hit
-  s_right_drops_3_active: conquistador_shot_hit
-  s_right_drops_4_active: conquistador_shot_hit
-  s_right_drops_5_active: conquistador_shot_hit
-
-  s_saucer_1_active:
-    - conquistador_major_hit
-    - clear_saucers
-  s_saucer_2_active:
-    - conquistador_major_hit
-    - clear_saucers
-  s_saucer_3_active:
-    - conquistador_major_hit
-    - clear_saucers
-  s_vuk_switch_active: conquistador_major_hit
-
-  drop_target_bank_dt_bank_left_down:
-    - drop_target_bank_dt_bank_left_reset
-  drop_target_bank_dt_bank_right_down:
-    - drop_target_bank_dt_bank_right_reset
+  s_trispinner_opto_active: conquistador_spinner_hit
+  s_upper_target_left_active: conquistador_upper_target_hit
+  s_upper_target_center_active: conquistador_upper_target_hit
+  s_upper_target_right_active: conquistador_upper_target_hit
+  s_web_target_mid_active: conquistador_center_web_hit
 
   mode_conquistador_started:
-    - rooftop_diverter_open|500ms
-    - clear_saucers
+    - clear_saucers_delayed
     - drop_target_bank_dt_bank_left_reset
-    - drop_target_bank_dt_bank_right_reset
+    - rooftop_diverter_close
+    - conquistador_clear_lights
 
   mode_conquistador_stopping:
-    - clear_saucers
+    - conquistador_clear_lights
+    - conquistador_disable_safety_net
+    - rooftop_diverter_close
+
+show_player:
+  conquistador_left_bank_phase:
+    conquistador_left_bank_flash:
+      loops: -1
+    conquistador_upper_targets_pulse:
+      loops: -1
+
+  conquistador_gate_open:
+    conquistador_left_bank_flash:
+      action: stop
+
+  conquistador_fountain_ready:
+    conquistador_fountain_flash:
+      loops: -1
+
+  conquistador_extra_sip_started:
+    conquistador_fountain_flash:
+      loops: -1
+
+  conquistador_clear_lights:
+    conquistador_left_bank_flash:
+      action: stop
+    conquistador_upper_targets_pulse:
+      action: stop
+    conquistador_fountain_flash:
+      action: stop
 
 light_player:
-  # Full-playfield GI theme while this mode is active.
-  mode_conquistador_started:
-    gi: 7050A0
+  conquistador_left_bank_phase:
+    gi: 40D060
 
-  mode_conquistador_stopping:
-    gi: E0E0E0
+  conquistador_gate_open:
+    gi: F0D040
+    l_gi_3bank: stop
+    l_3bankbonus: stop
 
+  conquistador_fountain_ready:
+    gi: 4060F0
+
+  conquistador_clear_lights:
+    gi: stop
+    l_mid_web_target: stop
+    l_upper_left: stop
+    l_upper_middle: stop
+    l_upper_right: stop
+    l_gi_3bank: stop
+    l_3bankbonus: stop
+
+shows:
+  conquistador_left_bank_flash:
+    - duration: 300ms
+      lights:
+        l_gi_3bank: 40D060
+        l_3bankbonus: 40D060
+    - duration: 300ms
+      lights:
+        l_gi_3bank: off
+        l_3bankbonus: off
+
+  conquistador_upper_targets_pulse:
+    - duration: 500ms
+      lights:
+        l_upper_left: 3050F0
+        l_upper_middle: 3050F0
+        l_upper_right: 3050F0
+    - duration: 500ms
+      lights:
+        l_upper_left: 101850
+        l_upper_middle: 101850
+        l_upper_right: 101850
+
+  conquistador_fountain_flash:
+    - duration: 300ms
+      lights:
+        l_mid_web_target: 40F060
+    - duration: 300ms
+      lights:
+        l_mid_web_target: off
