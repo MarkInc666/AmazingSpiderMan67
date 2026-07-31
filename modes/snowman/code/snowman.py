@@ -1,21 +1,26 @@
 from mpf.core.mode import Mode
 
 """
-Snowman / The Snowmen placeholder villain mode.
+The Snowman placeholder villain mode.
 
-Mode idea:
-Snowmen freeze shots; thaw with spinner/upper shots before collecting jackpot.
+APPROVED DESIGN:
+- Hit either web target for 100,000 to start a copper-wire connection.
+- The opposite web target lights for 16 seconds; hit it for 250,000.
+- The spinner then lights. The first spin defeats the Snowman, scores 100,000,
+  and starts an 8-second bonus window.
+- Every additional spinner spin during that window scores another 100,000.
+- The mode ends when the 8-second zap window expires.
 
 PLACEHOLDER IMPLEMENTATION
-- Python owns scoring, mode state, player variables, and completion/failure.
-- YAML maps common playfield hits into generic mode events.
-- Replace this with real gameplay when the villain is built out.
+- Current generic hit-count gameplay remains until the approved design is coded.
+- Replace the placeholder handlers with the web-to-web connection and spinner
+  bonus-window rules during implementation.
 """
 
 
 class Snowman(Mode):
     MODE_KEY = "snowman"
-    DISPLAY_NAME = "Snowman / The Snowmen"
+    DISPLAY_NAME = "The Snowman"
     HIT_SCORE = 25_000
     MAJOR_SCORE = 75_000
     HITS_TO_COMPLETE = 10

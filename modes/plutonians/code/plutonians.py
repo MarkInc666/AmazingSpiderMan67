@@ -1,21 +1,27 @@
 from mpf.core.mode import Mode
 
 """
-Metal-Eating Robot placeholder villain mode.
+The Plutonians placeholder villain mode.
 
-Mode idea:
-Monster eats metal targets; hit repair shots or lose scoring areas temporarily.
+APPROVED DESIGN:
+- All six playfield zones begin frozen and the roof-access gate starts open.
+- Hitting any upper target disables the freeze ray for 12 seconds.
+- Frozen zones can be thawed by hitting them while the ray is disabled.
+- Once the freeze ray reactivates, one currently thawed zone freezes every
+  12 seconds.
+- Thaw all six zones at the same time to repair the Space Warp Control and
+  send the Plutonians home.
 
 PLACEHOLDER IMPLEMENTATION
-- Python owns scoring, mode state, player variables, and completion/failure.
-- YAML maps common playfield hits into generic mode events.
-- Replace this with real gameplay when the villain is built out.
+- Current generic hit-count gameplay remains until the approved design is coded.
+- Replace the placeholder handlers with six-zone freeze/thaw state and the
+  upper-target freeze-ray-disable timer during implementation.
 """
 
 
 class Plutonians(Mode):
     MODE_KEY = "plutonians"
-    DISPLAY_NAME = "Metal-Eating Robot"
+    DISPLAY_NAME = "The Plutonians"
     HIT_SCORE = 25_000
     MAJOR_SCORE = 75_000
     HITS_TO_COMPLETE = 10

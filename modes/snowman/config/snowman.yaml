@@ -1,7 +1,10 @@
 #config_version=6
 
-# Snowman / The Snowmen placeholder villain mode.
-# Mode idea: Snowmen freeze shots; thaw with spinner/upper shots before collecting jackpot.
+# The Snowman placeholder villain mode.
+# Approved design: hit either web target for 100K, then the opposite web target
+# within 16 seconds for 250K to connect the copper wire. The first spinner spin
+# defeats the Snowman, scores 100K, and starts an 8-second unlimited 100K-per-spin
+# bonus window. Generic placeholder gameplay remains until implementation.
 
 mode:
   start_events: start_mode_snowman
