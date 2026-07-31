@@ -1,8 +1,5 @@
 #config_version=6
 
-# MetalEatingRobot placeholder villain mode.
-# Mode idea: STOP THE RAMPAGE.
-
 mode:
   start_events: start_mode_metal_eating_robot
   stop_events:
@@ -10,71 +7,765 @@ mode:
     - metal_eating_robot_mode_completed_summary
     - ball_ended
   code: metal_eating_robot.MetalEatingRobot
-  priority: 300
+  priority: 500
 
 widget_player:
   mode_metal_eating_robot_started:
-    metal_eating_robot:
-      action: play
-
-  metal_eating_robot_mode_complete:
-    metal_eating_robot:
-      action: remove
-
+    metal_eating_robot: {action: play}
   mode_metal_eating_robot_stopping:
-    metal_eating_robot:
-      action: remove
+    metal_eating_robot: {action: remove}
 
 event_player:
-  # Common playfield hits. Refine these later when the mode design is built out.
-  s_pop_left_active: metal_eating_robot_shot_hit
-  s_pop_right_active: metal_eating_robot_shot_hit
-  s_trispinner_opto_active: metal_eating_robot_shot_hit
-  s_web_spinner_active: metal_eating_robot_shot_hit
-  s_star_rollover_active: metal_eating_robot_shot_hit
-  s_upper_target_left_active: metal_eating_robot_shot_hit
-  s_upper_target_center_active: metal_eating_robot_shot_hit
-  s_upper_target_right_active: metal_eating_robot_shot_hit
-
-  s_left_drops_1_active: metal_eating_robot_shot_hit
-  s_left_drops_2_active: metal_eating_robot_shot_hit
-  s_left_drops_3_active: metal_eating_robot_shot_hit
-  s_right_drops_1_active: metal_eating_robot_shot_hit
-  s_right_drops_2_active: metal_eating_robot_shot_hit
-  s_right_drops_3_active: metal_eating_robot_shot_hit
-  s_right_drops_4_active: metal_eating_robot_shot_hit
-  s_right_drops_5_active: metal_eating_robot_shot_hit
-
+  s_sling_l_active: metal_zone_left_sling
+  s_inlane_l_active: metal_zone_left_sling
+  s_sling_r_active: metal_zone_right_sling
+  s_inlane_r_active: metal_zone_right_sling
+  s_web_target_left_active: metal_zone_left_web
+  s_inlane_m_l_active: metal_zone_left_web
+  s_star_rollover_active: metal_zone_upper_right
+  s_above_star_active: metal_zone_upper_right
+  s_inlane_a_active: metal_zone_upper_right
+  s_inlane_b_active: metal_zone_upper_right
+  s_left_drops_1_active: metal_zone_left_bank
+  s_left_drops_2_active: metal_zone_left_bank
+  s_left_drops_3_active: metal_zone_left_bank
+  s_left_drops_rubber_active: metal_zone_left_bank
+  s_left_drops_top_left_rubber_active: metal_zone_left_bank
+  s_left_drops_top_right_rubber_active: metal_zone_left_bank
+  s_web_spinner_active: metal_zone_left_bank
+  s_above_spinner_active: metal_zone_left_bank
+  s_right_drops_1_active: metal_zone_right_bank
+  s_right_drops_2_active: metal_zone_right_bank
+  s_right_drops_3_active: metal_zone_right_bank
+  s_right_drops_4_active: metal_zone_right_bank
+  s_right_drops_5_active: metal_zone_right_bank
+  s_right_drops_rubber_active: metal_zone_right_bank
+  s_right_drops_top_rubber_active: metal_zone_right_bank
+  s_mid_right_rubber_active: metal_zone_right_bank
+  s_inlane_m_r_active: metal_zone_right_bank
+  s_pop_left_active: metal_zone_center
+  s_pop_right_active: metal_zone_center
+  s_web_target_mid_active: metal_zone_center
+  s_leaf_next_to_1_active: metal_zone_saucers
   s_saucer_1_active:
-    - metal_eating_robot_major_hit
-    - clear_saucers
+    - metal_zone_saucers
+    - metal_saucer_1_eject
   s_saucer_2_active:
-    - metal_eating_robot_major_hit
-    - clear_saucers
+    - metal_zone_saucers
+    - metal_saucer_2_eject
   s_saucer_3_active:
-    - metal_eating_robot_major_hit
-    - clear_saucers
-  s_vuk_switch_active: metal_eating_robot_major_hit
-
-  drop_target_bank_dt_bank_left_down:
-    - drop_target_bank_dt_bank_left_reset
-  drop_target_bank_dt_bank_right_down:
-    - drop_target_bank_dt_bank_right_reset
-
+    - metal_zone_saucers
+    - metal_saucer_3_eject
+  drop_target_bank_dt_bank_left_down: drop_target_bank_dt_bank_left_reset
+  drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset
   mode_metal_eating_robot_started:
-    - rooftop_diverter_open|500ms
-    - clear_saucers
+    - rooftop_diverter_close
+    - clear_saucers_delayed
     - drop_target_bank_dt_bank_left_reset
     - drop_target_bank_dt_bank_right_reset
-
   mode_metal_eating_robot_stopping:
-    - clear_saucers
+    - clear_saucers_delayed
 
 light_player:
-  # Full-playfield GI theme while this mode is active.
   mode_metal_eating_robot_started:
-    gi: 7050A0
-
+    gi: 303030
   mode_metal_eating_robot_stopping:
     gi: E0E0E0
 
+  metal_zone_left_sling_destroyed:
+    l_left_inlane: off
+    l_gi_left_sling_upper: off
+    l_gi_left_sling_lower: off
+  metal_zone_right_sling_destroyed:
+    l_right_inlane: off
+    l_gi_right_sling: off
+    l_gi_right_return: off
+  metal_zone_left_web_destroyed:
+    l_left_web_target: off
+    l_left_b: off
+    l_gi_left_upper: off
+    l_gi_left_lower: off
+    l_gi_left_upper_flipper: off
+  metal_zone_upper_right_destroyed:
+    l_star: off
+    l_a_rollover: off
+    l_b_rollover: off
+    l_gi_ab: off
+    l_gi_a: off
+    l_gi_upflip: off
+    l_gi_bright: off
+    l_gi_top_3: off
+    l_gi_top_4: off
+  metal_zone_left_bank_destroyed:
+    l_3bankbonus: off
+    l_spinner: off
+    l_gi_3bank: off
+    l_gi_spinner: off
+  metal_zone_right_bank_destroyed:
+    l_5bank_1: off
+    l_5bank_2: off
+    l_5bank_3: off
+    l_5bank_4: off
+    l_5bank_5: off
+    l_right_a: off
+    l_gi_5bank_lower: off
+    l_gi_5bank_upper: off
+    l_gi_right_lower_triangle: off
+  metal_zone_center_destroyed:
+    l_pop_1_1: off
+    l_pop_1_2: off
+    l_pop_1_3: off
+    l_pop_1_4: off
+    l_pop_1_5: off
+    l_pop_1_6: off
+    l_pop_1_7: off
+    l_pop_1_8: off
+    l_pop_1_9: off
+    l_pop_1_10: off
+    l_pop_1_11: off
+    l_pop_1_12: off
+    l_pop_2_1: off
+    l_pop_2_2: off
+    l_pop_2_3: off
+    l_pop_2_4: off
+    l_pop_2_5: off
+    l_pop_2_6: off
+    l_pop_2_7: off
+    l_pop_2_8: off
+    l_pop_2_9: off
+    l_pop_2_10: off
+    l_pop_2_11: off
+    l_pop_2_12: off
+    l_mid_web_target: off
+    l_gi_mid_spider: off
+  metal_zone_saucers_destroyed:
+    l_1_hole_l: off
+    l_1_hole_r: off
+    l_2_hole_l: off
+    l_2_hole_r: off
+    l_3_hole_l: off
+    l_3_hole_r: off
+    l_1: off
+    l_2: off
+    l_3: off
+    l_123_bonus: off
+    l_gi_ramp: off
+
+show_player:
+  metal_zone_left_sling_attacked:
+    metal_left_sling_saved_show: {action: stop}
+    metal_left_sling_repeat_show: {action: stop}
+    metal_left_sling_attack_show: {loops: -1}
+  metal_zone_left_sling_saved:
+    metal_left_sling_attack_show: {action: stop}
+    metal_left_sling_saved_show: {loops: -1}
+  metal_zone_left_sling_repeat_available:
+    metal_left_sling_saved_show: {action: stop}
+    metal_left_sling_repeat_show: {loops: -1}
+  metal_zone_left_sling_repeat_collected:
+    metal_left_sling_repeat_show: {action: stop}
+    metal_left_sling_saved_show: {loops: -1}
+  metal_zone_left_sling_destroyed:
+    metal_left_sling_attack_show: {action: stop}
+    metal_left_sling_saved_show: {action: stop}
+    metal_left_sling_repeat_show: {action: stop}
+  metal_zone_right_sling_attacked:
+    metal_right_sling_saved_show: {action: stop}
+    metal_right_sling_repeat_show: {action: stop}
+    metal_right_sling_attack_show: {loops: -1}
+  metal_zone_right_sling_saved:
+    metal_right_sling_attack_show: {action: stop}
+    metal_right_sling_saved_show: {loops: -1}
+  metal_zone_right_sling_repeat_available:
+    metal_right_sling_saved_show: {action: stop}
+    metal_right_sling_repeat_show: {loops: -1}
+  metal_zone_right_sling_repeat_collected:
+    metal_right_sling_repeat_show: {action: stop}
+    metal_right_sling_saved_show: {loops: -1}
+  metal_zone_right_sling_destroyed:
+    metal_right_sling_attack_show: {action: stop}
+    metal_right_sling_saved_show: {action: stop}
+    metal_right_sling_repeat_show: {action: stop}
+  metal_zone_left_web_attacked:
+    metal_left_web_saved_show: {action: stop}
+    metal_left_web_repeat_show: {action: stop}
+    metal_left_web_attack_show: {loops: -1}
+  metal_zone_left_web_saved:
+    metal_left_web_attack_show: {action: stop}
+    metal_left_web_saved_show: {loops: -1}
+  metal_zone_left_web_repeat_available:
+    metal_left_web_saved_show: {action: stop}
+    metal_left_web_repeat_show: {loops: -1}
+  metal_zone_left_web_repeat_collected:
+    metal_left_web_repeat_show: {action: stop}
+    metal_left_web_saved_show: {loops: -1}
+  metal_zone_left_web_destroyed:
+    metal_left_web_attack_show: {action: stop}
+    metal_left_web_saved_show: {action: stop}
+    metal_left_web_repeat_show: {action: stop}
+  metal_zone_upper_right_attacked:
+    metal_upper_right_saved_show: {action: stop}
+    metal_upper_right_repeat_show: {action: stop}
+    metal_upper_right_attack_show: {loops: -1}
+  metal_zone_upper_right_saved:
+    metal_upper_right_attack_show: {action: stop}
+    metal_upper_right_saved_show: {loops: -1}
+  metal_zone_upper_right_repeat_available:
+    metal_upper_right_saved_show: {action: stop}
+    metal_upper_right_repeat_show: {loops: -1}
+  metal_zone_upper_right_repeat_collected:
+    metal_upper_right_repeat_show: {action: stop}
+    metal_upper_right_saved_show: {loops: -1}
+  metal_zone_upper_right_destroyed:
+    metal_upper_right_attack_show: {action: stop}
+    metal_upper_right_saved_show: {action: stop}
+    metal_upper_right_repeat_show: {action: stop}
+  metal_zone_left_bank_attacked:
+    metal_left_bank_saved_show: {action: stop}
+    metal_left_bank_repeat_show: {action: stop}
+    metal_left_bank_attack_show: {loops: -1}
+  metal_zone_left_bank_saved:
+    metal_left_bank_attack_show: {action: stop}
+    metal_left_bank_saved_show: {loops: -1}
+  metal_zone_left_bank_repeat_available:
+    metal_left_bank_saved_show: {action: stop}
+    metal_left_bank_repeat_show: {loops: -1}
+  metal_zone_left_bank_repeat_collected:
+    metal_left_bank_repeat_show: {action: stop}
+    metal_left_bank_saved_show: {loops: -1}
+  metal_zone_left_bank_destroyed:
+    metal_left_bank_attack_show: {action: stop}
+    metal_left_bank_saved_show: {action: stop}
+    metal_left_bank_repeat_show: {action: stop}
+  metal_zone_right_bank_attacked:
+    metal_right_bank_saved_show: {action: stop}
+    metal_right_bank_repeat_show: {action: stop}
+    metal_right_bank_attack_show: {loops: -1}
+  metal_zone_right_bank_saved:
+    metal_right_bank_attack_show: {action: stop}
+    metal_right_bank_saved_show: {loops: -1}
+  metal_zone_right_bank_repeat_available:
+    metal_right_bank_saved_show: {action: stop}
+    metal_right_bank_repeat_show: {loops: -1}
+  metal_zone_right_bank_repeat_collected:
+    metal_right_bank_repeat_show: {action: stop}
+    metal_right_bank_saved_show: {loops: -1}
+  metal_zone_right_bank_destroyed:
+    metal_right_bank_attack_show: {action: stop}
+    metal_right_bank_saved_show: {action: stop}
+    metal_right_bank_repeat_show: {action: stop}
+  metal_zone_center_attacked:
+    metal_center_saved_show: {action: stop}
+    metal_center_repeat_show: {action: stop}
+    metal_center_attack_show: {loops: -1}
+  metal_zone_center_saved:
+    metal_center_attack_show: {action: stop}
+    metal_center_saved_show: {loops: -1}
+  metal_zone_center_repeat_available:
+    metal_center_saved_show: {action: stop}
+    metal_center_repeat_show: {loops: -1}
+  metal_zone_center_repeat_collected:
+    metal_center_repeat_show: {action: stop}
+    metal_center_saved_show: {loops: -1}
+  metal_zone_center_destroyed:
+    metal_center_attack_show: {action: stop}
+    metal_center_saved_show: {action: stop}
+    metal_center_repeat_show: {action: stop}
+  metal_zone_saucers_attacked:
+    metal_saucers_saved_show: {action: stop}
+    metal_saucers_repeat_show: {action: stop}
+    metal_saucers_attack_show: {loops: -1}
+  metal_zone_saucers_saved:
+    metal_saucers_attack_show: {action: stop}
+    metal_saucers_saved_show: {loops: -1}
+  metal_zone_saucers_repeat_available:
+    metal_saucers_saved_show: {action: stop}
+    metal_saucers_repeat_show: {loops: -1}
+  metal_zone_saucers_repeat_collected:
+    metal_saucers_repeat_show: {action: stop}
+    metal_saucers_saved_show: {loops: -1}
+  metal_zone_saucers_destroyed:
+    metal_saucers_attack_show: {action: stop}
+    metal_saucers_saved_show: {action: stop}
+    metal_saucers_repeat_show: {action: stop}
+  metal_mode_ended:
+    metal_left_sling_attack_show: {action: stop}
+    metal_left_sling_saved_show: {action: stop}
+    metal_left_sling_repeat_show: {action: stop}
+    metal_right_sling_attack_show: {action: stop}
+    metal_right_sling_saved_show: {action: stop}
+    metal_right_sling_repeat_show: {action: stop}
+    metal_left_web_attack_show: {action: stop}
+    metal_left_web_saved_show: {action: stop}
+    metal_left_web_repeat_show: {action: stop}
+    metal_upper_right_attack_show: {action: stop}
+    metal_upper_right_saved_show: {action: stop}
+    metal_upper_right_repeat_show: {action: stop}
+    metal_left_bank_attack_show: {action: stop}
+    metal_left_bank_saved_show: {action: stop}
+    metal_left_bank_repeat_show: {action: stop}
+    metal_right_bank_attack_show: {action: stop}
+    metal_right_bank_saved_show: {action: stop}
+    metal_right_bank_repeat_show: {action: stop}
+    metal_center_attack_show: {action: stop}
+    metal_center_saved_show: {action: stop}
+    metal_center_repeat_show: {action: stop}
+    metal_saucers_attack_show: {action: stop}
+    metal_saucers_saved_show: {action: stop}
+    metal_saucers_repeat_show: {action: stop}
+
+shows:
+  metal_left_sling_attack_show:
+    - duration: 250ms
+      lights:
+        l_left_inlane: blue
+        l_gi_left_sling_upper: orange
+        l_gi_left_sling_lower: orange
+    - duration: 250ms
+      lights:
+        l_left_inlane: off
+        l_gi_left_sling_upper: off
+        l_gi_left_sling_lower: off
+  metal_left_sling_saved_show:
+    - duration: -1
+      lights:
+        l_left_inlane: blue
+        l_gi_left_sling_upper: green
+        l_gi_left_sling_lower: green
+  metal_left_sling_repeat_show:
+    - duration: 600ms
+      lights:
+        l_left_inlane: blue
+        l_gi_left_sling_upper: green
+        l_gi_left_sling_lower: green
+    - duration: 600ms
+      lights:
+        l_left_inlane: off
+        l_gi_left_sling_upper: off
+        l_gi_left_sling_lower: off
+  metal_right_sling_attack_show:
+    - duration: 250ms
+      lights:
+        l_right_inlane: blue
+        l_gi_right_sling: orange
+        l_gi_right_return: orange
+    - duration: 250ms
+      lights:
+        l_right_inlane: off
+        l_gi_right_sling: off
+        l_gi_right_return: off
+  metal_right_sling_saved_show:
+    - duration: -1
+      lights:
+        l_right_inlane: blue
+        l_gi_right_sling: green
+        l_gi_right_return: green
+  metal_right_sling_repeat_show:
+    - duration: 600ms
+      lights:
+        l_right_inlane: blue
+        l_gi_right_sling: green
+        l_gi_right_return: green
+    - duration: 600ms
+      lights:
+        l_right_inlane: off
+        l_gi_right_sling: off
+        l_gi_right_return: off
+  metal_left_web_attack_show:
+    - duration: 250ms
+      lights:
+        l_left_web_target: white
+        l_left_b: yellow
+        l_gi_left_upper: orange
+        l_gi_left_lower: orange
+        l_gi_left_upper_flipper: orange
+    - duration: 250ms
+      lights:
+        l_left_web_target: off
+        l_left_b: off
+        l_gi_left_upper: off
+        l_gi_left_lower: off
+        l_gi_left_upper_flipper: off
+  metal_left_web_saved_show:
+    - duration: -1
+      lights:
+        l_left_web_target: white
+        l_left_b: yellow
+        l_gi_left_upper: green
+        l_gi_left_lower: green
+        l_gi_left_upper_flipper: green
+  metal_left_web_repeat_show:
+    - duration: 600ms
+      lights:
+        l_left_web_target: white
+        l_left_b: yellow
+        l_gi_left_upper: green
+        l_gi_left_lower: green
+        l_gi_left_upper_flipper: green
+    - duration: 600ms
+      lights:
+        l_left_web_target: off
+        l_left_b: off
+        l_gi_left_upper: off
+        l_gi_left_lower: off
+        l_gi_left_upper_flipper: off
+  metal_upper_right_attack_show:
+    - duration: 250ms
+      lights:
+        l_star: red
+        l_a_rollover: yellow
+        l_b_rollover: yellow
+        l_gi_ab: orange
+        l_gi_a: orange
+        l_gi_upflip: orange
+        l_gi_bright: orange
+        l_gi_top_3: orange
+        l_gi_top_4: orange
+    - duration: 250ms
+      lights:
+        l_star: off
+        l_a_rollover: off
+        l_b_rollover: off
+        l_gi_ab: off
+        l_gi_a: off
+        l_gi_upflip: off
+        l_gi_bright: off
+        l_gi_top_3: off
+        l_gi_top_4: off
+  metal_upper_right_saved_show:
+    - duration: -1
+      lights:
+        l_star: red
+        l_a_rollover: yellow
+        l_b_rollover: yellow
+        l_gi_ab: green
+        l_gi_a: green
+        l_gi_upflip: green
+        l_gi_bright: green
+        l_gi_top_3: green
+        l_gi_top_4: green
+  metal_upper_right_repeat_show:
+    - duration: 600ms
+      lights:
+        l_star: red
+        l_a_rollover: yellow
+        l_b_rollover: yellow
+        l_gi_ab: green
+        l_gi_a: green
+        l_gi_upflip: green
+        l_gi_bright: green
+        l_gi_top_3: green
+        l_gi_top_4: green
+    - duration: 600ms
+      lights:
+        l_star: off
+        l_a_rollover: off
+        l_b_rollover: off
+        l_gi_ab: off
+        l_gi_a: off
+        l_gi_upflip: off
+        l_gi_bright: off
+        l_gi_top_3: off
+        l_gi_top_4: off
+  metal_left_bank_attack_show:
+    - duration: 250ms
+      lights:
+        l_3bankbonus: green
+        l_spinner: white
+        l_gi_3bank: orange
+        l_gi_spinner: orange
+    - duration: 250ms
+      lights:
+        l_3bankbonus: off
+        l_spinner: off
+        l_gi_3bank: off
+        l_gi_spinner: off
+  metal_left_bank_saved_show:
+    - duration: -1
+      lights:
+        l_3bankbonus: green
+        l_spinner: white
+        l_gi_3bank: green
+        l_gi_spinner: green
+  metal_left_bank_repeat_show:
+    - duration: 600ms
+      lights:
+        l_3bankbonus: green
+        l_spinner: white
+        l_gi_3bank: green
+        l_gi_spinner: green
+    - duration: 600ms
+      lights:
+        l_3bankbonus: off
+        l_spinner: off
+        l_gi_3bank: off
+        l_gi_spinner: off
+  metal_right_bank_attack_show:
+    - duration: 250ms
+      lights:
+        l_5bank_1: green
+        l_5bank_2: green
+        l_5bank_3: green
+        l_5bank_4: green
+        l_5bank_5: green
+        l_right_a: yellow
+        l_gi_5bank_lower: orange
+        l_gi_5bank_upper: orange
+        l_gi_right_lower_triangle: orange
+    - duration: 250ms
+      lights:
+        l_5bank_1: off
+        l_5bank_2: off
+        l_5bank_3: off
+        l_5bank_4: off
+        l_5bank_5: off
+        l_right_a: off
+        l_gi_5bank_lower: off
+        l_gi_5bank_upper: off
+        l_gi_right_lower_triangle: off
+  metal_right_bank_saved_show:
+    - duration: -1
+      lights:
+        l_5bank_1: green
+        l_5bank_2: green
+        l_5bank_3: green
+        l_5bank_4: green
+        l_5bank_5: green
+        l_right_a: yellow
+        l_gi_5bank_lower: green
+        l_gi_5bank_upper: green
+        l_gi_right_lower_triangle: green
+  metal_right_bank_repeat_show:
+    - duration: 600ms
+      lights:
+        l_5bank_1: green
+        l_5bank_2: green
+        l_5bank_3: green
+        l_5bank_4: green
+        l_5bank_5: green
+        l_right_a: yellow
+        l_gi_5bank_lower: green
+        l_gi_5bank_upper: green
+        l_gi_right_lower_triangle: green
+    - duration: 600ms
+      lights:
+        l_5bank_1: off
+        l_5bank_2: off
+        l_5bank_3: off
+        l_5bank_4: off
+        l_5bank_5: off
+        l_right_a: off
+        l_gi_5bank_lower: off
+        l_gi_5bank_upper: off
+        l_gi_right_lower_triangle: off
+  metal_center_attack_show:
+    - duration: 250ms
+      lights:
+        l_pop_1_1: white
+        l_pop_1_2: white
+        l_pop_1_3: white
+        l_pop_1_4: white
+        l_pop_1_5: white
+        l_pop_1_6: white
+        l_pop_1_7: white
+        l_pop_1_8: white
+        l_pop_1_9: white
+        l_pop_1_10: white
+        l_pop_1_11: white
+        l_pop_1_12: white
+        l_pop_2_1: white
+        l_pop_2_2: white
+        l_pop_2_3: white
+        l_pop_2_4: white
+        l_pop_2_5: white
+        l_pop_2_6: white
+        l_pop_2_7: white
+        l_pop_2_8: white
+        l_pop_2_9: white
+        l_pop_2_10: white
+        l_pop_2_11: white
+        l_pop_2_12: white
+        l_mid_web_target: white
+        l_gi_mid_spider: orange
+    - duration: 250ms
+      lights:
+        l_pop_1_1: off
+        l_pop_1_2: off
+        l_pop_1_3: off
+        l_pop_1_4: off
+        l_pop_1_5: off
+        l_pop_1_6: off
+        l_pop_1_7: off
+        l_pop_1_8: off
+        l_pop_1_9: off
+        l_pop_1_10: off
+        l_pop_1_11: off
+        l_pop_1_12: off
+        l_pop_2_1: off
+        l_pop_2_2: off
+        l_pop_2_3: off
+        l_pop_2_4: off
+        l_pop_2_5: off
+        l_pop_2_6: off
+        l_pop_2_7: off
+        l_pop_2_8: off
+        l_pop_2_9: off
+        l_pop_2_10: off
+        l_pop_2_11: off
+        l_pop_2_12: off
+        l_mid_web_target: off
+        l_gi_mid_spider: off
+  metal_center_saved_show:
+    - duration: -1
+      lights:
+        l_pop_1_1: white
+        l_pop_1_2: white
+        l_pop_1_3: white
+        l_pop_1_4: white
+        l_pop_1_5: white
+        l_pop_1_6: white
+        l_pop_1_7: white
+        l_pop_1_8: white
+        l_pop_1_9: white
+        l_pop_1_10: white
+        l_pop_1_11: white
+        l_pop_1_12: white
+        l_pop_2_1: white
+        l_pop_2_2: white
+        l_pop_2_3: white
+        l_pop_2_4: white
+        l_pop_2_5: white
+        l_pop_2_6: white
+        l_pop_2_7: white
+        l_pop_2_8: white
+        l_pop_2_9: white
+        l_pop_2_10: white
+        l_pop_2_11: white
+        l_pop_2_12: white
+        l_mid_web_target: white
+        l_gi_mid_spider: green
+  metal_center_repeat_show:
+    - duration: 600ms
+      lights:
+        l_pop_1_1: white
+        l_pop_1_2: white
+        l_pop_1_3: white
+        l_pop_1_4: white
+        l_pop_1_5: white
+        l_pop_1_6: white
+        l_pop_1_7: white
+        l_pop_1_8: white
+        l_pop_1_9: white
+        l_pop_1_10: white
+        l_pop_1_11: white
+        l_pop_1_12: white
+        l_pop_2_1: white
+        l_pop_2_2: white
+        l_pop_2_3: white
+        l_pop_2_4: white
+        l_pop_2_5: white
+        l_pop_2_6: white
+        l_pop_2_7: white
+        l_pop_2_8: white
+        l_pop_2_9: white
+        l_pop_2_10: white
+        l_pop_2_11: white
+        l_pop_2_12: white
+        l_mid_web_target: white
+        l_gi_mid_spider: green
+    - duration: 600ms
+      lights:
+        l_pop_1_1: off
+        l_pop_1_2: off
+        l_pop_1_3: off
+        l_pop_1_4: off
+        l_pop_1_5: off
+        l_pop_1_6: off
+        l_pop_1_7: off
+        l_pop_1_8: off
+        l_pop_1_9: off
+        l_pop_1_10: off
+        l_pop_1_11: off
+        l_pop_1_12: off
+        l_pop_2_1: off
+        l_pop_2_2: off
+        l_pop_2_3: off
+        l_pop_2_4: off
+        l_pop_2_5: off
+        l_pop_2_6: off
+        l_pop_2_7: off
+        l_pop_2_8: off
+        l_pop_2_9: off
+        l_pop_2_10: off
+        l_pop_2_11: off
+        l_pop_2_12: off
+        l_mid_web_target: off
+        l_gi_mid_spider: off
+  metal_saucers_attack_show:
+    - duration: 250ms
+      lights:
+        l_1_hole_l: red
+        l_1_hole_r: red
+        l_2_hole_l: red
+        l_2_hole_r: red
+        l_3_hole_l: red
+        l_3_hole_r: red
+        l_1: green
+        l_2: green
+        l_3: green
+        l_123_bonus: white
+        l_gi_ramp: orange
+    - duration: 250ms
+      lights:
+        l_1_hole_l: off
+        l_1_hole_r: off
+        l_2_hole_l: off
+        l_2_hole_r: off
+        l_3_hole_l: off
+        l_3_hole_r: off
+        l_1: off
+        l_2: off
+        l_3: off
+        l_123_bonus: off
+        l_gi_ramp: off
+  metal_saucers_saved_show:
+    - duration: -1
+      lights:
+        l_1_hole_l: red
+        l_1_hole_r: red
+        l_2_hole_l: red
+        l_2_hole_r: red
+        l_3_hole_l: red
+        l_3_hole_r: red
+        l_1: green
+        l_2: green
+        l_3: green
+        l_123_bonus: white
+        l_gi_ramp: green
+  metal_saucers_repeat_show:
+    - duration: 600ms
+      lights:
+        l_1_hole_l: red
+        l_1_hole_r: red
+        l_2_hole_l: red
+        l_2_hole_r: red
+        l_3_hole_l: red
+        l_3_hole_r: red
+        l_1: green
+        l_2: green
+        l_3: green
+        l_123_bonus: white
+        l_gi_ramp: green
+    - duration: 600ms
+      lights:
+        l_1_hole_l: off
+        l_1_hole_r: off
+        l_2_hole_l: off
+        l_2_hole_r: off
+        l_3_hole_l: off
+        l_3_hole_r: off
+        l_1: off
+        l_2: off
+        l_3: off
+        l_123_bonus: off
+        l_gi_ramp: off

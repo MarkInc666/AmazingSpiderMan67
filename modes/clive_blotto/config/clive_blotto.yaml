@@ -1,7 +1,9 @@
 #config_version=6
 
-# Spider-Slayer placeholder villain mode.
-# Mode idea: Robot locks onto shot groups; hit priority target before attack resolves.
+# Clive and Blotto placeholder villain mode.
+# Approved design: Blotto Meter starts at 3/4 and rises every 2 seconds. Spinner
+# hits lower it and pause growth for 2 seconds. A full meter Blotto's a clean
+# area; any hit in that area clears it. Win with no Blotto'd areas and meter 0.
 
 mode:
   start_events: start_mode_clive_blotto

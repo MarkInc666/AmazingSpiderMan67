@@ -3,13 +3,17 @@ from mpf.core.mode import Mode
 """
 Doctor Zapp placeholder villain mode.
 
-Mode idea:
-Chain electricity through shot groups; each correct chain step lights higher jackpot.
+Approved design concept:
+Knock down at least one target from the left bank and one from the right bank
+to open rooftop access. The upper spinner represents camera flashes; Doctor
+Zapp is defeated after 25 flashes. Each spinner spin normally awards 1 flash.
+Each of the three upper helper targets lights permanently when first hit and
+adds +1 flash to every later spinner spin. Lower-bank drops score 100,000,
+upper helper targets score 50,000, and each flash scores 50,000.
 
 PLACEHOLDER IMPLEMENTATION
-- Python owns scoring, mode state, player variables, and completion/failure.
-- YAML maps common playfield hits into generic mode events.
-- Replace this with real gameplay when the villain is built out.
+- Current generic hit-count gameplay remains temporary.
+- Replace it with the approved roof-access and flash design when built.
 """
 
 

@@ -1,7 +1,9 @@
 #config_version=6
 
 # Doctor Zapp placeholder villain mode.
-# Mode idea: Chain electricity through shot groups; each correct chain step lights higher jackpot.
+# Approved design: one left-bank and one right-bank target open roof access.
+# Upper spinner camera flashes defeat Zapp at 25; each lit upper helper target
+# adds +1 flash per spin. Drops score 100K, helpers 50K, flashes 50K.
 
 mode:
   start_events: start_mode_dr_zapp

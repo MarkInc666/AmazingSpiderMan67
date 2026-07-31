@@ -3,13 +3,18 @@ from mpf.core.mode import Mode
 """
 Bolton and Boomer placeholder villain mode.
 
-Mode idea:
-Shots freeze one by one; hit thaw shots to restore them and cash freeze jackpot.
+Approved design concept:
+Start 2-ball multiball with one random Electro-style target lit. Hitting it ends
+the roaming-target phase and lights all three saucers. Lock one ball in any
+saucer to capture Boomer, open the gate, and light the VUK Super against Bolton.
+The first Super remains lit until collected. Later Supers run for 20 seconds;
+if missed, the gate closes, the held saucer ball is released, and the random
+stage restarts. Collecting a Super releases the saucer ball, kicks the VUK ball,
+and returns to the random-target stage.
 
 PLACEHOLDER IMPLEMENTATION
-- Python owns scoring, mode state, player variables, and completion/failure.
-- YAML maps common playfield hits into generic mode events.
-- Replace this with real gameplay when the villain is built out.
+- Current generic hit-count gameplay remains temporary.
+- Replace it with the approved repeating multiball loop when built.
 """
 
 

@@ -1,7 +1,9 @@
 #config_version=6
 
 # Bolton and Boomer placeholder villain mode.
-# Mode idea: Shots freeze one by one; hit thaw shots to restore them and cash freeze jackpot.
+# Approved design: repeating 2-ball MB loop. Hit a random lit target, lock one
+# ball in a saucer, then shoot the VUK Super. First Super is untimed; later
+# Supers run 20 seconds and reset the loop if missed.
 
 mode:
   start_events: start_mode_bolton_boomer

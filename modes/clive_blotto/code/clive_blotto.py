@@ -1,21 +1,24 @@
 from mpf.core.mode import Mode
 
 """
-Spider-Slayer placeholder villain mode.
+Clive and Blotto placeholder villain mode.
 
-Mode idea:
-Robot locks onto shot groups; hit priority target before attack resolves.
+Approved design concept:
+The Blotto Meter starts at 3 out of 4 and gains 1 every 2 seconds. Each spinner
+hit lowers the meter by 1 and pauses further growth for 2 seconds; repeated
+spins reset that pause. When the meter reaches 4, it resets to 0 and one clean
+playfield area becomes Blotto'd. Hitting any switch in a Blotto'd area clears
+that area. Clive is defeated when no areas are Blotto'd and the meter is empty.
 
 PLACEHOLDER IMPLEMENTATION
-- Python owns scoring, mode state, player variables, and completion/failure.
-- YAML maps common playfield hits into generic mode events.
-- Replace this with real gameplay when the villain is built out.
+- Current generic hit-count gameplay remains temporary.
+- Replace it with the approved meter-and-area design when this mode is built.
 """
 
 
 class CliveBlotto(Mode):
     MODE_KEY = "clive_blotto"
-    DISPLAY_NAME = "Spider-Slayer"
+    DISPLAY_NAME = "Clive and Blotto"
     HIT_SCORE = 25_000
     MAJOR_SCORE = 75_000
     HITS_TO_COMPLETE = 10

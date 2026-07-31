@@ -411,15 +411,15 @@ class VillainBookends(Mode):
             'points_var': 'active_mode_points', 'state_var': 'spider_slayer_state', 'song': 'play_song_13',
         },
         'metal_eating_robot': {
-            'title': 'METAL MONSTER', 'intro_1': 'The robot is eating the city.', 'intro_2': 'Attack before it reaches the river.', 'intro_3': 'Complete ten danger shots.',
-            'summary_title_complete': 'METAL MONSTER SCRAPPED', 'summary_title_failed': 'METAL MONSTER ESCAPED',
-            'stat_1_label': 'HITS', 'stat_1_var': 'active_mode_hits', 'stat_2_label': 'MAJOR HITS', 'stat_2_var': 'active_mode_major_hits',
+            'title': 'METAL MONSTER', 'intro_1': 'Eight city zones are in danger.', 'intro_2': 'A new attack begins every five seconds.', 'intro_3': 'Save four before three are destroyed.',
+            'summary_title_complete': 'CITY SAVED', 'summary_title_failed': 'CITY DESTROYED',
+            'stat_1_label': 'ZONES SAVED', 'stat_1_var': 'metal_zones_saved', 'stat_2_label': 'DESTROYED', 'stat_2_var': 'metal_zones_destroyed',
             'points_var': 'active_mode_points', 'state_var': 'metal_eating_robot_state', 'song': 'play_song_14',
         },
         'fiddler': {
-            'title': 'FIDDLER', 'intro_1': 'Follow the dangerous melody.', 'intro_2': 'Silence the violin.', 'intro_3': 'Complete ten danger shots.',
+            'title': 'FIDDLER', 'intro_1': 'Watch the flashing notes.', 'intro_2': 'Repeat each melody in order.', 'intro_3': 'One wrong note and Fiddler escapes.',
             'summary_title_complete': 'FIDDLER SILENCED', 'summary_title_failed': 'FIDDLER ESCAPED',
-            'stat_1_label': 'HITS', 'stat_1_var': 'active_mode_hits', 'stat_2_label': 'RANSOM', 'stat_2_var': 'fiddler_bonus',
+            'stat_1_label': 'ROUND', 'stat_1_var': 'fiddler_round', 'stat_2_label': 'NOTES HIT', 'stat_2_var': 'active_mode_hits',
             'points_var': 'active_mode_points', 'state_var': 'fiddler_state', 'song': 'play_song_16',
         },
         'pardo': {
