@@ -1,0 +1,59 @@
+DOCTOR ZAPP — CAMERA FLASHES
+Status: Implemented / needs playtest
+Chapter: Elemental Chaos
+
+CORE RULES
+- Hit one target from the left drop bank and one target from the right drop bank.
+- The first qualifying hit in each bank scores 100,000; Bigger Jackpots scores 150,000.
+- When both banks are qualified, rooftop access opens and stays open for the rest of the mode.
+- Bank progress, camera flashes, and upper-target upgrades remain if the ball leaves the roof.
+
+ROOFTOP PHASE
+- The upper spinner is always active after rooftop access opens.
+- Each spinner spin scores 50,000, or 75,000 with Bigger Jackpots.
+- Each spin adds one camera flash plus one additional flash for every unique upper target collected.
+- The three unique upper targets each score 50,000, or 75,000 with Bigger Jackpots.
+- Each unique upper target permanently adds +1 camera flash per spinner spin.
+- Repeated upper-target hits have no extra mode award.
+- Doctor Zapp is defeated immediately at 25 or more camera flashes.
+
+CASE FILE HELPERS
+- Safety Net: 10-second ball save at mode start.
+- More Time: 15-second ball save on the first upper-playfield entry only.
+- Bigger Jackpots: bank qualifications 150K; upper targets and spinner spins 75K.
+- Shot Assist: the first unique upper target randomly awards another uncollected upper target, including its score and +1 flash-per-spin upgrade.
+- More Jackpots: after 25 flashes, keep the upper flipper enabled for a 10-second victory spinner window. Spins score normal points only and do not add flashes. At expiry, start the upper-flipper lockout and summary.
+
+DEFEAT / FLIPPER HANDOFF
+- Without More Jackpots, reaching 25 flashes immediately requests a six-second upper-flipper lockout and completes the mode.
+- With More Jackpots, the lockout begins after the 10-second bonus window.
+- Only the right upper flipper is disabled; lower flippers remain active.
+- The persistent base mode owns the six-second timer so it survives Doctor Zapp teardown and summary startup.
+- No additional defeat ball save is awarded.
+
+LIGHTING
+- Start GI dark blue.
+- Both bank GIs pulse blue; a qualified bank turns solid blue.
+- One-bank progress uses a blue GI pulse.
+- Both banks qualified changes GI to bright electric blue and opens rooftop access.
+- All upper-target lamps pulse white; collected and Shot Assist-awarded targets turn solid white.
+- First-time upper-target awards give a brief white GI flash.
+- Reaching 25 flashes gives a full white flash.
+- More Jackpots victory window pulses blue/white.
+- Spinner hits retain the existing shared spinner GI flash; this mode adds no duplicate spinner flash.
+
+STATUS / MESSAGES
+- HIT EACH DROP BANK
+- 25 CAMERA FLASHES
+- BONUS SPINS
+- BANK QUALIFIED — 100K / 150K
+- ROOFTOP ACCESS OPEN
+- FLASH BOOST +1 — 50K / 75K
+- EXTRA FLASH BOOST — 50K / 75K
+- DOCTOR ZAPP DEFEATED
+- BONUS SPINS — 10 SEC
+
+SUMMARY
+- MODE SCORE
+- CAMERA FLASHES
+- SPINNER SPINS

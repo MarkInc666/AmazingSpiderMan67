@@ -1,11 +1,5 @@
 #config_version=6
 
-# The Snowman placeholder villain mode.
-# Approved design: hit either web target for 100K, then the opposite web target
-# within 16 seconds for 250K to connect the copper wire. The first spinner spin
-# defeats the Snowman, scores 100K, and starts an 8-second unlimited 100K-per-spin
-# bonus window. Generic placeholder gameplay remains until implementation.
-
 mode:
   start_events: start_mode_snowman
   stop_events:
@@ -17,67 +11,137 @@ mode:
 
 widget_player:
   mode_snowman_started:
-    snowman:
-      action: play
-
+    snowman: {action: play}
   snowman_mode_complete:
-    snowman:
-      action: remove
-
+    snowman: {action: remove}
   mode_snowman_stopping:
-    snowman:
-      action: remove
+    snowman: {action: remove}
 
 event_player:
-  # Common playfield hits. Refine these later when the mode design is built out.
-  s_pop_left_active: snowman_shot_hit
-  s_pop_right_active: snowman_shot_hit
-  s_trispinner_opto_active: snowman_shot_hit
-  s_web_spinner_active: snowman_shot_hit
-  s_star_rollover_active: snowman_shot_hit
-  s_upper_target_left_active: snowman_shot_hit
-  s_upper_target_center_active: snowman_shot_hit
-  s_upper_target_right_active: snowman_shot_hit
+  s_web_target_left_active: snowman_left_web_hit
+  s_web_target_mid_active: snowman_center_web_hit
+  s_web_spinner_active: snowman_spinner_hit
 
-  s_left_drops_1_active: snowman_shot_hit
-  s_left_drops_2_active: snowman_shot_hit
-  s_left_drops_3_active: snowman_shot_hit
-  s_right_drops_1_active: snowman_shot_hit
-  s_right_drops_2_active: snowman_shot_hit
-  s_right_drops_3_active: snowman_shot_hit
-  s_right_drops_4_active: snowman_shot_hit
-  s_right_drops_5_active: snowman_shot_hit
-
-  s_saucer_1_active:
-    - snowman_major_hit
-    - clear_saucers
-  s_saucer_2_active:
-    - snowman_major_hit
-    - clear_saucers
-  s_saucer_3_active:
-    - snowman_major_hit
-    - clear_saucers
-  s_vuk_switch_active: snowman_major_hit
-
-  drop_target_bank_dt_bank_left_down:
-    - drop_target_bank_dt_bank_left_reset
-  drop_target_bank_dt_bank_right_down:
-    - drop_target_bank_dt_bank_right_reset
+  drop_target_bank_dt_bank_left_down: drop_target_bank_dt_bank_left_reset
+  drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset
 
   mode_snowman_started:
-    - rooftop_diverter_open|500ms
-    - clear_saucers
-    - drop_target_bank_dt_bank_left_reset
-    - drop_target_bank_dt_bank_right_reset
-
+    - reset_drops
+    - clear_saucers_delayed
   mode_snowman_stopping:
-    - clear_saucers
+    - clear_saucers_delayed
+
+ball_saves:
+  snowman_safety_net:
+    active_time: 10s
+    hurry_up_time: 2s
+    grace_period: 1s
+    enable_events: snowman_enable_safety_net
+    disable_events:
+      - snowman_disable_safety_net
+      - mode_snowman_stopping
+    auto_launch: true
+    balls_to_save: 1
+
+show_player:
+  snowman_idle_phase:
+    snowman_deep_blue_gi: {action: stop}
+    snowman_spinner_gi: {action: stop}
+    snowman_bonus_gi: {action: stop}
+    snowman_left_web_solid: {action: stop}
+    snowman_center_web_solid: {action: stop}
+    snowman_left_web_pulse: {loops: -1}
+    snowman_center_web_pulse: {loops: -1}
+    snowman_idle_gi: {loops: -1}
+
+  snowman_wire_started:
+    snowman_idle_gi: {action: stop}
+    snowman_deep_blue_gi: {loops: -1}
+
+  snowman_left_web_solid:
+    snowman_left_web_pulse: {action: stop}
+    snowman_left_web_solid: {loops: -1}
+  snowman_center_web_solid:
+    snowman_center_web_pulse: {action: stop}
+    snowman_center_web_solid: {loops: -1}
+  snowman_left_web_pulse:
+    snowman_left_web_pulse: {loops: -1}
+  snowman_center_web_pulse:
+    snowman_center_web_pulse: {loops: -1}
+
+  snowman_wire_complete:
+    snowman_deep_blue_gi: {action: stop}
+    snowman_left_web_pulse: {action: stop}
+    snowman_center_web_pulse: {action: stop}
+    snowman_left_web_solid: {loops: -1}
+    snowman_center_web_solid: {loops: -1}
+    snowman_white_flash: {loops: 1}
+    snowman_spinner_gi: {loops: -1}
+    snowman_spinner_flash: {loops: -1}
+
+  snowman_defeated:
+    snowman_spinner_gi: {action: stop}
+    snowman_bonus_gi: {loops: -1}
+
+  snowman_spin_flash:
+    snowman_white_flash: {loops: 1}
+
+  snowman_clear_all:
+    snowman_idle_gi: {action: stop}
+    snowman_deep_blue_gi: {action: stop}
+    snowman_spinner_gi: {action: stop}
+    snowman_bonus_gi: {action: stop}
+    snowman_left_web_pulse: {action: stop}
+    snowman_center_web_pulse: {action: stop}
+    snowman_left_web_solid: {action: stop}
+    snowman_center_web_solid: {action: stop}
+    snowman_spinner_flash: {action: stop}
 
 light_player:
-  # Full-playfield GI theme while this mode is active.
-  mode_snowman_started:
-    gi: D8F8FF
+  snowman_clear_all:
+    gi: stop
+    l_left_web_target: stop
+    l_mid_web_target: stop
+    l_gi_spinner: stop
 
-  mode_snowman_stopping:
-    gi: E0E0E0
-
+shows:
+  snowman_idle_gi:
+    - duration: 1s
+      lights: {gi: A0D8F0}
+  snowman_deep_blue_gi:
+    - duration: 1s
+      lights: {gi: 305090}
+  snowman_spinner_gi:
+    - duration: 1s
+      lights: {gi: 309090}
+  snowman_bonus_gi:
+    - duration: 500ms
+      lights: {gi: 4080C0}
+    - duration: 500ms
+      lights: {gi: D8F8FF}
+  snowman_white_flash:
+    - duration: 250ms
+      lights: {gi: FFFFFF}
+    - duration: 250ms
+      lights: {gi: 4080C0}
+  snowman_left_web_pulse:
+    - duration: 500ms
+      lights: {l_left_web_target: FF2020}
+    - duration: 500ms
+      lights: {l_left_web_target: 401010}
+  snowman_center_web_pulse:
+    - duration: 500ms
+      lights: {l_mid_web_target: FF2020}
+    - duration: 500ms
+      lights: {l_mid_web_target: 401010}
+  snowman_left_web_solid:
+    - duration: 1s
+      lights: {l_left_web_target: FF2020}
+  snowman_center_web_solid:
+    - duration: 1s
+      lights: {l_mid_web_target: FF2020}
+  snowman_spinner_flash:
+    - duration: 250ms
+      lights: {l_gi_spinner: 40FF80}
+    - duration: 250ms
+      lights: {l_gi_spinner: 102010}

@@ -1,16 +1,16 @@
 #config_version=6
 
-# The Plutonians placeholder villain mode.
-# Approved design: all six zones start frozen and the roof-access gate starts open.
-# Any upper target disables the freeze ray for 12 seconds so frozen zones can be
-# thawed. When the ray is active, one thawed zone freezes every 12 seconds. Thaw
-# all six simultaneously to repair the Space Warp Control and send them home.
-# Generic placeholder gameplay remains until implementation.
+# THE PLUTONIANS — six-area freeze/thaw control mode.
+# Areas reuse Super Swami's bottom/middle/upper x left/right switch map.
+# Areas can be thawed at any time. The active ray randomly refreezes one thawed
+# area every 12 seconds. Upper targets block it for 20 seconds (25 with More
+# Time), and every target hit resets the full blocked period.
 
 mode:
   start_events: start_mode_plutonians
   stop_events:
     - plutonians_mode_complete
+    - plutonians_mode_failed
     - plutonians_mode_completed_summary
     - ball_ended
   code: plutonians.Plutonians
@@ -20,65 +20,306 @@ widget_player:
   mode_plutonians_started:
     plutonians:
       action: play
-
   plutonians_mode_complete:
     plutonians:
       action: remove
-
+  plutonians_mode_failed:
+    plutonians:
+      action: remove
   mode_plutonians_stopping:
     plutonians:
       action: remove
 
 event_player:
-  # Common playfield hits. Refine these later when the mode design is built out.
-  s_pop_left_active: plutonians_shot_hit
-  s_pop_right_active: plutonians_shot_hit
-  s_trispinner_opto_active: plutonians_shot_hit
-  s_web_spinner_active: plutonians_shot_hit
-  s_star_rollover_active: plutonians_shot_hit
-  s_upper_target_left_active: plutonians_shot_hit
-  s_upper_target_center_active: plutonians_shot_hit
-  s_upper_target_right_active: plutonians_shot_hit
-
-  s_left_drops_1_active: plutonians_shot_hit
-  s_left_drops_2_active: plutonians_shot_hit
-  s_left_drops_3_active: plutonians_shot_hit
-  s_right_drops_1_active: plutonians_shot_hit
-  s_right_drops_2_active: plutonians_shot_hit
-  s_right_drops_3_active: plutonians_shot_hit
-  s_right_drops_4_active: plutonians_shot_hit
-  s_right_drops_5_active: plutonians_shot_hit
-
-  s_saucer_1_active:
-    - plutonians_major_hit
-    - clear_saucers
-  s_saucer_2_active:
-    - plutonians_major_hit
-    - clear_saucers
-  s_saucer_3_active:
-    - plutonians_major_hit
-    - clear_saucers
-  s_vuk_switch_active: plutonians_major_hit
-
-  drop_target_bank_dt_bank_left_down:
-    - drop_target_bank_dt_bank_left_reset
-  drop_target_bank_dt_bank_right_down:
-    - drop_target_bank_dt_bank_right_reset
+  # Keep captive-ball devices and drop banks flowing normally.
+  s_saucer_1_active: clear_saucers_delayed
+  s_saucer_2_active: clear_saucers_delayed
+  s_saucer_3_active: clear_saucers_delayed
+  drop_target_bank_dt_bank_left_down: drop_target_bank_dt_bank_left_reset
+  drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset
 
   mode_plutonians_started:
-    - rooftop_diverter_open|500ms
-    - clear_saucers
+    - rooftop_diverter_open
+    - clear_saucers_delayed
     - drop_target_bank_dt_bank_left_reset
     - drop_target_bank_dt_bank_right_reset
 
   mode_plutonians_stopping:
-    - clear_saucers
+    - plutonians_clear_lights
+    - rooftop_diverter_close
+    - clear_saucers_delayed
+    - drop_target_bank_dt_bank_left_reset
+    - drop_target_bank_dt_bank_right_reset
+
+show_player:
+  plutonians_ray_active:
+    plutonians_targets_red_pulse:
+      loops: -1
+    plutonians_targets_yellow_pulse:
+      action: stop
+
+  plutonians_ray_blocked:
+    plutonians_targets_red_pulse:
+      action: stop
+    plutonians_targets_yellow_pulse:
+      loops: -1
+
+  plutonians_control_repaired:
+    plutonians_targets_red_pulse:
+      action: stop
+    plutonians_targets_yellow_pulse:
+      action: stop
+    plutonians_control_repaired_flash:
+      loops: 1
+
+  plutonians_clear_lights:
+    plutonians_targets_red_pulse:
+      action: stop
+    plutonians_targets_yellow_pulse:
+      action: stop
+    plutonians_control_repaired_flash:
+      action: stop
 
 light_player:
-  # Full-playfield GI theme while this mode is active.
-  mode_plutonians_started:
-    gi: 80C8FF
+  plutonians_all_areas_frozen:
+    l_gi_3bank: 4080F0
+    l_gi_5bank_lower: 4080F0
+    l_gi_5bank_upper: 4080F0
+    l_gi_a: 4080F0
+    l_gi_ab: 4080F0
+    l_gi_bright: 4080F0
+    l_gi_left_lower: 4080F0
+    l_gi_left_sling_lower: 4080F0
+    l_gi_left_sling_upper: 4080F0
+    l_gi_left_upper: 4080F0
+    l_gi_left_upper_flipper: 4080F0
+    l_gi_mid_spider: 4080F0
+    l_gi_ramp: 4080F0
+    l_gi_right_lower_triangle: 4080F0
+    l_gi_right_return: 4080F0
+    l_gi_right_sling: 4080F0
+    l_gi_spinner: 4080F0
+    l_gi_top_1: 4080F0
+    l_gi_top_2: 4080F0
+    l_gi_top_3: 4080F0
+    l_gi_top_4: 4080F0
+    l_gi_upflip: 4080F0
+    l_pop_1_1: 4080F0
+    l_pop_1_2: 4080F0
+    l_pop_1_3: 4080F0
+    l_pop_1_4: 4080F0
+    l_pop_1_5: 4080F0
+    l_pop_1_6: 4080F0
+    l_pop_1_7: 4080F0
+    l_pop_1_8: 4080F0
+    l_pop_1_9: 4080F0
+    l_pop_1_10: 4080F0
+    l_pop_1_11: 4080F0
+    l_pop_1_12: 4080F0
+    l_pop_2_1: 4080F0
+    l_pop_2_2: 4080F0
+    l_pop_2_3: 4080F0
+    l_pop_2_4: 4080F0
+    l_pop_2_5: 4080F0
+    l_pop_2_6: 4080F0
+    l_pop_2_7: 4080F0
+    l_pop_2_8: 4080F0
+    l_pop_2_9: 4080F0
+    l_pop_2_10: 4080F0
+    l_pop_2_11: 4080F0
+    l_pop_2_12: 4080F0
 
-  mode_plutonians_stopping:
-    gi: E0E0E0
+  # Upper left
+  plutonians_thaw_upper_left:
+    l_gi_ramp: F0D040
+    l_gi_top_1: F0D040
+    l_gi_top_2: F0D040
+    l_pop_1_1: F0D040
+    l_pop_1_11: F0D040
+    l_pop_1_12: F0D040
+  plutonians_freeze_upper_left:
+    l_gi_ramp: 4080F0
+    l_gi_top_1: 4080F0
+    l_gi_top_2: 4080F0
+    l_pop_1_1: 4080F0
+    l_pop_1_11: 4080F0
+    l_pop_1_12: 4080F0
 
+  # Upper right
+  plutonians_thaw_upper_right:
+    l_gi_a: F0D040
+    l_gi_ab: F0D040
+    l_gi_bright: F0D040
+    l_gi_mid_spider: F0D040
+    l_gi_top_3: F0D040
+    l_gi_top_4: F0D040
+    l_gi_upflip: F0D040
+    l_pop_2_1: F0D040
+    l_pop_2_11: F0D040
+    l_pop_2_12: F0D040
+  plutonians_freeze_upper_right:
+    l_gi_a: 4080F0
+    l_gi_ab: 4080F0
+    l_gi_bright: 4080F0
+    l_gi_mid_spider: 4080F0
+    l_gi_top_3: 4080F0
+    l_gi_top_4: 4080F0
+    l_gi_upflip: 4080F0
+    l_pop_2_1: 4080F0
+    l_pop_2_11: 4080F0
+    l_pop_2_12: 4080F0
+
+  # Middle left
+  plutonians_thaw_middle_left:
+    l_gi_3bank: F0D040
+    l_gi_left_lower: F0D040
+    l_gi_left_upper: F0D040
+    l_gi_left_upper_flipper: F0D040
+    l_gi_spinner: F0D040
+    l_pop_1_2: F0D040
+    l_pop_1_3: F0D040
+    l_pop_1_4: F0D040
+    l_pop_1_5: F0D040
+    l_pop_1_6: F0D040
+    l_pop_1_7: F0D040
+    l_pop_1_8: F0D040
+    l_pop_1_9: F0D040
+    l_pop_1_10: F0D040
+  plutonians_freeze_middle_left:
+    l_gi_3bank: 4080F0
+    l_gi_left_lower: 4080F0
+    l_gi_left_upper: 4080F0
+    l_gi_left_upper_flipper: 4080F0
+    l_gi_spinner: 4080F0
+    l_pop_1_2: 4080F0
+    l_pop_1_3: 4080F0
+    l_pop_1_4: 4080F0
+    l_pop_1_5: 4080F0
+    l_pop_1_6: 4080F0
+    l_pop_1_7: 4080F0
+    l_pop_1_8: 4080F0
+    l_pop_1_9: 4080F0
+    l_pop_1_10: 4080F0
+
+  # Middle right
+  plutonians_thaw_middle_right:
+    l_gi_5bank_lower: F0D040
+    l_gi_5bank_upper: F0D040
+    l_gi_right_lower_triangle: F0D040
+    l_pop_2_2: F0D040
+    l_pop_2_3: F0D040
+    l_pop_2_4: F0D040
+    l_pop_2_5: F0D040
+    l_pop_2_6: F0D040
+    l_pop_2_7: F0D040
+    l_pop_2_8: F0D040
+    l_pop_2_9: F0D040
+    l_pop_2_10: F0D040
+  plutonians_freeze_middle_right:
+    l_gi_5bank_lower: 4080F0
+    l_gi_5bank_upper: 4080F0
+    l_gi_right_lower_triangle: 4080F0
+    l_pop_2_2: 4080F0
+    l_pop_2_3: 4080F0
+    l_pop_2_4: 4080F0
+    l_pop_2_5: 4080F0
+    l_pop_2_6: 4080F0
+    l_pop_2_7: 4080F0
+    l_pop_2_8: 4080F0
+    l_pop_2_9: 4080F0
+    l_pop_2_10: 4080F0
+
+  # Bottom left/right
+  plutonians_thaw_lower_left:
+    l_gi_left_sling_lower: F0D040
+    l_gi_left_sling_upper: F0D040
+  plutonians_freeze_lower_left:
+    l_gi_left_sling_lower: 4080F0
+    l_gi_left_sling_upper: 4080F0
+  plutonians_thaw_lower_right:
+    l_gi_right_return: F0D040
+    l_gi_right_sling: F0D040
+  plutonians_freeze_lower_right:
+    l_gi_right_return: 4080F0
+    l_gi_right_sling: 4080F0
+
+  plutonians_clear_lights:
+    l_gi_3bank: stop
+    l_gi_5bank_lower: stop
+    l_gi_5bank_upper: stop
+    l_gi_a: stop
+    l_gi_ab: stop
+    l_gi_bright: stop
+    l_gi_left_lower: stop
+    l_gi_left_sling_lower: stop
+    l_gi_left_sling_upper: stop
+    l_gi_left_upper: stop
+    l_gi_left_upper_flipper: stop
+    l_gi_mid_spider: stop
+    l_gi_ramp: stop
+    l_gi_right_lower_triangle: stop
+    l_gi_right_return: stop
+    l_gi_right_sling: stop
+    l_gi_spinner: stop
+    l_gi_top_1: stop
+    l_gi_top_2: stop
+    l_gi_top_3: stop
+    l_gi_top_4: stop
+    l_gi_upflip: stop
+    l_pop_1_1: stop
+    l_pop_1_2: stop
+    l_pop_1_3: stop
+    l_pop_1_4: stop
+    l_pop_1_5: stop
+    l_pop_1_6: stop
+    l_pop_1_7: stop
+    l_pop_1_8: stop
+    l_pop_1_9: stop
+    l_pop_1_10: stop
+    l_pop_1_11: stop
+    l_pop_1_12: stop
+    l_pop_2_1: stop
+    l_pop_2_2: stop
+    l_pop_2_3: stop
+    l_pop_2_4: stop
+    l_pop_2_5: stop
+    l_pop_2_6: stop
+    l_pop_2_7: stop
+    l_pop_2_8: stop
+    l_pop_2_9: stop
+    l_pop_2_10: stop
+    l_pop_2_11: stop
+    l_pop_2_12: stop
+
+shows:
+  plutonians_targets_red_pulse:
+    - duration: 500ms
+      lights:
+        l_upper_left: F03030
+        l_upper_middle: F03030
+        l_upper_right: F03030
+    - duration: 500ms
+      lights:
+        l_upper_left: 500808
+        l_upper_middle: 500808
+        l_upper_right: 500808
+
+  plutonians_targets_yellow_pulse:
+    - duration: 500ms
+      lights:
+        l_upper_left: F0D040
+        l_upper_middle: F0D040
+        l_upper_right: F0D040
+    - duration: 500ms
+      lights:
+        l_upper_left: 504010
+        l_upper_middle: 504010
+        l_upper_right: 504010
+
+  plutonians_control_repaired_flash:
+    - duration: 500ms
+      lights:
+        gi: FFFFFF
+    - duration: 1500ms
+      lights:
+        gi: F0D040

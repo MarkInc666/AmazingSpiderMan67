@@ -1,0 +1,46 @@
+CHAPTER 8 — ELEMENTAL CHAOS VILLAIN DESIGNS
+============================================
+
+CLIVE AND BLOTTO — DESIGNED / NOT CODED
+- Blotto Meter starts at 75% and rises every two seconds.
+- Spinner hits lower the meter and pause its growth for two seconds.
+- When the meter fills, a clean playfield area becomes Blotto'd.
+- Any switch hit in that area clears it.
+- Win when no areas are Blotto'd and the meter reaches zero.
+- Exact area map, scoring and Case File effects still need final workshop.
+
+DOCTOR ZAPP — CODED / NEEDS PLAYTEST
+- One hit from each lower bank permanently opens rooftop access.
+- Spinner spins score 50K and add one camera flash plus one for each unique
+  upper target collected.
+- First-time upper targets score 50K and permanently improve flashes per spin.
+- Reach 25 flashes to defeat Zapp.
+- More Jackpots gives a ten-second points-only spinner window.
+- After the objective/window, base mode owns a six-second upper-flipper lockout.
+- See doctor_zapp_mode.txt for the complete design.
+
+BOLTON AND BOOMER — DESIGNED / NOT CODED
+- Repeating two-ball multiball loop.
+- Hit a random lit target, lock one ball in any saucer, then shoot the VUK Super.
+- The first Super is untimed; later Supers use a 20-second timer and reset the
+  loop if missed.
+- Ball-control details, values and Case File effects still need final workshop.
+
+THE SNOWMAN — CODED / NEEDS PLAYTEST
+- Either web begins the copper-wire run.
+- Hit the opposite web within 16 seconds; repeated starting-web hits score 25K
+  and reset the timer. Shot Assist lets that repeated hit complete the wire.
+- First spinner spin defeats Snowman and begins a 10-second bonus-spin window.
+- More Time changes the windows to 20 and 16 seconds.
+- More Jackpots increases each following spin by 25K.
+- See snowman_mode.txt for the complete design.
+
+THE PLUTONIANS — CODED / NEEDS PLAYTEST
+- Six Super Swami areas begin frozen and rooftop access stays open.
+- One hit thaws a frozen area at any time.
+- The active Freeze Ray fires every 12 seconds and randomly refreezes one
+  thawed area.
+- Upper targets block/reset the ray for 20 seconds, or 25 with More Time.
+- Thaw all six simultaneously to repair the Space Warp Control.
+- More Jackpots awards one upper-target jackpot per roof entrance.
+- See plutonians_mode.txt for the complete design.

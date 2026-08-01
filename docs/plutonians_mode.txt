@@ -1,0 +1,55 @@
+THE PLUTONIANS — FINAL MODE DESIGN
+==================================
+
+GOAL
+- Thaw all six established playfield areas at the same time.
+- The six areas reuse Super Swami's bottom/middle/upper x left/right map.
+- Rooftop access starts open and stays open for the mode.
+
+AREA CONTROL
+- All six areas begin frozen.
+- One qualifying switch hit thaws an entire frozen area at any time.
+- Hits in already-thawed areas receive only normal switch scoring.
+- A thaw scores 100,000, or 150,000 with Bigger Jackpots.
+- Frozen area indicators are blue; thawed area indicators are yellow.
+
+FREEZE RAY
+- While active, the freeze ray fires every 12 seconds.
+- Each firing randomly refreezes one currently thawed area.
+- If no area is thawed, the firing has no effect.
+- Every upper-target hit scores 50,000, or 75,000 with Bigger Jackpots.
+- An upper-target hit blocks the ray for 20 seconds, or 25 with More Time.
+- Another target hit during the blocked state resets the full blocked duration.
+- When blocking expires, a fresh 12-second active firing cycle begins.
+- Upper targets pulse red while active and yellow while blocked.
+
+CASE FILES
+- More Jackpots: the first upper target hit during each upper-playfield entrance
+  awards a 500,000 Space Warp Jackpot (750,000 with Bigger Jackpots).
+- Bigger Jackpots: thaw 150,000; upper target 75,000; completion 1,500,000;
+  More Jackpots collect 750,000.
+- More Time: block duration increases from 20 to 25 seconds.
+- Safety Net: 10-second ball save at mode start.
+- Shot Assist: the first successful thaw also thaws one random frozen area;
+  both receive the full thaw score. One use per mode.
+
+COMPLETION
+- The instant all six areas are thawed, stop the freeze-ray timer permanently.
+- Award 1,000,000 for repairing the Space Warp Control, or 1,500,000 with Bigger.
+- Show SPACE WARP CONTROL REPAIRED.
+- Hold the successful mode for two seconds with only normal switch scoring.
+- Then end the mode and show the summary.
+
+DISPLAY
+- Active instruction: HIT TARGETS TO BLOCK RAY
+- Active timer: FREEZE IN X
+- Blocked instruction: HIT AREAS TO THAW
+- Blocked timer: FREEZE BLOCKED X
+- Messages: AREA THAWED, AREA REFROZEN, FREEZE RAY BLOCKED,
+  SPACE WARP JACKPOT, SPACE WARP CONTROL REPAIRED.
+- Do not show a separate PLUTONIANS DEFEATED victory message.
+
+SUMMARY
+- MODE SCORE
+- AREAS THAWED
+- FREEZE RAY BLOCKERS

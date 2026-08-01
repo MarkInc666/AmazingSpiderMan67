@@ -1,10 +1,5 @@
 #config_version=6
 
-# Doctor Zapp placeholder villain mode.
-# Approved design: one left-bank and one right-bank target open roof access.
-# Upper spinner camera flashes defeat Zapp at 25; each lit upper helper target
-# adds +1 flash per spin. Drops score 100K, helpers 50K, flashes 50K.
-
 mode:
   start_events: start_mode_dr_zapp
   stop_events:
@@ -16,67 +11,210 @@ mode:
 
 widget_player:
   mode_dr_zapp_started:
-    dr_zapp:
-      action: play
-
+    dr_zapp: {action: play}
   dr_zapp_mode_complete:
-    dr_zapp:
-      action: remove
-
+    dr_zapp: {action: remove}
   mode_dr_zapp_stopping:
-    dr_zapp:
-      action: remove
+    dr_zapp: {action: remove}
 
 event_player:
-  # Common playfield hits. Refine these later when the mode design is built out.
-  s_pop_left_active: dr_zapp_shot_hit
-  s_pop_right_active: dr_zapp_shot_hit
-  s_trispinner_opto_active: dr_zapp_shot_hit
-  s_web_spinner_active: dr_zapp_shot_hit
-  s_star_rollover_active: dr_zapp_shot_hit
-  s_upper_target_left_active: dr_zapp_shot_hit
-  s_upper_target_center_active: dr_zapp_shot_hit
-  s_upper_target_right_active: dr_zapp_shot_hit
+  s_left_drops_1_active: dr_zapp_left_bank_hit
+  s_left_drops_2_active: dr_zapp_left_bank_hit
+  s_left_drops_3_active: dr_zapp_left_bank_hit
+  s_right_drops_1_active: dr_zapp_right_bank_hit
+  s_right_drops_2_active: dr_zapp_right_bank_hit
+  s_right_drops_3_active: dr_zapp_right_bank_hit
+  s_right_drops_4_active: dr_zapp_right_bank_hit
+  s_right_drops_5_active: dr_zapp_right_bank_hit
 
-  s_left_drops_1_active: dr_zapp_shot_hit
-  s_left_drops_2_active: dr_zapp_shot_hit
-  s_left_drops_3_active: dr_zapp_shot_hit
-  s_right_drops_1_active: dr_zapp_shot_hit
-  s_right_drops_2_active: dr_zapp_shot_hit
-  s_right_drops_3_active: dr_zapp_shot_hit
-  s_right_drops_4_active: dr_zapp_shot_hit
-  s_right_drops_5_active: dr_zapp_shot_hit
+  s_upper_target_left_active: dr_zapp_upper_target_left
+  s_upper_target_center_active: dr_zapp_upper_target_center
+  s_upper_target_right_active: dr_zapp_upper_target_right
 
-  s_saucer_1_active:
-    - dr_zapp_major_hit
-    - clear_saucers
-  s_saucer_2_active:
-    - dr_zapp_major_hit
-    - clear_saucers
-  s_saucer_3_active:
-    - dr_zapp_major_hit
-    - clear_saucers
-  s_vuk_switch_active: dr_zapp_major_hit
+  s_trispinner_opto_active: dr_zapp_spinner_hit
+  s_upper_entrance_opto_active: dr_zapp_upper_entered
 
-  drop_target_bank_dt_bank_left_down:
-    - drop_target_bank_dt_bank_left_reset
-  drop_target_bank_dt_bank_right_down:
-    - drop_target_bank_dt_bank_right_reset
+  drop_target_bank_dt_bank_left_down: drop_target_bank_dt_bank_left_reset
+  drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset
 
   mode_dr_zapp_started:
-    - rooftop_diverter_open|500ms
-    - clear_saucers
-    - drop_target_bank_dt_bank_left_reset
-    - drop_target_bank_dt_bank_right_reset
-
+    - reset_drops
+    - clear_saucers_delayed
   mode_dr_zapp_stopping:
-    - clear_saucers
+    - clear_saucers_delayed
+    - dr_zapp_clear_all
+    - dr_zapp_disable_start_safety_net
+    - dr_zapp_disable_upper_entry_save
+
+ball_saves:
+  dr_zapp_start_safety_net:
+    active_time: 10s
+    hurry_up_time: 2s
+    grace_period: 1s
+    enable_events: dr_zapp_enable_start_safety_net
+    disable_events:
+      - dr_zapp_disable_start_safety_net
+      - mode_dr_zapp_stopping
+      - ball_ending
+    auto_launch: true
+    balls_to_save: 1
+
+  dr_zapp_upper_entry_save:
+    active_time: 15s
+    hurry_up_time: 3s
+    grace_period: 1s
+    enable_events: dr_zapp_enable_upper_entry_save
+    disable_events:
+      - dr_zapp_disable_upper_entry_save
+      - mode_dr_zapp_stopping
+      - ball_ending
+    auto_launch: true
+    balls_to_save: 1
+
+show_player:
+  dr_zapp_qualification_started:
+    dr_zapp_dark_blue_gi: {loops: -1}
+    dr_zapp_left_bank_pulse: {loops: -1}
+    dr_zapp_right_bank_pulse: {loops: -1}
+
+  dr_zapp_left_bank_qualified:
+    dr_zapp_left_bank_pulse: {action: stop}
+    dr_zapp_left_bank_solid: {loops: -1}
+    dr_zapp_one_bank_gi: {loops: -1}
+
+  dr_zapp_right_bank_qualified:
+    dr_zapp_right_bank_pulse: {action: stop}
+    dr_zapp_right_bank_solid: {loops: -1}
+    dr_zapp_one_bank_gi: {loops: -1}
+
+  dr_zapp_roof_open:
+    dr_zapp_dark_blue_gi: {action: stop}
+    dr_zapp_one_bank_gi: {action: stop}
+    dr_zapp_roof_gi: {loops: -1}
+    dr_zapp_upper_left_pulse: {loops: -1}
+    dr_zapp_upper_center_pulse: {loops: -1}
+    dr_zapp_upper_right_pulse: {loops: -1}
+
+  dr_zapp_left_target_solid:
+    dr_zapp_upper_left_pulse: {action: stop}
+    dr_zapp_upper_left_solid: {loops: -1}
+  dr_zapp_center_target_solid:
+    dr_zapp_upper_center_pulse: {action: stop}
+    dr_zapp_upper_center_solid: {loops: -1}
+  dr_zapp_right_target_solid:
+    dr_zapp_upper_right_pulse: {action: stop}
+    dr_zapp_upper_right_solid: {loops: -1}
+
+  dr_zapp_upper_target_collected:
+    dr_zapp_target_white_flash: {loops: 1}
+  dr_zapp_assisted_target_collected:
+    dr_zapp_target_white_flash: {loops: 1}
+
+  dr_zapp_defeated:
+    dr_zapp_defeat_white_flash: {loops: 1}
+
+  dr_zapp_bonus_started:
+    dr_zapp_roof_gi: {action: stop}
+    dr_zapp_bonus_gi: {loops: -1}
+
+  dr_zapp_clear_all:
+    dr_zapp_dark_blue_gi: {action: stop}
+    dr_zapp_one_bank_gi: {action: stop}
+    dr_zapp_roof_gi: {action: stop}
+    dr_zapp_bonus_gi: {action: stop}
+    dr_zapp_left_bank_pulse: {action: stop}
+    dr_zapp_right_bank_pulse: {action: stop}
+    dr_zapp_left_bank_solid: {action: stop}
+    dr_zapp_right_bank_solid: {action: stop}
+    dr_zapp_upper_left_pulse: {action: stop}
+    dr_zapp_upper_center_pulse: {action: stop}
+    dr_zapp_upper_right_pulse: {action: stop}
+    dr_zapp_upper_left_solid: {action: stop}
+    dr_zapp_upper_center_solid: {action: stop}
+    dr_zapp_upper_right_solid: {action: stop}
 
 light_player:
-  # Full-playfield GI theme while this mode is active.
-  mode_dr_zapp_started:
-    gi: 30A0FF
+  dr_zapp_clear_all:
+    gi: stop
+    l_gi_3bank: stop
+    l_gi_5bank_lower: stop
+    l_gi_5bank_upper: stop
+    l_upper_left: stop
+    l_upper_middle: stop
+    l_upper_right: stop
 
-  mode_dr_zapp_stopping:
-    gi: E0E0E0
+shows:
+  dr_zapp_dark_blue_gi:
+    - duration: 1s
+      lights: {gi: 183060}
+  dr_zapp_one_bank_gi:
+    - duration: 500ms
+      lights: {gi: 204080}
+    - duration: 500ms
+      lights: {gi: 102040}
+  dr_zapp_roof_gi:
+    - duration: 1s
+      lights: {gi: 3090FF}
+  dr_zapp_bonus_gi:
+    - duration: 500ms
+      lights: {gi: 3090FF}
+    - duration: 500ms
+      lights: {gi: FFFFFF}
+  dr_zapp_target_white_flash:
+    - duration: 250ms
+      lights: {gi: FFFFFF}
+    - duration: 250ms
+      lights: {gi: 3090FF}
+  dr_zapp_defeat_white_flash:
+    - duration: 250ms
+      lights: {gi: FFFFFF}
+    - duration: 250ms
+      lights: {gi: 3090FF}
 
+  dr_zapp_left_bank_pulse:
+    - duration: 500ms
+      lights: {l_gi_3bank: 3080FF}
+    - duration: 500ms
+      lights: {l_gi_3bank: 102040}
+  dr_zapp_right_bank_pulse:
+    - duration: 500ms
+      lights:
+        l_gi_5bank_lower: 3080FF
+        l_gi_5bank_upper: 3080FF
+    - duration: 500ms
+      lights:
+        l_gi_5bank_lower: 102040
+        l_gi_5bank_upper: 102040
+  dr_zapp_left_bank_solid:
+    - duration: 1s
+      lights: {l_gi_3bank: 3080FF}
+  dr_zapp_right_bank_solid:
+    - duration: 1s
+      lights:
+        l_gi_5bank_lower: 3080FF
+        l_gi_5bank_upper: 3080FF
+
+  dr_zapp_upper_left_pulse:
+    - duration: 500ms
+      lights: {l_upper_left: FFFFFF}
+    - duration: 500ms
+      lights: {l_upper_left: 303030}
+  dr_zapp_upper_center_pulse:
+    - duration: 500ms
+      lights: {l_upper_middle: FFFFFF}
+    - duration: 500ms
+      lights: {l_upper_middle: 303030}
+  dr_zapp_upper_right_pulse:
+    - duration: 500ms
+      lights: {l_upper_right: FFFFFF}
+    - duration: 500ms
+      lights: {l_upper_right: 303030}
+  dr_zapp_upper_left_solid:
+    - duration: 1s
+      lights: {l_upper_left: FFFFFF}
+  dr_zapp_upper_center_solid:
+    - duration: 1s
+      lights: {l_upper_middle: FFFFFF}
+  dr_zapp_upper_right_solid:
+    - duration: 1s
+      lights: {l_upper_right: FFFFFF}

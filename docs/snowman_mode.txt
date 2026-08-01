@@ -1,0 +1,16 @@
+THE SNOWMAN — FINAL MODE DESIGN
+===============================
+- Either web starts for 100K (150K with Bigger Jackpots).
+- The opposite web must be hit within 16 seconds (20 with More Time) for
+  250K (350K with Bigger).
+- Re-hitting the starting web scores 25K and resets the full wire timer.
+- With Shot Assist, that repeated starting-web hit completes the wire.
+- Wire timeout resets the sequence and either web can restart it.
+- The first spinner spin defeats Snowman and starts a 10-second bonus-spin
+  window (16 seconds with More Time).
+- Bonus spins score 100K, or 150K with Bigger Jackpots.
+- More Jackpots raises each following spin by 25K.
+- Safety Net starts a 10-second ball save when the spinner lights.
+- Webs pulse red; a hit web becomes solid red. GI progresses pale blue, deep
+  blue, white flash, cold green-blue, then blue/white bonus pulse.
+- Summary: MODE SCORE / BONUS SPINS / BIGGEST SPIN.

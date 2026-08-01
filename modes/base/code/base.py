@@ -104,6 +104,7 @@ class Base(Mode):
         self.add_mode_event_handler("update_mode_status", self._sync_mode_status_vars, priority=10000)
         self.add_mode_event_handler("hide_mode_status", self._hide_mode_status, priority=10000)
         self.add_mode_event_handler("clear_mode_display_context", self._clear_mode_display_context, priority=10000)
+        self.add_mode_event_handler("dr_zapp_upper_flipper_lockout", self._start_dr_zapp_upper_flipper_lockout, priority=10000)
 
         for stop_event in self.MODE_DISPLAY_CLEAR_EVENTS:
             self.add_mode_event_handler(stop_event, self._clear_mode_display_context, priority=10000)
@@ -112,6 +113,23 @@ class Base(Mode):
         self._ball_end_display_lock = False
         self._clear_mode_message_vars()
         self._clear_mode_status_vars()
+
+    def _start_dr_zapp_upper_flipper_lockout(self, **kwargs):
+        """Disable only the right upper flipper for six seconds after Zapp.
+
+        This lives in base mode so the timer survives the Doctor Zapp mode
+        stopping and its summary starting immediately.
+        """
+        self.delay.remove("dr_zapp_upper_flipper_lockout")
+        self.machine.events.post("cmd_upper_flippers_disable")
+        self.delay.add(
+            name="dr_zapp_upper_flipper_lockout",
+            ms=6000,
+            callback=self._end_dr_zapp_upper_flipper_lockout,
+        )
+
+    def _end_dr_zapp_upper_flipper_lockout(self):
+        self.machine.events.post("cmd_upper_flippers_enable")
 
     def _sync_mode_message_vars(
         self,
