@@ -1,0 +1,47 @@
+BOLTON AND BOOMER — FINAL MODE DESIGN
+=====================================
+
+Core loop
+---------
+- Start a two-ball multiball. MPF owns ball addition and multiball ending.
+- Opening ball save is 15 seconds, or 25 seconds with Safety Net.
+- One random playfield target pulses yellow.
+- Hit the lit target for 100K, or 150K with Bigger Jackpots.
+- All three saucers then pulse red and can capture the first ball.
+- Capturing one ball scores 100K, or 150K with Bigger Jackpots.
+- The captured saucer stays solid red, the rooftop gate opens, and the VUK flashes green.
+- If the second ball enters any saucer, it is kicked out after one second; the original held ball remains.
+- Shoot the VUK with the remaining ball to collect the Super Jackpot.
+
+Super sequence
+--------------
+- First Super is untimed.
+- Second and later Supers have 20 seconds, or 30 seconds with More Time.
+- Super starts at 500K, or 750K with Bigger Jackpots.
+- More Jackpots adds 100K to each next collected Super, capped at 1.5M.
+- On collect: gate closes immediately, VUK kicks after two seconds, and the held saucer kicks two seconds later.
+- A new random target lights after both balls are released.
+- On timed miss: gate closes immediately, held saucer releases after two seconds, and the target stage restarts.
+- Mode ends when multiball ends.
+
+Case Files
+----------
+- More Jackpots: each next Super increases by 100K, capped at 1.5M.
+- Bigger Jackpots: target 150K, capture 150K, base Super 750K.
+- More Time: timed Supers last 30 seconds.
+- Safety Net: opening multiball save extends from 15 to 25 seconds.
+- Shot Assist: on the first timed Super, reaching 10 seconds automatically awards the Super.
+
+Presentation
+------------
+- Lit random target: pulsing yellow.
+- Saucer capture ready: all saucers pulse red.
+- Held saucer: solid red.
+- VUK Super ready: flashing green.
+- Timed status: SUPER IN X.
+
+Summary
+-------
+- MODE SCORE
+- SUPER JACKPOTS
+- BIGGEST SUPER
