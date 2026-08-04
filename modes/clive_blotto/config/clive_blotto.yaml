@@ -1,0 +1,168 @@
+#config_version=6
+
+mode:
+  start_events: start_mode_clive_blotto
+  stop_events:
+    - clive_blotto_mode_complete
+    - clive_blotto_mode_failed
+    - ball_ended
+  code: clive_blotto.CliveBlotto
+  priority: 300
+
+widget_player:
+  mode_clive_blotto_started:
+    clive_blotto:
+      action: play
+  clive_blotto_mode_complete:
+    clive_blotto:
+      action: remove
+  clive_blotto_mode_failed:
+    clive_blotto:
+      action: remove
+  mode_clive_blotto_stopping:
+    clive_blotto:
+      action: remove
+
+event_player:
+  s_saucer_1_active: clear_saucers_delayed
+  s_saucer_2_active: clear_saucers_delayed
+  s_saucer_3_active: clear_saucers_delayed
+
+  drop_target_bank_dt_bank_left_down: drop_target_bank_dt_bank_left_reset
+  drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset
+
+  mode_clive_blotto_stopping:
+    - clear_saucers
+    - drop_target_bank_dt_bank_left_reset
+    - drop_target_bank_dt_bank_right_reset
+
+light_player:
+  clive_blotto_mode_lighting_start:
+    gi: 241038
+
+  # Meter urgency is shown on the spinner GI.
+  clive_blotto_meter_low:
+    l_gi_spinner:
+      color: FFFFFF
+      fade: 250ms
+  clive_blotto_meter_medium:
+    l_gi_spinner:
+      color: FFFFFF
+      fade: 100ms
+  clive_blotto_meter_high:
+    l_gi_spinner:
+      color: FF4040
+      fade: 50ms
+
+  # Infected areas pulse purple in their physical GI region.
+  clive_blotto_infect_upper_left:
+    l_gi_ramp:
+      color: A040FF
+      fade: 250ms
+    l_gi_top_1:
+      color: A040FF
+      fade: 250ms
+    l_gi_top_2:
+      color: A040FF
+      fade: 250ms
+  clive_blotto_infect_upper_right:
+    l_gi_a:
+      color: A040FF
+      fade: 250ms
+    l_gi_ab:
+      color: A040FF
+      fade: 250ms
+    l_gi_bright:
+      color: A040FF
+      fade: 250ms
+    l_gi_mid_spider:
+      color: A040FF
+      fade: 250ms
+    l_gi_top_3:
+      color: A040FF
+      fade: 250ms
+    l_gi_top_4:
+      color: A040FF
+      fade: 250ms
+    l_gi_upflip:
+      color: A040FF
+      fade: 250ms
+  clive_blotto_infect_middle_left:
+    l_gi_3bank:
+      color: A040FF
+      fade: 250ms
+    l_gi_left_lower:
+      color: A040FF
+      fade: 250ms
+    l_gi_left_upper:
+      color: A040FF
+      fade: 250ms
+    l_gi_left_upper_flipper:
+      color: A040FF
+      fade: 250ms
+    l_gi_spinner:
+      color: A040FF
+      fade: 250ms
+  clive_blotto_infect_middle_right:
+    l_gi_5bank_lower:
+      color: A040FF
+      fade: 250ms
+    l_gi_5bank_upper:
+      color: A040FF
+      fade: 250ms
+    l_gi_right_lower_triangle:
+      color: A040FF
+      fade: 250ms
+  clive_blotto_infect_lower_left:
+    l_gi_left_sling_lower:
+      color: A040FF
+      fade: 250ms
+    l_gi_left_sling_upper:
+      color: A040FF
+      fade: 250ms
+  clive_blotto_infect_lower_right:
+    l_gi_right_return:
+      color: A040FF
+      fade: 250ms
+    l_gi_right_sling:
+      color: A040FF
+      fade: 250ms
+
+  # Cleared areas return to the mode's dark violet base.
+  clive_blotto_clear_upper_left:
+    l_gi_ramp: 241038
+    l_gi_top_1: 241038
+    l_gi_top_2: 241038
+  clive_blotto_clear_upper_right:
+    l_gi_a: 241038
+    l_gi_ab: 241038
+    l_gi_bright: 241038
+    l_gi_mid_spider: 241038
+    l_gi_top_3: 241038
+    l_gi_top_4: 241038
+    l_gi_upflip: 241038
+  clive_blotto_clear_middle_left:
+    l_gi_3bank: 241038
+    l_gi_left_lower: 241038
+    l_gi_left_upper: 241038
+    l_gi_left_upper_flipper: 241038
+    l_gi_spinner: 241038
+  clive_blotto_clear_middle_right:
+    l_gi_5bank_lower: 241038
+    l_gi_5bank_upper: 241038
+    l_gi_right_lower_triangle: 241038
+  clive_blotto_clear_lower_left:
+    l_gi_left_sling_lower: 241038
+    l_gi_left_sling_upper: 241038
+  clive_blotto_clear_lower_right:
+    l_gi_right_return: 241038
+    l_gi_right_sling: 241038
+
+  clive_blotto_meter_full_flash:
+    gi: FFFFFF
+  clive_blotto_area_clear_flash:
+    gi: FFFFFF
+  clive_blotto_completion_lights:
+    gi: 40FF40
+  clive_blotto_restore_all_lights:
+    gi: E0E0E0

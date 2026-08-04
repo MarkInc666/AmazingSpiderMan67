@@ -239,6 +239,7 @@ class VillainProgression(Mode):
         'doctor_dumpty_mode_complete': ('doctor_dumpty', True),
         'dr_von_schlick_mode_complete': ('dr_von_schlick', True),
         'clive_blotto_mode_complete': ('clive_blotto', True),
+        'clive_blotto_mode_failed': ('clive_blotto', False),
         'dr_zapp_mode_complete': ('dr_zapp', True),
         'bolton_boomer_mode_complete': ('bolton_boomer', True),
         'snowman_mode_complete': ('snowman', True),
