@@ -1,0 +1,36 @@
+THE MOLEMEN — FINAL MODE DESIGN
+
+CORE
+- Start a 2-ball multiball.
+- Opening multiball save is 15 seconds, or 25 seconds with Safety Net.
+- There is no overall mode timer.
+- Rooftop gate remains closed for the entire mode. Gate-open requests are ignored, and normal gate control returns when the mode stops.
+- When multiball drops to one ball, start a 5-second grace period, or 10 seconds with More Time. End the mode if still at one ball when grace expires.
+- Playing the mode counts as completion when it ends.
+
+AREAS AND SAUCERS
+- Left pop -> Saucer 1.
+- Center web target -> Saucer 2.
+- Right pop -> Saucer 3.
+- One area hit lights its matching saucer jackpot.
+- Pop hits score 50K, or 75K with Bigger Jackpots.
+- Center web hits score 100K, or 150K with Bigger Jackpots.
+- With Shot Assist, the left web target always counts as the center web target and awards the same score/progress.
+
+ADD-A-BALL
+- Left and right pops require 3 hits to qualify add-a-ball at their matching saucer.
+- With More Jackpots, the pop requirement is 2 hits.
+- Center web requires only 1 hit for both jackpot and add-a-ball qualification.
+- Add-a-ball can be awarded only once per saucer per mode.
+- After a saucer has used add-a-ball, later jackpots at that saucer still work normally.
+
+JACKPOTS
+- Jackpot value is 250K multiplied by balls currently in play.
+- With Bigger Jackpots, value is 300K multiplied by balls currently in play.
+- Collecting a jackpot resets that area to 0 progress and turns its saucer light off.
+- The add-a-ball-used flag does not reset.
+
+SUMMARY
+- MODE SCORE
+- BIGGEST JP
+- JACKPOTS

@@ -843,6 +843,57 @@ player_vars:
   molemen_state:
     initial_value: 0
     value_type: int
+  molemen_state:
+    initial_value: 0
+    value_type: int
+  molemen_jackpots:
+    initial_value: 0
+    value_type: int
+  molemen_biggest_jackpot:
+    initial_value: 0
+    value_type: int
+  molemen_opening_save_seconds:
+    initial_value: 15
+    value_type: int
+  molemen_one_ball_grace_seconds:
+    initial_value: 5
+    value_type: int
+  molemen_left_hits:
+    initial_value: 0
+    value_type: int
+  molemen_center_hits:
+    initial_value: 0
+    value_type: int
+  molemen_right_hits:
+    initial_value: 0
+    value_type: int
+  molemen_saucer_1_lit:
+    initial_value: 0
+    value_type: int
+  molemen_saucer_2_lit:
+    initial_value: 0
+    value_type: int
+  molemen_saucer_3_lit:
+    initial_value: 0
+    value_type: int
+  molemen_saucer_1_add_ball_ready:
+    initial_value: 0
+    value_type: int
+  molemen_saucer_2_add_ball_ready:
+    initial_value: 0
+    value_type: int
+  molemen_saucer_3_add_ball_ready:
+    initial_value: 0
+    value_type: int
+  molemen_saucer_1_add_ball_used:
+    initial_value: 0
+    value_type: int
+  molemen_saucer_2_add_ball_used:
+    initial_value: 0
+    value_type: int
+  molemen_saucer_3_add_ball_used:
+    initial_value: 0
+    value_type: int
   brutus_state:
     initial_value: 0
     value_type: int
