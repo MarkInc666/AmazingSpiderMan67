@@ -1,5 +1,11 @@
 #config_version=6
 
+# The Plutonians coded rules:
+# - All six areas begin frozen and can be thawed at any time by qualifying hits.
+# - Active freeze ray fires every 12s and refreezes one thawed area.
+# - Any upper target blocks/resets the ray for 20s / 25s with More Time.
+# - Win by thawing all six areas simultaneously.
+
 # THE PLUTONIANS — six-area freeze/thaw control mode.
 # Areas reuse Super Swami's bottom/middle/upper x left/right switch map.
 # Areas can be thawed at any time. The active ray randomly refreezes one thawed

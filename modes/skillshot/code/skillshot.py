@@ -73,7 +73,7 @@ class SkillShot(Mode):
 
         self.add_mode_event_handler("s_pop_left_active", self.skillshot_switch_hit_disable)
         self.add_mode_event_handler("s_pop_right_active", self.skillshot_switch_hit_disable)
-        self.add_mode_event_handler("s_spinner_active", self.skillshot_switch_hit_disable)
+        self.add_mode_event_handler("s_web_spinner_active", self.skillshot_switch_hit_disable)
         self.add_mode_event_handler("s_inlane_m_r_active", self.skillshot_switch_hit_disable)
         self.add_mode_event_handler("s_inlane_m_l_active", self.skillshot_switch_hit_disable)
 

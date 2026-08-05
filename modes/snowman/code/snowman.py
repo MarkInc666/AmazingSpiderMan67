@@ -1,3 +1,17 @@
+"""The Snowman villain mode.
+
+Current coded rules:
+- Hit either web for 100K (150K with Bigger), then hit the opposite web
+  within 16 seconds (20 with More Time) for 250K (350K with Bigger).
+- Re-hitting the starting web scores 25K and resets the wire timer; Shot
+  Assist lets that repeat hit complete the connection once.
+- The first lower-spinner spin defeats Snowman, scores the current spin value,
+  and starts a 10-second bonus-spin window (16 seconds with More Time).
+- Every spin scores 100K (150K with Bigger). More Jackpots raises the value
+  of each following spin by 25K. Zaps are unlimited until the timer expires.
+- Safety Net starts a 10-second ball save when the spinner becomes ready.
+"""
+
 from mpf.core.delays import DelayManager
 from mpf.core.mode import Mode
 from modes.common.case_file_mixin import CaseFileMixin

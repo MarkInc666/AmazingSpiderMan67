@@ -1,5 +1,7 @@
 THE SNOWMAN — FINAL MODE DESIGN
 ===============================
+CURRENT CODE REFERENCE — timings and behavior below match the implemented mode.
+
 - Either web starts for 100K (150K with Bigger Jackpots).
 - The opposite web must be hit within 16 seconds (20 with More Time) for
   250K (350K with Bigger).

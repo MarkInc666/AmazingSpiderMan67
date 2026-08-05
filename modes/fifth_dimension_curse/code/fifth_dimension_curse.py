@@ -15,7 +15,7 @@ class FifthDimensionCurse(Mode):
         "upper_right": [
             "s_above_star", "s_inlane_a", "s_inlane_b", "s_star_rollover",
             "s_trispinner_opto", "s_upper_exit_right_opto", "s_upper_target_left",
-            "s_upper_target_center", "s_upper_target_right", "s_web_target_mid", "s_web_target_top",
+            "s_upper_target_center", "s_upper_target_right", "s_web_target_mid",
         ],
         "middle_left": [
             "s_above_spinner", "s_inlane_m_l", "s_left_drops_1", "s_left_drops_2",

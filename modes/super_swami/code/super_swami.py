@@ -14,7 +14,7 @@ class SuperSwami(CaseFileMixin, Mode):
 
     AREA_SWITCHES = {
         "upper_left": ['s_leaf_next_to_1', 's_saucer_1', 's_saucer_2', 's_saucer_3', 's_upper_entrance_opto', 's_upper_exit_left_opto', 's_vuk_switch'],
-        "upper_right": ['s_above_star', 's_inlane_a', 's_inlane_b', 's_star_rollover', 's_trispinner_opto', 's_upper_exit_right_opto', 's_upper_target_center', 's_upper_target_left', 's_upper_target_right', 's_web_target_mid', 's_web_target_top'],
+        "upper_right": ['s_above_star', 's_inlane_a', 's_inlane_b', 's_star_rollover', 's_web_target_mid'],
         "middle_left": ['s_above_spinner', 's_inlane_m_l', 's_left_drops_1', 's_left_drops_2', 's_left_drops_3', 's_left_drops_rubber', 's_left_drops_top_left_rubber', 's_left_drops_top_right_rubber', 's_pop_left', 's_web_spinner', 's_web_target_left'],
         "middle_right": ['s_inlane_m_r', 's_mid_right_rubber', 's_pop_right', 's_right_drops_1', 's_right_drops_2', 's_right_drops_3', 's_right_drops_4', 's_right_drops_5', 's_right_drops_rubber', 's_right_drops_top_rubber'],
         "lower_left": ['s_inlane_l', 's_outlane_l', 's_sling_l'],

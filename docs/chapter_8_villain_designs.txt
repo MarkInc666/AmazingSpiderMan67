@@ -26,7 +26,7 @@ BOLTON AND BOOMER — DESIGNED / NOT CODED
   loop if missed.
 - Ball-control details, values and Case File effects still need final workshop.
 
-THE SNOWMAN — CODED / NEEDS PLAYTEST
+THE SNOWMAN — CODED / NEEDS PLAYTEST (CURRENT CODE)
 - Either web begins the copper-wire run.
 - Hit the opposite web within 16 seconds; repeated starting-web hits score 25K
   and reset the timer. Shot Assist lets that repeated hit complete the wire.
@@ -35,7 +35,7 @@ THE SNOWMAN — CODED / NEEDS PLAYTEST
 - More Jackpots increases each following spin by 25K.
 - See snowman_mode.txt for the complete design.
 
-THE PLUTONIANS — CODED / NEEDS PLAYTEST
+THE PLUTONIANS — CODED / NEEDS PLAYTEST (CURRENT CODE)
 - Six Super Swami areas begin frozen and rooftop access stays open.
 - One hit thaws a frozen area at any time.
 - The active Freeze Ray fires every 12 seconds and randomly refreezes one

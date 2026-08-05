@@ -1,5 +1,7 @@
 THE PLUTONIANS — FINAL MODE DESIGN
 ==================================
+CURRENT CODE REFERENCE — timings and behavior below match the implemented mode.
+
 
 GOAL
 - Thaw all six established playfield areas at the same time.

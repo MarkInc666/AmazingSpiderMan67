@@ -1,3 +1,19 @@
+"""The Plutonians villain mode.
+
+Current coded rules:
+- All six Super-Swami-style playfield areas begin frozen; roof access remains
+  open for the mode. A qualifying hit thaws a frozen area at any time.
+- While active, the freeze ray fires every 12 seconds and randomly refreezes
+  one currently thawed area.
+- Any upper-target hit blocks or resets the ray for 20 seconds (25 with More
+  Time). When the block expires, a new 12-second firing cycle begins.
+- Thaws score 100K (150K with Bigger), upper targets score 50K (75K with
+  Bigger), and thawing all six simultaneously awards 1M (1.5M with Bigger).
+- More Jackpots awards one Space Warp Jackpot per upper-playfield entrance;
+  Shot Assist adds one extra thaw on the first successful thaw; Safety Net
+  starts a 10-second ball save.
+"""
+
 import random
 
 from mpf.core.mode import Mode
