@@ -169,15 +169,7 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
         player["fifth_avenue_phantom_state"] = 1
         player["active_mode_points"] = 0
         player["fifth_avenue_phantom_jackpots"] = 0
-        player["fifth_avenue_phantom_escape_jackpots"] = 0
         player["fifth_avenue_phantom_best_jackpot"] = 0
-        player["fifth_avenue_phantom_rounds"] = 0
-        player["fifth_avenue_phantom_reveals_used"] = 0
-        player["fifth_avenue_phantom_current_jackpot"] = 0
-        player["fifth_avenue_phantom_timer"] = 0
-        player["fifth_avenue_phantom_location"] = ""
-        player["fifth_avenue_phantom_phase"] = self.phase
-        player["fifth_avenue_phantom_shot_assist_used"] = 0
 
     def _start_new_round(self):
         if self._in_summary_or_done():
@@ -444,7 +436,6 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
         self._clear_lit_location()
         player = self.machine.game.player
         player["fifth_avenue_phantom_state"] = 2
-        player["fifth_avenue_phantom_phase"] = "complete"
         self.machine.events.post("show_mode_message", message_mode_title="PHANTOM CASE CLOSED", message_mode_subtitle="MODE COMPLETE")
         self.machine.events.post("fifth_avenue_phantom_mode_complete")
 
@@ -458,16 +449,10 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
     def _sync_vars(self):
         player = self.machine.game.player
         player["active_mode_points"] = self.mode_points
+        player["active_mode_hits"] = self.jackpots_collected
+        player["active_mode_major_hits"] = self.jackpots_collected
         player["fifth_avenue_phantom_jackpots"] = self.jackpots_collected
-        player["fifth_avenue_phantom_escape_jackpots"] = 0
         player["fifth_avenue_phantom_best_jackpot"] = self.best_jackpot
-        player["fifth_avenue_phantom_rounds"] = self.rounds_started
-        player["fifth_avenue_phantom_reveals_used"] = self.reveal_number
-        player["fifth_avenue_phantom_current_jackpot"] = self.current_jackpot
-        player["fifth_avenue_phantom_timer"] = max(0, self.reveal_seconds_left)
-        player["fifth_avenue_phantom_location"] = self.LOCATION_LABELS[self.current_location] if self.current_location else ""
-        player["fifth_avenue_phantom_phase"] = self.phase
-        player["fifth_avenue_phantom_shot_assist_used"] = self.shot_assist_used
 
     def _in_summary_or_done(self):
         if self.mode_done:

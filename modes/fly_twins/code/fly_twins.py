@@ -104,24 +104,8 @@ class FlyTwins(CaseFileMixin, Mode):
         player["active_mode_points"] = 0
         player["active_mode_hits"] = 0
         player["active_mode_major_hits"] = 0
-        player["fly_twins_round"] = self.round_number
         player["fly_twins_rounds_completed"] = 0
-        player["fly_twins_captures"] = 0
-        player["fly_twins_super_jackpots"] = 0
         player["fly_twins_jackpots"] = 0
-        player["fly_twins_spinner_hits"] = 0
-        player["fly_twins_base_jackpot"] = self.base_jackpot
-        player["fly_twins_lit_saucers"] = 0
-        player["fly_twins_multiplier"] = 0
-        player["fly_twins_last_award"] = 0
-        player["fly_twins_shot_assist_used"] = 0
-
-        player["fly_twins_upper_left_hit"] = 0
-        player["fly_twins_upper_center_hit"] = 0
-        player["fly_twins_upper_right_hit"] = 0
-        player["fly_twins_saucer_1_lit"] = 0
-        player["fly_twins_saucer_2_lit"] = 0
-        player["fly_twins_saucer_3_lit"] = 0
 
     def _add_handlers(self):
         self.add_mode_event_handler("fly_twins_multiball_ended", self._multiball_ended)
@@ -274,26 +258,10 @@ class FlyTwins(CaseFileMixin, Mode):
     def _sync_vars(self):
         player = self.machine.game.player
         player["active_mode_points"] = self.mode_points
-        player["active_mode_hits"] = len(self.upper_targets_hit)
+        player["active_mode_hits"] = self.rounds_completed
         player["active_mode_major_hits"] = self.jackpots_collected
-        player["fly_twins_round"] = self.round_number
         player["fly_twins_rounds_completed"] = self.rounds_completed
-        player["fly_twins_captures"] = self.captures
-        player["fly_twins_super_jackpots"] = self.super_jackpots
         player["fly_twins_jackpots"] = self.jackpots_collected
-        player["fly_twins_spinner_hits"] = self.spinner_hits
-        player["fly_twins_base_jackpot"] = self._current_base_jackpot()
-        player["fly_twins_lit_saucers"] = len(self.lit_saucers)
-        player["fly_twins_multiplier"] = self._current_multiplier()
-        player["fly_twins_last_award"] = self.last_award
-        player["fly_twins_shot_assist_used"] = 1 if self.shot_assist_used else 0
-
-        player["fly_twins_upper_left_hit"] = 1 if "left" in self.upper_targets_hit else 0
-        player["fly_twins_upper_center_hit"] = 1 if "center" in self.upper_targets_hit else 0
-        player["fly_twins_upper_right_hit"] = 1 if "right" in self.upper_targets_hit else 0
-        player["fly_twins_saucer_1_lit"] = 1 if "saucer_1" in self.lit_saucers else 0
-        player["fly_twins_saucer_2_lit"] = 1 if "saucer_2" in self.lit_saucers else 0
-        player["fly_twins_saucer_3_lit"] = 1 if "saucer_3" in self.lit_saucers else 0
         self._update_mode_status()
 
     def _update_mode_status(self):

@@ -1,0 +1,92 @@
+SINISTER SURGE
+Chapter 1 Mini-Wizard
+
+STATUS
+- Coded from the approved callback-stage design.
+- Needs on-machine playtest and timing/lighting verification.
+
+START / END
+- Starts 2-ball multiball.
+- Initial ball save: 20 seconds.
+- Mode ends when multiball ends (one ball remains).
+- Daily Bugle mystery is disabled while Sinister Surge owns the VUK.
+- Setup kicks a ball already sitting at the VUK.
+
+STAGE FLOW
+- One random unfinished Chapter 1 villain stage is active at a time.
+- Completing a stage lights the Daily Bugle/VUK Jackpot.
+- Collect the Jackpot before another unfinished stage is chosen.
+
+RHINO
+- 6 pop hits light Jackpot.
+
+SANDMAN
+- Uses the right 5-bank.
+- One special target flashes.
+- Every 4 seconds the special target advances to the next standing drop.
+- Hit the currently flashing target to light Jackpot.
+- If all five targets are down without collecting the lit target, reset the bank
+  and continue the Sandman attempt.
+
+VULTURE
+- Hit any one upper target once.
+- Make 3 upper-spinner spins.
+- Target and spinner requirements may be completed in either order.
+- Completing both requirements lights Jackpot.
+
+ELECTRO
+- Left web and center web are the two shots.
+- One starts lit.
+- Hit the lit web; the other web becomes lit and a 20-second timer starts.
+- Hit the second lit web before timeout to light Jackpot.
+- Timeout resets the Electro attempt and allows an immediate restart.
+
+GREEN GOBLIN
+- Any saucer starts the attempt and holds that ball for 4 seconds.
+- Four areas flash green: left web, center web, left drop bank, right drop bank.
+- Any individual drop hit qualifies its bank; each of the four areas counts once.
+- Hit 2 of the 4 areas before the 4-second hold ends to light Jackpot.
+- Success releases the held ball immediately.
+- Failure releases the held ball at 4 seconds and allows another saucer restart.
+
+SAUCER REST
+- During any non-Goblin stage, one ball may rest in any saucer for up to 20 seconds.
+- Only one saucer ball may be resting at a time.
+- A ball entering another saucer while one is already held ejects normally.
+- The rest does not pause the current stage or its timers.
+- Green Goblin replaces the rest with its specific 4-second attempt hold.
+
+JACKPOTS / ADD-A-BALL
+- Stage Jackpot = 100K x (balls in play + stages cleared) + Case File bonus.
+- Complete A+B before collecting a stage Jackpot to add a ball on that Jackpot.
+- Maximum balls in play: 5.
+- Added-ball save: 10 seconds.
+- A+B resets after each stage Jackpot.
+
+VICTORY LAPS
+- Begin after all five villain stages have been completed and their Jackpots collected.
+- A+B lights the Daily Bugle/VUK Super Jackpot.
+- Super Jackpot = 1M x balls in play + Case File bonus.
+
+CASE FILE VALUE BONUS
+- Each accumulated chapter Case File contributes 20K to every stage Jackpot and
+  Super Jackpot through mini_wizard_case_file_bonus.
+- Shared chapter cap: 25 Case Files / +500K.
+
+SCORING
+- Active qualifying stage hits: 50K.
+- Other registered stage-related hits: 20K.
+- Saucer entry: 50K.
+- Victory Lap registered hits: 50K.
+
+LIGHTING
+- Rhino: pop lighting.
+- Sandman: only the current special right-bank target flashes; green-lens inserts
+  use green/off.
+- Vulture: upper-target and upper-spinner indicators flash independently and stop
+  when their requirement is completed.
+- Electro: only the currently required web flashes.
+- Goblin: saucers flash while ready; during a 4-second attempt, the four qualifying
+  areas flash green and each collected area turns off.
+- Saucer main inserts use green and the red hole inserts use red, matching the
+  physical lenses in config/lights.yaml.

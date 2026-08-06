@@ -147,11 +147,8 @@ Case File 4 (Safety Net): One failed scheme step protected
 Case File 5 (Shot Assist): Spot one required shot
 
 Sinister Surge
-Case File 1 (More Jackpots): Add one extra surge jackpot
-Case File 2 (Bigger Jackpots): Increase surge jackpot
-Case File 3 (More Time): Extend surge phase
-Case File 4 (Safety Net): One drain / save window
-Case File 5 (Shot Assist): Start one surge shot lit
+Chapter Case Files: +20K each to every Sinister Surge Jackpot and Super Jackpot
+(shared mini-wizard value bonus; maximum 25 files / +500K)
 
 The Plotter
 Case File 1 (More Jackpots): Add one extra plan jackpot

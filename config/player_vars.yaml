@@ -297,6 +297,12 @@ player_vars:
   fifth_avenue_phantom_state:
     initial_value: 0
     value_type: int
+  fifth_avenue_phantom_jackpots:
+    initial_value: 0
+    value_type: int
+  fifth_avenue_phantom_best_jackpot:
+    initial_value: 0
+    value_type: int
   crime_wave_state:
     initial_value: 0
 
@@ -313,26 +319,6 @@ player_vars:
     initial_value: 0
     value_type: int
   dr_manta_state:
-    initial_value: 0
-    value_type: int
-  dr_manta_phase:
-    initial_value: shoot_vuk
-  dr_manta_jackpot_value:
-    initial_value: 0
-    value_type: int
-  dr_manta_jackpots:
-    initial_value: 0
-    value_type: int
-  dr_manta_biggest_jackpot:
-    initial_value: 0
-    value_type: int
-  dr_manta_attack_seconds:
-    initial_value: 0
-    value_type: int
-  dr_manta_held_saucer:
-    initial_value: 0
-    value_type: int
-  dr_manta_shot_assist_available:
     initial_value: 0
     value_type: int
   dr_manta_second_ball_save_seconds:
@@ -599,13 +585,7 @@ player_vars:
   mini_wizards_completed:
     initial_value: 0
     value_type: int
-  sinister_surge_case_file_bonus:
-    initial_value: 0
-    value_type: int
   mastermind_trap_case_file_bonus:
-    initial_value: 0
-    value_type: int
-  trubble_unleashed_case_file_bonus:
     initial_value: 0
     value_type: int
   mad_science_meltdown_case_file_bonus:
@@ -794,55 +774,10 @@ player_vars:
   final_showdown_state:
     initial_value: 0
     value_type: int
-  fly_twins_round:
-    initial_value: 0
-    value_type: int
   fly_twins_rounds_completed:
     initial_value: 0
     value_type: int
-  fly_twins_captures:
-    initial_value: 0
-    value_type: int
-  fly_twins_super_jackpots:
-    initial_value: 0
-    value_type: int
   fly_twins_jackpots:
-    initial_value: 0
-    value_type: int
-  fly_twins_spinner_hits:
-    initial_value: 0
-    value_type: int
-  fly_twins_base_jackpot:
-    initial_value: 0
-    value_type: int
-  fly_twins_lit_saucers:
-    initial_value: 0
-    value_type: int
-  fly_twins_multiplier:
-    initial_value: 0
-    value_type: int
-  fly_twins_last_award:
-    initial_value: 0
-    value_type: int
-  fly_twins_shot_assist_used:
-    initial_value: 0
-    value_type: int
-  fly_twins_upper_left_hit:
-    initial_value: 0
-    value_type: int
-  fly_twins_upper_center_hit:
-    initial_value: 0
-    value_type: int
-  fly_twins_upper_right_hit:
-    initial_value: 0
-    value_type: int
-  fly_twins_saucer_1_lit:
-    initial_value: 0
-    value_type: int
-  fly_twins_saucer_2_lit:
-    initial_value: 0
-    value_type: int
-  fly_twins_saucer_3_lit:
     initial_value: 0
     value_type: int
   super_swami_state:
@@ -875,45 +810,6 @@ player_vars:
   molemen_opening_save_seconds:
     initial_value: 15
     value_type: int
-  molemen_one_ball_grace_seconds:
-    initial_value: 5
-    value_type: int
-  molemen_left_hits:
-    initial_value: 0
-    value_type: int
-  molemen_center_hits:
-    initial_value: 0
-    value_type: int
-  molemen_right_hits:
-    initial_value: 0
-    value_type: int
-  molemen_saucer_1_lit:
-    initial_value: 0
-    value_type: int
-  molemen_saucer_2_lit:
-    initial_value: 0
-    value_type: int
-  molemen_saucer_3_lit:
-    initial_value: 0
-    value_type: int
-  molemen_saucer_1_add_ball_ready:
-    initial_value: 0
-    value_type: int
-  molemen_saucer_2_add_ball_ready:
-    initial_value: 0
-    value_type: int
-  molemen_saucer_3_add_ball_ready:
-    initial_value: 0
-    value_type: int
-  molemen_saucer_1_add_ball_used:
-    initial_value: 0
-    value_type: int
-  molemen_saucer_2_add_ball_used:
-    initial_value: 0
-    value_type: int
-  molemen_saucer_3_add_ball_used:
-    initial_value: 0
-    value_type: int
   brutus_state:
     initial_value: 0
     value_type: int
@@ -943,103 +839,16 @@ player_vars:
     initial_value: 0
   master_technician_multiplier:
     initial_value: 0
-  trubble_unleashed_saucer_jackpot:
-    initial_value: 0
-    value_type: int
   trubble_unleashed_saucer_jackpots:
     initial_value: 0
     value_type: int
   trubble_unleashed_staged_successes:
     initial_value: 0
     value_type: int
-  trubble_unleashed_staged_seconds:
-    initial_value: 0
-    value_type: int
-  trubble_unleashed_staged_targets:
-    initial_value: 0
-    value_type: int
-  trubble_unleashed_add_a_ball_qualified:
-    initial_value: 0
-    value_type: int
-  trubble_unleashed_add_a_balls:
-    initial_value: 0
-    value_type: int
-  trubble_unleashed_lit_saucers:
-    initial_value: 0
-    value_type: int
   noah_boddy_upper_target_hits:
     initial_value: 0
   noah_boddy_best_jackpot:
     initial_value: 0
-  sinister_surge_a_hit:
-    initial_value: 0
-    value_type: int
-  sinister_surge_ab_ready:
-    initial_value: 0
-    value_type: int
-  sinister_surge_area_drops_cleared:
-    initial_value: 0
-    value_type: int
-  sinister_surge_area_pops_cleared:
-    initial_value: 0
-    value_type: int
-  sinister_surge_area_progress:
-    initial_value: 0
-    value_type: int
-  sinister_surge_area_required:
-    initial_value: 0
-    value_type: int
-  sinister_surge_area_spinner_cleared:
-    initial_value: 0
-    value_type: int
-  sinister_surge_area_star_cleared:
-    initial_value: 0
-    value_type: int
-  sinister_surge_area_upper_targets_cleared:
-    initial_value: 0
-    value_type: int
-  sinister_surge_areas_cleared:
-    initial_value: 0
-    value_type: int
-  sinister_surge_b_hit:
-    initial_value: 0
-    value_type: int
-  sinister_surge_current_area:
-    initial_value: ""
-    value_type: str
-  sinister_surge_current_area_display:
-    initial_value: ""
-    value_type: str
-  sinister_surge_hits_still_needed:
-    initial_value: 0
-    value_type: int
-  sinister_surge_jackpot_ready:
-    initial_value: 0
-    value_type: int
-  sinister_surge_jackpot_value:
-    initial_value: 0
-    value_type: int
-  sinister_surge_jackpots:
-    initial_value: 0
-    value_type: int
-  sinister_surge_super_jackpot_ready:
-    initial_value: 0
-    value_type: int
-  sinister_surge_super_jackpot_value:
-    initial_value: 0
-    value_type: int
-  sinister_surge_super_jackpots:
-    initial_value: 0
-    value_type: int
-  sinister_surge_upper_center_hits:
-    initial_value: 0
-    value_type: int
-  sinister_surge_upper_left_hits:
-    initial_value: 0
-    value_type: int
-  sinister_surge_upper_right_hits:
-    initial_value: 0
-    value_type: int
   active_mode_points:
     initial_value: 0
     value_type: int

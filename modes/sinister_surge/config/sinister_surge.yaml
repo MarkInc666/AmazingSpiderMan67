@@ -41,7 +41,6 @@ event_player:
 
   s_vuk_switch_active:
     - sinister_surge_vuk_hit
-    - sinister_surge_kick_vuk|2s
 
   drop_target_bank_dt_bank_left_down:
     - drop_target_bank_dt_bank_left_reset
@@ -90,6 +89,8 @@ event_player:
 
   sinister_surge_enable_daily_bugle_mystery: enable_daily_bugle_mystery
 
+  sinister_surge_clear_stage_lights: sinister_surge_clear_area_lights
+
 
 widget_player:
   mode_sinister_surge_started:
@@ -130,7 +131,7 @@ widget_player:
 
 light_player:
   sinister_surge_saucer_hold_started{saucer=="saucer_1"}:
-    l_1: yellow
+    l_1: green
     l_1_hole_l: red
     l_1_hole_r: red
   sinister_surge_saucer_released{saucer=="saucer_1"}:
@@ -139,7 +140,7 @@ light_player:
     l_1_hole_r: off
 
   sinister_surge_saucer_hold_started{saucer=="saucer_2"}:
-    l_2: yellow
+    l_2: green
     l_2_hole_l: red
     l_2_hole_r: red
   sinister_surge_saucer_released{saucer=="saucer_2"}:
@@ -148,7 +149,7 @@ light_player:
     l_2_hole_r: off
 
   sinister_surge_saucer_hold_started{saucer=="saucer_3"}:
-    l_3: yellow
+    l_3: green
     l_3_hole_l: red
     l_3_hole_r: red
   sinister_surge_saucer_released{saucer=="saucer_3"}:
@@ -180,36 +181,139 @@ show_player:
       action: stop
     sinister_surge_drops_lit_show:
       action: stop
+    sinister_surge_vulture_targets_show:
+      action: stop
+    sinister_surge_vulture_spinner_show:
+      action: stop
+    sinister_surge_sandman_target_1_show:
+      action: stop
+    sinister_surge_sandman_target_2_show:
+      action: stop
+    sinister_surge_sandman_target_3_show:
+      action: stop
+    sinister_surge_sandman_target_4_show:
+      action: stop
+    sinister_surge_sandman_target_5_show:
+      action: stop
+    sinister_surge_electro_left_show:
+      action: stop
+    sinister_surge_electro_center_show:
+      action: stop
+    sinister_surge_goblin_saucers_show:
+      action: stop
+    sinister_surge_goblin_left_web_show:
+      action: stop
+    sinister_surge_goblin_center_web_show:
+      action: stop
+    sinister_surge_goblin_left_bank_show:
+      action: stop
+    sinister_surge_goblin_right_bank_show:
+      action: stop
 
-  sinister_surge_area_pops_lit:
+  sinister_surge_area_rhino_lit:
     sinister_surge_pops_lit_show:
       action: play
       loops: -1
       speed: 2
 
-  sinister_surge_area_spinner_lit:
-    sinister_surge_spinner_lit_show:
+  sinister_surge_area_vulture_lit:
+    sinister_surge_vulture_targets_show:
       action: play
       loops: -1
-      speed: 2
+      speed: 1
+    sinister_surge_vulture_spinner_show:
+      action: play
+      loops: -1
+      speed: 1
 
-  sinister_surge_area_star_lit:
-    sinister_surge_star_lit_show:
-      action: play
-      loops: -1
-      speed: 2
+  sinister_surge_vulture_target_done:
+    sinister_surge_vulture_targets_show:
+      action: stop
 
-  sinister_surge_area_upper_targets_lit:
-    sinister_surge_upper_targets_lit_show:
-      action: play
-      loops: -1
-      speed: 2
+  sinister_surge_vulture_spinner_done:
+    sinister_surge_vulture_spinner_show:
+      action: stop
 
-  sinister_surge_area_drops_lit:
-    sinister_surge_drops_lit_show:
-      action: play
+  sinister_surge_sandman_target_1:
+    sinister_surge_sandman_target_1_show:
       loops: -1
-      speed: 2
+  sinister_surge_sandman_target_2:
+    sinister_surge_sandman_target_2_show:
+      loops: -1
+  sinister_surge_sandman_target_3:
+    sinister_surge_sandman_target_3_show:
+      loops: -1
+  sinister_surge_sandman_target_4:
+    sinister_surge_sandman_target_4_show:
+      loops: -1
+  sinister_surge_sandman_target_5:
+    sinister_surge_sandman_target_5_show:
+      loops: -1
+
+  sinister_surge_sandman_clear:
+    sinister_surge_sandman_target_1_show:
+      action: stop
+    sinister_surge_sandman_target_2_show:
+      action: stop
+    sinister_surge_sandman_target_3_show:
+      action: stop
+    sinister_surge_sandman_target_4_show:
+      action: stop
+    sinister_surge_sandman_target_5_show:
+      action: stop
+
+  sinister_surge_electro_left_lit:
+    sinister_surge_electro_left_show:
+      loops: -1
+  sinister_surge_electro_center_lit:
+    sinister_surge_electro_center_show:
+      loops: -1
+  sinister_surge_electro_clear:
+    sinister_surge_electro_left_show:
+      action: stop
+    sinister_surge_electro_center_show:
+      action: stop
+
+  sinister_surge_area_goblin_lit:
+    sinister_surge_goblin_saucers_show:
+      loops: -1
+  sinister_surge_goblin_ready:
+    sinister_surge_goblin_saucers_show:
+      loops: -1
+  sinister_surge_goblin_attempt_started:
+    sinister_surge_goblin_saucers_show:
+      action: stop
+    sinister_surge_goblin_left_web_show:
+      loops: -1
+    sinister_surge_goblin_center_web_show:
+      loops: -1
+    sinister_surge_goblin_left_bank_show:
+      loops: -1
+    sinister_surge_goblin_right_bank_show:
+      loops: -1
+  sinister_surge_goblin_left_web_collected:
+    sinister_surge_goblin_left_web_show:
+      action: stop
+  sinister_surge_goblin_center_web_collected:
+    sinister_surge_goblin_center_web_show:
+      action: stop
+  sinister_surge_goblin_left_bank_collected:
+    sinister_surge_goblin_left_bank_show:
+      action: stop
+  sinister_surge_goblin_right_bank_collected:
+    sinister_surge_goblin_right_bank_show:
+      action: stop
+  sinister_surge_goblin_clear:
+    sinister_surge_goblin_saucers_show:
+      action: stop
+    sinister_surge_goblin_left_web_show:
+      action: stop
+    sinister_surge_goblin_center_web_show:
+      action: stop
+    sinister_surge_goblin_left_bank_show:
+      action: stop
+    sinister_surge_goblin_right_bank_show:
+      action: stop
 
   sinister_surge_jackpot_lit_show:
     sinister_surge_daily_bugle_jackpot_show:
@@ -249,6 +353,34 @@ show_player:
     sinister_surge_upper_targets_lit_show:
       action: stop
     sinister_surge_drops_lit_show:
+      action: stop
+    sinister_surge_vulture_targets_show:
+      action: stop
+    sinister_surge_vulture_spinner_show:
+      action: stop
+    sinister_surge_sandman_target_1_show:
+      action: stop
+    sinister_surge_sandman_target_2_show:
+      action: stop
+    sinister_surge_sandman_target_3_show:
+      action: stop
+    sinister_surge_sandman_target_4_show:
+      action: stop
+    sinister_surge_sandman_target_5_show:
+      action: stop
+    sinister_surge_electro_left_show:
+      action: stop
+    sinister_surge_electro_center_show:
+      action: stop
+    sinister_surge_goblin_saucers_show:
+      action: stop
+    sinister_surge_goblin_left_web_show:
+      action: stop
+    sinister_surge_goblin_center_web_show:
+      action: stop
+    sinister_surge_goblin_left_bank_show:
+      action: stop
+    sinister_surge_goblin_right_bank_show:
       action: stop
     sinister_surge_daily_bugle_jackpot_show:
       action: stop
@@ -362,6 +494,137 @@ shows:
         l_5bank_3: blue
         l_5bank_4: blue
         l_5bank_5: blue
+
+  # Chapter 1 callback indicators. Colors below respect the physical insert
+  # lenses in config/lights.yaml: both drop-bank inserts are green, while the
+  # web/upper indicators are white or RGB-capable.
+  sinister_surge_vulture_targets_show:
+    - duration: 250ms
+      lights:
+        l_upper_left: yellow
+        l_upper_middle: yellow
+        l_upper_right: yellow
+    - duration: 250ms
+      lights:
+        l_upper_left: off
+        l_upper_middle: off
+        l_upper_right: off
+
+  sinister_surge_vulture_spinner_show:
+    - duration: 250ms
+      lights:
+        l_gi_a: yellow
+    - duration: 250ms
+      lights:
+        l_gi_a: off
+
+  sinister_surge_sandman_target_1_show:
+    - duration: 250ms
+      lights:
+        l_5bank_1: green
+    - duration: 250ms
+      lights:
+        l_5bank_1: off
+
+  sinister_surge_sandman_target_2_show:
+    - duration: 250ms
+      lights:
+        l_5bank_2: green
+    - duration: 250ms
+      lights:
+        l_5bank_2: off
+
+  sinister_surge_sandman_target_3_show:
+    - duration: 250ms
+      lights:
+        l_5bank_3: green
+    - duration: 250ms
+      lights:
+        l_5bank_3: off
+
+  sinister_surge_sandman_target_4_show:
+    - duration: 250ms
+      lights:
+        l_5bank_4: green
+    - duration: 250ms
+      lights:
+        l_5bank_4: off
+
+  sinister_surge_sandman_target_5_show:
+    - duration: 250ms
+      lights:
+        l_5bank_5: green
+    - duration: 250ms
+      lights:
+        l_5bank_5: off
+
+  sinister_surge_electro_left_show:
+    - duration: 150ms
+      lights:
+        l_left_web_target: yellow
+    - duration: 150ms
+      lights:
+        l_left_web_target: off
+
+  sinister_surge_electro_center_show:
+    - duration: 150ms
+      lights:
+        l_mid_web_target: yellow
+    - duration: 150ms
+      lights:
+        l_mid_web_target: off
+
+  sinister_surge_goblin_saucers_show:
+    - duration: 200ms
+      lights:
+        l_1: green
+        l_2: green
+        l_3: green
+    - duration: 200ms
+      lights:
+        l_1: off
+        l_2: off
+        l_3: off
+
+  sinister_surge_goblin_left_web_show:
+    - duration: 120ms
+      lights:
+        l_left_web_target: green
+    - duration: 120ms
+      lights:
+        l_left_web_target: off
+
+  sinister_surge_goblin_center_web_show:
+    - duration: 120ms
+      lights:
+        l_mid_web_target: green
+    - duration: 120ms
+      lights:
+        l_mid_web_target: off
+
+  sinister_surge_goblin_left_bank_show:
+    - duration: 120ms
+      lights:
+        l_3bankbonus: green
+    - duration: 120ms
+      lights:
+        l_3bankbonus: off
+
+  sinister_surge_goblin_right_bank_show:
+    - duration: 120ms
+      lights:
+        l_5bank_1: green
+        l_5bank_2: green
+        l_5bank_3: green
+        l_5bank_4: green
+        l_5bank_5: green
+    - duration: 120ms
+      lights:
+        l_5bank_1: off
+        l_5bank_2: off
+        l_5bank_3: off
+        l_5bank_4: off
+        l_5bank_5: off
 
   sinister_surge_daily_bugle_jackpot_show:
     - duration: 150ms

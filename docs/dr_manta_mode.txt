@@ -74,28 +74,18 @@ Timeout
   Upper targets and spinner indications stop. GI falls to dim blue. All flippers
   stay disabled until the active ball reaches the trough.
 
-PLAYER VARIABLES / SUMMARY DATA
--------------------------------
-dr_manta_phase
-  shoot_vuk, lock_saucer, attack or drain_wait
+STATE / SUMMARY DATA
+--------------------
+The live phase, jackpot value, jackpot count, biggest jackpot, attack timer,
+held saucer and Shot Assist availability are mode-local Python state. They are
+not persisted as player variables.
 
-dr_manta_jackpot_value
-  Current spinner-built jackpot value.
-
-dr_manta_jackpots
-  Number of upper-target jackpots collected.
-
-dr_manta_biggest_jackpot
-  Largest single jackpot, including the Shot Assist 3X award.
-
-dr_manta_attack_seconds
-  Timed-phase seconds remaining.
-
-dr_manta_held_saucer
-  0, 1, 2 or 3.
-
-dr_manta_shot_assist_available
-  1 until the mapped 3X target is collected; otherwise 0.
+Persistent/shared player data is limited to:
+- dr_manta_state for villain progression.
+- dr_manta_second_ball_save_seconds because MPF YAML reads it for the dynamic
+  second-ball-save duration.
+- active_mode_points, active_mode_hits and active_mode_major_hits for the shared
+  end-of-mode summary.
 
 PLAYTEST CHECKLIST
 ------------------

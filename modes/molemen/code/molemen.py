@@ -18,26 +18,14 @@ class Molemen(CaseFileMixin, Mode):
     AREAS = {
         "left": {
             "display": "LEFT POP",
-            "hits_var": "molemen_left_hits",
-            "lit_var": "molemen_saucer_1_lit",
-            "add_ready_var": "molemen_saucer_1_add_ball_ready",
-            "add_used_var": "molemen_saucer_1_add_ball_used",
             "saucer": "saucer_1",
         },
         "center": {
             "display": "CENTER WEB",
-            "hits_var": "molemen_center_hits",
-            "lit_var": "molemen_saucer_2_lit",
-            "add_ready_var": "molemen_saucer_2_add_ball_ready",
-            "add_used_var": "molemen_saucer_2_add_ball_used",
             "saucer": "saucer_2",
         },
         "right": {
             "display": "RIGHT POP",
-            "hits_var": "molemen_right_hits",
-            "lit_var": "molemen_saucer_3_lit",
-            "add_ready_var": "molemen_saucer_3_add_ball_ready",
-            "add_used_var": "molemen_saucer_3_add_ball_used",
             "saucer": "saucer_3",
         },
     }
@@ -134,12 +122,10 @@ class Molemen(CaseFileMixin, Mode):
         player["molemen_jackpots"] = 0
         player["molemen_biggest_jackpot"] = 0
         player["molemen_opening_save_seconds"] = self.opening_save_seconds
-        player["molemen_one_ball_grace_seconds"] = self.one_ball_grace_seconds
-        for data in self.AREAS.values():
-            player[data["hits_var"]] = 0
-            player[data["lit_var"]] = 0
-            player[data["add_ready_var"]] = 0
-            player[data["add_used_var"]] = 0
+        self.area_state = {
+            area: {"hits": 0, "lit": False, "add_ready": False, "add_used": False}
+            for area in self.AREAS
+        }
 
     def _left_pop_hit(self, **kwargs):
         self._area_hit("left")
@@ -153,17 +139,17 @@ class Molemen(CaseFileMixin, Mode):
     def _area_hit(self, area):
         if self.mode_exiting:
             return
-        player = self.machine.game.player
         data = self.AREAS[area]
+        state = self.area_state[area]
 
         score = self.center_score if area == "center" else self.pop_score
         self._score(score)
-        player[data["hits_var"]] += 1
-        player[data["lit_var"]] = 1
+        state["hits"] += 1
+        state["lit"] = True
 
         add_threshold = 1 if area == "center" else self.pop_add_ball_hits
-        if player[data["add_used_var"]] == 0 and player[data["hits_var"]] >= add_threshold:
-            player[data["add_ready_var"]] = 1
+        if not state["add_used"] and state["hits"] >= add_threshold:
+            state["add_ready"] = True
             self.machine.events.post(f"molemen_{data['saucer']}_add_ball_ready")
 
         self.machine.events.post(f"molemen_{data['saucer']}_jackpot_lit")
@@ -192,8 +178,9 @@ class Molemen(CaseFileMixin, Mode):
         area = self.SAUCER_TO_AREA[saucer]
         data = self.AREAS[area]
         player = self.machine.game.player
+        state = self.area_state[area]
 
-        if player[data["lit_var"]] != 1:
+        if not state["lit"]:
             self._eject_saucer(saucer)
             return
 
@@ -203,10 +190,10 @@ class Molemen(CaseFileMixin, Mode):
         player["molemen_jackpots"] += 1
         player["molemen_biggest_jackpot"] = max(int(player["molemen_biggest_jackpot"]), value)
 
-        add_ball = player[data["add_ready_var"]] == 1 and player[data["add_used_var"]] == 0
+        add_ball = state["add_ready"] and not state["add_used"]
         if add_ball:
-            player[data["add_used_var"]] = 1
-            player[data["add_ready_var"]] = 0
+            state["add_used"] = True
+            state["add_ready"] = False
             self.machine.events.post("molemen_add_a_ball")
             self.delay.remove("molemen_ball_added_message")
             self.delay.add(name="molemen_ball_added_message", ms=2100, callback=self._show_ball_added)
@@ -223,11 +210,11 @@ class Molemen(CaseFileMixin, Mode):
         self._update_status()
 
     def _reset_area(self, area):
-        player = self.machine.game.player
         data = self.AREAS[area]
-        player[data["hits_var"]] = 0
-        player[data["lit_var"]] = 0
-        player[data["add_ready_var"]] = 0
+        state = self.area_state[area]
+        state["hits"] = 0
+        state["lit"] = False
+        state["add_ready"] = False
         self.machine.events.post(f"molemen_{data['saucer']}_reset")
 
     def _show_ball_added(self):
@@ -281,14 +268,13 @@ class Molemen(CaseFileMixin, Mode):
     def _update_status(self):
         if self.mode_exiting or self.grace_active:
             return
-        p = self.machine.game.player
         self.machine.events.post(
             "show_mode_status",
             mode_status_title="BUILD SAUCER JACKPOTS",
             mode_status_value=(
-                f"L {p['molemen_left_hits']}  "
-                f"C {p['molemen_center_hits']}  "
-                f"R {p['molemen_right_hits']}"
+                f"L {self.area_state['left']['hits']}  "
+                f"C {self.area_state['center']['hits']}  "
+                f"R {self.area_state['right']['hits']}"
             ),
         )
 

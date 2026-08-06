@@ -456,17 +456,10 @@ class TrubbleUnleashed(Mode):
 
     def _sync_vars(self):
         self._set("active_mode_points", self.mode_points)
-        self._set("active_mode_hits", self.left_drop_hits + self.right_drop_hits + self.upper_target_hits)
-        self._set("active_mode_major_hits", self.saucer_jackpots + self.staged_successes + self.add_a_balls_awarded)
-        self._set("trubble_unleashed_saucer_jackpot", self.saucer_jackpot_value)
+        self._set("active_mode_hits", self.saucer_jackpots)
+        self._set("active_mode_major_hits", self.staged_successes)
         self._set("trubble_unleashed_saucer_jackpots", self.saucer_jackpots)
         self._set("trubble_unleashed_staged_successes", self.staged_successes)
-        self._set("trubble_unleashed_staged_seconds", self.staged_seconds_left)
-        self._set("trubble_unleashed_staged_targets", len(self.staged_targets))
-        self._set("trubble_unleashed_add_a_ball_qualified", 1 if self.add_a_ball_qualified else 0)
-        self._set("trubble_unleashed_add_a_balls", self.add_a_balls_awarded)
-        self._set("trubble_unleashed_lit_saucers", len(self.lit_saucers))
-        self._set("trubble_unleashed_case_file_bonus", self.case_file_bonus)
 
     def _inactive(self):
         player = self.machine.game.player if self.machine.game else None

@@ -106,9 +106,18 @@ class FinalShowdown(Mode):
         "saucer_3": "delayed_kickout_saucer_3",
     }
 
+    # Final-showdown working values only need to live for this mode instance.
+    PERSISTENT_VARS = {
+        "active_mode_points",
+        "active_mode_hits",
+        "active_mode_major_hits",
+        "final_showdown_state",
+    }
+
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
 
+        self._runtime_state = {}
         self.mode_exiting = False
         self.current_area = None
         self.jackpot_ready = False
@@ -170,6 +179,8 @@ class FinalShowdown(Mode):
 
     def _reset_player_vars(self):
         self._set("active_mode_points", 0)
+        self._set("active_mode_hits", 0)
+        self._set("active_mode_major_hits", 0)
         self._set("final_showdown_areas_cleared", 0)
         self._set("final_showdown_jackpots", 0)
         self._set("final_showdown_super_jackpots", 0)
@@ -631,6 +642,9 @@ class FinalShowdown(Mode):
         self._set(f"final_showdown_area_{area}_cleared", 1)
 
     def _get(self, name, default=0):
+        if name not in self.PERSISTENT_VARS:
+            return self._runtime_state.get(name, default)
+
         player = self.machine.game.player if self.machine.game else None
 
         if not player:
@@ -642,6 +656,14 @@ class FinalShowdown(Mode):
             return default
 
     def _set(self, name, value):
+        if name not in self.PERSISTENT_VARS:
+            self._runtime_state[name] = value
+            if name == "final_showdown_areas_cleared":
+                self._set("active_mode_hits", value)
+            elif name == "final_showdown_jackpots":
+                self._set("active_mode_major_hits", value)
+            return
+
         player = self.machine.game.player if self.machine.game else None
 
         if player:

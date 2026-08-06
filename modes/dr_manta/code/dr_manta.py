@@ -315,13 +315,6 @@ class DrManta(CaseFileMixin, Mode):
         player["active_mode_points"] = self.mode_points
         player["active_mode_hits"] = self.jackpot_hits
         player["active_mode_major_hits"] = self.jackpot_hits
-        player["dr_manta_phase"] = self.phase
-        player["dr_manta_jackpot_value"] = self.current_jackpot
-        player["dr_manta_jackpots"] = self.jackpot_hits
-        player["dr_manta_biggest_jackpot"] = self.biggest_jackpot
-        player["dr_manta_attack_seconds"] = self.attack_seconds_remaining
-        player["dr_manta_held_saucer"] = self.held_saucer or 0
-        player["dr_manta_shot_assist_available"] = int(self.shot_assist_available)
 
     def _update_status(self):
         if self.phase == "shoot_vuk":

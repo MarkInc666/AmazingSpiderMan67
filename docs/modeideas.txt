@@ -359,34 +359,33 @@ Case File 5 (Shot Assist): Spot one required shot.
 
 ### Sinister Surge
 
-**Theme:** Fast chaos, probably Electro/Goblin/Mysterio energy.
+**Current approved design:** Chapter 1 callback mini-wizard.
 
 ```text
-Core:
-Multiple villain shots are lit at once.
-Hit as many as possible during a timed surge.
+Start 2-ball multiball with 20-second ball save.
+Choose one unfinished villain stage at random.
 
-Best mechanic:
-Super Spinner + Chaos Pops + jackpots.
-```
+Rhino: 6 pop hits.
+Sandman: hit the flashing right-bank drop; it moves every 4 seconds.
+Vulture: 1 upper target + 3 upper-spinner spins, any order.
+Electro: hit the lit web, then the other web within 20 seconds; timeout resets.
+Green Goblin: hit any saucer; while held 4 seconds, hit 2 of 4 flashing-green
+areas (left web, center web, left bank, right bank). Any drop hit counts its bank.
 
-Flow:
+Each completed stage lights the Daily Bugle/VUK Jackpot.
+After all five stages and their Jackpots, begin Victory Laps.
+A+B lights the VUK Super Jackpot during Victory Laps.
 
-```text
-Start 2-ball or timed single-ball.
-Spinner builds surge multiplier.
-Pops build chaos.
-Lit shots collect surge jackpots.
+One ball may rest in a saucer for up to 20 seconds during any stage.
+Only one resting saucer ball is allowed; a second saucer ejects normally.
+Goblin replaces the normal rest with its 4-second attempt hold.
 ```
 
 Case file effects:
 
 ```text
-More Jackpots: More lit surge shots.
-Bigger Jackpots: Higher surge base.
-More Time: Extend surge timer.
-Safety Net: Short ball save / drain protection.
-Shot Assist: Start one surge shot lit.
+Chapter Case Files add 20K each to Sinister Surge Jackpot and Super Jackpot
+values, using the shared mini-wizard Case File bonus (maximum 25 files / 500K).
 ```
 
 ---
@@ -2162,4 +2161,3 @@ Below is a text version of a score card
                                       
                            Text © Peter Hall 1998
      _________________________________________________________________
-
