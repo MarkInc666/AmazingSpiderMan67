@@ -72,7 +72,6 @@ event_player:
     - sinister_surge_kick_vuk|1.5s
     - sinister_surge_disable_daily_bugle_mystery
     - sinister_surge_mode_intro
-    - play_song_7
 
   sinister_surge_reset_banks:
     - drop_target_bank_dt_bank_left_reset|100ms

@@ -390,13 +390,13 @@ class VillainBookends(Mode):
             'stat_2_var': 'diamond_bonus',
             'points_var': 'active_mode_points',
             'state_var': 'doctor_cool_state',
-            'song': 'play_song_47',
+            'song': 'play_song_56',
         },
         'harley_clivendon': {
             'title': 'HARLEY CLIVENDON', 'intro_1': 'Break the hypnotic spell.', 'intro_2': 'Expose the hidden scheme.', 'intro_3': 'Complete ten danger shots.',
             'summary_title_complete': 'CLIVENDON STOPPED', 'summary_title_failed': 'CLIVENDON ESCAPED',
             'stat_1_label': 'HITS', 'stat_1_var': 'active_mode_hits', 'stat_2_label': 'MAJOR HITS', 'stat_2_var': 'active_mode_major_hits',
-            'points_var': 'active_mode_points', 'state_var': 'harley_clivendon_state', 'song': 'play_song_11',
+            'points_var': 'active_mode_points', 'state_var': 'harley_clivendon_state', 'song': 'play_song_51',
         },
         'conquistador': {
             'title': 'THE CONQUISTADOR', 'intro_1': 'Complete the left bank.', 'intro_2': 'Spin to find the Fountain.', 'intro_3': 'Build and collect at center web.',
@@ -408,19 +408,19 @@ class VillainBookends(Mode):
             'title': 'SPIDER-SLAYER', 'intro_1': 'The Slayer is tracking you.', 'intro_2': 'Hit lit shots to expose it.', 'intro_3': 'Destroy it at the Daily Bugle.',
             'summary_title_complete': 'SLAYER DESTROYED', 'summary_title_failed': 'SLAYER ESCAPED',
             'stat_1_label': 'SLAYER JP', 'stat_1_var': 'spider_slayer_jackpot', 'stat_2_label': 'HUNT TIME', 'stat_2_var': 'spider_slayer_hunt_time',
-            'points_var': 'active_mode_points', 'state_var': 'spider_slayer_state', 'song': 'play_song_13',
+            'points_var': 'active_mode_points', 'state_var': 'spider_slayer_state', 'song': 'play_song_55',
         },
         'metal_eating_robot': {
             'title': 'METAL MONSTER', 'intro_1': 'Eight city zones are in danger.', 'intro_2': 'A new attack begins every five seconds.', 'intro_3': 'Save four before three are destroyed.',
             'summary_title_complete': 'CITY SAVED', 'summary_title_failed': 'CITY DESTROYED',
             'stat_1_label': 'ZONES SAVED', 'stat_1_var': 'metal_zones_saved', 'stat_2_label': 'DESTROYED', 'stat_2_var': 'metal_zones_destroyed',
-            'points_var': 'active_mode_points', 'state_var': 'metal_eating_robot_state', 'song': 'play_song_14',
+            'points_var': 'active_mode_points', 'state_var': 'metal_eating_robot_state', 'song': 'play_song_58',
         },
         'fiddler': {
             'title': 'FIDDLER', 'intro_1': 'Watch the flashing notes.', 'intro_2': 'Repeat each melody in order.', 'intro_3': 'One wrong note and Fiddler escapes.',
             'summary_title_complete': 'FIDDLER SILENCED', 'summary_title_failed': 'FIDDLER ESCAPED',
             'stat_1_label': 'ROUND', 'stat_1_var': 'fiddler_round', 'stat_2_label': 'NOTES HIT', 'stat_2_var': 'active_mode_hits',
-            'points_var': 'active_mode_points', 'state_var': 'fiddler_state', 'song': 'play_song_16',
+            'points_var': 'active_mode_points', 'state_var': 'fiddler_state', 'song': 'play_song_50',
         },
         'pardo': {
             'title': 'PARDO',
@@ -474,7 +474,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'kotep_state',
-            'song': 'play_song_11',
+            'song': 'play_song_35',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: The Super Swami bends minds across the city.
@@ -635,7 +635,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'clive_blotto_state',
-            'song': 'play_song_15',
+            'song': 'play_song_57',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Dr. Zap chains electricity across shots.
@@ -675,7 +675,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'bolton_boomer_state',
-            'song': 'play_song_8',
+            'song': 'play_song_58',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: The Snowman is freezing the city.
@@ -755,7 +755,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'doctor_atlantean_state',
-            'song': 'play_song_16',
+            'song': 'play_song_37',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Desperado attacks from above the clouds.
@@ -938,7 +938,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'sir_galahad_state',
-            'song': 'play_song_11',
+            'song': 'play_song_57',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Master Vine spreads across the playfield.
@@ -999,7 +999,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'spider_men_state',
-            'song': 'play_song_12',
+            'song': 'play_song_27',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: The Baron Von Rantenraven commands the final attack.
@@ -1095,7 +1095,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'plotter_state',
-            'song': 'play_song_43',
+            'song': 'play_song_41',
         },
         'crime_wave': {
             'title': 'CRIME WAVE',
@@ -1126,7 +1126,7 @@ class VillainBookends(Mode):
             'summary_title_failed': 'THE WEB TIGHTENS',
             'stat_1_label': 'HITS', 'stat_1_var': 'active_mode_hits',
             'stat_2_label': 'STATE', 'stat_2_var': 'the_web_tightens_state',
-            'points_var': 'active_mode_points', 'state_var': 'the_web_tightens_state', 'song': 'play_song_17',
+            'points_var': 'active_mode_points', 'state_var': 'the_web_tightens_state', 'song': 'play_song_38',
         },
         'fifth_dimension_curse': {
             'title': 'FIFTH DIMENSION CURSE',
@@ -1160,7 +1160,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'mad_science_meltdown_state',
             'points_var': 'active_mode_points',
             'state_var': 'mad_science_meltdown_state',
-            'song': 'play_song_15',
+            'song': 'play_song_56',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Chapter 7 mini-wizard multiball.
@@ -1199,7 +1199,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'invasion_from_everywhere_state',
             'points_var': 'active_mode_points',
             'state_var': 'invasion_from_everywhere_state',
-            'song': 'play_song_19',
+            'song': 'play_song_55',
         },
         # ORIGINAL DISPLAY TEXT:
         #   title: WHO IS THE REAL VILLAIN?

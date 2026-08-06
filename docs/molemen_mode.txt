@@ -1,0 +1,74 @@
+THE MOLEMEN — IMPLEMENTED RULES
+================================
+
+Status
+------
+Implemented. Requires on-machine playtest and balance verification.
+
+Core gameplay
+-------------
+The Molemen is a two-ball area-control multiball. The rooftop gate remains closed throughout the mode.
+
+Three lower-playfield areas independently light their matching saucer jackpots:
+
+* Left pop bumper -> Saucer 1
+* Center web target -> Saucer 2
+* Right pop bumper -> Saucer 3
+
+Area scoring
+------------
+* Left/right pop hit: 50,000
+* Center web hit: 100,000
+* Bigger Jackpots: pop hits become 75,000 and center-web hits become 150,000
+
+Saucer jackpots
+---------------
+A lit saucer awards 250,000 multiplied by the number of balls currently in play.
+
+Bigger Jackpots raises the base to 300,000 per ball in play.
+
+After collection, that area's hit count and jackpot state reset so the area can be rebuilt.
+
+Add-a-ball
+----------
+Each area can qualify add-a-ball once:
+
+* Left pop: 3 hits
+* Center web: 1 hit
+* Right pop: 3 hits
+
+Shoot the matching lit saucer to collect the jackpot and add a ball. Add-a-ball is limited to once per area.
+
+More Jackpots lowers the left/right pop requirement from 3 hits to 2 hits.
+
+One-ball grace
+--------------
+When multiball drops to one ball, a short grace timer begins before the mode ends:
+
+* Normal: 5 seconds
+* More Time: 10 seconds
+
+If another ball is added during grace, the mode continues.
+
+Case Files
+----------
+* More Jackpots: left/right add-a-ball qualifies after 2 pop hits instead of 3.
+* Bigger Jackpots: area scores increase and saucer jackpot base increases from 250,000 to 300,000 per ball.
+* More Time: one-ball grace increases from 5 to 10 seconds.
+* Safety Net: opening multiball save increases from 15 to 25 seconds.
+* Shot Assist: the left web target also counts as a center-web hit.
+
+Presentation and tracking
+-------------------------
+The widget and status display track the three areas, lit saucers, add-a-ball readiness, total jackpots, biggest jackpot, opening save, and grace time.
+
+Playtest checklist
+------------------
+1. Confirm two-ball multiball starts and the rooftop gate remains closed.
+2. Confirm each area lights only its mapped saucer.
+3. Confirm saucer value scales with balls in play.
+4. Confirm each area's add-a-ball can be awarded only once.
+5. Confirm saucer lights and area progress reset after collection.
+6. Confirm the 5-second one-ball grace and 10-second More Time grace.
+7. Confirm all Case File effects and helper text.
+8. Confirm saucer ejection delay and mode cleanup at ball end.

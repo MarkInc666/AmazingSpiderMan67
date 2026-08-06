@@ -67,7 +67,6 @@ event_player:
     - drop_target_bank_dt_bank_left_reset
     - drop_target_bank_dt_bank_right_reset
     - rooftop_diverter_open
-    - play_song_18
 
   mode_mastermind_trap_stopping:
     - enable_daily_bugle_mystery
@@ -347,4 +346,3 @@ light_player:
 
   mode_mastermind_trap_stopping:
     gi: E0E0E0
-

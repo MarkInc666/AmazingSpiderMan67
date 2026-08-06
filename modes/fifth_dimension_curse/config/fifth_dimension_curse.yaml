@@ -59,7 +59,6 @@ event_player:
     - clear_saucers_delayed
     - drop_target_bank_dt_bank_left_reset
     - drop_target_bank_dt_bank_right_reset
-    - play_song_48
   mode_fifth_dimension_curse_stopping:
     - enable_daily_bugle_mystery
     - daily_bugle_restore_state

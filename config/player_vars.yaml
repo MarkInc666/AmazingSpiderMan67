@@ -315,6 +315,29 @@ player_vars:
   dr_manta_state:
     initial_value: 0
     value_type: int
+  dr_manta_phase:
+    initial_value: shoot_vuk
+  dr_manta_jackpot_value:
+    initial_value: 0
+    value_type: int
+  dr_manta_jackpots:
+    initial_value: 0
+    value_type: int
+  dr_manta_biggest_jackpot:
+    initial_value: 0
+    value_type: int
+  dr_manta_attack_seconds:
+    initial_value: 0
+    value_type: int
+  dr_manta_held_saucer:
+    initial_value: 0
+    value_type: int
+  dr_manta_shot_assist_available:
+    initial_value: 0
+    value_type: int
+  dr_manta_second_ball_save_seconds:
+    initial_value: 10
+    value_type: int
   bolton_boomer_state:
     initial_value: 0
     value_type: int
@@ -838,9 +861,6 @@ player_vars:
     initial_value: 0
     value_type: int
   doctor_atlantean_state:
-    initial_value: 0
-    value_type: int
-  molemen_state:
     initial_value: 0
     value_type: int
   molemen_state:

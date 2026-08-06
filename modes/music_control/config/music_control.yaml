@@ -275,3 +275,23 @@ sound_player:
     conquistador:
       bus: music
       loops: -1      
+
+  play_music_song_55:
+    death_have_no_mercy:
+      bus: music
+      loops: -1      
+
+  play_music_song_56:
+    diamond_head:
+      bus: music
+      loops: -1     
+
+  play_music_song_57:
+    washington_square:
+      bus: music
+      loops: -1      
+
+  play_music_song_58:
+    bongo_rock:
+      bus: music
+      loops: -1      

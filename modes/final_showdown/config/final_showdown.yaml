@@ -70,7 +70,6 @@ event_player:
     - clear_saucers
     - final_showdown_disable_daily_bugle_mystery
     - final_showdown_mode_intro
-    - play_song_7
 
   final_showdown_reset_banks:
     - drop_target_bank_dt_bank_left_reset|100ms

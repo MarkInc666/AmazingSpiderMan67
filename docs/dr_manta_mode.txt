@@ -1,0 +1,115 @@
+DR. MANTA — VUK-TO-SAUCER RELAY
+================================
+
+STATUS
+------
+Implemented from the finalized August 5, 2026 design. Needs on-machine playtest.
+
+CORE FLOW
+---------
+1. Start with one ball. The rooftop gate opens and the main spinner / access GI
+   flash to lead the player to the VUK.
+2. Shoot the VUK for 100,000. Ball 1 remains physically held in the VUK.
+3. A second ball is served with a 10-second ball save.
+4. Lock Ball 2 in any saucer for 150,000. The saucer keeps Ball 2 held.
+5. Ball 1 is kicked from the VUK to the upper playfield and the 20-second
+   Mountain Monster attack begins.
+6. Either spinner increases the jackpot by 50,000 per spin. The jackpot begins
+   at 100,000 and is capped at 1,000,000.
+7. Any upper target collects the current jackpot. The value does not reset.
+8. The timer continues even if the ball leaves the rooftop.
+9. At zero, jackpot scoring stops and ALL flippers disable immediately.
+10. When the active ball reaches the trough, the mode ends, the saucer ball is
+    released, and all flippers re-enable for normal single-ball play.
+
+The mode is tracked only as PLAYED for chapter progression. Jackpot count is
+used for score, status and summary presentation; it does not determine whether
+chapter progression advances.
+
+CASE FILES
+----------
+More Jackpots
+  Each spinner spin adds 75,000 instead of 50,000. Cap remains 1,000,000.
+
+Bigger Jackpots
+  VUK = 150,000; saucer = 200,000; upper jackpot begins at 200,000.
+  Spinner increase and 1,000,000 cap are unchanged.
+
+More Time
+  Mountain Monster attack lasts 28 seconds instead of 20.
+
+Safety Net
+  Second-ball save lasts 25 seconds instead of 10.
+
+Shot Assist
+  The saucer holding Ball 2 maps to the corresponding upper target:
+    Saucer 1 -> left upper target
+    Saucer 2 -> center upper target
+    Saucer 3 -> right upper target
+  That target scores 3X the current jackpot once. It may be collected at any
+  point during the timed phase and then returns to normal jackpot value.
+
+LIGHTING
+--------
+Base GI: ocean blue 2060A8.
+
+Phase 1 — Shoot VUK
+  Gate open. Main spinner insert flashes white. Spinner GI and upper-access GI
+  pulse blue toward the VUK. Saucers and upper targets remain off.
+
+Phase 2 — Lock Ball 2
+  VUK path show stops. All three red-lens saucer pairs flash red. Once captured,
+  only the occupied saucer pair remains solid red.
+
+Phase 3 — Mountain Monster
+  All upper targets flash blue-white. Spinner insert / GI flash to show value
+  building. Rooftop GI gives a brief blue-white flash on spinner increases and
+  jackpots. With Shot Assist, the target corresponding to the held saucer uses
+  a faster white-blue flash until its one-time 3X jackpot is collected.
+
+Final five seconds
+  GI alternates ocean blue and cool white.
+
+Timeout
+  Upper targets and spinner indications stop. GI falls to dim blue. All flippers
+  stay disabled until the active ball reaches the trough.
+
+PLAYER VARIABLES / SUMMARY DATA
+-------------------------------
+dr_manta_phase
+  shoot_vuk, lock_saucer, attack or drain_wait
+
+dr_manta_jackpot_value
+  Current spinner-built jackpot value.
+
+dr_manta_jackpots
+  Number of upper-target jackpots collected.
+
+dr_manta_biggest_jackpot
+  Largest single jackpot, including the Shot Assist 3X award.
+
+dr_manta_attack_seconds
+  Timed-phase seconds remaining.
+
+dr_manta_held_saucer
+  0, 1, 2 or 3.
+
+dr_manta_shot_assist_available
+  1 until the mapped 3X target is collected; otherwise 0.
+
+PLAYTEST CHECKLIST
+------------------
+- VUK reliably holds Ball 1 while the second ball serves.
+- Second-ball save is 10 seconds normally and 25 with Safety Net.
+- Unqualified saucers eject normally; the first qualified saucer holds Ball 2.
+- VUK eject reaches the rooftop after the saucer settles.
+- Both spinner switches increase jackpot only during the attack.
+- Upper targets award current value without resetting it.
+- More Jackpots changes each spin increase to 75,000.
+- Bigger Jackpots applies 150K / 200K / 200K start values.
+- Shot Assist maps saucer 1/2/3 to left/center/right and scores 3X only once.
+- All flippers disable exactly at timeout, even if the ball has left the roof.
+- Trough arrival ends the mode, releases only the held saucer and re-enables all
+  flippers without double-ejecting either held device.
+- Losing Ball 2 after the ball save but before a saucer lock releases the VUK
+  ball and ends the mode cleanly.
