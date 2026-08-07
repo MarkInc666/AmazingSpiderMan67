@@ -153,6 +153,8 @@ show_player:
       action: stop
     lizard_gi_hurry_show:
       action: stop
+    lizard_delivery_success_show:
+      loops: 0
 
   lizard_followup_collected:
     lizard_left_web_show:
@@ -181,6 +183,8 @@ show_player:
       action: stop
     lizard_gi_hurry_show:
       action: stop
+    lizard_serum_expired_lights:
+      loops: 0
 
   lizard_mode_complete:
     lizard_serum_star_show:
@@ -197,24 +201,36 @@ show_player:
       action: stop
 
   lizard_a_complete:
-    lizard_a_complete_show:
+    lizard_a_available_show:
+      action: stop
+    lizard_a_collected_show:
       loops: -1
 
   lizard_b_complete:
-    lizard_b_complete_show:
+    lizard_b_available_show:
+      action: stop
+    lizard_b_collected_show:
       loops: -1
 
   lizard_ab_complete:
-    lizard_a_complete_show:
-      action: stop
-    lizard_b_complete_show:
-      action: stop
-    lizard_ab_ready_show:
-      loops: 3
+    lizard_a_collected_show:
+      loops: -1
+    lizard_b_collected_show:
+      loops: -1
+
+  lizard_ab_timer_restarted:
+    lizard_ab_gi_show:
+      loops: 2
 
   lizard_clear_ab:
-    lizard_ab_off_show:
-      loops: 1
+    lizard_a_collected_show:
+      action: stop
+    lizard_b_collected_show:
+      action: stop
+    lizard_a_available_show:
+      loops: -1
+    lizard_b_available_show:
+      loops: -1
 
 
 shows:
@@ -254,26 +270,29 @@ shows:
         l_mid_web_target: off
 
   lizard_delivery_success_show:
-    - duration: 150ms
+    - duration: 500ms
       lights:
         l_left_web_target: white
         l_mid_web_target: white
-    - duration: 150ms
+    - duration: 500ms
+      lights:
+        l_left_web_target: green
+        l_mid_web_target: green
+    - duration: 500ms
+      lights:
+        l_left_web_target: white
+        l_mid_web_target: white
+    - duration: 500ms
       lights:
         l_left_web_target: green
         l_mid_web_target: green
 
   lizard_serum_expired_lights:
-    - duration: 150ms
+    - duration: 2s
       lights:
-        l_star: red
-        l_left_web_target: red
-        l_mid_web_target: red
-    - duration: 150ms
-      lights:
-        l_star: off
-        l_left_web_target: off
-        l_mid_web_target: off
+        gi:
+          color: off
+          fade: 2s
 
   lizard_complete_show:
     - duration: 200ms
@@ -283,44 +302,48 @@ shows:
       lights:
         gi: white
 
-  lizard_a_complete_show:
+  lizard_a_available_show:
     - duration: 300ms
       lights:
-        l_a_rollover: white
-        l_right_a: white
-    - duration: 300ms
-      lights:
-        l_a_rollover: blue
-        l_right_a: blue
-
-  lizard_b_complete_show:
-    - duration: 300ms
-      lights:
-        l_b_rollover: white
-        l_left_b: white
-    - duration: 300ms
-      lights:
-        l_b_rollover: blue
-        l_left_b: blue
-
-  lizard_ab_off_show:
+        l_a_rollover: yellow
+        l_right_a: yellow
     - duration: 300ms
       lights:
         l_a_rollover: off
         l_right_a: off
+
+  lizard_b_available_show:
+    - duration: 300ms
+      lights:
+        l_b_rollover: yellow
+        l_left_b: yellow
+    - duration: 300ms
+      lights:
         l_b_rollover: off
         l_left_b: off
 
-  lizard_ab_ready_show:
-    - duration: 300ms
+  lizard_a_collected_show:
+    - duration: 1s
       lights:
-        l_a_rollover: white
-        l_right_a: white
-        l_b_rollover: white
-        l_left_b: white
-    - duration: 300ms
+        l_a_rollover: yellow
+        l_right_a: yellow
+
+  lizard_b_collected_show:
+    - duration: 1s
       lights:
-        l_a_rollover: blue
-        l_b_rollover: blue
-        l_right_a: blue
-        l_left_b: blue
+        l_b_rollover: yellow
+        l_left_b: yellow
+
+  lizard_ab_gi_show:
+    - duration: 100ms
+      lights:
+        gi: green
+    - duration: 100ms
+      lights:
+        gi: yellow
+    - duration: 100ms
+      lights:
+        gi: white
+    - duration: 100ms
+      lights:
+        gi: off

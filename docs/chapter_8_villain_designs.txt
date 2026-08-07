@@ -1,13 +1,16 @@
 CHAPTER 8 — ELEMENTAL CHAOS VILLAIN DESIGNS
 ============================================
 
-CLIVE AND BLOTTO — DESIGNED / NOT CODED
+CLIVE AND BLOTTO — CODED / NEEDS PLAYTEST (CURRENT CODE)
 - Blotto Meter starts at 75% and rises every two seconds.
-- Spinner hits lower the meter and pause its growth for two seconds.
+- Either spinner lowers the meter and pauses its growth for two seconds.
 - When the meter fills, a clean playfield area becomes Blotto'd.
-- Any switch hit in that area clears it.
+- A switch hit in an infected area clears it.
 - Win when no areas are Blotto'd and the meter reaches zero.
-- Exact area map, scoring and Case File effects still need final workshop.
+- Six coded areas cover the upper-left, upper-right, middle-left, middle-right,
+  lower-left, and lower-right playfield regions.
+- Case Files and scoring are implemented; on-machine timing/feel still needs
+  playtesting.
 
 DOCTOR ZAPP — CODED / NEEDS PLAYTEST
 - One hit from each lower bank permanently opens rooftop access.
@@ -19,12 +22,18 @@ DOCTOR ZAPP — CODED / NEEDS PLAYTEST
 - After the objective/window, base mode owns a six-second upper-flipper lockout.
 - See doctor_zapp_mode.txt for the complete design.
 
-BOLTON AND BOOMER — DESIGNED / NOT CODED
+BOLTON AND BOOMER — CODED / NEEDS PLAYTEST (CURRENT CODE)
 - Repeating two-ball multiball loop.
 - Hit a random lit target, lock one ball in any saucer, then shoot the VUK Super.
 - The first Super is untimed; later Supers use a 20-second timer and reset the
   loop if missed.
-- Ball-control details, values and Case File effects still need final workshop.
+- Target and saucer shots score 100K; the base Super is 500K.
+- More Jackpots grows Supers by 100K up to 1.5M; Bigger Jackpots raises the
+  target/saucer shots to 150K and the base Super to 750K.
+- More Time changes timed Supers to 30 seconds; Safety Net extends the opening
+  ball save; Shot Assist can collect the first timed Super at 10 seconds.
+- Ball-control sequencing and Case File effects are implemented; on-machine
+  playtesting remains.
 
 THE SNOWMAN — CODED / NEEDS PLAYTEST (CURRENT CODE)
 - Either web begins the copper-wire run.

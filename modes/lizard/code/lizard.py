@@ -80,6 +80,7 @@ class Lizard(CaseFileMixin, Mode):
 
         # Lizard owns the gate for the full mode so the star remains reachable.
         self.machine.events.post("rooftop_diverter_close")
+        self.machine.events.post("lizard_clear_ab")
         self.machine.events.post("lizard_light_serum_location")
         self.machine.events.post("clear_saucers")
         self.machine.events.post(
@@ -128,6 +129,8 @@ class Lizard(CaseFileMixin, Mode):
         self._followup_target = None
         self._followup_value = 0
         self._pending_completion_after_followup = False
+        self._serum_expiration_pending = False
+        self._delivery_success_pending = False
 
         player["active_mode_points"] = 0
         player["lizard_best_delivery_value"] = 0
@@ -193,6 +196,7 @@ class Lizard(CaseFileMixin, Mode):
         if player["lizard_serum_ready"] == 1:
             player["lizard_delivery_value"] += self.AB_BONUS_VALUE
             self._start_delivery_timer()
+            self.machine.events.post("lizard_ab_timer_restarted")
 
         player["lizard_a_hit"] = 0
         player["lizard_b_hit"] = 0
@@ -201,6 +205,8 @@ class Lizard(CaseFileMixin, Mode):
 
     def serum_collect_request(self, **kwargs):
         if self.mode_done or self.machine.game.player["villain_mode_in_summary"] is True:
+            return
+        if self._serum_expiration_pending or self._delivery_success_pending:
             return
 
         player = self.machine.game.player
@@ -269,19 +275,19 @@ class Lizard(CaseFileMixin, Mode):
         self._stop_delivery_timers()
         self.machine.events.post("hide_mode_status")
         self.machine.events.post("lizard_serum_expired_show")
+        self._serum_expiration_pending = True
+        player["lizard_serum_ready"] = 0
+        player["lizard_delivery_value"] = self.start_delivery_value
 
         if self.has_case_file("safety_net") and not self._safety_net_used:
             self._safety_net_used = True
-            player["lizard_serum_ready"] = 0
-            player["lizard_delivery_value"] = self.start_delivery_value
             self.machine.events.post(
                 "show_mode_message",
                 message_mode_title="SAFETY NET",
                 message_mode_subtitle="SERUM SAVED - TRY AGAIN",
             )
             self.machine.events.post("lizard_safety_net_used")
-            self.machine.events.post("lizard_light_serum_location")
-            self._update_status()
+            self._schedule_serum_expiration_resolution(complete_mode=False)
             return
 
         self.machine.events.post(
@@ -292,13 +298,27 @@ class Lizard(CaseFileMixin, Mode):
         self.machine.events.post("lizard_serum_expired")
 
         player["lizard_deliveries"] += 1
-        player["lizard_serum_ready"] = 0
-        player["lizard_delivery_value"] = self.start_delivery_value
+        self._schedule_serum_expiration_resolution(
+            complete_mode=player["lizard_deliveries"] >= len(self.DELIVERY_SEQUENCE)
+        )
 
-        if player["lizard_deliveries"] >= len(self.DELIVERY_SEQUENCE):
+    def _schedule_serum_expiration_resolution(self, complete_mode):
+        """Let the expired-serum GI fade finish before advancing the mode."""
+        self.delay.remove("lizard_serum_expire_resolve")
+        self.delay.add(
+            name="lizard_serum_expire_resolve",
+            ms=2000,
+            callback=self._finish_serum_expiration,
+            complete_mode=complete_mode,
+        )
+
+    def _finish_serum_expiration(self, complete_mode=False, **kwargs):
+        if self.mode_done:
+            return
+        self._serum_expiration_pending = False
+        if complete_mode:
             self._complete_mode()
             return
-
         self.machine.events.post("lizard_light_serum_location")
         self._update_status()
 
@@ -338,22 +358,32 @@ class Lizard(CaseFileMixin, Mode):
             message_mode_subtitle=subtitle,
             message_mode_value=delivery_value,
         )
-        self.delay.remove("lizard_next_serum_prompt")
-        self.delay.add(name="lizard_next_serum_prompt", ms=2000, callback=self._prompt_next_serum)
         self.machine.events.post("lizard_serum_delivered")
         self._stop_delivery_timers()
 
         self._pending_completion_after_followup = player["lizard_deliveries"] >= len(self.DELIVERY_SEQUENCE)
+        self._delivery_success_pending = True
+        self.delay.remove("lizard_delivery_success_resolve")
+        self.delay.add(
+            name="lizard_delivery_success_resolve",
+            ms=2000,
+            callback=self._finish_delivery_success,
+            delivery_value=delivery_value,
+        )
 
+    def _finish_delivery_success(self, delivery_value=0, **kwargs):
+        if self.mode_done:
+            return
+        self._delivery_success_pending = False
         if self.has_case_file("more_jackpots"):
             self._start_followup_jackpot(delivery_value)
             return
         if self._pending_completion_after_followup:
             self._complete_mode()
             return
-
         self.machine.events.post("lizard_light_serum_location")
         self._update_status()
+        self._prompt_next_serum()
 
     def _prompt_next_serum(self):
         player = self.machine.game.player

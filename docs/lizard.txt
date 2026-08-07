@@ -17,6 +17,14 @@ Delivery scoring:
 - More Time decay: 50,000 per second.
 - Delivery value cannot fall below 100,000.
 - The second attempt resets to the full starting value and a fresh timer.
+- A successful serum delivery plays a 2-second white/green web-target success show before the next serum is lit. If More Jackpots is active, its center-web follow-up begins after the success show instead.
+- If a delivery timer expires, GI fades to off over 2 seconds. The next serum attempt does not light until that fade finishes; after the final expired attempt, mode completion also waits for the fade.
+
+A+B serum boost:
+- The A and B inserts flash yellow while that letter is available and go solid yellow when collected.
+- Completing A+B during an active serum adds 500,000 to the current delivery value and restarts the full delivery timer.
+- The timer restart plays a short GI celebration, then normal Lizard GI resumes automatically.
+- After A+B is completed, both letters reset and flash again for the next A+B cycle.
 
 Case Files:
 - More Jackpots: after a successful left-web delivery, the center web flashes purple for an extra jackpot worth 50% of the collected value. It remains available for 10 seconds or until the star is hit to begin the next serum attempt.
