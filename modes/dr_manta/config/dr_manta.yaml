@@ -204,7 +204,7 @@ shows:
 
   dr_manta_timeout_gi:
     - duration: 1s
-      lights: {gi: 081828}
+      lights: {gi: "081828"}
 
   dr_manta_spinner_ready:
     - duration: 500ms

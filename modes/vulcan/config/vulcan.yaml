@@ -280,7 +280,7 @@ shows:
   vulcan_right_drop_1_lit_show:
     - duration: 250ms
       lights:
-        l_5bank_1: 00FFA0
+        l_5bank_1: 10FFA0
     - duration: 250ms
       lights:
         l_5bank_1: off
@@ -288,7 +288,7 @@ shows:
   vulcan_right_drop_2_lit_show:
     - duration: 250ms
       lights:
-        l_5bank_2: 00FFA0
+        l_5bank_2: 10FFA0
     - duration: 250ms
       lights:
         l_5bank_2: off
@@ -296,7 +296,7 @@ shows:
   vulcan_right_drop_3_lit_show:
     - duration: 250ms
       lights:
-        l_5bank_3: 00FFA0
+        l_5bank_3: 10FFA0
     - duration: 250ms
       lights:
         l_5bank_3: off
@@ -304,7 +304,7 @@ shows:
   vulcan_right_drop_4_lit_show:
     - duration: 250ms
       lights:
-        l_5bank_4: 00FFA0
+        l_5bank_4: 10FFA0
     - duration: 250ms
       lights:
         l_5bank_4: off
@@ -312,7 +312,7 @@ shows:
   vulcan_right_drop_5_lit_show:
     - duration: 250ms
       lights:
-        l_5bank_5: 00FFA0
+        l_5bank_5: 10FFA0
     - duration: 250ms
       lights:
         l_5bank_5: off
@@ -320,22 +320,22 @@ shows:
   vulcan_right_bank_gi_pulse_show:
     - duration: 500ms
       lights:
-        l_gi_5bank_lower: 00C060
-        l_gi_5bank_upper: 00C060
+        l_gi_5bank_lower: 10C060
+        l_gi_5bank_upper: 10C060
     - duration: 500ms
       lights:
-        l_gi_5bank_lower: 003018
-        l_gi_5bank_upper: 003018
+        l_gi_5bank_lower: 103018
+        l_gi_5bank_upper: 103018
 
   vulcan_left_bank_jackpot_show:
     - duration: 500ms
       lights:
-        l_3bankbonus: 00FFA0
-        l_gi_3bank: 00C060
+        l_3bankbonus: 10FFA0
+        l_gi_3bank: 10C060
     - duration: 500ms
       lights:
-        l_3bankbonus: 003018
-        l_gi_3bank: 003018
+        l_3bankbonus: 103018
+        l_gi_3bank: 103018
 
   vulcan_upper_targets_normal_show:
     - duration: 500ms
@@ -352,9 +352,9 @@ shows:
   vulcan_add_a_ball_ready_show:
     - duration: 250ms
       lights:
-        l_upper_left: 00FF60
-        l_upper_middle: 00FF60
-        l_upper_right: 00FF60
+        l_upper_left: 10FF60
+        l_upper_middle: 10FF60
+        l_upper_right: 10FF60
     - duration: 250ms
       lights:
         l_upper_left: off
