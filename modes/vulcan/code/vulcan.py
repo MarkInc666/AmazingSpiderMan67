@@ -6,21 +6,28 @@ from modes.common.case_file_mixin import CaseFileMixin
 Vulcan - Volcano Unleashed
 
 Rules:
-- Starts 2-ball multiball.
-- Upper gate is open during the mode; Daily Bugle/VUK handling remains global.
-- Lower spinner scores 20K and builds the Vulcan Jackpot.
-- Base jackpot is 100K. With Bigger Jackpots, base is 150K.
-- Spinner adds +20K to jackpot normally, +30K with Bigger Jackpots.
-- Right drops collect the current jackpot and stay down.
-- The right bank does not auto-reset when all 5 are down.
-- Upper-left exit resets the right bank and adds +50K to the jackpot.
-- Upper targets score 25K each. Complete all 3 to add-a-ball if below 3 balls.
-- If already at 3 balls, upper target completion awards 250K Eruption Bonus.
-- When down to 1 ball, a Cooling Timer starts. Spinner hits reset it.
-- Cooling Timer is 16s normally, 24s with More Time. If it expires at 1 ball, mode ends.
-- More Jackpots: when all 5 right drops are down, light right rubber for one Bonus Jackpot.
-- Safety Net: when first down to 1 ball, start one 10s case-file ball save.
-- Shot Assist: first right-drop hit also drops/collects one additional right target.
+- Starts 2-ball multiball with a 10-second ball save; mode ends when the
+  multiball drops to one ball.
+- The rooftop gate remains open for the mode.
+- Right-bank drops are Vulcan Jackpots. Base is 100K, or 150K with Bigger
+  Jackpots, and the value is capped at 1M.
+- Every upper-target hit adds 25K to the current Jackpot value. The hit that
+  collects Add-a-Ball also adds 25K.
+- Completing a Jackpot bank qualifies one Add-a-Ball. Qualifications do not
+  stack. If already at the 3-ball cap, Add-a-Ball stays qualified until an
+  upper target is hit while below 3 balls.
+- Entering the upper playfield resets any down targets in the active Jackpot
+  banks. Banks do not auto-reset when completed.
+- More Jackpots makes the left 3-bank a second Jackpot bank under the same
+  rules as the right bank.
+- Bigger Jackpots raises the starting Jackpot from 100K to 150K.
+- More Time extends the upper-left-exit post hold from 8s to 12s.
+- Safety Net extends the opening multiball ball save from 10s to 20s. The
+  built-in Add-a-Ball save remains 10s.
+- Shot Assist: the first right-bank drop hit also drops and awards two more
+  standing right-bank targets.
+- Every collected Jackpot adds its full scored value to vulcan_bonus.
+- Spinners have no Vulcan-specific rule; normal base spinner scoring remains.
 """
 
 
@@ -30,21 +37,14 @@ class Vulcan(CaseFileMixin, Mode):
 
     BASE_JACKPOT = 100_000
     BIGGER_BASE_JACKPOT = 150_000
-    SPINNER_SCORE = 20_000
-    SPINNER_BUILD = 20_000
-    BIGGER_SPINNER_BUILD = 30_000
-    UPPER_TARGET_SCORE = 25_000
-    SPINNER_BONUS_BANK = 2_000
-    VULCAN_JACKPOT_BONUS_BANK = 50_000
-    UPPER_TARGET_BONUS_START = 75_000
-    UPPER_TARGET_BONUS_STEP = 25_000
-    UPPER_LEFT_EXIT_BUILD = 50_000
-    ERUPTION_BONUS = 250_000
-    COOLING_SECONDS = 10
-    MORE_TIME_COOLING_SECONDS = 16
+    UPPER_TARGET_BUILD = 25_000
+    MAX_JACKPOT = 1_000_000
+    POST_HOLD_MS = 8_000
+    MORE_TIME_POST_HOLD_MS = 12_000
     MAX_BALLS = 3
 
     RIGHT_DROPS = (1, 2, 3, 4, 5)
+    LEFT_DROPS = (1, 2, 3)
     UPPER_TARGETS = ("left", "center", "right")
 
     def mode_start(self, **kwargs):
@@ -55,40 +55,41 @@ class Vulcan(CaseFileMixin, Mode):
 
         self.mode_done = False
         self.mode_points = 0
-        self.spinner_hits = 0
-        self.jackpot_value = self.BIGGER_BASE_JACKPOT if self.has_case_file("bigger_jackpots") else self.BASE_JACKPOT
-        self.spinner_build_value = self.BIGGER_SPINNER_BUILD if self.has_case_file("bigger_jackpots") else self.SPINNER_BUILD
-        self.cooling_seconds = self.MORE_TIME_COOLING_SECONDS if self.has_case_file("more_time") else self.COOLING_SECONDS
-        self.cooling_active = False
-        self.cooling_seconds_left = 0
-        self.safety_net_used = False
+        self.jackpot_value = (
+            self.BIGGER_BASE_JACKPOT
+            if self.has_case_file("bigger_jackpots")
+            else self.BASE_JACKPOT
+        )
+        self.post_hold_ms = (
+            self.MORE_TIME_POST_HOLD_MS
+            if self.has_case_file("more_time")
+            else self.POST_HOLD_MS
+        )
 
         self.right_drops_down = set()
-        self.upper_targets_hit = set()
+        self.left_drops_down = set()
         self.jackpots_collected = 0
-        self.bonus_jackpot_lit = False
-        self.bonus_jackpot_collected = False
+        self.add_a_ball_qualified = False
         self.add_a_balls_awarded = 0
-        self.eruption_bonuses = 0
         self.shot_assist_used = False
-        self.upper_target_bonus_value = self.UPPER_TARGET_BONUS_START
+        self.post_hold_active = False
 
         self._sync_vars()
         self.publish_case_file_bonus_events(self.MODE_KEY)
         self.publish_active_case_file_helpers([
-            ("more_jackpots", "RUBBER BONUS JACKPOT AFTER 5 DROPS"),
-            ("bigger_jackpots", "150K BASE / +30K JP PER SPIN"),
-            ("more_time", "COOLING TIMER EXTENDED TO 24s"),
-            ("safety_net", "10 SECOND BALL SAVE AT 1 BALL"),
-            ("shot_assist", "FIRST DROP COLLECTS AN EXTRA DROP"),
+            ("more_jackpots", "LEFT 3-BANK ADDS JACKPOTS"),
+            ("bigger_jackpots", "JACKPOTS START AT 150K"),
+            ("more_time", "UPPER-LEFT POST HOLDS 12s"),
+            ("safety_net", "20 SECOND MULTIBALL BALL SAVE"),
+            ("shot_assist", "FIRST RIGHT DROP ADDS TWO DROPS"),
         ])
 
-        self.add_mode_event_handler("vulcan_spinner_hit", self._spinner_hit)
+        self.add_mode_event_handler(
+            "vulcan_upper_playfield_entered", self._upper_playfield_entered
+        )
         self.add_mode_event_handler("vulcan_upper_left_exit", self._upper_left_exit)
-        self.add_mode_event_handler("vulcan_bonus_rubber_hit", self._bonus_rubber_hit)
-        self.add_mode_event_handler("vulcan_multiball_ended", self._check_single_ball_phase)
-        self.add_mode_event_handler("vulcan_add_a_ball_started", self._add_a_ball_started)
-        self.add_mode_event_handler("vulcan_check_cooling", self._check_single_ball_phase)
+        self.add_mode_event_handler("vulcan_post_hold_cancel", self._post_hold_cancel)
+        self.add_mode_event_handler("vulcan_multiball_ended", self._complete_mode)
         self.add_mode_event_handler("vulcan_complete_request", self._complete_mode)
         self.add_mode_event_handler("vulcan_fail_request", self._complete_mode)
 
@@ -96,6 +97,13 @@ class Vulcan(CaseFileMixin, Mode):
             self.add_mode_event_handler(
                 f"vulcan_right_drop_{number}_hit",
                 self._right_drop_hit,
+                number=number,
+            )
+
+        for number in self.LEFT_DROPS:
+            self.add_mode_event_handler(
+                f"vulcan_left_drop_{number}_hit",
+                self._left_drop_hit,
                 number=number,
             )
 
@@ -107,212 +115,156 @@ class Vulcan(CaseFileMixin, Mode):
             )
 
         self.machine.events.post("vulcan_setup")
+        if self.has_case_file("more_jackpots"):
+            self.machine.events.post("vulcan_left_bank_reloaded")
+        else:
+            self.machine.events.post("vulcan_left_bank_disabled")
         self.machine.events.post("vulcan_start_multiball")
         self.machine.events.post("vulcan_mode_intro")
-        self._show_mode_message("VOLCANO UNLEASHED", "SPINNER BUILDS - DROPS COLLECT")
+        self._show_mode_message("VOLCANO UNLEASHED", "DROPS SCORE - UPPER TARGETS BUILD")
 
     def mode_stop(self, **kwargs):
+        self.delay.remove("vulcan_post_hold_release")
+        if self.post_hold_active:
+            self.machine.events.post("timer_timer_up_post_hold_complete")
+            self.post_hold_active = False
         self.machine.events.post("hide_mode_status")
-        self.delay.remove("vulcan_cooling_tick")
-        self.delay.remove("vulcan_reset_upper_targets_after_flash")
         self.machine.events.post("vulcan_clear_all_lights")
         self.machine.events.post("rooftop_diverter_close")
         self.clear_active_case_file_helpers()
         super().mode_stop(**kwargs)
 
-    def _spinner_hit(self, **kwargs):
-        if self._done():
-            return
-
-        self.spinner_hits += 1
-        self._score(self.SPINNER_SCORE)
-        self._bank_vulcan_bonus(self.SPINNER_BONUS_BANK)
-        self.jackpot_value += self.spinner_build_value
-        self.machine.events.post("vulcan_jackpot_built", value=self.jackpot_value)
-
-        if self.cooling_active:
-            self._start_cooling_timer()
-
-        self._sync_vars()
-
     def _right_drop_hit(self, number=None, **kwargs):
-        if self._done() or number is None:
+        if self._done() or number is None or number in self.right_drops_down:
             return
 
-        if number in self.right_drops_down:
-            return
-
-        self._collect_right_drop(number)
+        self._collect_drop("right", number)
 
         if self.has_case_file("shot_assist") and not self.shot_assist_used:
             self.shot_assist_used = True
-            extra = self._first_available_right_drop(exclude=number)
-            if extra is not None:
+            for _ in range(2):
+                extra = self._first_available_right_drop()
+                if extra is None:
+                    break
+                # Mark and score before the physical knockdown switch arrives,
+                # so its eventual switch event cannot double-award the Jackpot.
                 self.machine.events.post(f"vulcan_shot_assist_drop_{extra}")
-                self.machine.events.post(f"vulcan_right_drop_{extra}_hit")
+                self._collect_drop("right", extra)
 
-        self._check_more_jackpots_bonus()
+        self._check_bank_completion("right")
         self._sync_vars()
 
-    def _collect_right_drop(self, number):
-        self.right_drops_down.add(number)
-        self.jackpots_collected += 1
-        self._score(self.jackpot_value)
-        self._bank_vulcan_bonus(self.VULCAN_JACKPOT_BONUS_BANK)
-        self.machine.events.post("vulcan_right_drop_collected", number=number, value=self.jackpot_value)
-        self.machine.events.post(f"vulcan_right_drop_{number}_collected")
-        self._show_mode_jackpot("VULCAN JACKPOT", self.jackpot_value, f"DROP {number}")
+    def _left_drop_hit(self, number=None, **kwargs):
+        if self._done() or number is None or not self.has_case_file("more_jackpots"):
+            return
+        if number in self.left_drops_down:
+            return
 
-    def _upper_left_exit(self, **kwargs):
+        self._collect_drop("left", number)
+        self._check_bank_completion("left")
+        self._sync_vars()
+
+    def _collect_drop(self, bank, number):
+        drops_down = self.right_drops_down if bank == "right" else self.left_drops_down
+        drops_down.add(number)
+
+        value = self.jackpot_value
+        self.jackpots_collected += 1
+        self._score(value)
+        self._bank_vulcan_bonus(value)
+        self.machine.events.post(
+            "vulcan_drop_jackpot_collected", bank=bank, number=number, value=value
+        )
+        self.machine.events.post(f"vulcan_{bank}_drop_{number}_collected")
+        self._show_mode_jackpot("VULCAN JACKPOT", value, f"{bank.upper()} DROP {number}")
+
+    def _check_bank_completion(self, bank):
+        if bank == "right":
+            complete = len(self.right_drops_down) >= len(self.RIGHT_DROPS)
+        else:
+            complete = len(self.left_drops_down) >= len(self.LEFT_DROPS)
+
+        if not complete:
+            return
+
+        self.machine.events.post(f"vulcan_{bank}_bank_down")
+        if not self.add_a_ball_qualified:
+            self.add_a_ball_qualified = True
+            self.machine.events.post("vulcan_add_a_ball_qualified")
+            self._show_mode_message("ADD-A-BALL READY", "HIT ANY UPPER TARGET")
+
+    def _upper_playfield_entered(self, **kwargs):
         if self._done():
             return
 
-        self.right_drops_down.clear()
-        self.jackpot_value += self.UPPER_LEFT_EXIT_BUILD
-        self.bonus_jackpot_lit = False
-        self.machine.events.post("drop_target_bank_dt_bank_right_reset")
-        self.machine.events.post("vulcan_right_bank_reloaded")
-        self.machine.events.post("vulcan_jackpot_built", value=self.jackpot_value)
-        self._show_mode_message("BANK RELOADED", "+50K TO JACKPOT", self.jackpot_value)
+        if self.right_drops_down:
+            self.right_drops_down.clear()
+            self.machine.events.post("drop_target_bank_dt_bank_right_reset")
+            self.machine.events.post("vulcan_right_bank_reloaded")
+
+        if self.has_case_file("more_jackpots") and self.left_drops_down:
+            self.left_drops_down.clear()
+            self.machine.events.post("drop_target_bank_dt_bank_left_reset")
+            self.machine.events.post("vulcan_left_bank_reloaded")
+
         self._sync_vars()
 
     def _upper_target_hit(self, target=None, **kwargs):
         if self._done() or target not in self.UPPER_TARGETS:
             return
 
-        if target in self.upper_targets_hit:
-            return
+        old_value = self.jackpot_value
+        self.jackpot_value = min(
+            self.MAX_JACKPOT, self.jackpot_value + self.UPPER_TARGET_BUILD
+        )
+        self.machine.events.post(
+            "vulcan_jackpot_built",
+            target=target,
+            value=self.jackpot_value,
+            increase=self.jackpot_value - old_value,
+        )
 
-        self.upper_targets_hit.add(target)
-        self._score(self.UPPER_TARGET_SCORE)
-        self.machine.events.post(f"vulcan_upper_target_{target}_collected")
-        self._sync_vars()
-
-        if len(self.upper_targets_hit) >= 3:
-            self._complete_upper_targets()
-
-    def _complete_upper_targets(self):
-        self.machine.events.post("vulcan_upper_targets_completed")
-        self._bank_vulcan_bonus(self.upper_target_bonus_value)
-        self.machine.events.post("vulcan_upper_target_bonus_banked", value=self.upper_target_bonus_value)
-        self.upper_target_bonus_value += self.UPPER_TARGET_BONUS_STEP
-
-        if self._balls_in_play() < self.MAX_BALLS:
+        if self.add_a_ball_qualified and self._balls_in_play() < self.MAX_BALLS:
+            self.add_a_ball_qualified = False
             self.add_a_balls_awarded += 1
             self.machine.events.post("vulcan_add_a_ball")
             self.machine.events.post("vulcan_add_a_ball_awarded")
+            self.machine.events.post("vulcan_add_a_ball_unqualified")
             self._show_mode_message("ADD-A-BALL", "VULCAN ERUPTS AGAIN")
-        else:
-            self.eruption_bonuses += 1
-            self._score(self.ERUPTION_BONUS)
-            self.machine.events.post("vulcan_eruption_bonus_awarded", value=self.ERUPTION_BONUS)
-            self._show_mode_jackpot("ERUPTION BONUS", self.ERUPTION_BONUS)
 
         self._sync_vars()
-        self.delay.remove("vulcan_reset_upper_targets_after_flash")
-        self.delay.add(
-            name="vulcan_reset_upper_targets_after_flash",
-            ms=650,
-            callback=self._reset_upper_targets,
+
+    def _upper_left_exit(self, **kwargs):
+        if self._done():
+            return
+
+        self.delay.remove("vulcan_post_hold_release")
+        self.post_hold_active = True
+        self.machine.events.post("enable_up_post_event")
+        self.machine.events.post(
+            "vulcan_post_hold_started", seconds=int(self.post_hold_ms / 1000)
         )
-
-    def _reset_upper_targets(self):
-        if self._done():
-            return
-
-        self.upper_targets_hit.clear()
-        self.machine.events.post("vulcan_upper_targets_reset")
+        self.delay.add(
+            name="vulcan_post_hold_release",
+            ms=self.post_hold_ms,
+            callback=self._release_post_hold,
+        )
         self._sync_vars()
 
-    def _bonus_rubber_hit(self, **kwargs):
-        if self._done():
+    def _post_hold_cancel(self, **kwargs):
+        if not self.post_hold_active:
+            return
+        self._release_post_hold(cancel_delay=True)
+
+    def _release_post_hold(self, cancel_delay=False):
+        if cancel_delay:
+            self.delay.remove("vulcan_post_hold_release")
+        if not self.post_hold_active:
             return
 
-        if not self.has_case_file("more_jackpots"):
-            return
-
-        if not self.bonus_jackpot_lit or self.bonus_jackpot_collected:
-            self._score(self.UPPER_TARGET_SCORE)
-            return
-
-        self.bonus_jackpot_collected = True
-        self.bonus_jackpot_lit = False
-        self._score(self.jackpot_value)
-        self._bank_vulcan_bonus(self.VULCAN_JACKPOT_BONUS_BANK)
-        self.machine.events.post("vulcan_bonus_jackpot_collected", value=self.jackpot_value)
-        self._show_mode_jackpot("RUBBER BONUS JACKPOT", self.jackpot_value)
-        self._sync_vars()
-
-    def _check_more_jackpots_bonus(self):
-        if not self.has_case_file("more_jackpots"):
-            return
-
-        if self.bonus_jackpot_collected or self.bonus_jackpot_lit:
-            return
-
-        if len(self.right_drops_down) >= len(self.RIGHT_DROPS):
-            self.bonus_jackpot_lit = True
-            self.machine.events.post("vulcan_bonus_jackpot_lit", value=self.jackpot_value)
-            self._show_mode_message("BONUS JACKPOT", "HIT THE RUBBER", self.jackpot_value)
-
-    def _add_a_ball_started(self, **kwargs):
-        self._cancel_cooling_timer()
-        self.delay.add(name="vulcan_check_cooling_after_add", ms=1500, callback=self._check_single_ball_phase)
-        self._sync_vars()
-
-    def _check_single_ball_phase(self, **kwargs):
-        if self._done():
-            return
-
-        if self._balls_in_play() <= 1:
-            if self.has_case_file("safety_net") and not self.safety_net_used:
-                self.safety_net_used = True
-                self.machine.events.post("start_case_file_ball_save")
-                self.machine.events.post("vulcan_safety_net_started")
-            self._start_cooling_timer()
-        else:
-            self._cancel_cooling_timer()
-
-        self._sync_vars()
-
-    def _start_cooling_timer(self):
-        if self._done():
-            return
-
-        self.cooling_active = True
-        self.cooling_seconds_left = self.cooling_seconds
-        self.machine.events.post("vulcan_cooling_started", seconds=self.cooling_seconds_left)
-        self._show_mode_countdown("COOLING TIMER", self.cooling_seconds_left, "SPINNER RESETS TIMER")
-        self.delay.remove("vulcan_cooling_tick")
-        self.delay.add(name="vulcan_cooling_tick", ms=1000, callback=self._cooling_tick)
-        self._sync_vars()
-
-    def _cooling_tick(self):
-        if self._done() or not self.cooling_active:
-            return
-
-        if self._balls_in_play() > 1:
-            self._cancel_cooling_timer()
-            return
-
-        self.cooling_seconds_left -= 1
-        self.machine.events.post("vulcan_cooling_tick", seconds=self.cooling_seconds_left)
-        self.machine.events.post("update_mode_status", mode_status_title="SECONDS LEFT", mode_status_value=max(0, self.cooling_seconds_left))
-        self._sync_vars()
-
-        if self.cooling_seconds_left <= 0:
-            self._complete_mode()
-            return
-
-        self.delay.add(name="vulcan_cooling_tick", ms=1000, callback=self._cooling_tick)
-
-    def _cancel_cooling_timer(self):
-        if self.cooling_active:
-            self.machine.events.post("vulcan_cooling_cancelled")
-        self.cooling_active = False
-        self.cooling_seconds_left = 0
-        self.delay.remove("vulcan_cooling_tick")
-        self.machine.events.post("hide_mode_status")
+        self.post_hold_active = False
+        self.machine.events.post("timer_timer_up_post_hold_complete")
+        self.machine.events.post("vulcan_post_hold_released")
         self._sync_vars()
 
     def _complete_mode(self, **kwargs):
@@ -320,15 +272,15 @@ class Vulcan(CaseFileMixin, Mode):
             return
 
         self.mode_done = True
-        self._cancel_cooling_timer()
-        self._set(f"{self.MODE_KEY}_state", 2)
+        self.delay.remove("vulcan_post_hold_release")
+        if self.post_hold_active:
+            self.machine.events.post("timer_timer_up_post_hold_complete")
+            self.post_hold_active = False
         self._set(f"{self.MODE_KEY}_state", 2)
         self.machine.events.post(f"{self.MODE_KEY}_mode_complete")
 
-    def _first_available_right_drop(self, exclude=None):
+    def _first_available_right_drop(self):
         for number in self.RIGHT_DROPS:
-            if number == exclude:
-                continue
             if number not in self.right_drops_down:
                 return number
         return None
@@ -343,24 +295,16 @@ class Vulcan(CaseFileMixin, Mode):
 
     def _sync_vars(self):
         self._set("active_mode_points", self.mode_points)
-        self._set("active_mode_hits", self.jackpots_collected + self.spinner_hits)
-        self._set("active_mode_major_hits", self.add_a_balls_awarded + self.eruption_bonuses)
-        self._set("vulcan_spinner_hits", self.spinner_hits)
+        self._set("active_mode_hits", self.jackpots_collected)
+        self._set("active_mode_major_hits", self.add_a_balls_awarded)
         self._set("vulcan_jackpot_value", self.jackpot_value)
         self._set("vulcan_jackpots_collected", self.jackpots_collected)
         self._set("vulcan_right_drops_down", len(self.right_drops_down))
-        self._set("vulcan_bonus_jackpot_lit", int(self.bonus_jackpot_lit))
-        self._set("vulcan_bonus_jackpot_collected", int(self.bonus_jackpot_collected))
-        self._set("vulcan_upper_left_hit", int("left" in self.upper_targets_hit))
-        self._set("vulcan_upper_center_hit", int("center" in self.upper_targets_hit))
-        self._set("vulcan_upper_right_hit", int("right" in self.upper_targets_hit))
-        self._set("vulcan_upper_targets_completed", len(self.upper_targets_hit) >= 3)
+        self._set("vulcan_left_drops_down", len(self.left_drops_down))
+        self._set("vulcan_add_a_ball_qualified", int(self.add_a_ball_qualified))
         self._set("vulcan_add_a_balls", self.add_a_balls_awarded)
-        self._set("vulcan_eruption_bonuses", self.eruption_bonuses)
-        self._set("vulcan_cooling_active", int(self.cooling_active))
-        self._set("vulcan_cooling_seconds", self.cooling_seconds_left)
         self._set("vulcan_balls_in_play", self._balls_in_play())
-        self._set("vulcan_upper_target_bonus_value", self.upper_target_bonus_value)
+        self._set("vulcan_post_hold_active", int(self.post_hold_active))
 
     def _show_mode_message(self, title, subtitle="", value="", seconds="", reminder=False):
         self.machine.events.post(
@@ -381,15 +325,6 @@ class Vulcan(CaseFileMixin, Mode):
             message_mode_seconds="",
         )
 
-    def _show_mode_countdown(self, title, seconds, subtitle=""):
-        self.machine.events.post(
-            "show_mode_countdown",
-            message_mode_title=title,
-            message_mode_subtitle=subtitle,
-            message_mode_value="",
-            message_mode_seconds=seconds,
-        )
-
     def _balls_in_play(self):
         if not self.machine.game:
             return 0
@@ -397,15 +332,6 @@ class Vulcan(CaseFileMixin, Mode):
 
     def _done(self):
         return self.mode_done
-
-    def _get(self, name, default=0):
-        player = self.machine.game.player if self.machine.game else None
-        if not player:
-            return default
-        try:
-            return player[name]
-        except KeyError:
-            return default
 
     def _set(self, name, value):
         player = self.machine.game.player if self.machine.game else None

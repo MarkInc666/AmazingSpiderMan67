@@ -1,11 +1,8 @@
 #config_version=6
 
 # Cyclops - Eye of Doom
-# Limited-flips monster mode.
-# Center web target is the Cyclops Eye.
-# Drop targets add flips. Banks reset when all drops in that bank are down.
-# Case files adjust the flip budget, jackpot cap, safety net, extra Eye jackpot,
-# and drop-bank assist.
+# Limited-flips mode: drops/rubbers rebuild flips and center web collects Eye.
+# Banks reset immediately. More Jackpots adds a timed second Eye.
 
 mode:
   start_events: start_mode_cyclops
@@ -31,12 +28,27 @@ widget_player:
       action: remove
 
 
+ball_saves:
+  cyclops_safety_net:
+    active_time: 10s
+    hurry_up_time: 2s
+    grace_period: 1s
+    balls_to_save: 1
+    auto_launch: true
+    enable_events: cyclops_enable_safety_net
+    disable_events:
+      - cyclops_disable_safety_net
+      - cyclops_mode_complete
+      - mode_cyclops_stopping
+      - ball_ending
+
+
 event_player:
   # The center web target is the Cyclops Eye.
   s_web_target_mid_active:
     - cyclops_eye_hit
 
-  # Every drop switch adds flips. Bank-down events reset the physical banks.
+  # Every drop adds 3 flips. Bank-down events immediately reset the banks.
   s_left_drops_1_active:
     - cyclops_left_drop_1_hit
   s_left_drops_2_active:
@@ -55,15 +67,22 @@ event_player:
   s_right_drops_5_active:
     - cyclops_right_drop_5_hit
 
-
   drop_target_bank_dt_bank_left_down:
     - drop_target_bank_dt_bank_left_reset
 
   drop_target_bank_dt_bank_right_down:
+    - cyclops_right_bank_down
     - drop_target_bank_dt_bank_right_reset
 
+  # Every rubber adds 1 flip, including during the second-Eye round.
+  s_left_drops_rubber_active: cyclops_rubber_hit
+  s_left_drops_top_left_rubber_active: cyclops_rubber_hit
+  s_left_drops_top_right_rubber_active: cyclops_rubber_hit
+  s_right_drops_rubber_active: cyclops_rubber_hit
+  s_right_drops_top_rubber_active: cyclops_rubber_hit
+  s_mid_right_rubber_active: cyclops_rubber_hit
 
-  # Cyclops does not use saucers during gameplay; kick out any ball that lands there.
+  # Cyclops does not use saucers during gameplay; kick out any ball there.
   s_saucer_1_active: clear_saucers
   s_saucer_2_active: clear_saucers
   s_saucer_3_active: clear_saucers
@@ -72,76 +91,110 @@ event_player:
     - clear_saucers
     - drop_target_bank_dt_bank_left_reset
     - drop_target_bank_dt_bank_right_reset
-    - cyclops_eye_lit
+    - cyclops_bank_gi_start
 
   mode_cyclops_stopping:
     - clear_saucers
+    - cyclops_disable_safety_net
     - cyclops_eye_unlit
-
+    - cyclops_bank_gi_stop
 
 
 coil_player:
-  cyclops_shot_assist_left_bank:
-    c_left_bank_drop_1:
-      action: pulse
-    c_left_bank_drop_2:
-      action: pulse
-    c_left_bank_drop_3:
-      action: pulse
-
-  cyclops_shot_assist_right_bank:
+  cyclops_shot_assist_drop_1:
     c_right_bank_drop_1:
       action: pulse
+  cyclops_shot_assist_drop_2:
     c_right_bank_drop_2:
       action: pulse
+  cyclops_shot_assist_drop_3:
     c_right_bank_drop_3:
       action: pulse
+  cyclops_shot_assist_drop_4:
     c_right_bank_drop_4:
       action: pulse
+  cyclops_shot_assist_drop_5:
     c_right_bank_drop_5:
       action: pulse
 
+
 show_player:
   cyclops_eye_lit:
-    cyclops_eye_lit_show:
+    cyclops_eye_chase_show:
+      action: play
       loops: -1
 
   cyclops_eye_unlit:
-    cyclops_eye_lit_show:
+    cyclops_eye_chase_show:
+      action: stop
+
+  cyclops_bank_gi_start:
+    cyclops_bank_gi_pulse_show:
+      action: play
+      loops: -1
+
+  cyclops_bank_gi_stop:
+    cyclops_bank_gi_pulse_show:
       action: stop
 
   cyclops_mode_complete:
-    cyclops_eye_lit_show:
+    cyclops_eye_chase_show:
+      action: stop
+    cyclops_bank_gi_pulse_show:
       action: stop
 
   mode_cyclops_stopping:
-    cyclops_eye_lit_show:
+    cyclops_eye_chase_show:
+      action: stop
+    cyclops_bank_gi_pulse_show:
       action: stop
 
 
 shows:
-  cyclops_eye_lit_show:
-    - duration: 300ms
+  # Bottom-to-top approach path from the Monitor layout, ending at the Eye.
+  cyclops_eye_chase_show:
+    - duration: 250ms
       lights:
-        l_advance_multiplier: red
-        l_mid_multibonus: off
-        l_mid_web_target: off
-    - duration: 300ms
-      lights:
+        l_mid_multibonus: white
         l_advance_multiplier: off
-        l_mid_multibonus: red
+        l_special: off
         l_mid_web_target: off
-    - duration: 300ms
+    - duration: 250ms
       lights:
-        l_advance_multiplier: off
         l_mid_multibonus: off
-        l_mid_web_target: red
+        l_advance_multiplier: white
+        l_special: off
+        l_mid_web_target: off
+    - duration: 250ms
+      lights:
+        l_mid_multibonus: off
+        l_advance_multiplier: off
+        l_special: white
+        l_mid_web_target: off
+    - duration: 250ms
+      lights:
+        l_mid_multibonus: off
+        l_advance_multiplier: off
+        l_special: off
+        l_mid_web_target: white
+
+  cyclops_bank_gi_pulse_show:
+    - duration: 500ms
+      lights:
+        l_gi_3bank: 9020C0
+        l_gi_5bank_lower: 9020C0
+        l_gi_5bank_upper: 9020C0
+    - duration: 500ms
+      lights:
+        l_gi_3bank: 240830
+        l_gi_5bank_lower: 240830
+        l_gi_5bank_upper: 240830
+
 
 light_player:
-  # Full-playfield GI theme while this mode is active.
+  # Overall Cyclops GI. Bank GI is overridden by the pulsing purple show.
   mode_cyclops_started:
-    gi: FFD020
+    gi: D08080
 
   mode_cyclops_stopping:
     gi: E0E0E0
-

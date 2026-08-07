@@ -639,9 +639,6 @@ player_vars:
   vulcan_bonus:
     initial_value: 0
     value_type: int
-  vulcan_upper_target_bonus_value:
-    initial_value: 75000
-    value_type: int
   diamond_bonus:
     initial_value: 0
     value_type: int

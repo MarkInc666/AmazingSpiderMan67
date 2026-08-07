@@ -84,18 +84,25 @@ Case File 4 (Safety Net): One failed charge protected
 Case File 5 (Shot Assist): Spot one required target
 
 Cerberus
-Case File 1 (More Jackpots): Add one extra head jackpot
-Case File 2 (Bigger Jackpots): Increase completed-head value
-Case File 3 (More Time): Slow head relight / attack timer
-Case File 4 (Safety Net): One head reset prevented
-Case File 5 (Shot Assist): Start one head partially completed
+Case File 1 (More Jackpots): Each saucer's first jackpot leaves that saucer lit once for a second collection at the same multiplier
+Case File 2 (Bigger Jackpots): Increase Cerberus jackpot values
+Case File 3 (More Time): Extend the Cerberus timer from 16s to 20s
+Case File 4 (Safety Net): Start the 10-second case-file ball save
+Case File 5 (Shot Assist): One use; any saucer collects the best available jackpot and consumes only one collection state
+
+Vulcan
+Case File 1 (More Jackpots): Enable the left 3-bank as a second Jackpot bank; it resets on upper entry and can qualify Add-a-Ball like the right bank
+Case File 2 (Bigger Jackpots): Start the Jackpot at 150K instead of 100K
+Case File 3 (More Time): Extend the upper-left post hold from 8s to 12s
+Case File 4 (Safety Net): Extend the opening multiball ball save from 10s to 20s; Add-a-Ball save remains 10s
+Case File 5 (Shot Assist): First right-bank drop hit also drops and awards two additional standing right-bank targets
 
 Cyclops
-Case File 1 (More Jackpots): Add one extra eye jackpot
-Case File 2 (Bigger Jackpots): Increase eye jackpot
-Case File 3 (More Time): Extend aim / shot timer
-Case File 4 (Safety Net): One missed eye shot protected
-Case File 5 (Shot Assist): Light / spot the eye shot early
+Case File 1 (More Jackpots): Add a second Eye Jackpot after a 2s first-Jackpot hold; second Eye runs for 20s and expiry ends the mode
+Case File 2 (Bigger Jackpots): Eye Jackpot is 150K x remaining flips instead of 100K x remaining flips; cap remains 2M
+Case File 3 (More Time): Start with 30 flips instead of 20
+Case File 4 (Safety Net): 10-second ball save at mode start; does not add flips
+Case File 5 (Shot Assist): First drop hit also knocks down two standing right-bank targets; assisted drops award +3 flips each
 
 Reptilla
 Case File 1 (More Jackpots): Add one extra rampage jackpot

@@ -47,76 +47,127 @@ Possible physical fit:
 
 ### Cerberus — “Three Heads”
 
-**Core idea:** Three heads must be controlled separately.
+**Current implemented rules:** Upper targets control the three saucer jackpots.
 
 ```text
-Goal:
-Defeat all 3 heads: LEFT, CENTER, RIGHT.
+Any upper target lights all three saucer jackpots.
+The matching upper target makes its corresponding saucer 3X.
+Additional upper targets can build multiple 3X saucers before a collect.
+The upper spinner builds jackpot value.
 
-Main mechanic:
-Each head is represented by a shot group:
-LEFT = left drops/saucer 1
-CENTER = pops/saucer 2
-RIGHT = right drops/saucer 3
-
-Completing a head lights its saucer jackpot.
+After the first jackpot, a 16-second timer starts.
+Upper targets, the upper spinner, and any saucer hit reset the running timer.
+Timer expiry ends the played mode normally.
 ```
 
-Difficulty twist:
+After a jackpot, the gate opens and any other lit saucers return to 1X.
+
+Three jackpot collections show `CERBERUS DEFEATED` for 2 seconds, but this is
+display-only: play continues, and villain progression considers Cerberus
+complete after the mode has been played rather than requiring three jackpots.
+
+Case files:
 
 ```text
-If ignored too long, a head wakes back up.
-```
-
-This gives the mode a nice “keep plates spinning” feel.
-
-Good use of case files:
-
-```text
-Case File 1 (More Jackpots): Add one extra all-heads jackpot.
-Case File 2 (Bigger Jackpots): Increase completed-head value.
-Case File 3 (More Time): Slow head wake-up timer.
-Case File 4 (Safety Net): One head reset is blocked.
-Case File 5 (Shot Assist): Start one head partially completed.
+More Jackpots: each saucer's first jackpot leaves that saucer lit for one more
+collection at the same state/multiplier. Each saucer can do this once.
+Bigger Jackpots: increases Cerberus jackpot values.
+More Time: timer is 20 seconds instead of 16.
+Safety Net: 10-second case-file ball save.
+Shot Assist: one use; any saucer collects the best available jackpot and
+consumes only one collection state on the saucer actually awarded.
 ```
 
 ---
 
-### Cyclops — “Eye of Doom”
+### Vulcan — “Volcano Unleashed”
 
-**Core idea:** One dangerous shot is lit at a time. You need to aim carefully.
-
-```text
-Goal:
-Shoot the lit “eye” shot several times.
-
-Main mechanic:
-The eye opens and closes.
-When open, jackpot is available.
-When closed, hits score small points only.
-```
-
-Best physical fit:
-
-* Spinner or upper target as “eye”
-* Star rollover can “focus the eye”
-* Saucer collects jackpot
-
-A good twist:
+**Current implemented rules:** A two-ball drop-bank multiball with a rooftop
+reload loop.
 
 ```text
-Spinner builds FOCUS.
-At enough focus, the eye stays open longer.
+Start 2-ball multiball with a 10-second ball save and keep the rooftop gate open.
+Right-bank drops are Jackpots starting at 100K, or 150K with Bigger Jackpots.
+Every upper-target hit adds 25K to the current Jackpot, capped at 1M.
+Every collected Jackpot also adds its full scored value to vulcan_bonus.
+
+Completing a Jackpot bank qualifies Add-a-Ball. The upper targets change from
+pulsing purple to flashing green, and any upper-target hit collects Add-a-Ball
+when fewer than 3 balls are in play. The collecting hit still adds 25K to the
+Jackpot. Add-a-Ball qualifications do not stack, and a qualified Add-a-Ball
+stays green/ready while 3 balls are already in play.
+
+Entering the upper playfield resets any down targets in the active Jackpot
+banks using the machine's normal delayed bank-reset events. Banks never
+auto-reset on completion.
+
+Upper-left exit raises the post for 8 seconds, or until the both-flipper release.
+Mode ends when the main multiball reaches one ball. There is no Cooling Timer
+or single-ball continuation. Spinners have no Vulcan-specific effect.
 ```
 
 Case files:
 
 ```text
-Case File 1 (More Jackpots): Add one extra eye jackpot.
-Case File 2 (Bigger Jackpots): Increase eye jackpot.
-Case File 3 (More Time): Eye stays open longer.
-Case File 4 (Safety Net): One missed eye shot is protected.
-Case File 5 (Shot Assist): Light the first eye shot automatically.
+More Jackpots: enables the left 3-bank as a second Jackpot bank; it follows the
+same upper-entry reset and Add-a-Ball qualification rules as the right bank.
+Bigger Jackpots: starts the Jackpot at 150K instead of 100K.
+More Time: extends the upper-left post hold from 8 seconds to 12 seconds.
+Safety Net: extends the opening multiball ball save from 10 seconds to 20
+seconds; Add-a-Ball still uses its normal built-in 10-second save.
+Shot Assist: the first right-bank drop hit also drops and awards two additional
+standing right-bank targets. All three Jackpots score normally and bank their
+full values to vulcan_bonus.
+```
+
+Lighting: active right-bank GI pulses green; with More Jackpots, the left-bank
+GI pulses green too. A completed bank's GI goes dark until upper entry resets
+that bank. Upper targets pulse purple normally and flash green for Add-a-Ball.
+
+---
+
+### Cyclops — “Eye of Doom”
+
+**Core idea:** Limited flips. Build the remaining-flip supply with drops and rubbers, then cash it out at the Cyclops Eye.
+
+```text
+Goal:
+Hit the center-web Eye before running out of flips.
+
+Main mechanic:
+Start with 20 flips (30 with More Time).
+Each flipper press spends 1 flip.
+Each drop hit adds 3 flips; every rubber hit adds 1.
+Completed drop banks reset immediately.
+Flip count is uncapped.
+```
+
+Eye Jackpot:
+
+* Center web target is the Eye.
+* Normal value = 100K x remaining flips, capped at 2M.
+* Bigger Jackpots = 150K x remaining flips, still capped at 2M.
+* Without More Jackpots, collecting the Eye ends the mode after a 2s Jackpot-message hold.
+* More Jackpots adds Eye #2. After Eye #1, hold its Jackpot message for 2s, then start a 20s second-Eye window with the existing flip count.
+* Drops (+3) and rubbers (+1) continue rebuilding flips during Eye #2.
+* Eye #2 uses the same remaining-flips calculation. If its 20s window expires, show “EYE SEE YOU” for 2s, then end.
+* Reaching 0 flips at any time shows “OUT OF FLIPS” for 2s, then ends.
+
+Lighting:
+
+* Overall GI = D08080.
+* Left- and right-bank GI pulse purple.
+* Eye available = repeating 4-light white chase, 250ms per step: l_mid_multibonus -> l_advance_multiplier -> l_special -> l_mid_web_target.
+* The chase is off during the 2s buffer between Eye #1 and Eye #2.
+
+Case files:
+
+```text
+Case File 1 (More Jackpots): Add the timed second Eye Jackpot.
+Case File 2 (Bigger Jackpots): 150K x flips instead of 100K x flips; cap stays 2M.
+Case File 3 (More Time): Start with 30 flips instead of 20.
+Case File 4 (Safety Net): 10-second ball save.
+Case File 5 (Shot Assist): First drop hit knocks down two additional right-bank drops; each awards +3 flips.
 ```
 
 ---

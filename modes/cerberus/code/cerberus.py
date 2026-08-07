@@ -11,10 +11,13 @@ Cerberus - Three Heads
 - Additional upper-target hits can make multiple or all saucers 3X.
 - Any lit saucer collects a jackpot at its current multiplier.
 - After a collect, the gate opens and all remaining lit saucers return to 1X.
-- More Jackpots relights the collected saucer at 1X.
-- Upper spinner builds jackpot value but does not reset the timer.
+- More Jackpots lets each saucer remain lit once after its first collect, at
+  the same multiplier it had for that collect.
+- Upper spinner builds jackpot value and resets the timer once it is running.
 - After the first saucer jackpot, a 16s timer starts.
-- Upper-target hits and all saucer hits reset the running timer.
+- Upper-target, spinner, and all saucer hits reset the running timer.
+- The third jackpot displays CERBERUS DEFEATED for 2 seconds but does not end
+  the mode; defeat is presentation only.
 - Mode continues until the ball ends or the timer expires.
 """
 
@@ -50,7 +53,7 @@ class Cerberus(CaseFileMixin, Mode):
         self._apply_case_file_bonuses()
         self.publish_case_file_bonus_events("cerberus")
         self.publish_active_case_file_helpers([
-            ("more_jackpots", "COLLECTED SAUCER RELIGHTS AT 1X"),
+            ("more_jackpots", "EACH SAUCER STAYS LIT ONCE"),
             ("bigger_jackpots", "BIGGER CERBERUS JACKPOTS"),
             ("more_time", "CERBERUS TIMER EXTENDED"),
             ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
@@ -60,6 +63,9 @@ class Cerberus(CaseFileMixin, Mode):
         self.saucer_jackpot_lit = {1: False, 2: False, 3: False}
         self.saucer_triple_lit = {1: False, 2: False, 3: False}
         self.more_jackpots_active = self.has_case_file("more_jackpots")
+        self.more_jackpots_repeat_available = {
+            saucer: self.more_jackpots_active for saucer in [1, 2, 3]
+        }
         self.shot_assist_available = self.has_case_file("shot_assist")
 
         self.jackpot_value = self.base_jackpot_value
@@ -150,6 +156,7 @@ class Cerberus(CaseFileMixin, Mode):
             self.max_jackpot_value,
             self.jackpot_value + self.spinner_add_value,
         )
+        self._reset_timer_if_running()
         self._sync_vars()
         self.machine.events.post(
             "cerberus_jackpot_value_changed",
@@ -190,11 +197,21 @@ class Cerberus(CaseFileMixin, Mode):
         self.jackpots_collected += 1
         self.best_jackpot = max(self.best_jackpot, award)
 
-        # The collected saucer normally turns off. More Jackpots relights it
-        # immediately at 1X. Every remaining lit saucer also returns to 1X.
-        self.saucer_jackpot_lit[collect_saucer] = bool(self.more_jackpots_active)
+        # More Jackpots gives each saucer one retained first collection. The
+        # retained shot stays exactly as it was, including 3X when applicable.
+        # Shot Assist reaches this same path, so it consumes only one collection
+        # state from the saucer it actually awards.
+        keep_collected_saucer_lit = self.more_jackpots_repeat_available.get(
+            collect_saucer,
+            False,
+        )
+        if keep_collected_saucer_lit:
+            self.more_jackpots_repeat_available[collect_saucer] = False
+
+        self.saucer_jackpot_lit[collect_saucer] = keep_collected_saucer_lit
         for candidate in [1, 2, 3]:
-            self.saucer_triple_lit[candidate] = False
+            if candidate != collect_saucer or not keep_collected_saucer_lit:
+                self.saucer_triple_lit[candidate] = False
 
         self.gate_open_after_collect = True
 
@@ -213,6 +230,15 @@ class Cerberus(CaseFileMixin, Mode):
             jackpots=self.jackpots_collected,
         )
         self.machine.events.post("show_mode_jackpot", message_mode_title="CERBERUS JACKPOT", message_mode_subtitle=f"SAUCER {collect_saucer} - {multiplier}X", message_mode_value=award)
+
+        if self.jackpots_collected == 3:
+            # Presentation only: show_mode_message expires after 2 seconds in
+            # the shared base mode and play continues normally.
+            self.machine.events.post(
+                "show_mode_message",
+                message_mode_title="CERBERUS DEFEATED",
+                message_mode_subtitle="KEEP PLAYING",
+            )
 
     def _best_available_saucer_or_default(self, default_saucer):
         # Prefer the best lit jackpot on the playfield, even if the entered saucer is unlit.
