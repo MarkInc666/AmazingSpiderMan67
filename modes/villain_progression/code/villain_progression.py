@@ -39,6 +39,14 @@ class VillainProgression(Mode):
     ]
     CASE_FILE_MINI_WIZARD_BONUS = 20_000
     MINI_WIZARD_BASE_JACKPOT = 50_000
+    GATE_POWER_RECOVERY_MS = 500
+    GATE_OPEN_VERIFY_MS = 1000
+    GATE_OPEN_MAX_ATTEMPTS = 2
+    GATE_POWER_SWITCHES = (
+        "s_left_flipper",
+        "s_right_flipper",
+        "s_right_flipper_upper",
+    )
 
     CHAPTERS = [
         {
@@ -264,6 +272,10 @@ class VillainProgression(Mode):
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
         self.villain_progression_logic_active = True
+        self.mini_wizard_gate_open_pending = False
+        self.mini_wizard_gate_open_reason = ""
+        self.mini_wizard_gate_open_cycle_active = False
+        self.mini_wizard_gate_open_attempts = 0
 
         # Player vars are initialized in config/player_vars.yaml. This mode is
         # a stateless interpreter of those durable vars: it recovers unresolved
@@ -282,6 +294,7 @@ class VillainProgression(Mode):
         self._recalculate_progression_from_states(post_events=True)
 
         self._add_handlers()
+        self._try_pending_mini_wizard_gate_open()
 
         # Central saucer clearing lives here because villain_progression is
         # active during normal gameplay. This lets clear_saucers only pulse
@@ -318,22 +331,129 @@ class VillainProgression(Mode):
         )
 
     def _schedule_mini_wizard_gate_open(self, reason=""):
-        """Open rooftop access immediately when the chapter wizard is ready.
+        """Open rooftop access once the flipper power load has cleared.
 
         The rooftop diverter/gate coil toggles mechanically, so this method must
         only be called when readiness is first awarded or restored on a new ball.
-        A qualifying drop-target hit is no longer required.
+        A summary can finish from a both-flipper hold. Waiting for every flipper
+        button to be released prevents their hold coils from starving the 220ms
+        gate pulse. A short recovery period follows release, and the switch state
+        is checked again immediately before the one allowed gate-open request.
         """
         self.delay.remove("mini_wizard_ready_gate_open")
+        self.delay.remove("mini_wizard_ready_gate_verify")
+        if not self.mini_wizard_gate_open_cycle_active:
+            self.mini_wizard_gate_open_attempts = 0
+        self.mini_wizard_gate_open_cycle_active = True
+        self.mini_wizard_gate_open_pending = True
+        self.mini_wizard_gate_open_reason = reason
+        self._try_pending_mini_wizard_gate_open()
+
+    def _flipper_power_in_use(self):
+        return any(
+            self.machine.switch_controller.is_active(self.machine.switches[switch_name])
+            for switch_name in self.GATE_POWER_SWITCHES
+        )
+
+    def _try_pending_mini_wizard_gate_open(self, **kwargs):
+        if not self.mini_wizard_gate_open_pending:
+            return
+        if self._flipper_power_in_use():
+            self.delay.remove("mini_wizard_ready_gate_open")
+            self.machine.events.post(
+                "mini_wizard_gate_open_waiting_for_flipper_release",
+                reason=self.mini_wizard_gate_open_reason,
+            )
+            return
+        self.delay.remove("mini_wizard_ready_gate_open")
+        self.delay.add(
+            name="mini_wizard_ready_gate_open",
+            ms=self.GATE_POWER_RECOVERY_MS,
+            callback=self._fire_pending_mini_wizard_gate_open,
+        )
+
+    def _fire_pending_mini_wizard_gate_open(self, **kwargs):
+        if not self.mini_wizard_gate_open_pending:
+            return
+        if self._flipper_power_in_use():
+            self._try_pending_mini_wizard_gate_open()
+            return
+
+        reason = self.mini_wizard_gate_open_reason
+        self.mini_wizard_gate_open_pending = False
+        self.mini_wizard_gate_open_attempts += 1
         self.machine.events.post(
             "rooftop_diverter_open",
             reason=reason,
         )
+        self.machine.events.post(
+            "mini_wizard_gate_open_requested",
+            reason=reason,
+            attempt=self.mini_wizard_gate_open_attempts,
+        )
+        self.delay.remove("mini_wizard_ready_gate_verify")
+        self.delay.add(
+            name="mini_wizard_ready_gate_verify",
+            ms=self.GATE_OPEN_VERIFY_MS,
+            callback=self._verify_mini_wizard_gate_open,
+        )
+
+    def _gate_still_needs_opening(self):
+        # Follow the established state guards in config/config.yaml. Despite
+        # the switch name, state 1 enables the open pulse and state 0 enables
+        # the close pulse, so active means the requested opening did not occur.
+        return self.machine.switch_controller.is_active(
+            self.machine.switches["s_diverter_open"]
+        )
+
+    def _verify_mini_wizard_gate_open(self, **kwargs):
+        if not self.mini_wizard_gate_open_cycle_active:
+            return
+
+        if not self._gate_still_needs_opening():
+            reason = self.mini_wizard_gate_open_reason
+            attempts = self.mini_wizard_gate_open_attempts
+            self.mini_wizard_gate_open_cycle_active = False
+            self.mini_wizard_gate_open_pending = False
+            self.mini_wizard_gate_open_reason = ""
+            self.mini_wizard_gate_open_attempts = 0
+            self.machine.events.post(
+                "villain_mini_wizard_gate_opened",
+                reason=reason,
+                attempts=attempts,
+            )
+            return
+
+        if self.mini_wizard_gate_open_attempts >= self.GATE_OPEN_MAX_ATTEMPTS:
+            reason = self.mini_wizard_gate_open_reason
+            attempts = self.mini_wizard_gate_open_attempts
+            self.mini_wizard_gate_open_cycle_active = False
+            self.mini_wizard_gate_open_pending = False
+            self.mini_wizard_gate_open_reason = ""
+            self.mini_wizard_gate_open_attempts = 0
+            self.machine.events.post(
+                "mini_wizard_gate_open_failed_verification",
+                reason=reason,
+                attempts=attempts,
+            )
+            return
+
+        self.mini_wizard_gate_open_pending = True
+        self.machine.events.post(
+            "mini_wizard_gate_open_retry",
+            reason=self.mini_wizard_gate_open_reason,
+            attempt=self.mini_wizard_gate_open_attempts + 1,
+        )
+        self._try_pending_mini_wizard_gate_open()
 
     def mode_stop(self, **kwargs):
         # Do not make progression decisions while stopping at ball_ending.
         # Anything still PLAYING will be resolved on the next mode_start.
         self.villain_progression_logic_active = False
+        self.mini_wizard_gate_open_pending = False
+        self.mini_wizard_gate_open_cycle_active = False
+        self.delay.remove("mini_wizard_ready_gate_open")
+        self.delay.remove("mini_wizard_ready_gate_verify")
         super().mode_stop(**kwargs)
 
     def _recover_playing_modes_as_completed(self):
@@ -681,6 +801,9 @@ class VillainProgression(Mode):
         self.add_mode_event_handler("delayed_kickout_saucer_2", self._delayed_kickout_saucer, saucer_number="2")
         self.add_mode_event_handler("delayed_kickout_saucer_3", self._delayed_kickout_saucer, saucer_number="3")
         self.add_mode_event_handler("clear_saucers_now", self._clear_saucers_now)
+        self.add_mode_event_handler("s_left_flipper_inactive", self._try_pending_mini_wizard_gate_open)
+        self.add_mode_event_handler("s_right_flipper_inactive", self._try_pending_mini_wizard_gate_open)
+        self.add_mode_event_handler("s_right_flipper_upper_inactive", self._try_pending_mini_wizard_gate_open)
 
 
     def _mini_wizard_gameplay_finished(self, mini_wizard=None, completed=True, **kwargs):
@@ -1322,7 +1445,6 @@ class VillainProgression(Mode):
             self.machine.game.player[f"{mini_key}_state"] = self.NOT_PLAYED
 
         self._schedule_mini_wizard_gate_open(reason=kwargs.get("reason", "mini_wizard_ready"))
-        self.machine.events.post("villain_mini_wizard_gate_opened")
 
         self.machine.events.post(
             "chapter_mini_wizard_lit_at_daily_bugle",
@@ -1584,4 +1706,3 @@ class VillainProgression(Mode):
             return int(value)
         except Exception:
             return default
-

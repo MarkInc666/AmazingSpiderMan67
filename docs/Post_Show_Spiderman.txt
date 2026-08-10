@@ -657,6 +657,12 @@ After 5 villains:
 
 ```text
 mini-wizard ready
+→ if any flipper button is held, wait for all flippers to be released
+→ wait 500 ms for coil-power recovery
+→ open the rooftop gate
+→ after 1 second, verify the gate-position switch
+→ if it still needs opening, repeat the release/recovery check and open once more
+→ stop after two total open attempts
 shoot Daily Bugle VUK
 pause in VUK for audio/video intro
 start multiball
@@ -902,7 +908,5 @@ Left exit = add-a-ball
 
 
 A+B rollovers = Daily Bugle / gate / photos / mystery award
-
-
 
 

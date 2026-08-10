@@ -43,7 +43,10 @@ Chaos Bonus can only be banked during unsafe mode.
 - More Time extends the safe phase to 15 seconds.
 - The persistent mode-status area shows the live time remaining.
 - The safe phase ends when the timer expires or all six areas are collected.
-- At the end of the safe phase, the held ball releases and the temporary message reads `MORE CHAOS!`.
+- At the end of the safe phase, the held saucer kickout fires immediately and
+  the temporary message reads `MORE CHAOS!`.
+- Goblin keeps the hold active until the held saucer switch confirms that the
+  ball has physically left. Only then does unsafe play resume.
 
 Each safe area can be collected once per safe phase.
 
@@ -87,9 +90,11 @@ If another ball enters a different saucer while one ball is already held:
 
 - Score 50K silently.
 - Show `NO NO NO`.
-- Eject the second ball.
+- Eject the second ball after 750 ms.
 - Do not bank Chaos Bonus.
 - Do not restart or extend the safe timer.
+- Once the held ball's saucer switch confirms that the ball has left, the next
+  entry into any saucer starts a new full 10/15-second safe-phase hold.
 
 ## Case Files
 

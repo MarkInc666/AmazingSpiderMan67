@@ -22,6 +22,7 @@ class Goblin(CaseFileMixin, Mode):
     UNSAFE_SCORE = 20_000
     UNSAFE_LOSS = 150_000
     EXTRA_SAUCER_SCORE = 50_000
+    EXTRA_SAUCER_EJECT_DELAY_MS = 750
 
     SAFE_TIME_SECONDS = 10
     MORE_TIME_SECONDS = 15
@@ -67,6 +68,8 @@ class Goblin(CaseFileMixin, Mode):
         self.current_solid = set()
         self.hold_active = False
         self.held_saucer = None
+        self.release_pending = False
+        self.ejecting_saucers = set()
         self.mode_finishing = False
         self.bonus_paid = False
         self.safe_hit_count = 0
@@ -81,6 +84,9 @@ class Goblin(CaseFileMixin, Mode):
         self.add_mode_event_handler("goblin_saucer_1_hit", partial(self.saucer_hit, saucer=1))
         self.add_mode_event_handler("goblin_saucer_2_hit", partial(self.saucer_hit, saucer=2))
         self.add_mode_event_handler("goblin_saucer_3_hit", partial(self.saucer_hit, saucer=3))
+        self.add_mode_event_handler("s_saucer_1_inactive", partial(self.saucer_cleared, saucer=1))
+        self.add_mode_event_handler("s_saucer_2_inactive", partial(self.saucer_cleared, saucer=2))
+        self.add_mode_event_handler("s_saucer_3_inactive", partial(self.saucer_cleared, saucer=3))
         self.add_mode_event_handler("goblin_collect_bonus", self.collect_banked_bonus)
         self.add_mode_event_handler("ball_ending", self.collect_banked_bonus)
         self.add_mode_event_handler("multiball_goblin_chaos_multiball_started", self.multiball_started)
@@ -119,6 +125,7 @@ class Goblin(CaseFileMixin, Mode):
         if self.mode_finishing:
             return
         self.hold_active = False
+        self.release_pending = False
         self.machine.game.player["goblin_hold_active"] = 0
         self.safe_seconds_remaining = 0
         self.safe_hit_count = 0
@@ -134,6 +141,7 @@ class Goblin(CaseFileMixin, Mode):
 
     def start_safe_phase(self, saucer):
         self.hold_active = True
+        self.release_pending = False
         self.held_saucer = saucer
         player = self.machine.game.player
         player["goblin_hold_active"] = 1
@@ -164,21 +172,17 @@ class Goblin(CaseFileMixin, Mode):
         self.delay.add(name="goblin_safe_tick", ms=1000, callback=self.safe_tick)
 
     def end_safe_phase(self, reason="complete", **kwargs):
-        if self.mode_finishing or not self.hold_active:
+        if self.mode_finishing or not self.hold_active or self.release_pending:
             return
         self.delay.remove("goblin_safe_tick")
         saucer = self.held_saucer
-        self.held_saucer = None
-        self.hold_active = False
-        self.machine.game.player["goblin_hold_active"] = 0
-        self.machine.events.post("goblin_hold_ended", saucer=saucer, reason=reason)
+        self.release_pending = True
+        self._update_mode_status()
         self._queue_temp("MORE CHAOS!")
         if saucer is not None:
-            self.delayed_eject(saucer=saucer)
-        if self.safety_net_available and not self.safety_net_used:
-            self.safety_net_used = True
-            self.machine.events.post("start_case_file_ball_save")
-        self.delay.add(name="goblin_resume_after_hold", ms=250, callback=self.start_unsafe_phase)
+            self.eject_saucer(saucer=saucer)
+        else:
+            self._complete_saucer_release(saucer=None, reason=reason)
 
     # ------------------------------------------------------------------
     # Shots and scoring
@@ -252,13 +256,18 @@ class Goblin(CaseFileMixin, Mode):
     def saucer_hit(self, saucer=None, **kwargs):
         if self.mode_finishing or saucer is None:
             return
+        # Do not rescore or change state if a saucer switch chatters while its
+        # kickout is in progress. The inactive edge clears this guard.
+        if saucer in self.ejecting_saucers:
+            return
         if self.hold_active:
             self._award_points(self.EXTRA_SAUCER_SCORE)
             self._show_temp("NO NO NO")
+            self.ejecting_saucers.add(saucer)
             self.delay.add(
                 name=f"goblin_extra_saucer_eject_{saucer}",
-                ms=250,
-                callback=self.delayed_eject,
+                ms=self.EXTRA_SAUCER_EJECT_DELAY_MS,
+                callback=self.eject_saucer,
                 saucer=saucer,
             )
             return
@@ -277,20 +286,44 @@ class Goblin(CaseFileMixin, Mode):
         self.start_safe_phase(saucer)
         self._schedule_temp_after(2000, "SAFE JACKPOTS", "HIT ALL 6")
 
-    def delayed_eject(self, saucer=None, **kwargs):
+    def saucer_cleared(self, saucer=None, **kwargs):
+        """Use the physical switch opening as confirmation of a kickout."""
+        if saucer is None:
+            return
+        self.ejecting_saucers.discard(saucer)
+        if self.release_pending and saucer == self.held_saucer:
+            self._complete_saucer_release(saucer=saucer, reason="switch_inactive")
+
+    def eject_saucer(self, saucer=None, **kwargs):
+        """Kick a saucer immediately and wait for its inactive event."""
         if saucer is not None:
-            self.machine.events.post(f"delayed_kickout_saucer_{saucer}")
+            self.ejecting_saucers.add(saucer)
+            self.machine.events.post(f"kickout_saucer_{saucer}")
+
+    def _complete_saucer_release(self, saucer=None, reason=None):
+        """Leave the safe phase only after the held ball has physically left."""
+        self.held_saucer = None
+        self.hold_active = False
+        self.release_pending = False
+        self.machine.game.player["goblin_hold_active"] = 0
+        self.machine.events.post("goblin_hold_ended", saucer=saucer, reason=reason)
+        if self.safety_net_available and not self.safety_net_used:
+            self.safety_net_used = True
+            self.machine.events.post("start_case_file_ball_save")
+        self.start_unsafe_phase()
 
     def eject_held_saucer(self, reason=None):
         saucer = self.held_saucer
         if saucer is None:
             return
         self.delay.remove("goblin_safe_tick")
+        if saucer not in self.ejecting_saucers:
+            self.eject_saucer(saucer=saucer)
         self.held_saucer = None
         self.hold_active = False
+        self.release_pending = False
         self.machine.game.player["goblin_hold_active"] = 0
         self.machine.events.post("goblin_hold_ended", saucer=saucer, reason=reason)
-        self.delayed_eject(saucer=saucer)
 
     # ------------------------------------------------------------------
     # Messages / status
@@ -329,7 +362,10 @@ class Goblin(CaseFileMixin, Mode):
         self._queue_temp("CHAOS BONUS NOW", value=chaos_bonus)
 
     def _update_mode_status(self):
-        if self.hold_active:
+        if self.release_pending:
+            title = "RELEASING BALL"
+            value = "MORE CHAOS!"
+        elif self.hold_active:
             title = "SAFE JACKPOTS"
             value = f"TIME: {self.safe_seconds_remaining}"
         else:
@@ -393,7 +429,6 @@ class Goblin(CaseFileMixin, Mode):
     def clear_all_delays(self):
         for name in (
             "goblin_safe_tick",
-            "goblin_resume_after_hold",
             "goblin_extra_saucer_eject_1",
             "goblin_extra_saucer_eject_2",
             "goblin_extra_saucer_eject_3",
