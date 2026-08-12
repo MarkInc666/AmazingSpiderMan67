@@ -795,6 +795,9 @@ player_vars:
   doctor_atlantean_state:
     initial_value: 0
     value_type: int
+  doctor_atlantean_water_level:
+    initial_value: 6
+    value_type: int
   molemen_state:
     initial_value: 0
     value_type: int

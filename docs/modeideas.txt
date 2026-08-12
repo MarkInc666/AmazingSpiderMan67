@@ -219,6 +219,51 @@ solid red.
 
 ---
 
+### Doctor Atlantean — “Up From Nowhere”
+
+**Core idea:** Doctor Atlantean has sunk Manhattan beneath the ocean. Operate
+his rooftop control panel to lower the water and raise the city before it is
+lost.
+
+Water and control-panel rules:
+
+```text
+Water range: 0-8; starts at level 6.
+Opening: four-second animation fills GI bands 1-6 blue from bottom to top.
+Base/cleared GI: orange. Submerged GI: blue.
+Lit upper target: 100K and lowers water one level.
+Unlit upper target: 25K with no water change.
+Either upper exit: 25K and raises water one level, capped at 8.
+Upper spinner: 10K per spin with no water change.
+Victory: water reaches level 0.
+Failure: the danger timer expires while water remains at level 8.
+```
+
+All three upper targets begin available and pulse green. A collected target
+turns dark. After all three are collected, all three relight; this target-light
+cycle is independent of upper exits. The rooftop gate stays open throughout
+the mode.
+
+A 20-second inactivity timer runs below level 8. Expiry raises the water one
+level and restarts the timer. At level 8, the same 20-second countdown is the
+danger timer and expiry ends the mode. Any upper target or upper-spinner
+activity resets the current countdown; exits do not. Status shows
+`WATER LEVEL 6 / 8` and `TIME 20`, changing to `MANHATTAN SUBMERGED` at level
+8. The summary shows Control-panel Jackpots, Upper-spinner Spins, and total
+mode score.
+
+Case files:
+
+```text
+Case File 1 (More Jackpots): Completing all three targets qualifies the next upper-spinner spin for 100K total.
+Case File 2 (Bigger Jackpots): Lit control-panel targets score 125K instead of 100K.
+Case File 3 (More Time): Both water countdowns run for 30 seconds instead of 20.
+Case File 4 (Safety Net): 10-second ball save at mode start.
+Case File 5 (Shot Assist): The first unlit target hit counts as lit, scores the control-panel Jackpot, and lowers water one level.
+```
+
+---
+
 ### Reptilla — “Rampage”
 
 **Core idea:** Reptilla stomps through areas of the city. You must stop the rampage before it spreads.

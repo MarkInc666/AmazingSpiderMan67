@@ -737,21 +737,16 @@ class VillainBookends(Mode):
             'state_var': 'dr_manta_state',
             'song': 'play_song_40',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Doctor Atlantean rules from a lost city.
-        #   intro_2: Hit sky shots to bring the city down.
-        #   intro_3: Complete the attack before he escapes.
-        #   stat_2_label: MAJOR HITS
         'doctor_atlantean': {
             'title': 'DOCTOR ATLANTEAN',
-            'intro_1': 'Lost city rises.',
-            'intro_2': 'Hit sky shots.',
-            'intro_3': 'Bring it down.',
-            'summary_title_complete': 'ATLANTEAN DEFEATED',
-            'summary_title_failed': 'ATLANTEAN ESCAPED',
-            'stat_1_label': 'HITS',
+            'intro_1': 'Manhattan is sinking.',
+            'intro_2': 'Hit pulsing roof targets.',
+            'intro_3': 'Raise the city before it is lost.',
+            'summary_title_complete': 'MANHATTAN RISES!',
+            'summary_title_failed': 'MANHATTAN IS LOST!',
+            'stat_1_label': 'CONTROL JACKPOTS',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'MAJORS',
+            'stat_2_label': 'SPINNER SPINS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'doctor_atlantean_state',
