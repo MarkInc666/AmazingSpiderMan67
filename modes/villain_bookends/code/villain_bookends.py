@@ -971,21 +971,16 @@ class VillainBookends(Mode):
             'state_var': 'master_technician_state',
             'song': 'play_song_45',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: The Spider-Men attack from every direction.
-        #   intro_2: Hit tiny targets before they scatter.
-        #   intro_3: Clear the swarm and restore the scale.
-        #   stat_2_label: MAJOR HITS
         'spider_men': {
             'title': 'THE SPIDER-MEN',
-            'intro_1': 'The Spider-Men swarm.',
-            'intro_2': 'Hit tiny targets.',
-            'intro_3': 'Clear the attack.',
-            'summary_title_complete': 'THE SPIDER-MEN STOPPED',
-            'summary_title_failed': 'THE SPIDER-MEN ESCAPED',
-            'stat_1_label': 'HITS',
+            'intro_1': 'Align the Homeworld Ray.',
+            'intro_2': 'Flippers rotate the lights.',
+            'intro_3': 'Hit pulsing shots.',
+            'summary_title_complete': 'THE SPIDER-MEN RETURN HOME',
+            'summary_title_failed': 'PROTON TEST ACTIVATED',
+            'stat_1_label': 'JACKPOTS',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'MAJORS',
+            'stat_2_label': 'FINE ADJUSTMENTS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'spider_men_state',

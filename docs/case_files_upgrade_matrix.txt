@@ -184,3 +184,10 @@ Case File 2 (Bigger Jackpots): Increase crime jackpot
 Case File 3 (More Time): Extend crime-wave timer
 Case File 4 (Safety Net): One missed crime shot ignored
 Case File 5 (Shot Assist): Spot one active crime shot
+
+The Spider-Men
+Case File 1 (More Jackpots): Completing all six positions lights a fixed 500K center-web Super for 10 seconds; collect or timeout then completes the mode
+Case File 2 (Bigger Jackpots): Alignment Jackpots are 150K instead of 100K; the sixth remains double and the Super remains 500K
+Case File 3 (More Time): Extend the proton countdown from 40s to 60s
+Case File 4 (Safety Net): Start the standard 10-second Case File ball save
+Case File 5 (Shot Assist): First Jackpot also completes one random uncompleted position and awards its normal value

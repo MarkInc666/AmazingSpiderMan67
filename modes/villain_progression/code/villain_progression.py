@@ -266,6 +266,7 @@ class VillainProgression(Mode):
         'master_vine_mode_complete': ('master_vine', True),
         'master_technician_mode_complete': ('master_technician', True),
         'spider_men_mode_complete': ('spider_men', True),
+        'spider_men_mode_failed': ('spider_men', False),
         'von_rantenraven_mode_complete': ('von_rantenraven', True),
     }
 

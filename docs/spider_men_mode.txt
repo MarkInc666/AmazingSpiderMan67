@@ -1,0 +1,90 @@
+THE SPIDER-MEN — ALIGN THE HOMEWORLD RAY
+
+STATUS
+
+Coded. Needs on-machine playtest.
+
+
+CORE RULES
+
+The mode uses the same six switches as the normal skill shot:
+
+- Saucer 1
+- Saucer 2
+- Saucer 3
+- Star rollover
+- A rollover
+- B rollover
+
+All six positions begin pulsing red. The three saucers use their paired red
+hole lamps; the green numbered 1/2/3 inserts are not used. Star, A and B use
+their normal inserts and are also driven red.
+
+Left and right flipper presses rotate the entire six-position light pattern.
+Completed and incomplete states move together. Hitting a pulsing position
+converts it to solid red. Hitting a solid position scores a Fine Adjustment but
+does not advance the alignment.
+
+The first Jackpot starts the proton countdown. Complete all six positions before
+the countdown expires to align the Homeworld Ray and send the Spider-Men home.
+The rooftop gate is closed for the entire mode because all six shots are on the
+main playfield.
+
+
+TIMER
+
+- Base countdown: 40 seconds
+- More Time countdown: 60 seconds
+- The timer starts only when the first pulsing position is completed.
+- Later Jackpots do not reset or extend it.
+- Timer expiry fails the mode.
+
+
+SCORING
+
+- New pulsing position: 100,000 Jackpot
+- New pulsing position with Bigger Jackpots: 150,000 Jackpot
+- Sixth position: double the current Jackpot value (200,000 or 300,000)
+- Already-solid position: 25,000 Fine Adjustment
+- More Jackpots center-web Super: 500,000
+
+Shot Assist's free position awards its normal 100,000 or 150,000 and counts as
+a Jackpot. The Super is included in Mode Points but not in the regular Jackpot
+count.
+
+
+CASE FILES
+
+- More Jackpots: after all six positions are solid, flash the center web for a
+  fixed 500,000 Super Jackpot for 10 seconds. Collecting it or letting the
+  window expire completes the mode.
+- Bigger Jackpots: increase alignment Jackpots from 100,000 to 150,000; the
+  sixth remains double. The fixed Super remains 500,000.
+- More Time: increase the proton countdown from 40 to 60 seconds.
+- Safety Net: start the standard 10-second Case File ball save.
+- Shot Assist: the first completed pulsing position also completes one random
+  uncompleted position and awards its normal value.
+
+
+LIGHTING
+
+Alignment lights pulse/hold red. GI begins dim yellow and grows brighter after
+each completed position:
+
+- 0: 303000
+- 1: 505000
+- 2: 707000
+- 3: 909000
+- 4: B0B000
+- 5: D0D000
+- 6: FFFF00
+
+During the optional Super window, the six positions remain solid red, GI stays
+at full yellow, and the center web flashes red.
+
+
+SUMMARY
+
+- Mode Points
+- Jackpots
+- Fine Adjustments
