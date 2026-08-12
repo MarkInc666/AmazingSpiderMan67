@@ -36,7 +36,7 @@ class Bonus(MpfBonus):
         ("super_swami_bonus", "SUPER SWAMI", False),
         ("dumpty_bonus", "DUMPTY DEVICES", False),
         ("blotto_bonus", "BLOTTO RAMPAGE", False),
-        ("devargas_bonus", "LOST WORLDS PLACEHOLDER", False),
+        ("devargas_bonus", "DEVARGAS GOLD", False),
         ("swamp_bonus", "CONNER'S REPTILES", False),
         ("technician_bonus", "TECHNICIAN TRAP", False),
         # A carried bonus is always the final counted bonus entry before the

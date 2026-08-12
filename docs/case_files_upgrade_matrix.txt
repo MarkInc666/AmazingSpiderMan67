@@ -191,3 +191,10 @@ Case File 2 (Bigger Jackpots): Alignment Jackpots are 150K instead of 100K; the 
 Case File 3 (More Time): Extend the proton countdown from 40s to 60s
 Case File 4 (Safety Net): Start the standard 10-second Case File ball save
 Case File 5 (Shot Assist): First Jackpot also completes one random uncompleted position and awards its normal value
+
+DeVargas
+Case File 1 (More Jackpots): Increase the City of Gold score attack from 20 to 25 opportunities
+Case File 2 (Bigger Jackpots): Gold values become 200K slow, 175K medium, and 150K fast
+Case File 3 (More Time): Gold phases become 5s slow, 4s medium, and 4s fast; the new-opportunity interval remains 8s
+Case File 4 (Safety Net): Start the standard 10-second Case File ball save
+Case File 5 (Shot Assist): First expired opportunity auto-collects once at the current fast-tier value and banks the full award

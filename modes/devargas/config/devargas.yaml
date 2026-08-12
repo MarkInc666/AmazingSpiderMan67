@@ -1,7 +1,7 @@
 #config_version=6
 
-# DeVargas placeholder villain mode.
-# Mode idea: Lit target appears briefly; hit before it moves to win quickdraw jackpots.
+# DeVargas — City of Gold pure score attack.
+# Twenty timed opportunities are selected from thirteen repeatable shot groups.
 
 mode:
   start_events: start_mode_devargas
@@ -11,6 +11,21 @@ mode:
     - ball_ended
   code: devargas.DeVargas
   priority: 300
+
+
+ball_saves:
+  devargas_safety_net:
+    active_time: 10s
+    hurry_up_time: 2s
+    grace_period: 1s
+    enable_events: devargas_enable_safety_net
+    disable_events:
+      - devargas_disable_safety_net
+      - devargas_mode_complete
+      - mode_devargas_stopping
+    auto_launch: true
+    balls_to_save: 1
+
 
 widget_player:
   mode_devargas_started:
@@ -25,56 +40,320 @@ widget_player:
     devargas:
       action: remove
 
+
 event_player:
-  # Common playfield hits. Refine these later when the mode design is built out.
-  s_pop_left_active: devargas_shot_hit
-  s_pop_right_active: devargas_shot_hit
-  s_trispinner_opto_active: devargas_shot_hit
-  s_web_spinner_active: devargas_shot_hit
-  s_star_rollover_active: devargas_shot_hit
-  s_upper_target_left_active: devargas_shot_hit
-  s_upper_target_center_active: devargas_shot_hit
-  s_upper_target_right_active: devargas_shot_hit
+  s_web_target_left_active: devargas_left_web_hit
+  s_web_target_mid_active: devargas_center_web_hit
+  s_pop_left_active: devargas_left_pop_hit
+  s_pop_right_active: devargas_right_pop_hit
 
-  s_left_drops_1_active: devargas_shot_hit
-  s_left_drops_2_active: devargas_shot_hit
-  s_left_drops_3_active: devargas_shot_hit
-  s_right_drops_1_active: devargas_shot_hit
-  s_right_drops_2_active: devargas_shot_hit
-  s_right_drops_3_active: devargas_shot_hit
-  s_right_drops_4_active: devargas_shot_hit
-  s_right_drops_5_active: devargas_shot_hit
+  s_left_drops_1_active: devargas_left_bank_hit
+  s_left_drops_2_active: devargas_left_bank_hit
+  s_left_drops_3_active: devargas_left_bank_hit
+  s_left_drops_rubber_active: devargas_left_bank_hit
 
-  s_saucer_1_active:
-    - devargas_major_hit
-    - clear_saucers
-  s_saucer_2_active:
-    - devargas_major_hit
-    - clear_saucers
-  s_saucer_3_active:
-    - devargas_major_hit
-    - clear_saucers
-  s_vuk_switch_active: devargas_major_hit
+  s_right_drops_1_active: devargas_right_bank_hit
+  s_right_drops_2_active: devargas_right_bank_hit
+  s_right_drops_3_active: devargas_right_bank_hit
+  s_right_drops_4_active: devargas_right_bank_hit
+  s_right_drops_5_active: devargas_right_bank_hit
+  s_right_drops_rubber_active: devargas_right_bank_hit
 
-  drop_target_bank_dt_bank_left_down:
-    - drop_target_bank_dt_bank_left_reset
-  drop_target_bank_dt_bank_right_down:
-    - drop_target_bank_dt_bank_right_reset
+  s_inlane_a_active: devargas_upper_a_hit
+  s_inlane_b_active: devargas_upper_b_hit
+  s_inlane_m_r_active: devargas_middle_a_hit
+  s_inlane_m_l_active: devargas_middle_b_hit
 
-  mode_devargas_started:
-    - rooftop_diverter_open|500ms
-    - clear_saucers
-    - drop_target_bank_dt_bank_left_reset
-    - drop_target_bank_dt_bank_right_reset
+  s_upper_target_left_active: devargas_upper_targets_hit
+  s_upper_target_center_active: devargas_upper_targets_hit
+  s_upper_target_right_active: devargas_upper_targets_hit
+  s_web_spinner_active: devargas_spinner_hit
+  s_trispinner_opto_active: devargas_upper_spinner_hit
+
+  # Neutral devices remain available but do not award DeVargas gold.
+  s_saucer_1_active: delayed_kickout_saucer_1|750ms
+  s_saucer_2_active: delayed_kickout_saucer_2|750ms
+  s_saucer_3_active: delayed_kickout_saucer_3|750ms
+  s_vuk_switch_active: up_kick|1.5s
+
+  # Banks are not reset when selected. They reset normally when completed;
+  # the rear rubber keeps a lit bank collectible when its targets are down.
+  drop_target_bank_dt_bank_left_down: drop_target_bank_dt_bank_left_reset
+  drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset
 
   mode_devargas_stopping:
-    - clear_saucers
+    - enable_daily_bugle_mystery
+    - daily_bugle_restore_state
+    - devargas_all_shots_off
+    - rooftop_diverter_close
+    - clear_saucers_delayed
+
 
 light_player:
-  # Full-playfield GI theme while this mode is active.
   mode_devargas_started:
-    gi: 50FF80
+    gi: 8080D0
 
   mode_devargas_stopping:
     gi: E0E0E0
 
+
+show_player:
+  devargas_left_web_slow:
+    devargas_left_web_pulse: {action: play, loops: -1, speed: 1}
+  devargas_left_web_medium:
+    devargas_left_web_pulse: {action: play, loops: -1, speed: 2}
+  devargas_left_web_fast:
+    devargas_left_web_pulse: {action: play, loops: -1, speed: 4}
+  devargas_left_web_off:
+    devargas_left_web_pulse: {action: stop}
+
+  devargas_center_web_slow:
+    devargas_center_web_pulse: {action: play, loops: -1, speed: 1}
+  devargas_center_web_medium:
+    devargas_center_web_pulse: {action: play, loops: -1, speed: 2}
+  devargas_center_web_fast:
+    devargas_center_web_pulse: {action: play, loops: -1, speed: 4}
+  devargas_center_web_off:
+    devargas_center_web_pulse: {action: stop}
+
+  devargas_left_pop_slow:
+    devargas_left_pop_pulse: {action: play, loops: -1, speed: 1}
+  devargas_left_pop_medium:
+    devargas_left_pop_pulse: {action: play, loops: -1, speed: 2}
+  devargas_left_pop_fast:
+    devargas_left_pop_pulse: {action: play, loops: -1, speed: 4}
+  devargas_left_pop_off:
+    devargas_left_pop_pulse: {action: stop}
+
+  devargas_right_pop_slow:
+    devargas_right_pop_pulse: {action: play, loops: -1, speed: 1}
+  devargas_right_pop_medium:
+    devargas_right_pop_pulse: {action: play, loops: -1, speed: 2}
+  devargas_right_pop_fast:
+    devargas_right_pop_pulse: {action: play, loops: -1, speed: 4}
+  devargas_right_pop_off:
+    devargas_right_pop_pulse: {action: stop}
+
+  devargas_left_bank_slow:
+    devargas_left_bank_pulse: {action: play, loops: -1, speed: 1}
+  devargas_left_bank_medium:
+    devargas_left_bank_pulse: {action: play, loops: -1, speed: 2}
+  devargas_left_bank_fast:
+    devargas_left_bank_pulse: {action: play, loops: -1, speed: 4}
+  devargas_left_bank_off:
+    devargas_left_bank_pulse: {action: stop}
+
+  devargas_right_bank_slow:
+    devargas_right_bank_pulse: {action: play, loops: -1, speed: 1}
+  devargas_right_bank_medium:
+    devargas_right_bank_pulse: {action: play, loops: -1, speed: 2}
+  devargas_right_bank_fast:
+    devargas_right_bank_pulse: {action: play, loops: -1, speed: 4}
+  devargas_right_bank_off:
+    devargas_right_bank_pulse: {action: stop}
+
+  devargas_upper_a_slow:
+    devargas_upper_a_pulse: {action: play, loops: -1, speed: 1}
+  devargas_upper_a_medium:
+    devargas_upper_a_pulse: {action: play, loops: -1, speed: 2}
+  devargas_upper_a_fast:
+    devargas_upper_a_pulse: {action: play, loops: -1, speed: 4}
+  devargas_upper_a_off:
+    devargas_upper_a_pulse: {action: stop}
+
+  devargas_upper_b_slow:
+    devargas_upper_b_pulse: {action: play, loops: -1, speed: 1}
+  devargas_upper_b_medium:
+    devargas_upper_b_pulse: {action: play, loops: -1, speed: 2}
+  devargas_upper_b_fast:
+    devargas_upper_b_pulse: {action: play, loops: -1, speed: 4}
+  devargas_upper_b_off:
+    devargas_upper_b_pulse: {action: stop}
+
+  devargas_middle_a_slow:
+    devargas_middle_a_pulse: {action: play, loops: -1, speed: 1}
+  devargas_middle_a_medium:
+    devargas_middle_a_pulse: {action: play, loops: -1, speed: 2}
+  devargas_middle_a_fast:
+    devargas_middle_a_pulse: {action: play, loops: -1, speed: 4}
+  devargas_middle_a_off:
+    devargas_middle_a_pulse: {action: stop}
+
+  devargas_middle_b_slow:
+    devargas_middle_b_pulse: {action: play, loops: -1, speed: 1}
+  devargas_middle_b_medium:
+    devargas_middle_b_pulse: {action: play, loops: -1, speed: 2}
+  devargas_middle_b_fast:
+    devargas_middle_b_pulse: {action: play, loops: -1, speed: 4}
+  devargas_middle_b_off:
+    devargas_middle_b_pulse: {action: stop}
+
+  devargas_upper_targets_slow:
+    devargas_upper_targets_pulse: {action: play, loops: -1, speed: 1}
+  devargas_upper_targets_medium:
+    devargas_upper_targets_pulse: {action: play, loops: -1, speed: 2}
+  devargas_upper_targets_fast:
+    devargas_upper_targets_pulse: {action: play, loops: -1, speed: 4}
+  devargas_upper_targets_off:
+    devargas_upper_targets_pulse: {action: stop}
+
+  devargas_spinner_slow:
+    devargas_spinner_pulse: {action: play, loops: -1, speed: 1}
+  devargas_spinner_medium:
+    devargas_spinner_pulse: {action: play, loops: -1, speed: 2}
+  devargas_spinner_fast:
+    devargas_spinner_pulse: {action: play, loops: -1, speed: 4}
+  devargas_spinner_off:
+    devargas_spinner_pulse: {action: stop}
+
+  devargas_upper_spinner_slow:
+    devargas_upper_spinner_pulse: {action: play, loops: -1, speed: 1}
+  devargas_upper_spinner_medium:
+    devargas_upper_spinner_pulse: {action: play, loops: -1, speed: 2}
+  devargas_upper_spinner_fast:
+    devargas_upper_spinner_pulse: {action: play, loops: -1, speed: 4}
+  devargas_upper_spinner_off:
+    devargas_upper_spinner_pulse: {action: stop}
+
+  devargas_all_shots_off:
+    devargas_left_web_pulse: {action: stop}
+    devargas_center_web_pulse: {action: stop}
+    devargas_left_pop_pulse: {action: stop}
+    devargas_right_pop_pulse: {action: stop}
+    devargas_left_bank_pulse: {action: stop}
+    devargas_right_bank_pulse: {action: stop}
+    devargas_upper_a_pulse: {action: stop}
+    devargas_upper_b_pulse: {action: stop}
+    devargas_middle_a_pulse: {action: stop}
+    devargas_middle_b_pulse: {action: stop}
+    devargas_upper_targets_pulse: {action: stop}
+    devargas_spinner_pulse: {action: stop}
+    devargas_upper_spinner_pulse: {action: stop}
+
+
+shows:
+  devargas_left_web_pulse:
+    - duration: 500ms
+      lights: {l_left_web_target: F0F060}
+    - duration: 500ms
+      lights: {l_left_web_target: "303000"}
+
+  devargas_center_web_pulse:
+    - duration: 500ms
+      lights: {l_mid_web_target: F0F060}
+    - duration: 500ms
+      lights: {l_mid_web_target: "303000"}
+
+  devargas_left_pop_pulse:
+    - duration: 500ms
+      lights:
+        l_pop_1_1: F0F060
+        l_pop_1_2: F0F060
+        l_pop_1_3: F0F060
+        l_pop_1_4: F0F060
+        l_pop_1_5: F0F060
+        l_pop_1_6: F0F060
+        l_pop_1_7: F0F060
+        l_pop_1_8: F0F060
+        l_pop_1_9: F0F060
+        l_pop_1_10: F0F060
+        l_pop_1_11: F0F060
+        l_pop_1_12: F0F060
+    - duration: 500ms
+      lights:
+        l_pop_1_1: "303000"
+        l_pop_1_2: "303000"
+        l_pop_1_3: "303000"
+        l_pop_1_4: "303000"
+        l_pop_1_5: "303000"
+        l_pop_1_6: "303000"
+        l_pop_1_7: "303000"
+        l_pop_1_8: "303000"
+        l_pop_1_9: "303000"
+        l_pop_1_10: "303000"
+        l_pop_1_11: "303000"
+        l_pop_1_12: "303000"
+
+  devargas_right_pop_pulse:
+    - duration: 500ms
+      lights:
+        l_pop_2_1: F0F060
+        l_pop_2_2: F0F060
+        l_pop_2_3: F0F060
+        l_pop_2_4: F0F060
+        l_pop_2_5: F0F060
+        l_pop_2_6: F0F060
+        l_pop_2_7: F0F060
+        l_pop_2_8: F0F060
+        l_pop_2_9: F0F060
+        l_pop_2_10: F0F060
+        l_pop_2_11: F0F060
+        l_pop_2_12: F0F060
+    - duration: 500ms
+      lights:
+        l_pop_2_1: "303000"
+        l_pop_2_2: "303000"
+        l_pop_2_3: "303000"
+        l_pop_2_4: "303000"
+        l_pop_2_5: "303000"
+        l_pop_2_6: "303000"
+        l_pop_2_7: "303000"
+        l_pop_2_8: "303000"
+        l_pop_2_9: "303000"
+        l_pop_2_10: "303000"
+        l_pop_2_11: "303000"
+        l_pop_2_12: "303000"
+
+  devargas_left_bank_pulse:
+    - duration: 500ms
+      lights: {l_gi_3bank: F0F060}
+    - duration: 500ms
+      lights: {l_gi_3bank: "303000"}
+
+  devargas_right_bank_pulse:
+    - duration: 500ms
+      lights: {l_gi_5bank_lower: F0F060, l_gi_5bank_upper: F0F060}
+    - duration: 500ms
+      lights: {l_gi_5bank_lower: "303000", l_gi_5bank_upper: "303000"}
+
+  devargas_upper_a_pulse:
+    - duration: 500ms
+      lights: {l_a_rollover: F0F060}
+    - duration: 500ms
+      lights: {l_a_rollover: "303000"}
+
+  devargas_upper_b_pulse:
+    - duration: 500ms
+      lights: {l_b_rollover: F0F060}
+    - duration: 500ms
+      lights: {l_b_rollover: "303000"}
+
+  devargas_middle_a_pulse:
+    - duration: 500ms
+      lights: {l_right_a: F0F060}
+    - duration: 500ms
+      lights: {l_right_a: "303000"}
+
+  devargas_middle_b_pulse:
+    - duration: 500ms
+      lights: {l_left_b: F0F060}
+    - duration: 500ms
+      lights: {l_left_b: "303000"}
+
+  devargas_upper_targets_pulse:
+    - duration: 500ms
+      lights: {l_upper_left: F0F060, l_upper_middle: F0F060, l_upper_right: F0F060}
+    - duration: 500ms
+      lights: {l_upper_left: "303000", l_upper_middle: "303000", l_upper_right: "303000"}
+
+  devargas_spinner_pulse:
+    - duration: 500ms
+      lights: {l_spinner: F0F060}
+    - duration: 500ms
+      lights: {l_spinner: "303000"}
+
+  devargas_upper_spinner_pulse:
+    - duration: 500ms
+      lights: {l_gi_a: F0F060}
+    - duration: 500ms
+      lights: {l_gi_a: "303000"}

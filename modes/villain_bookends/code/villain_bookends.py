@@ -772,21 +772,16 @@ class VillainBookends(Mode):
             'state_var': 'desperado_state',
             'song': 'play_song_41',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: A replacement Lost Worlds villain has not been selected yet.
-        #   intro_2: Hit invasion shots before they reposition.
-        #   intro_3: Stop the attack and save the city.
-        #   stat_2_label: BONUS BANKED
         'devargas': {
             'title': 'DEVARGAS',
-            'intro_1': 'Cloud City is hidden.',
-            'intro_2': 'Defeat the gold eagle.',
-            'intro_3': 'Escape with the secret.',
-            'summary_title_complete': 'DEVARGAS DEFEATED',
-            'summary_title_failed': 'DEVARGAS ESCAPED',
-            'stat_1_label': 'HITS',
+            'intro_1': 'The City of Gold awaits.',
+            'intro_2': 'Hit the pulsing shots.',
+            'intro_3': 'Take all the gold you can.',
+            'summary_title_complete': 'GOLD SECURED',
+            'summary_title_failed': 'GOLD SECURED',
+            'stat_1_label': 'GOLD SHOTS',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'BANKED',
+            'stat_2_label': 'DEVARGAS GOLD',
             'stat_2_var': 'devargas_bonus',
             'points_var': 'active_mode_points',
             'state_var': 'devargas_state',

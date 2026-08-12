@@ -24,7 +24,7 @@ PART I — SEVEN REMAINING REGULAR VILLAINS
 1. DEVARGAS
 Chapter 9 — Lost Worlds
 Episode: “Cloud City of Gold” (November 30, 1968)
-Current status: Placeholder
+Current status: Implemented / needs machine playtest
 
 CONFIRMED EPISODE MATERIAL
 
@@ -46,64 +46,38 @@ STRONG THEMATIC HOOKS
 - The villain’s own attack starting a volcanic catastrophe
 - An escape sequence instead of a conventional final knockout
 
-PLAYFIELD TRANSLATION
+APPROVED DESIGN — CITY OF GOLD SCORE ATTACK
 
-- Left and right sides can represent alternate expedition routes.
-- Pops and spinner can represent jungle, river, and bats without requiring the
-  rooftop.
-- Right drops or a web target can represent the golden eagle and giant spider.
-- The three saucers naturally represent three captured companions.
-- The VUK is a strong final escape shot after the eruption begins.
+DeVargas is a single-ball pure score attack. The player receives 20 timed gold
+opportunities, or 25 with More Jackpots. Opportunities are randomly selected
+from 13 repeatable shot groups. A group may repeat later but cannot be selected
+as the immediately following opportunity, and a currently lit group cannot be
+selected again.
 
-CONCEPT A — EXPEDITION AND ESCAPE (RECOMMENDED)
+Shot groups: left web, center web, left pop, right pop, left 3-bank, right
+5-bank, A rollover, B rollover, middle A, middle B, all three upper targets as
+one group, main spinner, and upper spinner. Any target or the rear rubber scores
+a lit bank. Banks are not reset when selected but reset normally when completed.
 
-Use a three-act single-ball adventure:
+Each opportunity pulses gold at three speeds. Base timing is 4 seconds slow,
+3 seconds medium, and 3 seconds fast. More Time changes the phases to 5, 4, and
+4 seconds. A new opportunity appears every 8 seconds, so opportunities overlap
+naturally. Collecting a lit shot immediately replaces it and restarts the
+8-second selection interval.
 
-Act 1 — Reach Cloud City. Complete a short route across three changing playfield
-areas: jungle, underground river, and bat cave. The required shot moves across
-the lower playfield after every success so the journey feels directional.
+Base values are 150K slow, 125K medium, and 100K fast. Bigger Jackpots changes
+them to 200K, 175K, and 150K. Every award scores immediately and adds its full
+value to the persistent devargas_bonus bank shown as DEVARGAS GOLD.
 
-Act 2 — Break the city’s defenses. Defeat the golden eagle and giant spider with
-two clearly different objectives, then hit DeVargas’s cannon shot. The cannon
-shot intentionally begins the eruption rather than ending the mode.
+Safety Net starts a 10-second ball save. Shot Assist automatically collects the
+first opportunity that expires and awards the fast-tier value. The background
+GI is light blue 8080D0. Lit groups pulse between gold F0F060 and dim gold
+303000 at one, two, or four pulses per second. The rooftop gate opens only while
+the upper-target group or upper spinner is lit and closes when neither remains.
 
-Act 3 — Escape the volcano. A visible eruption timer begins. The three saucers
-light as captured companions. Rescue as many as possible, then shoot the VUK to
-escape. Escaping after all three rescues defeats DeVargas. Escaping early could
-end the mode as survived but not defeated, if the progression system permits
-that distinction; otherwise require all three before lighting the VUK.
-
-Why it works: the rules reproduce the episode’s actual shape—journey, defenses,
-self-inflicted eruption, rescue, escape—and do not duplicate the Molemen’s area
-multiball or Doctor Atlantean’s water-level struggle.
-
-CONCEPT B — CITY OF GOLD HEIST
-
-The player steals gold from several city districts while DeVargas deploys the
-eagle and spider to reclaim it. Gold builds a cashout at the VUK, but taking too
-long causes the volcano to erupt and wipes out unbanked value. This is simpler,
-but it turns Spider-Man into the treasure thief and is therefore less faithful.
-
-CONCEPT C — VOLCANO PURSUIT
-
-Start with the city already erupting. Alternate rescue shots and escape shots
-while a lava meter advances from the bottom of the playfield upward. This gives
-immediate urgency but loses most of the expedition material.
-
-CASE FILE STARTING POINTS
-
-- More Jackpots: add a golden-treasure jackpot during the escape.
-- Bigger Jackpots: increase defense, rescue, and escape awards.
-- More Time: extend the eruption timer.
-- Safety Net: 10-second ball save.
-- Shot Assist: complete the first missed or most difficult route objective.
-
-OPEN QUESTIONS
-
-- Must all three companions be rescued to defeat DeVargas?
-- Should route objectives be fixed or randomly chosen from safe combinations?
-- Which exact shots best distinguish the eagle from the giant spider?
-- Does failure occur only on drain, or can the eruption timer end the mode?
+The mode ends successfully after all opportunities have resolved or on drain.
+Previously earned gold remains banked. The summary shows Mode Points, DeVargas
+Gold, and Gold Shots collected.
 
 SOURCES
 
@@ -1124,7 +1098,7 @@ PART IV — CROSS-MODE COMPARISON
 
 Mode                         Recommended identity              Balls   Primary devices               Main pressure/failure         Closest existing risk and distinction
 ---------------------------  --------------------------------  ------  ----------------------------  ----------------------------  ----------------------------------------------
-DeVargas                     Expedition then volcano escape     1       Moving routes, saucers, VUK   Eruption timer/drain          Unlike Conquistador: rescue/escape climax
+DeVargas                     City of Gold score attack          1       13 timed shot groups          Opportunity timing/drain      Repeatable shots; full value banks as gold
 Charles Cameo                Mirrored impersonation shots       1       Left/right paired shots       Copy-window expiry/drain      Unlike Mysterio: deterministic mirror, no guess
 Brutus                       Lure guard, recover artwork         1       Banks/webs to saucers         Guard returns/drain           Unlike Rhino: routing, not a health bar
 Skymaster                    Find the stationary cloud          1       Lower shot pattern, saucer    Damage/rescue windows         Unlike Baron: no rooftop/limited flips
@@ -1147,23 +1121,23 @@ Kingpin Final Showdown       Four-act criminal-empire finale    Mixed   Whole pl
 PART V — RECOMMENDED REVIEW ORDER
 ============================================================
 
-1. DeVargas — completes Chapter 9’s regular roster.
-2. Invasion from Everywhere — can then use all five approved Chapter 9 modes.
-3. Charles Cameo.
-4. Brutus.
-5. Skymaster.
-6. Who Is the Real Villain?
-7. Sir Galahad.
-8. Master Vine.
-9. The Spider-Men.
-10. Time-Tossed Showdown.
-11. Mastermind Trap.
-12. Crime Wave.
-13. The Web Tightens.
-14. Fifth Dimension Curse.
-15. Mad Science Meltdown.
-16. Nature Strikes Back.
-17. Kingpin — Final Showdown.
+Completed from this research list: DeVargas and The Spider-Men.
+
+1. Invasion from Everywhere — can now use all five Chapter 9 modes.
+2. Charles Cameo.
+3. Brutus.
+4. Skymaster.
+5. Who Is the Real Villain?
+6. Sir Galahad.
+7. Master Vine.
+8. Time-Tossed Showdown.
+9. Mastermind Trap.
+10. Crime Wave.
+11. The Web Tightens.
+12. Fifth Dimension Curse.
+13. Mad Science Meltdown.
+14. Nature Strikes Back.
+15. Kingpin — Final Showdown.
 
 
 FINAL RESEARCH CONCLUSION
@@ -1171,7 +1145,7 @@ FINAL RESEARCH CONCLUSION
 The strongest starting concepts are the ones built around a single episode-
 specific action that no other ASM67 mode owns:
 
-- DeVargas causes the eruption the player must escape.
+- DeVargas turns Cloud City into a rapid gold-collection score attack.
 - Cameo copies the player’s shot on the opposite side.
 - Brutus must be lured away from guarded artwork.
 - Skymaster hides in the one cloud that does not move.
@@ -1182,6 +1156,6 @@ specific action that no other ASM67 mode owns:
 - Kingpin receives an episode-based, multi-act finale with the existing area
   multiball infrastructure reserved for the climactic Brainwasher act.
 
-No concept in this document is approved or ready to code. The next design
-conversation should begin with DeVargas and settle its progression one decision
-at a time.
+DeVargas and The Spider-Men are approved and coded. The remaining entries are
+research starting points until each receives a separate design review. The next
+recommended discussion is Invasion from Everywhere, followed by Charles Cameo.

@@ -1,0 +1,100 @@
+DEVARGAS — CITY OF GOLD
+
+STATUS
+Implemented; needs machine playtest.
+
+CORE RULE
+DeVargas is a single-ball pure score attack. Collect as much gold as possible
+from 20 timed opportunities. More Jackpots increases the total to 25. The mode
+always completes successfully when every opportunity resolves or when the ball
+drains; all previously collected gold remains banked.
+
+SHOT POOL
+Each opportunity is selected randomly from 13 repeatable groups:
+
+1. Left web target
+2. Center web target
+3. Left pop
+4. Right pop
+5. Left 3-bank
+6. Right 5-bank
+7. A rollover
+8. B rollover
+9. Middle A rollover
+10. Middle B rollover
+11. Upper targets (all three form one group)
+12. Main spinner
+13. Upper spinner
+
+A shot may repeat after another group has been selected, but not as the
+immediately following opportunity. A currently active group cannot be selected
+again. For either drop-bank group, any target or the rear rubber collects the
+gold. Banks are not reset when selected; they reset normally when completed.
+
+TIMING AND OVERLAP
+Base opportunity timing:
+
+- Slow pulse: 4 seconds
+- Medium pulse: 3 seconds
+- Fast pulse: 3 seconds
+- Total availability: 10 seconds
+
+A new opportunity appears every 8 seconds. This produces a natural 2-second
+overlap without an artificial active-shot limit. Hitting an active shot removes
+that opportunity, immediately selects a replacement, and restarts the 8-second
+selection interval.
+
+More Time changes the timing to 5 seconds slow, 4 seconds medium, and 4 seconds
+fast. The selection interval remains 8 seconds, producing a 5-second overlap.
+
+SCORING AND BONUS BANK
+Base values:
+
+- Slow: 150,000
+- Medium: 125,000
+- Fast: 100,000
+
+Bigger Jackpots values:
+
+- Slow: 200,000
+- Medium: 175,000
+- Fast: 150,000
+
+Each collected value is added immediately to the player's score and in full to
+the persistent devargas_bonus bank. The end-of-ball bonus displays this bank as
+DEVARGAS GOLD.
+
+CASE FILES
+- More Jackpots: 25 opportunities instead of 20.
+- Bigger Jackpots: values become 200K / 175K / 150K.
+- More Time: opportunity phases become 5s / 4s / 4s.
+- Safety Net: standard 10-second opening ball save.
+- Shot Assist: the first expired opportunity auto-collects once at the fast-tier
+  value, including the Bigger Jackpots value when active.
+
+LIGHTING
+The mode background GI is light blue 8080D0. Active shot indicators pulse from
+gold F0F060 to dim gold 303000. Slow, medium, and fast phases run at one, two,
+and four full pulses per second respectively. When an opportunity resolves, its
+indicator returns to the light-blue GI background or its normal insert state.
+
+The rooftop gate opens only while the upper-target group or upper spinner is
+active. It closes when neither remains active. The A/B rollovers and middle A/B
+rollovers are lower-playfield groups and never control the gate.
+
+DAILY BUGLE AND DEVICES
+Daily Bugle Mystery is disabled during the mode because both A/B rollover pairs
+are owned by DeVargas. A VUK hit ejects after 1.5 seconds. Saucers are neutral
+and eject after 750 ms. Daily Bugle state is restored when the mode stops.
+
+MESSAGES
+- Start: CITY OF GOLD / HIT THE PULSING SHOTS
+- Collection: GOLD COLLECTED / timing tier / value
+- Expiration: GOLD LOST / shot name
+- Shot Assist: GOLD RECOVERED / SHOT ASSIST / value
+- Status: gold banked this mode, opportunities used, and gold shots collected
+
+SUMMARY
+- Mode Points
+- DeVargas Gold
+- Gold Shots
