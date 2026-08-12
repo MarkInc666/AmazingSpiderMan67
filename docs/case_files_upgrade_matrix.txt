@@ -1,200 +1,93 @@
-Case File Bonus Ideas by Villain
+ASM67 — CASE FILE UPGRADE MATRIX
+Code/documentation sync: August 12, 2026
 
-Case File 1 = More Jackpots
-Case File 2 = Bigger Jackpots
-Case File 3 = More Time
-Case File 4 = Safety Net
-Case File 5 = Shot Assist
+Rules and scope
 
-Rhino
-Case File 1 (More Jackpots): Allow 1 extra jackpot collect
-Case File 2 (Bigger Jackpots): Increase rage jackpot base
-Case File 3 (More Time): Delay rage decay / hurry-up
-Case File 4 (Safety Net): One missed jackpot window is saved
-Case File 5 (Shot Assist): Spot one flashing rage target
+- This matrix contains exactly the 55 active regular villains defined by villain_progression.py.
+- Regular villains may use five individual powers: More Jackpots (MJ), Bigger Jackpots (BJ), More Time (MT), Safety Net (SN), and Shot Assist (SA).
+- Chapter mini-wizards do not receive those five powers. Every mini-wizard Jackpot and Super Jackpot instead adds 20K for each Case File collected in that chapter (0–25 files; 0–500K). Ordinary switch, spinner, target, progress, and other non-jackpot scoring is unchanged.
+- The entries below describe current Python behavior. “Not implemented” is a code gap, not a proposed rule. Placeholder-villain rules remain undecided.
 
-Sandman
-Case File 1 (More Jackpots): Add bonus jackpot after perfect bank
-Case File 2 (Bigger Jackpots): Increase flashing-target value
-Case File 3 (More Time): Slow moving target cycle
-Case File 4 (Safety Net): One missed flashing target does not break streak
-Case File 5 (Shot Assist): Start with first target already spotted
+Format: Villain | MJ | BJ | MT | SN | SA
 
-Vulture
-Case File 1 (More Jackpots): Add one extra aerial jackpot stage
-Case File 2 (Bigger Jackpots): Boost spinner jackpot value
-Case File 3 (More Time): Add mode time
-Case File 4 (Safety Net): Brief roof / exit ball save
-Case File 5 (Shot Assist): Start one target color completed
+CHAPTER 1 — CLASSIC ROGUES
+Rhino | Extra Rhino Jackpot available | +100K to every Rhino Jackpot | Berserk timer +5s | 10s ball save | One Berserk crash save
+Sandman | Extra Sandman bank available | Flashing targets score more | Target shift slowed | 10s ball save | First target spotted
+Vulture | All-red spinner +100K | Spinner values doubled | Target decay slowed | 10s ball save | First target advances all
+Electro | Extra Spark Jackpot available | Spark Jackpots boosted | Spark value drains slower | 10s ball save | First spark held longer
+Green Goblin | Safe shots score 150K | Bigger chaos bonus builds | 15s safe phase | Ball save after first release | First safe hit awards another
 
-Electro
-Case File 1 (More Jackpots): Add one extra spark jackpot
-Case File 2 (Bigger Jackpots): Increase spark / super value
-Case File 3 (More Time): Extend spark timer
-Case File 4 (Safety Net): One timeout does not reset spark chain
-Case File 5 (Shot Assist): Show / hold next spark location longer
+CHAPTER 2 — MASKED MASTERMINDS
+Doctor Octopus | Two safe Jackpots | Bigger Doc Ock Jackpots | Arm release delayed | 10s ball save | +10X shot assist
+Mysterio | First wrong shot protected | 1.5M Super Jackpot | Super penalty reduced | 10s ball save | One false shot removed
+Scorpion | Extra sting attempt available | Sting awards boosted | 12s sting window | 10s ball save | First rubber counts as target
+Lizard | Center-web follow-up Jackpot | Serum starts at 1.5M | 20s and slower value decay | First expired serum saved | Main spinner or left B delivers serum
+Parafino | Saucers hold value for extra collect | Zone hits build 150K | Two hits for Add-a-Ball | 10s safety net after multiball save | First zone hits count double
 
-Goblin
-Case File 1 (More Jackpots): Add one extra chaos jackpot chance
-Case File 2 (Bigger Jackpots): Increase flashing-shot bonus
-Case File 3 (More Time): Extend saucer lock / chaos window
-Case File 4 (Safety Net): One solid-shot penalty ignored
-Case File 5 (Shot Assist): Keep one flashing shot lit longer
+CHAPTER 3 — TRUBBLE'S MONSTERS
+Cerberus | Each saucer stays lit once | Bigger Cerberus Jackpots | Cerberus timer extended | 10s ball save | Best Jackpot from any saucer
+Vulcan | Left 3-bank adds Jackpots | Jackpots start at 150K | Upper-left post holds 12s | 20s multiball ball save | First right drop adds two drops
+Diana | Rubber shots score 100K | Bullseyes boosted | 30 arrows / 18s hunts | 10-arrow safety net | First hit drops a target
+Cyclops | Second Eye with 20s window | Eye Jackpot 150K per flip | Start with 30 flips | 10s ball save | First drop adds two right drops
+Centaur | Left-rubber secret half Jackpot | Centaur Jackpot 2X | Final timer 12s | 10s ball save on final shot | Right drops score Jackpot
 
-Mysterio
-Case File 1 (More Jackpots): Add one extra guess / award chance
-Case File 2 (Bigger Jackpots): Increase super jackpot
-Case File 3 (More Time): Add time to illusion trial
-Case File 4 (Safety Net): One wrong guess has no penalty
-Case File 5 (Shot Assist): Reveal one false shot / clue
+CHAPTER 4 — CRIME WAVE
+The Plotter | Back-page shot after VUK | NOT IMPLEMENTED | VUK timer 30s | Ball save active | First spin lights two saucers
+The Fly Twins | +1X saucer multiplier | 300K base / +50K per spin | Longer multiball save | One outlane save | One upper hit lights all
+The Fifth Avenue Phantom | Sixth Phantom round | Phantom values improved | Reveals +2s | Phantom ball save | First expired reveal awarded
+Enforcers | Saucer bonus Jackpots lit | Base Jackpot 150K | Ox ball save ready | 10s ball save | First hit lights Jackpots
+Doctor Cool | Second frozen shipment | Frozen diamond values increased | Star freeze 15s | 10s ball save | First wrong saucer counts
 
-Scorpion
-Case File 1 (More Jackpots): Add one extra sting jackpot attempt
-Case File 2 (Bigger Jackpots): Increase sting jackpot value
-Case File 3 (More Time): Extend sting window
-Case File 4 (Safety Net): One failed sting sequence can retry
-Case File 5 (Shot Assist): Spot one remaining bank target
+CHAPTER 5 — DANGER LURKS
+Harley Clivendon | Two areas stay lit | 150K per area | 25s opening save | Ball save after first Jackpot | First area spots another
+Conquistador | Take another sip | 400K base / 150K targets | 30s timers | 10s save at fountain | First target counts twice
+Spider-Slayer | Full Jackpot frozen 10s | 75K shots / 2.5M Jackpot | Jackpot decays 50K/s | 10s save at Daily Bugle | First hit adds two shots
+Metal-Eating Monster | Saved zones relight once at half value | Zone saves 400K | Zone timers 16s | 10s ball save | First zone auto-saves at 2s
+The Fiddler | Four-note encore round | +100K per correct note | Pattern repeats every 8s | 10s ball save | First wrong shot plays correct note
 
-Doc Ock
-Case File 1 (More Jackpots): Add one extra breakout jackpot
-Case File 2 (Bigger Jackpots): Increase locked-arm multiplier / base
-Case File 3 (More Time): Delay timed arm release
-Case File 4 (Safety Net): Block one forced arm release
-Case File 5 (Shot Assist): Start with one extra arm locked
+CHAPTER 6 — MYSTIC MENACE
+Pardo | Two extra hypnosis Jackpots | Bigger hypnosis Jackpots | Longer spinner reveal | 10s ball save | First round all good
+The Fantastic Fakir | First post-Super ruby 2X | Bigger ruby Jackpots | Longer real-ruby timer | Ball save after first saucer kickout | First reveal lights all upper targets
+Kotep | Fifth demon worth 500K during scepter | Bigger demon Jackpots and 1.5M Super | Scepter timer 30s | 10s ball save | First demon also destroys next demon
+Super Swami | Blackout Jackpot at VUK | Restore values start 200K | 50s city timer | Ball save active | First area spots another
+Infinata | Fourth green area during Super | Bigger area awards and 1.5M Super | Super timer 30s | 10s ball save | First hit awards two areas
 
-Parafino
-Case File 1 (More Jackpots): Add one extra saucer jackpot per area
-Case File 2 (Bigger Jackpots): Increase wax jackpot value
-Case File 3 (More Time): Slow heat decay / extend multiball timer
-Case File 4 (Safety Net): One add-a-ball / saucer safety save
-Case File 5 (Shot Assist): Start one area partially heated
+CHAPTER 7 — MAD SCIENCE
+Dr. Noah Boddy | Upper reveals score more | Noah Boddy Jackpot 2X | Hurry-up 24s | Secret-target ball save | Bank rubber scores secret target
+Dr. Magneto | Left-1 Magnetic Flux Super after main Super | Main Super 1.5M | Main Super timer 30s | Ball save when main Super lights | First spin drops two targets
+Professor Pretorius | Left-web reactor-overflow Super | Super Jackpots increased | Main Super timer 30s | Ball save when main Super lights | First spin floods two bands
+Doctor Dumpty | Extra Doctor Dumpty shot | Bigger prediction Jackpots | Prediction timers extended | 10s ball save | First timeout awards Jackpot
+Dr. Von Schlick | Two extra oil pellets | Oil pellets 150K | Super timer 30s | Ball save starts with Super | First pellet counts twice
 
-Lizard
-Case File 1 (More Jackpots): Add one extra serum delivery
-Case File 2 (Bigger Jackpots): Increase serum delivery value
-Case File 3 (More Time): Slow value decay / extend delivery timer
-Case File 4 (Safety Net): One failed delivery retry
-Case File 5 (Shot Assist): First delivery target starts lit
+CHAPTER 8 — ELEMENTAL CHAOS
+Clive and Blotto | First clear in each area awards Blotto Jackpot | Bigger spinner, clear, and final values | Meter rises every 3s | 10s ball save | First clear with 2+ infected clears another
+Doctor Zapp | 10s bonus spins | 150K banks / 75K targets and spins | 15s save on first roof entry | 10s save at mode start | First upper target awards another
+Bolton and Boomer | Supers grow 100K to 1.5M | 150K target/lock; 750K Super | 30s timed Supers | 25s opening save | First timed Super auto-collects at 10
+The Snowman | Spin value +25K per spin | 150K / 350K / 150K | 20s wire / 16s spins | 10s save at spinner | Starting web can complete wire
+Plutonians | 500K Jackpot once per roof entry | Thaws 150K; control 1.5M | Freeze blocked 25s | 10s ball save | First thaw also thaws another area
 
-Centaur
-Case File 1 (More Jackpots): Add one extra charge jackpot
-Case File 2 (Bigger Jackpots): Increase charge jackpot
-Case File 3 (More Time): Extend charge timer
-Case File 4 (Safety Net): One failed charge protected
-Case File 5 (Shot Assist): Spot one required target
+CHAPTER 9 — LOST WORLDS
+Dr. Manta | Spinners add 75K to Jackpot | 150K VUK / 200K saucer / 200K Jackpot | 28s attack | 25s second-ball save | Matched upper target scores 3X once
+Igor | Seven bad shots before Igor wins | Jackpots grow by 50K | Ball save 20s | 10s ball save | First bad shot becomes a Jackpot
+Doctor Atlantean | Three targets light 100K spinner Jackpot | Control-panel Jackpots 125K | Water timers 30s | 10s ball save | First unlit target counts as lit
+DeVargas | 25 gold opportunities | Gold 200K / 175K / 150K | Gold windows 5s / 4s / 4s | 10s opening save | First expired gold auto-collects
+Molemen | Pop Add-a-Ball in two hits | Bigger area and saucer Jackpots | 10s one-ball grace | 25s opening save | Left web also counts as center web
 
-Cerberus
-Case File 1 (More Jackpots): Each saucer's first jackpot leaves that saucer lit once for a second collection at the same multiplier
-Case File 2 (Bigger Jackpots): Increase Cerberus jackpot values
-Case File 3 (More Time): Extend the Cerberus timer from 16s to 20s
-Case File 4 (Safety Net): Start the 10-second case-file ball save
-Case File 5 (Shot Assist): One use; any saucer collects the best available jackpot and consumes only one collection state
+CHAPTER 10 — SAVAGE ODDITIES
+Charles Cameo | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER
+Brutus | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER
+Desperado | Extra showdown Jackpot | 250K new targets | 70s pursuit | 10s ball save | Round 2 spots extra target
+Skymaster | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER
+Conner's Reptiles | Center-web Rampage Jackpot | Jackpots 2X | Super timer 16s | Ball save during Rampage | Left-bank assist available
 
-Vulcan
-Case File 1 (More Jackpots): Enable the left 3-bank as a second Jackpot bank; it resets on upper entry and can qualify Add-a-Ball like the right bank
-Case File 2 (Bigger Jackpots): Start the Jackpot at 150K instead of 100K
-Case File 3 (More Time): Extend the upper-left post hold from 8s to 12s
-Case File 4 (Safety Net): Extend the opening multiball ball save from 10s to 20s; Add-a-Ball save remains 10s
-Case File 5 (Shot Assist): First right-bank drop hit also drops and awards two additional standing right-bank targets
+CHAPTER 11 — DIMENSIONAL FINALE
+Sir Galahad | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER
+Master Vine | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER
+Master Technician | NOT IMPLEMENTED | NOT IMPLEMENTED | NOT IMPLEMENTED | NOT IMPLEMENTED | NOT IMPLEMENTED
+The Spider-Men | Six Jackpots light 500K center-web Super | Alignment Jackpots 150K | Proton timer 60s | 10s ball save | First Jackpot aligns an extra position
+Baron Von Rantenraven | Repeat targets 500K | Roof Jackpots boosted | 15 roof flips | Ball save at mode start | First Jackpot also spots another
 
-Cyclops
-Case File 1 (More Jackpots): Add a second Eye Jackpot after a 2s first-Jackpot hold; second Eye runs for 20s and expiry ends the mode
-Case File 2 (Bigger Jackpots): Eye Jackpot is 150K x remaining flips instead of 100K x remaining flips; cap remains 2M
-Case File 3 (More Time): Start with 30 flips instead of 20
-Case File 4 (Safety Net): 10-second ball save at mode start; does not add flips
-Case File 5 (Shot Assist): First drop hit also knocks down two standing right-bank targets; assisted drops award +3 flips each
+Known code gaps found during this sync
 
-Igor
-Case File 1 (More Jackpots): Allow 7 bad shots instead of 5 before Igor's defenses end the mode
-Case File 2 (Bigger Jackpots): Jackpots still start at 100K but grow by 50K instead of 25K after each good shot
-Case File 3 (More Time): Use a 20-second opening ball save
-Case File 4 (Safety Net): Use a 10-second opening ball save
-Case File 5 (Shot Assist): Convert the first bad shot into the current Jackpot without adding a strike
-
-Reptilla
-Case File 1 (More Jackpots): Add one extra rampage jackpot
-Case File 2 (Bigger Jackpots): Increase rampage value
-Case File 3 (More Time): Extend rampage phase
-Case File 4 (Safety Net): One rampage drop protected
-Case File 5 (Shot Assist): Spot one required lane / target
-
-Mole Man
-Case File 1 (More Jackpots): Add extra underground jackpot
-Case File 2 (Bigger Jackpots): Increase tunnel jackpot
-Case File 3 (More Time): Extend tunnel search timer
-Case File 4 (Safety Net): One wrong tunnel ignored
-Case File 5 (Shot Assist): Reveal one correct tunnel / shot
-
-Enforcers
-Case File 1 (More Jackpots): Add one extra enforcer jackpot
-Case File 2 (Bigger Jackpots): Increase each enforcer value
-Case File 3 (More Time): Extend takedown timer
-Case File 4 (Safety Net): One enforcer escape blocked
-Case File 5 (Shot Assist): Spot one enforcer target
-
-Ox
-Case File 1 (More Jackpots): Add one extra strength jackpot
-Case File 2 (Bigger Jackpots): Increase smash jackpot
-Case File 3 (More Time): Extend smash window
-Case File 4 (Safety Net): One missed smash protected
-Case File 5 (Shot Assist): Spot one smash target
-
-Fifth Avenue Phantom
-Case File 1 (More Jackpots): Add one extra phantom jackpot
-Case File 2 (Bigger Jackpots): Increase phantom reveal value
-Case File 3 (More Time): Extend reveal / vanish timer
-Case File 4 (Safety Net): One vanish prevented
-Case File 5 (Shot Assist): Reveal phantom location briefly
-
-Frederick Foswell
-Case File 1 (More Jackpots): Add one extra evidence jackpot
-Case File 2 (Bigger Jackpots): Increase evidence value
-Case File 3 (More Time): Extend investigation timer
-Case File 4 (Safety Net): One bad lead ignored
-Case File 5 (Shot Assist): Spot one correct lead
-
-Blackwell
-Case File 1 (More Jackpots): Add one extra scheme jackpot
-Case File 2 (Bigger Jackpots): Increase scheme jackpot
-Case File 3 (More Time): Extend scheme timer
-Case File 4 (Safety Net): One failed scheme step protected
-Case File 5 (Shot Assist): Spot one required shot
-
-Sinister Surge
-Chapter Case Files: +20K each to every Sinister Surge Jackpot and Super Jackpot
-(shared mini-wizard value bonus; maximum 25 files / +500K)
-
-The Plotter
-Case File 1 (More Jackpots): Add one extra plan jackpot
-Case File 2 (Bigger Jackpots): Increase plan value
-Case File 3 (More Time): Extend planning timer
-Case File 4 (Safety Net): One failed step protected
-Case File 5 (Shot Assist): Spot one plan step
-
-Monster Island
-Case File 1 (More Jackpots): Add one extra monster jackpot
-Case File 2 (Bigger Jackpots): Increase monster jackpot
-Case File 3 (More Time): Extend island phase
-Case File 4 (Safety Net): One monster attack blocked
-Case File 5 (Shot Assist): Start one monster weakened
-
-Crime Wave Mini
-Case File 1 (More Jackpots): Add one extra crime jackpot
-Case File 2 (Bigger Jackpots): Increase crime jackpot
-Case File 3 (More Time): Extend crime-wave timer
-Case File 4 (Safety Net): One missed crime shot ignored
-Case File 5 (Shot Assist): Spot one active crime shot
-
-The Spider-Men
-Case File 1 (More Jackpots): Completing all six positions lights a fixed 500K center-web Super for 10 seconds; collect or timeout then completes the mode
-Case File 2 (Bigger Jackpots): Alignment Jackpots are 150K instead of 100K; the sixth remains double and the Super remains 500K
-Case File 3 (More Time): Extend the proton countdown from 40s to 60s
-Case File 4 (Safety Net): Start the standard 10-second Case File ball save
-Case File 5 (Shot Assist): First Jackpot also completes one random uncompleted position and awards its normal value
-
-DeVargas
-Case File 1 (More Jackpots): Increase the City of Gold score attack from 20 to 25 opportunities
-Case File 2 (Bigger Jackpots): Gold values become 200K slow, 175K medium, and 150K fast
-Case File 3 (More Time): Gold phases become 5s slow, 4s medium, and 4s fast; the new-opportunity interval remains 8s
-Case File 4 (Safety Net): Start the standard 10-second Case File ball save
-Case File 5 (Shot Assist): First expired opportunity auto-collects once at the current fast-tier value and banks the full award
+- The Plotter has no Bigger Jackpots behavior in its current Python code.
+- Master Technician has no Case File behavior in its current Python code.

@@ -1,23 +1,35 @@
-ASM67 — REMAINING 17 MODES
+ASM67 — 17-MODE RESEARCH ARCHIVE / 15 REMAINING
 RESEARCH AND STARTING-POINT CONCEPTS
 
 Research draft: August 12, 2026
-Project baseline: August 11 full codebase plus the completed Doctor Atlantean patch
+Project baseline: GitHub main at 5d0526f (reviewed August 12, 2026)
 
 
 HOW TO USE THIS DOCUMENT
 
 This is a source-backed idea book, not a final rules document. Episode facts are
-separated from design proposals. Each recommendation is intended to begin a
-mode-by-mode discussion. Nothing here should be counted as an approved design or
-coded until it has been reviewed.
+separated from design proposals. DeVargas and The Spider-Men are retained as
+completed research history and are approved/coded. All other recommendations
+are starting points until separately reviewed and approved.
+
+Current code/document status: 50 of 55 regular villains are substantive and five
+remain placeholders. Of 11 chapter mini-wizards, two are approved/coded, three
+are functional but provisional, and six are placeholder shells. The generic
+Final Showdown framework exists, but its dedicated Kingpin design/retheme is
+unfinished. Total remaining incomplete or unapproved modes: 15.
+
+Wizard Case File rule: chapter mini-wizards do not receive the five individual
+regular-villain Case File powers. Each Jackpot and Super Jackpot instead adds
+20K per Case File collected in that chapter (0–25 files; maximum +500K). The
+bonus does not apply to ordinary switch, spinner, target, progress, or other
+non-jackpot scoring.
 
 The core test for every concept is whether a player can quickly understand what
 to shoot, what changed, and why the rule belongs to that particular character.
 
 
 ============================================================
-PART I — SEVEN REMAINING REGULAR VILLAINS
+PART I — SEVEN REGULAR-VILLAIN REVIEWS (FIVE REMAINING; TWO COMPLETED)
 ============================================================
 
 
@@ -478,7 +490,7 @@ https://dcanimated.com/WF/sections/specials/spidey67/review/episode/vine/
 7. THE SPIDER-MEN
 Chapter 11 — Dimensional Finale
 Episode: “Home” (December 14, 1968)
-Current status: Placeholder
+Current status: Implemented / needs machine playtest
 
 IMPORTANT STORY INTERPRETATION
 
