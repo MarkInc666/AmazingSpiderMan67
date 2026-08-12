@@ -1,0 +1,1187 @@
+ASM67 — REMAINING 17 MODES
+RESEARCH AND STARTING-POINT CONCEPTS
+
+Research draft: August 12, 2026
+Project baseline: August 11 full codebase plus the completed Doctor Atlantean patch
+
+
+HOW TO USE THIS DOCUMENT
+
+This is a source-backed idea book, not a final rules document. Episode facts are
+separated from design proposals. Each recommendation is intended to begin a
+mode-by-mode discussion. Nothing here should be counted as an approved design or
+coded until it has been reviewed.
+
+The core test for every concept is whether a player can quickly understand what
+to shoot, what changed, and why the rule belongs to that particular character.
+
+
+============================================================
+PART I — SEVEN REMAINING REGULAR VILLAINS
+============================================================
+
+
+1. DEVARGAS
+Chapter 9 — Lost Worlds
+Episode: “Cloud City of Gold” (November 30, 1968)
+Current status: Placeholder
+
+CONFIRMED EPISODE MATERIAL
+
+Peter’s plane crashes in the Andes. Spider-Man leads the survivors through a
+jungle, a whirlpool and underground river, and a cave filled with vampire bats.
+They reach the hidden Cloud City of Gold, ruled by DeVargas, a descendant of
+15th-century conquistadors. DeVargas uses a giant golden eagle to attack the
+group and captures Spider-Man’s companions. Spider-Man also encounters a giant
+spider near the volcano. DeVargas fires a cannon into the volcano while trying
+to kill Spider-Man, triggers an eruption, and destroys his own city. Spider-Man
+rescues the captives and escapes before the city is consumed.
+
+STRONG THEMATIC HOOKS
+
+- A dangerous expedition with distinct locations
+- The hidden golden city as a destination rather than a starting point
+- Three memorable defenses: golden eagle, giant spider, and DeVargas’s cannon
+- Captured companions who must be rescued
+- The villain’s own attack starting a volcanic catastrophe
+- An escape sequence instead of a conventional final knockout
+
+PLAYFIELD TRANSLATION
+
+- Left and right sides can represent alternate expedition routes.
+- Pops and spinner can represent jungle, river, and bats without requiring the
+  rooftop.
+- Right drops or a web target can represent the golden eagle and giant spider.
+- The three saucers naturally represent three captured companions.
+- The VUK is a strong final escape shot after the eruption begins.
+
+CONCEPT A — EXPEDITION AND ESCAPE (RECOMMENDED)
+
+Use a three-act single-ball adventure:
+
+Act 1 — Reach Cloud City. Complete a short route across three changing playfield
+areas: jungle, underground river, and bat cave. The required shot moves across
+the lower playfield after every success so the journey feels directional.
+
+Act 2 — Break the city’s defenses. Defeat the golden eagle and giant spider with
+two clearly different objectives, then hit DeVargas’s cannon shot. The cannon
+shot intentionally begins the eruption rather than ending the mode.
+
+Act 3 — Escape the volcano. A visible eruption timer begins. The three saucers
+light as captured companions. Rescue as many as possible, then shoot the VUK to
+escape. Escaping after all three rescues defeats DeVargas. Escaping early could
+end the mode as survived but not defeated, if the progression system permits
+that distinction; otherwise require all three before lighting the VUK.
+
+Why it works: the rules reproduce the episode’s actual shape—journey, defenses,
+self-inflicted eruption, rescue, escape—and do not duplicate the Molemen’s area
+multiball or Doctor Atlantean’s water-level struggle.
+
+CONCEPT B — CITY OF GOLD HEIST
+
+The player steals gold from several city districts while DeVargas deploys the
+eagle and spider to reclaim it. Gold builds a cashout at the VUK, but taking too
+long causes the volcano to erupt and wipes out unbanked value. This is simpler,
+but it turns Spider-Man into the treasure thief and is therefore less faithful.
+
+CONCEPT C — VOLCANO PURSUIT
+
+Start with the city already erupting. Alternate rescue shots and escape shots
+while a lava meter advances from the bottom of the playfield upward. This gives
+immediate urgency but loses most of the expedition material.
+
+CASE FILE STARTING POINTS
+
+- More Jackpots: add a golden-treasure jackpot during the escape.
+- Bigger Jackpots: increase defense, rescue, and escape awards.
+- More Time: extend the eruption timer.
+- Safety Net: 10-second ball save.
+- Shot Assist: complete the first missed or most difficult route objective.
+
+OPEN QUESTIONS
+
+- Must all three companions be rescued to defeat DeVargas?
+- Should route objectives be fixed or randomly chosen from safe combinations?
+- Which exact shots best distinguish the eagle from the giant spider?
+- Does failure occur only on drain, or can the eruption timer end the mode?
+
+SOURCES
+
+https://en.wikipedia.org/wiki/List_of_Spider-Man_%281967_TV_series%29_episodes
+https://dcanimated.com/WF/sections/specials/spidey67/review/episode/cloudcity/
+https://spiderfan.org/review/shows/spiderman_tv_1960s/s02e12.html
+
+
+2. CHARLES CAMEO
+Chapter 10 — Savage Oddities
+Episodes: “The Sinister Prime Minister” and “Double Identity”
+Current status: Placeholder
+
+CONFIRMED EPISODE MATERIAL
+
+Charles Cameo is an actor and master impersonator based loosely on the
+Chameleon. In “The Sinister Prime Minister,” he kidnaps and replaces a visiting
+prime minister, uses a gas-firing cane, steals a large gold payment, and attempts
+to escape by airplane before Spider-Man exposes him. In “Double Identity,” he
+impersonates Peter Parker and later Spider-Man while stealing art treasures.
+Brutus helps with the robberies. The confrontation between the real and false
+Spider-Man produced the familiar pointing image.
+
+STRONG THEMATIC HOOKS
+
+- One identity copying another
+- Mirrored or paired shots
+- A real action immediately followed by its imitation
+- Stolen art and evidence
+- Success through exposing the fake, not simply hitting a strong villain
+- A final false-Spider-Man confrontation
+
+PLAYFIELD TRANSLATION
+
+- The playfield has natural left/right pairs: webs, pops, banks, and upper exits.
+- A successful shot can cause Cameo to “copy” it on the opposite side.
+- Art treasures can be represented by saucers after an impersonation is exposed.
+- The upper playfield or VUK can be reserved for the final getaway rather than
+  used throughout the mode.
+
+CONCEPT A — DOUBLE IDENTITY / MIRRORED SHOTS (RECOMMENDED)
+
+One source shot is lit. Hitting it causes Cameo to copy that identity: the
+corresponding shot on the opposite side lights for a short exposure window.
+Hitting the copy exposes Cameo and completes the round. Examples could include
+left web to right web, left pop to right pop, left bank to right bank, or left
+exit to right exit.
+
+Complete several impersonations. The final round represents Cameo disguised as
+Spider-Man: two equivalent Spider-Man shots appear, and the player must make a
+two-shot confrontation ending at the VUK or a designated web target.
+
+This is not a hidden-shot guessing mode. The player creates the copy by making
+the first shot, then deliberately shoots the mirror. That keeps it distinct from
+Mysterio’s clues, Pardo’s spinner reveal, and Fiddler’s memorized note sequence.
+
+CONCEPT B — COLLECT THE EVIDENCE
+
+Three suspects are lit. Ordinary shots gather evidence and progressively remove
+innocent identities until only Cameo remains. Shoot the exposed suspect to
+arrest him. This is thematically sound but too close to an investigation/clue
+mode and risks repeating Mysterio.
+
+CONCEPT C — STOLEN FACES
+
+Cameo steals the identity of the last major shot the player made, temporarily
+turning that shot into a trap. The player must shoot a different category to
+break the disguise. This is mechanically novel but could be difficult to read
+and explain during fast play.
+
+CASE FILE STARTING POINTS
+
+- More Jackpots: add an additional impersonation before the final confrontation.
+- Bigger Jackpots: increase each exposure and final award.
+- More Time: extend the mirrored-shot exposure window.
+- Safety Net: 10-second ball save.
+- Shot Assist: the first expired mirror window counts as completed.
+
+OPEN QUESTIONS
+
+- Which left/right pairs are reliable enough to use?
+- Does an expired copy window reset only the round or reduce prior progress?
+- Should the final false Spider-Man confrontation use the two web targets?
+- Should “The Sinister Prime Minister” supply a separate airplane escape phase?
+
+SOURCES
+
+https://en.wikipedia.org/wiki/List_of_Spider-Man_%281967_TV_series%29_episodes
+https://marvelanimated.fandom.com/wiki/Charles_Cameo_%28Spider-Man_%281967%29%29
+https://spiderfan.org/review/shows/spiderman_tv_1960s/s01e19-2.html
+
+
+3. BRUTUS
+Chapter 10 — Savage Oddities
+Episode: “Double Identity”
+Current status: Placeholder
+
+IDENTITY CLARIFICATION
+
+This roster slot is Charles Cameo’s human bodyguard from “Double Identity,” not
+Doctor Vespasian’s invisible dog, also named Brutus. Cameo’s Brutus knocks down
+Spider-Man, assaults the officer transporting the valuable tapestry, takes the
+officer’s place, and protects Cameo during the art theft.
+
+STRONG THEMATIC HOOKS
+
+- A bodyguard who blocks access rather than running the scheme
+- Physical interference and short openings
+- Luring the guard away from something valuable
+- Art treasures and the disguised tapestry delivery
+- Escalating difficulty as Brutus recovers faster
+
+PLAYFIELD TRANSLATION
+
+- A lit saucer can be the current art treasure.
+- A bank on the opposite side can lure Brutus away.
+- The player then has a short window to reach the unguarded treasure.
+- Pops and rubbers can score physical “bashing” points without becoming the
+  entire objective.
+
+CONCEPT A — GET PAST THE BODYGUARD (RECOMMENDED)
+
+One of the three saucers holds a valuable art treasure, but Brutus is guarding
+it. A clearly lit opposite-side bank or web target lures him away. Once that shot
+is made, the treasure saucer lights for a brief steal/recovery window. Collect
+the treasure before Brutus returns.
+
+Repeat for three treasures. Later rounds require either more lure hits or shorter
+windows. A shot into a guarded saucer scores a small blocked award and ejects
+quickly without collecting the treasure. Completing all treasures defeats
+Brutus by making his guarding irrelevant.
+
+This gives a minor physical character a clear routing mode instead of another
+Rhino-style health bar.
+
+CONCEPT B — BRUTUS BASH
+
+Pops, slings, rubbers, and drops reduce Brutus’s strength until a knockout shot
+lights. This is easy to understand but overlaps Rhino and other bash modes.
+
+CONCEPT C — TAPESTRY DELIVERY
+
+The player must move a tapestry through three delivery checkpoints while Brutus
+randomly intercepts one. Spinner activity reveals the safe route. This uses the
+episode well but risks becoming another reveal mode.
+
+CASE FILE STARTING POINTS
+
+- More Jackpots: add a fourth high-value artwork.
+- Bigger Jackpots: increase treasure values.
+- More Time: lengthen each unguarded window.
+- Safety Net: 10-second ball save.
+- Shot Assist: automatically lures Brutus away on the first guarded round.
+
+OPEN QUESTIONS
+
+- Should treasures always progress Saucer 1 to 3, or change position?
+- Should a guarded saucer hit cost time, points, or only opportunity?
+- How many lure hits should later rounds require?
+
+SOURCES
+
+https://en.wikipedia.org/wiki/List_of_Spider-Man_%281967_TV_series%29_episodes
+https://marvelanimated.fandom.com/wiki/Episode%3ADouble_Identity
+
+
+4. SKYMASTER
+Chapter 10 — Savage Oddities
+Episode: “Criminals in the Clouds” (October 5, 1968)
+Current status: Temporary placeholder requiring a distinct non-rooftop design
+
+CONFIRMED EPISODE MATERIAL
+
+Skymaster kidnaps football star Roy Robinson to ransom him to his scientist
+father, inventor of an invisibility serum. Skymaster hides a militaristic
+airship inside a cloud that does not move with the others. Spider-Man notices
+the stationary cloud, boards the airship, rescues Roy, defeats the crew, and
+causes the flying base to crash into the harbor.
+
+DESIGN CONSTRAINT
+
+Baron Von Rantenraven already owns the rooftop limited-flips Sky Harbor assault.
+Skymaster should therefore emphasize camouflage, tracking, kidnapping, and the
+airship’s gas cells on the lower playfield rather than becoming another rooftop
+air-fortress mode.
+
+STRONG THEMATIC HOOKS
+
+- One stationary cloud hidden among moving clouds
+- Tracking and revealing a camouflaged airship
+- Damaging balloon or gas cells
+- Rescuing a hostage
+- A final crash into the harbor
+
+CONCEPT A — FIND THE STATIONARY CLOUD (RECOMMENDED)
+
+Several lower-playfield shot groups represent clouds and move or pulse in a
+simple repeating pattern. One cloud remains stationary for the current cycle.
+Hitting the stationary shot finds Skymaster’s airship and lights a timed damage
+shot elsewhere. Damage three gas cells, with the stationary cloud changing
+after each success.
+
+After the airship is crippled, a saucer lights to rescue Roy and the VUK or a
+web shot lights to crash the airship safely into the harbor.
+
+The player is watching movement rather than guessing a hidden answer. This uses
+the episode’s best clue without copying Pardo’s spinner reveal or Electro’s
+random traveling spark.
+
+CONCEPT B — CLEAR THE CLOUD COVER
+
+Pop and sling hits reduce a cloud-cover meter. When the meter reaches zero, the
+airship appears at one of three shots for a short attack window. Cloud cover
+then rebuilds. This is readable but adds another fill-and-drain meter mode.
+
+CONCEPT C — RANSOM RESCUE
+
+Collect three pieces of tracking information, lock onto the airship at a saucer,
+then complete a timed hostage rescue. This is straightforward but underuses the
+stationary-cloud imagery.
+
+CASE FILE STARTING POINTS
+
+- More Jackpots: add a bonus gas cell or a post-rescue airship jackpot.
+- Bigger Jackpots: increase gas-cell and rescue awards.
+- More Time: extend the damage and rescue windows.
+- Safety Net: 10-second ball save.
+- Shot Assist: the first cloud cycle clearly holds or automatically identifies
+  the stationary cloud.
+
+OPEN QUESTIONS
+
+- Which three or four shot groups can create a readable moving-cloud pattern?
+- Should a wrong cloud hit merely score small points or accelerate the pattern?
+- Is Roy rescued at a saucer or the VUK?
+
+SOURCES
+
+https://en.wikipedia.org/wiki/List_of_Spider-Man_%281967_TV_series%29_episodes
+https://dcanimated.com/WF/sections/specials/spidey67/review/episode/criminalsclouds/
+https://marvelanimated.fandom.com/wiki/Sky_Master_%28Spider-Man_%281967%29%29
+
+
+5. SIR GALAHAD
+Chapter 11 — Dimensional Finale
+Episode: “Knight Must Fall” (April 26, 1970)
+Current status: Placeholder
+
+CONFIRMED EPISODE MATERIAL
+
+Sir Galahad is a modern criminal knight who behaves as if he is the genuine
+Arthurian figure. He rides a motorcycle as his “trusty steed” and uses an
+electrified lance. He initially stops a box-office robbery, then takes the money
+himself. He later robs an armored car because he claims its money was stolen.
+Finally, he attacks a shipment carrying a sword believed to be Excalibur.
+Spider-Man defeats him in a waterfront joust and knocks him into the water.
+
+STRONG THEMATIC HOOKS
+
+- Repeated lance charges
+- Left/right jousting exchanges
+- Electricity as a warning state
+- A motorcycle charge rather than a medieval horse
+- Three escalating encounters ending with Excalibur
+- Galahad’s warped belief that his thefts are acts of justice
+
+CONCEPT A — THE WATERFRONT JOUST (RECOMMENDED)
+
+Play three short jousting rounds: box office, armored car, and Excalibur. Each
+round begins with Galahad charging from a clearly indicated side. The player has
+a few seconds to make the opposite-side defense shot, then a center counter-shot.
+Success wins the exchange; failure lets Galahad score a hit but restarts the
+same round rather than erasing the entire mode.
+
+The third round requires several alternating left/right exchanges before the
+final web or VUK shot knocks Galahad into the waterfront. The electrified-lance
+warning can be shown with a brief GI or insert pulse confined to physically
+compatible lamps.
+
+This creates a directional reaction mode distinct from Baron’s limited flips,
+Cyclops’s flip economy, and Diana’s staged drop hunts.
+
+CONCEPT B — STEAL EXCALIBUR
+
+Galahad moves among several robbery shots. The player intercepts him three times
+and then protects Excalibur at the upper playfield. This is simpler but resembles
+a generic traveling-shot chase.
+
+CONCEPT C — LANCE CHARGE METER
+
+Galahad’s lance charges continuously. Spinner and target hits drain it while
+drops build Spider-Man’s counterattack. This underuses the joust and overlaps
+other meter-management modes.
+
+CASE FILE STARTING POINTS
+
+- More Jackpots: add a fourth bonus joust after Excalibur.
+- Bigger Jackpots: increase won-exchange and final awards.
+- More Time: extend each reaction window.
+- Safety Net: 10-second ball save.
+- Shot Assist: automatically blocks the first missed charge.
+
+OPEN QUESTIONS
+
+- Which physical shots should represent left defense, right defense, and the
+  center counterattack?
+- How many exchanges should the Excalibur joust require?
+- Does a failed defense reduce accumulated round progress?
+
+SOURCES
+
+https://en.wikipedia.org/wiki/List_of_Spider-Man_%281967_TV_series%29_episodes
+https://spiderfan.org/review/shows/spiderman_tv_1960s/s03e06.html
+https://marvelanimated.fandom.com/wiki/Sir_Galahad_%28Spider-Man_%281967%29%29
+
+
+6. MASTER VINE
+Chapter 11 — Dimensional Finale
+Episode: “Vine” (November 16, 1968)
+Current status: Placeholder
+
+CONFIRMED EPISODE MATERIAL
+
+Peter inadvertently releases a giant destructive vine from a seed found in a
+missing scientist’s home. He uses the scientist’s time machine to travel to
+3,000,000 B.C. The only way to stop the present-day vine is to obtain radium
+gems from the idol in a Forbidden City occupied by intelligent plant creatures.
+Master Vine captures Spider-Man and forces him to fight the giant caterpillar-
+like Goliath in an arena. Spider-Man defeats Goliath, takes the two radium eyes,
+and returns to the present. Feeding the vine too much radium overloads and kills
+it.
+
+STRONG THEMATIC HOOKS
+
+- A present-day threat solved by traveling into the distant past
+- Vine growth spreading across the playfield
+- A time machine as the transition between two rule states
+- Arena combat with Goliath
+- Two radium-gem eyes
+- Winning by overfeeding the menace rather than starving it
+
+CONCEPT A — TWO ERAS, ONE VINE (RECOMMENDED)
+
+Present phase: a vine-growth timer begins. The vine spreads into playfield areas
+one at a time. Spinner progress powers the time machine before too many areas are
+overgrown.
+
+Prehistoric phase: the rules and lighting change to the Forbidden City. Defeat
+Goliath with a compact arena objective, then collect the two radium gems from
+two clearly indicated shots. Completing the pair returns the player to the
+present.
+
+Final phase: feed the two gems to the giant vine through a designated center or
+web shot. One gem weakens it; the second overloads it and wins the mode. Growth
+continues during the present phases, so the player is racing an understandable
+threat without juggling independent zone timers.
+
+This is a genuine time-travel mode with two contrasting states, rather than an
+area-control copy of Metal-Eating Monster or Clive and Blotto.
+
+CONCEPT B — RADIAL VINE GROWTH
+
+The vine begins at the center and grows along several branches. Hit the tip of a
+branch to prune it while gathering radium. Prune every branch, then overfeed the
+root. Visually strong, but it may require a more complicated light map.
+
+CONCEPT C — FORBIDDEN CITY ARENA
+
+Skip the present-day growth and make the whole mode a limited-flips arena battle
+against Goliath, Master Vine, and the radium idol. This is compact but overlaps
+the existing limited-flip modes and discards the episode’s best structure.
+
+CASE FILE STARTING POINTS
+
+- More Jackpots: each radium gem qualifies a separate gem jackpot before the
+  final overload.
+- Bigger Jackpots: increase arena, gem, and overload awards.
+- More Time: slow the present-day vine-growth timer.
+- Safety Net: 10-second ball save.
+- Shot Assist: prune the first growth step or supply part of the Goliath goal.
+
+OPEN QUESTIONS
+
+- What event should represent entering and leaving the time machine?
+- Should overgrown areas merely show danger, suppress scoring, or cause failure
+  when a fixed number is reached?
+- Which two shots best read as the idol’s radium eyes?
+- Is the rooftop useful as the Forbidden City, or can the two-era effect remain
+  entirely on the lower playfield?
+
+SOURCES
+
+https://en.wikipedia.org/wiki/List_of_Spider-Man_%281967_TV_series%29_episodes
+https://spiderfan.org/review/shows/spiderman_tv_1960s/s02e10.html
+https://dcanimated.com/WF/sections/specials/spidey67/review/episode/vine/
+
+
+7. THE SPIDER-MEN
+Chapter 11 — Dimensional Finale
+Episode: “Home” (December 14, 1968)
+Current status: Placeholder
+
+IMPORTANT STORY INTERPRETATION
+
+The alien Spider-Men, including Carol and her father, are not conventional evil
+villains. Their civilization crash-landed on Earth and has lived underground
+while waiting for a ray from its home planet. Carol steals equipment because a
+proton-device test will destroy her people, who are highly vulnerable to proton
+rays. Spider-Man initially believes the theft is criminal, then learns the truth,
+stops the proton test, and helps the civilization return home.
+
+The mode should therefore be a rescue/cooperation story rather than “defeat the
+alien Spider-Men.”
+
+STRONG THEMATIC HOOKS
+
+- A false accusation that becomes an alliance
+- Alien Spider-Men with powers resembling Spider-Man’s
+- Stolen equipment needed to prevent a catastrophe
+- An underground spacecraft and hidden civilization
+- A proton countdown
+- A homeworld ray arriving at the climax
+
+CONCEPT A — STOP THE PROTON TEST (RECOMMENDED)
+
+Begin with a visible proton countdown. Collect three equipment components from
+three different shot families. Deliver each component to the underground base,
+represented by a saucer or the VUK. The countdown resets or gains time with each
+successful delivery but never disappears completely.
+
+After all components are installed, open the route to the upper playfield and
+align the homeworld ray with the three upper targets. Completing the alignment
+before the proton timer expires sends the Spider-Men home and wins the mode.
+
+This produces a clear story arc: apparent theft, equipment collection, delivery,
+and dimensional departure. It is not a multiball fight and it does not copy the
+Fly Twins simply because multiple spider-like characters appear.
+
+CONCEPT B — SPIDER-POWER COOPERATION
+
+Start two-ball multiball with one ball representing Spider-Man and one Carol.
+Paired shots must be completed close together to stop the device. This is a
+strong metaphor but ordinary pinballs are visually indistinguishable, making the
+rule harder to communicate reliably.
+
+CONCEPT C — FIND THE HIDDEN CIVILIZATION
+
+Use a search-and-reveal first act, then a short proton-device shutdown. This is
+faithful but risks repeating clue and hidden-shot modes.
+
+CASE FILE STARTING POINTS
+
+- More Jackpots: add a homeworld-ray jackpot after each aligned upper target.
+- Bigger Jackpots: increase component, delivery, and home awards.
+- More Time: extend the proton countdown.
+- Safety Net: 10-second ball save.
+- Shot Assist: collect or deliver the first missing component automatically.
+
+OPEN QUESTIONS
+
+- Which shot receives each component, and where are components delivered?
+- Does the countdown start immediately or after the first component?
+- Should upper access remain open only for the final alignment?
+- What happens if the proton timer expires: immediate mode failure or loss of
+  one component and a shortened recovery chance?
+
+SOURCES
+
+https://en.wikipedia.org/wiki/List_of_Spider-Man_%281967_TV_series%29_episodes
+https://www.imdb.com/title/tt0826468/
+
+
+============================================================
+PART II — NINE UNFINISHED CHAPTER MINI-WIZARDS
+============================================================
+
+
+8. MASTERMIND TRAP
+Chapter 2 — Masked Masterminds
+Villains: Doctor Octopus, Mysterio, Scorpion, Lizard, Parafino
+Current status: Functional framework exists, but the design is not approved
+
+CHAPTER IDENTITY
+
+These villains control, deceive, poison, transform, or physically trap their
+victims. The wizard should feel like Spider-Man has been caught inside a layered
+plan, not like five unrelated villains have returned for five small rematches.
+
+CONCEPT A — ESCAPE FIVE LAYERS (RECOMMENDED)
+
+Start as a protected single-ball escape mode. A capture meter advances at a
+steady pace. The player dismantles five trap layers, each expressed as a short,
+very readable rule:
+
+- Mechanical restraint: complete rollover or bank control points.
+- Illusion chamber: make the one visibly stable shot while the others move.
+- Venom lock: build and discharge venom through the spinner and a target.
+- Transformation serum: collect and deliver an antidote.
+- Wax prison: heat and break the final shell.
+
+Every cleared layer stops the capture meter briefly and permanently opens more
+of the playfield. Escaping the fifth layer begins a short two- or three-ball
+revenge multiball in which the five former trap shots become Jackpots. The mode
+is won by escaping; multiball is the celebration and scoring finish.
+
+Why it works: the chapter becomes one escalating imprisonment story. Individual
+villain themes are visible, but their full regular-mode rules are not replayed.
+
+CONCEPT B — FIVE TRAP NODES
+
+Start multiball with five trap areas active simultaneously. Complete each before
+its independent timer expires. This is energetic, but it resembles the current
+Crime Wave framework and several area-defense modes.
+
+CONCEPT C — MASTERMIND SEQUENCE
+
+The game displays a five-villain order and the player repeats it through mapped
+shots. This is easy to explain but too close to Fiddler’s Simon Says structure.
+
+KEY REVIEW QUESTIONS
+
+- Should clearing all five layers be required, or should survival through a
+  fixed time count as completion?
+- Does the revenge multiball affect chapter progression or only scoring?
+- How punitive should the capture meter be after a missed objective?
+
+
+9. CRIME WAVE
+Chapter 4 — Crime Wave
+Villains: The Plotter, Fly Twins, Fifth Avenue Phantom, Enforcers, Doctor Cool
+Current status: Substantial three-ball framework exists, but it is not yet an
+approved finished wizard
+
+CHAPTER IDENTITY
+
+This chapter is a coordinated citywide series of thefts: plans and blueprints,
+jewelry robberies, shrunken valuables, gang activity, and frozen diamonds. A
+crime-wave wizard should be a pursuit across several active crimes, with the
+player deciding what can be stopped before the getaway.
+
+CONCEPT A — FIVE ESCALATING HEISTS (RECOMMENDED)
+
+Start three-ball multiball. Five heists occur one at a time in a randomized but
+non-repeating order. Each heist has its own playfield area and a short getaway
+timer. Completing the area captures that villain and scores a Jackpot. If the
+timer expires, that villain escapes with the loot; the next heist still begins.
+
+After all five heists have been attempted, the VUK lights for the Crime Wave
+Jackpot. Its value is based on captured villains, recovered loot, balls still in
+play, and the chapter Case File bonus. Capturing all five lights an additional
+Super or add-a-ball opportunity.
+
+Why it works: it is a citywide chase with meaningful successes and failures,
+rather than five anonymous areas being maintained simultaneously. Every run can
+finish, but a perfect run remains special.
+
+CONCEPT B — FIVE TIMED AREAS
+
+Retain the current framework: all five villain areas run independently, with
+upper exits collecting Jackpots. This may prove good on the machine, but it must
+be tested for readability before being accepted as the final design.
+
+CONCEPT C — RECOVER THE MASTER PLAN
+
+Every villain holds one piece of the Plotter’s master blueprint. Complete all
+five shot groups, then assemble the plan through the spinner and collect at the
+VUK. Strong narrative, but mechanically close to a standard five-area checklist.
+
+KEY REVIEW QUESTIONS
+
+- Should escaped villains remain escaped or return for another attempt?
+- Does multiball end the wizard immediately at one ball, or is there a short
+  single-ball getaway grace period?
+- Can the best parts of the current implementation be retained inside the
+  sequential-heist structure?
+
+
+10. THE WEB TIGHTENS
+Chapter 5 — Danger Lurks
+Villains: Harley Clivendon, Conquistador, Spider-Slayer, Metal-Eating Monster,
+Fiddler
+Current status: Placeholder
+
+CHAPTER IDENTITY
+
+The five threats have little literal connection, but each forces Spider-Man to
+track a danger that is initially difficult to contain: hypnosis, a jungle hunt,
+an expanding robotic search, destruction spreading through the city, and a
+memorized musical pattern. The wizard name suggests Spider-Man should build a
+containment network that tightens around all five.
+
+CONCEPT A — BUILD THE WEB NETWORK (RECOMMENDED)
+
+Start two-ball multiball. Five web links connect opposite or separated parts of
+the playfield. Each link requires a first shot to anchor the web and a second
+shot within a short window to complete it. Completed links remain locked in and
+visibly form a five-part containment web.
+
+Every incomplete link represents one chapter villain and has a small escalating
+penalty or deadline. The player can choose which link to finish next. Complete
+all five links to trap the threats, light the VUK, and collect the Tightened Web
+Super Jackpot. If multiball falls to one ball, allow a brief chance to complete
+the current link before the wizard ends.
+
+Why it works: the mode uses Spider-Man’s own power as the chapter culmination.
+It unifies unrelated villains without replaying their rules and gives the title
+a literal, visible meaning.
+
+CONCEPT B — DANGER CASCADE
+
+One new threat activates every several seconds. Hit its area before the next
+one appears. This is intuitive but too similar to the Metal-Eating Monster’s
+existing overlapping attack timers.
+
+CONCEPT C — HUNT THE FIVE SIGNALS
+
+The spinner traces five villain signals and the player shoots each revealed
+location. This is clear but overuses reveal mechanics already found elsewhere.
+
+KEY REVIEW QUESTIONS
+
+- Which five shot pairs make strong, achievable web links?
+- Do completed links award Jackpots immediately or only build the Super?
+- Can a missed link window be retried without losing completed links?
+
+
+11. FIFTH DIMENSION CURSE
+Chapter 6 — Mystic Menace
+Villains: Pardo, Fantastic Fakir, Kotep, Super Swami, Infinata
+Current status: Functional three-ball framework exists, but the design is not
+approved
+
+CHAPTER IDENTITY
+
+This chapter combines hypnosis, illusion, sorcery, demons, false realities, and
+the literal Fifth Dimension. The wizard should make the playfield feel unstable
+while keeping the player’s immediate objective readable.
+
+CONCEPT A — FIVE FALSE REALITIES (RECOMMENDED)
+
+Start three-ball multiball. Reality shifts among five villain states on a fixed
+timer. Each state changes the GI presentation and lights a small, unique group
+of shots. One “true” objective is always visibly stable while illusion shots
+pulse or move. Hitting the true objective breaks that reality permanently and
+scores a Jackpot. A false hit scores little and speeds the next shift but does
+not erase completed realities.
+
+After all five realities are broken, the VUK opens as the portal to Infinata.
+Collect the Fifth Dimension Super to win. The chapter Case File bonus is added
+only to Jackpots and the Super.
+
+Why it works: the entire playfield feels cursed and unstable, but each moment
+still gives the player one clear truth. It is more cohesive than six independent
+GI timers and broader than any one villain’s illusion rule.
+
+CONCEPT B — CURSED SEALS
+
+Five seals require ordered shot pairs. Breaking a seal causes the next one to
+appear with a different color and rule. This is clear but may feel like five
+ordinary stages rather than a Fifth Dimension crisis.
+
+CONCEPT C — DIMENSIONAL COLLAPSE
+
+GI regions disappear one by one while the player relights them. This makes a
+strong show but overlaps Super Swami and the current wizard framework.
+
+KEY REVIEW QUESTIONS
+
+- How many seconds should each reality remain active?
+- Should realities cycle automatically or only after a meaningful shot?
+- What visual convention clearly distinguishes the true objective from an
+  illusion without relying on colors that physical lenses cannot show?
+
+
+12. MAD SCIENCE MELTDOWN
+Chapter 7 — Mad Science
+Villains: Dr. Noah Boddy, Dr. Magneto, Professor Pretorius, Doctor Dumpty,
+Dr. Von Schlick
+Current status: Placeholder
+
+CHAPTER IDENTITY
+
+The chapter contains invisibility, magnetism, shrinking technology, balloons and
+gas, and an oil-stealing weapon. A generic laboratory explosion would waste that
+variety. The strongest shared story is five unstable experiments drawing power
+from one overloaded reactor.
+
+CONCEPT A — CONTROLLED MELTDOWN (RECOMMENDED)
+
+Start three-ball multiball with a reactor heat meter and five experiment
+stations. Hitting an experiment advances its unique objective and also increases
+reactor heat. Spinner activity vents heat. If the reactor reaches maximum before
+all five experiments are disabled, the current experiment resets or one ball is
+removed from play; the exact penalty requires testing.
+
+Once all five experiments are disabled, the goal reverses: the player must now
+intentionally push the reactor to maximum and shoot the VUK during a short red
+meltdown window. That controlled final overload destroys the lab and scores the
+Super Jackpot.
+
+Why it works: the player first prevents a meltdown and then deliberately causes
+one at the safe moment. That reversal gives the wizard a memorable identity and
+makes the spinner a strategic control rather than just a value builder.
+
+CONCEPT B — FIVE FAILED EXPERIMENTS
+
+Complete five ordinary areas, each with a visual mutation. This is easy to code
+but risks becoming another chapter checklist.
+
+CONCEPT C — SHRINKING LAB
+
+The playable scoring area contracts as the mode proceeds, leaving fewer valid
+shots until the player restores full size. Highly thematic for Pretorius, but it
+does not represent the other four scientists evenly.
+
+KEY REVIEW QUESTIONS
+
+- What is the fair consequence of an early heat maximum?
+- Which shots vent heat, and can over-venting have a cost?
+- How should the five experiments differ without recreating five full modes?
+
+
+13. NATURE STRIKES BACK
+Chapter 8 — Elemental Chaos
+Villains: Clive and Blotto, Doctor Zapp, Bolton and Boomer, Snowman, Plutonians
+Current status: Placeholder
+
+CHAPTER IDENTITY
+
+The threats combine darkness/erasure, camera flashes, lightning, an electrically
+charged snow creature, and widespread freezing. Several elements interact in
+the episodes: electricity animates or harms creatures, flashes expose threats,
+and conductive webbing drains power. A good wizard can make those elements
+affect one another instead of presenting five separate jackpots.
+
+CONCEPT A — BALANCE THE ELEMENTS (RECOMMENDED)
+
+Start three-ball multiball with four linked meters: darkness, electrical charge,
+snow, and deep freeze. Each major shot reduces one meter but raises or activates
+another. For example, an electrical attack can expose Blotto but energize the
+Snowman; draining the Snowman can feed the camera-flash supply; heat from a flash
+can weaken deep freeze.
+
+The objective is to bring every meter into its safe zone at the same time. Doing
+so stabilizes nature and lights a VUK Jackpot. Repeat for a small number of
+increasingly difficult cycles, then collect a final Super.
+
+The status display must remain extremely simple—four short bars or named danger
+states—because the underlying interaction is intentionally richer than a normal
+mode.
+
+CONCEPT B — ELEMENTAL CHAIN REACTION
+
+Complete a fixed sequence in which one villain’s element defeats the next. This
+is easier to teach but could become a rigid linear checklist.
+
+CONCEPT C — FIVE WEATHER FRONTS
+
+Five areas deteriorate on timers and must be restored. This overlaps Metal-
+Eating Monster, Plutonians, and other zone-defense rules.
+
+KEY REVIEW QUESTIONS
+
+- Are four linked meters readable on the existing display during multiball?
+- Which interactions are intuitive enough to teach with callouts?
+- Should one successful balance win, or should there be three stabilization
+  cycles with increasing speed?
+
+
+14. INVASION FROM EVERYWHERE
+Chapter 9 — Lost Worlds
+Villains: Dr. Manta, Igor, Doctor Atlantean, DeVargas, Molemen
+Current status: Placeholder
+
+CHAPTER IDENTITY
+
+The threats reach Manhattan from an enslaved island, a fortified lost world,
+Atlantis, the Cloud City of Gold, and the underground Molemen civilization. The
+chapter title promises simultaneous pressure from several directions. A simple
+five-area multiball would duplicate the Molemen and Crime Wave concepts.
+
+CONCEPT A — FIVE-FRONT TUG OF WAR (RECOMMENDED)
+
+Start three-ball multiball. Five invasion fronts begin outside the city and each
+has a short three- or four-step track toward the center. Their paired shots push
+them one step back; periodic timers move one or more fronts forward. Repeatedly
+attacking the same front can drive it completely off the map and lock it out as
+defeated.
+
+If a front reaches the city center, it captures a ball in one of the saucers or
+disables a major scoring area until the player makes a rescue shot. The mode is
+won by pushing all five fronts back to their origins, then shooting the VUK for
+the Invasion Super.
+
+Why it works: progress can move in both directions. The player is not merely
+checking five boxes or waiting for five independent timers. The rule expresses
+an actual battle line and supports the “from everywhere” title.
+
+CONCEPT B — VERTICAL INVASION
+
+Use the eight horizontal GI bands as a shared city map, with underground and
+undersea forces rising while aerial forces descend. Visually strong, but it
+would reuse Doctor Atlantean’s defining water-band presentation too directly.
+
+CONCEPT C — LOST-WORLD PORTALS
+
+Five portals open in sequence and release a short villain objective. Close all
+five and then destroy the master portal. Clear, but close to replaying miniature
+versions of the regular modes.
+
+KEY REVIEW QUESTIONS
+
+- Which front maps to which shot without confusing the five simultaneous states?
+- Does a captured ball remain held, or is it quickly ejected after a rescue
+  requirement is established?
+- Can the mode remain fair if two fronts advance on the same timer tick?
+
+
+15. WHO IS THE REAL VILLAIN?
+Chapter 10 — Savage Oddities
+Villains: Charles Cameo, Brutus, Desperado, Skymaster, Conner’s Reptiles
+Current status: Placeholder
+
+CHAPTER IDENTITY
+
+This deliberately strange roster includes disguises, a bodyguard, a futuristic
+cowboy, a camouflaged airship, and intelligent reptiles. Charles Cameo provides
+the narrative glue: one apparent villain is Cameo in disguise, and Spider-Man
+must eliminate the genuine suspects before confronting the impostor.
+
+CONCEPT A — THE IMPOSTOR HUNT (RECOMMENDED)
+
+At mode start, one of the other four villains is secretly selected as Cameo’s
+current disguise. Four suspect areas are available. Completing a suspect’s short
+test produces a definitive result: genuine villain or Cameo. Genuine villains
+are captured and removed. Finding Cameo starts a final chase in which he changes
+through the remaining identities on successive shots.
+
+The game should not require blind guessing. Every completed suspect test always
+advances the investigation. Finding Cameo early increases the final value; if he
+is the fourth suspect, the player still reaches the confrontation through steady
+progress.
+
+This can run as two-ball multiball to make the chapter wizard feel larger, but
+the investigation should remain readable with one ball after a short grace
+period.
+
+CONCEPT B — TWO SPIDER-MEN
+
+Use two-ball multiball as a literal version of the Cameo pointing confrontation.
+Paired shots reveal which ball represents the real Spider-Man. Because physical
+balls are indistinguishable, this is visually funny but mechanically unreliable.
+
+CONCEPT C — SAVAGE GAUNTLET
+
+Fight all five villains in a rapid random order. Straightforward, but it does
+not justify the wizard’s excellent title.
+
+KEY REVIEW QUESTIONS
+
+- Should the hidden disguise be truly random or rotate evenly between games?
+- What compact test best represents each of Brutus, Desperado, Skymaster, and
+  the reptiles?
+- Does finding Cameo immediately end the investigation or begin a required
+  multi-identity final chase?
+
+
+16. TIME-TOSSED SHOWDOWN
+Chapter 11 — Dimensional Finale
+Villains: Sir Galahad, Master Vine, Master Technician, The Spider-Men,
+Baron Von Rantenraven
+Current status: Placeholder
+
+CHAPTER IDENTITY
+
+This chapter ranges from Arthurian delusion and prehistoric plant civilization
+to anti-gravity Manhattan, alien Spider-Men, and a World War I-style sky
+fortress. The wizard should feel like eras and worlds are colliding, not simply
+like another all-shots multiball.
+
+CONCEPT A — STABILIZE FIVE TIME RIFTS (RECOMMENDED)
+
+Start three-ball multiball. One time rift opens at a time for a fixed interval.
+Each rift has a compact two- or three-shot pattern based on its world: joust,
+prehistoric growth, anti-gravity machinery, alien home ray, or sky attack.
+
+Completing a rift stabilizes it permanently and scores a Jackpot. An expired
+rift becomes fractured and returns later with a shorter window or one additional
+shot. The player eventually sees all five; success does not depend on a lucky
+order. Stabilize all five, then shoot the VUK to return Manhattan to the correct
+time and score the Super Jackpot.
+
+Why it works: the time shifts are the main rule, and the five villains supply
+brief visual identities rather than full replayed modes. Failed rifts create
+escalation without deleting completed progress.
+
+CONCEPT B — CHOOSE THE ERA
+
+Spinner hits rotate among five eras, and the player shoots the corresponding
+objective to lock it. This offers agency but could be difficult to control in
+multiball and may overemphasize the spinner.
+
+CONCEPT C — TIME COLLAPSE COUNTDOWN
+
+All five eras attack simultaneously while a master countdown runs. This is
+dramatic but likely too dense and too similar to multi-area defense modes.
+
+KEY REVIEW QUESTIONS
+
+- Should fractured rifts become harder, less valuable, or both?
+- Does the wizard require all five, or can four stabilized rifts qualify a lower
+  final award?
+- How long should each rift remain active during three-ball play?
+
+
+============================================================
+PART III — FINAL WIZARD
+============================================================
+
+
+17. KINGPIN — FINAL SHOWDOWN
+Episodes: “King Pinned” and “The Big Brainwasher”
+Current status: Existing city-area framework; dedicated final design/retheme
+remains
+
+CONFIRMED EPISODE MATERIAL
+
+In “King Pinned,” Kingpin runs a counterfeit medicine operation. Frederick
+Foswell is his informer inside the Daily Bugle. Kingpin kidnaps J. Jonah Jameson,
+nearly unmasks Spider-Man with gas from his cane, and plants a time bomb in the
+Bugle’s printing presses. Spider-Man rescues Jameson and races to save the Bugle,
+but Kingpin escapes.
+
+In “The Big Brainwasher,” Kingpin operates a nightclub where Mary Jane takes
+photographs of city officials. The camera draws them into a back room containing
+a powerful brainwashing machine. Kingpin traps Spider-Man in a chained room that
+fills with water. Spider-Man uses a web-air bubble, escapes, rescues Mary Jane and
+the officials, and defeats Kingpin.
+
+The two episodes naturally form a final-wizard escalation: expose the criminal
+empire, survive the trap, save the Bugle, free the city, and finally capture the
+Kingpin who escaped the first confrontation.
+
+CONCEPT A — KINGPIN’S EMPIRE FALLS (RECOMMENDED)
+
+Use a cinematic four-act finale rather than one uninterrupted generic multiball.
+
+Act 1 — Expose the Empire. Major shots represent Kingpin’s network. Chapter
+completion and Case Files determine values or advantages, but the player does
+not replay all eleven chapter wizards. Break several criminal-network nodes and
+collect the evidence at the Daily Bugle VUK.
+
+Act 2 — Rescue Jameson / Escape the Water Trap. Kingpin captures Jameson and
+traps Spider-Man. Begin a tense protected single-ball sequence: break restraints,
+create the web-air bubble, and make the escape shot before the water timer ends.
+The exact shot pattern should be short and unmistakable.
+
+Act 3 — Save the Bugle. A visible printing-press bomb countdown begins. Spinner
+activity runs the presses or exposes bomb wiring; the three upper targets or
+three saucers can represent the circuits that must be disabled. A final VUK shot
+defuses the bomb and launches the climactic multiball.
+
+Act 4 — The Big Brainwasher. Start a large multiball. Five city-official areas
+are under Kingpin’s control. Completing an area frees its officials and scores a
+Jackpot. Freeing all five lights a Kingpin Super at the VUK or a deliberately
+chosen final shot. Collect it to defeat Kingpin and complete the game. Remaining
+balls can continue into victory laps after the story victory.
+
+WHY THIS SHOULD REPLACE THE CURRENT CLEAR-THE-CITY STRUCTURE
+
+The existing framework already supplies useful multiball, area, saucer, gate,
+and VUK infrastructure. Its weakness is thematic: it is a generic city-clearing
+mode. The recommended structure preserves reusable technical pieces for Act 4
+while giving Kingpin an episode-specific narrative and a true final-act climax.
+
+CONCEPT B — ELEVEN-CHAPTER GAUNTLET
+
+Replay one shot for every completed chapter, then fight Kingpin. This recognizes
+the entire game but risks becoming long, repetitive, and difficult to read.
+
+CONCEPT C — KINGPIN TAKEOVER MULTIBALL
+
+Begin immediately with five controlled city areas and clear them all. This is
+closest to the existing code and simplest to implement, but it does not feel
+like the reward for completing the entire game.
+
+PROGRESSION AND REWARD STARTING POINTS
+
+- Every completed chapter wizard should provide a visible advantage, value, or
+  safety resource, not another qualification requirement.
+- Total Case Files can increase Jackpots or grant one limited recovery feature.
+- The final wizard should have checkpoints between major acts so an early drain
+  does not force an excessively long replay from the beginning; the exact
+  continuation policy requires approval.
+- Story victory should occur on the final Kingpin Super. Victory laps are a
+  scoring reward and should not delay recognition of completion.
+
+OPEN QUESTIONS
+
+- How many acts should survive a drain or continue to the next ball?
+- Which act should receive the largest multiball and longest ball save?
+- Should failure in the water trap or bomb sequence end the wizard, reset that
+  act, or consume a previously earned chapter resource?
+- How should the eleven chapter completions affect the finale without producing
+  eleven separate rule exceptions?
+- What final physical shot best represents actually capturing Kingpin?
+
+SOURCES
+
+https://en.wikipedia.org/wiki/List_of_Spider-Man_%281967_TV_series%29_episodes
+https://dcanimated.com/WF/sections/specials/spidey67/review/episode/brainwasher/
+https://marvelanimated.fandom.com/wiki/Kingpin_%28Spider-Man_%281967%29%29
+
+
+============================================================
+PART IV — CROSS-MODE COMPARISON
+============================================================
+
+Mode                         Recommended identity              Balls   Primary devices               Main pressure/failure         Closest existing risk and distinction
+---------------------------  --------------------------------  ------  ----------------------------  ----------------------------  ----------------------------------------------
+DeVargas                     Expedition then volcano escape     1       Moving routes, saucers, VUK   Eruption timer/drain          Unlike Conquistador: rescue/escape climax
+Charles Cameo                Mirrored impersonation shots       1       Left/right paired shots       Copy-window expiry/drain      Unlike Mysterio: deterministic mirror, no guess
+Brutus                       Lure guard, recover artwork         1       Banks/webs to saucers         Guard returns/drain           Unlike Rhino: routing, not a health bar
+Skymaster                    Find the stationary cloud          1       Lower shot pattern, saucer    Damage/rescue windows         Unlike Baron: no rooftop/limited flips
+Sir Galahad                  Directional jousting exchanges     1       Side defense, center counter  Missed charge/drain           Unlike Diana: reaction joust, not bank hunt
+Master Vine                  Present/past growth crisis         1       Spinner, arena, gem shots     Vine growth/drain             Unlike zone modes: two authored eras
+The Spider-Men               Stop proton test and send home     1       Components, delivery, upper   Proton countdown/drain        Rescue/cooperation, not combat
+Mastermind Trap              Escape five layered traps          1→MB    Whole playfield               Capture meter/drain           Layers open playfield; not five parallel zones
+Crime Wave                   Five escalating timed heists       3       Five villain areas, VUK       Individual getaway timers    Sequential crimes, not area maintenance
+The Web Tightens             Build five web links               2       Paired cross-playfield shots  Link windows/multiball end    Web construction, not attack timers
+Fifth Dimension Curse        Break five false realities         3       Shifting shot groups, VUK     Reality shifts/multiball end Illusion states, not independent GI timers
+Mad Science Meltdown         Prevent then cause reactor overload 3       Five stations, spinner, VUK   Heat maximum/multiball end   Strategic reversal, not simple meter fill
+Nature Strikes Back          Balance linked elemental meters    3       Whole playfield, VUK          Meter imbalance/multiball end Interacting elements, not five zones
+Invasion from Everywhere     Push back five advancing fronts    3       Five mapped fronts, saucers   Front reaches city/ball loss Bidirectional tracks, not binary areas
+Who Is the Real Villain?     Eliminate suspects, chase Cameo     2       Four tests, final chase       Multiball end/drain           Investigation with guaranteed progress
+Time-Tossed Showdown         Stabilize five returning time rifts 3       Timed shot patterns, VUK      Rift fractures/ball loss     Time windows, not mini-mode replay
+Kingpin Final Showdown       Four-act criminal-empire finale    Mixed   Whole playfield, Bugle VUK    Act timers and drains         Episode-specific story, not generic clearing
+
+
+============================================================
+PART V — RECOMMENDED REVIEW ORDER
+============================================================
+
+1. DeVargas — completes Chapter 9’s regular roster.
+2. Invasion from Everywhere — can then use all five approved Chapter 9 modes.
+3. Charles Cameo.
+4. Brutus.
+5. Skymaster.
+6. Who Is the Real Villain?
+7. Sir Galahad.
+8. Master Vine.
+9. The Spider-Men.
+10. Time-Tossed Showdown.
+11. Mastermind Trap.
+12. Crime Wave.
+13. The Web Tightens.
+14. Fifth Dimension Curse.
+15. Mad Science Meltdown.
+16. Nature Strikes Back.
+17. Kingpin — Final Showdown.
+
+
+FINAL RESEARCH CONCLUSION
+
+The strongest starting concepts are the ones built around a single episode-
+specific action that no other ASM67 mode owns:
+
+- DeVargas causes the eruption the player must escape.
+- Cameo copies the player’s shot on the opposite side.
+- Brutus must be lured away from guarded artwork.
+- Skymaster hides in the one cloud that does not move.
+- Galahad turns left/right shot reactions into a joust.
+- Master Vine forces play between the present and 3,000,000 B.C.
+- The Spider-Men must be rescued from the proton test and sent home.
+- Each wizard uses one chapter-level system rather than replaying five villains.
+- Kingpin receives an episode-based, multi-act finale with the existing area
+  multiball infrastructure reserved for the climactic Brainwasher act.
+
+No concept in this document is approved or ready to code. The next design
+conversation should begin with DeVargas and settle its progression one decision
+at a time.

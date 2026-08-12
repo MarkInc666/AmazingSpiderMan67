@@ -1,3 +1,14 @@
+All six begin pulsing.
+Hitting a pulsing shot converts that light to solid.
+Flipper presses rotate the complete pattern around the six physical shots.
+Solid and pulsing states move together.
+The player tries to position a pulsing light under the ball’s likely path.
+Hitting a solid shot does not advance progress.
+The mode is completed when all six lights are solid.
+
+
+
+
 Yes — that’s a good place to focus. The first 10 have real identity now. The newer villains and mini-wizards need **clear gimmicks**, not just “hit flashing shots.”
 
 I’d design them around mechanics you still want to use more:

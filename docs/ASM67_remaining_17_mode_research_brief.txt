@@ -1,0 +1,204 @@
+ASM67 — REMAINING 17 MODES
+RESEARCH AND STARTING-CONCEPT BRIEF
+
+Prepared: August 12, 2026
+
+
+PURPOSE
+
+Research the remaining 17 incomplete ASM67 modes and develop a strong,
+episode-based starting concept for each one. These concepts are intended for
+later discussion and refinement. They are not approved final designs and should
+not be coded until reviewed with the user.
+
+
+CURRENT TOTALS
+
+Regular villain modes: 55 total; 48 substantively implemented; 7 incomplete.
+Chapter mini-wizards: 11 total; 2 considered good; 9 incomplete.
+Final Kingpin wizard: 1 total; incomplete.
+
+Remaining research/design workload: 17 modes.
+
+
+THE 17 MODES
+
+Regular villains (7)
+
+1. DeVargas — Chapter 9: Lost Worlds
+2. Charles Cameo — Chapter 10: Savage Oddities
+3. Brutus — Chapter 10: Savage Oddities
+4. Skymaster — Chapter 10: Savage Oddities
+5. Sir Galahad — Chapter 11: Dimensional Finale
+6. Master Vine — Chapter 11: Dimensional Finale
+7. The Spider-Men — Chapter 11: Dimensional Finale
+
+Chapter mini-wizards needing replacement, redesign, or approval (9)
+
+8. Mastermind Trap — Chapter 2: Masked Masterminds
+9. Crime Wave — Chapter 4: Crime Wave
+10. The Web Tightens — Chapter 5: Danger Lurks
+11. Fifth Dimension Curse — Chapter 6: Mystic Menace
+12. Mad Science Meltdown — Chapter 7: Mad Science
+13. Nature Strikes Back — Chapter 8: Elemental Chaos
+14. Invasion from Everywhere — Chapter 9: Lost Worlds
+15. Who Is the Real Villain? — Chapter 10: Savage Oddities
+16. Time-Tossed Showdown — Chapter 11: Dimensional Finale
+
+Final wizard (1)
+
+17. Kingpin — Final Showdown
+
+
+WIZARD MODES ALREADY CONSIDERED GOOD
+
+These two are not part of the remaining 17-mode research task:
+
+- Sinister Surge — Chapter 1
+- Trubble Unleashed — Chapter 3
+
+
+RESEARCH REQUIRED FOR EACH REGULAR VILLAIN
+
+For each of the seven remaining regular villains:
+
+1. Identify the character and every relevant 1967 Spider-Man episode.
+2. Summarize what the villain does in the episode.
+3. Separate confirmed episode facts from interpretation or design invention.
+4. Identify the villain's strongest visual, story, and action themes.
+5. Explain how the villain fits the assigned chapter.
+6. Translate the episode actions into physical pinball possibilities using the
+   real ASM67 playfield.
+7. Propose two or three substantially different gameplay directions.
+8. Recommend the strongest direction and explain why it is distinct.
+9. Identify possible overlap with existing villain modes and how to avoid it.
+10. List the important design questions that still require user decisions.
+
+
+RESEARCH REQUIRED FOR EACH CHAPTER WIZARD
+
+For each of the nine unfinished chapter mini-wizards:
+
+1. Review the five villains and the chapter's shared story identity.
+2. Identify episode events, threats, locations, or imagery that can unify them.
+3. Decide whether the current wizard name still fits the best concept.
+4. Propose two or three possible wizard structures.
+5. Recommend one structure that feels like a culmination of that chapter.
+6. Explain how each of the chapter's five villains is represented.
+7. Avoid simply replaying five individual villain modes in miniature.
+8. Consider whether the wizard should use multiball, staged single-ball play,
+   limited flips, escalating timers, area control, or a hybrid structure.
+9. Identify how prior chapter accomplishments could affect the wizard without
+   making it impossible for weaker players.
+10. List the decisions that must be reviewed before a final design is approved.
+
+
+RESEARCH REQUIRED FOR KINGPIN — FINAL SHOWDOWN
+
+1. Research Kingpin's role and actions in the 1967 animated series.
+2. Identify the strongest episode-specific finale material.
+3. Explain how Kingpin can credibly serve as the game's ultimate adversary.
+4. Develop a finale that reflects progress through the full game rather than a
+   generic city-clearing framework.
+5. Propose multiple structures for the final wizard.
+6. Recommend a structure with a clear opening, escalation, climax, and victory.
+7. Consider how completed chapters, defeated villains, Case Files, rooftop play,
+   saucers, drops, webs, spinner, VUK, and multiball can contribute.
+8. Keep the rules understandable during play despite the mode's large scope.
+9. Identify any qualification, continuation, or failure rules that need user
+   approval.
+
+
+EXPECTED ENTRY FOR EACH MODE
+
+Each mode's research entry should contain:
+
+- Mode name and chapter
+- Current status
+- Character or chapter background
+- Relevant episode title or titles
+- Concise episode plot and confirmed actions
+- Strong thematic hooks
+- Available playfield translations
+- Concept A
+- Concept B
+- Optional Concept C when genuinely distinct
+- Recommended starting concept
+- Why the recommendation fits the source material
+- Why it is distinct from existing ASM67 modes
+- Possible scoring/progression framework at a high level
+- Lighting, display, sound, and presentation opportunities
+- Likely Case File interactions for regular villains
+- Risks, conflicts, and implementation concerns
+- Questions requiring user review
+- Sources used
+
+
+ASM67 DESIGN CONSTRAINTS
+
+- Use the 1967 animated series as the primary thematic source.
+- Preserve the approved physical playfield layout and device behavior.
+- Do not redesign already approved modes merely to make a new concept fit.
+- Avoid duplicating an existing mode's main gameplay identity.
+- Consider the balance of timed modes, limited-flip modes, multiballs, linear
+  objectives, accuracy modes, survival modes, and area-control modes.
+- Use rooftop access and the upper playfield only when the episode concept
+  supports it; not every remaining villain should become another rooftop mode.
+- Respect the physical light and lens limitations defined in config/lights.yaml.
+- Use rooftop_diverter_open and rooftop_diverter_close for gate control.
+- Keep Case File behavior meaningful and specific to each regular villain.
+- Do not treat existing functional wizard shells as approved finished designs.
+- Do not write code during this research pass.
+
+
+RESEARCH QUALITY RULES
+
+- Verify obscure characters and episode events with sources rather than memory.
+- Prefer original episode information and reliable episode references.
+- Clearly label uncertain or conflicting facts.
+- Do not invent episode events and present them as factual.
+- Use episode events as inspiration without forcing every plot beat into rules.
+- Concepts should be concrete enough to begin a design conversation, but should
+  leave scoring values and detailed rules open unless a value is essential to
+  explaining the idea.
+
+
+DELIVERABLE
+
+Produce one master research document covering all 17 modes. Organize it first by
+chapter and then by mode. Include a short comparison table at the end showing:
+
+- Recommended gameplay identity
+- Ball count
+- Primary shots or devices
+- Timer or flip limit
+- Main risk or failure condition
+- Closest existing mode
+- How duplication is avoided
+
+After the master research document is reviewed, finalize the modes one at a
+time through discussion. Only then should approved designs be coded and added to
+the project documentation and planning workbook.
+
+
+RECOMMENDED DESIGN ORDER
+
+1. DeVargas, to complete Chapter 9's regular villain roster.
+2. Invasion from Everywhere, after Chapter 9's five villains are settled.
+3. Charles Cameo.
+4. Brutus.
+5. Skymaster.
+6. Who Is the Real Villain?
+7. Sir Galahad.
+8. Master Vine.
+9. The Spider-Men.
+10. Time-Tossed Showdown.
+11. Revisit the incomplete Chapter 2, 4, 5, 6, 7, and 8 mini-wizards.
+12. Kingpin — Final Showdown, after the chapter wizards have stable identities.
+
+
+APPROVAL BOUNDARY
+
+The completed research document is a starting point. No proposed concept should
+be marked finished, added to the implemented-mode total, or coded until it has
+been reviewed and explicitly approved.
