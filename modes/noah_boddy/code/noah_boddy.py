@@ -285,10 +285,17 @@ class NoahBoddy(CaseFileMixin, Mode):
 
         self.spinner_hits += 1
         self.jackpot_value += self.SPINNER_ADD_VALUE
+        bonus_value = self.SPINNER_ADD_VALUE * self.jackpot_multiplier
+        self.machine.game.player["noah_boddy_bonus"] += bonus_value
         self.machine.events.post(
             "noah_boddy_jackpot_increased",
             spinner_hits=self.spinner_hits,
             jackpot=self._current_jackpot_value(),
+        )
+        self.machine.events.post(
+            "noah_boddy_bonus_banked",
+            value=bonus_value,
+            total=self.machine.game.player["noah_boddy_bonus"],
         )
         self._show_mode_jackpot("JACKPOT BUILDS", self._current_jackpot_value())
         self._sync_vars()

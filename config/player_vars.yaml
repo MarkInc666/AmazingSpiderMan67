@@ -642,13 +642,13 @@ player_vars:
   diamond_bonus:
     initial_value: 0
     value_type: int
-  fiddler_bonus:
+  harley_bonus:
     initial_value: 0
     value_type: int
   super_swami_bonus:
     initial_value: 0
     value_type: int
-  dumpty_bonus:
+  noah_boddy_bonus:
     initial_value: 0
     value_type: int
   blotto_bonus:

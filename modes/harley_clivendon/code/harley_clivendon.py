@@ -110,8 +110,14 @@ class HarleyClivendon(CaseFileMixin, Mode):
             return
         value = len(self.lit_areas) * self.jackpot_per_area
         self._score(value)
+        self.machine.game.player["harley_bonus"] += value
         self.jackpots += 1
         self.biggest_jackpot = max(self.biggest_jackpot, value)
+        self.machine.events.post(
+            "harley_bonus_banked",
+            value=value,
+            total=self.machine.game.player["harley_bonus"],
+        )
         self.machine.events.post("show_mode_jackpot", message_mode_title="HARLEY JACKPOT", message_mode_subtitle=f"{len(self.lit_areas)} AREAS", message_mode_value=value)
 
         keep = set()
