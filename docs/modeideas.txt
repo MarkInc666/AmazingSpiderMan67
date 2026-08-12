@@ -172,6 +172,53 @@ Case File 5 (Shot Assist): First drop hit knocks down two additional right-bank 
 
 ---
 
+### Igor — “Defenses”
+
+**Core idea:** Endless single-ball precision/avoidance score attack. Each round
+lights one correct shot and two or three nearby defense shots.
+
+Authored shot sets:
+
+```text
+1. Right drop bank good; both pops bad.
+2. Center web good; both pops bad.
+3. Upper-center target good; upper-left and upper-right targets bad.
+4. Main spinner good; left web and right drop bank bad.
+5. Left drop bank good; left web, main spinner, and both pops bad.
+```
+
+The good shot flashes green, bad shots are solid red, and neutral shots are
+unlit. Drop-bank indications use the left/right bank GI sections rather than
+individual drop inserts. The upper-target set opens the rooftop gate; every
+other set closes it. After any good or bad shot, randomly choose one of the
+other four sets with no immediate repeat.
+
+Scoring and end conditions:
+
+* Good shots award a Jackpot starting at 100K. The next Jackpot grows by 25K.
+* Bad shots score 25K and add one bad-shot strike.
+* The fifth bad shot ends the mode after a 2-second `IGOR'S DEFENSES WIN`
+  message. More Jackpots changes the limit to seven bad shots.
+* There is no overall timer and no victory condition. Ball drain also ends the
+  mode.
+* Status shows `NEXT JACKPOT 175,000` and `BAD SHOTS 2 / 5` (or `/ 7`).
+* Summary shows Jackpots, Biggest Jackpot, and total mode score.
+
+Case files:
+
+```text
+Case File 1 (More Jackpots): The seventh bad shot ends the mode instead of the fifth.
+Case File 2 (Bigger Jackpots): Jackpot growth is +50K instead of +25K; it still starts at 100K.
+Case File 3 (More Time): Use a 20-second opening ball save.
+Case File 4 (Safety Net): Use a 10-second opening ball save.
+Case File 5 (Shot Assist): Convert the first bad shot into the current Jackpot with no strike.
+```
+
+Lighting: overall GI is `8080D0`; good shots flash green and bad shots hold
+solid red.
+
+---
+
 ### Reptilla — “Rampage”
 
 **Core idea:** Reptilla stomps through areas of the city. You must stop the rampage before it spreads.

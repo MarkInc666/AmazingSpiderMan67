@@ -104,6 +104,13 @@ Case File 3 (More Time): Start with 30 flips instead of 20
 Case File 4 (Safety Net): 10-second ball save at mode start; does not add flips
 Case File 5 (Shot Assist): First drop hit also knocks down two standing right-bank targets; assisted drops award +3 flips each
 
+Igor
+Case File 1 (More Jackpots): Allow 7 bad shots instead of 5 before Igor's defenses end the mode
+Case File 2 (Bigger Jackpots): Jackpots still start at 100K but grow by 50K instead of 25K after each good shot
+Case File 3 (More Time): Use a 20-second opening ball save
+Case File 4 (Safety Net): Use a 10-second opening ball save
+Case File 5 (Shot Assist): Convert the first bad shot into the current Jackpot without adding a strike
+
 Reptilla
 Case File 1 (More Jackpots): Add one extra rampage jackpot
 Case File 2 (Bigger Jackpots): Increase rampage value

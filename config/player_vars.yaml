@@ -813,6 +813,12 @@ player_vars:
   igor_state:
     initial_value: 0
     value_type: int
+  igor_biggest_jackpot:
+    initial_value: 0
+    value_type: int
+  igor_ball_save_seconds:
+    initial_value: 0
+    value_type: int
   skymaster_state:
     initial_value: 0
     value_type: int
