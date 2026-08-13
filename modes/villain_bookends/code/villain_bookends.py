@@ -807,42 +807,32 @@ class VillainBookends(Mode):
             'state_var': 'molemen_state',
             'song': 'play_song_42',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Charles Cameo hides behind disguises.
-        #   intro_2: Identify the real shot pattern.
-        #   intro_3: Shoot the true villain before he changes roles.
-        #   stat_2_label: MAJOR HITS
         'charles_cameo': {
             'title': 'CHARLES CAMEO',
-            'intro_1': 'Cameo wears disguises.',
-            'intro_2': 'Find the real shot.',
-            'intro_3': 'Catch him changing.',
+            'intro_1': 'Shoot the lit side.',
+            'intro_2': 'Then shoot its mirror.',
+            'intro_3': 'Finish at the webs.',
             'summary_title_complete': 'CHARLES CAMEO DEFEATED',
             'summary_title_failed': 'CHARLES CAMEO ESCAPED',
-            'stat_1_label': 'HITS',
-            'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'MAJORS',
-            'stat_2_var': 'active_mode_major_hits',
+            'stat_1_label': 'JACKPOTS',
+            'stat_1_var': 'active_mode_major_hits',
+            'stat_2_label': 'BIGGEST JP',
+            'stat_2_var': 'charles_cameo_biggest_jackpot',
             'points_var': 'active_mode_points',
             'state_var': 'charles_cameo_state',
             'song': 'play_song_28',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Brutus is guarding the hideout.
-        #   intro_2: Break through his cover with lit shots.
-        #   intro_3: Finish the fight before he blocks the route.
-        #   stat_2_label: MAJOR HITS
         'brutus': {
             'title': 'BRUTUS',
-            'intro_1': 'Brutus guards cover.',
-            'intro_2': 'Break through shots.',
-            'intro_3': 'Finish the fight.',
+            'intro_1': 'Brutus guards the artwork.',
+            'intro_2': 'Hit a right drop to lure him.',
+            'intro_3': 'Then shoot any saucer.',
             'summary_title_complete': 'BRUTUS BEATEN',
             'summary_title_failed': 'BRUTUS ESCAPED',
-            'stat_1_label': 'HITS',
-            'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'MAJORS',
-            'stat_2_var': 'active_mode_major_hits',
+            'stat_1_label': 'ARTWORK',
+            'stat_1_var': 'brutus_jackpots',
+            'stat_2_label': 'BIGGEST JP',
+            'stat_2_var': 'brutus_biggest_jackpot',
             'points_var': 'active_mode_points',
             'state_var': 'brutus_state',
             'song': 'play_song_52',

@@ -1,22 +1,22 @@
-ASM67 — 17-MODE RESEARCH ARCHIVE / 15 REMAINING
+ASM67 — 17-MODE RESEARCH ARCHIVE / 13 REMAINING
 RESEARCH AND STARTING-POINT CONCEPTS
 
 Research draft: August 12, 2026
-Project baseline: GitHub main at 5d0526f (reviewed August 12, 2026)
+Project baseline: GitHub main at 60d82f3 (reviewed August 13, 2026)
 
 
 HOW TO USE THIS DOCUMENT
 
 This is a source-backed idea book, not a final rules document. Episode facts are
-separated from design proposals. DeVargas and The Spider-Men are retained as
-completed research history and are approved/coded. All other recommendations
-are starting points until separately reviewed and approved.
+separated from design proposals. DeVargas, Charles Cameo, Brutus, and The
+Spider-Men are retained as completed research history and are approved/coded.
+All other recommendations are starting points until separately reviewed.
 
-Current code/document status: 50 of 55 regular villains are substantive and five
+Current code/document status: 52 of 55 regular villains are substantive and three
 remain placeholders. Of 11 chapter mini-wizards, two are approved/coded, three
 are functional but provisional, and six are placeholder shells. The generic
 Final Showdown framework exists, but its dedicated Kingpin design/retheme is
-unfinished. Total remaining incomplete or unapproved modes: 15.
+unfinished. Total remaining incomplete or unapproved modes: 13.
 
 Wizard Case File rule: chapter mini-wizards do not receive the five individual
 regular-villain Case File powers. Each Jackpot and Super Jackpot instead adds
@@ -29,7 +29,7 @@ to shoot, what changed, and why the rule belongs to that particular character.
 
 
 ============================================================
-PART I — SEVEN REGULAR-VILLAIN REVIEWS (FIVE REMAINING; TWO COMPLETED)
+PART I — SEVEN REGULAR-VILLAIN REVIEWS (THREE REMAINING; FOUR COMPLETED)
 ============================================================
 
 
@@ -185,7 +185,7 @@ https://spiderfan.org/review/shows/spiderman_tv_1960s/s01e19-2.html
 3. BRUTUS
 Chapter 10 — Savage Oddities
 Episode: “Double Identity”
-Current status: Placeholder
+Current status: Implemented / needs machine playtest
 
 IDENTITY CLARIFICATION
 
@@ -210,20 +210,23 @@ PLAYFIELD TRANSLATION
 - Pops and rubbers can score physical “bashing” points without becoming the
   entire objective.
 
-CONCEPT A — GET PAST THE BODYGUARD (RECOMMENDED)
+APPROVED DESIGN — GET PAST THE BODYGUARD
 
-One of the three saucers holds a valuable art treasure, but Brutus is guarding
-it. A clearly lit opposite-side bank or web target lures him away. Once that shot
-is made, the treasure saucer lights for a brief steal/recovery window. Collect
-the treasure before Brutus returns.
+All five right drops begin standing. Hitting any one right drop scores 50K,
+programmatically knocks down the other four, and lures Brutus away. All three
+saucers then light for 15 seconds. The first saucer hit scores a 250K Artwork
+Jackpot, closes the window, and resets the right bank for the next round.
 
-Repeat for three treasures. Later rounds require either more lure hits or shorter
-windows. A shot into a guarded saucer scores a small blocked award and ejects
-quickly without collecting the treasure. Completing all treasures defeats
-Brutus by making his guarding irrelevant.
+Hitting any left drop during the open window pulls Brutus back immediately,
+turns off the saucers, and resets the right bank without awarding the Artwork
+Jackpot. A timeout does the same. Left drops have no Brutus effect while the
+saucers are guarded. A guarded saucer scores 25K and ejects quickly. Three
+Artwork Jackpots defeat Brutus.
 
-This gives a minor physical character a clear routing mode instead of another
-Rhino-style health bar.
+The mode changes to the open state before firing the other right-bank knockdown
+coils, so their switch closures cannot create duplicate lures or windows. The
+right bank is reset only when a Jackpot, left-drop interruption, or timeout ends
+the current opportunity.
 
 CONCEPT B — BRUTUS BASH
 
@@ -236,19 +239,23 @@ The player must move a tapestry through three delivery checkpoints while Brutus
 randomly intercepts one. Spinner activity reveals the safe route. This uses the
 episode well but risks becoming another reveal mode.
 
-CASE FILE STARTING POINTS
+IMPLEMENTED CASE FILES
 
-- More Jackpots: add a fourth high-value artwork.
-- Bigger Jackpots: increase treasure values.
-- More Time: lengthen each unguarded window.
-- Safety Net: 10-second ball save.
-- Shot Assist: automatically lures Brutus away on the first guarded round.
+- More Jackpots: require a fourth Artwork Jackpot.
+- Bigger Jackpots: Artwork Jackpots score 400K.
+- More Time: each open saucer window lasts 20 seconds.
+- Safety Net: start the standard 10-second Case File ball save.
+- Shot Assist: two seconds after mode start, programmatically drop the entire
+  right bank and open the first saucer window. Normal rules apply afterward.
 
-OPEN QUESTIONS
+IMPLEMENTATION NOTES
 
-- Should treasures always progress Saucer 1 to 3, or change position?
-- Should a guarded saucer hit cost time, points, or only opportunity?
-- How many lure hits should later rounds require?
+- All three saucers are valid during every open window.
+- The VUK is not a mode shot and performs a neutral delayed eject.
+- The rooftop gate remains closed throughout the mode.
+- Green right-bank inserts mark the lure shots. Red-lensed hole lamps and green
+  saucer numbers distinguish guarded saucers from flashing Artwork Jackpots.
+- The Brutus portrait replaces the inherited Lizard placeholder video.
 
 SOURCES
 
@@ -1133,23 +1140,22 @@ Kingpin Final Showdown       Four-act criminal-empire finale    Mixed   Whole pl
 PART V — RECOMMENDED REVIEW ORDER
 ============================================================
 
-Completed from this research list: DeVargas and The Spider-Men.
+Completed from this research list: DeVargas, The Spider-Men, Charles Cameo, and
+Brutus.
 
-1. Invasion from Everywhere — can now use all five Chapter 9 modes.
-2. Charles Cameo.
-3. Brutus.
-4. Skymaster.
+1. Skymaster.
+2. Sir Galahad.
+3. Master Vine.
+4. Invasion from Everywhere — can now use all five Chapter 9 modes.
 5. Who Is the Real Villain?
-6. Sir Galahad.
-7. Master Vine.
-8. Time-Tossed Showdown.
-9. Mastermind Trap.
-10. Crime Wave.
-11. The Web Tightens.
-12. Fifth Dimension Curse.
-13. Mad Science Meltdown.
-14. Nature Strikes Back.
-15. Kingpin — Final Showdown.
+6. Time-Tossed Showdown.
+7. Mastermind Trap.
+8. Crime Wave.
+9. The Web Tightens.
+10. Fifth Dimension Curse.
+11. Mad Science Meltdown.
+12. Nature Strikes Back.
+13. Kingpin — Final Showdown.
 
 
 FINAL RESEARCH CONCLUSION
@@ -1168,6 +1174,7 @@ specific action that no other ASM67 mode owns:
 - Kingpin receives an episode-based, multi-act finale with the existing area
   multiball infrastructure reserved for the climactic Brainwasher act.
 
-DeVargas and The Spider-Men are approved and coded. The remaining entries are
-research starting points until each receives a separate design review. The next
-recommended discussion is Invasion from Everywhere, followed by Charles Cameo.
+DeVargas, The Spider-Men, Charles Cameo, and Brutus are approved and coded. The
+remaining entries are research starting points until each receives a separate
+design review. With wizard modes deferred, the next recommended regular-villain
+discussion is Skymaster.

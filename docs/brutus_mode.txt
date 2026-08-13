@@ -1,0 +1,54 @@
+BRUTUS — GET PAST THE BODYGUARD
+Implemented: August 13, 2026
+
+MODE IDENTITY
+
+Brutus guards stolen artwork in all three saucers. The player must lure him
+away with the right drop bank, recover one artwork before he returns, and avoid
+the left drop bank while the saucers are open.
+
+CORE LOOP
+
+1. Begin with all five right drops standing and all saucers guarded.
+2. Hit any right drop for 50K. The other four targets drop programmatically.
+3. All three saucers light for 15 seconds.
+4. Shoot any saucer for a 250K Artwork Jackpot.
+5. Close the window, reset the right bank, and repeat.
+
+Three Artwork Jackpots defeat Brutus. The mode changes state before firing the
+four automatic knockdown coils, so their switch closures cannot create extra
+lures or additional windows.
+
+BRUTUS RETURNS
+
+- Any left drop hit during an open window immediately turns off the saucers and
+  resets the right bank without awarding the Artwork Jackpot.
+- If the 15-second window expires, the same round restarts with the right bank
+  reset. Collected Artwork Jackpots are preserved.
+- Left drops do not affect Brutus while the saucers are guarded.
+- A guarded saucer scores 25K, displays BLOCKED BY BRUTUS, and ejects quickly.
+
+CASE FILES
+
+- More Jackpots: require four Artwork Jackpots instead of three.
+- Bigger Jackpots: Artwork Jackpots score 400K instead of 250K.
+- More Time: open saucer windows last 20 seconds instead of 15.
+- Safety Net: start the standard 10-second Case File ball save.
+- Shot Assist: two seconds after mode start, programmatically drop all five
+  right-bank targets and open the first saucer window. It applies only once.
+
+DEVICE AND PRESENTATION RULES
+
+- The rooftop gate remains closed throughout Brutus.
+- The VUK is not a mode shot and ejects after a neutral one-second delay.
+- Green right-bank inserts pulse while Brutus is guarding the artwork.
+- During an open window, the red-lensed hole lamps and green saucer-number
+  inserts flash; the left-bank GI flashes as the danger shot.
+- The mode uses the Brutus portrait rather than inherited Lizard footage.
+
+SCORING SUMMARY
+
+Right-drop lure:                    50K
+Guarded saucer:                     25K
+Artwork Jackpot:                   250K
+Artwork Jackpot with Bigger:       400K

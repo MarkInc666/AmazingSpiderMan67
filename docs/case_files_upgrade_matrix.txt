@@ -1,5 +1,5 @@
 ASM67 — CASE FILE UPGRADE MATRIX
-Code/documentation sync: August 12, 2026
+Code/documentation sync: August 13, 2026
 
 Rules and scope
 
@@ -74,8 +74,8 @@ DeVargas | 25 gold opportunities | Gold 200K / 175K / 150K | Gold windows 5s / 4
 Molemen | Pop Add-a-Ball in two hits | Bigger area and saucer Jackpots | 10s one-ball grace | 25s opening save | Left web also counts as center web
 
 CHAPTER 10 — SAVAGE ODDITIES
-Charles Cameo | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER
-Brutus | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER
+Charles Cameo | Upper-target pair added before Pops | 75K source shots / 300K ordinary mirrored Jackpots; Web Super stays 1M | Mirror windows last 15s | 10s ball save | First expired mirror auto-collects
+Brutus | Fourth Artwork Jackpot required | Artwork Jackpots score 400K | Open saucer windows last 20s | 10s ball save | Entire right bank drops 2s after mode start to open first window
 Desperado | Extra showdown Jackpot | 250K new targets | 70s pursuit | 10s ball save | Round 2 spots extra target
 Skymaster | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER
 Conner's Reptiles | Center-web Rampage Jackpot | Jackpots 2X | Super timer 16s | Ball save during Rampage | Left-bank assist available

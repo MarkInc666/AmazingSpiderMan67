@@ -1,4 +1,4 @@
-ASM67 — REMAINING 15 MODES
+ASM67 — REMAINING 13 MODES
 RESEARCH AND STARTING-CONCEPT BRIEF
 
 Prepared: August 12, 2026
@@ -6,7 +6,7 @@ Prepared: August 12, 2026
 
 PURPOSE
 
-Research the remaining 15 incomplete or unapproved ASM67 modes and develop a strong,
+Research the remaining 13 incomplete or unapproved ASM67 modes and develop a strong,
 episode-based starting concept for each one. These concepts are intended for
 later discussion and refinement. They are not approved final designs and should
 not be coded until reviewed with the user.
@@ -14,55 +14,54 @@ not be coded until reviewed with the user.
 
 CURRENT TOTALS
 
-Regular villain modes: 55 total; 50 substantively implemented; 5 placeholders.
+Regular villain modes: 55 total; 52 substantively implemented; 3 placeholders.
 Chapter mini-wizards: 11 total; 2 approved/coded; 3 functional but provisional;
 6 placeholder shells. Nine remain incomplete or unapproved.
 Final Kingpin wizard: working generic framework; dedicated design/retheme incomplete.
 
-Remaining research/design workload: 15 modes.
+Remaining research/design workload: 13 modes.
 
 
-THE 15 MODES
+THE 13 MODES
 
-Regular villains (5)
+Regular villains (3)
 
-1. Charles Cameo — Chapter 10: Savage Oddities
-2. Brutus — Chapter 10: Savage Oddities
-3. Skymaster — Chapter 10: Savage Oddities
-4. Sir Galahad — Chapter 11: Dimensional Finale
-5. Master Vine — Chapter 11: Dimensional Finale
+1. Skymaster — Chapter 10: Savage Oddities
+2. Sir Galahad — Chapter 11: Dimensional Finale
+3. Master Vine — Chapter 11: Dimensional Finale
 
 Chapter mini-wizards needing replacement, redesign, or approval (9)
 
-6. Mastermind Trap — Chapter 2: Masked Masterminds (functional/provisional)
-7. Crime Wave — Chapter 4: Crime Wave (functional/provisional)
-8. The Web Tightens — Chapter 5: Danger Lurks (placeholder)
-9. Fifth Dimension Curse — Chapter 6: Mystic Menace (functional/provisional)
-10. Mad Science Meltdown — Chapter 7: Mad Science (placeholder)
-11. Nature Strikes Back — Chapter 8: Elemental Chaos (placeholder)
-12. Invasion from Everywhere — Chapter 9: Lost Worlds (placeholder)
-13. Who Is the Real Villain? — Chapter 10: Savage Oddities (placeholder)
-14. Time-Tossed Showdown — Chapter 11: Dimensional Finale (placeholder)
+4. Mastermind Trap — Chapter 2: Masked Masterminds (functional/provisional)
+5. Crime Wave — Chapter 4: Crime Wave (functional/provisional)
+6. The Web Tightens — Chapter 5: Danger Lurks (placeholder)
+7. Fifth Dimension Curse — Chapter 6: Mystic Menace (functional/provisional)
+8. Mad Science Meltdown — Chapter 7: Mad Science (placeholder)
+9. Nature Strikes Back — Chapter 8: Elemental Chaos (placeholder)
+10. Invasion from Everywhere — Chapter 9: Lost Worlds (placeholder)
+11. Who Is the Real Villain? — Chapter 10: Savage Oddities (placeholder)
+12. Time-Tossed Showdown — Chapter 11: Dimensional Finale (placeholder)
 
 Final wizard (1)
 
-15. Kingpin — Final Showdown
+13. Kingpin — Final Showdown
 
 
 WIZARD MODES ALREADY CONSIDERED GOOD
 
-These two are not part of the remaining 15-mode research task:
+These two are not part of the remaining 13-mode research task:
 
 - Sinister Surge — Chapter 1
 - Trubble Unleashed — Chapter 3
 
-DeVargas and The Spider-Men are also no longer on the remaining list: both have
-substantive implementations, though machine playtest and polish are still due.
+DeVargas, The Spider-Men, Charles Cameo, and Brutus are also no longer on the
+remaining list: all four have substantive implementations, though machine
+playtest and polish are still due.
 
 
 RESEARCH REQUIRED FOR EACH REGULAR VILLAIN
 
-For each of the five remaining regular villains:
+For each of the three remaining regular villains:
 
 1. Identify the character and every relevant 1967 Spider-Man episode.
 2. Summarize what the villain does in the episode.
@@ -172,7 +171,7 @@ RESEARCH QUALITY RULES
 
 DELIVERABLE
 
-Produce one master research document covering all 15 modes. Organize it first by
+Produce one master research document covering all 13 modes. Organize it first by
 chapter and then by mode. Include a short comparison table at the end showing:
 
 - Recommended gameplay identity
@@ -190,21 +189,19 @@ the project documentation and planning workbook.
 
 RECOMMENDED DESIGN ORDER
 
-1. Invasion from Everywhere.
-2. Charles Cameo.
-3. Brutus.
-4. Skymaster.
+1. Skymaster.
+2. Sir Galahad.
+3. Master Vine.
+4. Invasion from Everywhere.
 5. Who Is the Real Villain?
-6. Sir Galahad.
-7. Master Vine.
-8. Time-Tossed Showdown.
-9. Mastermind Trap.
-10. Crime Wave.
-11. The Web Tightens.
-12. Fifth Dimension Curse.
-13. Mad Science Meltdown.
-14. Nature Strikes Back.
-15. Kingpin — Final Showdown, after the chapter wizards have stable identities.
+6. Time-Tossed Showdown.
+7. Mastermind Trap.
+8. Crime Wave.
+9. The Web Tightens.
+10. Fifth Dimension Curse.
+11. Mad Science Meltdown.
+12. Nature Strikes Back.
+13. Kingpin — Final Showdown, after the chapter wizards have stable identities.
 
 
 APPROVAL BOUNDARY

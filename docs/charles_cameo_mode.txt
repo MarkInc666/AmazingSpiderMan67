@@ -1,0 +1,59 @@
+CHARLES CAMEO — DOUBLE IDENTITY
+Implemented: August 13, 2026
+
+MODE IDENTITY
+
+Charles Cameo copies a lit shot on the opposite side of the playfield. This is
+a deterministic mirrored-shot mode, not a guessing mode: the first shot creates
+the disguise, and the player then shoots its visible counterpart.
+
+NORMAL STAGE ORDER
+
+1. Pops
+2. Drop banks
+3. A + B
+4. Web Super
+
+At the start of each stage, one side is selected randomly and pulses at normal
+speed. Hitting it scores 50K, then its paired shot flashes at double speed for
+10 seconds. Hitting the mirror scores a 250K Cameo Jackpot and starts the next
+stage. If the timer expires, the same stage restarts from its original side;
+completed stages are never lost.
+
+SHOT DEFINITIONS
+
+- Pops: left pop paired with right pop.
+- Drop banks: any target or bank rubber on the lit side. Cameo never forces a
+  bank reset, so its rubber remains available if all targets are down.
+- A + B: upper A rollover paired with upper B rollover.
+- Web Super: left web target paired with center/right web target. The mirrored
+  follow-up is a fixed 1M Super Jackpot and completes the mode.
+
+CASE FILES
+
+- More Jackpots: insert a left/right upper-target pair before Pops. Cameo opens
+  the rooftop gate for this stage and closes it after the mirrored Jackpot.
+- Bigger Jackpots: source shots score 75K and ordinary mirrored Jackpots score
+  300K. The Web Super remains fixed at 1M.
+- More Time: mirror windows last 15 seconds instead of 10.
+- Safety Net: start the standard 10-second Case File ball save.
+- Shot Assist: automatically award the first expired mirrored follow-up. This
+  can award the Web Super if it is the first mirror to expire.
+
+DEVICE AND FLOW RULES
+
+- Daily Bugle Mystery is disabled during the mode so A+B and rooftop gate
+  control cannot interfere with Cameo's staged shots.
+- The VUK ejects after a neutral one-second delay.
+- Saucers are not mode shots and eject normally.
+- Only rooftop_diverter_open and rooftop_diverter_close control the gate.
+- A drain ends the attempt; the normal villain bookend/progression flow handles
+  the failed summary.
+
+SCORING SUMMARY
+
+Source shot:                         50K
+Source shot with Bigger Jackpots:   75K
+Cameo Jackpot:                     250K
+Cameo Jackpot with Bigger:         300K
+Web Super Jackpot:                   1M

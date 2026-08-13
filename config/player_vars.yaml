@@ -399,6 +399,9 @@ player_vars:
   charles_cameo_state:
     initial_value: 0
     value_type: int
+  charles_cameo_biggest_jackpot:
+    initial_value: 0
+    value_type: int
   juan_ponce_de_leon_state:
     initial_value: 0
     value_type: int
@@ -811,6 +814,18 @@ player_vars:
     initial_value: 15
     value_type: int
   brutus_state:
+    initial_value: 0
+    value_type: int
+  brutus_jackpots:
+    initial_value: 0
+    value_type: int
+  brutus_biggest_jackpot:
+    initial_value: 0
+    value_type: int
+  brutus_blocked_saucers:
+    initial_value: 0
+    value_type: int
+  brutus_seconds_left:
     initial_value: 0
     value_type: int
   igor_state:
