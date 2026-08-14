@@ -1,5 +1,8 @@
 #config_version=6
 
+# Conner's Reptiles — Swamp Rampage. Pops reveal random Jackpot objectives;
+# collecting every revealed objective opens the gate for the VUK Super.
+
 mode:
   start_events: start_mode_conners_reptiles
   stop_events:
@@ -9,101 +12,182 @@ mode:
   code: conners_reptiles.ConnersReptiles
   priority: 300
 
+ball_saves:
+  conners_reptiles_10s_save:
+    active_time: 10s
+    hurry_up_time: 2s
+    grace_period: 1s
+    enable_events: conners_reptiles_enable_10s_ball_save
+    disable_events:
+      - conners_reptiles_mode_complete
+      - mode_conners_reptiles_stopping
+    auto_launch: true
+    balls_to_save: 1
+  conners_reptiles_20s_save:
+    active_time: 20s
+    hurry_up_time: 2s
+    grace_period: 1s
+    enable_events: conners_reptiles_enable_20s_ball_save
+    disable_events:
+      - conners_reptiles_mode_complete
+      - mode_conners_reptiles_stopping
+    auto_launch: true
+    balls_to_save: 1
+
 widget_player:
   mode_conners_reptiles_started:
-    conners_reptiles:
-      action: play
-
+    conners_reptiles: {action: play}
   conners_reptiles_mode_complete:
-    conners_reptiles:
-      action: remove
-
+    conners_reptiles: {action: remove}
   mode_conners_reptiles_stopping:
-    conners_reptiles:
-      action: remove
+    conners_reptiles: {action: remove}
 
 event_player:
-  s_pop_left_active:
-    - conners_reptiles_pop_hit
-  s_pop_right_active:
-    - conners_reptiles_pop_hit
+  s_pop_left_active: conners_reptiles_pop_hit
+  s_pop_right_active: conners_reptiles_pop_hit
 
-  s_left_drops_1_active:
-    - conners_reptiles_left_drop_1_hit
-  s_left_drops_2_active:
-    - conners_reptiles_left_drop_2_hit
-  s_left_drops_3_active:
-    - conners_reptiles_left_drop_3_hit
-
-  s_right_drops_1_active:
-    - conners_reptiles_right_drop_1_hit
-  s_right_drops_2_active:
-    - conners_reptiles_right_drop_2_hit
-  s_right_drops_3_active:
-    - conners_reptiles_right_drop_3_hit
-  s_right_drops_4_active:
-    - conners_reptiles_right_drop_4_hit
-  s_right_drops_5_active:
-    - conners_reptiles_right_drop_5_hit
-
-  s_upper_target_center_active:
-    - conners_reptiles_upper_middle_hit
-
-  s_web_target_mid_active:
-    - conners_reptiles_center_web_hit
+  s_inlane_a_active: conners_reptiles_upper_a_hit
+  s_inlane_b_active: conners_reptiles_upper_b_hit
+  s_inlane_m_r_active: conners_reptiles_middle_a_hit
+  s_inlane_m_l_active: conners_reptiles_middle_b_hit
+  s_web_target_left_active: conners_reptiles_left_web_hit
+  s_web_target_mid_active: conners_reptiles_center_web_hit
+  s_star_rollover_active: conners_reptiles_star_hit
 
   s_saucer_1_active:
-    - clear_saucers
+    - conners_reptiles_saucer_1_hit
+    - clear_saucers_delayed
   s_saucer_2_active:
     - conners_reptiles_saucer_2_hit
-    - clear_saucers
+    - clear_saucers_delayed
   s_saucer_3_active:
-    - clear_saucers
+    - conners_reptiles_saucer_3_hit
+    - clear_saucers_delayed
+
+  s_vuk_switch_active: conners_reptiles_vuk_hit
 
   mode_conners_reptiles_started:
-    - clear_saucers
-    - reset_drops
+    - disable_daily_bugle_mystery
+    - rooftop_diverter_close
+    - clear_saucers_delayed
     - conners_reptiles_clear_all_lights
-
   mode_conners_reptiles_stopping:
     - conners_reptiles_clear_all_lights
+    - clear_saucers_delayed
+    - enable_daily_bugle_mystery
+    - daily_bugle_restore_state
+    - rooftop_diverter_close
 
 light_player:
-  # Full-playfield GI theme while this mode is active.
   mode_conners_reptiles_started:
     gi: 408020
-
   mode_conners_reptiles_stopping:
     gi: E0E0E0
 
-  conners_reptiles_left_bank_lit:
-    l_3bankbonus: orange
-
-  conners_reptiles_upper_middle_lit:
-    l_upper_middle: orange
-
-  conners_reptiles_right_bank_lit:
-    l_5bank_3: orange
-
+show_player:
+  conners_reptiles_upper_a_lit:
+    conners_reptiles_upper_a_pulse: {loops: -1, priority: 340}
+  conners_reptiles_upper_a_collected:
+    conners_reptiles_upper_a_pulse: {action: stop}
+  conners_reptiles_upper_b_lit:
+    conners_reptiles_upper_b_pulse: {loops: -1, priority: 340}
+  conners_reptiles_upper_b_collected:
+    conners_reptiles_upper_b_pulse: {action: stop}
+  conners_reptiles_middle_a_lit:
+    conners_reptiles_middle_a_pulse: {loops: -1, priority: 340}
+  conners_reptiles_middle_a_collected:
+    conners_reptiles_middle_a_pulse: {action: stop}
+  conners_reptiles_middle_b_lit:
+    conners_reptiles_middle_b_pulse: {loops: -1, priority: 340}
+  conners_reptiles_middle_b_collected:
+    conners_reptiles_middle_b_pulse: {action: stop}
+  conners_reptiles_left_web_lit:
+    conners_reptiles_left_web_pulse: {loops: -1, priority: 340}
+  conners_reptiles_left_web_collected:
+    conners_reptiles_left_web_pulse: {action: stop}
   conners_reptiles_center_web_lit:
-    l_mid_web_target: orange
-
+    conners_reptiles_center_web_pulse: {loops: -1, priority: 340}
+  conners_reptiles_center_web_collected:
+    conners_reptiles_center_web_pulse: {action: stop}
+  conners_reptiles_saucers_lit:
+    conners_reptiles_saucers_pulse: {loops: -1, priority: 340}
+  conners_reptiles_saucers_collected:
+    conners_reptiles_saucers_pulse: {action: stop}
+  conners_reptiles_star_lit:
+    conners_reptiles_star_pulse: {loops: -1, priority: 340}
+  conners_reptiles_star_collected:
+    conners_reptiles_star_pulse: {action: stop}
   conners_reptiles_super_jackpot_lit:
-    l_2: red
-    l_2_hole_l: red
-    l_2_hole_r: red
+    conners_reptiles_vuk_super_pulse: {loops: -1, priority: 350}
 
-  conners_reptiles_clear_rampage_lights:
-    l_3bankbonus: off
-    l_upper_middle: off
-    l_5bank_3: off
-    l_mid_web_target: off
-
+  conners_reptiles_clear_jackpot_lights: &stop_reptile_jackpots
+    conners_reptiles_upper_a_pulse: {action: stop}
+    conners_reptiles_upper_b_pulse: {action: stop}
+    conners_reptiles_middle_a_pulse: {action: stop}
+    conners_reptiles_middle_b_pulse: {action: stop}
+    conners_reptiles_left_web_pulse: {action: stop}
+    conners_reptiles_center_web_pulse: {action: stop}
+    conners_reptiles_saucers_pulse: {action: stop}
+    conners_reptiles_star_pulse: {action: stop}
   conners_reptiles_clear_all_lights:
-    l_3bankbonus: off
-    l_upper_middle: off
-    l_5bank_3: off
-    l_mid_web_target: off
-    l_2: off
-    l_2_hole_l: off
-    l_2_hole_r: off
+    <<: *stop_reptile_jackpots
+    conners_reptiles_vuk_super_pulse: {action: stop}
+
+shows:
+  conners_reptiles_upper_a_pulse:
+    - duration: 450ms
+      lights: {l_a_rollover: yellow}
+    - duration: 450ms
+      lights: {l_a_rollover: off}
+  conners_reptiles_upper_b_pulse:
+    - duration: 450ms
+      lights: {l_b_rollover: yellow}
+    - duration: 450ms
+      lights: {l_b_rollover: off}
+  conners_reptiles_middle_a_pulse:
+    - duration: 450ms
+      lights: {l_right_a: yellow}
+    - duration: 450ms
+      lights: {l_right_a: off}
+  conners_reptiles_middle_b_pulse:
+    - duration: 450ms
+      lights: {l_left_b: yellow}
+    - duration: 450ms
+      lights: {l_left_b: off}
+  conners_reptiles_left_web_pulse:
+    - duration: 450ms
+      lights: {l_left_web_target: white}
+    - duration: 450ms
+      lights: {l_left_web_target: off}
+  conners_reptiles_center_web_pulse:
+    - duration: 450ms
+      lights: {l_mid_web_target: white}
+    - duration: 450ms
+      lights: {l_mid_web_target: off}
+  conners_reptiles_saucers_pulse:
+    - duration: 450ms
+      lights:
+        l_1_hole_l: red
+        l_1_hole_r: red
+        l_2_hole_l: red
+        l_2_hole_r: red
+        l_3_hole_l: red
+        l_3_hole_r: red
+    - duration: 450ms
+      lights:
+        l_1_hole_l: off
+        l_1_hole_r: off
+        l_2_hole_l: off
+        l_2_hole_r: off
+        l_3_hole_l: off
+        l_3_hole_r: off
+  conners_reptiles_star_pulse:
+    - duration: 450ms
+      lights: {l_star: red}
+    - duration: 450ms
+      lights: {l_star: off}
+  conners_reptiles_vuk_super_pulse:
+    - duration: 300ms
+      lights: {l_gi_ramp: 40FF60}
+    - duration: 300ms
+      lights: {l_gi_ramp: off}

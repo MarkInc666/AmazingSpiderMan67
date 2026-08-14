@@ -48,6 +48,177 @@ event_player:
     - case_file_drop_5_hit
 
 
+# Each collected Case File selects one matching Spider-Man or J. Jonah Jameson
+# callout. Sound asset names are the stems of the .wav files in sounds/voice.
+random_event_player:
+  case_file_collected_more_jackpots:
+    - case_file_more_jackpots_callout_1
+    - case_file_more_jackpots_callout_2
+    - case_file_more_jackpots_callout_3
+    - case_file_more_jackpots_callout_4
+    - case_file_more_jackpots_callout_5
+    - case_file_more_jackpots_callout_6
+
+  case_file_collected_more_time:
+    - case_file_more_time_callout_1
+    - case_file_more_time_callout_2
+    - case_file_more_time_callout_3
+    - case_file_more_time_callout_4
+    - case_file_more_time_callout_5
+    - case_file_more_time_callout_6
+
+  case_file_collected_bigger_jackpots:
+    - case_file_bigger_jackpots_callout_1
+    - case_file_bigger_jackpots_callout_2
+    - case_file_bigger_jackpots_callout_3
+    - case_file_bigger_jackpots_callout_4
+    - case_file_bigger_jackpots_callout_5
+    - case_file_bigger_jackpots_callout_6
+
+  case_file_collected_safety_net:
+    - case_file_safety_net_callout_1
+    - case_file_safety_net_callout_2
+    - case_file_safety_net_callout_3
+    - case_file_safety_net_callout_4
+    - case_file_safety_net_callout_5
+    - case_file_safety_net_callout_6
+
+  case_file_collected_shot_assist:
+    - case_file_shot_assist_callout_1
+    - case_file_shot_assist_callout_2
+    - case_file_shot_assist_callout_3
+    - case_file_shot_assist_callout_4
+    - case_file_shot_assist_callout_5
+    - case_file_shot_assist_callout_6
+
+
+sound_player:
+  case_file_more_jackpots_callout_1:
+    jj_extra_jackpot_chances_outrageous:
+      action: play
+      bus: voice
+  case_file_more_jackpots_callout_2:
+    jj_extra_jackpots_that_menace_is_getting_paid:
+      action: play
+      bus: voice
+  case_file_more_jackpots_callout_3:
+    jj_more_jackpots_this_city_is_doomed:
+      action: play
+      bus: voice
+  case_file_more_jackpots_callout_4:
+    sm_extra_jackpots_locked_and_loaded:
+      action: play
+      bus: voice
+  case_file_more_jackpots_callout_5:
+    sm_jackpot_chances_multiplied:
+      action: play
+      bus: voice
+  case_file_more_jackpots_callout_6:
+    sm_more_jackpots_now_were_swinging:
+      action: play
+      bus: voice
+
+  case_file_more_time_callout_1:
+    jj_more_time_hes_stalling_again:
+      action: play
+      bus: voice
+  case_file_more_time_callout_2:
+    jj_that_wallcrawler_bought_himself_time:
+      action: play
+      bus: voice
+  case_file_more_time_callout_3:
+    jj_the_clock_is_giving_spiderman_a_break:
+      action: play
+      bus: voice
+  case_file_more_time_callout_4:
+    sm_a_little_more_time_never_hurts:
+      action: play
+      bus: voice
+  case_file_more_time_callout_5:
+    sm_clocks_slowing_down:
+      action: play
+      bus: voice
+  case_file_more_time_callout_6:
+    sm_timer_trouble_not_anymore:
+      action: play
+      bus: voice
+
+  case_file_bigger_jackpots_callout_1:
+    jj_bigger_jackpots_hes_robbing_the_scoreboard:
+      action: play
+      bus: voice
+  case_file_bigger_jackpots_callout_2:
+    jj_bigger_values_this_is_irresponsible:
+      action: play
+      bus: voice
+  case_file_bigger_jackpots_callout_3:
+    jj_stop_inflating_that_menaces_jackpot:
+      action: play
+      bus: voice
+  case_file_bigger_jackpots_callout_4:
+    sm_bigger_jackpots_my_spider_sense_approves:
+      action: play
+      bus: voice
+  case_file_bigger_jackpots_callout_5:
+    sm_jackpot_value_boosted:
+      action: play
+      bus: voice
+  case_file_bigger_jackpots_callout_6:
+    sm_now_thats_a_spectacular_jackpot:
+      action: play
+      bus: voice
+
+  case_file_safety_net_callout_1:
+    jj_a_safety_net_he_gets_everything:
+      action: play
+      bus: voice
+  case_file_safety_net_callout_2:
+    jj_saved_again_unbelievable:
+      action: play
+      bus: voice
+  case_file_safety_net_callout_3:
+    jj_who_authorized_this_protection:
+      action: play
+      bus: voice
+  case_file_safety_net_callout_4:
+    sm_a_little_spider_insurance:
+      action: play
+      bus: voice
+  case_file_safety_net_callout_5:
+    sm_safety_net_deployed:
+      action: play
+      bus: voice
+  case_file_safety_net_callout_6:
+    sm_saved_by_the_web:
+      action: play
+      bus: voice
+
+  case_file_shot_assist_callout_1:
+    jj_another_unfair_advantage_for_spiderman:
+      action: play
+      bus: voice
+  case_file_shot_assist_callout_2:
+    jj_shot_assist_hes_cheating:
+      action: play
+      bus: voice
+  case_file_shot_assist_callout_3:
+    jj_the_shot_was_practically_handed_to_him:
+      action: play
+      bus: voice
+  case_file_shot_assist_callout_4:
+    sm_shot_assist:
+      action: play
+      bus: voice
+  case_file_shot_assist_callout_5:
+    sm_spidey_assist_activated:
+      action: play
+      bus: voice
+  case_file_shot_assist_callout_6:
+    sm_that_shot_just_got_easier:
+      action: play
+      bus: voice
+
+
 show_player:
   # Any right 5-bank hit flashes the local GI.
   case_file_any_drop_hit:

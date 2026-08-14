@@ -1,0 +1,55 @@
+CONNER'S REPTILES — SWAMP RAMPAGE
+Final rules sync: August 14, 2026
+
+Core rules
+
+- The rooftop gate remains closed during the Jackpot phase.
+- Every physical pop hit scores 25,000, adds 50,000 to the persistent Swamp Bonus,
+  and reveals one random unique Jackpot objective that has not already been revealed.
+- Pop hits continue scoring and adding to Swamp Bonus throughout the entire mode,
+  including after every Jackpot has been revealed and while the VUK Super is lit.
+- Revealed Jackpot objectives pulse until collected and remain lit indefinitely.
+
+Base Jackpot objectives
+
+1. Upper A rollover
+2. Upper B rollover
+3. Middle A rollover
+4. Middle B rollover
+5. Left web target
+6. Center web target
+7. Saucers — any of Saucers 1, 2, or 3 collects this single grouped objective
+
+Scoring and completion
+
+- Each revealed Jackpot scores 100,000.
+- Collecting all required Jackpot objectives opens the rooftop gate using
+  rooftop_diverter_open and lights the VUK for an untimed 500,000 Super.
+- Only collecting the VUK Super defeats Conner's Reptiles and sets the mode state
+  to completed. Starting the mode or reaching the Super does not mark completion.
+- The Super is held in the VUK until the villain summary is finished.
+
+Persistent Swamp Bonus
+
+- Every counted pop hit adds 50,000 to swamp_bonus.
+- Swamp Bonus persists across balls and is awarded on the end-of-ball Mode Bonus page.
+- Immediate pop scoring and the persistent Swamp Bonus are separate awards.
+
+Case Files
+
+- More Jackpots: adds the star rollover as an eighth required Jackpot objective.
+- Bigger Jackpots: each revealed Jackpot scores 150,000 instead of 100,000.
+  Pop scoring, Swamp Bonus contributions, and the 500,000 VUK Super do not change.
+- More Time: when Safety Net is active, extends its opening ball save from 10 to
+  20 seconds.
+- Safety Net: 10-second opening ball save.
+- Shot Assist: the first physical pop hit counts as two pop hits. It scores 50,000,
+  adds 100,000 to Swamp Bonus, and reveals two unique Jackpot objectives.
+
+Lighting
+
+- Revealed rollovers pulse yellow, web targets pulse white, and the grouped saucers
+  and optional star pulse red to match their physical lenses.
+- Collected objectives turn off.
+- When the Super is ready, the Jackpot objective lights clear and the VUK path GI
+  flashes green.

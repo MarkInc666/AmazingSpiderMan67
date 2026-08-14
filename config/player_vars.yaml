@@ -857,8 +857,31 @@ player_vars:
     value_type: int
   conners_reptiles_jackpots_collected:
     initial_value: 0
+    value_type: int
   conners_reptiles_pop_hits:
     initial_value: 0
+    value_type: int
+  conners_reptiles_rampage_level:
+    initial_value: 0
+    value_type: int
+  conners_reptiles_current_jackpot:
+    initial_value: 100000
+    value_type: int
+  conners_reptiles_super_jackpot:
+    initial_value: 500000
+    value_type: int
+  conners_reptiles_jackpots_required:
+    initial_value: 7
+    value_type: int
+  conners_reptiles_pop_score_value:
+    initial_value: 25000
+    value_type: int
+  conners_reptiles_super_lit:
+    initial_value: 0
+    value_type: int
+  conners_reptiles_super_timer_seconds:
+    initial_value: 0
+    value_type: int
   master_technician_spinner_value:
     initial_value: 0
   master_technician_multiplier:

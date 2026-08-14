@@ -37,7 +37,7 @@ class Bonus(MpfBonus):
         ("noah_boddy_bonus", "INVISIBLE FORTUNE", False),
         ("blotto_bonus", "BLOTTO RAMPAGE", False),
         ("devargas_bonus", "DEVARGAS GOLD", False),
-        ("swamp_bonus", "CONNER'S REPTILES", False),
+        ("swamp_bonus", "SWAMP BONUS", False),
         ("technician_bonus", "TECHNICIAN TRAP", False),
         # A carried bonus is always the final counted bonus entry before the
         # player-score hold. It is consumed only after being awarded.

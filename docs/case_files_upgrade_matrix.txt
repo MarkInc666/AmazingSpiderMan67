@@ -1,10 +1,11 @@
 ASM67 — CASE FILE UPGRADE MATRIX
-Code/documentation sync: August 13, 2026
+Code/documentation sync: August 14, 2026
 
 Rules and scope
 
 - This matrix contains exactly the 55 active regular villains defined by villain_progression.py.
 - Regular villains may use five individual powers: More Jackpots (MJ), Bigger Jackpots (BJ), More Time (MT), Safety Net (SN), and Shot Assist (SA).
+- Collecting any Case File plays one random matching Spider-Man or J. Jonah Jameson voice callout.
 - Chapter mini-wizards do not receive those five powers. Every mini-wizard Jackpot and Super Jackpot instead adds 20K for each Case File collected in that chapter (0–25 files; 0–500K). Ordinary switch, spinner, target, progress, and other non-jackpot scoring is unchanged.
 - The entries below describe current Python behavior. “Not implemented” is a code gap, not a proposed rule. Placeholder-villain rules remain undecided.
 
@@ -78,7 +79,7 @@ Charles Cameo | Upper-target pair added before Pops | 75K source shots / 300K or
 Brutus | Fourth Artwork Jackpot required | Artwork Jackpots score 400K | Open saucer windows last 20s | 10s ball save | Entire right bank drops 2s after mode start to open first window
 Desperado | Extra showdown Jackpot | 250K new targets | 70s pursuit | 10s ball save | Round 2 spots extra target
 Skymaster | Left web adds a second Super | Drops 150K / web Supers 750K | Super window 20s | 10s opening ball save | First upper spin drops two targets
-Conner's Reptiles | Center-web Rampage Jackpot | Jackpots 2X | Super timer 16s | Ball save during Rampage | Left-bank assist available
+Conner's Reptiles | Star Jackpot objective added | Rampage Jackpots score 150K | Opening ball save extends to 20s when Safety Net is active | 10s opening ball save | First pop counts twice: 50K score, +100K Swamp Bonus, and two Jackpots revealed
 
 CHAPTER 11 — DIMENSIONAL FINALE
 Sir Galahad | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER
