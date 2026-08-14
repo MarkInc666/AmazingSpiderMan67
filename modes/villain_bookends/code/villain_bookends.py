@@ -859,17 +859,18 @@ class VillainBookends(Mode):
         #   stat_2_label: MAJOR HITS
         'skymaster': {
             'title': 'SKYMASTER',
-            'intro_1': 'SAUCERS REACH THE BLIMP.',
-            'intro_2': 'HIT 3 UPPER TARGETS.',
-            'intro_3': 'REMAINING FLIPS BOOST SUPER.',
+            'intro_1': 'DROP ALL 8 TARGETS IN ORDER.',
+            'intro_2': 'UPPER SPINNER DROPS THE NEXT.',
+            'intro_3': 'WRONG TARGET RESETS ITS BANK.',
             'summary_title_complete': 'SKYMASTER GROUNDED',
             'summary_title_failed': 'SKYMASTER ESCAPED',
-            'stat_1_label': 'JACKPOTS',
+            'stat_1_label': 'TARGETS',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': '',
+            'stat_2_label': 'WEB JACKPOTS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'skymaster_state',
+            'completion_var': 'skymaster_defeated',
             'song': 'play_song_9',
         },
         # ORIGINAL DISPLAY TEXT:
@@ -1307,7 +1308,11 @@ class VillainBookends(Mode):
 
         data = self.VILLAINS[villain]
         state = self._get_player_value(data.get("state_var", ""), 0)
-        completed = int(state) == 2
+        completion_var = data.get("completion_var", "")
+        if completion_var:
+            completed = int(self._get_player_value(completion_var, 0)) == 1
+        else:
+            completed = int(state) == 2
         title = data["summary_title_complete"] if completed else data["summary_title_failed"]
 
         points = self._get_player_value(data["points_var"], 0)

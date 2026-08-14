@@ -1,0 +1,63 @@
+SKYMASTER MODE
+==============
+
+Source / identity
+-----------------
+- Internal key: skymaster
+- Display name: Skymaster
+- Replaces the temporary generic Skymaster placeholder.
+- Gameplay structure repurposes the former Professor Pretorius spinner-to-web
+  implementation. Professor Pretorius remains available for his separate
+  four-station reactor-management redesign.
+
+Core rules
+----------
+- Reset both lower drop banks when the mode begins.
+- Complete all eight drops in strict left-to-right order:
+  left 1, left 2, left 3, right 1, right 2, right 3, right 4, right 5.
+- Each upper-spinner spin knocks down and awards the next required target.
+- The player may also hit the targets directly, but only the next required
+  target advances the sequence.
+- A wrong direct hit resets only that target's bank. The first restored target
+  drops about 200ms after the physical reset pulse (the code waits 300ms from
+  the reset event to account for MPF's configured 100ms reset delay). Every
+  already-completed target in that bank is then knocked back down in order,
+  with 200ms between knockdowns. Sequence progress is preserved.
+- Upper-playfield entry does not reset either bank.
+- Each correct target scores 100,000 points.
+
+Super round
+-----------
+- Completing all eight drops lights the center web for a 15-second Super
+  Jackpot worth 500,000 points.
+- Collecting the center-web Super defeats Skymaster.
+- If the center Super expires, the mode ends unsuccessfully. There is no
+  second attempt.
+- A lit web Jackpot can be collected only once.
+
+Case Files
+----------
+- More Jackpots: the left web is also lit during the same Super window for a
+  second 500,000-point Super Jackpot. Center and left can each be collected
+  once. Center is still required to defeat Skymaster.
+- Bigger Jackpots: correct drops score 150,000; each web Super scores 750,000.
+- More Time: the Super window is 20 seconds instead of 15.
+- Safety Net: starts the standard 10-second Case File ball save when the mode
+  begins.
+- Shot Assist: the first upper-spinner activation advances two ordered drops,
+  staged 200ms apart.
+
+Lighting
+--------
+- The upper-spinner lamp flashes during the ordered-drop phase.
+- The green left-bank lamp flashes while a left-bank target is required.
+- The individual green right-bank lamp flashes for the required right target.
+- The center web flashes white during the main Super window.
+- With More Jackpots, the left web also flashes white.
+- GI is blue during the mode and restores to the normal neutral value on exit.
+
+Summary
+-------
+- Targets: number of correctly completed ordered drops.
+- Web Jackpots: number of unique web Supers collected.
+- Points: total Skymaster mode points.

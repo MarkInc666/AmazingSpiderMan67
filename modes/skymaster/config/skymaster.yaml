@@ -1,7 +1,8 @@
 #config_version=6
 
-# Skymaster placeholder. The former limited-flip roof-target rules now belong
-# to Baron von Rantenraven / Sky Harbor. Skymaster needs a distinct redesign.
+# Skymaster: complete all eight lower drops from left to right. The upper
+# spinner drops the next correct target. A wrong direct hit resets that bank
+# and restores its completed targets about 200ms after the physical reset pulse.
 
 mode:
   start_events: start_mode_skymaster
@@ -24,29 +25,220 @@ widget_player:
       action: remove
 
 event_player:
-  s_pop_left_active: skymaster_shot_hit
-  s_pop_right_active: skymaster_shot_hit
-  s_trispinner_opto_active: skymaster_shot_hit
-  s_web_spinner_active: skymaster_shot_hit
-  s_star_rollover_active: skymaster_shot_hit
-  s_upper_target_left_active: skymaster_shot_hit
-  s_upper_target_center_active: skymaster_shot_hit
-  s_upper_target_right_active: skymaster_shot_hit
-  s_saucer_1_active:
-    - skymaster_major_hit
+  s_trispinner_opto_active: skymaster_upper_spinner_hit
+
+  s_left_drops_1_active:
+    skymaster_drop_hit:
+      target: left_1
+  s_left_drops_2_active:
+    skymaster_drop_hit:
+      target: left_2
+  s_left_drops_3_active:
+    skymaster_drop_hit:
+      target: left_3
+  s_right_drops_1_active:
+    skymaster_drop_hit:
+      target: right_1
+  s_right_drops_2_active:
+    skymaster_drop_hit:
+      target: right_2
+  s_right_drops_3_active:
+    skymaster_drop_hit:
+      target: right_3
+  s_right_drops_4_active:
+    skymaster_drop_hit:
+      target: right_4
+  s_right_drops_5_active:
+    skymaster_drop_hit:
+      target: right_5
+
+  s_web_target_mid_active: skymaster_center_web_hit
+  s_web_target_left_active: skymaster_left_web_hit
+
+  s_saucer_1_active: clear_saucers_delayed
+  s_saucer_2_active: clear_saucers_delayed
+  s_saucer_3_active: clear_saucers_delayed
+
+  mode_skymaster_stopping:
     - clear_saucers_delayed
-  s_saucer_2_active:
-    - skymaster_major_hit
-    - clear_saucers_delayed
-  s_saucer_3_active:
-    - skymaster_major_hit
-    - clear_saucers_delayed
-  mode_skymaster_started:
-    - drop_target_bank_dt_bank_left_reset
-    - drop_target_bank_dt_bank_right_reset
+    - skymaster_clear_lights
+
+  skymaster_reset_left_bank: drop_target_bank_dt_bank_left_reset
+  skymaster_reset_right_bank: drop_target_bank_dt_bank_right_reset
+
+show_player:
+  skymaster_sequence_started:
+    skymaster_spinner_flash:
+      loops: -1
+      priority: 320
+  skymaster_super_ready:
+    skymaster_spinner_flash:
+      action: stop
+    skymaster_center_super_flash:
+      loops: -1
+      priority: 330
+  skymaster_left_super_ready:
+    skymaster_left_super_flash:
+      loops: -1
+      priority: 330
+  skymaster_center_super_collected:
+    skymaster_center_super_flash:
+      action: stop
+  skymaster_left_super_collected:
+    skymaster_left_super_flash:
+      action: stop
+  skymaster_super_expired:
+    skymaster_center_super_flash:
+      action: stop
+    skymaster_left_super_flash:
+      action: stop
+  skymaster_clear_lights:
+    skymaster_spinner_flash:
+      action: stop
+    skymaster_expected_left_flash:
+      action: stop
+    skymaster_expected_right_1_flash:
+      action: stop
+    skymaster_expected_right_2_flash:
+      action: stop
+    skymaster_expected_right_3_flash:
+      action: stop
+    skymaster_expected_right_4_flash:
+      action: stop
+    skymaster_expected_right_5_flash:
+      action: stop
+    skymaster_center_super_flash:
+      action: stop
+    skymaster_left_super_flash:
+      action: stop
+
+  skymaster_clear_target_lights:
+    skymaster_expected_left_flash:
+      action: stop
+    skymaster_expected_right_1_flash:
+      action: stop
+    skymaster_expected_right_2_flash:
+      action: stop
+    skymaster_expected_right_3_flash:
+      action: stop
+    skymaster_expected_right_4_flash:
+      action: stop
+    skymaster_expected_right_5_flash:
+      action: stop
+
+  skymaster_expected_left_1:
+    skymaster_expected_left_flash:
+      loops: -1
+      priority: 325
+  skymaster_expected_left_2:
+    skymaster_expected_left_flash:
+      loops: -1
+      priority: 325
+  skymaster_expected_left_3:
+    skymaster_expected_left_flash:
+      loops: -1
+      priority: 325
+  skymaster_expected_right_1:
+    skymaster_expected_right_1_flash:
+      loops: -1
+      priority: 325
+  skymaster_expected_right_2:
+    skymaster_expected_right_2_flash:
+      loops: -1
+      priority: 325
+  skymaster_expected_right_3:
+    skymaster_expected_right_3_flash:
+      loops: -1
+      priority: 325
+  skymaster_expected_right_4:
+    skymaster_expected_right_4_flash:
+      loops: -1
+      priority: 325
+  skymaster_expected_right_5:
+    skymaster_expected_right_5_flash:
+      loops: -1
+      priority: 325
 
 light_player:
   mode_skymaster_started:
-    gi: B8FF20
-  mode_skymaster_stopping:
+    gi: 4060FF
+  skymaster_clear_lights:
+    l_spinner: off
+    l_3bankbonus: off
+    l_5bank_1: off
+    l_5bank_2: off
+    l_5bank_3: off
+    l_5bank_4: off
+    l_5bank_5: off
+    l_mid_web_target: off
+    l_left_web_target: off
     gi: E0E0E0
+
+shows:
+  skymaster_spinner_flash:
+    - duration: 250ms
+      lights:
+        l_spinner: white
+    - duration: 250ms
+      lights:
+        l_spinner: off
+
+  skymaster_expected_left_flash:
+    - duration: 250ms
+      lights:
+        l_3bankbonus: green
+    - duration: 250ms
+      lights:
+        l_3bankbonus: off
+
+  skymaster_expected_right_1_flash:
+    - duration: 250ms
+      lights:
+        l_5bank_1: green
+    - duration: 250ms
+      lights:
+        l_5bank_1: off
+  skymaster_expected_right_2_flash:
+    - duration: 250ms
+      lights:
+        l_5bank_2: green
+    - duration: 250ms
+      lights:
+        l_5bank_2: off
+  skymaster_expected_right_3_flash:
+    - duration: 250ms
+      lights:
+        l_5bank_3: green
+    - duration: 250ms
+      lights:
+        l_5bank_3: off
+  skymaster_expected_right_4_flash:
+    - duration: 250ms
+      lights:
+        l_5bank_4: green
+    - duration: 250ms
+      lights:
+        l_5bank_4: off
+  skymaster_expected_right_5_flash:
+    - duration: 250ms
+      lights:
+        l_5bank_5: green
+    - duration: 250ms
+      lights:
+        l_5bank_5: off
+
+  skymaster_center_super_flash:
+    - duration: 200ms
+      lights:
+        l_mid_web_target: white
+    - duration: 200ms
+      lights:
+        l_mid_web_target: off
+
+  skymaster_left_super_flash:
+    - duration: 200ms
+      lights:
+        l_left_web_target: white
+    - duration: 200ms
+      lights:
+        l_left_web_target: off

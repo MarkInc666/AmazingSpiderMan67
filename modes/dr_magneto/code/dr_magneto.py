@@ -1,33 +1,29 @@
 from mpf.core.delays import DelayManager
 from mpf.core.mode import Mode
+
 from modes.common.case_file_mixin import CaseFileMixin
 
 
 class DrMagneto(CaseFileMixin, Mode):
-    """Dr. Magneto - magnetic sweep rooftop mode."""
+    """Dr. Magneto: cross-feed the A/B rollovers into the pop bumpers."""
 
     MODE_KEY = "dr_magneto"
     DISPLAY_NAME = "DR. MAGNETO"
 
-    SPINNER_SCORE = 50_000
-    DROP_SCORE = 50_000
-    MAIN_SUPER_VALUE = 1_000_000
-    BIGGER_MAIN_SUPER_VALUE = 1_500_000
-    FLUX_SUPER_VALUE = 500_000
-    MAIN_SECONDS = 20
-    MORE_TIME_SECONDS = 30
-    FLUX_SECONDS = 10
-    BANK_SETTLE_MS = 500
+    ROLLOVER_VALUE = 100_000
+    BIGGER_ROLLOVER_VALUE = 150_000
+    POP_VALUE = 250_000
+    STAR_VALUE = 250_000
+    SUPER_VALUE = 500_000
+    BIGGER_SUPER_VALUE = 750_000
 
-    SWEEP_TARGETS = (
-        "left_1",
-        "left_2",
-        "left_3",
-        "right_1",
-        "right_2",
-        "right_3",
-        "right_4",
-    )
+    OBJECTIVE_SECONDS = 8
+    MORE_TIME_OBJECTIVE_SECONDS = 10
+    STAR_SECONDS = 6
+    SUPER_SECONDS = 16
+    MORE_TIME_SUPER_SECONDS = 20
+
+    POP_FOR_ROLLOVER = {"a": "left", "b": "right"}
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
@@ -35,230 +31,297 @@ class DrMagneto(CaseFileMixin, Mode):
         self.delay = DelayManager(self.machine)
         self.case_files = self.get_case_file_bonuses()
         self.mode_done = False
-        self.phase = "waiting_for_roof"
-        self.sweep_index = 0
-        self.spinner_hits = 0
-        self.drops_knocked_down = 0
+        self.phase = "circuits"
         self.mode_points = 0
+        self.rollovers_collected = 0
+        self.pops_completed = 0
+        self.super_jackpots = 0
         self.seconds_left = 0
         self.shot_assist_used = False
-        self.main_super_collected = False
-        self.flux_super_collected = False
+        self.star_lit = False
+        self.rollover_lit = {"a": False, "b": False}
+        self.pop_state = {"left": "off", "right": "off"}
+
+        self.objective_seconds = (
+            self.MORE_TIME_OBJECTIVE_SECONDS
+            if self.has_case_file("more_time")
+            else self.OBJECTIVE_SECONDS
+        )
+        self.super_seconds = (
+            self.MORE_TIME_SUPER_SECONDS
+            if self.has_case_file("more_time")
+            else self.SUPER_SECONDS
+        )
 
         player = self.machine.game.player
         player[f"{self.MODE_KEY}_state"] = 1
-        self._sync_summary_vars()
+        self._sync_vars()
 
         self.publish_case_file_bonus_events(self.MODE_KEY)
         self.publish_active_case_file_helpers([
-            ("more_jackpots", "LEFT 1 MAGNETIC FLUX SUPER AFTER MAIN SUPER"),
-            ("bigger_jackpots", "MAIN SUPER BOOSTED TO 1.5M"),
-            ("more_time", "MAIN SUPER TIMER EXTENDED TO 30s"),
-            ("safety_net", "BALL SAVE WHEN MAIN SUPER LIGHTS"),
-            ("shot_assist", "FIRST SPIN DROPS TWO TARGETS"),
+            ("more_jackpots", "NEW OBJECTIVES LIGHT STAR FOR 250K"),
+            ("bigger_jackpots", "150K ROLLOVERS / 750K SUPER"),
+            ("more_time", "10 SECOND CIRCUITS / 20 SECOND SUPER"),
+            ("safety_net", "10 SECOND OPENING BALL SAVE"),
+            ("shot_assist", "FIRST QUALIFIER LIGHTS A AND B"),
         ])
 
-        self.add_mode_event_handler("dr_magneto_upper_entered", self._upper_entered)
-        self.add_mode_event_handler("dr_magneto_upper_exited", self._upper_exited)
-        self.add_mode_event_handler("dr_magneto_upper_spinner_hit", self._upper_spinner_hit)
-        self.add_mode_event_handler("dr_magneto_right_drop_5_hit", self._right_drop_5_hit)
-        self.add_mode_event_handler("dr_magneto_left_drop_1_hit", self._left_drop_1_hit)
+        self.add_mode_event_handler("dr_magneto_left_qualifier_hit", self._qualifier_hit, side="left")
+        self.add_mode_event_handler("dr_magneto_right_qualifier_hit", self._qualifier_hit, side="right")
+        self.add_mode_event_handler("dr_magneto_a_rollover_hit", self._rollover_hit, rollover="a")
+        self.add_mode_event_handler("dr_magneto_b_rollover_hit", self._rollover_hit, rollover="b")
+        self.add_mode_event_handler("dr_magneto_left_pop_hit", self._pop_hit, side="left")
+        self.add_mode_event_handler("dr_magneto_right_pop_hit", self._pop_hit, side="right")
+        self.add_mode_event_handler("dr_magneto_center_web_hit", self._center_web_hit)
+        self.add_mode_event_handler("dr_magneto_star_hit", self._star_hit)
         self.add_mode_event_handler("dr_magneto_complete_request", self._complete_mode)
         self.add_mode_event_handler("dr_magneto_fail_request", self._fail_mode)
 
-        self.machine.events.post("rooftop_diverter_open")
-        self.machine.events.post("clear_saucers")
-        self.machine.events.post("dr_magneto_build_gi")
-        self._show_message("DR. MAGNETO", "GET TO THE ROOF", reminder=True)
+        self.machine.events.post("dr_magneto_clear_all")
+        self.machine.events.post("rooftop_diverter_close")
+        self.machine.events.post("clear_saucers_delayed")
+        if self.has_case_file("safety_net"):
+            self.machine.events.post("start_case_file_ball_save")
+        self._show_message("DR. MAGNETO", "SLINGS AND INLANES LIGHT A / B", reminder=True)
+        self._update_status()
 
     def mode_stop(self, **kwargs):
         self._clear_delays()
-        self.machine.events.post("dr_magneto_stop_gi")
-        self.machine.events.post("dr_magneto_clear_drop_lights")
+        self.machine.events.post("dr_magneto_clear_all")
         self.machine.events.post("rooftop_diverter_close")
-        self.machine.events.post("clear_saucers")
-        self.machine.events.post("hide_mode_status")
+        self.machine.events.post("clear_saucers_delayed")
         self.machine.events.post("cancel_mode_message_reminder")
+        self.machine.events.post("hide_mode_status")
         self.clear_active_case_file_helpers()
         super().mode_stop(**kwargs)
 
-    def _upper_entered(self, **kwargs):
-        if self._done_or_summary():
+    def _qualifier_hit(self, side=None, **kwargs):
+        if self.mode_done or self.phase != "circuits" or side not in ("left", "right"):
             return
 
-        # Once a final shot is staged, preserve it even if the ball loops upstairs.
-        if self.phase in ("main_ready", "flux_ready"):
-            return
+        rollover = "a" if side == "left" else "b"
 
-        self._clear_timer_delay()
-        self.phase = "bank_resetting"
-        self.sweep_index = 0
-        self.machine.events.post("dr_magneto_reset_banks")
-        self.machine.events.post("dr_magneto_clear_drop_lights")
-        self.machine.events.post("dr_magneto_build_gi")
-        self._show_message("MAGNETIC SWEEP", "SPIN TO DROP THE BANKS")
-        self.delay.add(
-            name="dr_magneto_bank_settle",
-            ms=self.BANK_SETTLE_MS,
-            callback=self._begin_sweep,
-        )
-        self._sync_summary_vars()
-
-    def _begin_sweep(self):
-        if self._done_or_summary() or self.phase != "bank_resetting":
-            return
-        self.phase = "sweep"
-        self.machine.events.post("dr_magneto_sweep_started")
-        self._sync_summary_vars()
-
-    def _upper_exited(self, **kwargs):
-        if self._done_or_summary():
-            return
-
-        if self.phase in ("bank_resetting", "sweep"):
-            # The right-5 final target was not isolated yet. Reset and require another roof trip.
-            self._clear_timer_delay()
-            self.phase = "waiting_for_roof"
-            self.sweep_index = 0
-            self.machine.events.post("dr_magneto_reset_banks")
-            self.machine.events.post("dr_magneto_clear_drop_lights")
-            self.machine.events.post("dr_magneto_build_gi")
-            self._show_message("MAGNETIC SWEEP LOST", "RETURN TO THE ROOF", reminder=True)
-            self._sync_summary_vars()
-
-    def _upper_spinner_hit(self, **kwargs):
-        if self._done_or_summary() or self.phase != "sweep":
-            return
-
-        self.spinner_hits += 1
-        self._score(self.SPINNER_SCORE)
-
-        steps = 1
         if self.has_case_file("shot_assist") and not self.shot_assist_used:
             self.shot_assist_used = True
-            steps = 2
+            newly_lit = False
+            for assisted_rollover in ("a", "b"):
+                newly_lit = self._light_rollover(assisted_rollover, light_star=False) or newly_lit
+            if newly_lit:
+                self._light_star()
             self.machine.events.post("dr_magneto_shot_assist_used")
+        else:
+            self._light_rollover(rollover)
 
-        for _ in range(steps):
-            if self.sweep_index >= len(self.SWEEP_TARGETS):
-                break
-            target = self.SWEEP_TARGETS[self.sweep_index]
-            self.sweep_index += 1
-            self.drops_knocked_down += 1
-            self._score(self.DROP_SCORE)
-            self.machine.events.post(f"dr_magneto_drop_{target}")
+        self._update_status()
+        self._sync_vars()
+
+    def _light_rollover(self, rollover, light_star=True):
+        pop_side = self.POP_FOR_ROLLOVER[rollover]
+        if self.pop_state[pop_side] == "solid":
+            return False
+
+        timer_name = f"dr_magneto_{rollover}_timeout"
+        was_lit = self.rollover_lit[rollover]
+        self.rollover_lit[rollover] = True
+        self.delay.reset(
+            name=timer_name,
+            ms=self.objective_seconds * 1000,
+            callback=self._rollover_expired,
+            rollover=rollover,
+        )
+
+        if was_lit:
             self.machine.events.post(
-                "dr_magneto_sweep_advanced",
-                sweep_index=self.sweep_index,
-                target=target,
+                "dr_magneto_rollover_timer_restarted",
+                rollover=rollover,
+                seconds=self.objective_seconds,
             )
+            return False
 
-        if self.sweep_index >= len(self.SWEEP_TARGETS):
-            self._stage_main_super()
-        else:
-            self._show_message(
-                "MAGNETIC SWEEP",
-                f"{self.sweep_index} / {len(self.SWEEP_TARGETS)} TARGETS",
-                value=self.mode_points,
-            )
-        self._sync_summary_vars()
+        self.machine.events.post(f"dr_magneto_{rollover}_lit")
+        self.machine.events.post(
+            "dr_magneto_objective_lit",
+            objective=rollover,
+            seconds=self.objective_seconds,
+        )
+        if light_star:
+            self._light_star()
+        return True
 
-    def _stage_main_super(self):
-        if self._done_or_summary():
+    def _rollover_expired(self, rollover):
+        if self.mode_done or self.phase != "circuits" or not self.rollover_lit[rollover]:
             return
-        self.phase = "main_ready"
-        self.seconds_left = self.MORE_TIME_SECONDS if self.has_case_file("more_time") else self.MAIN_SECONDS
-        self.machine.events.post("dr_magneto_main_super_ready")
-        if self.has_case_file("safety_net"):
-            self.machine.events.post("start_case_file_ball_save")
-        self._show_countdown("MAGNETO SUPER", self.seconds_left, "HIT RIGHT DROP 5")
-        self._schedule_timer_tick()
-        self._sync_summary_vars()
+        self.rollover_lit[rollover] = False
+        self.machine.events.post(f"dr_magneto_{rollover}_expired")
+        self._update_status()
+        self._sync_vars()
 
-    def _right_drop_5_hit(self, **kwargs):
-        if self._done_or_summary() or self.phase != "main_ready":
+    def _rollover_hit(self, rollover=None, **kwargs):
+        if (
+            self.mode_done
+            or self.phase != "circuits"
+            or rollover not in self.rollover_lit
+            or not self.rollover_lit[rollover]
+        ):
             return
 
-        self._clear_timer_delay()
-        value = self.BIGGER_MAIN_SUPER_VALUE if self.has_case_file("bigger_jackpots") else self.MAIN_SUPER_VALUE
-        self.main_super_collected = True
+        self.rollover_lit[rollover] = False
+        self.delay.remove(f"dr_magneto_{rollover}_timeout")
+        self.machine.events.post(f"dr_magneto_{rollover}_collected")
+
+        value = (
+            self.BIGGER_ROLLOVER_VALUE
+            if self.has_case_file("bigger_jackpots")
+            else self.ROLLOVER_VALUE
+        )
+        self.rollovers_collected += 1
         self._score(value)
-        self.machine.events.post("dr_magneto_main_super_collected", value=value)
-        self._show_jackpot("MAGNETO SUPER", value)
+        pop_side = self.POP_FOR_ROLLOVER[rollover]
+        self._light_pop(pop_side)
+        self._show_message(
+            f"{rollover.upper()} CIRCUIT COMPLETE",
+            f"HIT {pop_side.upper()} POP",
+            value=value,
+        )
+        self._update_status()
+        self._sync_vars()
 
-        if self.has_case_file("more_jackpots"):
-            self._prepare_flux_super()
+    def _light_pop(self, side):
+        if self.pop_state[side] == "solid":
+            return
+
+        was_flashing = self.pop_state[side] == "flashing"
+        self.pop_state[side] = "flashing"
+        self.delay.reset(
+            name=f"dr_magneto_{side}_pop_timeout",
+            ms=self.objective_seconds * 1000,
+            callback=self._pop_expired,
+            side=side,
+        )
+        if was_flashing:
+            return
+
+        self.machine.events.post(f"dr_magneto_{side}_pop_flashing")
+        self.machine.events.post(
+            "dr_magneto_objective_lit",
+            objective=f"{side}_pop",
+            seconds=self.objective_seconds,
+        )
+        self._light_star()
+
+    def _pop_expired(self, side):
+        if self.mode_done or self.phase != "circuits" or self.pop_state[side] != "flashing":
+            return
+        self.pop_state[side] = "off"
+        self.machine.events.post(f"dr_magneto_{side}_pop_expired")
+        self._show_message("POP CIRCUIT LOST", f"RELIGHT {side.upper()} POP")
+        self._update_status()
+        self._sync_vars()
+
+    def _pop_hit(self, side=None, **kwargs):
+        if (
+            self.mode_done
+            or self.phase != "circuits"
+            or side not in self.pop_state
+            or self.pop_state[side] != "flashing"
+        ):
+            return
+
+        self.pop_state[side] = "solid"
+        self.delay.remove(f"dr_magneto_{side}_pop_timeout")
+        self.pops_completed += 1
+        self._score(self.POP_VALUE)
+        self.machine.events.post(f"dr_magneto_{side}_pop_solid")
+        self._show_message("POP MAGNETIZED", f"{side.upper()} POP COMPLETE", value=self.POP_VALUE)
+
+        if all(state == "solid" for state in self.pop_state.values()):
+            self._stage_super()
         else:
-            self._complete_mode()
+            self._update_status()
+        self._sync_vars()
 
-    def _prepare_flux_super(self):
-        self.phase = "flux_staging"
-        self.seconds_left = 0
-        self.machine.events.post("dr_magneto_reset_left_bank")
-        self.machine.events.post("dr_magneto_clear_drop_lights")
-        self.delay.add(
-            name="dr_magneto_flux_stage",
-            ms=self.BANK_SETTLE_MS,
-            callback=self._stage_flux_super,
+    def _stage_super(self):
+        if self.mode_done or self.phase != "circuits":
+            return
+        self.phase = "super"
+        self.seconds_left = self.super_seconds
+        self.machine.events.post("dr_magneto_super_ready")
+        self.machine.events.post(
+            "dr_magneto_objective_lit",
+            objective="center_web_super",
+            seconds=self.super_seconds,
         )
-        self._sync_summary_vars()
-
-    def _stage_flux_super(self):
-        if self._done_or_summary() or self.phase != "flux_staging":
-            return
-        self.machine.events.post("dr_magneto_drop_left_2")
-        self.machine.events.post("dr_magneto_drop_left_3")
-        self.phase = "flux_ready"
-        self.seconds_left = self.FLUX_SECONDS
-        self.machine.events.post("dr_magneto_flux_super_ready")
-        self._show_countdown("MAGNETIC FLUX SUPER", self.seconds_left, "HIT LEFT DROP 1")
-        self._schedule_timer_tick()
-        self._sync_summary_vars()
-
-    def _left_drop_1_hit(self, **kwargs):
-        if self._done_or_summary() or self.phase != "flux_ready":
-            return
-
-        self._clear_timer_delay()
-        self.flux_super_collected = True
-        self._score(self.FLUX_SUPER_VALUE)
-        self.machine.events.post("dr_magneto_flux_super_collected", value=self.FLUX_SUPER_VALUE)
-        self._show_jackpot("MAGNETIC FLUX SUPER", self.FLUX_SUPER_VALUE)
-        self._complete_mode()
-
-    def _schedule_timer_tick(self):
-        self.delay.add(
-            name="dr_magneto_timer_tick",
-            ms=1000,
-            callback=self._timer_tick,
+        self._light_star()
+        self._show_countdown("MAGNETO SUPER", self.seconds_left, "HIT CENTER WEB")
+        self.machine.events.post(
+            "show_mode_status",
+            mode_status_title="MAGNETO SUPER",
+            mode_status_value=f"CENTER WEB - {self.seconds_left}s",
         )
+        self._schedule_super_tick()
+        self._sync_vars()
 
-    def _timer_tick(self):
-        if self._done_or_summary() or self.phase not in ("main_ready", "flux_ready"):
+    def _schedule_super_tick(self):
+        self.delay.reset(name="dr_magneto_super_tick", ms=1000, callback=self._super_tick)
+
+    def _super_tick(self):
+        if self.mode_done or self.phase != "super":
             return
-        self.seconds_left -= 1
+        self.seconds_left = max(0, self.seconds_left - 1)
         if self.seconds_left <= 0:
-            expired_phase = self.phase
-            self.seconds_left = 0
-            self.machine.events.post("dr_magneto_final_shot_expired", phase=expired_phase)
-            self._show_message("DR. MAGNETO", "SUPER JACKPOT EXPIRED")
+            self.machine.events.post("dr_magneto_super_expired")
+            self._show_message("DR. MAGNETO ESCAPED", "SUPER EXPIRED")
             self._fail_mode()
             return
+        self._show_countdown("MAGNETO SUPER", self.seconds_left, "HIT CENTER WEB")
+        self._schedule_super_tick()
+        self._sync_vars()
 
-        if self.phase == "main_ready":
-            self._show_countdown("MAGNETO SUPER", self.seconds_left, "HIT RIGHT DROP 5")
-        else:
-            self._show_countdown("MAGNETIC FLUX SUPER", self.seconds_left, "HIT LEFT DROP 1")
-        self._schedule_timer_tick()
-        self._sync_summary_vars()
+    def _center_web_hit(self, **kwargs):
+        if self.mode_done or self.phase != "super":
+            return
+        self.delay.remove("dr_magneto_super_tick")
+        value = self.BIGGER_SUPER_VALUE if self.has_case_file("bigger_jackpots") else self.SUPER_VALUE
+        self.super_jackpots = 1
+        self._score(value)
+        self.machine.events.post("dr_magneto_super_collected", value=value)
+        self._show_jackpot("MAGNETO SUPER", value)
+        self._complete_mode()
+
+    def _light_star(self):
+        if not self.has_case_file("more_jackpots") or self.mode_done:
+            return
+        self.star_lit = True
+        self.delay.reset(
+            name="dr_magneto_star_timeout",
+            ms=self.STAR_SECONDS * 1000,
+            callback=self._star_expired,
+        )
+        self.machine.events.post("dr_magneto_star_lit", seconds=self.STAR_SECONDS)
+
+    def _star_hit(self, **kwargs):
+        if self.mode_done or not self.star_lit:
+            return
+        self.star_lit = False
+        self.delay.remove("dr_magneto_star_timeout")
+        self._score(self.STAR_VALUE)
+        self.machine.events.post("dr_magneto_star_collected", value=self.STAR_VALUE)
+        self._show_message("MAGNETIC STAR", "MORE JACKPOTS", value=self.STAR_VALUE)
+        self._sync_vars()
+
+    def _star_expired(self):
+        if self.mode_done or not self.star_lit:
+            return
+        self.star_lit = False
+        self.machine.events.post("dr_magneto_star_expired")
+        self._sync_vars()
 
     def _complete_mode(self, **kwargs):
         if self.mode_done:
             return
         self.mode_done = True
         self._clear_delays()
-        player = self.machine.game.player
-        player[f"{self.MODE_KEY}_state"] = 2
+        self.machine.game.player[f"{self.MODE_KEY}_state"] = 2
         self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post("dr_magneto_mode_complete")
 
@@ -267,8 +330,7 @@ class DrMagneto(CaseFileMixin, Mode):
             return
         self.mode_done = True
         self._clear_delays()
-        player = self.machine.game.player
-        player[f"{self.MODE_KEY}_state"] = 2
+        self.machine.game.player[f"{self.MODE_KEY}_state"] = 2
         self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post("dr_magneto_mode_complete")
 
@@ -277,19 +339,23 @@ class DrMagneto(CaseFileMixin, Mode):
         player = self.machine.game.player
         player["score"] += points
         self.mode_points += points
-        self._sync_summary_vars()
+        self._sync_vars()
 
-    def _sync_summary_vars(self):
-        """Expose only the shared summary values needed outside this mode.
-
-        Sweep progress, phase, countdown, helper use, and collected-shot flags are
-        temporary mode state and intentionally remain Python attributes.
-        """
+    def _sync_vars(self):
         player = self.machine.game.player
         player["active_mode_points"] = self.mode_points
-        player["active_mode_hits"] = self.spinner_hits
-        player["active_mode_major_hits"] = (
-            int(self.main_super_collected) + int(self.flux_super_collected)
+        player["active_mode_hits"] = self.rollovers_collected + self.pops_completed
+        player["active_mode_major_hits"] = self.super_jackpots
+
+    def _update_status(self):
+        if self.mode_done or self.phase != "circuits":
+            return
+        left = "SOLID" if self.pop_state["left"] == "solid" else "BUILD"
+        right = "SOLID" if self.pop_state["right"] == "solid" else "BUILD"
+        self.machine.events.post(
+            "show_mode_status",
+            mode_status_title="MAGNETIC CIRCUITS",
+            mode_status_value=f"LEFT {left} / RIGHT {right}",
         )
 
     def _show_message(self, title, subtitle="", value="", reminder=False):
@@ -315,18 +381,18 @@ class DrMagneto(CaseFileMixin, Mode):
         self.machine.events.post(
             "show_mode_jackpot",
             message_mode_title=title,
-            message_mode_subtitle="",
+            message_mode_subtitle="DR. MAGNETO DEFEATED",
             message_mode_value=value,
             message_mode_seconds="",
         )
 
-    def _clear_timer_delay(self):
-        self.delay.remove("dr_magneto_timer_tick")
-
     def _clear_delays(self):
-        self.delay.remove("dr_magneto_bank_settle")
-        self.delay.remove("dr_magneto_flux_stage")
-        self.delay.remove("dr_magneto_timer_tick")
-
-    def _done_or_summary(self):
-        return self.mode_done or not self.machine.game or not self.machine.game.player
+        for name in (
+            "dr_magneto_a_timeout",
+            "dr_magneto_b_timeout",
+            "dr_magneto_left_pop_timeout",
+            "dr_magneto_right_pop_timeout",
+            "dr_magneto_star_timeout",
+            "dr_magneto_super_tick",
+        ):
+            self.delay.remove(name)

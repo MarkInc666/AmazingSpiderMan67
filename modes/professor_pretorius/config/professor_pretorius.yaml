@@ -1,4 +1,7 @@
 #config_version=6
+
+# Professor Pretorius - four-station reactor and heat-management mode.
+
 mode:
   start_events: start_mode_professor_pretorius
   stop_events:
@@ -10,150 +13,284 @@ mode:
 
 widget_player:
   mode_professor_pretorius_started:
-    professor_pretorius:
-      action: play
+    professor_pretorius: {action: play}
   professor_pretorius_mode_complete:
-    professor_pretorius:
-      action: remove
+    professor_pretorius: {action: remove}
   mode_professor_pretorius_stopping:
-    professor_pretorius:
-      action: remove
+    professor_pretorius: {action: remove}
 
 event_player:
-  s_saucer_1_active: clear_saucers
-  s_saucer_2_active: clear_saucers
-  s_saucer_3_active: clear_saucers
+  s_pop_left_active: professor_pretorius_left_pop_hit
+  s_pop_right_active: professor_pretorius_right_pop_hit
+
+  s_left_drops_1_active: professor_pretorius_left_drop_1_hit
+  s_left_drops_2_active: professor_pretorius_left_drop_2_hit
+  s_left_drops_3_active: professor_pretorius_left_drop_3_hit
+
+  s_right_drops_1_active: professor_pretorius_right_drop_1_hit
+  s_right_drops_2_active: professor_pretorius_right_drop_2_hit
+  s_right_drops_3_active: professor_pretorius_right_drop_3_hit
+  s_right_drops_4_active: professor_pretorius_right_drop_4_hit
+  s_right_drops_5_active: professor_pretorius_right_drop_5_hit
+
+  s_web_spinner_active: professor_pretorius_spinner_hit
+  s_vuk_switch_active: professor_pretorius_vuk_hit
+
+  s_saucer_1_active: clear_saucers_delayed
+  s_saucer_2_active: clear_saucers_delayed
+  s_saucer_3_active: clear_saucers_delayed
+
   drop_target_bank_dt_bank_left_down: drop_target_bank_dt_bank_left_reset
   drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset
-  mode_professor_pretorius_started:
-    - clear_saucers_delayed
-    - drop_target_bank_dt_bank_left_reset
-    - drop_target_bank_dt_bank_right_reset
-  mode_professor_pretorius_stopping:
-    - clear_saucers_delayed
-    - drop_target_bank_dt_bank_left_reset
-    - drop_target_bank_dt_bank_right_reset
 
-light_player:
-  professor_pretorius_flood_started:
-    gi: red
-  professor_pretorius_band_1_blue:
-    l_gi_right_return: blue
-    l_gi_left_sling_lower: blue
-    l_gi_right_sling: blue
-    l_gi_left_sling_upper: blue
-    l_gi_left_upper_flipper: blue
-    l_gi_right_lower_triangle: blue
-  professor_pretorius_band_2_blue:
-    l_gi_5bank_lower: blue
-    l_gi_3bank: blue
-    l_gi_5bank_upper: blue
-    l_gi_left_lower: blue
-    l_gi_spinner: blue
-    l_pop_2_6: blue
-  professor_pretorius_band_3_blue:
-    l_gi_left_upper: blue
-    l_pop_2_7: blue
-    l_pop_2_5: blue
-    l_pop_1_6: blue
-    l_pop_1_5: blue
-    l_pop_1_7: blue
-  professor_pretorius_band_4_blue:
-    l_pop_2_8: blue
-    l_pop_1_4: blue
-    l_pop_1_8: blue
-    l_pop_2_4: blue
-    l_pop_2_9: blue
-  professor_pretorius_band_5_blue:
-    l_pop_1_9: blue
-    l_pop_1_3: blue
-    l_pop_2_3: blue
-    l_pop_2_10: blue
-    l_pop_1_2: blue
-    l_pop_1_10: blue
-  professor_pretorius_band_6_blue:
-    l_pop_2_2: blue
-    l_pop_2_11: blue
-    l_pop_1_11: blue
-    l_pop_1_1: blue
-    l_pop_1_12: blue
-    l_pop_2_1: blue
-  professor_pretorius_band_7_blue:
-    l_pop_2_12: blue
-    l_gi_upflip: blue
-    l_gi_ramp: blue
-    l_gi_bright: blue
-    l_gi_ab: blue
-    l_gi_a: blue
-  professor_pretorius_band_8_blue:
-    l_gi_mid_spider: blue
-    l_gi_top_4: blue
-    l_gi_top_3: blue
-    l_gi_top_1: blue
-    l_gi_top_2: blue
-  professor_pretorius_clear_lights:
-    l_spinner: off
-    l_mid_web_target: off
-    l_left_web_target: off
-    gi: E0E0E0
+  mode_professor_pretorius_started:
+    - disable_daily_bugle_mystery
+    - rooftop_diverter_close
+    - clear_saucers_delayed
+    - reset_drops
+  mode_professor_pretorius_stopping:
+    - professor_pretorius_clear_all
+    - clear_saucers_delayed
+    - reset_drops
+    - enable_daily_bugle_mystery
+    - daily_bugle_restore_state
+    - rooftop_diverter_close
+
+coil_player:
+  professor_pretorius_drop_left_1:
+    c_left_bank_drop_1: {action: pulse}
+  professor_pretorius_drop_left_2:
+    c_left_bank_drop_2: {action: pulse}
+  professor_pretorius_drop_left_3:
+    c_left_bank_drop_3: {action: pulse}
 
 show_player:
-  professor_pretorius_flood_started:
-    professor_pretorius_spinner_blue_flash:
-      loops: -1
-  professor_pretorius_main_super_ready:
-    professor_pretorius_spinner_blue_flash:
-      action: stop
-    professor_pretorius_center_super_purple_flash:
-      loops: -1
-  professor_pretorius_main_super_collected:
-    professor_pretorius_center_super_purple_flash:
-      action: stop
-  professor_pretorius_main_super_expired:
-    professor_pretorius_center_super_purple_flash:
-      action: stop
-  professor_pretorius_overflow_super_ready:
-    professor_pretorius_left_super_purple_flash:
-      loops: -1
-  professor_pretorius_overflow_super_collected:
-    professor_pretorius_left_super_purple_flash:
-      action: stop
-  professor_pretorius_overflow_super_expired:
-    professor_pretorius_left_super_purple_flash:
-      action: stop
+  professor_pretorius_stations_available:
+    professor_pretorius_left_pop_available: {loops: -1, priority: 340}
+    professor_pretorius_right_pop_available: {loops: -1, priority: 340}
+    professor_pretorius_left_bank_available: {loops: -1, priority: 340}
+    professor_pretorius_right_bank_available: {loops: -1, priority: 340}
+
+  professor_pretorius_left_pop_complete:
+    professor_pretorius_left_pop_available: {action: stop}
+    professor_pretorius_left_pop_solid: {loops: -1, priority: 340}
+  professor_pretorius_right_pop_complete:
+    professor_pretorius_right_pop_available: {action: stop}
+    professor_pretorius_right_pop_solid: {loops: -1, priority: 340}
+  professor_pretorius_left_bank_complete:
+    professor_pretorius_left_bank_available: {action: stop}
+    professor_pretorius_left_bank_solid: {loops: -1, priority: 340}
+  professor_pretorius_right_bank_complete:
+    professor_pretorius_right_bank_available: {action: stop}
+    professor_pretorius_right_bank_solid: {loops: -1, priority: 340}
+
+  professor_pretorius_stop_temperature_gi:
+    professor_pretorius_temp_0: {action: stop}
+    professor_pretorius_temp_1: {action: stop}
+    professor_pretorius_temp_2: {action: stop}
+    professor_pretorius_temp_3: {action: stop}
+    professor_pretorius_temp_4: {action: stop}
+    professor_pretorius_temp_5: {action: stop}
+  professor_pretorius_temperature_0:
+    professor_pretorius_temp_0: {loops: -1, priority: 310}
+  professor_pretorius_temperature_1:
+    professor_pretorius_temp_1: {loops: -1, priority: 310}
+  professor_pretorius_temperature_2:
+    professor_pretorius_temp_2: {loops: -1, priority: 310}
+  professor_pretorius_temperature_3:
+    professor_pretorius_temp_3: {loops: -1, priority: 310}
+  professor_pretorius_temperature_4:
+    professor_pretorius_temp_4: {loops: -1, priority: 310}
+  professor_pretorius_temperature_5:
+    professor_pretorius_temp_5: {loops: -1, priority: 310}
+
+  professor_pretorius_spinner_flashing:
+    professor_pretorius_spinner_flash: {loops: -1, priority: 350}
+  professor_pretorius_spinner_off:
+    professor_pretorius_spinner_flash: {action: stop}
+
+  professor_pretorius_clear_all:
+    professor_pretorius_left_pop_available: {action: stop}
+    professor_pretorius_right_pop_available: {action: stop}
+    professor_pretorius_left_bank_available: {action: stop}
+    professor_pretorius_right_bank_available: {action: stop}
+    professor_pretorius_left_pop_solid: {action: stop}
+    professor_pretorius_right_pop_solid: {action: stop}
+    professor_pretorius_left_bank_solid: {action: stop}
+    professor_pretorius_right_bank_solid: {action: stop}
+    professor_pretorius_temp_0: {action: stop}
+    professor_pretorius_temp_1: {action: stop}
+    professor_pretorius_temp_2: {action: stop}
+    professor_pretorius_temp_3: {action: stop}
+    professor_pretorius_temp_4: {action: stop}
+    professor_pretorius_temp_5: {action: stop}
+    professor_pretorius_spinner_flash: {action: stop}
+
+light_player:
   mode_professor_pretorius_stopping:
-    professor_pretorius_spinner_blue_flash:
-      action: stop
-    professor_pretorius_center_super_purple_flash:
-      action: stop
-    professor_pretorius_left_super_purple_flash:
-      action: stop
+    gi: E0E0E0
+    l_spinner: off
 
 shows:
-  professor_pretorius_spinner_blue_flash:
-    - duration: 250ms
+  professor_pretorius_left_pop_available:
+    - duration: 400ms
       lights:
-        l_spinner: blue
-    - duration: 250ms
+        l_pop_1_1: green
+        l_pop_1_2: green
+        l_pop_1_3: green
+        l_pop_1_4: green
+        l_pop_1_5: green
+        l_pop_1_6: green
+        l_pop_1_7: green
+        l_pop_1_8: green
+        l_pop_1_9: green
+        l_pop_1_10: green
+        l_pop_1_11: green
+        l_pop_1_12: green
+    - duration: 400ms
       lights:
-        l_spinner: off
+        l_pop_1_1: off
+        l_pop_1_2: off
+        l_pop_1_3: off
+        l_pop_1_4: off
+        l_pop_1_5: off
+        l_pop_1_6: off
+        l_pop_1_7: off
+        l_pop_1_8: off
+        l_pop_1_9: off
+        l_pop_1_10: off
+        l_pop_1_11: off
+        l_pop_1_12: off
 
-  professor_pretorius_center_super_purple_flash:
-    - duration: 200ms
+  professor_pretorius_left_pop_solid:
+    - duration: 1s
       lights:
-        l_mid_web_target: purple
-        gi: 6030A0
-    - duration: 200ms
-      lights:
-        l_mid_web_target: off
-        gi: blue
+        l_pop_1_1: green
+        l_pop_1_2: green
+        l_pop_1_3: green
+        l_pop_1_4: green
+        l_pop_1_5: green
+        l_pop_1_6: green
+        l_pop_1_7: green
+        l_pop_1_8: green
+        l_pop_1_9: green
+        l_pop_1_10: green
+        l_pop_1_11: green
+        l_pop_1_12: green
 
-  professor_pretorius_left_super_purple_flash:
-    - duration: 200ms
+  professor_pretorius_right_pop_available:
+    - duration: 400ms
       lights:
-        l_left_web_target: purple
-        gi: 6030A0
-    - duration: 200ms
+        l_pop_2_1: green
+        l_pop_2_2: green
+        l_pop_2_3: green
+        l_pop_2_4: green
+        l_pop_2_5: green
+        l_pop_2_6: green
+        l_pop_2_7: green
+        l_pop_2_8: green
+        l_pop_2_9: green
+        l_pop_2_10: green
+        l_pop_2_11: green
+        l_pop_2_12: green
+    - duration: 400ms
       lights:
-        l_left_web_target: off
-        gi: blue
+        l_pop_2_1: off
+        l_pop_2_2: off
+        l_pop_2_3: off
+        l_pop_2_4: off
+        l_pop_2_5: off
+        l_pop_2_6: off
+        l_pop_2_7: off
+        l_pop_2_8: off
+        l_pop_2_9: off
+        l_pop_2_10: off
+        l_pop_2_11: off
+        l_pop_2_12: off
+
+  professor_pretorius_right_pop_solid:
+    - duration: 1s
+      lights:
+        l_pop_2_1: green
+        l_pop_2_2: green
+        l_pop_2_3: green
+        l_pop_2_4: green
+        l_pop_2_5: green
+        l_pop_2_6: green
+        l_pop_2_7: green
+        l_pop_2_8: green
+        l_pop_2_9: green
+        l_pop_2_10: green
+        l_pop_2_11: green
+        l_pop_2_12: green
+
+  professor_pretorius_left_bank_available:
+    - duration: 400ms
+      lights: {l_3bankbonus: green}
+    - duration: 400ms
+      lights: {l_3bankbonus: off}
+
+  professor_pretorius_left_bank_solid:
+    - duration: 1s
+      lights: {l_3bankbonus: green}
+
+  professor_pretorius_right_bank_available:
+    - duration: 400ms
+      lights:
+        l_5bank_1: green
+        l_5bank_2: green
+        l_5bank_3: green
+        l_5bank_4: green
+        l_5bank_5: green
+    - duration: 400ms
+      lights:
+        l_5bank_1: off
+        l_5bank_2: off
+        l_5bank_3: off
+        l_5bank_4: off
+        l_5bank_5: off
+
+  professor_pretorius_right_bank_solid:
+    - duration: 1s
+      lights:
+        l_5bank_1: green
+        l_5bank_2: green
+        l_5bank_3: green
+        l_5bank_4: green
+        l_5bank_5: green
+
+  # GI accelerates with reactor temperature: solid, then 500/400/300/200/100ms.
+  professor_pretorius_temp_0:
+    - duration: 1s
+      lights: {gi: F03010}
+  professor_pretorius_temp_1:
+    - duration: 500ms
+      lights: {gi: F03010}
+    - duration: 500ms
+      lights: {gi: "301008"}
+  professor_pretorius_temp_2:
+    - duration: 400ms
+      lights: {gi: F03010}
+    - duration: 400ms
+      lights: {gi: "301008"}
+  professor_pretorius_temp_3:
+    - duration: 300ms
+      lights: {gi: F03010}
+    - duration: 300ms
+      lights: {gi: "301008"}
+  professor_pretorius_temp_4:
+    - duration: 200ms
+      lights: {gi: F03010}
+    - duration: 200ms
+      lights: {gi: "301008"}
+  professor_pretorius_temp_5:
+    - duration: 100ms
+      lights: {gi: F03010}
+    - duration: 100ms
+      lights: {gi: "301008"}
+
+  professor_pretorius_spinner_flash:
+    - duration: 200ms
+      lights: {l_spinner: blue}
+    - duration: 200ms
+      lights: {l_spinner: off}

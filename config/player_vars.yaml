@@ -840,6 +840,9 @@ player_vars:
   skymaster_state:
     initial_value: 0
     value_type: int
+  skymaster_defeated:
+    initial_value: 0
+    value_type: int
   sir_galahad_state:
     initial_value: 0
     value_type: int

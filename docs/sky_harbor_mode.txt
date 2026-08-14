@@ -22,4 +22,6 @@ Case files
 
 Skymaster
 - The former limited-flip roof-target rules have been removed from Skymaster.
-- Skymaster remains a placeholder until a distinct mechanic is selected.
+- Skymaster now uses a distinct non-rooftop ordered-drop mode: the upper
+  spinner forces the eight lower targets down from left to right, correct
+  direct hits can advance the same sequence, and wrong hits reset their bank.

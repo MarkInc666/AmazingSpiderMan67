@@ -1,161 +1,317 @@
+import random
+
+from mpf.core.delays import DelayManager
 from mpf.core.mode import Mode
+
 from modes.common.case_file_mixin import CaseFileMixin
 
 
 class ProfessorPretorius(CaseFileMixin, Mode):
+    """Professor Pretorius: finish four reactor stations without overheating."""
+
     MODE_KEY = "professor_pretorius"
-    BAND_SCORE = 100_000
-    MAIN_SUPER_BASE = 1_000_000
-    MAIN_SUPER_BIG = 1_500_000
-    OVERFLOW_BASE = 500_000
-    OVERFLOW_BIG = 750_000
-    MAIN_SECONDS = 20
-    MAIN_SECONDS_MORE_TIME = 30
-    OVERFLOW_SECONDS = 10
+    DISPLAY_NAME = "PROFESSOR PRETORIUS"
+
+    STATION_HITS_REQUIRED = 3
+    TOTAL_REACTOR_HITS = 12
+    REACTOR_HIT_VALUE = 100_000
+    BIGGER_REACTOR_HIT_VALUE = 150_000
+    COOLING_VALUE = 50_000
+    SUPER_VALUE = 500_000
+
+    OVERHEAT_TEMPERATURE = 5
+    OVERHEAT_GRACE_MS = 4_000
+    MORE_TIME_GRACE_MS = 8_000
+    SHOT_ASSIST_DELAY_MS = 200
+
+    LEFT_DROP_TARGETS = (1, 2, 3)
+    RIGHT_DROP_TARGETS = (1, 2, 3, 4, 5)
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
-        self.mode_done = False
-        self.phase = "flood"
-        self.bands_blue = 0
-        self.seconds_left = 0
-        self.mode_points = 0
-        self.hits = 0
-        self.major_hits = 0
-        self.shot_assist_used = False
+
+        self.delay = DelayManager(self.machine)
         self.case_files = self.get_case_file_bonuses()
+        self.mode_done = False
+        self.phase = "reactor"
+        self.mode_points = 0
+        self.reactor_hits = 0
+        self.temperature = 0
+        self.cooling_spins = 0
+        self.super_jackpots = 0
+        self.grace_active = False
+        self.shot_assist_used = False
+        self.pop_hits = {"left_pop": 0, "right_pop": 0}
+        self.left_drops = set()
+        self.right_drops = set()
+        self.station_complete = {
+            "left_pop": False,
+            "right_pop": False,
+            "left_bank": False,
+            "right_bank": False,
+        }
+
+        self.reactor_hit_value = (
+            self.BIGGER_REACTOR_HIT_VALUE
+            if self.has_case_file("bigger_jackpots")
+            else self.REACTOR_HIT_VALUE
+        )
+        self.overheat_grace_ms = (
+            self.MORE_TIME_GRACE_MS
+            if self.has_case_file("more_time")
+            else self.OVERHEAT_GRACE_MS
+        )
 
         player = self.machine.game.player
         player[f"{self.MODE_KEY}_state"] = 1
-        self._sync_shared_vars()
-
-        self.add_mode_event_handler("s_web_spinner_active", self._spinner_hit)
-        self.add_mode_event_handler("s_web_target_mid_active", self._center_web_hit)
-        self.add_mode_event_handler("s_web_target_left_active", self._left_web_hit)
-        self.add_mode_event_handler("professor_pretorius_main_timer_tick", self._main_timer_tick)
-        self.add_mode_event_handler("professor_pretorius_overflow_timer_tick", self._overflow_timer_tick)
-        self.add_mode_event_handler("professor_pretorius_complete_request", self._complete_mode)
-        self.add_mode_event_handler("professor_pretorius_fail_request", self._fail_mode)
+        self._sync_vars()
 
         self.publish_case_file_bonus_events(self.MODE_KEY)
         self.publish_active_case_file_helpers([
-            ("more_jackpots", "LEFT WEB REACTOR OVERFLOW SUPER"),
-            ("bigger_jackpots", "SUPER JACKPOTS INCREASED"),
-            ("more_time", "MAIN SUPER TIMER 30 SECONDS"),
-            ("safety_net", "BALL SAVE WHEN MAIN SUPER LIGHTS"),
-            ("shot_assist", "FIRST SPIN FLOODS TWO BANDS"),
+            ("more_jackpots", "ALL FIVE RIGHT DROPS SCORE"),
+            ("bigger_jackpots", "REACTOR HITS WORTH 150K"),
+            ("more_time", "OVERHEAT GRACE EXTENDED TO 8 SECONDS"),
+            ("safety_net", "10 SECOND OPENING BALL SAVE"),
+            ("shot_assist", "FIRST LEFT DROP ADDS A RANDOM DROP"),
         ])
 
-        self.machine.events.post("professor_pretorius_flood_started")
+        self.add_mode_event_handler("professor_pretorius_left_pop_hit", self._pop_hit, station="left_pop")
+        self.add_mode_event_handler("professor_pretorius_right_pop_hit", self._pop_hit, station="right_pop")
+        for target in self.LEFT_DROP_TARGETS:
+            self.add_mode_event_handler(
+                f"professor_pretorius_left_drop_{target}_hit",
+                self._left_drop_hit,
+                target=target,
+            )
+        for target in self.RIGHT_DROP_TARGETS:
+            self.add_mode_event_handler(
+                f"professor_pretorius_right_drop_{target}_hit",
+                self._right_drop_hit,
+                target=target,
+            )
+        self.add_mode_event_handler("professor_pretorius_spinner_hit", self._spinner_hit)
+        self.add_mode_event_handler("professor_pretorius_vuk_hit", self._vuk_hit)
+        self.add_mode_event_handler("professor_pretorius_complete_request", self._complete_mode)
+        self.add_mode_event_handler("professor_pretorius_fail_request", self._fail_mode)
+
+        self.machine.events.post("disable_daily_bugle_mystery")
+        self.machine.events.post("daily_bugle_cancel_vuk_delay_eject")
+        self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("clear_saucers_delayed")
-        self.machine.events.post("drop_target_bank_dt_bank_left_reset")
-        self.machine.events.post("drop_target_bank_dt_bank_right_reset")
-        self._show_status("FLOOD THE REACTOR", "SPIN 8 TIMES", value="0 / 8", reminder=True)
+        self.machine.events.post("reset_drops")
+        self.machine.events.post("professor_pretorius_clear_all")
+        self.machine.events.post("professor_pretorius_stations_available")
+        self._update_temperature_lights()
+        if self.has_case_file("safety_net"):
+            self.machine.events.post("start_case_file_ball_save")
+        self._show_message("PRETORIUS REACTOR", "COMPLETE FOUR EXPERIMENTS", reminder=True)
+        self._update_status()
 
     def mode_stop(self, **kwargs):
-        self.delay.remove("pretoris_timer")
-        self.machine.events.post("professor_pretorius_clear_lights")
+        self._clear_delays()
+        self.machine.events.post("daily_bugle_cancel_vuk_delay_eject")
+        self.machine.events.post("professor_pretorius_clear_all")
         self.machine.events.post("clear_saucers_delayed")
-        self.machine.events.post("drop_target_bank_dt_bank_left_reset")
-        self.machine.events.post("drop_target_bank_dt_bank_right_reset")
+        self.machine.events.post("reset_drops")
+        self.machine.events.post("enable_daily_bugle_mystery")
+        self.machine.events.post("daily_bugle_restore_state")
+        self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post("hide_mode_status")
         self.clear_active_case_file_helpers()
         super().mode_stop(**kwargs)
 
-    def _spinner_hit(self, **kwargs):
-        if self.mode_done or self.phase != "flood" or self.bands_blue >= 8:
+    def _pop_hit(self, station=None, **kwargs):
+        if self.mode_done or self.phase not in ("reactor", "super") or station not in self.pop_hits:
             return
-        conversions = 1
-        if self.has_case_file("shot_assist") and not self.shot_assist_used:
+        if self.station_complete[station]:
+            return
+
+        self.pop_hits[station] += 1
+        self._accept_reactor_hit(station, station.replace("_", " ").upper())
+
+    def _left_drop_hit(self, target=None, **kwargs):
+        if self.mode_done or self.phase not in ("reactor", "super") or target not in self.LEFT_DROP_TARGETS:
+            return
+        if target in self.left_drops or self.station_complete["left_bank"]:
+            return
+
+        self.left_drops.add(target)
+        self._accept_reactor_hit("left_bank", f"LEFT DROP {target}")
+
+        if self.has_case_file("shot_assist") and not self.shot_assist_used and not self.mode_done:
             self.shot_assist_used = True
-            conversions = 2
-        converted = 0
-        for _ in range(conversions):
-            if self.bands_blue >= 8:
-                break
-            self.bands_blue += 1
-            converted += 1
-            self.machine.events.post(f"professor_pretorius_band_{self.bands_blue}_blue")
-        if converted:
-            self.hits += converted
-            self._score(self.BAND_SCORE * converted)
-            self.machine.events.post("professor_pretorius_band_converted", bands_blue=self.bands_blue, converted=converted)
-            self._show_status("REACTOR FLOODING", f"{self.bands_blue} / 8 BLUE", value=self.BAND_SCORE * converted)
-        if self.bands_blue >= 8:
-            self._start_main_super()
+            self.delay.reset(
+                name="professor_pretorius_shot_assist",
+                ms=self.SHOT_ASSIST_DELAY_MS,
+                callback=self._apply_shot_assist,
+            )
 
-    def _start_main_super(self):
-        self.phase = "main_super"
-        self.seconds_left = self.MAIN_SECONDS_MORE_TIME if self.has_case_file("more_time") else self.MAIN_SECONDS
-        self.machine.events.post("professor_pretorius_main_super_ready")
-        if self.has_case_file("safety_net"):
-            self.machine.events.post("start_case_file_ball_save")
-        self._show_status("SUPER JACKPOT", "CENTER WEB", seconds=self.seconds_left, reminder=True)
-        self._schedule_timer("professor_pretorius_main_timer_tick")
-
-    def _center_web_hit(self, **kwargs):
-        if self.mode_done or self.phase != "main_super":
+    def _apply_shot_assist(self):
+        if self.mode_done or self.station_complete["left_bank"]:
             return
-        self.delay.remove("pretoris_timer")
-        value = self.MAIN_SUPER_BIG if self.has_case_file("bigger_jackpots") else self.MAIN_SUPER_BASE
-        self.major_hits += 1
-        self._score(value)
-        self.machine.events.post("professor_pretorius_main_super_collected", value=value)
-        self._show_status("SUPER JACKPOT", "REACTOR FLOODED", value=value, event="show_mode_jackpot")
+        remaining = [target for target in self.LEFT_DROP_TARGETS if target not in self.left_drops]
+        if not remaining:
+            return
+
+        target = random.choice(remaining)
+        self.left_drops.add(target)
+        self.machine.events.post(f"professor_pretorius_drop_left_{target}")
+        self.machine.events.post("professor_pretorius_shot_assist_used", target=target)
+        self._accept_reactor_hit("left_bank", f"ASSISTED LEFT DROP {target}", assisted=True)
+
+    def _right_drop_hit(self, target=None, **kwargs):
+        if self.mode_done or self.phase not in ("reactor", "super") or target not in self.RIGHT_DROP_TARGETS:
+            return
+        if target in self.right_drops:
+            return
+
+        self.right_drops.add(target)
+        if not self.station_complete["right_bank"]:
+            self._accept_reactor_hit("right_bank", f"RIGHT DROP {target}")
+            return
+
         if self.has_case_file("more_jackpots"):
-            self._start_overflow_super()
-        else:
-            self._complete_mode()
+            self._score(self.reactor_hit_value)
+            self.machine.events.post(
+                "professor_pretorius_optional_right_drop_scored",
+                target=target,
+                value=self.reactor_hit_value,
+            )
+            self._show_message("EXTRA REACTOR JACKPOT", f"RIGHT DROP {target}", value=self.reactor_hit_value)
+            self._sync_vars()
 
-    def _start_overflow_super(self):
-        self.phase = "overflow_super"
-        self.seconds_left = self.OVERFLOW_SECONDS
-        self.machine.events.post("professor_pretorius_overflow_super_ready")
-        self._show_status("REACTOR OVERFLOW", "LEFT WEB", seconds=self.seconds_left, reminder=True)
-        self._schedule_timer("professor_pretorius_overflow_timer_tick")
-
-    def _left_web_hit(self, **kwargs):
-        if self.mode_done or self.phase != "overflow_super":
+    def _accept_reactor_hit(self, station, label, assisted=False):
+        if self.mode_done or self.station_complete[station]:
             return
-        self.delay.remove("pretoris_timer")
-        value = self.OVERFLOW_BIG if self.has_case_file("bigger_jackpots") else self.OVERFLOW_BASE
-        self.major_hits += 1
-        self._score(value)
-        self.machine.events.post("professor_pretorius_overflow_super_collected", value=value)
-        self._show_status("MAGNETIC OVERFLOW", "SUPER JACKPOT", value=value, event="show_mode_jackpot")
+
+        self.reactor_hits += 1
+        self._score(self.reactor_hit_value)
+        self.temperature += 1
+        self.machine.events.post(
+            "professor_pretorius_reactor_hit",
+            station=station,
+            reactor_hits=self.reactor_hits,
+            temperature=self.temperature,
+            value=self.reactor_hit_value,
+            assisted=assisted,
+        )
+
+        if self._station_hits(station) >= self.STATION_HITS_REQUIRED:
+            self.station_complete[station] = True
+            self.machine.events.post(f"professor_pretorius_{station}_complete")
+
+        self._update_temperature_lights()
+        self._update_overheat_grace()
+
+        if self.reactor_hits >= self.TOTAL_REACTOR_HITS and self.phase == "reactor":
+            self._qualify_super()
+        else:
+            self._show_message(
+                "REACTOR HIT",
+                label,
+                value=self.reactor_hit_value,
+            )
+            self._update_status()
+        self._sync_vars()
+
+    def _station_hits(self, station):
+        if station in self.pop_hits:
+            return self.pop_hits[station]
+        if station == "left_bank":
+            return len(self.left_drops)
+        if station == "right_bank":
+            return min(len(self.right_drops), self.STATION_HITS_REQUIRED)
+        return 0
+
+    def _spinner_hit(self, **kwargs):
+        if self.mode_done or self.temperature <= 0:
+            return
+
+        self.temperature -= 1
+        self.cooling_spins += 1
+        self._score(self.COOLING_VALUE)
+        self.machine.events.post(
+            "professor_pretorius_reactor_cooled",
+            temperature=self.temperature,
+            value=self.COOLING_VALUE,
+        )
+        if self.temperature < self.OVERHEAT_TEMPERATURE and self.grace_active:
+            self._cancel_overheat_grace()
+        self._update_temperature_lights()
+        self._show_message("REACTOR COOLED", f"TEMPERATURE {self.temperature}", value=self.COOLING_VALUE)
+        self._update_status()
+        self._sync_vars()
+
+    def _update_overheat_grace(self):
+        if self.temperature < self.OVERHEAT_TEMPERATURE or self.grace_active or self.mode_done:
+            return
+        self.grace_active = True
+        self.delay.reset(
+            name="professor_pretorius_overheat_grace",
+            ms=self.overheat_grace_ms,
+            callback=self._overheat_grace_expired,
+        )
+        seconds = self.overheat_grace_ms // 1000
+        self.machine.events.post("professor_pretorius_overheat_started", seconds=seconds)
+        self._show_message("REACTOR OVERHEATING", f"COOL WITH SPINNER - {seconds} SECONDS", reminder=True)
+
+    def _cancel_overheat_grace(self):
+        self.grace_active = False
+        self.delay.remove("professor_pretorius_overheat_grace")
+        self.machine.events.post("professor_pretorius_overheat_cancelled")
+
+    def _overheat_grace_expired(self):
+        if self.mode_done:
+            return
+        self.grace_active = False
+        if self.temperature >= self.OVERHEAT_TEMPERATURE:
+            self.machine.events.post("professor_pretorius_overheated")
+            self._show_message("REACTOR OVERHEATED", "PROFESSOR PRETORIUS ESCAPED")
+            self._fail_mode()
+
+    def _qualify_super(self):
+        if self.mode_done or self.phase != "reactor":
+            return
+        self.phase = "super"
+        self.machine.events.post("rooftop_diverter_open")
+        self.machine.events.post("professor_pretorius_super_ready")
+        self._update_spinner_insert()
+        self._show_message("REACTOR SUPER READY", "SHOOT THE VUK", value=self.SUPER_VALUE, reminder=True)
+        self._update_status()
+        self._sync_vars()
+
+    def _vuk_hit(self, **kwargs):
+        self.machine.events.post("daily_bugle_cancel_vuk_delay_eject")
+        if self.mode_done:
+            return
+        if self.phase != "super":
+            self.machine.events.post("up_kick")
+            return
+
+        self.super_jackpots = 1
+        self._score(self.SUPER_VALUE)
+        self.machine.events.post("professor_pretorius_super_collected", value=self.SUPER_VALUE)
+        self._show_jackpot("REACTOR SUPER", self.SUPER_VALUE)
+        self.machine.events.post("villain_summary_hold_vuk_until_done")
         self._complete_mode()
 
-    def _schedule_timer(self, event):
-        self.delay.reset(name="pretoris_timer", ms=1000, callback=lambda: self.machine.events.post(event))
+    def _update_temperature_lights(self):
+        level = min(self.temperature, self.OVERHEAT_TEMPERATURE)
+        self.machine.events.post("professor_pretorius_stop_temperature_gi")
+        self.machine.events.post(f"professor_pretorius_temperature_{level}")
+        self._update_spinner_insert()
 
-    def _main_timer_tick(self, **kwargs):
-        if self.mode_done or self.phase != "main_super":
-            return
-        self.seconds_left -= 1
-        if self.seconds_left <= 0:
-            self.machine.events.post("professor_pretorius_main_super_expired")
-            self._fail_mode()
-            return
-        self._show_status("SUPER JACKPOT", "CENTER WEB", seconds=self.seconds_left)
-        self._schedule_timer("professor_pretorius_main_timer_tick")
-
-    def _overflow_timer_tick(self, **kwargs):
-        if self.mode_done or self.phase != "overflow_super":
-            return
-        self.seconds_left -= 1
-        if self.seconds_left <= 0:
-            self.machine.events.post("professor_pretorius_overflow_super_expired")
-            self._complete_mode()
-            return
-        self._show_status("REACTOR OVERFLOW", "LEFT WEB", seconds=self.seconds_left)
-        self._schedule_timer("professor_pretorius_overflow_timer_tick")
+    def _update_spinner_insert(self):
+        self.machine.events.post("professor_pretorius_spinner_off")
+        if self.temperature > 0 or self.phase == "super":
+            self.machine.events.post("professor_pretorius_spinner_flashing")
 
     def _complete_mode(self, **kwargs):
         if self.mode_done:
             return
         self.mode_done = True
-        self.delay.remove("pretoris_timer")
+        self._clear_delays()
         self.machine.game.player[f"{self.MODE_KEY}_state"] = 2
         self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post("professor_pretorius_mode_complete")
@@ -164,7 +320,7 @@ class ProfessorPretorius(CaseFileMixin, Mode):
         if self.mode_done:
             return
         self.mode_done = True
-        self.delay.remove("pretoris_timer")
+        self._clear_delays()
         self.machine.game.player[f"{self.MODE_KEY}_state"] = 2
         self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post("professor_pretorius_mode_complete")
@@ -174,20 +330,52 @@ class ProfessorPretorius(CaseFileMixin, Mode):
         player = self.machine.game.player
         player["score"] += points
         self.mode_points += points
-        self._sync_shared_vars()
+        self._sync_vars()
 
-    def _sync_shared_vars(self):
+    def _sync_vars(self):
         player = self.machine.game.player
         player["active_mode_points"] = self.mode_points
-        player["active_mode_hits"] = self.hits
-        player["active_mode_major_hits"] = self.major_hits
+        player["active_mode_hits"] = self.reactor_hits
+        player["active_mode_major_hits"] = self.super_jackpots
 
-    def _show_status(self, title, subtitle="", value="", seconds="", event="show_mode_message", reminder=False):
+    def _update_status(self):
+        if self.mode_done:
+            return
+        if self.phase == "super":
+            self.machine.events.post(
+                "show_mode_status",
+                mode_status_title="REACTOR SUPER READY",
+                mode_status_value=f"VUK / TEMP {self.temperature}",
+            )
+            return
         self.machine.events.post(
-            event,
+            "show_mode_status",
+            mode_status_title="PRETORIUS REACTOR",
+            mode_status_value=(
+                f"{min(self.reactor_hits, self.TOTAL_REACTOR_HITS)} / "
+                f"{self.TOTAL_REACTOR_HITS} - TEMP {self.temperature}"
+            ),
+        )
+
+    def _show_message(self, title, subtitle="", value="", reminder=False):
+        self.machine.events.post(
+            "show_mode_message",
             message_mode_title=title,
             message_mode_subtitle=subtitle,
             message_mode_value=value,
-            message_mode_seconds=seconds,
+            message_mode_seconds="",
             reminder=reminder,
         )
+
+    def _show_jackpot(self, title, value):
+        self.machine.events.post(
+            "show_mode_jackpot",
+            message_mode_title=title,
+            message_mode_subtitle="PROFESSOR PRETORIUS DEFEATED",
+            message_mode_value=value,
+            message_mode_seconds="",
+        )
+
+    def _clear_delays(self):
+        self.delay.remove("professor_pretorius_overheat_grace")
+        self.delay.remove("professor_pretorius_shot_assist")
