@@ -636,7 +636,7 @@ player_vars:
   vulture_bonus:
     initial_value: 0
     value_type: int
-  goblin_bonus:
+  doc_ock_bonus:
     initial_value: 0
     value_type: int
   vulcan_bonus:

@@ -7,7 +7,7 @@ class CustomBonus(Mode):
 
     BANKED_BONUS_VARS = [
         "vulture_bonus",
-        "goblin_bonus",
+        "doc_ock_bonus",
         "vulcan_bonus",
         "diamond_bonus",
         "harley_bonus",

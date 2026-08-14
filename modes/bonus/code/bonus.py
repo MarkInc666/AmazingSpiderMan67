@@ -29,7 +29,7 @@ class Bonus(MpfBonus):
 
     MODE_BONUS_ENTRIES = [
         ("vulture_bonus", "VULTURE FLIGHT", False),
-        ("goblin_bonus", "GOBLIN CHAOS", False),
+        ("doc_ock_bonus", "BREAKOUT BONUS", False),
         ("vulcan_bonus", "VULCAN ERUPTION", False),
         ("diamond_bonus", "DOCTOR COOL", False),
         ("harley_bonus", "HARLEY JACKPOTS", False),

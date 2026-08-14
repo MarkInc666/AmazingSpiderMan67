@@ -104,6 +104,8 @@ If another ball enters a different saucer while one ball is already held:
 - Safety Net: start a one-time 10-second ball save after the first proper safe-phase saucer release.
 - Shot Assist: consumed on the first physical safe-shot hit; it automatically awards one random remaining safe area using the next value in the sequence.
 
-## Bonus payout
+## Chaos Bonus payout
 
-Every valid unsafe-phase saucer bank adds the current Chaos Bonus to Goblin Bonus. Goblin Bonus is added to the normal end-of-ball mode bonus when Goblin ends or the ball ends.
+Every valid unsafe-phase saucer scores the current Chaos Bonus immediately and
+adds it to the mode's CHAOS SCORED summary total. Green Goblin no longer creates
+a persistent end-of-ball mode bonus.

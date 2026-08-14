@@ -8,6 +8,7 @@ Core rules
 - The spinner scores through the normal base game, adds +1X per spin, and relights the web jackpot.
 - After one second without another spin, show the multiplier and then the next web jackpot value.
 - Web Jackpot = base value x (5 - locked arms) x spinner multiplier. Base is 50K.
+- Every collected web jackpot also adds 100K to the persistent BREAKOUT BONUS.
 - An unlit web target scores 25K.
 - Collecting a web jackpot resets the multiplier to 2X after jackpot 1, 3X after jackpot 2, 4X after jackpot 3, and so on.
 - Each jackpot lights one random currently unlit breakout shot. Multiple breakouts may remain lit.
@@ -30,3 +31,9 @@ Display
 - Arm release: AN ARM BROKE FREE!
 - Final release: DOCTOR OCTOPUS HAS BROKEN FREE!
 - Summary uses the standard villain layout with final mode score and JACKPOTS: count.
+
+Persistent bonus
+- BREAKOUT BONUS increases by 100K for every collected web jackpot, including
+  the first two protected jackpots supplied by More Jackpots.
+- BREAKOUT BONUS carries across balls and is awarded on the end-of-ball Mode
+  Bonus page.

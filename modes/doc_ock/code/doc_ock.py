@@ -5,6 +5,7 @@ import random
 
 
 class doc_ock(CaseFileMixin, Mode):
+    BREAKOUT_BONUS_PER_JACKPOT = 100_000
     JACKPOTS_BEFORE_TIMED_RELEASE = 2
     DEFAULT_ARM_RELEASE_DELAY_MS = 10_000
     MORE_TIME_ARM_RELEASE_DELAY_MS = 15_000
@@ -258,8 +259,15 @@ class doc_ock(CaseFileMixin, Mode):
         self.jackpot_lit = False
         self._award_points(collected_value)
         self.jackpots_collected += 1
-        self.machine.game.player["doc_ock_jackpots"] = self.jackpots_collected
-        self.machine.game.player["doc_ock_last_jackpot"] = collected_value
+        player = self.machine.game.player
+        player["doc_ock_jackpots"] = self.jackpots_collected
+        player["doc_ock_last_jackpot"] = collected_value
+        player["doc_ock_bonus"] += self.BREAKOUT_BONUS_PER_JACKPOT
+        self.machine.events.post(
+            "doc_ock_breakout_bonus_added",
+            value=self.BREAKOUT_BONUS_PER_JACKPOT,
+            total=player["doc_ock_bonus"],
+        )
 
         self.machine.events.post("doc_ock_jackpot_award")
         self.machine.events.post(

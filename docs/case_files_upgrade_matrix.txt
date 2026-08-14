@@ -82,7 +82,7 @@ Conner's Reptiles | Center-web Rampage Jackpot | Jackpots 2X | Super timer 16s |
 
 CHAPTER 11 — DIMENSIONAL FINALE
 Sir Galahad | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER
-Master Vine | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER | NOT FINALIZED—PLACEHOLDER
+Master Vine | First spinner hit of each wave lights 3 unique lower shots instead of 1 | Vine jackpots score 75K instead of 50K | Each wave lasts 40s instead of 30s | 10s ball save starts on first upper entry | First collected shot also collects a random second lit shot; if none exists, the same shot scores again
 Master Technician | NOT IMPLEMENTED | NOT IMPLEMENTED | NOT IMPLEMENTED | NOT IMPLEMENTED | NOT IMPLEMENTED
 The Spider-Men | Six Jackpots light 500K center-web Super | Alignment Jackpots 150K | Proton timer 60s | 10s ball save | First Jackpot aligns an extra position
 Baron Von Rantenraven | Repeat targets 500K | Roof Jackpots boosted | 15 roof flips | Ball save at mode start | First Jackpot also spots another

@@ -1,0 +1,35 @@
+MASTER VINE — VINE INVASION
+
+Core rules
+- The rooftop gate starts open.
+- Entering the upper playfield starts one of three waves, clears all lower shot
+  states, resets both drop banks, closes the gate, and starts a 30-second timer.
+- Each upper-spinner pulse scores 25K, lights one random unique available lower
+  shot, and resets the wave timer to 30 seconds.
+- The 22 lower objectives are both web targets, both slings, both pops, all
+  three saucers, all eight drops, A, B, middle A, middle B, and STAR.
+- A programmed objective pulses. Collecting it scores 50K and leaves its lamp
+  solid at reduced brightness. Each objective scores once per wave.
+- When waves 1 and 2 expire, the gate opens. Existing lower shot states remain
+  available until the player returns upstairs; that return clears the states
+  and begins the next wave.
+- The third timer expiry ends the mode immediately.
+
+Case Files
+- More Jackpots: the first spinner pulse of each wave lights three random
+  unique lower shots instead of one.
+- Bigger Jackpots: lower-shot awards are 75K instead of 50K.
+- More Time: all three wave timers are 40 seconds instead of 30 seconds.
+- Safety Net: starts the standard 10-second Case File ball save on the first
+  upper-playfield entry.
+- Shot Assist: the first lower jackpot of the mode also collects another random
+  lit, uncollected shot. If no second lit shot exists, the original shot scores
+  a second time.
+
+Hardware notes
+- The three left drops share l_3bankbonus, so the display names the selected
+  left target while the shared bank insert pulses whenever any left drop is lit.
+- Drop targets already knocked down during a wave are excluded from later
+  random programming until the next upper entry resets both banks.
+- The mode disables Daily Bugle Mystery, explicitly ejects the VUK, and restores
+  Daily Bugle state when it stops.

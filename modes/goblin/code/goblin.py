@@ -71,7 +71,6 @@ class Goblin(CaseFileMixin, Mode):
         self.release_pending = False
         self.ejecting_saucers = set()
         self.mode_finishing = False
-        self.bonus_paid = False
         self.safe_hit_count = 0
         self.safe_seconds_remaining = 0
         self.message_queue_next_time = time.monotonic()
@@ -87,8 +86,6 @@ class Goblin(CaseFileMixin, Mode):
         self.add_mode_event_handler("s_saucer_1_inactive", partial(self.saucer_cleared, saucer=1))
         self.add_mode_event_handler("s_saucer_2_inactive", partial(self.saucer_cleared, saucer=2))
         self.add_mode_event_handler("s_saucer_3_inactive", partial(self.saucer_cleared, saucer=3))
-        self.add_mode_event_handler("goblin_collect_bonus", self.collect_banked_bonus)
-        self.add_mode_event_handler("ball_ending", self.collect_banked_bonus)
         self.add_mode_event_handler("multiball_goblin_chaos_multiball_started", self.multiball_started)
         self.add_mode_event_handler("multiball_goblin_chaos_multiball_ended", self.multiball_ended)
 
@@ -274,13 +271,18 @@ class Goblin(CaseFileMixin, Mode):
 
         player = self.machine.game.player
         bank_value = int(player["goblin_chaos_bonus"])
+        self._award_points(bank_value)
         player["goblin_bonus_banked"] += bank_value
         player["goblin_chaos_lock"] = player["goblin_bonus_banked"]
-        self.machine.events.post("goblin_bonus_bank_added", value=bank_value)
+        self.machine.events.post(
+            "goblin_chaos_bonus_scored",
+            value=bank_value,
+            total=player["goblin_bonus_banked"],
+        )
         self.machine.events.post(
             "show_mode_message",
-            message_mode_title="CHAOS BONUS BANKED",
-            message_mode_subtitle="GOBLIN BONUS",
+            message_mode_title="CHAOS BONUS SCORED",
+            message_mode_subtitle="SAFE PHASE STARTED",
             message_mode_value=bank_value,
         )
         self.start_safe_phase(saucer)
@@ -391,17 +393,6 @@ class Goblin(CaseFileMixin, Mode):
         if not self.mode_finishing:
             self.finish_mode(completed=False)
 
-    def collect_banked_bonus(self, **kwargs):
-        if self.bonus_paid:
-            return
-        banked = int(self.machine.game.player["goblin_bonus_banked"])
-        if banked <= 0:
-            return
-        player = self.machine.game.player
-        player["goblin_bonus"] += banked
-        self.bonus_paid = True
-        self.machine.events.post("goblin_bonus_collected", value=banked)
-
     def finish_mode(self, completed=False):
         if self.mode_finishing:
             return
@@ -413,7 +404,6 @@ class Goblin(CaseFileMixin, Mode):
         self.machine.events.post("goblin_gi_stop")
         self.machine.events.post("goblin_mode_ended")
         self.machine.game.player["goblin_state"] = 2
-        self.collect_banked_bonus()
         self.machine.events.post("goblin_mode_complete")
 
     def mode_stop(self, **kwargs):

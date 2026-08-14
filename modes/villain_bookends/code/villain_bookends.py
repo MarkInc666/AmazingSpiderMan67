@@ -132,8 +132,8 @@ class VillainBookends(Mode):
             'summary_title_failed': 'GOBLIN ESCAPED',
             'stat_1_label': 'ATTACK TOTAL',
             'stat_1_var': 'goblin_attacks_value',
-            'stat_2_label': 'BANKED',
-            'stat_2_var': 'goblin_bonus',
+            'stat_2_label': 'CHAOS SCORED',
+            'stat_2_var': 'goblin_bonus_banked',
             'points_var': 'active_mode_points',
             'state_var': 'goblin_state',
             'song': 'play_song_7',
@@ -916,21 +916,16 @@ class VillainBookends(Mode):
             'state_var': 'sir_galahad_state',
             'song': 'play_song_57',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Master Vine spreads across the playfield.
-        #   intro_2: Clear vine shots before they lock out.
-        #   intro_3: Stop the growth before it covers the city.
-        #   stat_2_label: MAJOR HITS
         'master_vine': {
             'title': 'MASTER VINE',
-            'intro_1': 'Vines spread fast.',
-            'intro_2': 'Clear vine shots.',
-            'intro_3': 'Stop the growth.',
+            'intro_1': 'Attack the vine upstairs.',
+            'intro_2': 'Spinner spreads new growth.',
+            'intro_3': 'Clear three vine waves.',
             'summary_title_complete': 'MASTER VINE DEFEATED',
             'summary_title_failed': 'MASTER VINE ESCAPED',
-            'stat_1_label': 'HITS',
+            'stat_1_label': 'VINE JPS',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'MAJORS',
+            'stat_2_label': 'WAVES',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'master_vine_state',
