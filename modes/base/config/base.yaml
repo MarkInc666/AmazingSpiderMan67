@@ -56,6 +56,13 @@ random_event_player:
     - play_song_9
     - play_song_16
 
+  play_random_player_added_callout:
+    - player_added_callout_1
+    - player_added_callout_2
+    - player_added_callout_3
+    - player_added_callout_4
+    - player_added_callout_5
+
 
 event_player:
   finish_skillshot:
@@ -143,9 +150,15 @@ event_player:
   s_web_spinner_active{mode.super_spinner.active == False}:
     - default_spinner_hit
 
-  player_added{num == 2}: show_player_2_added
-  player_added{num == 3}: show_player_3_added
-  player_added{num == 4}: show_player_4_added
+  player_added{num == 2}:
+    - show_player_2_added
+    - play_random_player_added_callout
+  player_added{num == 3}:
+    - show_player_3_added
+    - play_random_player_added_callout
+  player_added{num == 4}:
+    - show_player_4_added
+    - play_random_player_added_callout
 
   s_left_drops_1_active{current_player.villain_mode_running != 1}:
     - drop_hit_no_mode
@@ -172,6 +185,31 @@ event_player:
 
 
 sound_player:
+  player_added_callout_1:
+    jj_its_about_time_you_showed_up:
+      action: play
+      bus: voice
+
+  player_added_callout_2:
+    mg_you_screamed_mr_jameson:
+      action: play
+      bus: voice
+
+  player_added_callout_3:
+    jj_what_kept_you_parker:
+      action: play
+      bus: voice
+
+  player_added_callout_4:
+    jj_oh_there_you_are_parker:
+      action: play
+      bus: voice
+
+  player_added_callout_5:
+    sm_welcome_to_my_parlor:
+      action: play
+      bus: voice
+
   default_spinner_hit:
     rope_1:
       action: play
