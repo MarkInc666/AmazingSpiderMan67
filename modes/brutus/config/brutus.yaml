@@ -105,11 +105,11 @@ shows:
   brutus_right_bank_pulse:
     - duration: 500ms
       lights:
-        l_5bank_1: 00F000
-        l_5bank_2: 00F000
-        l_5bank_3: 00F000
-        l_5bank_4: 00F000
-        l_5bank_5: 00F000
+        l_5bank_1: "00F000"
+        l_5bank_2: "00F000"
+        l_5bank_3: "00F000"
+        l_5bank_4: "00F000"
+        l_5bank_5: "00F000"
     - duration: 500ms
       lights:
         l_5bank_1: "003000"
@@ -141,9 +141,9 @@ shows:
   brutus_saucers_jackpot:
     - duration: 250ms
       lights:
-        l_1: 00F000
-        l_2: 00F000
-        l_3: 00F000
+        l_1: "00F000"
+        l_2: "00F000"
+        l_3: "00F000"
         l_1_hole_l: F00000
         l_1_hole_r: F00000
         l_2_hole_l: F00000
@@ -165,9 +165,9 @@ shows:
   brutus_jackpot_flash:
     - duration: 125ms
       lights:
-        l_1: 00F000
-        l_2: 00F000
-        l_3: 00F000
+        l_1: "00F000"
+        l_2: "00F000"
+        l_3: "00F000"
         l_1_hole_l: F00000
         l_1_hole_r: F00000
         l_2_hole_l: F00000

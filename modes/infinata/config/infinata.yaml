@@ -191,36 +191,36 @@ light_player:
     gi: E0E0E0
 
   infinata_pop_left_complete:
-    l_pop_1_1: 00BF00
-    l_pop_1_2: 00BF00
-    l_pop_1_3: 00BF00
-    l_pop_1_4: 00BF00
-    l_pop_1_5: 00BF00
-    l_pop_1_6: 00BF00
-    l_pop_1_7: 00BF00
-    l_pop_1_8: 00BF00
-    l_pop_1_9: 00BF00
-    l_pop_1_10: 00BF00
-    l_pop_1_11: 00BF00
-    l_pop_1_12: 00BF00
+    l_pop_1_1: "00BF00"
+    l_pop_1_2: "00BF00"
+    l_pop_1_3: "00BF00"
+    l_pop_1_4: "00BF00"
+    l_pop_1_5: "00BF00"
+    l_pop_1_6: "00BF00"
+    l_pop_1_7: "00BF00"
+    l_pop_1_8: "00BF00"
+    l_pop_1_9: "00BF00"
+    l_pop_1_10: "00BF00"
+    l_pop_1_11: "00BF00"
+    l_pop_1_12: "00BF00"
   infinata_pop_right_complete:
-    l_pop_2_1: 00BF00
-    l_pop_2_2: 00BF00
-    l_pop_2_3: 00BF00
-    l_pop_2_4: 00BF00
-    l_pop_2_5: 00BF00
-    l_pop_2_6: 00BF00
-    l_pop_2_7: 00BF00
-    l_pop_2_8: 00BF00
-    l_pop_2_9: 00BF00
-    l_pop_2_10: 00BF00
-    l_pop_2_11: 00BF00
-    l_pop_2_12: 00BF00
+    l_pop_2_1: "00BF00"
+    l_pop_2_2: "00BF00"
+    l_pop_2_3: "00BF00"
+    l_pop_2_4: "00BF00"
+    l_pop_2_5: "00BF00"
+    l_pop_2_6: "00BF00"
+    l_pop_2_7: "00BF00"
+    l_pop_2_8: "00BF00"
+    l_pop_2_9: "00BF00"
+    l_pop_2_10: "00BF00"
+    l_pop_2_11: "00BF00"
+    l_pop_2_12: "00BF00"
 
   infinata_web_left_complete:
-    l_left_web_target: 00BF00
+    l_left_web_target: "00BF00"
   infinata_web_mid_complete:
-    l_mid_web_target: 00BF00
+    l_mid_web_target: "00BF00"
 
   infinata_unlight_pops:
     l_pop_1_1: 6030A0

@@ -319,6 +319,42 @@ sound_player:
       action: play
       bus: effects
 
+  # MPF posts ball_started with both the player number and an is_extra_ball flag.
+  # Keep normal turn and true extra-ball callouts separate from ball-save relaunches.
+  ball_started{player == 1 and is_extra_ball == False}:
+    player_1_is_up:
+      action: play
+      bus: voice
+  ball_started{player == 2 and is_extra_ball == False}:
+    player_2_is_up:
+      action: play
+      bus: voice
+  ball_started{player == 3 and is_extra_ball == False}:
+    player_3_is_up:
+      action: play
+      bus: voice
+  ball_started{player == 4 and is_extra_ball == False}:
+    player_4_is_up:
+      action: play
+      bus: voice
+
+  ball_started{player == 1 and is_extra_ball == True}:
+    player_1_shoot_again:
+      action: play
+      bus: voice
+  ball_started{player == 2 and is_extra_ball == True}:
+    player_2_shoot_again:
+      action: play
+      bus: voice
+  ball_started{player == 3 and is_extra_ball == True}:
+    player_3_shoot_again:
+      action: play
+      bus: voice
+  ball_started{player == 4 and is_extra_ball == True}:
+    player_4_shoot_again:
+      action: play
+      bus: voice
+
  
 sequences:
   reset_left_bank_after_hit:
@@ -419,5 +455,4 @@ queue_relay_player:
 #  ball_save_default_ball_save_saving_ball:
 #    - play_ball_save_callout
 #    - flash_gi_blue
-
 
