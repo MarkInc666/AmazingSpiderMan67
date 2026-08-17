@@ -1,8 +1,5 @@
 #config_version=6
 
-# SirGalahad placeholder villain mode.
-# Mode idea: One target lights for a short quickdraw; hit it to build showdown jackpot.
-
 mode:
   start_events: start_mode_sir_galahad
   stop_events:
@@ -26,55 +23,171 @@ widget_player:
       action: remove
 
 event_player:
-  # Common playfield hits. Refine these later when the mode design is built out.
-  s_pop_left_active: sir_galahad_shot_hit
-  s_pop_right_active: sir_galahad_shot_hit
-  s_trispinner_opto_active: sir_galahad_shot_hit
-  s_web_spinner_active: sir_galahad_shot_hit
-  s_star_rollover_active: sir_galahad_shot_hit
-  s_upper_target_left_active: sir_galahad_shot_hit
-  s_upper_target_center_active: sir_galahad_shot_hit
-  s_upper_target_right_active: sir_galahad_shot_hit
+  # Rooftop exits select the opposite lower drop bank.
+  s_upper_exit_left_opto_active: sir_galahad_upper_left_exit
+  s_upper_exit_right_opto_active: sir_galahad_upper_right_exit
 
-  s_left_drops_1_active: sir_galahad_shot_hit
-  s_left_drops_2_active: sir_galahad_shot_hit
-  s_left_drops_3_active: sir_galahad_shot_hit
-  s_right_drops_1_active: sir_galahad_shot_hit
-  s_right_drops_2_active: sir_galahad_shot_hit
-  s_right_drops_3_active: sir_galahad_shot_hit
-  s_right_drops_4_active: sir_galahad_shot_hit
-  s_right_drops_5_active: sir_galahad_shot_hit
+  # Right exit returns through the physical right inlane before the left-bank
+  # timer begins. Left-exit timing begins from the shared up-post completion
+  # event handled in Python.
+  s_inlane_r_active: sir_galahad_right_inlane_hit
 
-  s_saucer_1_active:
-    - sir_galahad_major_hit
-    - clear_saucers
-  s_saucer_2_active:
-    - sir_galahad_major_hit
-    - clear_saucers
-  s_saucer_3_active:
-    - sir_galahad_major_hit
-    - clear_saucers
-  s_vuk_switch_active: sir_galahad_major_hit
+  s_left_drops_1_active: sir_galahad_left_drop_1_hit
+  s_left_drops_2_active: sir_galahad_left_drop_2_hit
+  s_left_drops_3_active: sir_galahad_left_drop_3_hit
 
-  drop_target_bank_dt_bank_left_down:
-    - drop_target_bank_dt_bank_left_reset
-  drop_target_bank_dt_bank_right_down:
-    - drop_target_bank_dt_bank_right_reset
+  s_right_drops_1_active: sir_galahad_right_drop_1_hit
+  s_right_drops_2_active: sir_galahad_right_drop_2_hit
+  s_right_drops_3_active: sir_galahad_right_drop_3_hit
+  s_right_drops_4_active: sir_galahad_right_drop_4_hit
+  s_right_drops_5_active: sir_galahad_right_drop_5_hit
+
+  # Galahad owns VUK behavior while Daily Bugle Mystery is disabled. During a
+  # live joust the VUK resolves the round and starts the same bank collapse.
+  s_vuk_switch_active: sir_galahad_vuk_hit
+
+  s_saucer_1_active: clear_saucers_delayed
+  s_saucer_2_active: clear_saucers_delayed
+  s_saucer_3_active: clear_saucers_delayed
+
+  # Standard both-flipper early release. The joust timer still begins only
+  # after the post is commanded down.
+  s_left_flipper_active{device.switches.s_right_flipper.state == 1}:
+    - sir_galahad_post_hold_cancel
+  s_right_flipper_active{device.switches.s_left_flipper.state == 1}:
+    - sir_galahad_post_hold_cancel
 
   mode_sir_galahad_started:
-    - rooftop_diverter_open|500ms
-    - clear_saucers
-    - drop_target_bank_dt_bank_left_reset
-    - drop_target_bank_dt_bank_right_reset
+    - disable_daily_bugle_mystery
+    - clear_saucers_delayed
+    - sir_galahad_clear_all_lights
 
   mode_sir_galahad_stopping:
+    - enable_daily_bugle_mystery
     - clear_saucers
+    - sir_galahad_clear_all_lights
+
+show_player:
+  sir_galahad_roof_ready:
+    sir_galahad_roof_ready_show:
+      loops: -1
+
+  sir_galahad_roof_not_ready:
+    sir_galahad_roof_ready_show:
+      action: stop
+
+  sir_galahad_right_bank_ready:
+    sir_galahad_right_bank_show:
+      loops: -1
+
+  sir_galahad_left_bank_ready:
+    sir_galahad_left_bank_show:
+      loops: -1
+
+  sir_galahad_bank_window_off:
+    sir_galahad_right_bank_show:
+      action: stop
+    sir_galahad_left_bank_show:
+      action: stop
+    sir_galahad_collapse_gi_show:
+      loops: 3
+
+  sir_galahad_round_complete:
+    sir_galahad_collapse_gi_show:
+      action: stop
+
+  sir_galahad_clear_all_lights:
+    sir_galahad_roof_ready_show:
+      action: stop
+    sir_galahad_right_bank_show:
+      action: stop
+    sir_galahad_left_bank_show:
+      action: stop
+    sir_galahad_collapse_gi_show:
+      action: stop
+
+shows:
+  # The roof remains available for all three/four rounds.
+  sir_galahad_roof_ready_show:
+    - duration: 400ms
+      lights:
+        l_upper_left: A0D0FF
+        l_upper_right: A0D0FF
+        l_gi_ramp: 406090
+    - duration: 400ms
+      lights:
+        l_upper_left: 406090
+        l_upper_right: 406090
+        l_gi_ramp: A0D0FF
+
+  # Five-bank value tiers: center, adjacent, then outer targets. The physical
+  # inserts are green, so brightness/speed rather than incompatible colors
+  # communicates value. Both right-bank GI lamps flash throughout the window.
+  sir_galahad_right_bank_show:
+    - duration: 200ms
+      lights:
+        l_5bank_1: "004000"
+        l_5bank_2: "009000"
+        l_5bank_3: "00FF00"
+        l_5bank_4: "009000"
+        l_5bank_5: "004000"
+        l_gi_5bank_lower: A0D0FF
+        l_gi_5bank_upper: A0D0FF
+    - duration: 200ms
+      lights:
+        l_5bank_1: "002000"
+        l_5bank_2: "004800"
+        l_5bank_3: "006000"
+        l_5bank_4: "004800"
+        l_5bank_5: "002000"
+        l_gi_5bank_lower: off
+        l_gi_5bank_upper: off
+    - duration: 200ms
+      lights:
+        l_5bank_1: "004000"
+        l_5bank_2: "009000"
+        l_5bank_3: "00FF00"
+        l_5bank_4: "009000"
+        l_5bank_5: "004000"
+        l_gi_5bank_lower: A0D0FF
+        l_gi_5bank_upper: A0D0FF
+    - duration: 200ms
+      lights:
+        l_5bank_1: off
+        l_5bank_2: "004800"
+        l_5bank_3: "006000"
+        l_5bank_4: "004800"
+        l_5bank_5: off
+        l_gi_5bank_lower: off
+        l_gi_5bank_upper: off
+
+  # The left three-bank has one green insert. It and the left-bank GI flash to
+  # mark the active accuracy shot; the display supplies AIM FOR CENTER guidance.
+  sir_galahad_left_bank_show:
+    - duration: 250ms
+      lights:
+        l_3bankbonus: "00FF00"
+        l_gi_3bank: A0D0FF
+    - duration: 250ms
+      lights:
+        l_3bankbonus: off
+        l_gi_3bank: off
+
+  sir_galahad_collapse_gi_show:
+    - duration: 250ms
+      lights:
+        l_gi_3bank: FFFFFF
+        l_gi_5bank_lower: FFFFFF
+        l_gi_5bank_upper: FFFFFF
+    - duration: 250ms
+      lights:
+        l_gi_3bank: 305080
+        l_gi_5bank_lower: 305080
+        l_gi_5bank_upper: 305080
 
 light_player:
-  # Full-playfield GI theme while this mode is active.
   mode_sir_galahad_started:
-    gi: 7050A0
+    gi: 305080
 
   mode_sir_galahad_stopping:
     gi: E0E0E0
-

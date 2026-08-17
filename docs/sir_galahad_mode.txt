@@ -1,0 +1,85 @@
+SIR GALAHAD — KNIGHT MUST FALL
+
+Status: Implemented; machine playtest and presentation polish required.
+
+
+CORE RULES
+
+- The mode is a three-round rooftop score attack. There is no pass/fail score
+  threshold; the objective is to collect as many points as possible.
+- More Jackpots adds a fourth round.
+- The rooftop gate opens when the mode starts and remains open for the mode.
+- Every upper exit scores 100,000 and stages the opposite drop bank:
+  - Left upper exit stages the right five-bank. The up-post holds the ball, and
+    the target window begins when the post drops.
+  - Right upper exit stages the left three-bank. The target window begins when
+    the physical right inlane switch is hit.
+- The base target window is 8 seconds. More Time extends it to 12 seconds.
+- A physical target hit scores once, stops the timer, and starts the same
+  center-out target collapse used on a timeout.
+- A VUK hit during an active target window stops the timer and starts the
+  center-out collapse without awarding target points. The VUK ejects normally.
+- After the bank collapses, the rooftop is prompted again for the next round.
+- After the final round resolves, the mode completes and shows JOUST SCORE.
+
+
+TARGET VALUES
+
+Normal values:
+
+- Left bank targets 1 / 2 / 3: 100,000 / 500,000 / 100,000.
+- Right bank targets 1 / 2 / 3 / 4 / 5:
+  50,000 / 100,000 / 500,000 / 100,000 / 50,000.
+
+Bigger Jackpots values:
+
+- Left bank targets 1 / 2 / 3: 150,000 / 750,000 / 150,000.
+- Right bank targets 1 / 2 / 3 / 4 / 5:
+  100,000 / 250,000 / 750,000 / 250,000 / 100,000.
+
+
+CENTER-OUT COLLAPSE
+
+- Right five-bank: target 3 immediately; 500 ms later targets 2+4; 500 ms
+  later targets 1+5.
+- Left three-bank: target 2 immediately; 500 ms later targets 1+3.
+- A target already down is skipped. Programmatic knockdowns never award points
+  or consume Shot Assist.
+
+
+CASE FILES
+
+- More Jackpots: adds a fourth joust round.
+- Bigger Jackpots: raises left-bank values to 150K / 750K / 150K and
+  right-bank values to 100K / 250K / 750K / 250K / 100K.
+- More Time: extends each target window from 8 seconds to 12 seconds.
+- Safety Net: starts a 10-second ball save when the mode begins.
+- Shot Assist: the first physical drop-target hit scores that bank's center
+  value. Timeout, VUK, and programmatic knockdowns do not consume it.
+
+
+LIGHTING AND PROMPTS
+
+- The right-bank green inserts communicate value by intensity and flash rate:
+  center brightest, targets 2+4 medium, targets 1+5 dimmer. Both right-bank GI
+  lamps flash while that bank is staged.
+- The left bank has one green insert and one GI lamp; both flash while staged.
+  The display supplies AIM FOR CENTER guidance.
+- Start: KNIGHT MUST FALL / ENTER THE ROOFTOP.
+- Exit: show the 100K award and prompt the opposite bank's center.
+- Active window: show the bank, AIM FOR CENTER, and remaining time.
+- Target hit: JOUST JACKPOT plus the collected value.
+- Timeout or active-window VUK: GALAHAD CHARGES.
+- Between rounds: prompt the roof and show jousts remaining.
+- Final: KNIGHT MUST FALL / JOUST SCORE.
+
+
+STATE AND SUMMARY DATA
+
+- sir_galahad_state is the only Galahad-specific player variable:
+  0 = unplayed, 1 = active, 2 = completed.
+- Round, bank, timer, score, switch guards, and Case File runtime flags remain
+  local to the Python mode.
+- active_mode_points, active_mode_hits, and active_mode_major_hits feed the
+  shared summary presentation. Major hits count center-value bullseyes,
+  including an assisted first physical target.
