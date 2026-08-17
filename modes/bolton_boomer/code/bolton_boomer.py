@@ -59,6 +59,9 @@ class BoltonBoomer(CaseFileMixin, Mode):
         self.add_mode_event_handler("bolton_boomer_vuk_hit", self._vuk_hit)
         self.add_mode_event_handler("multiball_bolton_boomer_multiball_ended", self._multiball_ended)
 
+        self.machine.events.post("disable_daily_bugle_mystery")
+        self.machine.events.post("daily_bugle_cancel_vuk_delay_eject")
+
         player = self.machine.game.player
         player["bolton_boomer_state"] = 1
         player["bolton_boomer_opening_save_seconds"] = self.opening_save_seconds
@@ -297,4 +300,6 @@ class BoltonBoomer(CaseFileMixin, Mode):
         if self.held_saucer is not None:
             self._eject_saucer(self.held_saucer, 0)
         self._eject_vuk(0)
+        self.machine.events.post("enable_daily_bugle_mystery")
+        self.machine.events.post("daily_bugle_restore_state")
         super().mode_stop(**kwargs)

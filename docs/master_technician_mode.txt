@@ -1,0 +1,59 @@
+MASTER TECHNICIAN — CURRENT MODE RULES
+
+STATUS
+- Redesigned and coded.
+- Automated validation completed with the patch.
+- Physical-machine playtest still required.
+
+CORE LOOP
+- Master Technician is a one-ball, timed spinner/drop-target score attack.
+- The mode starts with 60 seconds and both drop banks reset.
+- Each physical or inlane-assisted drop scores 25,000.
+- Either inlane knocks down one random standing target.
+- The spinner scores 10,000 when no targets are down.
+- With one through seven targets down, the spinner scores 50,000 per down target:
+  1 = 50,000; 2 = 100,000; 3 = 150,000; 4 = 200,000;
+  5 = 250,000; 6 = 300,000; 7 = 350,000.
+- Spinner and drop-bank GI pulses increase through seven speeds as the value builds.
+- The player should leave one target standing and cash in the spinner value.
+- Knocking down all eight targets causes a short circuit, deducts 10 seconds,
+  resets both banks, and returns the spinner to its unlit 10,000 value.
+- The timer penalty is clamped at zero.
+- Timer expiration ends the mode normally and counts as completion for progression.
+- There is no defeat objective; the goal is to score as much as possible before time expires.
+- A ball drain stops the mode normally through the standard villain progression flow.
+
+CASE FILES
+- More Jackpots: both web targets light whenever one through seven targets are
+  down. Each lit web-target hit scores 50,000. They turn off at zero targets and
+  during every eight-target reset.
+- Bigger Jackpots: the spinner builds at 75,000 per down target, up to 525,000
+  with seven down. The unlit spinner remains 10,000.
+- More Time: the starting timer is 75 seconds instead of 60.
+- Safety Net: the first eight-target short circuit still resets both banks but
+  does not deduct 10 seconds.
+- Shot Assist: the first inlane can knock down two random standing targets in
+  sequence. It is capped at seven down and will not automatically knock down
+  the eighth target.
+
+DISPLAY AND LIGHTING
+- Intro cues explain that drops boost the spinner, seven down is the scoring
+  goal, and all eight costs 10 seconds.
+- Mode status shows seconds remaining, targets down, and current spinner value.
+- Spinner awards, 50,000 web jackpots, short circuits, Safety Net use, and the
+  Shot Assist final-target hold each produce player-facing messages.
+- The spinner insert and both bank GI groups pulse faster at each level from one
+  through seven targets down.
+- More Jackpots lights both white-lens web-target inserts white.
+
+SUMMARY
+- Normal title: TIME EXPIRED.
+- Ball-drain title: CIRCUIT INTERRUPTED.
+- Statistics: spinner hits, short circuits, and total mode points.
+
+PLAYER VARIABLE OWNERSHIP
+- master_technician_state is retained for persistent progression.
+- active_mode_points, active_mode_hits, and active_mode_major_hits carry the
+  standard summary totals.
+- Temporary timer, target, spinner-value, helper-use, and inlane state remains
+  in Python and is not stored as player variables.

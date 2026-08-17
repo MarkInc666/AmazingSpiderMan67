@@ -284,7 +284,11 @@ class Kotep(CaseFileMixin, Mode):
         self._schedule_scepter_tick()
 
     def _vuk_hit(self, **kwargs):
-        if self.mode_done or self.phase != "scepter":
+        if self.mode_done:
+            return
+
+        if self.phase != "scepter":
+            self.machine.events.post("request_vuk_eject", delay_ms=1_000)
             return
 
         # The optional fifth demon is lost if the Super is collected first.

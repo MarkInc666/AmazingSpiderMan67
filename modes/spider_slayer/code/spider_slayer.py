@@ -149,7 +149,7 @@ class SpiderSlayer(CaseFileMixin, Mode):
         self._sync_vars()
         self.machine.events.post("spider_slayer_disable_safety_net")
         self.machine.events.post("show_mode_jackpot", message_mode_title="SPIDER-SLAYER DESTROYED", message_mode_subtitle="SLAYER JACKPOT", message_mode_value=self.collected_jackpot)
-        self.delay.add(name="spider_slayer_vuk_eject", ms=1200, callback=self.machine.events.post, event="up_kick")
+        self.machine.events.post("villain_summary_hold_vuk_until_done")
         self.delay.add(name="spider_slayer_finish", ms=2000, callback=self.machine.events.post, event="spider_slayer_mode_complete")
 
     def _ball_ending(self, **kwargs):
@@ -193,7 +193,6 @@ class SpiderSlayer(CaseFileMixin, Mode):
     def mode_stop(self, **kwargs):
         self.delay.remove("spider_slayer_begin_decay")
         self.delay.remove("spider_slayer_decay")
-        self.delay.remove("spider_slayer_vuk_eject")
         self.delay.remove("spider_slayer_finish")
         self.machine.events.post("spider_slayer_clear_all")
         self.machine.events.post("spider_slayer_disable_safety_net")

@@ -75,6 +75,8 @@ class Brutus(CaseFileMixin, Mode):
         self.add_mode_event_handler("s_vuk_switch_active", self._vuk_hit)
         self.add_mode_event_handler("ball_ending", self._ball_ending)
 
+        self.machine.events.post("disable_daily_bugle_mystery")
+        self.machine.events.post("daily_bugle_cancel_vuk_delay_eject")
         self.machine.events.post("brutus_clear_all")
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("clear_saucers_delayed")
@@ -108,6 +110,8 @@ class Brutus(CaseFileMixin, Mode):
         self.machine.events.post("clear_saucers_delayed")
         self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post("hide_mode_status")
+        self.machine.events.post("enable_daily_bugle_mystery")
+        self.machine.events.post("daily_bugle_restore_state")
         self.clear_active_case_file_helpers()
         super().mode_stop(**kwargs)
 

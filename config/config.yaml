@@ -289,6 +289,13 @@ coil_player:
   up_kick:
     c_vuk_to_upper:
       action: pulse
+
+  # One switch-confirmed recovery pulse may be requested by the persistent
+  # villain-progression VUK release service when the first up_kick does not
+  # clear the VUK switch.
+  up_kick_retry:
+    c_vuk_to_upper:
+      action: pulse
     
   fire_rooftop_diverter_open:
     c_diverter_open_close:
@@ -455,4 +462,3 @@ queue_relay_player:
 #  ball_save_default_ball_save_saving_ball:
 #    - play_ball_save_callout
 #    - flash_gi_blue
-

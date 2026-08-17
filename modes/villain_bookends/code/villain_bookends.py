@@ -931,23 +931,17 @@ class VillainBookends(Mode):
             'state_var': 'master_vine_state',
             'song': 'play_song_53',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Drop targets set the spinner value.
-        #   intro_2: Build the circuit, then rip the spinner.
-        #   intro_3: Complete a bank before the system shorts out.
-        #   stat_1_label: SPINNER VALUE
-        #   stat_2_label: BONUS BANKED
         'master_technician': {
             'title': 'MASTER TECHNICIAN',
-            'intro_1': 'Drops set spinner.',
-            'intro_2': 'Build the circuit.',
-            'intro_3': 'Spin before short.',
-            'summary_title_complete': 'TECHNICIAN STOPPED',
-            'summary_title_failed': 'TECHNICIAN ESCAPED',
-            'stat_1_label': 'SPIN VALUE',
-            'stat_1_var': 'master_technician_spinner_value',
-            'stat_2_label': 'BANKED',
-            'stat_2_var': 'technician_bonus',
+            'intro_1': 'Drops boost the spinner.',
+            'intro_2': 'Stop at seven and spin.',
+            'intro_3': 'All eight costs ten seconds.',
+            'summary_title_complete': 'TIME EXPIRED',
+            'summary_title_failed': 'CIRCUIT INTERRUPTED',
+            'stat_1_label': 'SPINNER HITS',
+            'stat_1_var': 'active_mode_hits',
+            'stat_2_label': 'SHORT CIRCUITS',
+            'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'master_technician_state',
             'song': 'play_song_45',
@@ -1253,6 +1247,22 @@ class VillainBookends(Mode):
         end of the summary for both timeout and flipper speedup paths.
         """
         self.summary_vuk_release_pending = True
+        # The scoring mode may re-enable Daily Bugle as it stops. Keep Daily
+        # Bugle disabled for the full summary so a VUK switch chatter cannot
+        # schedule its normal 500 ms eject and defeat this hold.
+        self.machine.events.post("disable_daily_bugle_mystery")
+        self.machine.events.post("daily_bugle_cancel_vuk_delay_eject")
+        self.delay.reset(
+            name="villain_summary_enforce_vuk_hold",
+            ms=10,
+            callback=self._enforce_vuk_summary_hold,
+        )
+
+    def _enforce_vuk_summary_hold(self):
+        if not self.summary_vuk_release_pending:
+            return
+        self.machine.events.post("disable_daily_bugle_mystery")
+        self.machine.events.post("daily_bugle_cancel_vuk_delay_eject")
 
     def _intro_request(self, villain=None, start_event=None, **kwargs):
         if villain not in self.VILLAINS:
@@ -1300,6 +1310,9 @@ class VillainBookends(Mode):
 
         self.machine.events.post("play_song_21")
         self.machine.game.player["villain_mode_in_summary"] = True
+
+        if self.summary_vuk_release_pending:
+            self._enforce_vuk_summary_hold()
 
         data = self.VILLAINS[villain]
         state = self._get_player_value(data.get("state_var", ""), 0)
@@ -1418,7 +1431,13 @@ class VillainBookends(Mode):
             self.machine.events.post("villain_bookend_summary_done", villain=villain)
             if self.summary_vuk_release_pending:
                 self.summary_vuk_release_pending = False
+                self.delay.remove("villain_summary_enforce_vuk_hold")
                 self.machine.events.post("up_kick")
+                self.delay.reset(
+                    name="villain_summary_restore_daily_bugle",
+                    ms=1_200,
+                    callback=self._restore_daily_bugle_after_vuk_release,
+                )
 
         self.machine.events.post("clear_saucers_delayed")
         self.current_stage = None
@@ -1428,6 +1447,13 @@ class VillainBookends(Mode):
 
         if done_event:
             self.machine.events.post(done_event, villain=villain)
+
+    def _restore_daily_bugle_after_vuk_release(self):
+        player = self.machine.game.player if self.machine.game else None
+        if player and int(player["villain_mode_running"]) == 1:
+            return
+        self.machine.events.post("enable_daily_bugle_mystery")
+        self.machine.events.post("daily_bugle_restore_state")
 
     def _get_player_value(self, var_name, default=0):
         player = self.machine.game.player if self.machine.game else None

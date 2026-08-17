@@ -13,7 +13,7 @@ class SuperSwami(CaseFileMixin, Mode):
     MORE_JACKPOTS_VALUE = 500_000
 
     AREA_SWITCHES = {
-        "upper_left": ['s_leaf_next_to_1', 's_saucer_1', 's_saucer_2', 's_saucer_3', 's_upper_entrance_opto', 's_upper_exit_left_opto', 's_vuk_switch'],
+        "upper_left": ['s_leaf_next_to_1', 's_saucer_1', 's_saucer_2', 's_saucer_3', 's_upper_entrance_opto', 's_upper_exit_left_opto'],
         "upper_right": ['s_above_star', 's_inlane_a', 's_inlane_b', 's_star_rollover', 's_web_target_mid'],
         "middle_left": ['s_above_spinner', 's_inlane_m_l', 's_left_drops_1', 's_left_drops_2', 's_left_drops_3', 's_left_drops_rubber', 's_left_drops_top_left_rubber', 's_left_drops_top_right_rubber', 's_pop_left', 's_web_spinner', 's_web_target_left'],
         "middle_right": ['s_inlane_m_r', 's_mid_right_rubber', 's_pop_right', 's_right_drops_1', 's_right_drops_2', 's_right_drops_3', 's_right_drops_4', 's_right_drops_5', 's_right_drops_rubber', 's_right_drops_top_rubber'],
@@ -54,6 +54,8 @@ class SuperSwami(CaseFileMixin, Mode):
         self.add_mode_event_handler("s_vuk_switch_active", self._vuk_hit)
         self.add_mode_event_handler(f"{self.MODE_KEY}_fail_request", self._fail_mode)
 
+        self.machine.events.post("disable_daily_bugle_mystery")
+        self.machine.events.post("daily_bugle_cancel_vuk_delay_eject")
         self.machine.events.post("super_swami_dim_city")
         self.machine.events.post("clear_saucers")
         self.machine.events.post("drop_target_bank_dt_bank_left_reset")
@@ -81,6 +83,8 @@ class SuperSwami(CaseFileMixin, Mode):
         self.machine.events.post("clear_saucers")
         self.machine.events.post("drop_target_bank_dt_bank_left_reset")
         self.machine.events.post("drop_target_bank_dt_bank_right_reset")
+        self.machine.events.post("enable_daily_bugle_mystery")
+        self.machine.events.post("daily_bugle_restore_state")
         self.clear_active_case_file_helpers()
         super().mode_stop(**kwargs)
 
@@ -137,8 +141,17 @@ class SuperSwami(CaseFileMixin, Mode):
         self.machine.events.post("rooftop_diverter_open")
 
     def _vuk_hit(self, **kwargs):
-        if not self.final_jackpot_lit or self.mode_done:
+        if self.mode_done:
             return
+
+        # A neutral VUK hit still counts as an upper-left restoration shot, but
+        # it cannot also collect a Blackout Jackpot that the same switch event
+        # just qualified. The player must return to the newly lit VUK.
+        if not self.final_jackpot_lit:
+            self._area_switch_hit(area="upper_left")
+            self.machine.events.post("request_vuk_eject", delay_ms=1_000)
+            return
+
         self._score(self.MORE_JACKPOTS_VALUE)
         self.machine.events.post("show_mode_message", message_mode_title="BLACKOUT JACKPOT", message_mode_subtitle="500K")
         self.machine.events.post("villain_summary_hold_vuk_until_done")

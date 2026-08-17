@@ -72,7 +72,6 @@ class Infinata(CaseFileMixin, Mode):
 
     def mode_stop(self, **kwargs):
         self.delay.remove("infinata_super_tick")
-        self.delay.remove("infinata_vuk_eject")
         self._close_roof_gate_if_requested()
         self.machine.events.post("infinata_clear_lights")
         self.machine.events.post("clear_saucers_delayed")
@@ -202,12 +201,7 @@ class Infinata(CaseFileMixin, Mode):
         rooftop gate is open for the upper-target area and the VUK is acting as
         the feed to the upper playfield.
         """
-        self.delay.remove("infinata_vuk_eject")
-        self.delay.add(
-            name="infinata_vuk_eject",
-            ms=1000,
-            callback=lambda: self.machine.events.post("up_kick"),
-        )
+        self.machine.events.post("request_vuk_eject", delay_ms=1_000)
 
     def _saucer_hit(self, **kwargs):
         if self.mode_done or self.phase != "super":

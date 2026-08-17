@@ -1,5 +1,9 @@
 #config_version=6
 
+# Master Technician is a 60-second spinner/drop-target score attack. Each down
+# target raises the spinner value. Dropping all eight costs 10 seconds and
+# resets both banks, so the player should stop at seven and spin.
+
 mode:
   start_events: start_mode_master_technician
   stop_events:
@@ -8,189 +12,172 @@ mode:
   code: master_technician.MasterTechnician
   priority: 300
 
-
 widget_player:
   mode_master_technician_started:
     master_technician:
       action: play
-
   master_technician_mode_complete:
     master_technician:
       action: remove
-
   mode_master_technician_stopping:
     master_technician:
       action: remove
 
-
-variable_player:
-
-  mode_master_technician_started:
-    master_technician_running:
-      action: set
-      int: 1
-
-  mode_master_technician_stopped:
-    master_technician_running:
-      action: set
-      int: 0
-      
-      
 event_player:
   mode_master_technician_started:
-    - reset_drops 
+    - master_technician_reset_banks
     - enable_up_post_event
     - master_technician_start
 
-  s_web_spinner_active:
-    - master_technician_spinner_hit
+  s_web_spinner_active: master_technician_spinner_hit
+  s_web_target_left_active: master_technician_web_hit
+  s_web_target_mid_active: master_technician_web_hit
 
-  s_inlane_l_active:
-    - master_technician_inlane_hit
-  s_inlane_r_active:
-    - master_technician_inlane_hit
+  s_inlane_l_active: master_technician_inlane_hit
+  s_inlane_r_active: master_technician_inlane_hit
 
-  s_left_drops_1_active:
-    - master_technician_left_drop_1_hit
-  s_left_drops_2_active:
-    - master_technician_left_drop_2_hit
-  s_left_drops_3_active:
-    - master_technician_left_drop_3_hit
+  s_left_drops_1_active: master_technician_left_drop_1_hit
+  s_left_drops_2_active: master_technician_left_drop_2_hit
+  s_left_drops_3_active: master_technician_left_drop_3_hit
+  s_right_drops_1_active: master_technician_right_drop_1_hit
+  s_right_drops_2_active: master_technician_right_drop_2_hit
+  s_right_drops_3_active: master_technician_right_drop_3_hit
+  s_right_drops_4_active: master_technician_right_drop_4_hit
+  s_right_drops_5_active: master_technician_right_drop_5_hit
 
-  s_right_drops_1_active:
-    - master_technician_right_drop_1_hit
-  s_right_drops_2_active:
-    - master_technician_right_drop_2_hit
-  s_right_drops_3_active:
-    - master_technician_right_drop_3_hit
-  s_right_drops_4_active:
-    - master_technician_right_drop_4_hit
-  s_right_drops_5_active:
-    - master_technician_right_drop_5_hit
+  s_saucer_1_active: delayed_kickout_saucer_1
+  s_saucer_2_active: delayed_kickout_saucer_2
+  s_saucer_3_active: delayed_kickout_saucer_3
 
-  s_saucer_1_active:
-    - master_technician_saucer_hit
-    - delayed_kickout_saucer_1
-  s_saucer_2_active:
-    - master_technician_saucer_hit
-    - delayed_kickout_saucer_2
-  s_saucer_3_active:
-    - master_technician_saucer_hit
-    - delayed_kickout_saucer_3
-
-
-light_player:
-  master_technician_light_saucers:
-    l_1: green
-    l_1_hole_l: red
-    l_1_hole_r: red
-    l_2: green
-    l_2_hole_l: red
-    l_2_hole_r: red
-    l_3: green
-    l_3_hole_l: red
-    l_3_hole_r: red
-
-  master_technician_clear_saucers:
-    l_1: off
-    l_1_hole_l: off
-    l_1_hole_r: off
-    l_2: off
-    l_2_hole_l: off
-    l_2_hole_r: off
-    l_3: off
-    l_3_hole_l: off
-    l_3_hole_r: off
+  master_technician_reset_banks:
+    - drop_target_bank_dt_bank_left_reset
+    - drop_target_bank_dt_bank_right_reset
 
   mode_master_technician_stopping:
-    l_1: off
-    l_1_hole_l: off
-    l_1_hole_r: off
-    l_2: off
-    l_2_hole_l: off
-    l_2_hole_r: off
-    l_3: off
-    l_3_hole_l: off
-    l_3_hole_r: off
+    - master_technician_reset_banks
+    - master_technician_clear_lights
 
 show_player:
-  master_technician_start:
-    master_technician_base_show:
-      loops: -1
-
-  master_technician_spinner_scored:
-    master_technician_spinner_show:
-      loops: 1
-
-  master_technician_drop_scored:
-    master_technician_drop_show:
-      loops: 1
-
-  master_technician_inlane_advance:
-    master_technician_drop_show:
-      loops: 1
-
-  master_technician_danger_warning:
-    master_technician_danger_show:
-      loops: 1
-
-  master_technician_mode_complete:
-    master_technician_base_show:
+  master_technician_level_0:
+    master_technician_level_pulse:
       action: stop
-    master_technician_complete_show:
-      loops: 1
+      key: master_technician_level_pulse
+
+  master_technician_level_1:
+    master_technician_level_pulse:
+      action: play
+      loops: -1
+      speed: 0.75
+      key: master_technician_level_pulse
+      priority: 320
+  master_technician_level_2:
+    master_technician_level_pulse:
+      action: play
+      loops: -1
+      speed: 1
+      key: master_technician_level_pulse
+      priority: 320
+  master_technician_level_3:
+    master_technician_level_pulse:
+      action: play
+      loops: -1
+      speed: 1.25
+      key: master_technician_level_pulse
+      priority: 320
+  master_technician_level_4:
+    master_technician_level_pulse:
+      action: play
+      loops: -1
+      speed: 1.5
+      key: master_technician_level_pulse
+      priority: 320
+  master_technician_level_5:
+    master_technician_level_pulse:
+      action: play
+      loops: -1
+      speed: 2
+      key: master_technician_level_pulse
+      priority: 320
+  master_technician_level_6:
+    master_technician_level_pulse:
+      action: play
+      loops: -1
+      speed: 2.75
+      key: master_technician_level_pulse
+      priority: 320
+  master_technician_level_7:
+    master_technician_level_pulse:
+      action: play
+      loops: -1
+      speed: 4
+      key: master_technician_level_pulse
+      priority: 320
+
+  master_technician_time_penalty:
+    master_technician_short_circuit_show:
+      loops: 2
+      priority: 330
+
+  master_technician_safety_net_used:
+    master_technician_safety_net_show:
+      loops: 2
+      priority: 330
+
+  master_technician_clear_lights:
+    master_technician_level_pulse:
+      action: stop
+      key: master_technician_level_pulse
+
+light_player:
+  master_technician_light_webs:
+    l_left_web_target: white
+    l_mid_web_target: white
+  master_technician_clear_webs:
+    l_left_web_target: off
+    l_mid_web_target: off
+  master_technician_clear_lights:
+    l_spinner: off
+    l_left_web_target: off
+    l_mid_web_target: off
+    l_gi_3bank: off
+    l_gi_5bank_lower: off
+    l_gi_5bank_upper: off
 
 shows:
-  master_technician_base_show:
-    - duration: 300ms
+  master_technician_level_pulse:
+    - duration: 500ms
       lights:
         l_spinner: white
-    - duration: 300ms
+        l_gi_3bank: white
+        l_gi_5bank_lower: white
+        l_gi_5bank_upper: white
+    - duration: 500ms
       lights:
-        l_spinner: blue
+        l_spinner: off
+        l_gi_3bank: off
+        l_gi_5bank_lower: off
+        l_gi_5bank_upper: off
 
-  master_technician_spinner_show:
-    - duration: 100ms
+  master_technician_short_circuit_show:
+    - duration: 125ms
       lights:
-        l_spinner: yellow
-        gi: yellow
-    - duration: 100ms
+        l_gi_3bank: red
+        l_gi_5bank_lower: red
+        l_gi_5bank_upper: red
+    - duration: 125ms
       lights:
-        l_spinner: white
-        gi: white
+        l_gi_3bank: off
+        l_gi_5bank_lower: off
+        l_gi_5bank_upper: off
 
-  master_technician_drop_show:
-    - duration: 100ms
+  master_technician_safety_net_show:
+    - duration: 125ms
       lights:
-        gi: white
-    - duration: 100ms
+        l_gi_3bank: green
+        l_gi_5bank_lower: green
+        l_gi_5bank_upper: green
+    - duration: 125ms
       lights:
-        gi: blue
-
-  master_technician_danger_show:
-    - duration: 100ms
-      lights:
-        l_3bankbonus: cyan
-        l_left_multibonus: cyan
-        l_5bank_1: cyan
-        l_5bank_2: cyan
-        l_5bank_3: cyan
-        l_5bank_4: cyan
-        l_5bank_5: cyan
-    - duration: 100ms
-      lights:
-        l_3bankbonus: off
-        l_left_multibonus: off
-        l_5bank_1: off
-        l_5bank_2: off
-        l_5bank_3: off
-        l_5bank_4: off
-        l_5bank_5: off
-
-  master_technician_complete_show:
-    - duration: 150ms
-      lights:
-        gi: red
-    - duration: 150ms
-      lights:
-        gi: off
+        l_gi_3bank: off
+        l_gi_5bank_lower: off
+        l_gi_5bank_upper: off

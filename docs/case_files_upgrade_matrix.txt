@@ -84,11 +84,10 @@ Conner's Reptiles | Star Jackpot objective added | Rampage Jackpots score 150K |
 CHAPTER 11 — DIMENSIONAL FINALE
 Sir Galahad | Add a fourth joust round | Left values 150K / 750K / 150K; right values 100K / 250K / 750K / 250K / 100K | Target windows last 12s instead of 8s | 10s ball save at mode start | First physical drop hit scores the bank's center value; timeout, VUK, and programmatic drops do not consume it
 Master Vine | First spinner hit of each wave lights 3 unique lower shots instead of 1 | Vine jackpots score 75K instead of 50K | Each wave lasts 40s instead of 30s | 10s ball save starts on first upper entry | First collected shot also collects a random second lit shot; if none exists, the same shot scores again
-Master Technician | NOT IMPLEMENTED | NOT IMPLEMENTED | NOT IMPLEMENTED | NOT IMPLEMENTED | NOT IMPLEMENTED
+Master Technician | Web targets score 50K while 1-7 drops are down | Spinner builds 75K per down target | Timer starts at 75s | First eight-down reset has no 10s penalty | First inlane drops up to two targets without dropping the eighth
 The Spider-Men | Six Jackpots light 500K center-web Super | Alignment Jackpots 150K | Proton timer 60s | 10s ball save | First Jackpot aligns an extra position
 Baron Von Rantenraven | Repeat targets 500K | Roof Jackpots boosted | 15 roof flips | Ball save at mode start | First Jackpot also spots another
 
 Known code gaps found during this sync
 
 - The Plotter has no Bigger Jackpots behavior in its current Python code.
-- Master Technician has no Case File behavior in its current Python code.

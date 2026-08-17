@@ -45,6 +45,7 @@ event_player:
   s_upper_target_center_active: conquistador_upper_target_hit
   s_upper_target_right_active: conquistador_upper_target_hit
   s_web_target_mid_active: conquistador_center_web_hit
+  s_vuk_switch_active: conquistador_vuk_hit
 
   mode_conquistador_started:
     - clear_saucers_delayed

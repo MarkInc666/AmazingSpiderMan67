@@ -33,6 +33,8 @@ class DailyBugleRooftopRiot(Mode):
         self.add_mode_event_handler(f"{self.MODE_KEY}_complete_request", self._complete_mode)
         self.add_mode_event_handler(f"{self.MODE_KEY}_fail_request", self._fail_mode)
 
+        self.machine.events.post("disable_daily_bugle_mystery")
+        self.machine.events.post("daily_bugle_cancel_vuk_delay_eject")
         self.machine.events.post("chapter_mini_wizard_started", mini_wizard=self.MODE_KEY)
         self.machine.events.post(f"{self.MODE_KEY}_start_multiball")
 
@@ -40,6 +42,8 @@ class DailyBugleRooftopRiot(Mode):
         player = self.machine.game.player
         if player["mini_wizard_current_key"] == self.MODE_KEY:
             player["mini_wizard_current_key"] = ""
+        self.machine.events.post("enable_daily_bugle_mystery")
+        self.machine.events.post("daily_bugle_restore_state")
         super().mode_stop(**kwargs)
 
     def _shot_hit(self, **kwargs):
@@ -57,8 +61,10 @@ class DailyBugleRooftopRiot(Mode):
             return
         if not self.jackpot_lit:
             self.machine.events.post(f"{self.MODE_KEY}_jackpot_not_lit")
+            self.machine.events.post("request_vuk_eject", delay_ms=1_500)
             return
         self._score(self.JACKPOT_SCORE)
+        self.machine.events.post("villain_summary_hold_vuk_until_done")
         self._complete_mode()
 
     def _complete_mode(self, **kwargs):

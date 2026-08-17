@@ -294,12 +294,23 @@ class SirGalahad(CaseFileMixin, Mode):
         self._resolve_round(result="target")
 
     def _vuk_hit(self, **kwargs):
-        self.delay.reset(
-            name="sir_galahad_vuk_eject",
-            ms=self.VUK_EJECT_MS,
-            callback=lambda: self.machine.events.post("up_kick"),
+        if self.mode_done:
+            return
+
+        final_vuk_round = (
+            self.phase == "window"
+            and self.rounds_resolved + 1 >= self.max_rounds
         )
-        if self.mode_done or self.phase != "window":
+        if final_vuk_round:
+            self.machine.events.post("villain_summary_hold_vuk_until_done")
+        else:
+            self.delay.reset(
+                name="sir_galahad_vuk_eject",
+                ms=self.VUK_EJECT_MS,
+                callback=lambda: self.machine.events.post("up_kick"),
+            )
+
+        if self.phase != "window":
             return
         self._resolve_round(result="vuk")
 

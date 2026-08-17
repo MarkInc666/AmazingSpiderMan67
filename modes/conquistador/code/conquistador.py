@@ -55,6 +55,7 @@ class Conquistador(CaseFileMixin, Mode):
         self.add_mode_event_handler("conquistador_spinner_hit", self._spinner_hit)
         self.add_mode_event_handler("conquistador_upper_target_hit", self._upper_target_hit)
         self.add_mode_event_handler("conquistador_center_web_hit", self._center_web_hit)
+        self.add_mode_event_handler("conquistador_vuk_hit", self._vuk_hit)
         self.add_mode_event_handler("conquistador_complete_request", self._complete_mode)
         self.add_mode_event_handler("conquistador_fail_request", self._fail_main_phase)
 
@@ -64,6 +65,10 @@ class Conquistador(CaseFileMixin, Mode):
         self.machine.events.post("conquistador_left_bank_phase")
         self._show_status("LEFT DROPS TO OPEN GATE", self.seconds_left)
         self._schedule_tick()
+
+    def _vuk_hit(self, **kwargs):
+        """Return a neutral VUK ball while Daily Bugle is disabled."""
+        self.machine.events.post("request_vuk_eject", delay_ms=1_000)
 
     def mode_stop(self, **kwargs):
         self._clear_delays()

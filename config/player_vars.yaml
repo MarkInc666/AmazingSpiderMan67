@@ -882,10 +882,6 @@ player_vars:
   conners_reptiles_super_timer_seconds:
     initial_value: 0
     value_type: int
-  master_technician_spinner_value:
-    initial_value: 0
-  master_technician_multiplier:
-    initial_value: 0
   trubble_unleashed_saucer_jackpots:
     initial_value: 0
     value_type: int

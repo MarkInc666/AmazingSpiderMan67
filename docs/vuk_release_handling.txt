@@ -1,0 +1,37 @@
+ASM67 VUK RELEASE HANDLING
+==========================
+
+The Daily Bugle VUK is a raw switch/coil pair, not an MPF ball device. A mode
+that disables Daily Bugle Mystery must therefore own every VUK hit explicitly.
+
+Shared handling
+---------------
+
+- Daily Bugle enabled, Mystery not ready: eject after 500 ms.
+- Daily Bugle enabled, Mystery ready: award Mystery and eject after 5 seconds.
+- Chapter mini-wizard start: villain progression holds the ball through the
+  intro and releases it when the intro finishes or is skipped.
+- A villain ending at the VUK posts villain_summary_hold_vuk_until_done.
+  Villain Bookends keeps Daily Bugle disabled, releases the ball when the
+  summary finishes or is skipped, then restores Daily Bugle after the release
+  and retry window.
+- request_vuk_eject with delay_ms schedules a release from the persistent
+  villain-progression mode, so the release survives the requesting mode ending.
+- Every up_kick pulse is checked after 900 ms. If s_vuk_switch is still active,
+  up_kick_retry pulses the VUK coil one additional time.
+
+Mode ownership rules
+--------------------
+
+- Modes that score or time the VUK must disable Daily Bugle Mystery on start,
+  cancel its pending VUK eject, and restore Daily Bugle on stop.
+- Neutral VUK hits normally use a 1,000-1,500 ms delayed release.
+- Mode-ending VUK shots hold for the villain summary rather than using a fixed
+  eject delay.
+- Super Swami counts an unlit VUK as an upper-left restoration shot, then
+  ejects. A VUK hit that qualifies the Blackout Jackpot cannot collect that
+  Jackpot on the same switch event.
+- Dr. Manta intentionally holds its first VUK ball until a second ball locks in
+  a saucer. Its later releases remain mode controlled.
+- Clive and Blotto and Plutonians leave Daily Bugle enabled intentionally; the
+  VUK can count for their area rules while Daily Bugle owns the release.

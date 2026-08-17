@@ -42,6 +42,8 @@ class VillainProgression(Mode):
     GATE_POWER_RECOVERY_MS = 500
     GATE_OPEN_VERIFY_MS = 1000
     GATE_OPEN_MAX_ATTEMPTS = 2
+    VUK_EJECT_DEFAULT_DELAY_MS = 1_000
+    VUK_EJECT_VERIFY_MS = 900
     GATE_POWER_SWITCHES = (
         "s_left_flipper",
         "s_right_flipper",
@@ -795,6 +797,15 @@ class VillainProgression(Mode):
         self.add_mode_event_handler("s_vuk_switch_active", self._daily_bugle_hit)
         self.add_mode_event_handler("villain_bookend_intro_done", self._mini_wizard_intro_done)
 
+        # Shared VUK release API. The VUK is a raw switch/coil pair rather than
+        # an MPF ball device, so delayed releases must survive the scoring
+        # mode that requested them stopping. Every up_kick also gets one
+        # switch-confirmed retry in case the first pulse does not clear the VUK.
+        self.add_mode_event_handler("request_vuk_eject", self._request_vuk_eject)
+        self.add_mode_event_handler("cancel_vuk_eject_request", self._cancel_vuk_eject_request)
+        self.add_mode_event_handler("up_kick", self._up_kick_requested)
+        self.add_mode_event_handler("villain_summary_hold_vuk_until_done", self._cancel_vuk_eject_request)
+
         # Delayed saucer eject API. Raw kickout_saucer_* events still exist for
         # explicit immediate coil tests/manual use, but gameplay modes should use
         # these so saucer releases don't stack on top of other high-current events.
@@ -805,6 +816,37 @@ class VillainProgression(Mode):
         self.add_mode_event_handler("s_left_flipper_inactive", self._try_pending_mini_wizard_gate_open)
         self.add_mode_event_handler("s_right_flipper_inactive", self._try_pending_mini_wizard_gate_open)
         self.add_mode_event_handler("s_right_flipper_upper_inactive", self._try_pending_mini_wizard_gate_open)
+
+    def _request_vuk_eject(self, delay_ms=None, **kwargs):
+        """Schedule a VUK release from this persistent progression mode."""
+        try:
+            release_delay = int(delay_ms)
+        except (TypeError, ValueError):
+            release_delay = self.VUK_EJECT_DEFAULT_DELAY_MS
+
+        self.delay.reset(
+            name="shared_vuk_eject_request",
+            ms=max(0, release_delay),
+            callback=lambda: self.machine.events.post("up_kick"),
+        )
+
+    def _cancel_vuk_eject_request(self, **kwargs):
+        self.delay.remove("shared_vuk_eject_request")
+        self.delay.remove("shared_vuk_eject_verify")
+
+    def _up_kick_requested(self, **kwargs):
+        """Verify one raw VUK pulse and retry once if the ball remains."""
+        self.delay.remove("shared_vuk_eject_request")
+        self.delay.reset(
+            name="shared_vuk_eject_verify",
+            ms=self.VUK_EJECT_VERIFY_MS,
+            callback=self._verify_vuk_released,
+        )
+
+    def _verify_vuk_released(self, **kwargs):
+        vuk_switch = self.machine.switches.get("s_vuk_switch")
+        if vuk_switch and self.machine.switch_controller.is_active(vuk_switch):
+            self.machine.events.post("up_kick_retry")
 
 
     def _mini_wizard_gameplay_finished(self, mini_wizard=None, completed=True, **kwargs):

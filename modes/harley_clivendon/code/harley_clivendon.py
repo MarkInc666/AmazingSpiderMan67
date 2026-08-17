@@ -53,6 +53,9 @@ class HarleyClivendon(CaseFileMixin, Mode):
         self.add_mode_event_handler("harley_vuk_hit", self._vuk_hit)
         self.add_mode_event_handler("multiball_harley_multiball_ended", self._multiball_ended)
 
+        self.machine.events.post("disable_daily_bugle_mystery")
+        self.machine.events.post("daily_bugle_cancel_vuk_delay_eject")
+
         p = self.machine.game.player
         p["harley_clivendon_state"] = 1
         p["active_mode_points"] = 0
@@ -190,4 +193,6 @@ class HarleyClivendon(CaseFileMixin, Mode):
         if self.held_saucer is not None:
             self._eject_saucer(self.held_saucer)
         self._eject_vuk(0)
+        self.machine.events.post("enable_daily_bugle_mystery")
+        self.machine.events.post("daily_bugle_restore_state")
         super().mode_stop(**kwargs)
