@@ -8,6 +8,13 @@ mode:
 
 event_player:
 
+  # Refresh the Daily Bugle widget by removing and re-adding it.
+  # Avoid action:update on an MPFWidget; GMC expects update() on registered
+  # updaters and a plain MPFWidget does not provide that method.
+  daily_bugle_widget_update:
+    - daily_bugle_widget_remove
+    - daily_bugle_widget_readd|10ms
+
   # A rollovers
   s_inlane_a_active:
     - daily_bugle_a_hit
@@ -52,12 +59,12 @@ widget_player:
       action: remove
       key: daily_bugle_ready
 
-  daily_bugle_widget_update{current_player.chapter_mini_wizard_ready != 1 and current_player.mini_wizard_daily_bugle_ready != 1 and current_player.mini_wizard_vuk_hold_active != 1 and current_player.final_wizard_ready != 1}:
+  daily_bugle_widget_readd{current_player.chapter_mini_wizard_ready != 1 and current_player.mini_wizard_daily_bugle_ready != 1 and current_player.mini_wizard_vuk_hold_active != 1 and current_player.final_wizard_ready != 1}:
     daily_bugle_ready:
       action: play
       key: daily_bugle_ready
 
-  daily_bugle_widget_update{current_player.chapter_mini_wizard_ready == 1 or current_player.mini_wizard_daily_bugle_ready == 1 or current_player.mini_wizard_vuk_hold_active == 1 or current_player.final_wizard_ready == 1}:
+  daily_bugle_widget_readd{current_player.chapter_mini_wizard_ready == 1 or current_player.mini_wizard_daily_bugle_ready == 1 or current_player.mini_wizard_vuk_hold_active == 1 or current_player.final_wizard_ready == 1}:
     daily_bugle_ready:
       action: remove
       key: daily_bugle_ready
