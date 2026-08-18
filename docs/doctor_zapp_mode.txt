@@ -1,6 +1,6 @@
 DOCTOR ZAPP — CAMERA FLASHES
 Status: Implemented / needs playtest
-Chapter: Elemental Chaos
+Chapter: Nature Strikes Back
 
 CORE RULES
 - Hit one target from the left drop bank and one target from the right drop bank.

@@ -1080,7 +1080,7 @@ class VillainBookends(Mode):
         'the_web_tightens': {
             'title': 'THE WEB TIGHTENS',
             'intro_1': 'Five hidden threats return.',
-            'intro_2': 'Survive Danger Lurks multiball.',
+            'intro_2': 'Survive The Web Tightens multiball.',
             'intro_3': 'Every case file boosts jackpots.',
             'summary_title_complete': 'THE WEB BROKEN',
             'summary_title_failed': 'THE WEB TIGHTENS',
@@ -1149,7 +1149,7 @@ class VillainBookends(Mode):
         'invasion_from_everywhere': {
             'title': 'LOST WORLD INVASION',
             'intro_1': 'Invasion multiball.',
-            'intro_2': 'Fight lost worlds.',
+            'intro_2': 'Stop the invasion from everywhere.',
             'intro_3': 'Case files boost value.',
             'summary_title_complete': 'INVASION STOPPED',
             'summary_title_failed': 'INVASION CONTINUES',

@@ -34,7 +34,7 @@ PART I — SEVEN REGULAR-VILLAIN REVIEWS (THREE REMAINING; FOUR COMPLETED)
 
 
 1. DEVARGAS
-Chapter 9 — Lost Worlds
+Chapter 9 — Invasion from Everywhere
 Episode: “Cloud City of Gold” (November 30, 1968)
 Current status: Implemented / needs machine playtest
 
@@ -99,7 +99,7 @@ https://spiderfan.org/review/shows/spiderman_tv_1960s/s02e12.html
 
 
 2. CHARLES CAMEO
-Chapter 10 — Savage Oddities
+Chapter 10 — Who Is the Real Villain?
 Episodes: “The Sinister Prime Minister” and “Double Identity”
 Current status: Placeholder
 
@@ -183,7 +183,7 @@ https://spiderfan.org/review/shows/spiderman_tv_1960s/s01e19-2.html
 
 
 3. BRUTUS
-Chapter 10 — Savage Oddities
+Chapter 10 — Who Is the Real Villain?
 Episode: “Double Identity”
 Current status: Implemented / needs machine playtest
 
@@ -264,7 +264,7 @@ https://marvelanimated.fandom.com/wiki/Episode%3ADouble_Identity
 
 
 4. SKYMASTER
-Chapter 10 — Savage Oddities
+Chapter 10 — Who Is the Real Villain?
 Episode: “Criminals in the Clouds” (October 5, 1968)
 Current status: Temporary placeholder requiring a distinct non-rooftop design
 
@@ -341,7 +341,7 @@ https://marvelanimated.fandom.com/wiki/Sky_Master_%28Spider-Man_%281967%29%29
 
 
 5. SIR GALAHAD
-Chapter 11 — Dimensional Finale
+Chapter 11 — Time-Tossed Showdown
 Episode: “Knight Must Fall” (April 26, 1970)
 Current status: Placeholder
 
@@ -414,7 +414,7 @@ https://marvelanimated.fandom.com/wiki/Sir_Galahad_%28Spider-Man_%281967%29%29
 
 
 6. MASTER VINE
-Chapter 11 — Dimensional Finale
+Chapter 11 — Time-Tossed Showdown
 Episode: “Vine” (November 16, 1968)
 Current status: Placeholder
 
@@ -495,7 +495,7 @@ https://dcanimated.com/WF/sections/specials/spidey67/review/episode/vine/
 
 
 7. THE SPIDER-MEN
-Chapter 11 — Dimensional Finale
+Chapter 11 — Time-Tossed Showdown
 Episode: “Home” (December 14, 1968)
 Current status: Implemented / needs machine playtest
 
@@ -575,7 +575,7 @@ PART II — NINE UNFINISHED CHAPTER MINI-WIZARDS
 
 
 8. MASTERMIND TRAP
-Chapter 2 — Masked Masterminds
+Chapter 2 — Mastermind Trap
 Villains: Doctor Octopus, Mysterio, Scorpion, Lizard, Parafino
 Current status: Functional framework exists, but the design is not approved
 
@@ -675,7 +675,7 @@ KEY REVIEW QUESTIONS
 
 
 10. THE WEB TIGHTENS
-Chapter 5 — Danger Lurks
+Chapter 5 — The Web Tightens
 Villains: Harley Clivendon, Conquistador, Spider-Slayer, Metal-Eating Monster,
 Fiddler
 Current status: Placeholder
@@ -724,7 +724,7 @@ KEY REVIEW QUESTIONS
 
 
 11. FIFTH DIMENSION CURSE
-Chapter 6 — Mystic Menace
+Chapter 6 — Fifth Dimension Curse
 Villains: Pardo, Fantastic Fakir, Kotep, Super Swami, Infinata
 Current status: Functional three-ball framework exists, but the design is not
 approved
@@ -772,7 +772,7 @@ KEY REVIEW QUESTIONS
 
 
 12. MAD SCIENCE MELTDOWN
-Chapter 7 — Mad Science
+Chapter 7 — Mad Science Meltdown
 Villains: Dr. Noah Boddy, Dr. Magneto, Professor Pretorius, Doctor Dumpty,
 Dr. Von Schlick
 Current status: Placeholder
@@ -820,7 +820,7 @@ KEY REVIEW QUESTIONS
 
 
 13. NATURE STRIKES BACK
-Chapter 8 — Elemental Chaos
+Chapter 8 — Nature Strikes Back
 Villains: Clive and Blotto, Doctor Zapp, Bolton and Boomer, Snowman, Plutonians
 Current status: Placeholder
 
@@ -867,7 +867,7 @@ KEY REVIEW QUESTIONS
 
 
 14. INVASION FROM EVERYWHERE
-Chapter 9 — Lost Worlds
+Chapter 9 — Invasion from Everywhere
 Villains: Dr. Manta, Igor, Doctor Atlantean, DeVargas, Molemen
 Current status: Placeholder
 
@@ -916,7 +916,7 @@ KEY REVIEW QUESTIONS
 
 
 15. WHO IS THE REAL VILLAIN?
-Chapter 10 — Savage Oddities
+Chapter 10 — Who Is the Real Villain?
 Villains: Charles Cameo, Brutus, Desperado, Skymaster, Conner’s Reptiles
 Current status: Placeholder
 
@@ -965,7 +965,7 @@ KEY REVIEW QUESTIONS
 
 
 16. TIME-TOSSED SHOWDOWN
-Chapter 11 — Dimensional Finale
+Chapter 11 — Time-Tossed Showdown
 Villains: Sir Galahad, Master Vine, Master Technician, The Spider-Men,
 Baron Von Rantenraven
 Current status: Placeholder

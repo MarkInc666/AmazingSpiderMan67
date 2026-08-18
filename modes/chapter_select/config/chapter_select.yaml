@@ -70,6 +70,10 @@ widget_player:
       action: play
       priority: 2000
 
+  # Refresh conditional cover art as Chapter 1 moves between carousel slots.
+  chapter_select_view_changed:
+    chapter_select:
+      action: update
 
   stop_mode_chapter_select:
     chapter_select:

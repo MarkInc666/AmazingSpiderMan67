@@ -1,5 +1,5 @@
 ASM67 — CASE FILE UPGRADE MATRIX
-Code/documentation sync: August 14, 2026
+Code/documentation sync: August 18, 2026
 
 Rules and scope
 
@@ -11,21 +11,21 @@ Rules and scope
 
 Format: Villain | MJ | BJ | MT | SN | SA
 
-CHAPTER 1 — CLASSIC ROGUES
+CHAPTER 1 — SINISTER SURGE
 Rhino | Extra Rhino Jackpot available | +100K to every Rhino Jackpot | Berserk timer +5s | 10s ball save | One Berserk crash save
 Sandman | Extra Sandman bank available | Flashing targets score more | Target shift slowed | 10s ball save | First target spotted
 Vulture | All-red spinner +100K | Spinner values doubled | Target decay slowed | 10s ball save | First target advances all
 Electro | Extra Spark Jackpot available | Spark Jackpots boosted | Spark value drains slower | 10s ball save | First spark held longer
 Green Goblin | Safe shots score 150K | Bigger chaos bonus builds | 15s safe phase | Ball save after first release | First safe hit awards another
 
-CHAPTER 2 — MASKED MASTERMINDS
+CHAPTER 2 — MASTERMIND TRAP
 Doctor Octopus | Two safe Jackpots | Bigger Doc Ock Jackpots | Arm release delayed | 10s ball save | +10X shot assist
 Mysterio | First wrong shot protected | 1.5M Super Jackpot | Super penalty reduced | 10s ball save | One false shot removed
 Scorpion | Extra sting attempt available | Sting awards boosted | 12s sting window | 10s ball save | First rubber counts as target
 Lizard | Center-web follow-up Jackpot | Serum starts at 1.5M | 20s and slower value decay | First expired serum saved | Main spinner or left B delivers serum
 Parafino | Saucers hold value for extra collect | Zone hits build 150K | Two hits for Add-a-Ball | 10s safety net after multiball save | First zone hits count double
 
-CHAPTER 3 — TRUBBLE'S MONSTERS
+CHAPTER 3 — TRUBBLE UNLEASHED
 Cerberus | Each saucer stays lit once | Bigger Cerberus Jackpots | Cerberus timer extended | 10s ball save | Best Jackpot from any saucer
 Vulcan | Left 3-bank adds Jackpots | Jackpots start at 150K | Upper-left post holds 12s | 20s multiball ball save | First right drop adds two drops
 Diana | Rubber shots score 100K | Bullseyes boosted | 30 arrows / 18s hunts | 10-arrow safety net | First hit drops a target
@@ -39,49 +39,49 @@ The Fifth Avenue Phantom | Sixth Phantom round | Phantom values improved | Revea
 Enforcers | Saucer bonus Jackpots lit | Base Jackpot 150K | Ox ball save ready | 10s ball save | First hit lights Jackpots
 Doctor Cool | Second frozen shipment | Frozen diamond values increased | Star freeze 15s | 10s ball save | First wrong saucer counts
 
-CHAPTER 5 — DANGER LURKS
+CHAPTER 5 — THE WEB TIGHTENS
 Harley Clivendon | Two areas stay lit | 150K per area | 25s opening save | Ball save after first Jackpot | First area spots another
 Conquistador | Take another sip | 400K base / 150K targets | 30s timers | 10s save at fountain | First target counts twice
 Spider-Slayer | Full Jackpot frozen 10s | 75K shots / 2.5M Jackpot | Jackpot decays 50K/s | 10s save at Daily Bugle | First hit adds two shots
 Metal-Eating Monster | Saved zones relight once at half value | Zone saves 400K | Zone timers 16s | 10s ball save | First zone auto-saves at 2s
 The Fiddler | Four-note encore round | +100K per correct note | Pattern repeats every 8s | 10s ball save | First wrong shot plays correct note
 
-CHAPTER 6 — MYSTIC MENACE
+CHAPTER 6 — FIFTH DIMENSION CURSE
 Pardo | Two extra hypnosis Jackpots | Bigger hypnosis Jackpots | Longer spinner reveal | 10s ball save | First round all good
 The Fantastic Fakir | First post-Super ruby 2X | Bigger ruby Jackpots | Longer real-ruby timer | Ball save after first saucer kickout | First reveal lights all upper targets
 Kotep | Fifth demon worth 500K during scepter | Bigger demon Jackpots and 1.5M Super | Scepter timer 30s | 10s ball save | First demon also destroys next demon
 Super Swami | Blackout Jackpot at VUK | Restore values start 200K | 50s city timer | Ball save active | First area spots another
 Infinata | Fourth green area during Super | Bigger area awards and 1.5M Super | Super timer 30s | 10s ball save | First hit awards two areas
 
-CHAPTER 7 — MAD SCIENCE
+CHAPTER 7 — MAD SCIENCE MELTDOWN
 Dr. Noah Boddy | Upper reveals score more | Noah Boddy Jackpot 2X | Hurry-up 24s | Secret-target ball save | Bank rubber scores secret target
 Dr. Magneto | Left-1 Magnetic Flux Super after main Super | Main Super 1.5M | Main Super timer 30s | Ball save when main Super lights | First spin drops two targets
 Professor Pretorius | Left-web reactor-overflow Super | Super Jackpots increased | Main Super timer 30s | Ball save when main Super lights | First spin floods two bands
 Doctor Dumpty | Extra Doctor Dumpty shot | Bigger prediction Jackpots | Prediction timers extended | 10s ball save | First timeout awards Jackpot
 Dr. Von Schlick | Two extra oil pellets | Oil pellets 150K | Super timer 30s | Ball save starts with Super | First pellet counts twice
 
-CHAPTER 8 — ELEMENTAL CHAOS
+CHAPTER 8 — NATURE STRIKES BACK
 Clive and Blotto | First clear in each area awards Blotto Jackpot | Bigger spinner, clear, and final values | Meter rises every 3s | 10s ball save | First clear with 2+ infected clears another
 Doctor Zapp | 10s bonus spins | 150K banks / 75K targets and spins | 15s save on first roof entry | 10s save at mode start | First upper target awards another
 Bolton and Boomer | Supers grow 100K to 1.5M | 150K target/lock; 750K Super | 30s timed Supers | 25s opening save | First timed Super auto-collects at 10
 The Snowman | Spin value +25K per spin | 150K / 350K / 150K | 20s wire / 16s spins | 10s save at spinner | Starting web can complete wire
 Plutonians | 500K Jackpot once per roof entry | Thaws 150K; control 1.5M | Freeze blocked 25s | 10s ball save | First thaw also thaws another area
 
-CHAPTER 9 — LOST WORLDS
+CHAPTER 9 — INVASION FROM EVERYWHERE
 Dr. Manta | Spinners add 75K to Jackpot | 150K VUK / 200K saucer / 200K Jackpot | 28s attack | 25s second-ball save | Matched upper target scores 3X once
 Igor | Seven bad shots before Igor wins | Jackpots grow by 50K | Ball save 20s | 10s ball save | First bad shot becomes a Jackpot
 Doctor Atlantean | Three targets light 100K spinner Jackpot | Control-panel Jackpots 125K | Water timers 30s | 10s ball save | First unlit target counts as lit
 DeVargas | 25 gold opportunities | Gold 200K / 175K / 150K | Gold windows 5s / 4s / 4s | 10s opening save | First expired gold auto-collects
 Molemen | Pop Add-a-Ball in two hits | Bigger area and saucer Jackpots | 10s one-ball grace | 25s opening save | Left web also counts as center web
 
-CHAPTER 10 — SAVAGE ODDITIES
+CHAPTER 10 — WHO IS THE REAL VILLAIN?
 Charles Cameo | Upper-target pair added before Pops | 75K source shots / 300K ordinary mirrored Jackpots; Web Super stays 1M | Mirror windows last 15s | 10s ball save | First expired mirror auto-collects
 Brutus | Fourth Artwork Jackpot required | Artwork Jackpots score 400K | Open saucer windows last 20s | 10s ball save | Entire right bank drops 2s after mode start to open first window
 Desperado | Extra showdown Jackpot | 250K new targets | 70s pursuit | 10s ball save | Round 2 spots extra target
 Skymaster | Left web adds a second Super | Drops 150K / web Supers 750K | Super window 20s | 10s opening ball save | First upper spin drops two targets
 Conner's Reptiles | Star Jackpot objective added | Rampage Jackpots score 150K | Opening ball save extends to 20s when Safety Net is active | 10s opening ball save | First pop counts twice: 50K score, +100K Swamp Bonus, and two Jackpots revealed
 
-CHAPTER 11 — DIMENSIONAL FINALE
+CHAPTER 11 — TIME-TOSSED SHOWDOWN
 Sir Galahad | Add a fourth joust round | Left values 150K / 750K / 150K; right values 100K / 250K / 750K / 250K / 100K | Target windows last 12s instead of 8s | 10s ball save at mode start | First physical drop hit scores the bank's center value; timeout, VUK, and programmatic drops do not consume it
 Master Vine | First spinner hit of each wave lights 3 unique lower shots instead of 1 | Vine jackpots score 75K instead of 50K | Each wave lasts 40s instead of 30s | 10s ball save starts on first upper entry | First collected shot also collects a random second lit shot; if none exists, the same shot scores again
 Master Technician | Web targets score 50K while 1-7 drops are down | Spinner builds 75K per down target | Timer starts at 75s | First eight-down reset has no 10s penalty | First inlane drops up to two targets without dropping the eighth

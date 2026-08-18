@@ -53,7 +53,7 @@ class VillainProgression(Mode):
     CHAPTERS = [
         {
             'key': 'classic_rogues',
-            'name': 'Classic Rogues',
+            'name': 'Sinister Surge',
             'villains': ['rhino', 'sandman', 'vulture', 'electro', 'goblin'],
             'mini_wizard_key': 'sinister_surge',
             'mini_wizard_name': 'Sinister Surge',
@@ -61,7 +61,7 @@ class VillainProgression(Mode):
         },
         {
             'key': 'masked_masterminds',
-            'name': 'Masked Masterminds',
+            'name': 'Mastermind Trap',
             'villains': ['doc_ock', 'mysterio', 'scorpion', 'lizard', 'parafino'],
             'mini_wizard_key': 'mastermind_trap',
             'mini_wizard_name': 'Mastermind Trap',
@@ -69,7 +69,7 @@ class VillainProgression(Mode):
         },
         {
             'key': 'trubbles_monsters',
-            'name': "Trubble's Monsters",
+            'name': 'Trubble Unleashed',
             'villains': ['cerberus', 'vulcan', 'diana', 'cyclops', 'centaur'],
             'mini_wizard_key': 'trubble_unleashed',
             'mini_wizard_name': 'Trubble Unleashed',
@@ -85,7 +85,7 @@ class VillainProgression(Mode):
         },
         {
             'key': 'danger_lurks',
-            'name': 'Danger Lurks',
+            'name': 'The Web Tightens',
             'villains': ['harley_clivendon', 'conquistador', 'spider_slayer', 'metal_eating_robot', 'fiddler'],
             'mini_wizard_key': 'the_web_tightens',
             'mini_wizard_name': 'The Web Tightens',
@@ -93,7 +93,7 @@ class VillainProgression(Mode):
         },
         {
             'key': 'mystic_menace',
-            'name': 'Mystic Menace',
+            'name': 'Fifth Dimension Curse',
             'villains': ['pardo', 'fakir', 'kotep', 'super_swami', 'infinata'],
             'mini_wizard_key': 'fifth_dimension_curse',
             'mini_wizard_name': 'Fifth Dimension Curse',
@@ -101,7 +101,7 @@ class VillainProgression(Mode):
         },
         {
             'key': 'mad_science',
-            'name': 'Mad Science',
+            'name': 'Mad Science Meltdown',
             'villains': ['noah_boddy', 'dr_magneto', 'professor_pretorius', 'doctor_dumpty', 'dr_von_schlick'],
             'mini_wizard_key': 'mad_science_meltdown',
             'mini_wizard_name': 'Mad Science Meltdown',
@@ -109,7 +109,7 @@ class VillainProgression(Mode):
         },
         {
             'key': 'elemental_chaos',
-            'name': 'Elemental Chaos',
+            'name': 'Nature Strikes Back',
             'villains': ['clive_blotto', 'dr_zapp', 'bolton_boomer', 'snowman', 'plutonians'],
             'mini_wizard_key': 'nature_strikes_back',
             'mini_wizard_name': 'Nature Strikes Back',
@@ -117,7 +117,7 @@ class VillainProgression(Mode):
         },
         {
             'key': 'lost_worlds',
-            'name': 'Lost Worlds',
+            'name': 'Invasion from Everywhere',
             'villains': ['dr_manta', 'igor', 'doctor_atlantean', 'devargas', 'molemen'],
             'mini_wizard_key': 'invasion_from_everywhere',
             'mini_wizard_name': 'Invasion from Everywhere',
@@ -125,7 +125,7 @@ class VillainProgression(Mode):
         },
         {
             'key': 'savage_oddities',
-            'name': 'Savage Oddities',
+            'name': 'Who Is the Real Villain?',
             'villains': ['charles_cameo', 'brutus', 'desperado', 'skymaster', 'conners_reptiles'],
             'mini_wizard_key': 'who_is_the_real_villain',
             'mini_wizard_name': 'Who Is the Real Villain?',
@@ -133,7 +133,7 @@ class VillainProgression(Mode):
         },
         {
             'key': 'dimensional_finale',
-            'name': 'Dimensional Finale',
+            'name': 'Time-Tossed Showdown',
             'villains': ['sir_galahad', 'master_vine', 'master_technician', 'spider_men', 'von_rantenraven'],
             'mini_wizard_key': 'time_tossed_showdown',
             'mini_wizard_name': 'Time-Tossed Showdown',

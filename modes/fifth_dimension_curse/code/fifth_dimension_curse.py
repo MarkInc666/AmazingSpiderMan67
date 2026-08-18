@@ -2,7 +2,7 @@ from mpf.core.mode import Mode
 
 
 class FifthDimensionCurse(Mode):
-    """Mystic Menace mini-wizard: keep six city zones alive for VUK jackpots."""
+    """Fifth Dimension Curse mini-wizard: keep six city zones alive for VUK jackpots."""
 
     MODE_KEY = "fifth_dimension_curse"
     DISPLAY_NAME = "Fifth Dimension Curse"

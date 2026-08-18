@@ -1,7 +1,7 @@
 #config_version=6
 
 # The Web Tightens placeholder mini-wizard.
-# Danger Lurks mini-wizard multiball.
+# The Web Tightens mini-wizard multiball.
 # Temporary flow: intro -> 2-ball multiball -> MB end -> summary -> next chapter.
 
 mode:
@@ -104,4 +104,3 @@ light_player:
 
   mode_the_web_tightens_stopping:
     gi: E0E0E0
-

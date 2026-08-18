@@ -902,7 +902,7 @@ player_vars:
     initial_value: 0
     value_type: int
 
-# Chapter 5 - Danger Lurks
+# Chapter 5 - The Web Tightens
   harley_clivendon_state:
     initial_value: 0
     value_type: int

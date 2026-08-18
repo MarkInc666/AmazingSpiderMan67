@@ -1,7 +1,7 @@
 Yes. Since your current 4 chapters are:
 
 ```text
-Classic Rogues
+Sinister Surge
 Masterminds
 Monsters
 Crime Wave
@@ -124,7 +124,7 @@ Good reason to include it: this chapter can be flashy and high-energy, with GI c
 ## Clean expanded campaign structure
 
 ```text
-Chapter 1 — Classic Rogues
+Chapter 1 — Sinister Surge
 Rhino
 Vulture
 Green Goblin

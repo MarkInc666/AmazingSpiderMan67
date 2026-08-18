@@ -1,0 +1,45 @@
+ASM67 — CHAPTER SELECT COMIC TITLES
+Updated: August 18, 2026
+
+Presentation rule
+
+- Chapter Select presents each chapter as a newly released collectible comic.
+- The visible comic title is the chapter's mini-wizard title, not the former
+  roster/category label.
+- Internal chapter keys and numbered progression variables remain unchanged for
+  save-game and code compatibility.
+- AVAILABLE, LOCKED, and COLLECTED remain live Godot labels because their values
+  change during play.
+
+Visible titles
+
+1. Sinister Surge
+2. Mastermind Trap
+3. Trubble Unleashed
+4. Crime Wave
+5. The Web Tightens
+6. Fifth Dimension Curse
+7. Mad Science Meltdown
+8. Nature Strikes Back
+9. Invasion from Everywhere
+10. Who Is the Real Villain?
+11. Time-Tossed Showdown
+
+Chapter 1 artwork
+
+- `images/chapter_1_cover.png` is the text-free 630x725 comic cover.
+- `images/chapter_1_title_overlay.png` is the transparent SINISTER SURGE title.
+- Chapter Select conditionally displays both layers when Chapter 1 is in the
+  left, center, or right carousel position.
+- Generic number/title labels are hidden for Chapter 1 so they do not duplicate
+  the title artwork.
+
+Chapter 2 artwork
+
+- `images/chapter_2_cover.png` is the text-free 630x725 Mastermind Trap cover.
+- Doctor Octopus is centered in a wide inner frame. Mysterio, Scorpion, Lizard,
+  and Parafino appear in four symmetrical corner circles.
+- `images/chapter_2_title_overlay.png` supplies the transparent horizontal
+  MASTERMIND TRAP title below Doctor Octopus's face.
+- Chapter Select conditionally displays both layers in the left, center, or
+  right carousel position and suppresses the generic labels for Chapters 1–2.

@@ -5,17 +5,17 @@ class ChapterSelect(Mode):
     """Comic-book chapter carousel shown at controlled shooter-lane stops."""
 
     CHAPTERS = [
-        (1, 'CLASSIC ROGUES'),
-        (2, 'MASKED MASTERMINDS'),
-        (3, "TRUBBLE'S MONSTERS"),
+        (1, 'SINISTER SURGE'),
+        (2, 'MASTERMIND TRAP'),
+        (3, 'TRUBBLE UNLEASHED'),
         (4, 'CRIME WAVE'),
-        (5, 'DANGER LURKS'),
-        (6, 'MYSTIC MENACE'),
-        (7, 'MAD SCIENCE'),
-        (8, 'ELEMENTAL CHAOS'),
-        (9, 'LOST WORLDS'),
-        (10, 'SAVAGE ODDITIES'),
-        (11, 'DIMENSIONAL FINALE'),
+        (5, 'THE WEB TIGHTENS'),
+        (6, 'FIFTH DIMENSION CURSE'),
+        (7, 'MAD SCIENCE MELTDOWN'),
+        (8, 'NATURE STRIKES BACK'),
+        (9, 'INVASION FROM EVERYWHERE'),
+        (10, 'WHO IS THE REAL VILLAIN?'),
+        (11, 'TIME-TOSSED SHOWDOWN'),
     ]
 
     def mode_start(self, **kwargs):
