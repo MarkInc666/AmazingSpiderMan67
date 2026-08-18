@@ -43,3 +43,12 @@ Chapter 2 artwork
   MASTERMIND TRAP title below Doctor Octopus's face.
 - Chapter Select conditionally displays both layers in the left, center, or
   right carousel position and suppresses the generic labels for Chapters 1–2.
+
+Chapter 3 artwork
+
+- `images/chapter_3_cover.png` is the finished 630x725 Trubble Unleashed cover.
+- It uses the 1967-series artwork for Miss Trubble, Pandora's box, Cerberus,
+  Cyclops, Diana, Vulcan, and the Centaur, with the title baked into the cover.
+- Chapter Select conditionally displays the cover in the left, center, or right
+  carousel position and suppresses the generic labels for Chapters 1–3.
+- AVAILABLE, LOCKED, and COLLECTED remain separate live labels off the cover.
