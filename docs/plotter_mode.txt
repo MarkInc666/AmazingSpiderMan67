@@ -1,0 +1,79 @@
+THE PLOTTER — CURRENT MODE RULES
+
+STATUS
+- Updated and coded.
+- Automated validation completed with the patch.
+- Physical-machine playtest still required.
+
+
+CORE LOOP
+- Pop hits build Rumors and score 25,000.
+- Two Rumors make the lower playfield spinner ready.
+- The lower spinner consumes two Rumors, scores 50,000, and lights one random
+  saucer.
+- The upper spinner is not used by this mode.
+- A lit saucer scores a 250,000 Scheme Jackpot. Stop three schemes to expose
+  The Plotter.
+- After the third scheme, surplus lit saucers are cleared, the rooftop gate
+  opens, and the Daily Bugle VUK lights for 20 seconds.
+- The VUK Super scores 1,000,000 and completes the normal mode.
+- Missing the VUK before the timer expires ends the attempt without completing
+  The Plotter for progression.
+
+
+CASE FILES
+- More Jackpots: after the 1,000,000 VUK Super, all three upper targets flash
+  together. Any one scores a 500,000 Back Page Bonus before the original VUK
+  timer expires. The VUK Super and Back Page values are not increased by
+  Bigger Jackpots.
+- Bigger Jackpots: doubles ordinary Plotter scoring only:
+  - Pops: 25,000 becomes 50,000.
+  - Spinner: 50,000 becomes 100,000.
+  - Lit saucer Scheme Jackpot: 250,000 becomes 500,000.
+  - VUK Super remains 1,000,000.
+  - Back Page Bonus remains 500,000.
+- More Time: extends the VUK/Back Page timer from 20 seconds to 30 seconds.
+- Safety Net: starts a 10-second ball save when the mode begins.
+- Shot Assist: the first unlit saucer hit while at least one saucer is lit
+  collects one randomly selected lit saucer. Correctly hitting a lit saucer
+  does not consume the assist. A saucer hit when none are lit does not consume
+  it. After the assisted collection, later saucers must match a lit saucer.
+
+
+LIGHTING
+- Base GI remains amber throughout the mode.
+- With fewer than two Rumors available, both pop-bumper lamp rings pulse green.
+- With two or more Rumors and an available saucer, the lower spinner insert
+  flashes yellow. The upper spinner is never lit for Plotter.
+- Each lit saucer flashes its two physical red side inserts. Multiple lit
+  saucers can flash at the same time.
+- If all three saucers are lit, pop and spinner guidance turns off so only the
+  three red saucer objectives remain.
+- When the VUK phase begins, all pop, spinner-objective, and saucer lighting is
+  cleared. The lower spinner insert and the adjacent upper-left VUK GI pulse
+  yellow for the entire VUK timer.
+- After the VUK Super with More Jackpots, the VUK guidance stops and all three
+  white-lens upper-target inserts flash red together until collected or expired.
+- All Plotter shows stop on completion, failure, ball end, or mode stop, and GI
+  returns to the normal white state.
+
+
+MESSAGES AND STATUS
+- Start: POPS BUILD RUMORS.
+- Second available Rumor: SPINNER READY / SHOOT THE YELLOW LOWER SPINNER.
+- Spinner attempted too early: NEED RUMORS / HIT POPS.
+- Spinner collection: SAUCER LIT / COLLECT THE RED SAUCER.
+- Lit saucer: SCHEME STOPPED plus progress toward three.
+- Assisted unlit saucer: SHOT ASSIST plus the lit saucer collected.
+- VUK phase: THE PLOTTER EXPOSED / SHOOT DAILY BUGLE VUK plus time remaining.
+- More Jackpots: THE PLOTTER SUPER / BACK PAGE LIT plus time remaining.
+- Timer expiry distinguishes a missed VUK from a missed Back Page.
+
+
+PLAYER VARIABLE OWNERSHIP
+- plotter_state is retained for persistent progression.
+- active_mode_points, active_mode_hits, and active_mode_major_hits carry the
+  standard shared summary values. Hits count total Rumors earned rather than
+  the unspent Rumors remaining when the mode ends.
+- Rumors, lit saucers, schemes, VUK/Back Page state, timer state, lighting phase,
+  and Shot Assist use remain in Python rather than Plotter-specific player vars.

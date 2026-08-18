@@ -27,14 +27,15 @@ event_player:
   s_pop_right_active: plotter_pop_hit
 
   s_web_spinner_active: plotter_spinner_hit
-  s_trispinner_opto_active: plotter_spinner_hit
 
   s_saucer_1_active: plotter_saucer_1_hit
   s_saucer_2_active: plotter_saucer_2_hit
   s_saucer_3_active: plotter_saucer_3_hit
 
   s_vuk_switch_active: plotter_vuk_hit
+  s_upper_target_left_active: plotter_back_page_hit
   s_upper_target_center_active: plotter_back_page_hit
+  s_upper_target_right_active: plotter_back_page_hit
 
   mode_plotter_started:
     - disable_daily_bugle_mystery
@@ -50,113 +51,202 @@ event_player:
     - plotter_clear_lights
 
 show_player:
-  plotter_saucer_1_lit:
-    foswell_saucer_1_lit:
+  plotter_clear_guidance_lights:
+    plotter_pops_show:
+      action: stop
+    plotter_spinner_show:
+      action: stop
+    plotter_vuk_super_show:
+      action: stop
+    plotter_back_page_show:
+      action: stop
+
+  plotter_pops_lights:
+    plotter_pops_show:
       loops: -1
+      priority: 320
+
+  plotter_spinner_lights:
+    plotter_spinner_show:
+      loops: -1
+      priority: 320
+
+  plotter_saucer_1_lit:
+    plotter_saucer_1_show:
+      loops: -1
+      priority: 325
 
   plotter_saucer_1_collected:
-    foswell_saucer_1_lit:
+    plotter_saucer_1_show:
       action: stop
 
   plotter_saucer_2_lit:
-    foswell_saucer_2_lit:
+    plotter_saucer_2_show:
       loops: -1
+      priority: 325
 
   plotter_saucer_2_collected:
-    foswell_saucer_2_lit:
+    plotter_saucer_2_show:
       action: stop
 
   plotter_saucer_3_lit:
-    foswell_saucer_3_lit:
+    plotter_saucer_3_show:
       loops: -1
+      priority: 325
 
   plotter_saucer_3_collected:
-    foswell_saucer_3_lit:
+    plotter_saucer_3_show:
       action: stop
 
-  plotter_super_lit_show:
-    foswell_vuk_super_lit:
+  plotter_vuk_lights:
+    plotter_vuk_super_show:
       loops: -1
+      priority: 325
 
-  plotter_super_collected:
-    foswell_vuk_super_lit:
-      action: stop
-
-  plotter_back_page_lit_show:
-    foswell_back_page_lit:
+  plotter_back_page_lights:
+    plotter_back_page_show:
       loops: -1
+      priority: 325
 
   plotter_back_page_collected:
-    foswell_back_page_lit:
+    plotter_back_page_show:
       action: stop
 
   plotter_clear_lights:
-    foswell_saucer_1_lit:
+    plotter_saucer_1_show:
       action: stop
-    foswell_saucer_2_lit:
+    plotter_saucer_2_show:
       action: stop
-    foswell_saucer_3_lit:
+    plotter_saucer_3_show:
       action: stop
-    foswell_vuk_super_lit:
+    plotter_pops_show:
       action: stop
-    foswell_back_page_lit:
+    plotter_spinner_show:
+      action: stop
+    plotter_vuk_super_show:
+      action: stop
+    plotter_back_page_show:
       action: stop
 
 shows:
-  foswell_saucer_1_lit:
+  # Rumor phase: both pop-bumper lamp rings pulse green over the amber base GI.
+  plotter_pops_show:
     - duration: 500ms
       lights:
-        l_1: yellow
-        l_1_hole_l: yellow
-        l_1_hole_r: yellow
+        l_pop_1_1: "00FF00"
+        l_pop_1_2: "00FF00"
+        l_pop_1_3: "00FF00"
+        l_pop_1_4: "00FF00"
+        l_pop_1_5: "00FF00"
+        l_pop_1_6: "00FF00"
+        l_pop_1_7: "00FF00"
+        l_pop_1_8: "00FF00"
+        l_pop_1_9: "00FF00"
+        l_pop_1_10: "00FF00"
+        l_pop_1_11: "00FF00"
+        l_pop_1_12: "00FF00"
+        l_pop_2_1: "00FF00"
+        l_pop_2_2: "00FF00"
+        l_pop_2_3: "00FF00"
+        l_pop_2_4: "00FF00"
+        l_pop_2_5: "00FF00"
+        l_pop_2_6: "00FF00"
+        l_pop_2_7: "00FF00"
+        l_pop_2_8: "00FF00"
+        l_pop_2_9: "00FF00"
+        l_pop_2_10: "00FF00"
+        l_pop_2_11: "00FF00"
+        l_pop_2_12: "00FF00"
     - duration: 500ms
       lights:
-        l_1: off
+        l_pop_1_1: "004000"
+        l_pop_1_2: "004000"
+        l_pop_1_3: "004000"
+        l_pop_1_4: "004000"
+        l_pop_1_5: "004000"
+        l_pop_1_6: "004000"
+        l_pop_1_7: "004000"
+        l_pop_1_8: "004000"
+        l_pop_1_9: "004000"
+        l_pop_1_10: "004000"
+        l_pop_1_11: "004000"
+        l_pop_1_12: "004000"
+        l_pop_2_1: "004000"
+        l_pop_2_2: "004000"
+        l_pop_2_3: "004000"
+        l_pop_2_4: "004000"
+        l_pop_2_5: "004000"
+        l_pop_2_6: "004000"
+        l_pop_2_7: "004000"
+        l_pop_2_8: "004000"
+        l_pop_2_9: "004000"
+        l_pop_2_10: "004000"
+        l_pop_2_11: "004000"
+        l_pop_2_12: "004000"
+
+  # The lower playfield spinner is the only spinner used by this mode.
+  plotter_spinner_show:
+    - duration: 400ms
+      lights:
+        l_spinner: FFC000
+    - duration: 400ms
+      lights:
+        l_spinner: "503000"
+
+  plotter_saucer_1_show:
+    - duration: 500ms
+      lights:
+        l_1_hole_l: red
+        l_1_hole_r: red
+    - duration: 500ms
+      lights:
         l_1_hole_l: off
         l_1_hole_r: off
 
-  foswell_saucer_2_lit:
+  plotter_saucer_2_show:
     - duration: 500ms
       lights:
-        l_2: yellow
-        l_2_hole_l: yellow
-        l_2_hole_r: yellow
+        l_2_hole_l: red
+        l_2_hole_r: red
     - duration: 500ms
       lights:
-        l_2: off
         l_2_hole_l: off
         l_2_hole_r: off
 
-  foswell_saucer_3_lit:
+  plotter_saucer_3_show:
     - duration: 500ms
       lights:
-        l_3: yellow
-        l_3_hole_l: yellow
-        l_3_hole_r: yellow
+        l_3_hole_l: red
+        l_3_hole_r: red
     - duration: 500ms
       lights:
-        l_3: off
         l_3_hole_l: off
         l_3_hole_r: off
 
-  foswell_vuk_super_lit:
-    - duration: 300ms
+  # VUK phase: the spinner insert and the adjacent upper-left GI pulse yellow.
+  plotter_vuk_super_show:
+    - duration: 350ms
       lights:
-        l_advance_multiplier: red
-    - duration: 300ms
+        l_spinner: FFC000
+        l_gi_spinner: FFC000
+    - duration: 350ms
       lights:
-        l_mid_multibonus: red
-    - duration: 300ms
-      lights:
-        l_mid_web_target: red
+        l_spinner: "503000"
+        l_gi_spinner: "503000"
 
-  foswell_back_page_lit:
+  # More Jackpots: all three white-lensed upper target inserts flash red and
+  # any one of the three collects the 500K Back Page Bonus.
+  plotter_back_page_show:
     - duration: 250ms
       lights:
-        l_upper_middle: white
+        l_upper_left: red
+        l_upper_middle: red
+        l_upper_right: red
     - duration: 250ms
       lights:
+        l_upper_left: off
         l_upper_middle: off
+        l_upper_right: off
 
 light_player:
   # Full-playfield GI theme while this mode is active.
@@ -165,4 +255,3 @@ light_player:
 
   mode_plotter_stopping:
     gi: E0E0E0
-

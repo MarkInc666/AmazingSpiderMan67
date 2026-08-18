@@ -1044,12 +1044,12 @@ class VillainBookends(Mode):
         #   intro_3: Chapter case files raise the values.
         'plotter': {
             'title': "THE PLOTTER",
-            'intro_1': 'Pops build information.',
-            'intro_2': 'Spinner reveals a scheme.',
+            'intro_1': 'Pops build rumors.',
+            'intro_2': 'Lower spinner reveals a scheme.',
             'intro_3': 'Stop three, then shoot the VUK.',
             'summary_title_complete': 'THE PLOTTER EXPOSED',
             'summary_title_failed': 'PLOTTER ESCAPED',
-            'stat_1_label': 'INFORMATION',
+            'stat_1_label': 'RUMORS',
             'stat_1_var': 'active_mode_hits',
             'stat_2_label': 'SCHEMES',
             'stat_2_var': 'active_mode_major_hits',

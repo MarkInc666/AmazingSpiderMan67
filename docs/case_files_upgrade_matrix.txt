@@ -33,7 +33,7 @@ Cyclops | Second Eye with 20s window | Eye Jackpot 150K per flip | Start with 30
 Centaur | Left-rubber secret half Jackpot | Centaur Jackpot 2X | Final timer 12s | 10s ball save on final shot | Right drops score Jackpot
 
 CHAPTER 4 — CRIME WAVE
-The Plotter | Back-page shot after VUK | NOT IMPLEMENTED | VUK timer 30s | Ball save active | First spin lights two saucers
+The Plotter | Any upper target collects a 500K Back Page after the VUK | Pops 50K / spinner 100K / schemes 500K; VUK stays 1M and Back Page stays 500K | VUK/Back Page timer 30s | 10s ball save | First unlit saucer hit collects one currently lit saucer
 The Fly Twins | +1X saucer multiplier | 300K base / +50K per spin | Longer multiball save | One outlane save | One upper hit lights all
 The Fifth Avenue Phantom | Sixth Phantom round | Phantom values improved | Reveals +2s | Phantom ball save | First expired reveal awarded
 Enforcers | Saucer bonus Jackpots lit | Base Jackpot 150K | Ox ball save ready | 10s ball save | First hit lights Jackpots
@@ -90,4 +90,4 @@ Baron Von Rantenraven | Repeat targets 500K | Roof Jackpots boosted | 15 roof fl
 
 Known code gaps found during this sync
 
-- The Plotter has no Bigger Jackpots behavior in its current Python code.
+- No regular-villain Case File code gaps remain in this matrix.

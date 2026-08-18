@@ -19,12 +19,14 @@ class Plotter(CaseFileMixin, Mode):
     VUK_SECONDS = 20
     MORE_TIME_VUK_SECONDS = 30
     RUMORS_TO_LIGHT_SAUCER = 2
+    BIGGER_JACKPOTS_MULTIPLIER = 2
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
         self.delay = DelayManager(self.machine)
         self.mode_done = False
         self.rumors = 0
+        self.rumor_hits = 0
         self.lit_saucers = set()
         self.schemes = 0
         self.mode_points = 0
@@ -33,24 +35,29 @@ class Plotter(CaseFileMixin, Mode):
         self.back_page_lit = False
         self.seconds_left = 0
         self.shot_assist_used = False
+        self.lighting_phase = None
 
         self.case_files = self.get_case_file_bonuses()
         self.vuk_seconds = self.MORE_TIME_VUK_SECONDS if self.has_case_file("more_time") else self.VUK_SECONDS
+        self.build_score_multiplier = (
+            self.BIGGER_JACKPOTS_MULTIPLIER
+            if self.has_case_file("bigger_jackpots")
+            else 1
+        )
 
         player = self.machine.game.player
         player[f"{self.MODE_KEY}_state"] = 1
         player["active_mode_points"] = 0
         player["active_mode_hits"] = 0
         player["active_mode_major_hits"] = 0
-        player["plotter_headlines_collected"] = 0
-        player["plotter_super_collected"] = 0
 
         self.publish_case_file_bonus_events(self.MODE_KEY)
         self.publish_active_case_file_helpers([
             ("more_jackpots", "BACK PAGE SHOT AFTER VUK"),
+            ("bigger_jackpots", "POPS, SPINNER AND SCHEMES SCORE 2X"),
             ("more_time", "VUK TIMER EXTENDED TO 30 SECONDS"),
             ("safety_net", "BALL SAVE ACTIVE"),
-            ("shot_assist", "FIRST SPIN LIGHTS TWO SAUCERS"),
+            ("shot_assist", "FIRST UNLIT SAUCER COLLECTS A LIT SAUCER"),
         ])
         if self.has_case_file("safety_net"):
             self.machine.events.post("start_case_file_ball_save")
@@ -95,8 +102,17 @@ class Plotter(CaseFileMixin, Mode):
     def _pop_hit(self, **kwargs):
         if self.mode_done:
             return
+        spinner_was_ready = self.rumors >= self.RUMORS_TO_LIGHT_SAUCER
         self.rumors += 1
-        self._score(self.POP_VALUE)
+        self.rumor_hits += 1
+        self.machine.game.player["active_mode_hits"] = self.rumor_hits
+        self._score(self._boosted_value(self.POP_VALUE))
+        if not spinner_was_ready and self.rumors >= self.RUMORS_TO_LIGHT_SAUCER:
+            self.machine.events.post(
+                "show_mode_message",
+                message_mode_title="SPINNER READY",
+                message_mode_subtitle="SHOOT THE YELLOW LOWER SPINNER",
+            )
         self._update_status()
 
     def _spinner_hit(self, **kwargs):
@@ -112,66 +128,78 @@ class Plotter(CaseFileMixin, Mode):
             return
 
         self.rumors -= self.RUMORS_TO_LIGHT_SAUCER
-        self._score(self.SPINNER_VALUE)
+        self._score(self._boosted_value(self.SPINNER_VALUE))
         self._light_random_saucer(available)
-
-        if self.has_case_file("shot_assist") and not self.shot_assist_used:
-            self.shot_assist_used = True
-            available = [saucer for saucer in self.SAUCERS if saucer not in self.lit_saucers]
-            if available:
-                self._light_random_saucer(available, assisted=True)
 
         self.machine.events.post(
             "show_mode_message",
             message_mode_title="SAUCER LIT",
-            message_mode_subtitle="COLLECT ANY LIT SAUCER",
+            message_mode_subtitle="COLLECT THE RED SAUCER",
         )
         self._update_status()
 
-    def _light_random_saucer(self, available, assisted=False):
+    def _light_random_saucer(self, available):
         saucer = random.choice(available)
         self.lit_saucers.add(saucer)
         self.machine.events.post(f"plotter_saucer_{saucer}_lit")
-        if assisted:
-            self.machine.events.post("show_mode_message", message_mode_title="SHOT ASSIST", message_mode_subtitle=f"SAUCER {saucer} ALSO LIT")
 
     def _saucer_hit(self, saucer, **kwargs):
         self.machine.events.post(f"delayed_kickout_saucer_{saucer}")
-        if self.mode_done or saucer not in self.lit_saucers:
+        if self.mode_done or self.vuk_lit or not self.lit_saucers:
             return
 
-        self.lit_saucers.remove(saucer)
-        self.machine.events.post(f"plotter_saucer_{saucer}_collected")
+        assisted = False
+        collected_saucer = saucer
+        if saucer not in self.lit_saucers:
+            if not self.has_case_file("shot_assist") or self.shot_assist_used:
+                return
+            self.shot_assist_used = True
+            assisted = True
+            collected_saucer = random.choice(sorted(self.lit_saucers))
+
+        self.lit_saucers.remove(collected_saucer)
+        self.machine.events.post(f"plotter_saucer_{collected_saucer}_collected")
         self.schemes += 1
-        self._score(self.SCHEME_VALUE)
+        scheme_value = self._boosted_value(self.SCHEME_VALUE)
+        self._score(scheme_value)
         player = self.machine.game.player
         player["active_mode_major_hits"] = self.schemes
-        player["plotter_headlines_collected"] = self.schemes
 
         if self.schemes >= 3:
             self._start_vuk_timer()
         else:
             self.machine.events.post(
                 "show_mode_jackpot",
-                message_mode_title="SCHEME STOPPED",
-                message_mode_subtitle=f"{self.schemes} OF 3",
-                message_mode_value=self.SCHEME_VALUE,
+                message_mode_title="SHOT ASSIST" if assisted else "SCHEME STOPPED",
+                message_mode_subtitle=(
+                    f"SAUCER {collected_saucer} COLLECTED — {self.schemes} OF 3"
+                    if assisted
+                    else f"{self.schemes} OF 3"
+                ),
+                message_mode_value=scheme_value,
             )
         self._update_status()
 
     def _start_vuk_timer(self):
         if self.vuk_lit or self.mode_done:
             return
+
+        # Shot Assist can leave another saucer lit when the third scheme is
+        # collected. Once the VUK phase begins, no surplus scheme remains live.
+        for saucer in tuple(self.lit_saucers):
+            self.machine.events.post(f"plotter_saucer_{saucer}_collected")
+        self.lit_saucers.clear()
+
         self.vuk_lit = True
         self.seconds_left = self.vuk_seconds
         self.machine.events.post("rooftop_diverter_open")
-        self.machine.events.post("plotter_super_lit_show")
         self.machine.events.post(
             "show_mode_jackpot",
             message_mode_title="THE PLOTTER EXPOSED",
             message_mode_subtitle=f"SHOOT DAILY BUGLE VUK - {self.seconds_left}s",
             message_mode_value=self.SUPER_VALUE,
         )
+        self._refresh_objective_lighting()
         self._schedule_vuk_tick()
 
     def _schedule_vuk_tick(self):
@@ -204,13 +232,10 @@ class Plotter(CaseFileMixin, Mode):
             return
 
         self.vuk_collected = True
-        self.machine.game.player["plotter_super_collected"] = 1
         self._score(self.SUPER_VALUE)
-        self.machine.events.post("plotter_super_collected")
 
         if self.has_case_file("more_jackpots"):
             self.back_page_lit = True
-            self.machine.events.post("plotter_back_page_lit_show")
             self.machine.events.post(
                 "show_mode_jackpot",
                 message_mode_title="THE PLOTTER SUPER",
@@ -271,10 +296,35 @@ class Plotter(CaseFileMixin, Mode):
         self.mode_points += points
         player["active_mode_points"] = self.mode_points
 
+    def _boosted_value(self, base_value):
+        return base_value * self.build_score_multiplier
+
+    def _refresh_objective_lighting(self):
+        if self.mode_done:
+            return
+
+        if self.back_page_lit:
+            phase = "back_page"
+        elif self.vuk_lit:
+            phase = "vuk"
+        elif len(self.lit_saucers) >= len(self.SAUCERS):
+            phase = "saucers_only"
+        elif self.rumors >= self.RUMORS_TO_LIGHT_SAUCER:
+            phase = "spinner"
+        else:
+            phase = "pops"
+
+        if phase == self.lighting_phase:
+            return
+
+        self.lighting_phase = phase
+        self.machine.events.post("plotter_clear_guidance_lights")
+        if phase != "saucers_only":
+            self.machine.events.post(f"plotter_{phase}_lights")
+
     def _update_status(self):
         if self.mode_done:
             return
-        self.machine.game.player["active_mode_hits"] = self.rumors
         if self.back_page_lit:
             objective = f"BACK PAGE {self.seconds_left}s"
         elif self.vuk_lit:
@@ -289,3 +339,4 @@ class Plotter(CaseFileMixin, Mode):
             mode_status_title="RUMORS / SCHEMES",
             mode_status_value=f"{self.rumors} / {self.schemes}   {objective}",
         )
+        self._refresh_objective_lighting()
