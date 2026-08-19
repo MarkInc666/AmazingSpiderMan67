@@ -84,7 +84,7 @@ Persistent/shared player data is limited to:
 - dr_manta_state for villain progression.
 - dr_manta_second_ball_save_seconds because MPF YAML reads it for the dynamic
   second-ball-save duration.
-- active_mode_points, active_mode_hits and active_mode_major_hits for the shared
+- active_mode_points, active_mode_stat_1 and active_mode_stat_2 for the shared
   end-of-mode summary.
 
 PLAYTEST CHECKLIST

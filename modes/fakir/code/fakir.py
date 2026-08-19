@@ -45,6 +45,7 @@ class Fakir(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
 
         self.delay = DelayManager(self.machine)
         self.mode_done = False
@@ -366,8 +367,8 @@ class Fakir(CaseFileMixin, Mode):
         # Keep player variables lean. Detailed Ruby state stays in this mode's
         # Python instance; only generic summary counters are published.
         player["active_mode_points"] = self.mode_points
-        player["active_mode_hits"] = self.total_rubies_collected
-        player["active_mode_major_hits"] = self.super_jackpots_collected
+        player["active_mode_stat_1"] = self.total_rubies_collected
+        player["active_mode_stat_2"] = self.super_jackpots_collected
         self._update_mode_status()
 
     def _update_mode_status(self):

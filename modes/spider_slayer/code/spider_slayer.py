@@ -28,6 +28,7 @@ class SpiderSlayer(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
         self.delay = DelayManager(self.machine)
         self.case_files = self.get_case_file_bonuses()
 
@@ -169,9 +170,9 @@ class SpiderSlayer(CaseFileMixin, Mode):
         player = self.machine.game.player
         player["active_mode_points"] = self.mode_points
         player["spider_slayer_hits"] = self.hits
-        player["spider_slayer_jackpot"] = self.collected_jackpot or self.slayers_jackpot
+        player["active_mode_stat_1"] = self.collected_jackpot or self.slayers_jackpot
         player["spider_slayer_hunt_time_tenths"] = self.hunt_time_tenths
-        player["spider_slayer_hunt_time"] = f"{self.hunt_time_tenths / 10:.1f} SEC"
+        player["active_mode_stat_2"] = self.hunt_time_tenths
 
     def _update_status(self):
         if self.phase == "hunt":

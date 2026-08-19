@@ -83,6 +83,7 @@ class Plutonians(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
         self.mode_done = False
         self.thawed = set()
         self.mode_points = 0
@@ -124,8 +125,8 @@ class Plutonians(CaseFileMixin, Mode):
 
         player = self.machine.game.player
         player["active_mode_points"] = 0
-        player["active_mode_hits"] = 0
-        player["active_mode_major_hits"] = 0
+        player["active_mode_stat_1"] = 0
+        player["active_mode_stat_2"] = 0
         player[f"{self.MODE_KEY}_state"] = 1
 
         # Register target behavior before area behavior because upper targets do both.
@@ -359,5 +360,5 @@ class Plutonians(CaseFileMixin, Mode):
     def _sync_vars(self):
         player = self.machine.game.player
         player["active_mode_points"] = self.mode_points
-        player["active_mode_hits"] = self.total_thaws
-        player["active_mode_major_hits"] = self.freeze_ray_blockers
+        player["active_mode_stat_1"] = self.total_thaws
+        player["active_mode_stat_2"] = self.freeze_ray_blockers

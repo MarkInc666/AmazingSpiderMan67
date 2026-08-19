@@ -27,6 +27,7 @@ class Desperado(Mode, CaseFileMixin):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
         self.mode_done = False
         self.bank_sweeping = False
         self.completed = {target: False for target in self.TARGETS}
@@ -38,6 +39,8 @@ class Desperado(Mode, CaseFileMixin):
         self.duplicate_target_value = self.DUPLICATE_TARGET_VALUE
         self.extra_round_qualified = False
         self.extra_round_active = False
+        self.bank_hits = 0
+        self.outlaws = 0
         self.shot_assist_used = False
 
         self.case_files = self.get_case_file_bonuses()
@@ -83,8 +86,8 @@ class Desperado(Mode, CaseFileMixin):
         player = self.machine.game.player
         player["desperado_state"] = 1
         player["active_mode_points"] = 0
-        player["active_mode_hits"] = 0
-        player["active_mode_major_hits"] = 0
+        player["active_mode_stat_1"] = self.bank_hits
+        player["active_mode_stat_2"] = self.outlaws
 
     def _add_handlers(self):
         for target in self.TARGETS:
@@ -154,7 +157,8 @@ class Desperado(Mode, CaseFileMixin):
     def _complete_target(self, target, value):
         self.completed[target] = True
         self._score(value)
-        self.machine.game.player["active_mode_major_hits"] += 1
+        self.outlaws += 1
+        self.machine.game.player["active_mode_stat_2"] = self.outlaws
         self.machine.events.post(f"desperado_target_{target}_complete")
         self.machine.events.post("desperado_new_target_complete", target=target, value=value)
         self._show_message("OUTLAW SPOTTED", f"DROP {target}", value=self._format_score(value), event="show_mode_jackpot")
@@ -266,7 +270,8 @@ class Desperado(Mode, CaseFileMixin):
         return sum(1 for completed in self.completed.values() if completed)
 
     def _add_hit_vars(self):
-        self.machine.game.player["active_mode_hits"] += 1
+        self.bank_hits += 1
+        self.machine.game.player["active_mode_stat_1"] = self.bank_hits
 
     def _score(self, points):
         player = self.machine.game.player

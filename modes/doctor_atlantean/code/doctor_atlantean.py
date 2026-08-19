@@ -26,6 +26,7 @@ class DoctorAtlantean(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
 
         self.mode_done = False
         self.phase = "sinking"
@@ -349,8 +350,8 @@ class DoctorAtlantean(CaseFileMixin, Mode):
     def _sync_vars(self, update_status=True):
         player = self.machine.game.player
         player["active_mode_points"] = self.mode_points
-        player["active_mode_hits"] = self.control_panel_jackpots
-        player["active_mode_major_hits"] = self.spinner_spins
+        player["active_mode_stat_1"] = self.control_panel_jackpots
+        player["active_mode_stat_2"] = self.spinner_spins
         player["doctor_atlantean_water_level"] = self.water_level
         if update_status and not self.mode_done and self.phase == "active":
             self._update_status()

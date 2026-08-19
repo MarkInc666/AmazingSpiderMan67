@@ -48,6 +48,8 @@ class ConnersReptiles(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
+        self.machine.game.player["active_mode_stat_2"] = self.machine.game.player["swamp_bonus"]
 
         self.mode_done = False
         self.super_lit = False
@@ -288,7 +290,8 @@ class ConnersReptiles(CaseFileMixin, Mode):
         player["conners_reptiles_rampage_level"] = len(self.revealed_shots)
         player["conners_reptiles_current_jackpot"] = self.jackpot_value
         player["conners_reptiles_super_jackpot"] = self.SUPER_VALUE
-        player["conners_reptiles_jackpots_collected"] = self.jackpots_collected
+        player["active_mode_stat_1"] = self.jackpots_collected
+        player["active_mode_stat_2"] = player["swamp_bonus"]
         player["conners_reptiles_jackpots_required"] = self.required_jackpots
         player["conners_reptiles_pop_score_value"] = self.POP_VALUE
         player["conners_reptiles_super_lit"] = 1 if self.super_lit else 0

@@ -34,6 +34,7 @@ class BoltonBoomer(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=1)
         self.case_files = self.get_case_file_bonuses()
         self.mode_done = False
         self.phase = "target"

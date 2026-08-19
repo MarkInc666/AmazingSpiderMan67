@@ -41,6 +41,7 @@ class Cerberus(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
 
         self.delay = DelayManager(self.machine)
         self.mode_done = False
@@ -338,9 +339,9 @@ class Cerberus(CaseFileMixin, Mode):
             return
 
         player["active_mode_points"] = self.mode_points
-        player["cerberus_targets_hit"] = self.targets_hit
+        player["active_mode_stat_1"] = self.targets_hit
         player["cerberus_spinner_spins"] = self.spinner_spins
-        player["cerberus_jackpots_collected"] = self.jackpots_collected
+        player["active_mode_stat_2"] = self.jackpots_collected
         player["cerberus_best_jackpot"] = self.best_jackpot
         player["cerberus_jackpot_value"] = self.jackpot_value
         player["cerberus_timer_seconds"] = self.timer_seconds if self.timer_running else 0

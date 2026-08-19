@@ -53,7 +53,7 @@ SUMMARY
 
 PLAYER VARIABLE OWNERSHIP
 - master_technician_state is retained for persistent progression.
-- active_mode_points, active_mode_hits, and active_mode_major_hits carry the
+- active_mode_points, active_mode_stat_1, and active_mode_stat_2 carry the
   standard summary totals.
 - Temporary timer, target, spinner-value, helper-use, and inlane state remains
   in Python and is not stored as player variables.

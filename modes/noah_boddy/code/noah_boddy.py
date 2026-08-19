@@ -84,6 +84,8 @@ class NoahBoddy(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
+        self.machine.game.player["active_mode_stat_2"] = self.machine.game.player["noah_boddy_bonus"]
 
         self.delay = DelayManager(self.machine)
         self.case_files = self.get_case_file_bonuses()
@@ -201,7 +203,7 @@ class NoahBoddy(CaseFileMixin, Mode):
         player["noah_boddy_state"] = 2
         player["active_mode_points"] = 0
         player["noah_boddy_upper_target_hits"] = 0
-        player["noah_boddy_spinner_hits"] = 0
+        player["active_mode_stat_1"] = 0
         player["noah_boddy_jackpots"] = 0
         player["noah_boddy_best_jackpot"] = 0
         player["noah_boddy_jackpot_value"] = self._current_jackpot_value()
@@ -287,6 +289,7 @@ class NoahBoddy(CaseFileMixin, Mode):
         self.jackpot_value += self.SPINNER_ADD_VALUE
         bonus_value = self.SPINNER_ADD_VALUE * self.jackpot_multiplier
         self.machine.game.player["noah_boddy_bonus"] += bonus_value
+        self.machine.game.player["active_mode_stat_2"] = self.machine.game.player["noah_boddy_bonus"]
         self.machine.events.post(
             "noah_boddy_jackpot_increased",
             spinner_hits=self.spinner_hits,
@@ -515,7 +518,7 @@ class NoahBoddy(CaseFileMixin, Mode):
         player = self.machine.game.player
         player["active_mode_points"] = self.mode_points
         player["noah_boddy_upper_target_hits"] = self.upper_target_hits
-        player["noah_boddy_spinner_hits"] = self.spinner_hits
+        player["active_mode_stat_1"] = self.spinner_hits
         player["noah_boddy_jackpots"] = self.jackpots_collected
         player["noah_boddy_best_jackpot"] = self.best_jackpot
         player["noah_boddy_jackpot_value"] = self._current_jackpot_value()

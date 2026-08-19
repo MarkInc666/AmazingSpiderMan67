@@ -29,6 +29,7 @@ class Kotep(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
         self.delay = DelayManager(self.machine)
         self.mode_done = False
         self.phase = "demons"
@@ -66,8 +67,8 @@ class Kotep(CaseFileMixin, Mode):
 
         player = self.machine.game.player
         player["active_mode_points"] = 0
-        player["active_mode_hits"] = 0
-        player["active_mode_major_hits"] = 0
+        player["active_mode_stat_1"] = 0
+        player["active_mode_stat_2"] = 0
         player[f"{self.MODE_KEY}_state"] = 1
 
         self.publish_case_file_bonus_events(self.MODE_KEY)
@@ -337,8 +338,8 @@ class Kotep(CaseFileMixin, Mode):
     def _sync_vars(self):
         player = self.machine.game.player
         player["active_mode_points"] = self.mode_points
-        player["active_mode_hits"] = self.demons_destroyed + self.bonus_demons_destroyed
-        player["active_mode_major_hits"] = self.super_jackpots
+        player["active_mode_stat_1"] = self.demons_destroyed + self.bonus_demons_destroyed
+        player["active_mode_stat_2"] = self.super_jackpots
 
     def _show_message(self, title, subtitle="", reminder=False):
         self.machine.events.post(

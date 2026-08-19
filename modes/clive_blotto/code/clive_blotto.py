@@ -66,6 +66,7 @@ class CliveBlotto(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
         self.mode_done = False
         self.meter = self.METER_START
         self.infected = set()
@@ -105,8 +106,8 @@ class CliveBlotto(CaseFileMixin, Mode):
         player = self.machine.game.player
         player[f"{self.MODE_KEY}_state"] = 1
         player["active_mode_points"] = 0
-        player["active_mode_hits"] = 0
-        player["active_mode_major_hits"] = 0
+        player["active_mode_stat_1"] = 0
+        player["active_mode_stat_2"] = 0
 
         for area_name, switches in self.AREA_SWITCHES.items():
             for switch_name in switches:
@@ -212,7 +213,7 @@ class CliveBlotto(CaseFileMixin, Mode):
         self.infected.add(area)
         self.attack_count += 1
         player = self.machine.game.player
-        player["active_mode_major_hits"] = self.attack_count
+        player["active_mode_stat_2"] = self.attack_count
         self.machine.events.post("clive_blotto_meter_full_flash")
         self.machine.events.post(f"clive_blotto_infect_{area}")
         self.machine.events.post(
@@ -253,7 +254,7 @@ class CliveBlotto(CaseFileMixin, Mode):
         self._score(self.clear_score)
 
         player = self.machine.game.player
-        player["active_mode_hits"] = self.cleared_count
+        player["active_mode_stat_1"] = self.cleared_count
         self.machine.events.post(f"clive_blotto_clear_{area}")
         self.machine.events.post("clive_blotto_area_clear_flash")
         self.machine.events.post("reset_mode_message_reminder")
@@ -321,8 +322,8 @@ class CliveBlotto(CaseFileMixin, Mode):
 
     def _publish_status(self):
         player = self.machine.game.player
-        player["active_mode_hits"] = self.cleared_count
-        player["active_mode_major_hits"] = self.attack_count
+        player["active_mode_stat_1"] = self.cleared_count
+        player["active_mode_stat_2"] = self.attack_count
         self.machine.events.post(
             "set_mode_status",
             title=f"BLOTTO METER {self._meter_percent()}%",

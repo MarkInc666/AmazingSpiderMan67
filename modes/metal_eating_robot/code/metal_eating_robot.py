@@ -50,6 +50,7 @@ class MetalEatingRobot(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
         self.case_files = self.get_case_file_bonuses()
         self.mode_done = False
         self.mode_points = 0
@@ -93,10 +94,8 @@ class MetalEatingRobot(CaseFileMixin, Mode):
         player = self.machine.game.player
         player["metal_eating_robot_state"] = 1
         player["active_mode_points"] = 0
-        player["active_mode_hits"] = 0
-        player["active_mode_major_hits"] = 0
-        player["metal_zones_saved"] = 0
-        player["metal_zones_destroyed"] = 0
+        player["active_mode_stat_1"] = 0
+        player["active_mode_stat_2"] = 0
         player["metal_zones_under_attack"] = 0
         player["metal_repeat_jackpots"] = 0
         player["metal_zone_timer_seconds"] = self.zone_timer_ms // 1000
@@ -300,10 +299,8 @@ class MetalEatingRobot(CaseFileMixin, Mode):
     def _sync_vars(self):
         player = self.machine.game.player
         player["active_mode_points"] = self.mode_points
-        player["active_mode_hits"] = len(self.saved_zones)
-        player["active_mode_major_hits"] = len(self.destroyed_zones)
-        player["metal_zones_saved"] = len(self.saved_zones)
-        player["metal_zones_destroyed"] = len(self.destroyed_zones)
+        player["active_mode_stat_1"] = len(self.saved_zones)
+        player["active_mode_stat_2"] = len(self.destroyed_zones)
         player["metal_zones_under_attack"] = len(self.attacked_zones)
         player["metal_repeat_jackpots"] = len(self.repeat_collected)
 

@@ -11,7 +11,7 @@ from modes.common.case_file_mixin import CaseFileMixin
     "stat_1_label": "DELIVERIES",
     "stat_1_var": "lizard_deliveries",
     "stat_2_label": "BEST VALUE",
-    "stat_2_var": "lizard_best_delivery_value",
+    "stat_2_var": "active_mode_stat_2",
     "points_var": "active_mode_points",
     "state_var": "lizard_state",
 """
@@ -39,6 +39,7 @@ class Lizard(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
 
         self.case_files = self.get_case_file_bonuses()
         self._apply_case_file_bonuses()
@@ -125,6 +126,11 @@ class Lizard(CaseFileMixin, Mode):
         player["lizard_ab_ready"] = 0
         player["lizard_followup_ready"] = 0
 
+        self.best_delivery_value = 0
+        self.deliveries_made = 0
+        player["active_mode_stat_1"] = self.deliveries_made
+        player["active_mode_stat_2"] = self.best_delivery_value
+
         self._safety_net_used = False
         self._followup_target = None
         self._followup_value = 0
@@ -133,8 +139,6 @@ class Lizard(CaseFileMixin, Mode):
         self._delivery_success_pending = False
 
         player["active_mode_points"] = 0
-        player["lizard_best_delivery_value"] = 0
-        player["lizard_deliveries_made"] = 0
         player["lizard_state"] = 1
 
     def _award_points(self, points):
@@ -343,11 +347,12 @@ class Lizard(CaseFileMixin, Mode):
         delivery_value = max(self.MINIMUM_DELIVERY_VALUE, player["lizard_delivery_value"])
         self._award_points(delivery_value)
 
-        if delivery_value > player["lizard_best_delivery_value"]:
-            player["lizard_best_delivery_value"] = delivery_value
+        self.best_delivery_value = max(self.best_delivery_value, delivery_value)
+        self.deliveries_made += 1
+        player["active_mode_stat_1"] = self.deliveries_made
+        player["active_mode_stat_2"] = self.best_delivery_value
 
         player["lizard_deliveries"] += 1
-        player["lizard_deliveries_made"] += 1
         player["lizard_state"] = 2
         player["lizard_delivery_value"] = self.start_delivery_value
 

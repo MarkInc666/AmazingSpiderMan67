@@ -31,6 +31,7 @@ class RhinoBash(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
 
         self.rage_stage = 1
         self.rhino_best_rage_stage = 1
@@ -274,7 +275,7 @@ class RhinoBash(CaseFileMixin, Mode):
         player["rhino_stage_5_required_pops"] = self.stage_5_required_pops()
         player["rhino_berserk_running"] = int(self.berserk_running)
         player["rhino_berserk_time_ms"] = self.berserk_time_ms()
-        player["rhino_best_rage_stage"] = self.rhino_best_rage_stage
-        player["rhino_best_jackpot_value"] = self.rhino_best_jackpot_value
+        player["active_mode_stat_2"] = self.rhino_best_rage_stage
+        player["active_mode_stat_1"] = self.rhino_best_jackpot_value
         player["active_mode_points"] = self.active_mode_points
         self._update_status()

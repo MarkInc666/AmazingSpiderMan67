@@ -52,6 +52,7 @@ class VonRantenraven(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
 
         self.case_files = self.get_case_file_bonuses()
         self._configure_values()
@@ -68,8 +69,8 @@ class VonRantenraven(CaseFileMixin, Mode):
 
         player = self.machine.game.player
         player["active_mode_points"] = 0
-        player["active_mode_hits"] = 0
-        player["active_mode_major_hits"] = 0
+        player["active_mode_stat_1"] = 0
+        player["active_mode_stat_2"] = 0
         player[f"{self.MODE_KEY}_state"] = 1
 
         self.add_mode_event_handler("s_saucer_1_active", self._saucer_hit)
@@ -225,7 +226,7 @@ class VonRantenraven(CaseFileMixin, Mode):
 
         self.roof_attempt_active = False
         self.rooftop_jackpots += 1
-        self.machine.game.player["active_mode_major_hits"] = self.rooftop_jackpots
+        self.machine.game.player["active_mode_stat_2"] = self.rooftop_jackpots
         self.machine.events.post("von_rantenraven_roof_attempt_complete", count=self.rooftop_jackpots)
 
         if self.rooftop_jackpots >= self.ROOFTOP_JACKPOTS_TO_COMPLETE:
@@ -293,7 +294,7 @@ class VonRantenraven(CaseFileMixin, Mode):
         self.mode_points += points
         self.jackpot_hits += 1
         player["active_mode_points"] = self.mode_points
-        player["active_mode_hits"] = self.jackpot_hits
+        player["active_mode_stat_1"] = self.jackpot_hits
 
     def _complete_mode(self):
         if self.mode_done:

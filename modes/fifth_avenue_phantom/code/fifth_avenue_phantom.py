@@ -84,6 +84,7 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
 
         self.delay = DelayManager(self.machine)
         self.case_files = self.get_case_file_bonuses()
@@ -168,8 +169,8 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
         player = self.machine.game.player
         player["fifth_avenue_phantom_state"] = 1
         player["active_mode_points"] = 0
-        player["fifth_avenue_phantom_jackpots"] = 0
-        player["fifth_avenue_phantom_best_jackpot"] = 0
+        player["active_mode_stat_1"] = 0
+        player["active_mode_stat_2"] = 0
 
     def _start_new_round(self):
         if self._in_summary_or_done():
@@ -449,10 +450,8 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
     def _sync_vars(self):
         player = self.machine.game.player
         player["active_mode_points"] = self.mode_points
-        player["active_mode_hits"] = self.jackpots_collected
-        player["active_mode_major_hits"] = self.jackpots_collected
-        player["fifth_avenue_phantom_jackpots"] = self.jackpots_collected
-        player["fifth_avenue_phantom_best_jackpot"] = self.best_jackpot
+        player["active_mode_stat_1"] = self.jackpots_collected
+        player["active_mode_stat_2"] = self.best_jackpot
 
     def _in_summary_or_done(self):
         if self.mode_done:

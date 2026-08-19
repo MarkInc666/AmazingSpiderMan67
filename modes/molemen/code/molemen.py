@@ -44,7 +44,10 @@ class Molemen(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
         self.mode_exiting = False
+        self.jackpots_collected = 0
+        self.biggest_jackpot = 0
         self.grace_active = False
 
         self.case_files = self.get_case_file_bonuses()
@@ -119,8 +122,8 @@ class Molemen(CaseFileMixin, Mode):
         player = self.machine.game.player
         player["active_mode_points"] = 0
         player["molemen_state"] = 1
-        player["molemen_jackpots"] = 0
-        player["molemen_biggest_jackpot"] = 0
+        player["active_mode_stat_1"] = self.biggest_jackpot
+        player["active_mode_stat_2"] = self.jackpots_collected
         player["molemen_opening_save_seconds"] = self.opening_save_seconds
         self.area_state = {
             area: {"hits": 0, "lit": False, "add_ready": False, "add_used": False}
@@ -187,8 +190,10 @@ class Molemen(CaseFileMixin, Mode):
         balls = max(1, self._balls_in_play())
         value = self.jackpot_per_ball * balls
         self._score(value)
-        player["molemen_jackpots"] += 1
-        player["molemen_biggest_jackpot"] = max(int(player["molemen_biggest_jackpot"]), value)
+        self.jackpots_collected += 1
+        self.biggest_jackpot = max(self.biggest_jackpot, value)
+        player["active_mode_stat_1"] = self.biggest_jackpot
+        player["active_mode_stat_2"] = self.jackpots_collected
 
         add_ball = state["add_ready"] and not state["add_used"]
         if add_ball:

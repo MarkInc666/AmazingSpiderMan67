@@ -49,6 +49,7 @@ class CharlesCameo(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
 
         self.case_files = self.get_case_file_bonuses()
         self.stages = self.MORE_JACKPOTS_STAGES if self.has_case_file("more_jackpots") else self.NORMAL_STAGES
@@ -320,9 +321,8 @@ class CharlesCameo(CaseFileMixin, Mode):
     def _sync_vars(self):
         player = self.machine.game.player
         player["active_mode_points"] = self.mode_points
-        player["active_mode_hits"] = self.source_hits
-        player["active_mode_major_hits"] = self.jackpots
-        player["charles_cameo_biggest_jackpot"] = self.biggest_jackpot
+        player["active_mode_stat_1"] = self.jackpots
+        player["active_mode_stat_2"] = self.biggest_jackpot
 
     def _update_status(self):
         if self.mode_done or not self.stage:

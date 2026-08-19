@@ -42,6 +42,8 @@ class DoctorCool(Mode, CaseFileMixin):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
+        self.machine.game.player["active_mode_stat_2"] = self.machine.game.player["diamond_bonus"]
 
         self.mode_done = False
         self.case_files = self.get_case_file_bonuses()
@@ -353,8 +355,8 @@ class DoctorCool(Mode, CaseFileMixin):
         # Use shared active-mode counters. Do not recreate per-mode
         # *_mode_points / *_hits / *_major_hits player vars.
         player["active_mode_points"] = self.mode_points
-        player["active_mode_hits"] = self.drop_hits
-        player["active_mode_major_hits"] = self.jackpots_collected
+        player["active_mode_stat_1"] = self.jackpots_collected
+        player["active_mode_stat_2"] = player["diamond_bonus"]
         self._update_mode_status()
 
     def _update_mode_status(self):

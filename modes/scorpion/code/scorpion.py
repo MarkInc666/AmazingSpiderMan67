@@ -17,6 +17,7 @@ class Scorpion(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
 
         self.delay = DelayManager(self.machine)
         self.case_files = self.get_case_file_bonuses()
@@ -96,8 +97,8 @@ class Scorpion(CaseFileMixin, Mode):
 
     def _sync_player_vars(self):
         player = self.machine.game.player
-        player["scorpion_stings"] = self.scorpion_stings
-        player["scorpion_biggest_jackpot"] = self.scorpion_biggest_jackpot
+        player["active_mode_stat_1"] = self.scorpion_stings
+        player["active_mode_stat_2"] = self.scorpion_biggest_jackpot
         player["active_mode_points"] = self.active_mode_points
 
     def _add_score(self, value):

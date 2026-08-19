@@ -72,7 +72,7 @@ MESSAGES AND STATUS
 
 PLAYER VARIABLE OWNERSHIP
 - plotter_state is retained for persistent progression.
-- active_mode_points, active_mode_hits, and active_mode_major_hits carry the
+- active_mode_points, active_mode_stat_1, and active_mode_stat_2 carry the
   standard shared summary values. Hits count total Rumors earned rather than
   the unspent Rumors remaining when the mode ends.
 - Rumors, lit saucers, schemes, VUK/Back Page state, timer state, lighting phase,

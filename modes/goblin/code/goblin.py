@@ -35,6 +35,7 @@ class Goblin(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
 
         self.case_files = self.get_case_file_bonuses()
         self.more_jackpots = self.has_case_file("more_jackpots")
@@ -71,6 +72,8 @@ class Goblin(CaseFileMixin, Mode):
         self.release_pending = False
         self.ejecting_saucers = set()
         self.mode_finishing = False
+        self.attack_total = 0
+        self.chaos_scored = 0
         self.safe_hit_count = 0
         self.safe_seconds_remaining = 0
         self.message_queue_next_time = time.monotonic()
@@ -94,11 +97,13 @@ class Goblin(CaseFileMixin, Mode):
     def begin_mode(self):
         player = self.machine.game.player
         player["goblin_chaos_bonus"] = self.CHAOS_START
-        player["goblin_bonus_banked"] = 0
+        self.chaos_scored = 0
+        player["active_mode_stat_2"] = self.chaos_scored
         player["goblin_chaos_lock"] = 0
         player["goblin_hold_count"] = 0
         player["goblin_hold_active"] = 0
-        player["goblin_attacks_value"] = 0
+        self.attack_total = 0
+        player["active_mode_stat_1"] = self.attack_total
         player["active_mode_points"] = 0
         player["goblin_state"] = 1
         player["goblin_jackpot_value"] = self.SAFE_IMMEDIATE_SCORE
@@ -198,7 +203,8 @@ class Goblin(CaseFileMixin, Mode):
     def collect_unsafe_shot(self, shot_name):
         self._award_points(self.UNSAFE_SCORE)
         player = self.machine.game.player
-        player["goblin_attacks_value"] += self.UNSAFE_SCORE
+        self.attack_total += self.UNSAFE_SCORE
+        player["active_mode_stat_1"] = self.attack_total
         player["goblin_chaos_bonus"] = max(
             self.CHAOS_MIN,
             int(player["goblin_chaos_bonus"]) - self.UNSAFE_LOSS,
@@ -216,7 +222,8 @@ class Goblin(CaseFileMixin, Mode):
 
         self._award_points(immediate)
         player = self.machine.game.player
-        player["goblin_attacks_value"] += immediate
+        self.attack_total += immediate
+        player["active_mode_stat_1"] = self.attack_total
         player["goblin_chaos_bonus"] = min(
             self.CHAOS_MAX,
             int(player["goblin_chaos_bonus"]) + add_value,
@@ -272,12 +279,13 @@ class Goblin(CaseFileMixin, Mode):
         player = self.machine.game.player
         bank_value = int(player["goblin_chaos_bonus"])
         self._award_points(bank_value)
-        player["goblin_bonus_banked"] += bank_value
-        player["goblin_chaos_lock"] = player["goblin_bonus_banked"]
+        self.chaos_scored += bank_value
+        player["active_mode_stat_2"] = self.chaos_scored
+        player["goblin_chaos_lock"] = self.chaos_scored
         self.machine.events.post(
             "goblin_chaos_bonus_scored",
             value=bank_value,
-            total=player["goblin_bonus_banked"],
+            total=self.chaos_scored,
         )
         self.machine.events.post(
             "show_mode_message",

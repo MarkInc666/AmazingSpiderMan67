@@ -12,9 +12,9 @@ from mpf.core.delays import DelayManager
     "summary_title_complete": "SANDMAN DEFEATED",
     "summary_title_failed": "SANDMAN ESCAPED",
     "stat_1_label": "DROPS HIT",
-    "stat_1_var": "sandman_total_drops",
+    "stat_1_var": "active_mode_stat_1",
     "stat_2_label": "BEST RUNS",
-    "stat_2_var": "sandman_best_run",
+    "stat_2_var": "active_mode_stat_2",
     "points_var": "active_mode_points",
     "state_var": "sandman_state",
 """
@@ -27,6 +27,7 @@ class Sandman(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
 
         self.delay = DelayManager(self.machine)
 
@@ -303,8 +304,8 @@ class Sandman(CaseFileMixin, Mode):
         player = self.machine.game.player
 
         player["sandman_banks_completed"] = self.banks_completed
-        player["sandman_total_drops"] = self.flash_hits
-        player["sandman_best_run"] = self.sandman_best_run
+        player["active_mode_stat_1"] = self.flash_hits
+        player["active_mode_stat_2"] = self.sandman_best_run
         self._update_status()
     
 

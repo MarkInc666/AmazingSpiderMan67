@@ -297,12 +297,6 @@ player_vars:
   fifth_avenue_phantom_state:
     initial_value: 0
     value_type: int
-  fifth_avenue_phantom_jackpots:
-    initial_value: 0
-    value_type: int
-  fifth_avenue_phantom_best_jackpot:
-    initial_value: 0
-    value_type: int
   crime_wave_state:
     initial_value: 0
 
@@ -339,9 +333,6 @@ player_vars:
   infinata_state:
     initial_value: 0
     value_type: int
-  infinata_areas_completed:
-    initial_value: 0
-    value_type: int
   infinata_super_seconds:
     initial_value: 0
     value_type: int
@@ -357,15 +348,9 @@ player_vars:
   spider_slayer_hits:
     initial_value: 0
     value_type: int
-  spider_slayer_jackpot:
-    initial_value: 0
-    value_type: int
   spider_slayer_hunt_time_tenths:
     initial_value: 0
     value_type: int
-  spider_slayer_hunt_time:
-    initial_value: "0.0 SEC"
-    value_type: str
   henry_smythe_state:
     initial_value: 0
     value_type: int
@@ -397,9 +382,6 @@ player_vars:
     initial_value: 0
     value_type: int
   charles_cameo_state:
-    initial_value: 0
-    value_type: int
-  charles_cameo_biggest_jackpot:
     initial_value: 0
     value_type: int
   juan_ponce_de_leon_state:
@@ -804,22 +786,10 @@ player_vars:
   molemen_state:
     initial_value: 0
     value_type: int
-  molemen_jackpots:
-    initial_value: 0
-    value_type: int
-  molemen_biggest_jackpot:
-    initial_value: 0
-    value_type: int
   molemen_opening_save_seconds:
     initial_value: 15
     value_type: int
   brutus_state:
-    initial_value: 0
-    value_type: int
-  brutus_jackpots:
-    initial_value: 0
-    value_type: int
-  brutus_biggest_jackpot:
     initial_value: 0
     value_type: int
   brutus_blocked_saucers:
@@ -829,9 +799,6 @@ player_vars:
     initial_value: 0
     value_type: int
   igor_state:
-    initial_value: 0
-    value_type: int
-  igor_biggest_jackpot:
     initial_value: 0
     value_type: int
   igor_ball_save_seconds:
@@ -853,9 +820,6 @@ player_vars:
     initial_value: 0
     value_type: int
   invasion_from_everywhere_state:
-    initial_value: 0
-    value_type: int
-  conners_reptiles_jackpots_collected:
     initial_value: 0
     value_type: int
   conners_reptiles_pop_hits:
@@ -893,6 +857,15 @@ player_vars:
   noah_boddy_best_jackpot:
     initial_value: 0
   active_mode_points:
+    initial_value: 0
+    value_type: int
+  active_mode_stat_count:
+    initial_value: 0
+    value_type: int
+  active_mode_stat_1:
+    initial_value: 0
+    value_type: int
+  active_mode_stat_2:
     initial_value: 0
     value_type: int
   active_mode_hits:

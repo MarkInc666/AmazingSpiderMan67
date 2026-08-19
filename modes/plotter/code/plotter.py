@@ -23,6 +23,7 @@ class Plotter(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
         self.delay = DelayManager(self.machine)
         self.mode_done = False
         self.rumors = 0
@@ -48,8 +49,8 @@ class Plotter(CaseFileMixin, Mode):
         player = self.machine.game.player
         player[f"{self.MODE_KEY}_state"] = 1
         player["active_mode_points"] = 0
-        player["active_mode_hits"] = 0
-        player["active_mode_major_hits"] = 0
+        player["active_mode_stat_1"] = 0
+        player["active_mode_stat_2"] = 0
 
         self.publish_case_file_bonus_events(self.MODE_KEY)
         self.publish_active_case_file_helpers([
@@ -105,7 +106,7 @@ class Plotter(CaseFileMixin, Mode):
         spinner_was_ready = self.rumors >= self.RUMORS_TO_LIGHT_SAUCER
         self.rumors += 1
         self.rumor_hits += 1
-        self.machine.game.player["active_mode_hits"] = self.rumor_hits
+        self.machine.game.player["active_mode_stat_1"] = self.rumor_hits
         self._score(self._boosted_value(self.POP_VALUE))
         if not spinner_was_ready and self.rumors >= self.RUMORS_TO_LIGHT_SAUCER:
             self.machine.events.post(
@@ -163,7 +164,7 @@ class Plotter(CaseFileMixin, Mode):
         scheme_value = self._boosted_value(self.SCHEME_VALUE)
         self._score(scheme_value)
         player = self.machine.game.player
-        player["active_mode_major_hits"] = self.schemes
+        player["active_mode_stat_2"] = self.schemes
 
         if self.schemes >= 3:
             self._start_vuk_timer()

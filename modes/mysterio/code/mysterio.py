@@ -17,6 +17,7 @@ class Mysterio(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
         self.delay = DelayManager(self.machine)
         self.case_files = self.get_case_file_bonuses()
 
@@ -34,6 +35,7 @@ class Mysterio(CaseFileMixin, Mode):
         self.reveal_false_shot = self.has_case_file("shot_assist")
         self.mysterio_illusions_cleared = 0
         self.mysterio_jackpot_value = 0
+        self.clues_used = 0
         self.active_mode_points = 0
         self.mode_done = False
         self.mode_finishing = False
@@ -137,7 +139,7 @@ class Mysterio(CaseFileMixin, Mode):
         player = self.machine.game.player
         player["mysterio_super_value"] = self.super_value
         player["mysterio_illusions_cleared"] = 0
-        player["mysterio_jackpot_value"] = 0
+        player["active_mode_stat_2"] = 0
         player["active_mode_points"] = 0
 
         self._update_mode_status()
@@ -221,6 +223,8 @@ class Mysterio(CaseFileMixin, Mode):
         self._update_mode_status()
 
     def handle_clue_shot(self, shot, protected=False):
+        self.clues_used += 1
+        self.machine.game.player["active_mode_stat_1"] = self.clues_used
         self.machine.events.post("mysterio_clue_shot")
         self.machine.events.post("mysterio_score_wrong_shot")
         self._award_points(self.WRONG_SCORE)
@@ -279,7 +283,7 @@ class Mysterio(CaseFileMixin, Mode):
         self.mode_finishing = True
         self._disable_shot(shot)
         self.mysterio_jackpot_value = collected_value
-        self.machine.game.player["mysterio_jackpot_value"] = collected_value
+        self.machine.game.player["active_mode_stat_2"] = collected_value
         self._award_points(collected_value)
 
         self.machine.events.post("hide_mode_status")

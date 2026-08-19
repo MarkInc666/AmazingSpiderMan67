@@ -58,6 +58,8 @@ class DeVargas(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
+        self.machine.game.player["active_mode_stat_2"] = self.machine.game.player["devargas_bonus"]
 
         self.delay = DelayManager(self.machine)
         self.case_files = self.get_case_file_bonuses()
@@ -148,8 +150,7 @@ class DeVargas(CaseFileMixin, Mode):
     def _reset_player_vars(self):
         player = self.machine.game.player
         player["active_mode_points"] = 0
-        player["active_mode_hits"] = 0
-        player["active_mode_major_hits"] = 0
+        player["active_mode_stat_1"] = 0
         player["devargas_state"] = 1
         self._sync_vars()
 
@@ -391,6 +392,7 @@ class DeVargas(CaseFileMixin, Mode):
         player = self.machine.game.player
         player["score"] += value
         player["devargas_bonus"] += value
+        player["active_mode_stat_2"] = player["devargas_bonus"]
         self.mode_points += value
         self.gold_banked_this_mode += value
 
@@ -420,8 +422,7 @@ class DeVargas(CaseFileMixin, Mode):
     def _sync_vars(self, update_status=True):
         player = self.machine.game.player
         player["active_mode_points"] = self.mode_points
-        player["active_mode_hits"] = self.gold_shots
-        player["active_mode_major_hits"] = self.opportunities_started
+        player["active_mode_stat_1"] = self.gold_shots
         if update_status and not self.mode_done:
             self._update_status()
 

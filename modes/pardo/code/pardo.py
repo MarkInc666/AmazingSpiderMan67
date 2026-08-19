@@ -48,6 +48,7 @@ class Pardo(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
 
         self.delay = DelayManager(self.machine)
         self.mode_done = False
@@ -292,8 +293,8 @@ class Pardo(CaseFileMixin, Mode):
         if not player:
             return
         player["active_mode_points"] = self.mode_points
-        player["active_mode_hits"] = self.correct_shots
-        player["active_mode_major_hits"] = self.incorrect_shots
+        player["active_mode_stat_1"] = self.correct_shots
+        player["active_mode_stat_2"] = self.incorrect_shots
         self._update_mode_status()
 
     def _update_mode_status(self):

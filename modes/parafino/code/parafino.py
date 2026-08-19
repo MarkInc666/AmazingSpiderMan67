@@ -102,6 +102,7 @@ class Parafino(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
 
         self.case_files = self.get_case_file_bonuses()
         self._apply_case_file_bonuses()
@@ -115,6 +116,8 @@ class Parafino(CaseFileMixin, Mode):
         ])
 
         self.mode_exiting = False
+        self.zone_hits = 0
+        self.total_jackpots = 0
         self._reset_player_vars()
         self._add_switch_handlers()
 
@@ -207,9 +210,9 @@ class Parafino(CaseFileMixin, Mode):
 
         player["active_mode_points"] = 0
         player["parafino_state"] = 1
-        player["parafino_zone_hits"] = 0
+        player["active_mode_stat_1"] = self.zone_hits
         player["parafino_jackpots"] = 0
-        player["parafino_total_jackpots"] = 0
+        player["active_mode_stat_2"] = self.total_jackpots
         player["parafino_jackpot_value"] = 0
         player["parafino_last_jackpot_value"] = 0
         player["parafino_biggest_jackpot"] = 0
@@ -274,7 +277,8 @@ class Parafino(CaseFileMixin, Mode):
         if not extra_collect_pending:
             player[data["value_var"]] = new_hits * self.zone_build_value
 
-        player["parafino_zone_hits"] += actual_hits_added
+        self.zone_hits += actual_hits_added
+        player["active_mode_stat_1"] = self.zone_hits
         player["parafino_heat_hits"] += actual_hits_added
 
         player[data["lit_var"]] = 1
@@ -344,7 +348,8 @@ class Parafino(CaseFileMixin, Mode):
         self._score(value)
         player[data["jackpots_var"]] += 1
         player["parafino_jackpots"] += 1
-        player["parafino_total_jackpots"] += 1
+        self.total_jackpots += 1
+        player["active_mode_stat_2"] = self.total_jackpots
         player["parafino_last_jackpot_value"] = value
         player["parafino_biggest_jackpot"] = max(int(player["parafino_biggest_jackpot"]), value)
         player["parafino_jackpot_value"] = value

@@ -32,6 +32,7 @@ class SpiderMen(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
 
         self.mode_done = False
         self.phase = "alignment"
@@ -393,8 +394,8 @@ class SpiderMen(CaseFileMixin, Mode):
     def _sync_vars(self, update_status=True):
         player = self.machine.game.player
         player["active_mode_points"] = self.mode_points
-        player["active_mode_hits"] = self.jackpots
-        player["active_mode_major_hits"] = self.fine_adjustments
+        player["active_mode_stat_1"] = self.jackpots
+        player["active_mode_stat_2"] = self.fine_adjustments
         if update_status and not self.mode_done:
             self._update_status()
 

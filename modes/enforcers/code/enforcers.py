@@ -33,6 +33,7 @@ class Enforcers(Mode, CaseFileMixin):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
 
         self.mode_done = False
         self.case_files = self.get_case_file_bonuses()
@@ -328,10 +329,10 @@ class Enforcers(Mode, CaseFileMixin):
         player = self.machine.game.player
         player["active_mode_points"] = self.mode_points
         player["enforcers_base_jackpot"] = self.base_jackpot
-        player["enforcers_upper_jackpots"] = self.upper_jackpots_collected
+        player["active_mode_stat_1"] = self.upper_jackpots_collected
         player["enforcers_saucer_bonus_jackpots"] = self.saucer_bonus_collected_count
         player["enforcers_spinner_spins"] = self.spinner_spins
-        player["enforcers_ox_super_value"] = self.ox_super_value
+        player["active_mode_stat_2"] = self.ox_super_value
         player["enforcers_ox_lit"] = 1 if self.ox_lit else 0
         player["enforcers_gate_open"] = 1 if self.rooftop_gate_open else 0
 

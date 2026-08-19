@@ -20,6 +20,7 @@ class doc_ock(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
         self.delay = DelayManager(self.machine)
         self.case_files = self.get_case_file_bonuses()
 
@@ -168,7 +169,7 @@ class doc_ock(CaseFileMixin, Mode):
             return False
         self.locked_arms[arm_index] = True
         self.doc_ock_max_arms_locked = max(self.doc_ock_max_arms_locked, sum(self.locked_arms))
-        self.machine.game.player["doc_ock_max_arms_locked"] = self.doc_ock_max_arms_locked
+        self.machine.game.player["active_mode_stat_1"] = self.doc_ock_max_arms_locked
         self.refresh_lane_lights()
         self._set_jackpot_lit(True)
         if self.timed_release_running:
@@ -260,7 +261,7 @@ class doc_ock(CaseFileMixin, Mode):
         self._award_points(collected_value)
         self.jackpots_collected += 1
         player = self.machine.game.player
-        player["doc_ock_jackpots"] = self.jackpots_collected
+        player["active_mode_stat_2"] = self.jackpots_collected
         player["doc_ock_last_jackpot"] = collected_value
         player["doc_ock_bonus"] += self.BREAKOUT_BONUS_PER_JACKPOT
         self.machine.events.post(
@@ -387,7 +388,7 @@ class doc_ock(CaseFileMixin, Mode):
         player["doc_ock_locked_arms"] = sum(self.locked_arms)
         player["doc_ock_spinner_multi"] = self.doc_ock_jackpot_spinner_multi
         player["doc_ock_jackpots_collected"] = self.jackpots_collected
-        player["doc_ock_jackpots"] = self.jackpots_collected
+        player["active_mode_stat_2"] = self.jackpots_collected
         player["doc_ock_active_breakouts"] = len(self.active_breakouts)
         player["doc_ock_next_jackpot"] = self.calculate_next_jackpot()
         player["active_mode_points"] = self.active_mode_points

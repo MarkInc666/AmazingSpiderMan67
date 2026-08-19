@@ -80,6 +80,6 @@ STATE AND SUMMARY DATA
   0 = unplayed, 1 = active, 2 = completed.
 - Round, bank, timer, score, switch guards, and Case File runtime flags remain
   local to the Python mode.
-- active_mode_points, active_mode_hits, and active_mode_major_hits feed the
+- active_mode_points, active_mode_stat_1, and active_mode_stat_2 feed the
   shared summary presentation. Major hits count center-value bullseyes,
   including an assisted first physical target.

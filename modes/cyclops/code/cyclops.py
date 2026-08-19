@@ -41,6 +41,7 @@ class Cyclops(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
 
         self.delay = DelayManager(self.machine)
         self.case_files = self.get_case_file_bonuses()
@@ -363,14 +364,13 @@ class Cyclops(CaseFileMixin, Mode):
     def _sync_vars(self):
         player = self.machine.game.player
         player["active_mode_points"] = self.mode_points
-        player["active_mode_hits"] = self.drops_hit + self.rubbers_hit
-        player["active_mode_major_hits"] = self.eye_jackpots
         player["cyclops_flips_remaining"] = self.flips_remaining
+        player["active_mode_stat_2"] = self.flips_remaining
         player["cyclops_flips_used"] = self.flips_used
         player["cyclops_drops_hit"] = self.drops_hit
         player["cyclops_rubbers_hit"] = self.rubbers_hit
         player["cyclops_eye_jackpots"] = self.eye_jackpots
-        player["cyclops_best_jackpot"] = self.best_jackpot
+        player["active_mode_stat_1"] = self.best_jackpot
         player["cyclops_jackpot_value"] = self._current_jackpot_value()
         player["cyclops_jackpot_cap"] = self.JACKPOT_CAP
         player["cyclops_second_eye_seconds"] = self.second_eye_seconds_remaining

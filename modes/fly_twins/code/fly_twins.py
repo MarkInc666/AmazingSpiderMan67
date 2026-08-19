@@ -43,6 +43,7 @@ class FlyTwins(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
 
         self.case_files = self.get_case_file_bonuses()
         self.mode_done = False
@@ -102,8 +103,8 @@ class FlyTwins(CaseFileMixin, Mode):
         player = self.machine.game.player
         player["fly_twins_state"] = 1
         player["active_mode_points"] = 0
-        player["active_mode_hits"] = 0
-        player["active_mode_major_hits"] = 0
+        player["active_mode_stat_1"] = 0
+        player["active_mode_stat_2"] = 0
         player["fly_twins_rounds_completed"] = 0
         player["fly_twins_jackpots"] = 0
 
@@ -258,8 +259,8 @@ class FlyTwins(CaseFileMixin, Mode):
     def _sync_vars(self):
         player = self.machine.game.player
         player["active_mode_points"] = self.mode_points
-        player["active_mode_hits"] = self.rounds_completed
-        player["active_mode_major_hits"] = self.jackpots_collected
+        player["active_mode_stat_1"] = self.rounds_completed
+        player["active_mode_stat_2"] = self.jackpots_collected
         player["fly_twins_rounds_completed"] = self.rounds_completed
         player["fly_twins_jackpots"] = self.jackpots_collected
         self._update_mode_status()

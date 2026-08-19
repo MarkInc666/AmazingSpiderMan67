@@ -115,6 +115,29 @@ class CaseFileMixin:
         player["active_case_file_helper_count"] = 0
         self.machine.events.post("case_files_active_helpers_changed", helper_count=0)
 
+    def reset_active_mode_summary(self, stat_count=3):
+        """Reset the shared villain summary handoff slots for a new mode."""
+        player = self.machine.game.player if self.machine.game else None
+        if not player:
+            return
+
+        player["active_mode_stat_count"] = int(stat_count)
+        player["active_mode_points"] = 0
+        player["active_mode_stat_1"] = 0
+        player["active_mode_stat_2"] = 0
+
+    def publish_active_mode_summary(self, points, stat_1=0, stat_2=0, stat_count=None):
+        """Publish local mode totals into the shared summary/display slots."""
+        player = self.machine.game.player if self.machine.game else None
+        if not player:
+            return
+
+        if stat_count is not None:
+            player["active_mode_stat_count"] = int(stat_count)
+        player["active_mode_points"] = points
+        player["active_mode_stat_1"] = stat_1
+        player["active_mode_stat_2"] = stat_2
+
     def _safe_int(self, value, default=0):
         try:
             return int(value)

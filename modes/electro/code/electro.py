@@ -13,9 +13,9 @@ import random
     "summary_title_complete": "ELECTRO DEFEATED",
     "summary_title_failed": "ELECTRO ESCAPED",
     "stat_1_label": "BEST SPARK",
-    "stat_1_var": "electro_best_spark",
+    "stat_1_var": "active_mode_stat_1",
     "stat_2_label": "SUPER JACKPOT",
-    "stat_2_var": "electro_super_jackpot",
+    "stat_2_var": "active_mode_stat_2",
     "points_var": "active_mode_points",
     "state_var": "electro_state",
 """
@@ -32,6 +32,7 @@ class Electro(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
 
         self.delay = DelayManager(self.machine)
         self.case_files = self.get_case_file_bonuses()
@@ -301,7 +302,7 @@ class Electro(CaseFileMixin, Mode):
 
         if jackpot_value > self.electro_best_spark:
             self.electro_best_spark = jackpot_value
-        self.machine.game.player["electro_best_spark"] = self.electro_best_spark
+        self.machine.game.player["active_mode_stat_1"] = self.electro_best_spark
 
         self._show_message("ELECTRO JACKPOT", self._shot_label(shot), value=jackpot_value, event="show_mode_jackpot")
         self.machine.events.post("electro_jackpot_collected")
@@ -360,7 +361,7 @@ class Electro(CaseFileMixin, Mode):
         self.electro_super_jackpot = self.machine.game.player["electro_super_jackpot_value"]
         self.active_mode_points += self.electro_super_jackpot
 
-        self.machine.game.player["electro_super_jackpot"] = self.electro_super_jackpot
+        self.machine.game.player["active_mode_stat_2"] = self.electro_super_jackpot
         self.machine.game.player["active_mode_points"] = self.active_mode_points
         self.machine.game.player["score"] += self.electro_super_jackpot
 

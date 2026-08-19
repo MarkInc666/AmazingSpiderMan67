@@ -44,6 +44,7 @@ class Centaur(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
 
         self.delay = DelayManager(self.machine)
         self.case_files = self.get_case_file_bonuses()
@@ -428,9 +429,9 @@ class Centaur(CaseFileMixin, Mode):
     def _sync_vars(self):
         player = self.machine.game.player
         player["active_mode_points"] = self.mode_points
-        player["centaur_drops_down"] = len(self.drops_down)
+        player["active_mode_stat_1"] = len(self.drops_down)
         player["centaur_jackpot_value"] = self._current_jackpot_value()
-        player["centaur_best_jackpot"] = self.best_jackpot
+        player["active_mode_stat_2"] = self.best_jackpot
         player["centaur_jackpots"] = self.jackpots_collected
         player["centaur_secret_jackpots"] = self.secret_jackpots_collected
         player["centaur_consolation_awarded"] = self.consolation_awarded

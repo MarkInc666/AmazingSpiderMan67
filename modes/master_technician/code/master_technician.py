@@ -29,6 +29,7 @@ class MasterTechnician(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
 
         self.case_files = self.get_case_file_bonuses()
         self.mode_done = False
@@ -54,8 +55,8 @@ class MasterTechnician(CaseFileMixin, Mode):
 
         player = self.machine.game.player
         player[f"{self.MODE_KEY}_state"] = 1
-        player["active_mode_hits"] = 0
-        player["active_mode_major_hits"] = 0
+        player["active_mode_stat_1"] = 0
+        player["active_mode_stat_2"] = 0
 
         self.publish_case_file_bonus_events(self.MODE_KEY)
         self.publish_active_case_file_helpers([
@@ -167,7 +168,7 @@ class MasterTechnician(CaseFileMixin, Mode):
 
     def _short_circuit(self):
         self.short_circuits += 1
-        self.machine.game.player["active_mode_major_hits"] = self.short_circuits
+        self.machine.game.player["active_mode_stat_2"] = self.short_circuits
 
         if self.has_case_file("safety_net") and not self.safety_net_used:
             self.safety_net_used = True
@@ -207,7 +208,7 @@ class MasterTechnician(CaseFileMixin, Mode):
             return
         value = self.spinner_value()
         self.spinner_hits += 1
-        self.machine.game.player["active_mode_hits"] = self.spinner_hits
+        self.machine.game.player["active_mode_stat_1"] = self.spinner_hits
         self._award_score(value)
         self.machine.events.post(
             "master_technician_spinner_scored",

@@ -49,6 +49,8 @@ class Vulcan(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
+        self.machine.game.player["active_mode_stat_2"] = self.machine.game.player["vulcan_bonus"]
 
         self.delay = DelayManager(self.machine)
         self.case_files = self.get_case_file_bonuses()
@@ -295,10 +297,9 @@ class Vulcan(CaseFileMixin, Mode):
 
     def _sync_vars(self):
         self._set("active_mode_points", self.mode_points)
-        self._set("active_mode_hits", self.jackpots_collected)
-        self._set("active_mode_major_hits", self.add_a_balls_awarded)
         self._set("vulcan_jackpot_value", self.jackpot_value)
-        self._set("vulcan_jackpots_collected", self.jackpots_collected)
+        self._set("active_mode_stat_1", self.jackpots_collected)
+        self._set("active_mode_stat_2", self._get("vulcan_bonus", 0))
         self._set("vulcan_right_drops_down", len(self.right_drops_down))
         self._set("vulcan_left_drops_down", len(self.left_drops_down))
         self._set("vulcan_add_a_ball_qualified", int(self.add_a_ball_qualified))

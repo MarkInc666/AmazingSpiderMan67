@@ -23,6 +23,7 @@ class DrZapp(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=1)
         self.delay = DelayManager(self.machine)
         self.case_files = self.get_case_file_bonuses()
 

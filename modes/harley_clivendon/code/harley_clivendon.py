@@ -25,6 +25,8 @@ class HarleyClivendon(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
+        self.machine.game.player["active_mode_stat_2"] = self.machine.game.player["harley_bonus"]
         self.case_files = self.get_case_file_bonuses()
         self.mode_done = False
         self.held_saucer = None
@@ -59,7 +61,7 @@ class HarleyClivendon(CaseFileMixin, Mode):
         p = self.machine.game.player
         p["harley_clivendon_state"] = 1
         p["active_mode_points"] = 0
-        p["harley_vuk_jackpots"] = 0
+        p["active_mode_stat_1"] = 0
         p["harley_biggest_jackpot"] = 0
         p["harley_areas_lit"] = 0
         p["harley_jackpot_value"] = 0
@@ -114,6 +116,7 @@ class HarleyClivendon(CaseFileMixin, Mode):
         value = len(self.lit_areas) * self.jackpot_per_area
         self._score(value)
         self.machine.game.player["harley_bonus"] += value
+        self.machine.game.player["active_mode_stat_2"] = self.machine.game.player["harley_bonus"]
         self.jackpots += 1
         self.biggest_jackpot = max(self.biggest_jackpot, value)
         self.machine.events.post(
@@ -177,7 +180,7 @@ class HarleyClivendon(CaseFileMixin, Mode):
         value = len(self.lit_areas) * self.jackpot_per_area
         p["harley_areas_lit"] = len(self.lit_areas)
         p["harley_jackpot_value"] = value
-        p["harley_vuk_jackpots"] = self.jackpots
+        p["active_mode_stat_1"] = self.jackpots
         p["harley_biggest_jackpot"] = self.biggest_jackpot
         title = f"AREAS {len(self.lit_areas)}/8"
         status = "LOCK A BALL"

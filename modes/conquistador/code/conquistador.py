@@ -21,6 +21,7 @@ class Conquistador(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
         self.delay = DelayManager(self.machine)
         self.case_files = self.get_case_file_bonuses()
 
@@ -219,7 +220,7 @@ class Conquistador(CaseFileMixin, Mode):
             return
         self.speed_bonus += bonus
         self._score(bonus)
-        self.machine.events.post("conquistador_speed_bonus", value=bonus, seconds=self.seconds_left)
+        self.machine.events.post("active_mode_stat_2", value=bonus, seconds=self.seconds_left)
         self._show_message("SPEED BONUS", f"{self.seconds_left} SECONDS LEFT", value=bonus)
 
     def _fail_main_phase(self, **kwargs):
@@ -274,8 +275,8 @@ class Conquistador(CaseFileMixin, Mode):
     def _sync_vars(self):
         player = self.machine.game.player
         player["active_mode_points"] = self.mode_points
-        player["conquistador_jackpot_points"] = self.jackpot_points
-        player["conquistador_speed_bonus"] = self.speed_bonus
+        player["active_mode_stat_1"] = self.jackpot_points
+        player["active_mode_stat_2"] = self.speed_bonus
         player["conquistador_jackpot_value"] = self.jackpot_value
         player["conquistador_target_hits"] = self.target_hits
         player["conquistador_spins"] = self.spins

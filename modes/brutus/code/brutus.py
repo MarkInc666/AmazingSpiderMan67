@@ -30,6 +30,7 @@ class Brutus(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
 
         self.case_files = self.get_case_file_bonuses()
         self.required_jackpots = (
@@ -312,10 +313,8 @@ class Brutus(CaseFileMixin, Mode):
     def _sync_vars(self):
         player = self.machine.game.player
         player["active_mode_points"] = self.mode_points
-        player["active_mode_hits"] = self.lures
-        player["active_mode_major_hits"] = self.jackpots
-        player["brutus_jackpots"] = self.jackpots
-        player["brutus_biggest_jackpot"] = self.biggest_jackpot
+        player["active_mode_stat_1"] = self.jackpots
+        player["active_mode_stat_2"] = self.biggest_jackpot
         player["brutus_blocked_saucers"] = self.blocked_saucers
         player["brutus_seconds_left"] = self.seconds_left
 

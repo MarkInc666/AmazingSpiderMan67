@@ -27,6 +27,7 @@ class DrMagneto(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
 
         self.delay = DelayManager(self.machine)
         self.case_files = self.get_case_file_bonuses()
@@ -344,8 +345,8 @@ class DrMagneto(CaseFileMixin, Mode):
     def _sync_vars(self):
         player = self.machine.game.player
         player["active_mode_points"] = self.mode_points
-        player["active_mode_hits"] = self.rollovers_collected + self.pops_completed
-        player["active_mode_major_hits"] = self.super_jackpots
+        player["active_mode_stat_1"] = self.rollovers_collected + self.pops_completed
+        player["active_mode_stat_2"] = self.super_jackpots
 
     def _update_status(self):
         if self.mode_done or self.phase != "circuits":

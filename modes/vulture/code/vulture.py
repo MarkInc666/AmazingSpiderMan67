@@ -12,6 +12,8 @@ class Vulture(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
+        self.machine.game.player["active_mode_stat_2"] = self.machine.game.player["vulture_bonus"]
 
         self.started = False
         self.upper_balls = 0
@@ -179,7 +181,7 @@ class Vulture(CaseFileMixin, Mode):
         self.vulture_banked_bonus += total
 
         player = self.machine.game.player
-        player["vulture_spins"] = self.vulture_spins
+        player["active_mode_stat_1"] = self.vulture_spins
         player["vulture_banked_bonus"] = self.vulture_banked_bonus
         player["vulture_last_spinner_score"] = total
 
@@ -193,6 +195,7 @@ class Vulture(CaseFileMixin, Mode):
     def bank_bonus(self, value):
         player = self.machine.game.player
         player["vulture_bonus"] = player["vulture_bonus"] + value
+        player["active_mode_stat_2"] = player["vulture_bonus"]
 
     def idle_decay(self, **kwargs):
         changed = False

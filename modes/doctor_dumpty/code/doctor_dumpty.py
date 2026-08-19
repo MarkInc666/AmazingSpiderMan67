@@ -50,6 +50,7 @@ class DoctorDumpty(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
 
         self.delay = DelayManager(self.machine)
         self.case_files = self.get_case_file_bonuses()
@@ -283,10 +284,8 @@ class DoctorDumpty(CaseFileMixin, Mode):
             return
 
         player["active_mode_points"] = self.mode_points
-        player["active_mode_hits"] = self.jackpots_collected
-        player["active_mode_major_hits"] = len(self.shot_sequence)
-        player["doctor_dumpty_jackpots"] = self.jackpots_collected
-        player["doctor_dumpty_missed_shots"] = self.missed_shots
+        player["active_mode_stat_1"] = self.jackpots_collected
+        player["active_mode_stat_2"] = self.missed_shots
         player["doctor_dumpty_best_jackpot"] = self.best_jackpot
         player["doctor_dumpty_current_shot"] = self.current_shot or ""
         player["doctor_dumpty_current_shot_number"] = self.current_index + 1 if self.current_index >= 0 else 0

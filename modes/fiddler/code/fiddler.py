@@ -42,6 +42,7 @@ class Fiddler(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.reset_active_mode_summary(stat_count=3)
         self.case_files = self.get_case_file_bonuses()
         self.mode_done = False
         self.mode_points = 0
@@ -66,9 +67,8 @@ class Fiddler(CaseFileMixin, Mode):
         player = self.machine.game.player
         player["fiddler_state"] = 1
         player["active_mode_points"] = 0
-        player["active_mode_hits"] = 0
-        player["active_mode_major_hits"] = 0
-        player["fiddler_round"] = 0
+        player["active_mode_stat_2"] = 0
+        player["active_mode_stat_1"] = 0
         player["fiddler_note"] = 0
         player["fiddler_notes_completed"] = 0
         player["fiddler_notes_required"] = 0
@@ -289,9 +289,8 @@ class Fiddler(CaseFileMixin, Mode):
     def _sync_vars(self):
         player = self.machine.game.player
         player["active_mode_points"] = self.mode_points
-        player["active_mode_hits"] = sum(len(self.ROUND_VALUES[r]) for r in range(1, self.round_number)) + self.expected_index
-        player["active_mode_major_hits"] = max(0, self.round_number - 1)
-        player["fiddler_round"] = self.round_number
+        player["active_mode_stat_2"] = sum(len(self.ROUND_VALUES[r]) for r in range(1, self.round_number)) + self.expected_index
+        player["active_mode_stat_1"] = self.round_number
         player["fiddler_note"] = min(self.expected_index + 1, len(self.sequence)) if self.sequence else 0
         player["fiddler_notes_completed"] = self.expected_index
         player["fiddler_notes_required"] = len(self.sequence)
