@@ -9,7 +9,7 @@ class DailyBugleMystery(Mode):
       1. Complete A+B.
       2. Rooftop gate opens.
       3. Shoot VUK to the rooftop.
-      4. Rooftop spinner takes photos. Three photos lights Mystery.
+      4. One rooftop-spinner photo lights Mystery.
       5. Left exit can hold the ball on the pop-up post for JJJ instructions.
       6. Right exit only plays the same instruction/callout, without the post.
       7. VUK collects Mystery when ready.
@@ -22,7 +22,7 @@ class DailyBugleMystery(Mode):
     AB_DAILY_POINTS = 10000
     AB_DAILY_POINTS_UNLIT = 2000
 
-    PHOTOS_NEEDED = 3
+    PHOTOS_NEEDED = 1
     LEFT_EXIT_HOLD_MS = 8000
 
     # Daily Bugle should not take over the rooftop gate while one of
@@ -58,6 +58,7 @@ class DailyBugleMystery(Mode):
         "mystery_award_million_points",
         "mystery_award_villain_start_ready",
         "mystery_award_start_next_villain",
+        "mystery_award_random_case_file",
     ]
 
     AWARD_MESSAGES = {
@@ -70,6 +71,7 @@ class DailyBugleMystery(Mode):
         "mystery_award_million_points": ("MYSTERY AWARD", "1,000,000"),
         "mystery_award_villain_start_ready": ("VILLAIN READY", "SAUCERS MAXED"),
         "mystery_award_start_next_villain": ("START NEXT VILLAIN", "SEARCHING..."),
+        "mystery_award_random_case_file": ("CASE FILE", "SEARCHING..."),
         "mystery_award_light_extra_ball": ("EXTRA BALL", "LIT"),
         "mystery_award_light_right_extra_ball": ("EXTRA BALL", "RIGHT BANK LIT"),
         "mystery_award_award_extra_ball": ("EXTRA BALL", "AWARDED"),
@@ -111,6 +113,7 @@ class DailyBugleMystery(Mode):
     def _add_handlers(self):
         self.add_mode_event_handler("daily_bugle_a_hit", self.a_rollover_hit)
         self.add_mode_event_handler("daily_bugle_b_hit", self.b_rollover_hit)
+        self.add_mode_event_handler("daily_bugle_sling_swap_request", self.sling_swap_ab)
         self.add_mode_event_handler("daily_bugle_rooftop_spinner_hit", self.rooftop_spinner_hit)
         self.add_mode_event_handler("daily_bugle_rooftop_left_exit", self.rooftop_left_exit)
         self.add_mode_event_handler("daily_bugle_rooftop_right_exit", self.rooftop_right_exit)
@@ -179,6 +182,30 @@ class DailyBugleMystery(Mode):
             player["score"] += self.AB_DAILY_POINTS_UNLIT
             self.machine.events.post("ab_rolledover_sfx")
             self.update_player_vars()
+
+    def sling_swap_ab(self, **kwargs):
+        """Swap a single completed A/B qualification light on a sling hit."""
+        if not self.daily_bugle_enabled or self.mystery_ab_ready or self.mystery_ready:
+            return
+
+        # Slings only move a single lit/completed letter. Neither or both lit
+        # states are intentionally unchanged.
+        if self.a_hit == self.b_hit:
+            return
+
+        self.a_hit, self.b_hit = self.b_hit, self.a_hit
+        self.update_player_vars(post_widget_update=False)
+        self._restore_lights_and_widgets()
+        lit_letter = "A" if self.a_hit else "B"
+        self.machine.events.post(
+            "daily_bugle_ab_sling_swapped",
+            lit_letter=lit_letter,
+        )
+        self.machine.events.post(
+            "daily_bugle_ab_sling_swapped_to_a"
+            if lit_letter == "A"
+            else "daily_bugle_ab_sling_swapped_to_b"
+        )
 
     def check_ab_complete(self):
         if not self.a_hit or not self.b_hit:
@@ -471,6 +498,13 @@ class DailyBugleMystery(Mode):
                     self._post_mystery_award(award_event)
                     return
 
+            elif award_event == "mystery_award_random_case_file":
+                # Case Files owns the actual random selection and collection.
+                # Only offer this while Case Files are available and a file remains.
+                if self._can_random_case_file_award():
+                    self._post_mystery_award(award_event)
+                    return
+
             else:
                 self._post_mystery_award(award_event)
                 return
@@ -480,7 +514,10 @@ class DailyBugleMystery(Mode):
 
     def _post_mystery_award(self, award_event):
         """Show a readable mystery award message, then post the award event."""
-        self._post_mystery_award_message(award_event)
+        # The Case Files mode chooses the actual missing file, so let it post
+        # the message containing that specific Case File name.
+        if award_event != "mystery_award_random_case_file":
+            self._post_mystery_award_message(award_event)
         self.machine.events.post(award_event)
 
     def _post_mystery_award_message(self, award_event):
@@ -489,6 +526,30 @@ class DailyBugleMystery(Mode):
             "show_mode_message",
             message_mode_title=title,
             message_mode_subtitle=subtitle,
+        )
+
+
+    def _has_uncollected_case_file(self):
+        player = self.machine.game.player if self.machine.game else None
+        if not player:
+            return False
+
+        case_files = (
+            "more_jackpots",
+            "more_time",
+            "bigger_jackpots",
+            "safety_net",
+            "shot_assist",
+        )
+        return any(
+            self._safe_int(player[f"case_file_{key}_collected"], 0) == 0
+            for key in case_files
+        )
+
+    def _can_random_case_file_award(self):
+        return (
+            not self._progression_award_blocked()
+            and self._has_uncollected_case_file()
         )
 
     def _progression_award_blocked(self):

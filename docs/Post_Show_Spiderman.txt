@@ -206,13 +206,15 @@ B = BUGLE
 
 Completing A+B opens the gate to the upper playfield.
 
+While exactly one of A or B is completed/lit, either slingshot swaps that completed letter to the other side. Slings have no A/B effect when neither letter or both letters are completed. Each successful sling swap briefly shows the Spider-Man pointing visual in the 640x480 center panel; the directional frame alternates with the newly lit side and uses a quick Godot horizontal flip-in/flip-out animation. No explanatory text is shown.
+
 ## Flow
 
 ```text
 Complete A+B
 → open upper gate
 → reach upper playfield
-→ spin upper spinner to take photos
+→ spin upper spinner once to take a photo and light Mystery
 → shoot Daily Bugle VUK to collect reward / mystery / start mini-wizard sequence
 ```
 
@@ -396,6 +398,7 @@ The lower spinner controls the lit Case File target on the right 5-bank.
 ```text
 lower spinner = cycles selected Case File
 right 5-bank = collects the selected Case File
+after all five Case Files are collected, a full right-bank completion = Villain Intel +1 to the lowest-qualified saucer
 ```
 
 ## Rule
@@ -421,6 +424,7 @@ Player-facing idea:
 ```text
 SPIN LOWER SPINNER TO SELECT CASE FILE
 HIT LIT RIGHT DROP TO COLLECT UPGRADE
+AFTER ALL CASE FILES: COMPLETE RIGHT BANK FOR VILLAIN INTEL
 ```
 
 ---

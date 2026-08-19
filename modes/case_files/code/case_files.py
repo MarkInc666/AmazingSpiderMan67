@@ -1,3 +1,5 @@
+import random
+
 from mpf.core.mode import Mode
 
 
@@ -46,6 +48,7 @@ class CaseFiles(Mode):
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
         self.case_files_logic_active = True
+        self._suppress_intel_bank = False
         self._add_handlers()
         self._restore_state()
         self._publish_widget_vars()
@@ -73,6 +76,8 @@ class CaseFiles(Mode):
         self.add_mode_event_handler("case_files_restore_state", self._restore_state)
         self.add_mode_event_handler("case_files_reset_all", self._reset_all_case_files)
         self.add_mode_event_handler("case_files_clear_lights", self._clear_lights)
+        self.add_mode_event_handler("mystery_award_random_case_file", self._mystery_award_random_case_file)
+        self.add_mode_event_handler("drop_target_bank_dt_bank_right_down", self._right_bank_completed)
 
     def _spinner_hit(self, **kwargs):
         if not self.case_files_logic_active or self._case_files_locked():
@@ -120,8 +125,20 @@ class CaseFiles(Mode):
 
         self.machine.events.post("case_file_selected_stop")
 
+        count_before = self._safe_int(self.machine.game.player["case_files_collected_count"], 0)
         self._set_case_file_collected(key, 1)
         self._refresh_counts()
+        if count_before < len(self.CASE_FILES) and self.machine.game.player["case_files_collected_count"] >= len(self.CASE_FILES):
+            # If this same drop also finishes the physical bank, keep that bank
+            # completion as the fifth Case File reward only. Villain Intel starts
+            # with the next completed right bank.
+            self._suppress_intel_bank = True
+            self.delay.remove("case_files_clear_intel_suppression")
+            self.delay.add(
+                name="case_files_clear_intel_suppression",
+                ms=250,
+                callback=self._clear_intel_suppression,
+            )
         self._publish_widget_vars()
 
         self.machine.events.post(
@@ -139,6 +156,72 @@ class CaseFiles(Mode):
             self._advance_selected_case_file()
 
         self._restore_state()
+
+    def _mystery_award_random_case_file(self, **kwargs):
+        """Award one random Case File that the player has not collected."""
+        if not self.case_files_logic_active or self._case_files_locked():
+            self.machine.events.post("mystery_case_file_award_rejected", reason="case_files_locked")
+            return
+
+        missing = [key for key in self.CASE_FILES if self._case_file_value(key) == 0]
+        if not missing:
+            self.machine.events.post("mystery_case_file_award_rejected", reason="all_collected")
+            return
+
+        key = random.choice(missing)
+        self.machine.events.post("case_file_selected_stop")
+        self._set_case_file_collected(key, 1)
+        self._refresh_counts()
+        self._publish_widget_vars()
+
+        label = self.CASE_FILE_LABELS[key]
+        self.machine.events.post(
+            "show_mode_message",
+            message_mode_title="CASE FILE",
+            message_mode_subtitle=label.upper(),
+        )
+        self.machine.events.post(
+            "case_file_collected",
+            case_file=key,
+            label=label,
+            benefit=self.CASE_FILE_BENEFITS[key],
+            count=self.machine.game.player["case_files_collected_count"],
+            source="daily_bugle_mystery",
+        )
+        self.machine.events.post(f"case_file_collected_{key}")
+        self.machine.events.post(
+            "mystery_case_file_awarded",
+            case_file=key,
+            label=label,
+            count=self.machine.game.player["case_files_collected_count"],
+        )
+
+        if self.machine.game.player["case_files_collected_count"] >= len(self.CASE_FILES):
+            self._complete_case_file_set()
+        else:
+            self._advance_selected_case_file()
+
+        self._restore_state()
+
+    def _right_bank_completed(self, **kwargs):
+        """After all Case Files are collected, a full right bank earns Villain Intel."""
+        if not self.case_files_logic_active or self._case_files_locked():
+            return
+
+        self._refresh_counts()
+        if self.machine.game.player["case_files_collected_count"] < len(self.CASE_FILES):
+            return
+
+        if self._suppress_intel_bank:
+            self._suppress_intel_bank = False
+            self.delay.remove("case_files_clear_intel_suppression")
+            self.machine.events.post("villain_intel_bank_suppressed_for_case_file_completion")
+            return
+
+        self.machine.events.post("villain_intel_bank_completed")
+
+    def _clear_intel_suppression(self):
+        self._suppress_intel_bank = False
 
     def _complete_case_file_set(self):
         self.machine.game.player = self.machine.game.player

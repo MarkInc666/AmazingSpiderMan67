@@ -17,6 +17,7 @@ class QualifySystem(Mode):
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
         self.qualify_logic_active = True
+        self._intel_tie_cursor = 0
         self._add_handlers()
         self._restore_state()
 
@@ -38,6 +39,7 @@ class QualifySystem(Mode):
         self.add_mode_event_handler("drop_target_bank_dt_bank_left_down", self._bank_completed)
         self.add_mode_event_handler("saucer_star_upgrade_hit", self._star_hit)
         self.add_mode_event_handler("mystery_award_villain_start_ready", self._mystery_award_villain_start_ready)
+        self.add_mode_event_handler("villain_intel_bank_completed", self._villain_intel_bank_completed)
 
         self.add_mode_event_handler("ball_started", self._ball_started_restore)
         self.add_mode_event_handler("villain_started_set", self._reset_after_villain)
@@ -95,6 +97,53 @@ class QualifySystem(Mode):
             self.machine.events.post(f"{saucer}_state_{self.MAX_SAUCER_STATE}")
 
         self.machine.events.post("mystery_villain_start_ready_qualified")
+        self._restore_state()
+
+    def _villain_intel_bank_completed(self, **kwargs):
+        """Advance the lowest-qualified saucer after Case Files are complete."""
+        if not self.qualify_logic_active:
+            return
+
+        if self._qualify_blocked():
+            self.machine.events.post("villain_intel_ignored_progression_blocked")
+            return
+
+        player = self.machine.game.player
+        states = {saucer: self._safe_int(player[f"{saucer}_state"], 0) for saucer in self.SAUCERS}
+        eligible = [saucer for saucer in self.SAUCERS if states[saucer] < self.MAX_SAUCER_STATE]
+        if not eligible:
+            self.machine.events.post("villain_intel_saucers_all_maxed")
+            return
+
+        lowest_state = min(states[saucer] for saucer in eligible)
+        tied = {saucer for saucer in eligible if states[saucer] == lowest_state}
+
+        chosen = None
+        for offset in range(len(self.SAUCERS)):
+            index = (self._intel_tie_cursor + offset) % len(self.SAUCERS)
+            candidate = self.SAUCERS[index]
+            if candidate in tied:
+                chosen = candidate
+                self._intel_tie_cursor = (index + 1) % len(self.SAUCERS)
+                break
+
+        if chosen is None:
+            return
+
+        self._advance_saucer_state(saucer=chosen, source="villain_intel")
+        new_state = self._safe_int(player[f"{chosen}_state"], 0)
+        saucer_number = self.SAUCERS.index(chosen) + 1
+        self.machine.events.post(
+            "villain_intel_awarded",
+            saucer=chosen,
+            saucer_number=saucer_number,
+            state=new_state,
+        )
+        self.machine.events.post(
+            "show_mode_message",
+            message_mode_title="VILLAIN INTEL +1",
+            message_mode_subtitle=f"SAUCER {saucer_number}: {new_state} VILLAIN{'S' if new_state != 1 else ''}",
+        )
         self._restore_state()
 
     def _drop_hit(self, saucer=None, **kwargs):

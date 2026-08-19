@@ -29,7 +29,15 @@ event_player:
   s_inlane_m_l_active:
     - daily_bugle_b_hit
 
-  # Rooftop spinner collects Daily Bugle photos. 3 photos lights Mystery.
+  # Either sling swaps a single completed/lit A or B qualification letter.
+  # No effect when neither or both letters are lit.
+  s_sling_l_active:
+    - daily_bugle_sling_swap_request
+
+  s_sling_r_active:
+    - daily_bugle_sling_swap_request
+
+  # Rooftop spinner collects Daily Bugle photos. 1 photo lights Mystery.
   s_trispinner_opto_active:
     - daily_bugle_rooftop_spinner_hit
 
@@ -54,6 +62,27 @@ event_player:
 
 
 widget_player:
+  # Brief center-panel visual when a sling moves the active A/B letter.
+  # The two supplied source JPGs remain unchanged; each widget crops its
+  # 800x600 picture area and scales it to the 640x480 center video panel.
+  daily_bugle_ab_sling_swapped_to_a:
+    daily_bugle_ab_swap_b:
+      action: remove
+      key: daily_bugle_ab_swap_b
+    daily_bugle_ab_swap_a:
+      action: play
+      key: daily_bugle_ab_swap_a
+      expire: 1s
+
+  daily_bugle_ab_sling_swapped_to_b:
+    daily_bugle_ab_swap_a:
+      action: remove
+      key: daily_bugle_ab_swap_a
+    daily_bugle_ab_swap_b:
+      action: play
+      key: daily_bugle_ab_swap_b
+      expire: 1s
+
   daily_bugle_widget_remove:
     daily_bugle_ready:
       action: remove
