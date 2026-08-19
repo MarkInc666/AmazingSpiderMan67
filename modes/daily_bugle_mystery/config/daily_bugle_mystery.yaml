@@ -63,8 +63,8 @@ event_player:
 
 widget_player:
   # Brief center-panel visual when a sling moves the active A/B letter.
-  # The two supplied source JPGs remain unchanged; each widget crops its
-  # 800x600 picture area and scales it to the 640x480 center video panel.
+  # The supplied 800x600 JPGs are used directly and scaled to the
+  # 640x480 center video panel.
   daily_bugle_ab_sling_swapped_to_a:
     daily_bugle_ab_swap_b:
       action: remove
@@ -149,6 +149,18 @@ random_event_player:
 
 
 sound_player:
+  # Play the impostor line only when a sling actually swaps the active A/B
+  # letter and the matching pointing visual is shown.
+  daily_bugle_ab_sling_swapped_to_a:
+    that_man_is_an_impostor:
+      action: play
+      bus: voice
+
+  daily_bugle_ab_sling_swapped_to_b:
+    that_man_is_an_impostor:
+      action: play
+      bus: voice
+
   s_vuk_switch_active:
     bump_sfx_2:
       action: play
