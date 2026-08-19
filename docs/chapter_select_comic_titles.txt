@@ -52,3 +52,18 @@ Chapter 3 artwork
 - Chapter Select conditionally displays the cover in the left, center, or right
   carousel position and suppresses the generic labels for Chapters 1–3.
 - AVAILABLE, LOCKED, and COLLECTED remain separate live labels off the cover.
+
+Chapter 4 artwork
+
+- `images/chapter_4_cover.png` is the text-free 630x725 Crime Wave cover.
+- The original tall C composition is preserved without horizontal stretching.
+  A navy, red, and cream comic-book frame uses wide side borders and narrow
+  top/bottom borders to fill the Chapter Select cover ratio.
+- The citywide crime-map composition includes the Chapter 4 villains and a
+  glowing Spider-Man swinging across the skyline.
+- `images/chapter_4_title_overlay.png` supplies the separate transparent
+  horizontal CRIME WAVE title across the bottom of the cover.
+- Chapter Select conditionally displays the cover in the left, center, or right
+  carousel position with its title overlay and suppresses the generic labels
+  for Chapters 1–4.
+- AVAILABLE, LOCKED, and COLLECTED remain separate live labels off the cover.

@@ -295,3 +295,33 @@ sound_player:
     bongo_rock:
       bus: music
       loops: -1      
+
+  play_music_song_59:
+    ride_into_the_sun:
+      bus: music
+      loops: -1      
+
+  play_music_song_60:
+    foot_patter:
+      bus: music
+      loops: -1      
+
+  play_music_song_61:
+    wild_weekend_intro:
+      bus: music
+      loops: -1      
+
+  play_music_song_62:
+    sheba:
+      bus: music
+      loops: -1      
+
+  play_music_song_63:
+    man_of_mystery:
+      bus: music
+      loops: -1      
+
+  play_music_song_64:
+    bombora:
+      bus: music
+      loops: -1      
