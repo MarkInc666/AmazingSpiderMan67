@@ -278,7 +278,7 @@ class Vulcan(CaseFileMixin, Mode):
         if self.post_hold_active:
             self.machine.events.post("timer_timer_up_post_hold_complete")
             self.post_hold_active = False
-        self._set(f"{self.MODE_KEY}_state", 2)
+        self.machine.game.player[f"{self.MODE_KEY}_state"] = 2
         self.machine.events.post(f"{self.MODE_KEY}_mode_complete")
 
     def _first_available_right_drop(self):
@@ -288,24 +288,18 @@ class Vulcan(CaseFileMixin, Mode):
         return None
 
     def _bank_vulcan_bonus(self, value):
-        self._add("vulcan_bonus", value)
+        self.machine.game.player["vulcan_bonus"] += value
 
     def _score(self, points):
-        self._add("score", points)
+        self.machine.game.player["score"] += points
         self.mode_points += points
         self._sync_vars()
 
     def _sync_vars(self):
-        self._set("active_mode_points", self.mode_points)
-        self._set("vulcan_jackpot_value", self.jackpot_value)
-        self._set("active_mode_stat_1", self.jackpots_collected)
-        self._set("active_mode_stat_2", self._get("vulcan_bonus", 0))
-        self._set("vulcan_right_drops_down", len(self.right_drops_down))
-        self._set("vulcan_left_drops_down", len(self.left_drops_down))
-        self._set("vulcan_add_a_ball_qualified", int(self.add_a_ball_qualified))
-        self._set("vulcan_add_a_balls", self.add_a_balls_awarded)
-        self._set("vulcan_balls_in_play", self._balls_in_play())
-        self._set("vulcan_post_hold_active", int(self.post_hold_active))
+        player = self.machine.game.player
+        player["active_mode_points"] = self.mode_points
+        player["active_mode_stat_1"] = self.jackpots_collected
+        player["active_mode_stat_2"] = player["vulcan_bonus"]
 
     def _show_mode_message(self, title, subtitle="", value="", seconds="", reminder=False):
         self.machine.events.post(
@@ -333,13 +327,3 @@ class Vulcan(CaseFileMixin, Mode):
 
     def _done(self):
         return self.mode_done
-
-    def _set(self, name, value):
-        player = self.machine.game.player if self.machine.game else None
-        if player:
-            player[name] = value
-
-    def _add(self, name, value):
-        player = self.machine.game.player if self.machine.game else None
-        if player:
-            player[name] += value
