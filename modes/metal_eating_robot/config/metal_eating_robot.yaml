@@ -48,17 +48,17 @@ event_player:
   s_web_target_mid_active: metal_zone_center
   s_leaf_next_to_1_active: metal_zone_saucers
   s_saucer_1_active:
-    - metal_zone_saucers:
-        saucer_number: 1
-    - metal_saucer_1_eject
+    metal_zone_saucers:
+      saucer_number: 1
+    metal_saucer_1_eject: {}
   s_saucer_2_active:
-    - metal_zone_saucers:
-        saucer_number: 2
-    - metal_saucer_2_eject
+    metal_zone_saucers:
+      saucer_number: 2
+    metal_saucer_2_eject: {}
   s_saucer_3_active:
-    - metal_zone_saucers:
-        saucer_number: 3
-    - metal_saucer_3_eject
+    metal_zone_saucers:
+      saucer_number: 3
+    metal_saucer_3_eject: {}
   drop_target_bank_dt_bank_left_down: drop_target_bank_dt_bank_left_reset
   drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset
   mode_metal_eating_robot_started:
