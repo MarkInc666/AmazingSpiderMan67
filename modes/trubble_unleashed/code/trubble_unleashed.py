@@ -193,7 +193,7 @@ class TrubbleUnleashed(Mode):
         self.ignored_auto_drop_targets.clear()
 
         self.machine.events.post("trubble_unleashed_staged_prepare", stage=self.staged_successes + 1)
-        self.machine.events.post("reset_5bank")
+        self.machine.events.post("drop_target_bank_dt_bank_right_reset")
         self.machine.events.post("enable_up_post_event")
         self._show_message("TRUBBLE TRAP", "READY THE STAGED DROP")
 
@@ -338,11 +338,7 @@ class TrubbleUnleashed(Mode):
     def _vuk_hit(self, **kwargs):
         if self._inactive():
             return
-        self.delay.add(
-            name="trubble_vuk_eject",
-            ms=1500,
-            callback=lambda: self.machine.events.post("up_kick"),
-        )
+        self.machine.events.post("request_vuk_eject", delay_ms=1_500)
         if self.add_a_ball_qualified and self._balls_in_play() < self.MAX_BALLS:
             self.add_a_ball_qualified = False
             self.add_a_balls_awarded += 1
@@ -424,7 +420,6 @@ class TrubbleUnleashed(Mode):
             "trubble_post_hold_release",
             "trubble_staged_timer_tick",
             "trubble_reset_right_bank_after_stage",
-            "trubble_vuk_eject",
         ):
             self.delay.remove(name)
 

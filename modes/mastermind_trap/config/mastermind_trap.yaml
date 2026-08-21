@@ -82,7 +82,7 @@ event_player:
   s_saucer_3_active:
     delayed_kickout_saucer_3:
   s_vuk_switch_active:
-    up_kick|1.5s:
+    request_vuk_eject:
 
   multiball_mastermind_trap_multiball_ended: mastermind_trap_multiball_ended
   mastermind_trap_mode_complete: stop_mode_mastermind_trap

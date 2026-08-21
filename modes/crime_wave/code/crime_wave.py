@@ -59,7 +59,6 @@ class CrimeWave(Mode):
     def mode_stop(self, **kwargs):
         for area in self.AREAS:
             self.delay.remove(f"crime_wave_area_{area}")
-        self.delay.remove("crime_wave_vuk_eject")
         for saucer in tuple(self.held_saucers):
             self._release_saucer(saucer)
         self.machine.events.post("rooftop_diverter_close")
@@ -134,12 +133,7 @@ class CrimeWave(Mode):
         Daily Bugle Mystery is disabled during this wizard, so Crime Wave must
         own VUK switch response and kick the ball out itself.
         """
-        self.delay.remove("crime_wave_vuk_eject")
-        self.delay.add(
-            name="crime_wave_vuk_eject",
-            ms=1500,
-            callback=lambda: self.machine.events.post("up_kick"),
-        )
+        self.machine.events.post("request_vuk_eject", delay_ms=1_500)
         self._upper_exit_hit(**kwargs)
 
     def _upper_exit_hit(self, **kwargs):

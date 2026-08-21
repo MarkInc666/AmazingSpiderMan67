@@ -287,7 +287,7 @@ class ProfessorPretorius(CaseFileMixin, Mode):
         if self.mode_done:
             return
         if self.phase != "super":
-            self.machine.events.post("up_kick")
+            self.machine.events.post("request_vuk_eject")
             return
 
         self.super_jackpots = 1

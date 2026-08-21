@@ -229,7 +229,7 @@ class Plotter(CaseFileMixin, Mode):
 
     def _vuk_hit(self, **kwargs):
         if self.mode_done or not self.vuk_lit or self.vuk_collected:
-            self.machine.events.post("up_kick")
+            self.machine.events.post("request_vuk_eject")
             return
 
         self.vuk_collected = True
@@ -244,7 +244,7 @@ class Plotter(CaseFileMixin, Mode):
                 message_mode_value=self.SUPER_VALUE,
             )
             self._update_status()
-            self.machine.events.post("up_kick")
+            self.machine.events.post("request_vuk_eject")
             return
 
         self.machine.events.post(

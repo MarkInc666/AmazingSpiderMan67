@@ -44,7 +44,7 @@ event_player:
   # Daily Bugle Mystery is disabled while the mode owns the saucers. The VUK
   # remains a normal eject, but the rooftop gate stays closed throughout.
   s_vuk_switch_active:
-    - up_kick|1.5s
+    - request_vuk_eject
 
   spider_men_startup_complete:
     - disable_daily_bugle_mystery

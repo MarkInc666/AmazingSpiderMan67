@@ -20,6 +20,16 @@ variable_player:
       action: set
       int: 0
 
+  multiball_sinister_surge_add_a_ball_started:
+    multiball_autoplunge_active:
+      action: set
+      int: 1
+
+  multiball_sinister_surge_add_a_ball_ended:
+    multiball_autoplunge_active:
+      action: set
+      int: 0
+
 
 multiballs:
   sinister_surge_multiball:
@@ -68,7 +78,7 @@ event_player:
   sinister_surge_setup:
     - sinister_surge_reset_banks
     - clear_saucers
-    - sinister_surge_kick_vuk|1.5s
+    - request_vuk_eject
     - sinister_surge_disable_daily_bugle_mystery
     - sinister_surge_mode_intro
 
@@ -82,8 +92,6 @@ event_player:
   sinister_surge_open_upper_gate: rooftop_diverter_open
 
   sinister_surge_close_upper_gate: rooftop_diverter_close
-
-  sinister_surge_kick_vuk: up_kick
 
   sinister_surge_disable_daily_bugle_mystery: disable_daily_bugle_mystery
 

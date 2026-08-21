@@ -204,7 +204,7 @@ class DrVonSchlick(CaseFileMixin, Mode):
         if self.mode_done:
             return
         if self.phase != "super":
-            self.machine.events.post("up_kick")
+            self.machine.events.post("request_vuk_eject")
             return
         self.phase = "flood"
         self.delay.remove("dr_von_schlick_move_shot")
@@ -247,7 +247,7 @@ class DrVonSchlick(CaseFileMixin, Mode):
         self.mode_done = True
         self.machine.game.player[f"{self.MODE_KEY}_state"] = 2
         self.machine.events.post("show_mode_message", message_mode_title="REACTOR ESCAPED", message_mode_subtitle="SUPER LOST")
-        self.machine.events.post("up_kick")
+        self.machine.events.post("request_vuk_eject")
         self.machine.events.post("dr_von_schlick_mode_complete")
 
     def _score(self, points):

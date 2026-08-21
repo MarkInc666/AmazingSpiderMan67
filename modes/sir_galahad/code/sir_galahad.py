@@ -139,7 +139,6 @@ class SirGalahad(CaseFileMixin, Mode):
         for name in (
             "sir_galahad_window_tick",
             "sir_galahad_collapse_next",
-            "sir_galahad_vuk_eject",
             "sir_galahad_complete_hold",
         ):
             self.delay.remove(name)
@@ -305,11 +304,7 @@ class SirGalahad(CaseFileMixin, Mode):
         if final_vuk_round:
             self.machine.events.post("villain_summary_hold_vuk_until_done")
         else:
-            self.delay.reset(
-                name="sir_galahad_vuk_eject",
-                ms=self.VUK_EJECT_MS,
-                callback=lambda: self.machine.events.post("up_kick"),
-            )
+            self.machine.events.post("request_vuk_eject", delay_ms=self.VUK_EJECT_MS)
 
         if self.phase != "window":
             return

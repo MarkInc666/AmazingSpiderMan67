@@ -104,7 +104,6 @@ class CharlesCameo(CaseFileMixin, Mode):
 
     def mode_stop(self, **kwargs):
         self._stop_timer()
-        self.delay.remove("charles_cameo_vuk_eject")
         self.delay.remove("charles_cameo_next_stage")
         self.delay.remove("charles_cameo_restart_pair")
         self.machine.events.post("charles_cameo_clear_all")
@@ -270,11 +269,7 @@ class CharlesCameo(CaseFileMixin, Mode):
     def _vuk_hit(self, **kwargs):
         if self.mode_done:
             return
-        self.delay.reset(
-            name="charles_cameo_vuk_eject",
-            ms=self.VUK_EJECT_MS,
-            callback=lambda: self.machine.events.post("up_kick"),
-        )
+        self.machine.events.post("request_vuk_eject", delay_ms=self.VUK_EJECT_MS)
 
     def _complete_mode(self):
         if self.mode_done:

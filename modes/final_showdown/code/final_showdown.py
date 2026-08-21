@@ -333,11 +333,7 @@ class FinalShowdown(Mode):
         )
 
     def _daily_bugle_hit(self, **kwargs):
-        self.delay.add(
-            name="final_showdown_vuk_delay_eject",
-            ms=2000,
-            callback=self.fire_VUK
-        )
+        self.machine.events.post("request_vuk_eject", delay_ms=2_000)
 
         if self.victory_laps:
             self._collect_super_jackpot()
@@ -348,11 +344,6 @@ class FinalShowdown(Mode):
             return
 
         self._collect_jackpot()
-
-
-    def fire_VUK(self):
-        self.machine.events.post("up_kick")
-
 
     def _collect_jackpot(self):
         jackpot_value = self._update_jackpot_value()

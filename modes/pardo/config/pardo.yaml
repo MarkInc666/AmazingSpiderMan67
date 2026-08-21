@@ -53,7 +53,7 @@ event_player:
   # Daily Bugle VUK is disabled during the mode, so Pardo
   # must always eject the ball itself.
   s_vuk_switch_active:
-    - up_kick|1.5s
+    - request_vuk_eject
 
   # Saucers are not Pardo choices, but they must still kick out.
   s_saucer_1_active: clear_saucers

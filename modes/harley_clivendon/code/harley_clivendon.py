@@ -172,12 +172,15 @@ class HarleyClivendon(CaseFileMixin, Mode):
         self._sync()
 
     def _eject_saucer(self, saucer, delay_ms=0):
-        event = self.SAUCER_EJECT_EVENTS.get(saucer)
-        if event:
-            self.delay.reset(name=f"harley_eject_saucer_{saucer}", ms=delay_ms, callback=self.machine.events.post, event=event)
+        if saucer in self.SAUCER_EJECT_EVENTS:
+            self.machine.events.post(
+                "request_saucer_eject",
+                saucer_number=saucer,
+                delay_ms=delay_ms,
+            )
 
     def _eject_vuk(self, delay_ms=750):
-        self.delay.reset(name="harley_vuk_eject", ms=delay_ms, callback=self.machine.events.post, event="up_kick")
+        self.machine.events.post("request_vuk_eject", delay_ms=delay_ms)
 
     def _vuk_ready(self):
         return self.held_saucer is not None and len(self.lit_areas) >= self.MIN_JACKPOT_AREAS
@@ -244,10 +247,15 @@ class HarleyClivendon(CaseFileMixin, Mode):
         self.clear_active_case_file_helpers()
         if self.held_saucer is not None:
             self._eject_saucer(self.held_saucer)
-        self._eject_vuk(0)
         self.waiting_for_upper_entry = False
         self._close_rooftop_gate()
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("enable_daily_bugle_mystery")
         self.machine.events.post("daily_bugle_restore_state")
+        vuk_switch = self.machine.switches.get("s_vuk_switch")
+        if vuk_switch and self.machine.switch_controller.is_active(vuk_switch):
+            if self.mode_done:
+                self.machine.events.post("villain_summary_hold_vuk_until_done")
+            else:
+                self.machine.events.post("request_vuk_eject")
         super().mode_stop(**kwargs)

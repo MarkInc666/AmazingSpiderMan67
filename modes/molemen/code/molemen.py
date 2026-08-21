@@ -92,8 +92,6 @@ class Molemen(CaseFileMixin, Mode):
         self.grace_active = False
         self.delay.remove("molemen_one_ball_grace")
         self.delay.remove("molemen_ball_added_message")
-        for saucer in self.EJECT_EVENTS:
-            self.delay.remove(f"molemen_eject_{saucer}")
         self.machine.events.post("molemen_clear_all_lights")
         self.machine.events.post("clear_saucers_delayed")
         self.machine.events.post("rooftop_diverter_close")
@@ -284,15 +282,12 @@ class Molemen(CaseFileMixin, Mode):
         )
 
     def _eject_saucer(self, saucer):
-        event = self.EJECT_EVENTS.get(saucer)
-        if not event:
+        if saucer not in self.EJECT_EVENTS:
             return
-        self.delay.remove(f"molemen_eject_{saucer}")
-        self.delay.add(
-            name=f"molemen_eject_{saucer}",
-            ms=self.SAUCER_EJECT_MS,
-            callback=self.machine.events.post,
-            event=event,
+        self.machine.events.post(
+            "request_saucer_eject",
+            saucer_number=saucer,
+            delay_ms=self.SAUCER_EJECT_MS,
         )
 
     def _balls_in_play(self):

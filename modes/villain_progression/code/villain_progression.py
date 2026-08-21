@@ -42,7 +42,7 @@ class VillainProgression(Mode):
     GATE_POWER_RECOVERY_MS = 500
     GATE_OPEN_VERIFY_MS = 1000
     GATE_OPEN_MAX_ATTEMPTS = 2
-    VUK_EJECT_DEFAULT_DELAY_MS = 1_000
+    VUK_EJECT_DEFAULT_DELAY_MS = 1_500
     VUK_EJECT_VERIFY_MS = 900
     GATE_POWER_SWITCHES = (
         "s_left_flipper",
@@ -682,6 +682,7 @@ class VillainProgression(Mode):
             player[f"{mini_key}_state"] = self.NOT_PLAYED
 
     SAUCER_EJECT_DELAY_MS = 750
+    SAUCER_CLEAR_STAGGER_MS = 300
     SAUCER_EJECTS = {
         "1": ("s_saucer_1", "kickout_saucer_1"),
         "2": ("s_saucer_2", "kickout_saucer_2"),
@@ -716,7 +717,8 @@ class VillainProgression(Mode):
         """
         self.info_log("CLEAR SAUCERS NOW called. kwargs=%s", kwargs)
 
-        for saucer_number, (switch_name, kickout_event) in self.SAUCER_EJECTS.items():
+        occupied_saucers = []
+        for saucer_number, (switch_name, _kickout_event) in self.SAUCER_EJECTS.items():
             if saucer_number in self.summary_held_saucers:
                 self.machine.events.post(
                     "villain_summary_saucer_eject_suppressed",
@@ -727,29 +729,53 @@ class VillainProgression(Mode):
             self.info_log("Saucer check %s active=%s", switch_name, active)
 
             if active:
-                self.info_log("Posting %s from clear_saucers", kickout_event)
-                self.machine.events.post(kickout_event)
+                occupied_saucers.append(saucer_number)
+
+        # Do not fire multiple high-current saucer coils on the same tick.
+        # The first occupied saucer releases now; any others follow 300 ms apart.
+        for saucer_number in self.SAUCER_EJECTS:
+            self.delay.remove(f"clear_saucer_{saucer_number}_stagger")
+            self.delay.remove(f"request_saucer_eject_{saucer_number}")
+
+        for index, saucer_number in enumerate(occupied_saucers):
+            self.delay.reset(
+                name=f"clear_saucer_{saucer_number}_stagger",
+                ms=index * self.SAUCER_CLEAR_STAGGER_MS,
+                callback=self._kickout_saucer_if_occupied,
+                saucer_number=saucer_number,
+            )
 
     def _delayed_kickout_saucer(self, saucer_number, **kwargs):
         """Public delayed kickout event for modes that hold/release saucers."""
+        self._request_saucer_eject(saucer_number=saucer_number)
+
+    def _request_saucer_eject(self, saucer_number=None, delay_ms=None, **kwargs):
+        """Schedule one occupancy-checked saucer release from this persistent mode."""
         saucer_number = str(saucer_number)
         if saucer_number not in self.SAUCER_EJECTS:
             self.warning_log("Unknown delayed saucer kickout requested: %s", saucer_number)
             return
 
-        delay_name = f"delayed_kickout_saucer_{saucer_number}"
-        self.delay.remove(delay_name)
+        delay_name = f"request_saucer_eject_{saucer_number}"
+        self.delay.remove(f"clear_saucer_{saucer_number}_stagger")
         if saucer_number in self.summary_held_saucers:
+            self.delay.remove(delay_name)
             self.machine.events.post(
                 "villain_summary_saucer_eject_suppressed",
                 saucer=saucer_number,
             )
             return
-        self.delay.add(
+
+        try:
+            release_delay = int(delay_ms)
+        except (TypeError, ValueError):
+            release_delay = self.SAUCER_EJECT_DELAY_MS
+
+        self.delay.reset(
             name=delay_name,
-            ms=self.SAUCER_EJECT_DELAY_MS,
+            ms=max(0, release_delay),
             callback=self._kickout_saucer_if_occupied,
-            saucer_number=str(saucer_number),
+            saucer_number=saucer_number,
         )
 
     def _kickout_saucer_if_occupied(self, saucer_number, **kwargs):
@@ -784,6 +810,8 @@ class VillainProgression(Mode):
                 continue
             self.summary_held_saucers.add(number)
             self.delay.remove(f"delayed_kickout_saucer_{number}")
+            self.delay.remove(f"request_saucer_eject_{number}")
+            self.delay.remove(f"clear_saucer_{number}_stagger")
             self.machine.events.post(
                 "villain_summary_saucer_hold_started",
                 saucer=number,
@@ -865,6 +893,7 @@ class VillainProgression(Mode):
         self.add_mode_event_handler("delayed_kickout_saucer_1", self._delayed_kickout_saucer, saucer_number="1")
         self.add_mode_event_handler("delayed_kickout_saucer_2", self._delayed_kickout_saucer, saucer_number="2")
         self.add_mode_event_handler("delayed_kickout_saucer_3", self._delayed_kickout_saucer, saucer_number="3")
+        self.add_mode_event_handler("request_saucer_eject", self._request_saucer_eject)
         self.add_mode_event_handler("clear_saucers_now", self._clear_saucers_now)
         self.add_mode_event_handler("s_left_flipper_inactive", self._try_pending_mini_wizard_gate_open)
         self.add_mode_event_handler("s_right_flipper_inactive", self._try_pending_mini_wizard_gate_open)
@@ -880,8 +909,15 @@ class VillainProgression(Mode):
         self.delay.reset(
             name="shared_vuk_eject_request",
             ms=max(0, release_delay),
-            callback=lambda: self.machine.events.post("up_kick"),
+            callback=self._eject_vuk_if_occupied,
         )
+
+    def _eject_vuk_if_occupied(self):
+        vuk_switch = self.machine.switches.get("s_vuk_switch")
+        if vuk_switch and self.machine.switch_controller.is_active(vuk_switch):
+            self.machine.events.post("up_kick")
+        else:
+            self.machine.events.post("vuk_eject_skipped_empty")
 
     def _cancel_vuk_eject_request(self, **kwargs):
         self.delay.remove("shared_vuk_eject_request")

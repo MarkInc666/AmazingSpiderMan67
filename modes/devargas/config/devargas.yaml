@@ -71,10 +71,10 @@ event_player:
   s_trispinner_opto_active: devargas_upper_spinner_hit
 
   # Neutral devices remain available but do not award DeVargas gold.
-  s_saucer_1_active: delayed_kickout_saucer_1|750ms
-  s_saucer_2_active: delayed_kickout_saucer_2|750ms
-  s_saucer_3_active: delayed_kickout_saucer_3|750ms
-  s_vuk_switch_active: up_kick|1.5s
+  s_saucer_1_active: delayed_kickout_saucer_1
+  s_saucer_2_active: delayed_kickout_saucer_2
+  s_saucer_3_active: delayed_kickout_saucer_3
+  s_vuk_switch_active: request_vuk_eject
 
   # Banks are not reset when selected. They reset normally when completed;
   # the rear rubber keeps a lit bank collectible when its targets are down.

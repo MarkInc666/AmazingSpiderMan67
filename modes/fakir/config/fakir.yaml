@@ -77,7 +77,7 @@ event_player:
   # Daily Bugle VUK is disabled during the mode, so Fakir
   # must always eject the ball itself.
   s_vuk_switch_active:
-    - up_kick|1.5s
+    - request_vuk_eject
 
   drop_target_bank_dt_bank_left_down:
     - drop_target_bank_dt_bank_left_reset

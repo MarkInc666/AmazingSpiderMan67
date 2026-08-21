@@ -119,7 +119,7 @@ class Diana(CaseFileMixin, Mode):
         self.add_mode_event_handler("diana_right_rubber_hit", self._right_rubber_hit)
 
         self.machine.events.post("clear_saucers")
-        self.machine.events.post("reset_5bank")
+        self.machine.events.post("drop_target_bank_dt_bank_right_reset")
         self.machine.events.post("rooftop_diverter_open")
         self.machine.events.post("diana_mode_started")
         self.machine.events.post("diana_rearm_phase_started")
@@ -305,7 +305,7 @@ class Diana(CaseFileMixin, Mode):
         self._sync_vars()
 
     def _stage_right_bank_for_hunt(self, hunt_number):
-        self.machine.events.post("reset_5bank")
+        self.machine.events.post("drop_target_bank_dt_bank_right_reset")
         self.delay.add(
             name="diana_stage_right_bank",
             ms=self.STAGE_BANK_DELAY_MS,

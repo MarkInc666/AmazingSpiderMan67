@@ -280,29 +280,16 @@ class DrManta(CaseFileMixin, Mode):
         self.machine.events.post("dr_manta_disable_second_ball_save")
 
     def _eject_saucer(self, saucer, delay_ms=0):
-        event = self.SAUCER_EJECT_EVENTS.get(saucer)
-        if not event:
+        if saucer not in self.SAUCER_EJECT_EVENTS:
             return
-        if delay_ms <= 0:
-            self.machine.events.post(event)
-            return
-        self.delay.reset(
-            name=f"dr_manta_eject_saucer_{saucer}",
-            ms=delay_ms,
-            callback=self.machine.events.post,
-            event=event,
+        self.machine.events.post(
+            "request_saucer_eject",
+            saucer_number=saucer,
+            delay_ms=delay_ms,
         )
 
     def _eject_vuk(self, delay_ms=0):
-        if delay_ms <= 0:
-            self.machine.events.post("up_kick")
-            return
-        self.delay.reset(
-            name="dr_manta_eject_vuk",
-            ms=delay_ms,
-            callback=self.machine.events.post,
-            event="up_kick",
-        )
+        self.machine.events.post("request_vuk_eject", delay_ms=delay_ms)
 
     def _score(self, points):
         points = int(points)
@@ -349,9 +336,6 @@ class DrManta(CaseFileMixin, Mode):
 
     def mode_stop(self, **kwargs):
         self.delay.remove("dr_manta_attack_tick")
-        self.delay.remove("dr_manta_eject_vuk")
-        for saucer in (1, 2, 3):
-            self.delay.remove(f"dr_manta_eject_saucer_{saucer}")
 
         self.machine.events.post("dr_manta_disable_second_ball_save")
         self.machine.events.post("dr_manta_clear_all")
@@ -366,10 +350,10 @@ class DrManta(CaseFileMixin, Mode):
         # Cleanup for abnormal stops only. Normal completion clears held_saucer
         # before this method runs, so the continuing ball is not double-ejected.
         if self.held_saucer is not None:
-            self.machine.events.post(self.SAUCER_EJECT_EVENTS[self.held_saucer])
+            self._eject_saucer(self.held_saucer, 0)
             self.held_saucer = None
 
         if self.phase in ("shoot_vuk", "lock_saucer") and not self.mode_done:
-            self.machine.events.post("up_kick")
+            self.machine.events.post("request_vuk_eject")
 
         super().mode_stop(**kwargs)

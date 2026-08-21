@@ -172,7 +172,6 @@ event_player:
   ball_starting:
     - cmd_flippers_enable
     - cmd_autofire_coils_enable
-    - cmd_drop_targets_reset
   ball_ending:
     - cmd_flippers_disable
     - cmd_autofire_coils_disable
@@ -239,8 +238,8 @@ event_player:
     - drop_target_bank_dt_bank_right_reset
 
   reset_drops:
-    - reset_3bank
-    - reset_5bank|300ms
+    - drop_target_bank_dt_bank_left_reset
+    - drop_target_bank_dt_bank_right_reset|300ms
 
   villain_full_cleanup:
     - case_files_clear_lights
@@ -250,7 +249,7 @@ event_player:
     - reset_drops
 
   reset_5bank_delayed:
-    - reset_5bank|500ms
+    - drop_target_bank_dt_bank_right_reset|500ms
 
 
 
@@ -361,26 +360,6 @@ sound_player:
     player_4_shoot_again:
       action: play
       bus: voice
-
- 
-sequences:
-  reset_left_bank_after_hit:
-    events:
-      - drop_target_bank_dt_bank_left_down
-      - xxxs_web_target_left_active
-    reset_on_complete: true
-    disable_on_complete: false
-    events_when_complete: drop_target_bank_dt_bank_left_reset
-  
-  reset_right_bank_after_hit:
-    events:
-      - drop_target_bank_dt_bank_right_down
-      - xxxs_web_target_mid_active
-    reset_on_complete: true
-    disable_on_complete: false
-    events_when_complete: drop_target_bank_dt_bank_right_reset
-
-
 
 ball_saves:
 

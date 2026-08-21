@@ -272,7 +272,7 @@ class VonRantenraven(CaseFileMixin, Mode):
             self.machine.events.post("cmd_upper_flippers_enable")
 
     def _vuk_hit(self, **kwargs):
-        self.delay.add(name="von_rantenraven_vuk_kick", ms=1500, callback=lambda: self.machine.events.post("up_kick"))
+        self.machine.events.post("request_vuk_eject")
 
     def _light_targets_for_attempt(self):
         for target_name, target_config in self.TARGETS.items():

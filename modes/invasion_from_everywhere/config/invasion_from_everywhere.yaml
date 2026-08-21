@@ -77,7 +77,7 @@ event_player:
     delayed_kickout_saucer_3:
   s_vuk_switch_active:
     - invasion_from_everywhere_shot_hit
-    - up_kick|1.5s
+    - request_vuk_eject
 
   multiball_invasion_from_everywhere_multiball_ended: invasion_from_everywhere_complete_request
 
@@ -104,4 +104,3 @@ light_player:
 
   mode_invasion_from_everywhere_stopping:
     gi: E0E0E0
-

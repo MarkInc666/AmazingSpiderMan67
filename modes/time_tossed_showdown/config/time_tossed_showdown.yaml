@@ -77,7 +77,7 @@ event_player:
     delayed_kickout_saucer_3:
   s_vuk_switch_active:
     - time_tossed_showdown_shot_hit
-    - up_kick|1.5s
+    - request_vuk_eject
 
   multiball_time_tossed_showdown_multiball_ended: time_tossed_showdown_complete_request
 
@@ -104,4 +104,3 @@ light_player:
 
   mode_time_tossed_showdown_stopping:
     gi: E0E0E0
-

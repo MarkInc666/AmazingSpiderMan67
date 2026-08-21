@@ -1439,7 +1439,6 @@ class VillainBookends(Mode):
             self.machine.game.player["villain_mode_in_summary"] = False
             self.machine.events.post("reset_villain_locate")
             self.machine.events.post("reset_daily_bugle_state")
-            self.machine.events.post("reset_drops")
             self.machine.events.post("villain_bookend_summary_hide")
             self.machine.events.post("villain_bookend_summary_done", villain=villain)
             if self.summary_vuk_release_pending:

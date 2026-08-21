@@ -24,6 +24,16 @@ multiballs:
       - dr_manta_mode_completed_summary
       - ball_ended
 
+variable_player:
+  multiball_dr_manta_relay_started:
+    multiball_autoplunge_active:
+      action: set
+      int: 1
+  multiball_dr_manta_relay_ended:
+    multiball_autoplunge_active:
+      action: set
+      int: 0
+
 ball_saves:
   dr_manta_second_ball_save:
     active_time: (current_player.dr_manta_second_ball_save_seconds)

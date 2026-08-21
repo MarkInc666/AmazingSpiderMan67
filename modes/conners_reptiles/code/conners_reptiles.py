@@ -134,7 +134,7 @@ class ConnersReptiles(CaseFileMixin, Mode):
         self.machine.events.post("conners_reptiles_clear_all_lights")
         self.machine.events.post("clear_saucers_delayed")
         if not self.super_collected:
-            self.machine.events.post("up_kick")
+            self.machine.events.post("request_vuk_eject")
         self.machine.events.post("enable_daily_bugle_mystery")
         self.machine.events.post("daily_bugle_restore_state")
         self.machine.events.post("rooftop_diverter_close")
@@ -252,7 +252,7 @@ class ConnersReptiles(CaseFileMixin, Mode):
         if self._in_summary_or_done():
             return
         if not self.super_lit:
-            self.machine.events.post("up_kick")
+            self.machine.events.post("request_vuk_eject")
             return
 
         self.super_lit = False

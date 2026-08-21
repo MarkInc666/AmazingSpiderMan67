@@ -104,8 +104,6 @@ class Fakir(CaseFileMixin, Mode):
         self.delay.remove("fakir_ruby_timer")
         self.delay.remove("fakir_restore_base_gi")
         self.delay.remove("fakir_safety_net_after_kickout")
-        for saucer in self.SAUCER_KICKOUTS:
-            self.delay.remove(f"fakir_extra_saucer_{saucer}_eject")
         self._release_locked_saucer()
         self.machine.events.post("fakir_all_lights_off")
         self.machine.events.post("fakir_stop_all_gi")
@@ -307,15 +305,12 @@ class Fakir(CaseFileMixin, Mode):
                 )
 
     def _eject_extra_saucer(self, saucer, **kwargs):
-        kickout = self.SAUCER_KICKOUTS.get(saucer)
-        if not kickout:
+        if saucer not in self.SAUCER_KICKOUTS:
             return
-        delay_name = f"fakir_extra_saucer_{saucer}_eject"
-        self.delay.remove(delay_name)
-        self.delay.add(
-            name=delay_name,
-            ms=self.EXTRA_SAUCER_EJECT_MS,
-            callback=lambda: self.machine.events.post(kickout),
+        self.machine.events.post(
+            "request_saucer_eject",
+            saucer_number=saucer,
+            delay_ms=self.EXTRA_SAUCER_EJECT_MS,
         )
 
     def _release_locked_saucer(self):

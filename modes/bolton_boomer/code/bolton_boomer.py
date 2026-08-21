@@ -234,12 +234,15 @@ class BoltonBoomer(CaseFileMixin, Mode):
         return min(self.SUPER_CAP, self.base_super_value + (self.super_jackpots * self.SUPER_STEP))
 
     def _eject_saucer(self, saucer, delay_ms=0):
-        event = self.SAUCER_EJECT_EVENTS.get(saucer)
-        if event:
-            self.delay.reset(name=f"bolton_boomer_eject_saucer_{saucer}", ms=delay_ms, callback=self.machine.events.post, event=event)
+        if saucer in self.SAUCER_EJECT_EVENTS:
+            self.machine.events.post(
+                "request_saucer_eject",
+                saucer_number=saucer,
+                delay_ms=delay_ms,
+            )
 
     def _eject_vuk(self, delay_ms=0):
-        self.delay.reset(name="bolton_boomer_eject_vuk", ms=delay_ms, callback=self.machine.events.post, event="up_kick")
+        self.machine.events.post("request_vuk_eject", delay_ms=delay_ms)
 
     def _cancel_super_delays(self):
         for name in ("bolton_boomer_super_tick", "bolton_boomer_shot_assist"):
@@ -300,7 +303,12 @@ class BoltonBoomer(CaseFileMixin, Mode):
         self.clear_active_case_file_helpers()
         if self.held_saucer is not None:
             self._eject_saucer(self.held_saucer, 0)
-        self._eject_vuk(0)
         self.machine.events.post("enable_daily_bugle_mystery")
         self.machine.events.post("daily_bugle_restore_state")
+        vuk_switch = self.machine.switches.get("s_vuk_switch")
+        if vuk_switch and self.machine.switch_controller.is_active(vuk_switch):
+            if self.mode_done:
+                self.machine.events.post("villain_summary_hold_vuk_until_done")
+            else:
+                self.machine.events.post("request_vuk_eject")
         super().mode_stop(**kwargs)

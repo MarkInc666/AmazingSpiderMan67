@@ -68,7 +68,7 @@ event_player:
   # Daily Bugle Mystery is disabled during Igor. The VUK remains a route to the
   # upper playfield and must eject normally.
   s_vuk_switch_active:
-    - up_kick|1.5s
+    - request_vuk_eject
 
   # Saucers are neutral and always kick out.
   s_saucer_1_active: clear_saucers

@@ -46,13 +46,13 @@ event_player:
 
   s_saucer_1_active:
     - spider_slayer_shot_saucer
-    - delayed_kickout_saucer_1|750ms
+    - delayed_kickout_saucer_1
   s_saucer_2_active:
     - spider_slayer_shot_saucer
-    - delayed_kickout_saucer_2|750ms
+    - delayed_kickout_saucer_2
   s_saucer_3_active:
     - spider_slayer_shot_saucer
-    - delayed_kickout_saucer_3|750ms
+    - delayed_kickout_saucer_3
   s_vuk_switch_active: spider_slayer_vuk_hit
 
   drop_target_bank_dt_bank_left_down: drop_target_bank_dt_bank_left_reset

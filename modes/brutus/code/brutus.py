@@ -101,7 +101,6 @@ class Brutus(CaseFileMixin, Mode):
         for delay_name in (
             "brutus_shot_assist",
             "brutus_round_transition",
-            "brutus_vuk_eject",
             "brutus_finish",
         ):
             self.delay.remove(delay_name)
@@ -278,11 +277,7 @@ class Brutus(CaseFileMixin, Mode):
     def _vuk_hit(self, **kwargs):
         if self.mode_done:
             return
-        self.delay.reset(
-            name="brutus_vuk_eject",
-            ms=self.VUK_EJECT_MS,
-            callback=lambda: self.machine.events.post("up_kick"),
-        )
+        self.machine.events.post("request_vuk_eject", delay_ms=self.VUK_EJECT_MS)
 
     def _ball_ending(self, **kwargs):
         if self.mode_done:

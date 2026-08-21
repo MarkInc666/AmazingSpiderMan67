@@ -41,7 +41,7 @@ event_player:
   # Daily Bugle Mystery is disabled during this rooftop-control mode. The VUK
   # remains a route to the upper playfield and ejects normally.
   s_vuk_switch_active:
-    - up_kick|1.5s
+    - request_vuk_eject
 
   s_saucer_1_active: clear_saucers
   s_saucer_2_active: clear_saucers

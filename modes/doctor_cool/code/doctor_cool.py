@@ -85,7 +85,6 @@ class DoctorCool(Mode, CaseFileMixin):
         self.delay.remove("doctor_cool_saucer_cycle")
         self.delay.remove("doctor_cool_star_freeze")
         self.delay.remove("doctor_cool_resume_chase")
-        self.delay.remove("doctor_cool_vuk_eject")
         self.clear_active_case_file_helpers()
         self.machine.events.post("doctor_cool_clear_lights")
         super().mode_stop(**kwargs)
@@ -321,16 +320,7 @@ class DoctorCool(Mode, CaseFileMixin):
         cannot reopen the gate. Doctor Cool does not score or collect anything
         at the VUK; it only provides a safe delayed feed back to the playfield.
         """
-        self.delay.reset(
-            name="doctor_cool_vuk_eject",
-            ms=1_000,
-            callback=self._eject_vuk,
-        )
-
-    def _eject_vuk(self):
-        if self.mode_done:
-            return
-        self.machine.events.post("up_kick")
+        self.machine.events.post("request_vuk_eject")
 
     def _complete_mode(self, **kwargs):
         if not self.mode_done:

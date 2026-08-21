@@ -20,6 +20,16 @@ variable_player:
       action: set
       int: 0
 
+  multiball_final_showdown_add_a_ball_started:
+    multiball_autoplunge_active:
+      action: set
+      int: 1
+
+  multiball_final_showdown_add_a_ball_ended:
+    multiball_autoplunge_active:
+      action: set
+      int: 0
+
 
 multiballs:
   final_showdown_multiball:

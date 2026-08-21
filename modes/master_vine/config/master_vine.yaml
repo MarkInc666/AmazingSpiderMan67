@@ -57,7 +57,7 @@ event_player:
   s_inlane_m_r_active: master_vine_middle_a_hit
   s_inlane_m_l_active: master_vine_middle_b_hit
   s_star_rollover_active: master_vine_star_hit
-  s_vuk_switch_active: up_kick|1.5s
+  s_vuk_switch_active: request_vuk_eject
 
   master_vine_reset_banks:
     - drop_target_bank_dt_bank_left_reset

@@ -250,7 +250,7 @@ class Centaur(CaseFileMixin, Mode):
 
     def _stage_right_bank(self):
         self.machine.events.post("centaur_stage_right_bank_started")
-        self.machine.events.post("reset_5bank")
+        self.machine.events.post("drop_target_bank_dt_bank_right_reset")
         self.delay.add(
             name="centaur_stage_right_bank",
             ms=500,

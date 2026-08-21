@@ -149,9 +149,6 @@ class Parafino(CaseFileMixin, Mode):
         self.mode_exiting = True
         self.delay.remove("parafino_start_safety_net")
         self.delay.remove("parafino_ball_added_message")
-        for saucer in self.SAUCER_EJECT_EVENTS:
-            self.delay.remove(f"parafino_eject_{saucer}")
-
         self.machine.events.post("parafino_clear_all_lights")
         self.machine.events.post("clear_saucers_delayed")
         self.machine.events.post("rooftop_diverter_close")
@@ -445,17 +442,12 @@ class Parafino(CaseFileMixin, Mode):
         self.machine.events.post("parafino_case_file_safety_net_started")
 
     def _eject_saucer(self, saucer):
-        event = self.SAUCER_EJECT_EVENTS.get(saucer)
-
-        if not event:
+        if saucer not in self.SAUCER_EJECT_EVENTS:
             return
-
-        self.delay.remove(f"parafino_eject_{saucer}")
-        self.delay.add(
-            name=f"parafino_eject_{saucer}",
-            ms=self.SAUCER_EJECT_DELAY_MS,
-            callback=self.machine.events.post,
-            event=event,
+        self.machine.events.post(
+            "request_saucer_eject",
+            saucer_number=saucer,
+            delay_ms=self.SAUCER_EJECT_DELAY_MS,
         )
 
     def _multiball_ended(self, **kwargs):
@@ -463,9 +455,6 @@ class Parafino(CaseFileMixin, Mode):
         self.mode_exiting = True
         self.delay.remove("parafino_start_safety_net")
         self.delay.remove("parafino_ball_added_message")
-        for saucer in self.SAUCER_EJECT_EVENTS:
-            self.delay.remove(f"parafino_eject_{saucer}")
-
         self.machine.events.post("clear_saucers_delayed")
         self.machine.game.player["parafino_state"] = 2
         self.machine.events.post("parafino_mode_complete")
