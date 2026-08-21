@@ -65,7 +65,7 @@ widget_player:
   # Brief center-panel visual when a sling moves the active A/B letter.
   # The supplied 800x600 JPGs are used directly and scaled to the
   # 640x480 center video panel.
-  daily_bugle_ab_sling_swapped_to_a:
+  daily_bugle_ab_sling_swapped_to_a{current_player.villain_mode_running != 1}:
     daily_bugle_ab_swap_b:
       action: remove
       key: daily_bugle_ab_swap_b
@@ -74,7 +74,7 @@ widget_player:
       key: daily_bugle_ab_swap_a
       expire: 2.45s
 
-  daily_bugle_ab_sling_swapped_to_b:
+  daily_bugle_ab_sling_swapped_to_b{current_player.villain_mode_running != 1}:
     daily_bugle_ab_swap_a:
       action: remove
       key: daily_bugle_ab_swap_a
@@ -147,13 +147,13 @@ random_event_player:
     - daily_bugle_rooftop_right_exit_1
     - daily_bugle_rooftop_right_exit_2
 
-  daily_bugle_ab_sling_swapped_to_a:
+  daily_bugle_ab_sling_swapped_to_a{current_player.villain_mode_running != 1}:
     - daily_bugle_ab_callout_1
     - daily_bugle_ab_callout_2
     - daily_bugle_ab_callout_3
     - daily_bugle_ab_callout_4
 
-  daily_bugle_ab_sling_swapped_to_b:
+  daily_bugle_ab_sling_swapped_to_b{current_player.villain_mode_running != 1}:
     - daily_bugle_ab_callout_1
     - daily_bugle_ab_callout_2
     - daily_bugle_ab_callout_3
