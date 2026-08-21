@@ -1,111 +1,81 @@
-# GREEN GOBLIN — CHAOS MULTIBALL
+GREEN GOBLIN - CHAOS MULTIBALL
+===============================
 
-## Start
+START
+-----
+- The intro-held saucer ball is released before Ball 2 is served.
+- Green Goblin starts as a two-ball multiball.
+- Chaos Value starts at 500K, never resets, has a 100K minimum, and has no maximum.
+- The mode ends when multiball returns to one ball in play.
 
-- Start two-ball Chaos Multiball.
-- Chaos Bonus starts at 250K.
-- Chaos Bonus persists throughout the mode and is clamped between 50K and 1M.
-- Goblin Bonus starts at 0 and has no cap.
-- The mode ends when multiball returns to one ball.
+SIX LOGICAL SHOTS
+-----------------
+1. Left web
+2. Center/right web
+3. Left pop
+4. Right pop
+5. Left drop-target bank
+6. Right drop-target bank
 
-## Unsafe Chaos
+Any individual drop-target hit counts as the logical shot for that bank. A completed
+bank still resets normally.
 
-- GI is red.
-- All six shot areas are solid:
-  - Star
-  - Pops
-  - Left web
-  - Right web
-  - Left drops
-  - Right drops
-- Saucers remain lit.
-- Each unsafe shot scores 20K immediately.
-- Each unsafe hit subtracts 150K from Chaos Bonus, never below 50K.
-- Chaos Bonus is displayed persistently in the mode-status area.
+UNSAFE PHASE
+------------
+- General illumination is red.
+- All six shots are solid.
+- The three saucers are lit to collect Chaos Value and begin Safe play.
+- Each bad shot scores 20K immediately and removes 100K from Chaos Value.
+- Chaos Value cannot fall below 100K.
 
-## Saucer Bank
+SAUCER COLLECT AND HOLD
+-----------------------
+- When Green Goblin is not already holding a ball, a ball entering any saucer scores
+  the current Chaos Value and adds it to the CHAOS SCORED summary total.
+- Collecting does not reset or reduce Chaos Value.
+- That ball remains held while the other ball plays the Safe phase.
+- Only the first occupied Goblin saucer can collect and hold a ball.
 
-Hitting any saucer during unsafe mode:
+SAFE PHASE
+----------
+- General illumination turns green and the six shots flash.
+- Each logical shot can be made once per Safe phase.
+- A good shot scores 100K immediately and adds 100K to Chaos Value.
+- More JP changes the immediate good-shot score to 150K.
+- Bigger JP changes the Chaos Value increase to 150K.
+- Safe lasts 10 seconds, or 15 seconds with the More Time case file.
+- Completing all six shots ends Safe early.
 
-- Banks the current Chaos Bonus into the uncapped Goblin Bonus.
-- Does not reset Chaos Bonus.
-- Holds that ball in the saucer.
-- Immediately starts the safe phase.
+At the end of Safe, MORE CHAOS! appears immediately. The held saucer is released,
+and the mode waits for its switch to become inactive before returning to Unsafe.
+If the switch remains active, Green Goblin makes one additional release request after
+650 milliseconds. The next unheld saucer entry can then collect the current value and
+start another Safe phase.
 
-Chaos Bonus can only be banked during unsafe mode.
+HELD AND SECOND-SAUCER BEHAVIOR
+-------------------------------
+- Repeat switch chatter from the held saucer is ignored.
+- If the held switch becomes inactive unexpectedly, the false hold is cleared and
+  the mode returns safely to Unsafe play.
+- If the other ball enters a different saucer while a Goblin ball is held, it scores
+  50K, plays the rejection response, and ejects after 750 milliseconds.
+- A second saucer entry does not collect Chaos Value and does not change the Safe timer.
 
-## Safe Jackpots
+MESSAGES
+--------
+- Temporary scoring messages use latest-message-wins behavior, so rapid hits cannot
+  create a stale message backlog.
 
-- GI is green.
-- All six shot areas flash.
-- Saucers remain lit.
-- The held ball stays for 10 seconds.
-- More Time extends the safe phase to 15 seconds.
-- The persistent mode-status area shows the live time remaining.
-- The safe phase ends when the timer expires or all six areas are collected.
-- At the end of the safe phase, the held saucer kickout fires immediately and
-  the temporary message reads `MORE CHAOS!`.
-- Goblin keeps the hold active until the held saucer switch confirms that the
-  ball has physically left. Only then does unsafe play resume.
+CASE FILES
+----------
+- More JP: good shots score 150K immediately.
+- Bigger JP: good shots add 150K to Chaos Value.
+- More Time: Safe lasts 15 seconds.
+- Ball Save: starts a 10-second ball save after the first held-ball release.
+- Safety Net: the first good shot in each Safe phase awards one additional ball.
 
-Each safe area can be collected once per safe phase.
-
-### Immediate safe-shot score
-
-- Base: 100K per shot.
-- More Jackpots: 150K per shot.
-
-### Chaos Bonus added by safe shots
-
-Base sequence:
-
-- 100K
-- 125K
-- 150K
-- 175K
-- 200K
-- 225K
-
-With Bigger Jackpots:
-
-- 150K
-- 175K
-- 200K
-- 225K
-- 250K
-- 275K
-
-The sequence resets at the beginning of every safe phase. Chaos Bonus remains capped at 1M.
-
-## Safe-shot messages
-
-The persistent countdown stays visible in the mode-status area. Temporary award messages use the separate shared-message area:
-
-1. `SAFE JACKPOT - 100K` or `SAFE JACKPOT - 150K` for one second.
-2. `CHAOS BONUS NOW` with the updated value for one second.
-
-## Second saucer during safe mode
-
-If another ball enters a different saucer while one ball is already held:
-
-- Score 50K silently.
-- Show `NO NO NO`.
-- Eject the second ball after 750 ms.
-- Do not bank Chaos Bonus.
-- Do not restart or extend the safe timer.
-- Once the held ball's saucer switch confirms that the ball has left, the next
-  entry into any saucer starts a new full 10/15-second safe-phase hold.
-
-## Case Files
-
-- More Jackpots: safe shots score 150K immediately instead of 100K.
-- Bigger Jackpots: safe-shot Chaos Bonus sequence becomes 150K through 275K.
-- More Time: safe phase lasts 15 seconds instead of 10.
-- Safety Net: start a one-time 10-second ball save after the first proper safe-phase saucer release.
-- Shot Assist: consumed on the first physical safe-shot hit; it automatically awards one random remaining safe area using the next value in the sequence.
-
-## Chaos Bonus payout
-
-Every valid unsafe-phase saucer scores the current Chaos Bonus immediately and
-adds it to the mode's CHAOS SCORED summary total. Green Goblin no longer creates
-a persistent end-of-ball mode bonus.
+SUMMARY
+-------
+- ATTACK TOTAL: immediate good, bad, and second-saucer shot scoring.
+- CHAOS SCORED: total Chaos Value collected at saucers.
+- POINTS: the mode's complete score contribution.

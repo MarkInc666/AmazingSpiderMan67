@@ -1,7 +1,8 @@
 #config_version=6
 
 # Pardo: Hypnosis Reel.
-# Three shots look identical. Spinner reveals which shot is real.
+# Each chance presents three choices. Spinner reveals which shot is real.
+# Three correct shots within five chances defeats Pardo.
 
 mode:
   start_events: start_mode_pardo
@@ -88,7 +89,6 @@ light_player:
   pardo_all_lights_off:
     l_left_web_target: off
     l_mid_web_target: off
-    l_gi_a: off
     l_upper_left: off
     l_upper_middle: off
     l_upper_right: off
@@ -123,51 +123,52 @@ light_player:
     l_pop_2_11: off
     l_pop_2_12: off
 
-  # Hidden state: all current choices look the same.
+  # Hidden state: green works through both white and green physical lenses,
+  # so all three choices have the same visible color.
   pardo_hidden_left_web:
-    l_left_web_target: white
+    l_left_web_target: green
   pardo_hidden_center_web:
-    l_mid_web_target: white
+    l_mid_web_target: green
   pardo_hidden_upper_target_left:
-    l_upper_left: white
+    l_upper_left: green
   pardo_hidden_upper_target_center:
-    l_upper_middle: white
+    l_upper_middle: green
   pardo_hidden_upper_target_right:
-    l_upper_right: white
+    l_upper_right: green
   pardo_hidden_left_drops:
-    l_3bankbonus: white
+    l_3bankbonus: green
   pardo_hidden_right_drops:
-    l_5bank_1: white
-    l_5bank_2: white
-    l_5bank_3: white
-    l_5bank_4: white
-    l_5bank_5: white
+    l_5bank_1: green
+    l_5bank_2: green
+    l_5bank_3: green
+    l_5bank_4: green
+    l_5bank_5: green
   pardo_hidden_pop_left:
-    l_pop_1_1: white
-    l_pop_1_2: white
-    l_pop_1_3: white
-    l_pop_1_4: white
-    l_pop_1_5: white
-    l_pop_1_6: white
-    l_pop_1_7: white
-    l_pop_1_8: white
-    l_pop_1_9: white
-    l_pop_1_10: white
-    l_pop_1_11: white
-    l_pop_1_12: white
+    l_pop_1_1: green
+    l_pop_1_2: green
+    l_pop_1_3: green
+    l_pop_1_4: green
+    l_pop_1_5: green
+    l_pop_1_6: green
+    l_pop_1_7: green
+    l_pop_1_8: green
+    l_pop_1_9: green
+    l_pop_1_10: green
+    l_pop_1_11: green
+    l_pop_1_12: green
   pardo_hidden_pop_right:
-    l_pop_2_1: white
-    l_pop_2_2: white
-    l_pop_2_3: white
-    l_pop_2_4: white
-    l_pop_2_5: white
-    l_pop_2_6: white
-    l_pop_2_7: white
-    l_pop_2_8: white
-    l_pop_2_9: white
-    l_pop_2_10: white
-    l_pop_2_11: white
-    l_pop_2_12: white
+    l_pop_2_1: green
+    l_pop_2_2: green
+    l_pop_2_3: green
+    l_pop_2_4: green
+    l_pop_2_5: green
+    l_pop_2_6: green
+    l_pop_2_7: green
+    l_pop_2_8: green
+    l_pop_2_9: green
+    l_pop_2_10: green
+    l_pop_2_11: green
+    l_pop_2_12: green
 
   # Correct reveal: green, toggled on/off by Python every 250ms.
   pardo_reveal_good_on_left_web:
@@ -260,54 +261,57 @@ light_player:
     l_pop_2_11: off
     l_pop_2_12: off
 
-  # Wrong reveal: solid red for the full reveal window.
+  # Wrong choices turn off. Red is intentionally avoided because the two
+  # drop-bank indicators have green physical lenses.
   pardo_reveal_bad_left_web:
-    l_left_web_target: red
+    l_left_web_target: off
   pardo_reveal_bad_center_web:
-    l_mid_web_target: red
+    l_mid_web_target: off
   pardo_reveal_bad_upper_target_left:
-    l_upper_left: red
+    l_upper_left: off
   pardo_reveal_bad_upper_target_center:
-    l_upper_middle: red
+    l_upper_middle: off
   pardo_reveal_bad_upper_target_right:
-    l_upper_right: red
+    l_upper_right: off
   pardo_reveal_bad_left_drops:
-    l_3bankbonus: red
+    l_3bankbonus: off
   pardo_reveal_bad_right_drops:
-    l_5bank_1: red
-    l_5bank_2: red
-    l_5bank_3: red
-    l_5bank_4: red
-    l_5bank_5: red
+    l_5bank_1: off
+    l_5bank_2: off
+    l_5bank_3: off
+    l_5bank_4: off
+    l_5bank_5: off
   pardo_reveal_bad_pop_left:
-    l_pop_1_1: red
-    l_pop_1_2: red
-    l_pop_1_3: red
-    l_pop_1_4: red
-    l_pop_1_5: red
-    l_pop_1_6: red
-    l_pop_1_7: red
-    l_pop_1_8: red
-    l_pop_1_9: red
-    l_pop_1_10: red
-    l_pop_1_11: red
-    l_pop_1_12: red
+    l_pop_1_1: off
+    l_pop_1_2: off
+    l_pop_1_3: off
+    l_pop_1_4: off
+    l_pop_1_5: off
+    l_pop_1_6: off
+    l_pop_1_7: off
+    l_pop_1_8: off
+    l_pop_1_9: off
+    l_pop_1_10: off
+    l_pop_1_11: off
+    l_pop_1_12: off
   pardo_reveal_bad_pop_right:
-    l_pop_2_1: red
-    l_pop_2_2: red
-    l_pop_2_3: red
-    l_pop_2_4: red
-    l_pop_2_5: red
-    l_pop_2_6: red
-    l_pop_2_7: red
-    l_pop_2_8: red
-    l_pop_2_9: red
-    l_pop_2_10: red
-    l_pop_2_11: red
-    l_pop_2_12: red
+    l_pop_2_1: off
+    l_pop_2_2: off
+    l_pop_2_3: off
+    l_pop_2_4: off
+    l_pop_2_5: off
+    l_pop_2_6: off
+    l_pop_2_7: off
+    l_pop_2_8: off
+    l_pop_2_9: off
+    l_pop_2_10: off
+    l_pop_2_11: off
+    l_pop_2_12: off
 
   # Brief hit confirmation. Python immediately starts the next round after this.
   pardo_correct_shot:
     l_gi_bright: green
   pardo_incorrect_shot:
     l_gi_bright: red
+  pardo_result_gi_restore:
+    l_gi_bright: A0A0F0

@@ -23,6 +23,8 @@ class Fakir(CaseFileMixin, Mode):
     MORE_TIME_RUBY_TIMER_MS = 15_000
     SAUCER_EJECT_SAFETY_NET_MS = 650
     EXTRA_SAUCER_EJECT_MS = 350
+    RUBY_COLLECT_SAUCER_HOLD_MS = 2_000
+    RUBY_RELEASE_SETTLE_MS = 400
     GI_RESTORE_AFTER_JACKPOT_MS = 650
 
     SAUCER_KICKOUTS = {
@@ -52,6 +54,7 @@ class Fakir(CaseFileMixin, Mode):
         self.ruby_active = False
         self.ruby_timer_started = False
         self.locked_saucer = None
+        self.release_pending_saucer = None
         self.current_target = None
         self.current_award_is_super = False
         self.super_qualified = False
@@ -104,6 +107,7 @@ class Fakir(CaseFileMixin, Mode):
         self.delay.remove("fakir_ruby_timer")
         self.delay.remove("fakir_restore_base_gi")
         self.delay.remove("fakir_safety_net_after_kickout")
+        self.delay.remove("fakir_finish_ruby_release")
         self._release_locked_saucer()
         self.machine.events.post("fakir_all_lights_off")
         self.machine.events.post("fakir_stop_all_gi")
@@ -125,6 +129,15 @@ class Fakir(CaseFileMixin, Mode):
     def _saucer_hit(self, saucer, **kwargs):
         if self._inactive():
             self._eject_extra_saucer(saucer)
+            return
+
+        # After a successful Ruby collect, keep the parked ball in its saucer
+        # for the full presentation hold. Switch chatter from that saucer must
+        # not start another attempt, while the other live ball is still ejected
+        # if it enters a different saucer during the hold.
+        if self.release_pending_saucer is not None:
+            if saucer != self.release_pending_saucer:
+                self._eject_extra_saucer(saucer)
             return
 
         # Fakir holds exactly one saucer while the real-ruby shot is active.
@@ -274,33 +287,54 @@ class Fakir(CaseFileMixin, Mode):
         self.current_jackpot_value = self.ruby_base_value if not self.super_qualified else self.super_jackpot_value
 
         if release_saucer and released_saucer:
-            self._release_saucer(released_saucer)
+            release_delay_ms = self.RUBY_COLLECT_SAUCER_HOLD_MS if jackpot_collected else 0
+            if jackpot_collected:
+                self.release_pending_saucer = released_saucer
+                self.delay.reset(
+                    name="fakir_finish_ruby_release",
+                    ms=release_delay_ms + self.RUBY_RELEASE_SETTLE_MS,
+                    callback=self._finish_ruby_release,
+                )
+            self._release_saucer(released_saucer, delay_ms=release_delay_ms)
 
-        if not self.mode_done:
+        if not self.mode_done and self.release_pending_saucer is None:
             self._show_saucers_available()
             if self.super_qualified and not self.super_collected:
                 self._sync_player_vars("SUPER READY", "SHOOT SAUCER")
             else:
                 self._sync_player_vars("SHOOT SAUCERS", "FAKE RUBIES")
 
+    def _finish_ruby_release(self, **kwargs):
+        self.release_pending_saucer = None
+        if self._inactive():
+            return
+        self._show_saucers_available()
+        if self.super_qualified and not self.super_collected:
+            self._sync_player_vars("SUPER READY", "SHOOT SAUCER")
+        else:
+            self._sync_player_vars("SHOOT SAUCERS", "FAKE RUBIES")
+
     def _show_saucers_available(self):
-        if not self._inactive() and not self.ruby_active:
+        if not self._inactive() and not self.ruby_active and self.release_pending_saucer is None:
             self.machine.events.post("fakir_saucers_available")
 
     def _restore_base_gi(self, **kwargs):
         if not self._inactive() and not self.ruby_active:
             self.machine.events.post("fakir_restore_base_gi")
 
-    def _release_saucer(self, saucer):
-        kickout = self.SAUCER_KICKOUTS.get(saucer)
-        if kickout:
-            self.machine.events.post(kickout)
+    def _release_saucer(self, saucer, delay_ms=0):
+        if saucer in self.SAUCER_KICKOUTS:
+            self.machine.events.post(
+                "request_saucer_eject",
+                saucer_number=saucer,
+                delay_ms=delay_ms,
+            )
             if self.has_case_file("safety_net") and not self.safety_net_started:
                 self.safety_net_started = True
                 self.delay.remove("fakir_safety_net_after_kickout")
                 self.delay.add(
                     name="fakir_safety_net_after_kickout",
-                    ms=self.SAUCER_EJECT_SAFETY_NET_MS,
+                    ms=max(0, int(delay_ms)) + self.SAUCER_EJECT_SAFETY_NET_MS,
                     callback=self._start_safety_net_ball_save,
                 )
 

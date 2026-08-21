@@ -122,6 +122,7 @@ class CaseFileMixin:
             return
 
         player["active_mode_stat_count"] = int(stat_count)
+        player["active_mode_completed"] = 0
         player["active_mode_points"] = 0
         player["active_mode_stat_1"] = 0
         player["active_mode_stat_2"] = 0

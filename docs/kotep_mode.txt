@@ -1,0 +1,39 @@
+KOTEP MODE
+
+STATUS
+Implemented. The updated lighting and outcome handling require physical-machine playtesting.
+
+CORE GAMEPLAY
+- Four of six demon shots are selected at random: left web, center web, left drop bank, right drop bank, left pop, and right pop.
+- The first demon is available immediately. Another selected demon appears every 4 seconds until all four have been introduced.
+- Introduced demons remain available, so the player can choose among all currently active demon shots.
+- Demon Jackpots are 200,000, 250,000, 300,000, and 350,000.
+- Destroying all four demons begins the scepter phase, opens rooftop access, and starts a 20-second timer.
+- Shoot the VUK before time expires to destroy the scepter and score a 1,000,000 Super Jackpot.
+- If the timer expires, Kotep escapes. The summary now distinguishes this result from a successful defeat.
+
+LIGHTING
+- The demon phase uses dim dark-red background GI.
+- Every active demon flashes yellow independently at 300ms on and 300ms dim/off.
+- A destroyed demon immediately returns to the dim background state.
+- During the scepter phase, only the ramp/VUK area flashes yellow. The old full-playfield red/off strobe is not used.
+- The optional fifth demon flashes independently from the ramp/VUK cue.
+- Collecting the Super plays a short 600ms full-playfield success burst before the summary begins.
+
+VUK AND SAUCERS
+- A VUK hit before the scepter phase requests a normal 1-second eject.
+- A successful scepter shot holds the VUK through the villain summary. The summary is responsible for the final release.
+- Kotep does not use the three lower saucers; they use the normal delayed kickout path.
+
+CASE FILES
+- More Jackpots: adds an optional fifth demon during the scepter phase, worth 500,000.
+- Bigger Jackpots: demon values become 300,000, 350,000, 400,000, and 450,000; the Super becomes 1,500,000.
+- More Time: extends the scepter timer from 20 to 30 seconds.
+- Safety Net: starts a 10-second ball save.
+- Shot Assist: the first destroyed demon also destroys the next selected demon.
+
+SUMMARY STATS
+- DEMONS: required demons plus an optional fifth demon collected.
+- SUPERS: 1 after a successful scepter shot, otherwise 0.
+- Successful VUK Super: KOTEP DEFEATED.
+- Scepter timeout: KOTEP ESCAPED.

@@ -1,0 +1,53 @@
+PARDO - HYPNOSIS REEL
+=====================
+
+OBJECTIVE
+---------
+- The player has five chances to defeat Pardo.
+- Each chance presents three lit shots selected from nine possible shot groups.
+- The spinner reveals which of the three shots is correct.
+- Three correct shots defeats Pardo immediately.
+- If all available chances are used with fewer than three correct shots, Pardo escapes.
+
+REVEAL
+------
+- A spinner hit reveals the correct shot for 3 seconds.
+- All three hidden choices are solid green so the white and green physical lenses
+  display a consistent color.
+- During the reveal, the correct shot flashes green and the two wrong choices turn off.
+- When the reveal expires, all three choices return to their hidden appearance.
+- A correct or wrong choice briefly flashes one GI section green or red, then restores
+  that section to Pardo's normal GI color after 350ms.
+
+SCORING
+-------
+- Correct shots score a Hypnosis Jackpot.
+- The base Jackpot starts at 100K and increases by 50K after each correct shot.
+- Wrong choices score 10K and consume the current chance.
+- The summary reports correct shots, wrong shots, and total mode points.
+
+CASE FILES
+----------
+- More JP: seven chances instead of five.
+- Bigger JP: Jackpots start at 150K and increase by 75K.
+- More Time: the spinner reveal lasts 5 seconds instead of 3 seconds.
+- Safety Net: starts the standard 10-second case-file ball save.
+- Shot Assist: all three choices are treated as correct during the first chance.
+
+SHOTS
+-----
+- Left web
+- Center web
+- Upper-left target
+- Upper-center target
+- Upper-right target
+- Left drop bank
+- Right drop bank
+- Left pop
+- Right pop
+
+DEVICE BEHAVIOR
+---------------
+- Rooftop access opens whenever at least one current choice is an upper target.
+- The Daily Bugle VUK uses the shared regular release delay.
+- Saucers are not choices and use the shared saucer kickout action.

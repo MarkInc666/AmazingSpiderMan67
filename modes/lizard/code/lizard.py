@@ -19,11 +19,11 @@ from modes.common.case_file_mixin import CaseFileMixin
 
 class Lizard(CaseFileMixin, Mode):
 
-    DELIVERY_SEQUENCE = ["left", "left"]
+    BASE_DELIVERY_ATTEMPTS = 2
+    MORE_JACKPOTS_DELIVERY_ATTEMPTS = 3
 
     TARGET_LIGHT_EVENTS = {
         "left": "lizard_light_left_web",
-        "center": "lizard_light_center_web",
     }
 
     START_DELIVERY_VALUE = 1_000_000
@@ -35,7 +35,6 @@ class Lizard(CaseFileMixin, Mode):
     DELIVERY_SECONDS = 16
     MORE_TIME_SECONDS = 20
     AB_BONUS_VALUE = 500_000
-    FOLLOWUP_SECONDS = 10
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
@@ -48,7 +47,6 @@ class Lizard(CaseFileMixin, Mode):
 
         self.add_mode_event_handler("s_star_rollover_active", self.serum_collect_request)
         self.add_mode_event_handler("s_web_target_left_active", self.delivery_request, target="left")
-        self.add_mode_event_handler("s_web_target_mid_active", self.delivery_request, target="center")
 
         # A rollovers.
         self.add_mode_event_handler("s_inlane_a_active", self.a_rollover)
@@ -67,12 +65,11 @@ class Lizard(CaseFileMixin, Mode):
         self.add_mode_event_handler("timer_lizard_delivery_timer_complete", self.serum_expired)
         self.add_mode_event_handler("timer_lizard_delivery_timer_more_time_tick", self.delivery_timer_tick)
         self.add_mode_event_handler("timer_lizard_delivery_timer_more_time_complete", self.serum_expired)
-        self.add_mode_event_handler("timer_lizard_followup_timer_complete", self.followup_expired)
         self.add_mode_event_handler("lizard_light_delivery_target", self.light_next_target)
 
         self.publish_case_file_bonus_events("lizard")
         self.publish_active_case_file_helpers([
-            ("more_jackpots", "CENTER WEB FOLLOW-UP JACKPOT"),
+            ("more_jackpots", "THIRD SERUM DELIVERY ATTEMPT"),
             ("bigger_jackpots", "SERUM STARTS AT 1.5 MILLION"),
             ("more_time", "20 SECONDS AND SLOWER VALUE DECAY"),
             ("safety_net", "FIRST EXPIRED SERUM IS SAVED"),
@@ -94,12 +91,15 @@ class Lizard(CaseFileMixin, Mode):
     def mode_stop(self, **kwargs):
         self.machine.events.post("hide_mode_status")
         self._stop_delivery_timers()
-        self.machine.events.post("lizard_followup_timer_stop")
-        self.machine.events.post("lizard_followup_cleanup")
         self.clear_active_case_file_helpers()
         super().mode_stop(**kwargs)
 
     def _apply_case_file_bonuses(self):
+        self.delivery_attempts = (
+            self.MORE_JACKPOTS_DELIVERY_ATTEMPTS
+            if self.has_case_file("more_jackpots")
+            else self.BASE_DELIVERY_ATTEMPTS
+        )
         self.start_delivery_value = (
             self.BIGGER_DELIVERY_VALUE
             if self.has_case_file("bigger_jackpots")
@@ -124,17 +124,13 @@ class Lizard(CaseFileMixin, Mode):
         player["lizard_a_hit"] = 0
         player["lizard_b_hit"] = 0
         player["lizard_ab_ready"] = 0
-        player["lizard_followup_ready"] = 0
-
         self.best_delivery_value = 0
         self.deliveries_made = 0
         player["active_mode_stat_1"] = self.deliveries_made
         player["active_mode_stat_2"] = self.best_delivery_value
 
         self._safety_net_used = False
-        self._followup_target = None
-        self._followup_value = 0
-        self._pending_completion_after_followup = False
+        self._delivery_completes_mode = False
         self._serum_expiration_pending = False
         self._delivery_success_pending = False
 
@@ -152,22 +148,19 @@ class Lizard(CaseFileMixin, Mode):
             return
         player = self.machine.game.player
         deliveries = player["lizard_deliveries"]
-        if player["lizard_followup_ready"] == 1:
-            title = "EXTRA JACKPOT"
-            value = "CENTER WEB"
-        elif player["lizard_serum_ready"] == 1:
+        if player["lizard_serum_ready"] == 1:
             title = "DELIVER SERUM"
             value = "LEFT WEB"
         else:
             title = "COLLECT SERUM"
-            value = f"STAR  {deliveries} OF {len(self.DELIVERY_SEQUENCE)}"
+            value = f"STAR  {deliveries} OF {self.delivery_attempts}"
         self.machine.events.post("show_mode_status", mode_status_title=title, mode_status_value=value)
 
     def current_target(self):
         deliveries = self.machine.game.player["lizard_deliveries"]
-        if deliveries >= len(self.DELIVERY_SEQUENCE):
+        if deliveries >= self.delivery_attempts:
             return None
-        return self.DELIVERY_SEQUENCE[deliveries]
+        return "left"
 
     def a_rollover(self, **kwargs):
         if self.machine.game.player["villain_mode_in_summary"] is True:
@@ -186,13 +179,14 @@ class Lizard(CaseFileMixin, Mode):
             self._ab_complete()
 
     def _ab_complete(self):
-        """Completing A+B boosts the active serum and restarts its timer."""
+        """Permanently boost this mode's current and future serum values."""
         player = self.machine.game.player
         player["lizard_ab_ready"] = 1
+        self.start_delivery_value += self.AB_BONUS_VALUE
         self.machine.events.post(
             "show_mode_message",
             message_mode_title="A+B BOOST!",
-            message_mode_subtitle="SERUM VALUE UP",
+            message_mode_subtitle="ALL SERUM VALUES UP",
             message_mode_value=self.AB_BONUS_VALUE,
         )
         self.machine.events.post("lizard_ab_complete")
@@ -201,6 +195,8 @@ class Lizard(CaseFileMixin, Mode):
             player["lizard_delivery_value"] += self.AB_BONUS_VALUE
             self._start_delivery_timer()
             self.machine.events.post("lizard_ab_timer_restarted")
+        else:
+            player["lizard_delivery_value"] = self.start_delivery_value
 
         player["lizard_a_hit"] = 0
         player["lizard_b_hit"] = 0
@@ -216,12 +212,8 @@ class Lizard(CaseFileMixin, Mode):
         player = self.machine.game.player
         if player["lizard_serum_ready"] == 1:
             return
-        if player["lizard_deliveries"] >= len(self.DELIVERY_SEQUENCE):
+        if player["lizard_deliveries"] >= self.delivery_attempts:
             return
-
-        # Starting the next serum early cancels the optional center-web jackpot.
-        if player["lizard_followup_ready"] == 1:
-            self._cancel_followup_for_serum()
 
         player["lizard_delivery_value"] = self.start_delivery_value
         self._award_points(self.SERUM_COLLECT_SCORE)
@@ -303,7 +295,7 @@ class Lizard(CaseFileMixin, Mode):
 
         player["lizard_deliveries"] += 1
         self._schedule_serum_expiration_resolution(
-            complete_mode=player["lizard_deliveries"] >= len(self.DELIVERY_SEQUENCE)
+            complete_mode=player["lizard_deliveries"] >= self.delivery_attempts
         )
 
     def _schedule_serum_expiration_resolution(self, complete_mode):
@@ -331,9 +323,6 @@ class Lizard(CaseFileMixin, Mode):
             return
 
         player = self.machine.game.player
-        if player["lizard_followup_ready"] == 1:
-            self._followup_request(target)
-            return
         if player["lizard_serum_ready"] == 0:
             return
 
@@ -366,7 +355,7 @@ class Lizard(CaseFileMixin, Mode):
         self.machine.events.post("lizard_serum_delivered")
         self._stop_delivery_timers()
 
-        self._pending_completion_after_followup = player["lizard_deliveries"] >= len(self.DELIVERY_SEQUENCE)
+        self._delivery_completes_mode = player["lizard_deliveries"] >= self.delivery_attempts
         self._delivery_success_pending = True
         self.delay.remove("lizard_delivery_success_resolve")
         self.delay.add(
@@ -380,10 +369,7 @@ class Lizard(CaseFileMixin, Mode):
         if self.mode_done:
             return
         self._delivery_success_pending = False
-        if self.has_case_file("more_jackpots"):
-            self._start_followup_jackpot(delivery_value)
-            return
-        if self._pending_completion_after_followup:
+        if self._delivery_completes_mode:
             self._complete_mode()
             return
         self.machine.events.post("lizard_light_serum_location")
@@ -395,8 +381,7 @@ class Lizard(CaseFileMixin, Mode):
         if (
             self.mode_done
             or player["villain_mode_in_summary"] is True
-            or player["lizard_followup_ready"] == 1
-            or player["lizard_deliveries"] >= len(self.DELIVERY_SEQUENCE)
+            or player["lizard_deliveries"] >= self.delivery_attempts
         ):
             return
         self.machine.events.post("lizard_more_serum_needed")
@@ -407,78 +392,9 @@ class Lizard(CaseFileMixin, Mode):
             reminder=True,
         )
 
-    def _start_followup_jackpot(self, delivery_value):
-        self._followup_target = "center"
-        self._followup_value = int(delivery_value / 2)
-        self.machine.game.player["lizard_followup_ready"] = 1
-
-        self.machine.events.post(
-            "show_mode_countdown",
-            message_mode_title="EXTRA JACKPOT",
-            message_mode_subtitle="HIT CENTER WEB",
-            message_mode_value=self._followup_value,
-            message_mode_seconds=self.FOLLOWUP_SECONDS,
-        )
-        self.machine.events.post("lizard_followup_started")
-        self._light_target("center")
-        self.machine.events.post("lizard_followup_timer_start")
-        self._update_status()
-
-    def _followup_request(self, target):
-        if target != "center":
-            return
-
-        self.machine.game.player["lizard_followup_ready"] = 0
-        self.machine.events.post("lizard_followup_timer_stop")
-        self.machine.events.post("lizard_followup_collected")
-        self.machine.events.post("hide_mode_status")
-        self._award_points(self._followup_value)
-        self.machine.events.post(
-            "show_mode_jackpot",
-            message_mode_title="EXTRA JACKPOT",
-            message_mode_subtitle="CENTER WEB",
-            message_mode_value=self._followup_value,
-        )
-        self._finish_followup()
-
-    def _cancel_followup_for_serum(self):
-        self.machine.game.player["lizard_followup_ready"] = 0
-        self.machine.events.post("lizard_followup_timer_stop")
-        self.machine.events.post("lizard_followup_cleanup")
-        self._followup_target = None
-        self._followup_value = 0
-        self._pending_completion_after_followup = False
-
-    def followup_expired(self, **kwargs):
-        if self.mode_done or self.machine.game.player["lizard_followup_ready"] == 0:
-            return
-
-        self.machine.game.player["lizard_followup_ready"] = 0
-        self.machine.events.post("lizard_followup_expired")
-        self.machine.events.post("hide_mode_status")
-        self.machine.events.post(
-            "show_mode_message",
-            message_mode_title="EXTRA JACKPOT MISSED",
-            message_mode_subtitle="COLLECT SERUM",
-        )
-        self._finish_followup()
-
-    def _finish_followup(self):
-        self._followup_target = None
-        self._followup_value = 0
-
-        if self._pending_completion_after_followup:
-            self._complete_mode()
-            return
-
-        self.machine.events.post("lizard_light_serum_location")
-        self._update_status()
-
     def _complete_mode(self):
         self.mode_done = True
         self._stop_delivery_timers()
-        self.machine.events.post("lizard_followup_timer_stop")
-        self.machine.events.post("lizard_followup_cleanup")
         self.machine.events.post(
             "show_mode_jackpot",
             message_mode_title="LIZARD CURED",

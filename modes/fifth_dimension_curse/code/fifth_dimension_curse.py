@@ -6,6 +6,7 @@ class FifthDimensionCurse(Mode):
 
     MODE_KEY = "fifth_dimension_curse"
     DISPLAY_NAME = "Fifth Dimension Curse"
+    VUK_EJECT_DELAY_MS = 1_500
 
     ZONE_SWITCHES = {
         "upper_left": [
@@ -130,7 +131,10 @@ class FifthDimensionCurse(Mode):
             return
         zones = len(self.active_zones)
         if zones <= 0:
-            self.machine.events.post("up_kick")
+            self.machine.events.post(
+                "request_vuk_eject",
+                delay_ms=self.VUK_EJECT_DELAY_MS,
+            )
             return
 
         value = 500_000 + (zones - 1) * 250_000 + self.case_file_bonus
@@ -145,7 +149,10 @@ class FifthDimensionCurse(Mode):
             message_mode_subtitle=f"{zones} ZONES ACTIVE",
             message_mode_value=value,
         )
-        self.machine.events.post("up_kick")
+        self.machine.events.post(
+            "request_vuk_eject",
+            delay_ms=self.VUK_EJECT_DELAY_MS,
+        )
         self.machine.events.post("reset_mode_message_reminder")
         self._update_gate_and_status()
 

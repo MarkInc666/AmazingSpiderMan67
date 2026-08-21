@@ -7,6 +7,12 @@ Three areas independently build lit saucer jackpots:
 - Pop Bumpers -> Saucer 2
 - Right Drops -> Saucer 3
 
+All three target areas are lit as soon as the mode starts. The left and right
+bank inserts use their physical green lens colors, while the pop area uses its
+red lighting. These steady target lights remain active throughout the mode.
+The matching saucer lamp begins flashing only after that area has earned a
+jackpot value.
+
 Every qualifying area hit:
 - scores an extra 5K
 - increases that area's hit count by 1

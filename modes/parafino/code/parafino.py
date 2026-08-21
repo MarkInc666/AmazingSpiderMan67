@@ -14,7 +14,7 @@ class Parafino(CaseFileMixin, Mode):
     - Pops        -> Saucer 2
     - Right drops -> Saucer 3
 
-    Each zone starts unlit with no jackpot value.
+    All three target zones light when the mode starts with no jackpot value.
     Each zone hit adds one count and lights that zone's saucer.
     Jackpot value is 100K x hits, or 150K x hits with Bigger Jackpots.
     Zone hit counts cap at 20.

@@ -1,0 +1,21 @@
+FIFTH DIMENSION CURSE MINI-WIZARD
+
+STATUS
+Implemented. The VUK timing correction requires physical-machine playtesting.
+
+VUK RELEASE BEHAVIOR
+- During active gameplay, every Daily Bugle VUK visit uses the shared delayed-release service.
+- Both an unlit VUK visit and a Curse Jackpot wait 1.5 seconds before the up-kicker fires.
+- The shared service checks the VUK switch after the first pulse and may issue one recovery pulse if the ball remains detected.
+- The ball captured to start the mini-wizard remains held throughout the introduction.
+- The post-introduction release remains immediate; the new 1.5-second gameplay delay does not add another wait after the intro.
+
+GAMEPLAY SUMMARY
+- Fifth Dimension Curse is a three-ball multiball.
+- Playfield switches illuminate six temporary city zones.
+- Zones remain bright for 5 seconds, flicker, and return to dim after 8 seconds.
+- Entering the VUK with active zones collects a Curse Jackpot based on the number of active zones plus the chapter Case File bonus.
+- Entering the VUK with no active zones scores no Curse Jackpot and uses the same 1.5-second release.
+- A VUK Jackpot with at least three active zones qualifies add-a-ball.
+- Completing all three upper targets collects a qualified add-a-ball, up to three times.
+- The mini-wizard ends when multiball ends.

@@ -64,38 +64,50 @@ event_player:
   drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset
 
 show_player:
-  kotep_start_gi_flash:
-    kotep_gi_flash:
+  kotep_start_scepter_ramp_flash:
+    kotep_scepter_ramp_flash:
       loops: -1
-  kotep_stop_gi_flash:
-    kotep_gi_flash:
+  kotep_stop_scepter_ramp_flash:
+    kotep_scepter_ramp_flash:
       action: stop
+  kotep_super_burst:
+    kotep_super_burst:
+      loops: 0
 
 light_player:
   kotep_gi_red:
-    gi: red
+    gi: 401010
 
   kotep_light_left_web:
     l_left_web_target: yellow
   kotep_unlight_left_web:
+    l_left_web_target: off
+  kotep_dim_left_web:
     l_left_web_target: off
 
   kotep_light_center_web:
     l_mid_web_target: yellow
   kotep_unlight_center_web:
     l_mid_web_target: off
+  kotep_dim_center_web:
+    l_mid_web_target: off
 
   kotep_light_left_drops:
     l_gi_3bank: yellow
   kotep_unlight_left_drops:
-    l_gi_3bank: red
+    l_gi_3bank: 401010
+  kotep_dim_left_drops:
+    l_gi_3bank: 401010
 
   kotep_light_right_drops:
     l_gi_5bank_lower: yellow
     l_gi_5bank_upper: yellow
   kotep_unlight_right_drops:
-    l_gi_5bank_lower: red
-    l_gi_5bank_upper: red
+    l_gi_5bank_lower: 401010
+    l_gi_5bank_upper: 401010
+  kotep_dim_right_drops:
+    l_gi_5bank_lower: 401010
+    l_gi_5bank_upper: 401010
 
   kotep_light_left_pop:
     l_pop_1_1: yellow
@@ -111,18 +123,31 @@ light_player:
     l_pop_1_11: yellow
     l_pop_1_12: yellow
   kotep_unlight_left_pop:
-    l_pop_1_1: red
-    l_pop_1_2: red
-    l_pop_1_3: red
-    l_pop_1_4: red
-    l_pop_1_5: red
-    l_pop_1_6: red
-    l_pop_1_7: red
-    l_pop_1_8: red
-    l_pop_1_9: red
-    l_pop_1_10: red
-    l_pop_1_11: red
-    l_pop_1_12: red
+    l_pop_1_1: 401010
+    l_pop_1_2: 401010
+    l_pop_1_3: 401010
+    l_pop_1_4: 401010
+    l_pop_1_5: 401010
+    l_pop_1_6: 401010
+    l_pop_1_7: 401010
+    l_pop_1_8: 401010
+    l_pop_1_9: 401010
+    l_pop_1_10: 401010
+    l_pop_1_11: 401010
+    l_pop_1_12: 401010
+  kotep_dim_left_pop:
+    l_pop_1_1: 401010
+    l_pop_1_2: 401010
+    l_pop_1_3: 401010
+    l_pop_1_4: 401010
+    l_pop_1_5: 401010
+    l_pop_1_6: 401010
+    l_pop_1_7: 401010
+    l_pop_1_8: 401010
+    l_pop_1_9: 401010
+    l_pop_1_10: 401010
+    l_pop_1_11: 401010
+    l_pop_1_12: 401010
 
   kotep_light_right_pop:
     l_pop_2_1: yellow
@@ -138,49 +163,62 @@ light_player:
     l_pop_2_11: yellow
     l_pop_2_12: yellow
   kotep_unlight_right_pop:
-    l_pop_2_1: red
-    l_pop_2_2: red
-    l_pop_2_3: red
-    l_pop_2_4: red
-    l_pop_2_5: red
-    l_pop_2_6: red
-    l_pop_2_7: red
-    l_pop_2_8: red
-    l_pop_2_9: red
-    l_pop_2_10: red
-    l_pop_2_11: red
-    l_pop_2_12: red
+    l_pop_2_1: 401010
+    l_pop_2_2: 401010
+    l_pop_2_3: 401010
+    l_pop_2_4: 401010
+    l_pop_2_5: 401010
+    l_pop_2_6: 401010
+    l_pop_2_7: 401010
+    l_pop_2_8: 401010
+    l_pop_2_9: 401010
+    l_pop_2_10: 401010
+    l_pop_2_11: 401010
+    l_pop_2_12: 401010
+  kotep_dim_right_pop:
+    l_pop_2_1: 401010
+    l_pop_2_2: 401010
+    l_pop_2_3: 401010
+    l_pop_2_4: 401010
+    l_pop_2_5: 401010
+    l_pop_2_6: 401010
+    l_pop_2_7: 401010
+    l_pop_2_8: 401010
+    l_pop_2_9: 401010
+    l_pop_2_10: 401010
+    l_pop_2_11: 401010
+    l_pop_2_12: 401010
 
   kotep_clear_demon_lights:
     l_left_web_target: off
     l_mid_web_target: off
-    l_gi_3bank: red
-    l_gi_5bank_lower: red
-    l_gi_5bank_upper: red
-    l_pop_1_1: red
-    l_pop_1_2: red
-    l_pop_1_3: red
-    l_pop_1_4: red
-    l_pop_1_5: red
-    l_pop_1_6: red
-    l_pop_1_7: red
-    l_pop_1_8: red
-    l_pop_1_9: red
-    l_pop_1_10: red
-    l_pop_1_11: red
-    l_pop_1_12: red
-    l_pop_2_1: red
-    l_pop_2_2: red
-    l_pop_2_3: red
-    l_pop_2_4: red
-    l_pop_2_5: red
-    l_pop_2_6: red
-    l_pop_2_7: red
-    l_pop_2_8: red
-    l_pop_2_9: red
-    l_pop_2_10: red
-    l_pop_2_11: red
-    l_pop_2_12: red
+    l_gi_3bank: 401010
+    l_gi_5bank_lower: 401010
+    l_gi_5bank_upper: 401010
+    l_pop_1_1: 401010
+    l_pop_1_2: 401010
+    l_pop_1_3: 401010
+    l_pop_1_4: 401010
+    l_pop_1_5: 401010
+    l_pop_1_6: 401010
+    l_pop_1_7: 401010
+    l_pop_1_8: 401010
+    l_pop_1_9: 401010
+    l_pop_1_10: 401010
+    l_pop_1_11: 401010
+    l_pop_1_12: 401010
+    l_pop_2_1: 401010
+    l_pop_2_2: 401010
+    l_pop_2_3: 401010
+    l_pop_2_4: 401010
+    l_pop_2_5: 401010
+    l_pop_2_6: 401010
+    l_pop_2_7: 401010
+    l_pop_2_8: 401010
+    l_pop_2_9: 401010
+    l_pop_2_10: 401010
+    l_pop_2_11: 401010
+    l_pop_2_12: 401010
 
   kotep_scepter_lit:
     l_gi_ramp: yellow
@@ -192,10 +230,23 @@ light_player:
     l_gi_ramp: off
 
 shows:
-  kotep_gi_flash:
-    - duration: 250ms
+  kotep_scepter_ramp_flash:
+    - duration: 300ms
       lights:
-        gi: red
-    - duration: 250ms
+        l_gi_ramp: yellow
+    - duration: 300ms
       lights:
-        gi: off
+        l_gi_ramp: 401010
+  kotep_super_burst:
+    - duration: 150ms
+      lights:
+        gi: white
+    - duration: 150ms
+      lights:
+        gi: 401010
+    - duration: 150ms
+      lights:
+        gi: white
+    - duration: 150ms
+      lights:
+        gi: 401010

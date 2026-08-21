@@ -80,35 +80,34 @@ event_player:
     - drop_target_bank_dt_bank_right_reset
   s_web_target_left_active: goblin_left_web_hit
   s_web_target_mid_active: goblin_right_web_hit
-  s_star_rollover_active: goblin_star_hit
-  s_pop_left_active: goblin_pops_hit
-  s_pop_right_active: goblin_pops_hit
+  s_pop_left_active: goblin_left_pop_hit
+  s_pop_right_active: goblin_right_pop_hit
   s_saucer_1_active: goblin_saucer_1_hit
   s_saucer_2_active: goblin_saucer_2_hit
   s_saucer_3_active: goblin_saucer_3_hit
 
 show_player:
-  goblin_lite_star:
-    goblin_star_flash_show:
+  goblin_lite_left_pop:
+    goblin_left_pop_flash_show:
       loops: -1
-  goblin_solid_star:
-    goblin_star_solid_show:
+  goblin_solid_left_pop:
+    goblin_left_pop_solid_show:
       loops: -1
-  goblin_stop_star:
-    goblin_star_flash_show:
+  goblin_stop_left_pop:
+    goblin_left_pop_flash_show:
       action: stop
-    goblin_star_solid_show:
+    goblin_left_pop_solid_show:
       action: stop
-  goblin_lite_pops:
-    goblin_pops_flash_show:
+  goblin_lite_right_pop:
+    goblin_right_pop_flash_show:
       loops: -1
-  goblin_solid_pops:
-    goblin_pops_solid_show:
+  goblin_solid_right_pop:
+    goblin_right_pop_solid_show:
       loops: -1
-  goblin_stop_pops:
-    goblin_pops_flash_show:
+  goblin_stop_right_pop:
+    goblin_right_pop_flash_show:
       action: stop
-    goblin_pops_solid_show:
+    goblin_right_pop_solid_show:
       action: stop
   goblin_lite_left_web:
     goblin_left_web_flash_show:
@@ -173,13 +172,13 @@ show_player:
     goblin_gi_safe_show:
       action: stop
   goblin_mode_ended:
-    goblin_star_flash_show:
+    goblin_left_pop_flash_show:
       action: stop
-    goblin_star_solid_show:
+    goblin_left_pop_solid_show:
       action: stop
-    goblin_pops_flash_show:
+    goblin_right_pop_flash_show:
       action: stop
-    goblin_pops_solid_show:
+    goblin_right_pop_solid_show:
       action: stop
     goblin_left_web_flash_show:
       action: stop
@@ -205,20 +204,7 @@ show_player:
       action: stop
 
 shows:
-  goblin_star_flash_show:
-    - duration: 120ms
-      lights:
-        l_star: green
-    - duration: 120ms
-      lights:
-        l_star: off
-
-  goblin_star_solid_show:
-    - duration: -1
-      lights:
-        l_star: green
-
-  goblin_pops_flash_show:
+  goblin_left_pop_flash_show:
     - duration: 120ms
       lights:
         l_pop_1_1: green
@@ -233,18 +219,6 @@ shows:
         l_pop_1_10: green
         l_pop_1_11: green
         l_pop_1_12: green
-        l_pop_2_1: green
-        l_pop_2_2: green
-        l_pop_2_3: green
-        l_pop_2_4: green
-        l_pop_2_5: green
-        l_pop_2_6: green
-        l_pop_2_7: green
-        l_pop_2_8: green
-        l_pop_2_9: green
-        l_pop_2_10: green
-        l_pop_2_11: green
-        l_pop_2_12: green
     - duration: 120ms
       lights:
         l_pop_1_1: off
@@ -259,20 +233,8 @@ shows:
         l_pop_1_10: off
         l_pop_1_11: off
         l_pop_1_12: off
-        l_pop_2_1: off
-        l_pop_2_2: off
-        l_pop_2_3: off
-        l_pop_2_4: off
-        l_pop_2_5: off
-        l_pop_2_6: off
-        l_pop_2_7: off
-        l_pop_2_8: off
-        l_pop_2_9: off
-        l_pop_2_10: off
-        l_pop_2_11: off
-        l_pop_2_12: off
 
-  goblin_pops_solid_show:
+  goblin_left_pop_solid_show:
     - duration: -1
       lights:
         l_pop_1_1: green
@@ -287,6 +249,40 @@ shows:
         l_pop_1_10: green
         l_pop_1_11: green
         l_pop_1_12: green
+
+  goblin_right_pop_flash_show:
+    - duration: 120ms
+      lights:
+        l_pop_2_1: green
+        l_pop_2_2: green
+        l_pop_2_3: green
+        l_pop_2_4: green
+        l_pop_2_5: green
+        l_pop_2_6: green
+        l_pop_2_7: green
+        l_pop_2_8: green
+        l_pop_2_9: green
+        l_pop_2_10: green
+        l_pop_2_11: green
+        l_pop_2_12: green
+    - duration: 120ms
+      lights:
+        l_pop_2_1: off
+        l_pop_2_2: off
+        l_pop_2_3: off
+        l_pop_2_4: off
+        l_pop_2_5: off
+        l_pop_2_6: off
+        l_pop_2_7: off
+        l_pop_2_8: off
+        l_pop_2_9: off
+        l_pop_2_10: off
+        l_pop_2_11: off
+        l_pop_2_12: off
+
+  goblin_right_pop_solid_show:
+    - duration: -1
+      lights:
         l_pop_2_1: green
         l_pop_2_2: green
         l_pop_2_3: green

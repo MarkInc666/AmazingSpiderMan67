@@ -87,7 +87,7 @@ class VillainBookends(Mode):
         'lizard': {
             'title': 'GREEN LIZARD',
             'intro_1': 'Make serum at STAR.',
-            'intro_2': 'Deliver to web shots.',
+            'intro_2': 'Deliver to the left web.',
             'intro_3': 'Hurry before it decays.',
             'summary_title_complete': 'GREEN LIZARD CURED',
             'summary_title_failed': 'GREEN LIZARD ESCAPED',
@@ -126,8 +126,8 @@ class VillainBookends(Mode):
         'goblin': {
             'title': 'GREEN GOBLIN',
             'intro_1': 'Chaos multiball.',
-            'intro_2': 'Flashing builds value.',
-            'intro_3': 'Avoid Solid shots.',
+            'intro_2': 'Saucers bank CHAOS and start SAFE play.',
+            'intro_3': 'Flashing builds it. Solid shots reduce it.',
             'summary_title_complete': 'GOBLIN DEFEATED',
             'summary_title_failed': 'GOBLIN ESCAPED',
             'stat_1_label': 'ATTACK TOTAL',
@@ -424,9 +424,9 @@ class VillainBookends(Mode):
         },
         'pardo': {
             'title': 'PARDO',
-            'intro_1': 'Five-shot Hypnosis Reel.',
+            'intro_1': 'Five chances. Three correct shots win.',
             'intro_2': 'Spinner reveals the true shot.',
-            'intro_3': 'Seven wrong shots and he escapes.',
+            'intro_3': 'Choose the correct shot from three.',
             'summary_title_complete': 'PARDO DEFEATED',
             'summary_title_failed': 'PARDO ESCAPED',
             'stat_1_label': 'GOOD SHOTS',
@@ -435,6 +435,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'pardo_state',
+            'completion_var': 'active_mode_completed',
             'song': 'play_song_53',
         },
         # ORIGINAL DISPLAY TEXT:
@@ -474,6 +475,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'kotep_state',
+            'completion_var': 'active_mode_completed',
             'song': 'play_song_35',
         },
         # ORIGINAL DISPLAY TEXT:

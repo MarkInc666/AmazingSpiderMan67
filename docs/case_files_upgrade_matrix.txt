@@ -16,13 +16,13 @@ Rhino | Extra Rhino Jackpot available | +100K to every Rhino Jackpot | Berserk t
 Sandman | Extra Sandman bank available | Flashing targets score more | Target shift slowed | 10s ball save | First target spotted
 Vulture | All-red spinner +100K | Spinner values doubled | Target decay slowed | 10s ball save | First target advances all
 Electro | Extra Spark Jackpot available | Spark Jackpots boosted | Spark value drains slower | 10s ball save | First spark held longer
-Green Goblin | Safe shots score 150K | Bigger chaos bonus builds | 15s safe phase | Ball save after first release | First safe hit awards another
+Green Goblin | Good shots score 150K | Good shots add 150K to Chaos Value | 15s Safe phase | 10s ball save after first held-ball release | First good shot each Safe phase awards another ball
 
 CHAPTER 2 — MASTERMIND TRAP
 Doctor Octopus | Two safe Jackpots | Bigger Doc Ock Jackpots | Arm release delayed | 10s ball save | +10X shot assist
 Mysterio | First wrong shot protected | 1.5M Super Jackpot | Super penalty reduced | 10s ball save | One false shot removed
 Scorpion | Extra sting attempt available | Sting awards boosted | 12s sting window | 10s ball save | First rubber counts as target
-Lizard | Center-web follow-up Jackpot | Serum starts at 1.5M | 20s and slower value decay | First expired serum saved | Main spinner or left B delivers serum
+Lizard | Third serum delivery attempt | Serum starts at 1.5M | 20s and slower value decay | First expired serum saved | Main spinner or left B delivers serum
 Parafino | Saucers hold value for extra collect | Zone hits build 150K | Two hits for Add-a-Ball | 10s safety net after multiball save | First zone hits count double
 
 CHAPTER 3 — TRUBBLE UNLEASHED
@@ -47,7 +47,7 @@ Metal-Eating Monster | Saved zones relight once at half value | Zone saves 400K 
 The Fiddler | Four-note encore round | +100K per correct note | Pattern repeats every 8s | 10s ball save | First wrong shot plays correct note
 
 CHAPTER 6 — FIFTH DIMENSION CURSE
-Pardo | Two extra hypnosis Jackpots | Bigger hypnosis Jackpots | Longer spinner reveal | 10s ball save | First round all good
+Pardo | Seven chances instead of five | Bigger hypnosis Jackpots | Spinner reveal lasts 5s instead of 3s | 10s ball save | First round all good
 The Fantastic Fakir | First post-Super ruby 2X | Bigger ruby Jackpots | Longer real-ruby timer | Ball save after first saucer kickout | First reveal lights all upper targets
 Kotep | Fifth demon worth 500K during scepter | Bigger demon Jackpots and 1.5M Super | Scepter timer 30s | 10s ball save | First demon also destroys next demon
 Super Swami | Blackout Jackpot at VUK | Restore values start 200K | 50s city timer | Ball save active | First area spots another

@@ -9,14 +9,19 @@ Find the Noah Boddy
 
 Rules:
 - Get to the upper playfield to start the search.
-- Both drop target banks reset and one lower drop target is secretly chosen.
+- The first rooftop visit secretly chooses one lower drop target.
+- Every rooftop visit resets both banks, then re-drops all non-secret targets
+  revealed during earlier rooftop visits.
 - Upper target hits knock down non-secret lower drop targets.
 - Upper spinner builds the Noah Boddy Jackpot.
 - When only the secret target remains standing, a hurry-up starts.
 - The player has 16s, or 24s with More Time, to return lower and hit the secret target.
 - If the hurry-up expires, the secret target drops and the mode fails.
-- If the player exits upper left/right before reveal, all remaining drops fall and the player must return upper.
-- If a lower drop is hit before reveal, all remaining drops fall and the player must return upper.
+- If the player exits upper left/right before reveal, both banks reset but the
+  reveal progress and hidden target are preserved. The player must return upper
+  before the reveal can continue.
+- If a lower drop is hit before reveal, both banks reset and the player must
+  return upper; reveal progress is preserved.
 
 Case Files:
 - More Jackpots: upper target reveal hits score more points.
@@ -37,6 +42,8 @@ class NoahBoddy(CaseFileMixin, Mode):
     MORE_JACKPOTS_UPPER_TARGET_SCORE = 75_000
     HURRYUP_SECONDS = 16
     MORE_TIME_HURRYUP_SECONDS = 24
+    DROP_REBUILD_START_MS = 700
+    DROP_REBUILD_STAGGER_MS = 150
 
     TARGETS = (
         "left_1",
@@ -94,6 +101,7 @@ class NoahBoddy(CaseFileMixin, Mode):
         self.phase = "get_to_upper"
         self.secret_target = None
         self.standing_targets = set()
+        self.revealed_non_secret_targets = set()
         self.programmatic_drops_pending = set()
         self.jackpot_value = self.BASE_JACKPOT
         self.jackpot_multiplier = 1
@@ -184,6 +192,7 @@ class NoahBoddy(CaseFileMixin, Mode):
     def mode_stop(self, **kwargs):
         self.machine.events.post("hide_mode_status")
         self.delay.remove("noah_boddy_hurryup_tick")
+        self._cancel_drop_rebuild()
         self.clear_active_case_file_helpers()
         self.machine.events.post("rooftop_diverter_close")
         super().mode_stop(**kwargs)
@@ -217,33 +226,106 @@ class NoahBoddy(CaseFileMixin, Mode):
         if self._in_summary_or_done():
             return
 
+        # Ignore opto chatter or a second entry event while the current rooftop
+        # visit is already active.
+        if self.phase not in ("get_to_upper", "return_to_upper"):
+            return
+
         self._start_search_cycle()
 
     def _start_search_cycle(self):
         self.delay.remove("noah_boddy_hurryup_tick")
-        self.phase = "revealing"
+        self._cancel_drop_rebuild()
+        self.phase = "restoring"
         self.programmatic_drops_pending.clear()
-        self.secret_target = random.choice(list(self.TARGETS))
+        first_visit = self.secret_target is None
+        if first_visit:
+            self.secret_target = random.choice(list(self.TARGETS))
         self.standing_targets = set(self.TARGETS)
         self.hurryup_seconds_left = 0
 
-        self.machine.events.post("drop_target_bank_dt_bank_left_reset")
-        self.machine.events.post("drop_target_bank_dt_bank_right_reset")
-        self.machine.events.post(
-            "noah_boddy_secret_target_chosen",
-            secret_target=self.secret_target,
-            secret_label=self.TARGET_LABELS[self.secret_target],
+        # reset_drops uses the shared MPF bank-reset path and spaces the two
+        # reset coils. Rebuild the preserved search only after both banks have
+        # had time to stand up.
+        self.machine.events.post("reset_drops")
+        if first_visit:
+            self.machine.events.post(
+                "noah_boddy_secret_target_chosen",
+                secret_target=self.secret_target,
+                secret_label=self.TARGET_LABELS[self.secret_target],
+            )
+
+        preserved_targets = [
+            target for target in self.TARGETS
+            if target in self.revealed_non_secret_targets
+        ]
+        for index, target in enumerate(preserved_targets):
+            self.delay.add(
+                name=f"noah_boddy_restore_drop_{target}",
+                ms=self.DROP_REBUILD_START_MS + (index * self.DROP_REBUILD_STAGGER_MS),
+                callback=self._restore_revealed_target,
+                target=target,
+            )
+
+        rebuild_done_ms = self.DROP_REBUILD_START_MS + (
+            len(preserved_targets) * self.DROP_REBUILD_STAGGER_MS
+        )
+        self.delay.add(
+            name="noah_boddy_finish_drop_rebuild",
+            ms=rebuild_done_ms,
+            callback=self._finish_drop_rebuild,
         )
         self.machine.events.post("noah_boddy_search_started")
-        self._show_mode_message("SEARCH STARTED", "HIT UPPER TARGETS")
+        if preserved_targets:
+            self.machine.events.post(
+                "noah_boddy_reveal_progress_restoring",
+                revealed=len(preserved_targets),
+                remaining=self._remaining_locations(),
+            )
+            self._show_mode_message(
+                "SEARCH RESUMING",
+                f"{self._remaining_locations()} LOCATIONS LEFT",
+            )
+        else:
+            self._show_mode_message("SEARCH STARTED", "PREPARING TARGETS")
         self._sync_vars()
+
+    def _restore_revealed_target(self, target=None, **kwargs):
+        if self.phase != "restoring" or target not in self.revealed_non_secret_targets:
+            return
+        self._drop_programmatically(target)
+
+    def _finish_drop_rebuild(self, **kwargs):
+        if self.phase != "restoring" or self._in_summary_or_done():
+            return
+        self.phase = "revealing"
+        self.machine.events.post(
+            "noah_boddy_reveal_progress_restored",
+            revealed=len(self.revealed_non_secret_targets),
+            remaining=self._remaining_locations(),
+        )
+        self._show_mode_message(
+            "SEARCH ACTIVE",
+            f"{self._remaining_locations()} LOCATIONS LEFT",
+        )
+        self._check_reveal_complete()
+        self._sync_vars()
+
+    def _cancel_drop_rebuild(self):
+        self.delay.remove("noah_boddy_finish_drop_rebuild")
+        for target in self.TARGETS:
+            self.delay.remove(f"noah_boddy_restore_drop_{target}")
 
     def _upper_target_hit(self, **kwargs):
         if self._in_summary_or_done():
             return
 
-        if self.phase == "get_to_upper" or self.phase == "return_to_upper":
+        if self.phase in ("get_to_upper", "return_to_upper"):
             self.machine.events.post("noah_boddy_upper_target_needs_new_search")
+            return
+
+        if self.phase == "restoring":
+            self.machine.events.post("noah_boddy_upper_target_wait_for_rebuild")
             return
 
         if self.phase != "revealing":
@@ -259,6 +341,7 @@ class NoahBoddy(CaseFileMixin, Mode):
 
         if non_secret_targets:
             target_to_drop = random.choice(non_secret_targets)
+            self.revealed_non_secret_targets.add(target_to_drop)
             self._drop_programmatically(target_to_drop)
             self.machine.events.post(
                 "noah_boddy_non_secret_target_dropped",
@@ -271,9 +354,9 @@ class NoahBoddy(CaseFileMixin, Mode):
             "noah_boddy_upper_target_reveal_hit",
             hits=self.upper_target_hits,
             score=self.upper_target_score,
-            remaining=len(self.standing_targets),
+            remaining=self._remaining_locations(),
         )
-        self._show_mode_message("SEARCHING", f"{len(self.standing_targets)} TARGETS LEFT")
+        self._show_mode_message("SEARCHING", f"{self._remaining_locations()} LOCATIONS LEFT")
 
         self._check_reveal_complete()
         self._sync_vars()
@@ -307,7 +390,7 @@ class NoahBoddy(CaseFileMixin, Mode):
         if self._in_summary_or_done():
             return
 
-        if self.phase == "revealing":
+        if self.phase in ("revealing", "restoring"):
             self._collapse_search("upper_exit_before_reveal")
 
     def _drop_target_hit(self, target=None, **kwargs):
@@ -328,7 +411,7 @@ class NoahBoddy(CaseFileMixin, Mode):
                 self._award_secret_jackpot(source="drop_target")
             return
 
-        if self.phase == "revealing":
+        if self.phase in ("revealing", "restoring"):
             self._collapse_search("lower_drop_before_reveal")
             return
 
@@ -421,19 +504,29 @@ class NoahBoddy(CaseFileMixin, Mode):
             return
 
         self.delay.remove("noah_boddy_hurryup_tick")
-        self._drop_all_remaining_targets()
+        self._cancel_drop_rebuild()
+        self.machine.events.post("reset_drops")
         self.phase = "return_to_upper"
-        self.secret_target = None
+        self.standing_targets = set(self.TARGETS)
         self.hurryup_seconds_left = 0
-        self.machine.events.post("noah_boddy_search_collapsed", reason=reason)
+        self.machine.events.post(
+            "noah_boddy_search_collapsed",
+            reason=reason,
+            revealed=len(self.revealed_non_secret_targets),
+            remaining=self._remaining_locations(),
+        )
+        self.machine.events.post(
+            "noah_boddy_reveal_progress_preserved",
+            revealed=len(self.revealed_non_secret_targets),
+            remaining=self._remaining_locations(),
+        )
         self.machine.events.post("noah_boddy_secret_lights_off")
         self.machine.events.post("noah_boddy_return_to_upper")
-        self._show_mode_message("SEARCH LOST", "RETURN TO THE ROOF")
+        self._show_mode_message(
+            "SEARCH PAUSED",
+            f"{self._remaining_locations()} LEFT - RETURN TO ROOF",
+        )
         self._sync_vars()
-
-    def _drop_all_remaining_targets(self):
-        for target in list(self.standing_targets):
-            self._drop_programmatically(target)
 
     def _drop_programmatically(self, target):
         if target not in self.TARGET_COILS:
@@ -514,6 +607,9 @@ class NoahBoddy(CaseFileMixin, Mode):
     def _current_jackpot_value(self):
         return int(self.jackpot_value * self.jackpot_multiplier)
 
+    def _remaining_locations(self):
+        return len(self.TARGETS) - len(self.revealed_non_secret_targets)
+
     def _sync_vars(self):
         player = self.machine.game.player
         player["active_mode_points"] = self.mode_points
@@ -523,9 +619,13 @@ class NoahBoddy(CaseFileMixin, Mode):
         player["noah_boddy_best_jackpot"] = self.best_jackpot
         player["noah_boddy_jackpot_value"] = self._current_jackpot_value()
         player["noah_boddy_hurryup_seconds"] = self.hurryup_seconds_left
-        player["noah_boddy_secret_target"] = self.TARGET_LABELS[self.secret_target] if self.secret_target else ""
+        player["noah_boddy_secret_target"] = (
+            self.TARGET_LABELS[self.secret_target]
+            if self.secret_target and self.phase == "hurryup"
+            else ""
+        )
         player["noah_boddy_phase"] = self.phase
-        player["noah_boddy_remaining_targets"] = len(self.standing_targets)
+        player["noah_boddy_remaining_targets"] = self._remaining_locations()
         player["noah_boddy_secret_revealed"] = 1 if self.phase == "hurryup" else 0
 
     def _in_summary_or_done(self):

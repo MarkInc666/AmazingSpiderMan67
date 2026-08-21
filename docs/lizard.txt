@@ -2,7 +2,7 @@ Lizard Mode: “Serum Chase”
 
 Core rules:
 - The rooftop gate stays closed for the entire mode.
-- The player gets exactly two serum delivery attempts.
+- The player gets two serum delivery attempts, or three with More Jackpots.
 - During serum collection, GI is red and the red star rollover flashes.
 - Hitting the star immediately starts the delivery timer and changes GI to green.
 - Both deliveries are made at the left web target, which flashes purple.
@@ -16,18 +16,21 @@ Delivery scoring:
 - Base decay: 100,000 per second.
 - More Time decay: 50,000 per second.
 - Delivery value cannot fall below 100,000.
-- The second attempt resets to the full starting value and a fresh timer.
-- A successful serum delivery plays a 2-second white/green web-target success show before the next serum is lit. If More Jackpots is active, its center-web follow-up begins after the success show instead.
+- Each later attempt starts at the current full serum value and receives a fresh timer.
+- A successful serum delivery plays a 2-second white/green left-web success show before the next serum is lit.
 - If a delivery timer expires, GI fades to off over 2 seconds. The next serum attempt does not light until that fade finishes; after the final expired attempt, mode completion also waits for the fade.
+- One or more successful deliveries produces the CURED summary. If every attempt expires, the summary reports that Lizard escaped.
 
 A+B serum boost:
 - The A and B inserts flash yellow while that letter is available and go solid yellow when collected.
-- Completing A+B during an active serum adds 500,000 to the current delivery value and restarts the full delivery timer.
+- Every A+B completion adds 500,000 to the starting value of all remaining serum attempts.
+- If serum is currently active, the same 500,000 is added immediately and the full delivery timer restarts.
+- The cumulative A+B increase has no cap and remains active until the mode ends.
 - The timer restart plays a short GI celebration, then normal Lizard GI resumes automatically.
 - After A+B is completed, both letters reset and flash again for the next A+B cycle.
 
 Case Files:
-- More Jackpots: after a successful left-web delivery, the center web flashes purple for an extra jackpot worth 50% of the collected value. It remains available for 10 seconds or until the star is hit to begin the next serum attempt.
+- More Jackpots: adds a third serum delivery attempt. It uses the same star collection and left-web delivery rules as the first two attempts.
 - Bigger Jackpots: raises the starting delivery value to 1,500,000.
 - More Time: adds 4 seconds and slows decay to 50,000 per second.
 - Safety Net: saves the first expired serum.

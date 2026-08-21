@@ -862,6 +862,9 @@ player_vars:
   active_mode_stat_count:
     initial_value: 0
     value_type: int
+  active_mode_completed:
+    initial_value: 0
+    value_type: int
   active_mode_stat_1:
     initial_value: 0
     value_type: int

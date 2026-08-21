@@ -8,15 +8,15 @@ import random
 class Pardo(CaseFileMixin, Mode):
     """Pardo: Hypnosis Reel.
 
-    Five-shot illusion puzzle for the Hypnosis Reel.
+    Five-chance illusion puzzle for the Hypnosis Reel.
     Each round lights three identical-looking choices. The spinner briefly
-    reveals the real shot. Correct shots score Hypnosis Jackpots; wrong shots
-    score small points and build toward Pardo escaping.
+    reveals the real shot. Three correct choices defeat Pardo. If the available
+    chances expire first, Pardo escapes.
     """
 
     BASE_ROUNDS = 5
     EXTRA_ROUNDS = 2
-    MAX_INCORRECT_SHOTS = 7
+    CORRECT_SHOTS_TO_WIN = 3
 
     BASE_JACKPOT_VALUE = 100_000
     JACKPOT_STEP = 50_000
@@ -24,9 +24,10 @@ class Pardo(CaseFileMixin, Mode):
     BIGGER_JACKPOT_STEP = 75_000
     BAD_SHOT_SCORE = 10_000
 
-    NORMAL_REVEAL_MS = 2_000
-    MORE_TIME_REVEAL_MS = 4_000
+    NORMAL_REVEAL_MS = 3_000
+    MORE_TIME_REVEAL_MS = 5_000
     REVEAL_FLASH_INTERVAL_MS = 250
+    RESULT_GI_FLASH_MS = 350
 
     SHOT_GROUPS = [
         "left_web",
@@ -70,7 +71,7 @@ class Pardo(CaseFileMixin, Mode):
         self._apply_case_file_bonuses()
         self.publish_case_file_bonus_events("pardo")
         self.publish_active_case_file_helpers([
-            ("more_jackpots", "TWO EXTRA HYPNOSIS JACKPOTS"),
+            ("more_jackpots", "TWO EXTRA HYPNOSIS CHANCES"),
             ("bigger_jackpots", "BIGGER HYPNOSIS JACKPOTS"),
             ("more_time", "LONGER SPINNER REVEAL"),
             ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
@@ -95,6 +96,7 @@ class Pardo(CaseFileMixin, Mode):
         self.machine.events.post("hide_mode_status")
         self.delay.remove("pardo_hide_reveal")
         self.delay.remove("pardo_reveal_flash")
+        self.delay.remove("pardo_result_gi_restore")
         self.machine.events.post("pardo_all_lights_off")
         self.machine.events.post("rooftop_diverter_close")
         self.clear_active_case_file_helpers()
@@ -130,7 +132,7 @@ class Pardo(CaseFileMixin, Mode):
         self.delay.remove("pardo_hide_reveal")
 
         if self.round_number >= self.rounds_to_play:
-            self._complete_mode()
+            self._fail_mode()
             return
 
         self.round_number += 1
@@ -184,9 +186,12 @@ class Pardo(CaseFileMixin, Mode):
             correct_shots=self.correct_shots,
         )
         self.machine.events.post(f"pardo_correct_{group}")
+        self._schedule_result_gi_restore()
         self.machine.events.post("show_mode_jackpot", message_mode_title="HYPNOSIS JACKPOT", message_mode_subtitle=group.replace("_", " ").upper(), message_mode_value=self.jackpot_value)
         self.jackpot_value += self.jackpot_step
         self._sync_player_vars()
+        if self.correct_shots >= self.CORRECT_SHOTS_TO_WIN:
+            self._complete_mode()
 
     def _collect_bad_shot(self, group):
         self._score(self.BAD_SHOT_SCORE)
@@ -195,14 +200,17 @@ class Pardo(CaseFileMixin, Mode):
             "pardo_incorrect_shot",
             group=group,
             incorrect_shots=self.incorrect_shots,
-            max_incorrect=self.MAX_INCORRECT_SHOTS,
+            chances_used=self.round_number,
+            total_chances=self.rounds_to_play,
         )
         self.machine.events.post(f"pardo_incorrect_{group}")
-        self.machine.events.post("show_mode_message", message_mode_title="WRONG SHOT", message_mode_subtitle=f"HYPNOSIS {self.incorrect_shots} / {self.MAX_INCORRECT_SHOTS}")
+        self._schedule_result_gi_restore()
+        self.machine.events.post(
+            "show_mode_message",
+            message_mode_title="WRONG SHOT",
+            message_mode_subtitle=f"CHANCE {self.round_number} OF {self.rounds_to_play}",
+        )
         self._sync_player_vars()
-
-        if self.incorrect_shots >= self.MAX_INCORRECT_SHOTS:
-            self._fail_mode()
 
     def _reveal_current_round(self, **kwargs):
         if self._inactive() or not self.current_groups:
@@ -252,6 +260,18 @@ class Pardo(CaseFileMixin, Mode):
         for group in self.current_groups:
             self.machine.events.post(f"pardo_hidden_{group}")
 
+    def _schedule_result_gi_restore(self):
+        """Return the result-flash GI section to Pardo's normal GI color."""
+        self.delay.reset(
+            name="pardo_result_gi_restore",
+            ms=self.RESULT_GI_FLASH_MS,
+            callback=self._restore_result_gi,
+        )
+
+    def _restore_result_gi(self, **kwargs):
+        if not self.mode_done:
+            self.machine.events.post("pardo_result_gi_restore")
+
     def _update_rooftop_diverter(self):
         if any(group in self.UPPER_GROUPS for group in self.current_groups):
             self.machine.events.post("rooftop_diverter_open")
@@ -265,6 +285,7 @@ class Pardo(CaseFileMixin, Mode):
         player = self.machine.game.player if self.machine.game else None
         if player:
             player["pardo_state"] = 2
+            player["active_mode_completed"] = 1
         self.machine.events.post("pardo_all_lights_off")
         self.machine.events.post("show_mode_message_long", message_mode_title="PARDO DEFEATED", message_mode_subtitle="HYPNOSIS BROKEN")
         self.machine.events.post("pardo_mode_complete")
@@ -276,6 +297,7 @@ class Pardo(CaseFileMixin, Mode):
         player = self.machine.game.player if self.machine.game else None
         if player:
             player["pardo_state"] = 2
+            player["active_mode_completed"] = 0
         self.machine.events.post("pardo_all_lights_off")
         self.machine.events.post("show_mode_message_long", message_mode_title="PARDO ESCAPES", message_mode_subtitle="MIND CONTROL WINS")
         self.machine.events.post("pardo_mode_complete")
@@ -298,8 +320,8 @@ class Pardo(CaseFileMixin, Mode):
         self._update_mode_status()
 
     def _update_mode_status(self):
-        title = "CORRECT / WRONG"
-        value = f"{self.correct_shots}/{self.rounds_to_play} / {self.incorrect_shots}/{self.MAX_INCORRECT_SHOTS}"
+        title = "CORRECT / CHANCE"
+        value = f"{self.correct_shots}/{self.CORRECT_SHOTS_TO_WIN} / {self.round_number}/{self.rounds_to_play}"
         self.machine.events.post("update_mode_status", mode_status_title=title, mode_status_value=value)
 
     def _inactive(self):

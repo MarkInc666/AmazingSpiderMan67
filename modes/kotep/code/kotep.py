@@ -19,6 +19,8 @@ class Kotep(CaseFileMixin, Mode):
     )
     DEMONS_REQUIRED = 4
     DEMON_ADD_INTERVAL_MS = 4000
+    DEMON_FLASH_INTERVAL_MS = 300
+    SUPER_BURST_MS = 600
     SCEPTER_TIMER_SECONDS = 20
     MORE_TIME_SCEPTER_SECONDS = 30
     DEMON_JACKPOT_VALUES = (200_000, 250_000, 300_000, 350_000)
@@ -32,6 +34,7 @@ class Kotep(CaseFileMixin, Mode):
         self.reset_active_mode_summary(stat_count=3)
         self.delay = DelayManager(self.machine)
         self.mode_done = False
+        self.completion_pending = False
         self.phase = "demons"
         self.mode_points = 0
         self.demons_destroyed = 0
@@ -64,6 +67,7 @@ class Kotep(CaseFileMixin, Mode):
         self.introduced_demons = []
         self.active_demons = set()
         self.destroyed_demons = set()
+        self.demon_flash_on = {}
 
         player = self.machine.game.player
         player["active_mode_points"] = 0
@@ -107,8 +111,11 @@ class Kotep(CaseFileMixin, Mode):
     def mode_stop(self, **kwargs):
         self.delay.remove("kotep_add_demon")
         self.delay.remove("kotep_scepter_tick")
+        self.delay.remove("kotep_super_burst")
+        for shot in self.DEMON_SHOTS:
+            self._stop_demon_flash(shot)
         self.machine.events.post("kotep_clear_lights")
-        self.machine.events.post("kotep_stop_gi_flash")
+        self.machine.events.post("kotep_stop_scepter_ramp_flash")
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("reset_drops")
         self.machine.events.post("clear_saucers_delayed")
@@ -144,8 +151,39 @@ class Kotep(CaseFileMixin, Mode):
         if shot not in self.destroyed_demons:
             self.active_demons.add(shot)
             self.machine.events.post("kotep_demon_lit", shot=shot)
-            self.machine.events.post(f"kotep_light_{shot}")
+            self._start_demon_flash(shot)
         self._sync_vars()
+
+    def _start_demon_flash(self, shot):
+        if shot not in self.active_demons:
+            return
+        self.demon_flash_on[shot] = True
+        self.machine.events.post(f"kotep_light_{shot}")
+        self.delay.reset(
+            name=f"kotep_demon_flash_{shot}",
+            ms=self.DEMON_FLASH_INTERVAL_MS,
+            callback=self._toggle_demon_flash,
+            shot=shot,
+        )
+
+    def _toggle_demon_flash(self, shot=None, **kwargs):
+        if self.mode_done or shot not in self.active_demons:
+            return
+        is_on = not self.demon_flash_on.get(shot, False)
+        self.demon_flash_on[shot] = is_on
+        event = f"kotep_light_{shot}" if is_on else f"kotep_dim_{shot}"
+        self.machine.events.post(event)
+        self.delay.reset(
+            name=f"kotep_demon_flash_{shot}",
+            ms=self.DEMON_FLASH_INTERVAL_MS,
+            callback=self._toggle_demon_flash,
+            shot=shot,
+        )
+
+    def _stop_demon_flash(self, shot):
+        self.delay.remove(f"kotep_demon_flash_{shot}")
+        self.demon_flash_on.pop(shot, None)
+        self.machine.events.post(f"kotep_unlight_{shot}")
 
     def _schedule_next_demon(self):
         if self.phase != "demons" or self._next_unintroduced_required_demon() is None:
@@ -177,7 +215,7 @@ class Kotep(CaseFileMixin, Mode):
         self.demons_destroyed += 1
         jackpot = self.demon_jackpot_values[self.demons_destroyed - 1]
         self._score(jackpot)
-        self.machine.events.post(f"kotep_unlight_{shot}")
+        self._stop_demon_flash(shot)
         self.machine.events.post(
             "kotep_demon_destroyed",
             shot=shot,
@@ -225,9 +263,11 @@ class Kotep(CaseFileMixin, Mode):
 
         self.phase = "scepter"
         self.delay.remove("kotep_add_demon")
+        for shot in tuple(self.active_demons):
+            self._stop_demon_flash(shot)
         self.active_demons.clear()
         self.machine.events.post("kotep_clear_demon_lights")
-        self.machine.events.post("kotep_start_gi_flash")
+        self.machine.events.post("kotep_start_scepter_ramp_flash")
         self.machine.events.post("rooftop_diverter_open")
         self.machine.events.post("kotep_scepter_lit")
 
@@ -235,7 +275,7 @@ class Kotep(CaseFileMixin, Mode):
             self.bonus_demon_available = True
             self.active_demons.add(self.bonus_demon)
             self.machine.events.post("kotep_bonus_demon_lit", shot=self.bonus_demon)
-            self.machine.events.post(f"kotep_light_{self.bonus_demon}")
+            self._start_demon_flash(self.bonus_demon)
 
         self.scepter_seconds_left = self.scepter_timer_seconds
         self._sync_vars()
@@ -254,7 +294,7 @@ class Kotep(CaseFileMixin, Mode):
         self.bonus_demon_available = False
         self.bonus_demons_destroyed = 1
         self._score(self.BONUS_DEMON_VALUE)
-        self.machine.events.post(f"kotep_unlight_{shot}")
+        self._stop_demon_flash(shot)
         self.machine.events.post(
             "kotep_bonus_demon_destroyed",
             shot=shot,
@@ -285,7 +325,7 @@ class Kotep(CaseFileMixin, Mode):
         self._schedule_scepter_tick()
 
     def _vuk_hit(self, **kwargs):
-        if self.mode_done:
+        if self.mode_done or self.completion_pending:
             return
 
         if self.phase != "scepter":
@@ -295,7 +335,7 @@ class Kotep(CaseFileMixin, Mode):
         # The optional fifth demon is lost if the Super is collected first.
         if self.bonus_demon_available and self.bonus_demon in self.active_demons:
             self.active_demons.remove(self.bonus_demon)
-            self.machine.events.post(f"kotep_unlight_{self.bonus_demon}")
+            self._stop_demon_flash(self.bonus_demon)
             self.bonus_demon_available = False
 
         self.delay.remove("kotep_scepter_tick")
@@ -305,6 +345,16 @@ class Kotep(CaseFileMixin, Mode):
         self.machine.events.post("kotep_scepter_destroyed", value=self.scepter_super_value)
         self._show_jackpot("SUPER JACKPOT", self.scepter_super_value, "SCEPTER DESTROYED")
         self.machine.events.post("villain_summary_hold_vuk_until_done")
+        self.machine.events.post("kotep_super_burst")
+        self.completion_pending = True
+        self.delay.reset(
+            name="kotep_super_burst",
+            ms=self.SUPER_BURST_MS,
+            callback=self._finish_super,
+        )
+
+    def _finish_super(self):
+        self.completion_pending = False
         self._complete_mode()
 
     def _complete_mode(self, **kwargs):
@@ -314,6 +364,7 @@ class Kotep(CaseFileMixin, Mode):
         self.phase = "done"
         player = self.machine.game.player
         player[f"{self.MODE_KEY}_state"] = 2
+        player["active_mode_completed"] = 1
         self._sync_vars()
         self.machine.events.post("kotep_mode_complete")
 
@@ -324,6 +375,7 @@ class Kotep(CaseFileMixin, Mode):
         self.phase = "done"
         player = self.machine.game.player
         player[f"{self.MODE_KEY}_state"] = 2
+        player["active_mode_completed"] = 0
         self._sync_vars()
         self.machine.events.post("kotep_scepter_survived")
         self._show_message("THE SCEPTER SURVIVED", "SCARLET SORCERER ESCAPES")
