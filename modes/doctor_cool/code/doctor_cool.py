@@ -263,13 +263,16 @@ class DoctorCool(Mode, CaseFileMixin):
             message_mode_subtitle=f"{self.jackpots_collected}/{self.required_jackpots} SHIPMENTS",
             message_mode_value=award,
         )
+        terminal_saucer = self.jackpots_collected >= self.required_jackpots
+        if terminal_saucer:
+            self.machine.events.post("villain_summary_hold_saucer_until_done")
         self._kick_saucer(saucer)
         self._sync_vars()
 
         self.machine.events.post("drop_target_bank_dt_bank_left_reset")
         self.machine.events.post("drop_target_bank_dt_bank_right_reset")
 
-        if self.jackpots_collected >= self.required_jackpots:
+        if terminal_saucer:
             self.mode_done = True
             self.delay.add(name="doctor_cool_complete_delay", ms=1_000, callback=self._complete_mode)
         else:

@@ -68,6 +68,12 @@ class Bonus(MpfBonus):
         self._player = self.machine.game.player
         self._bonus_running = True
 
+        # Remove gameplay widgets before the first bonus token update. GMC
+        # queues widget deletion, so bonus_start intentionally does not call
+        # slide action:update; _begin_bonus_sequence supplies the first update
+        # after the existing teardown delay.
+        self.machine.events.post("mode_display_context_cleared")
+
         self.machine.events.post("bonus_start", ball=self._player["ball"])
 
         # Let other ball_ending handlers finish banking values before the

@@ -19,6 +19,7 @@ class Infinata(CaseFileMixin, Mode):
     BIGGER_SUPER_VALUE = 1_500_000
     SUPER_SECONDS = 20
     MORE_TIME_SUPER_SECONDS = 30
+    VUK_EJECT_DELAY_MS = 1_500
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
@@ -201,7 +202,10 @@ class Infinata(CaseFileMixin, Mode):
         rooftop gate is open for the upper-target area and the VUK is acting as
         the feed to the upper playfield.
         """
-        self.machine.events.post("request_vuk_eject", delay_ms=1_000)
+        self.machine.events.post(
+            "request_vuk_eject",
+            delay_ms=self.VUK_EJECT_DELAY_MS,
+        )
 
     def _saucer_hit(self, **kwargs):
         if self.mode_done or self.phase != "super":
@@ -209,6 +213,7 @@ class Infinata(CaseFileMixin, Mode):
         self.delay.remove("infinata_super_tick")
         self.super_jackpots = 1
         self._score(self.super_value)
+        self.machine.events.post("villain_summary_hold_saucer_until_done")
         self.machine.events.post("infinata_super_collected", value=self.super_value)
         self._show_jackpot("SUPER JACKPOT", self.super_value, "INFINATA DEFEATED")
         self._complete_mode()

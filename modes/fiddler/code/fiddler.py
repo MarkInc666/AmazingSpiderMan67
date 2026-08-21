@@ -10,7 +10,11 @@ class Fiddler(CaseFileMixin, Mode):
 
     MODE_KEY = "fiddler"
     DISPLAY_NAME = "FIDDLER"
-    DEMO_NOTE_MS = 2_000
+    DEMO_PATTERN_REPEATS = 4
+    DEMO_PATTERN_TICK_MS = 100
+    DEMO_PULSE_ON_MS = 200
+    DEMO_PULSE_GAP_MS = 100
+    DEMO_PATTERN_END_GAP_MS = 400
     STAGE_DELAY_MS = 2_000
     BASE_REMINDER_MS = 14_000
     MORE_TIME_REMINDER_MS = 8_000
@@ -155,9 +159,9 @@ class Fiddler(CaseFileMixin, Mode):
             self.demonstrating = False
             self._complete_round()
             return
-        self._demonstrate_note(remaining, 0)
+        self._demonstrate_note(remaining, 0, self.expected_index)
 
-    def _demonstrate_note(self, notes, index):
+    def _demonstrate_note(self, notes, index, position_offset):
         if self.mode_done:
             return
         if index >= len(notes):
@@ -166,19 +170,45 @@ class Fiddler(CaseFileMixin, Mode):
             return
 
         shot = notes[index]
-        self.machine.events.post(f"fiddler_{shot}_flash")
+        position = position_offset + index + 1
         self.machine.events.post(self.NOTE_EVENTS[shot])
-        self.delay.add(
-            name="fiddler_demo_step",
-            ms=self.DEMO_NOTE_MS,
-            callback=partial(self._finish_demo_note, notes=notes, index=index, shot=shot),
-        )
+        self._demo_pattern_tick(notes, index, position_offset, shot, position, 0)
 
-    def _finish_demo_note(self, notes, index, shot):
+    def _demo_pattern_tick(self, notes, index, position_offset, shot, position, elapsed_ms):
         if self.mode_done:
             return
-        self.machine.events.post(f"fiddler_{shot}_solid")
-        self._demonstrate_note(notes, index + 1)
+
+        cycle_ms = (
+            position * self.DEMO_PULSE_ON_MS
+            + (position - 1) * self.DEMO_PULSE_GAP_MS
+            + self.DEMO_PATTERN_END_GAP_MS
+        )
+        total_ms = cycle_ms * self.DEMO_PATTERN_REPEATS
+        if elapsed_ms >= total_ms:
+            self.machine.events.post(f"fiddler_{shot}_solid")
+            self._demonstrate_note(notes, index + 1, position_offset)
+            return
+
+        cycle_elapsed = elapsed_ms % cycle_ms
+        pulse_spacing_ms = self.DEMO_PULSE_ON_MS + self.DEMO_PULSE_GAP_MS
+        light_on = any(
+            pulse * pulse_spacing_ms <= cycle_elapsed < pulse * pulse_spacing_ms + self.DEMO_PULSE_ON_MS
+            for pulse in range(position)
+        )
+        self.machine.events.post(f"fiddler_{shot}_{'solid' if light_on else 'off'}")
+        self.delay.reset(
+            name="fiddler_demo_step",
+            ms=self.DEMO_PATTERN_TICK_MS,
+            callback=partial(
+                self._demo_pattern_tick,
+                notes,
+                index,
+                position_offset,
+                shot,
+                position,
+                elapsed_ms + self.DEMO_PATTERN_TICK_MS,
+            ),
+        )
 
     def _begin_response_phase(self):
         if self.mode_done:

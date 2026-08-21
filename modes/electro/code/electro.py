@@ -368,6 +368,8 @@ class Electro(CaseFileMixin, Mode):
         self.current_shot.is_lit = False
         self.current_shot.is_jackpot = False
 
+        if self.current_shot.name == "saucers":
+            self.machine.events.post("villain_summary_hold_saucer_until_done")
         self._show_message("ELECTRO SUPER", "SUPER JACKPOT", value=self.electro_super_jackpot, event="show_mode_jackpot")
         self.machine.events.post("electro_super_collected")
         self.machine.events.post("electro_super_timer_stop")

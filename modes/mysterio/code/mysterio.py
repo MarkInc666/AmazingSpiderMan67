@@ -293,6 +293,8 @@ class Mysterio(CaseFileMixin, Mode):
             message_mode_title="MYSTERIO SUPER JACKPOT",
             message_mode_value=collected_value,
         )
+        if shot.name == "saucers":
+            self.machine.events.post("villain_summary_hold_saucer_until_done")
         self.delay.add(
             name=self.COMPLETION_DELAY_NAME,
             ms=self.COMPLETION_HOLD_MS,

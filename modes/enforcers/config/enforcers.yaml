@@ -27,7 +27,6 @@ event_player:
     - clear_saucers
     - drop_target_bank_dt_bank_left_reset
     - drop_target_bank_dt_bank_right_reset
-    - enforcers_clear_all_lights
     - enforcers_clear_upper_shows
     - enforcers_clear_saucers
 
@@ -393,16 +392,25 @@ shows:
   enforcers_ox_chase:
     - duration: 300ms
       lights:
-        l_advance_multiplier: red
-        l_mid_multibonus: off
+        l_mid_multibonus: white
+        l_advance_multiplier: off
+        l_special: off
         l_mid_web_target: off
     - duration: 300ms
       lights:
-        l_advance_multiplier: off
-        l_mid_multibonus: red
+        l_mid_multibonus: off
+        l_advance_multiplier: white
+        l_special: off
         l_mid_web_target: off
     - duration: 300ms
       lights:
-        l_advance_multiplier: off
         l_mid_multibonus: off
-        l_mid_web_target: red
+        l_advance_multiplier: off
+        l_special: white
+        l_mid_web_target: off
+    - duration: 300ms
+      lights:
+        l_mid_multibonus: off
+        l_advance_multiplier: off
+        l_special: off
+        l_mid_web_target: white

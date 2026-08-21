@@ -13,6 +13,7 @@ class HarleyClivendon(CaseFileMixin, Mode):
     BIGGER_JACKPOT_PER_AREA = 150_000
     MIN_JACKPOT_AREAS = 4
     SAFETY_NET_SECONDS = 10
+    GATE_CLOSE_FALLBACK_MS = 5_000
     SAUCER_EJECT_EVENTS = {
         1: "delayed_kickout_saucer_1",
         2: "delayed_kickout_saucer_2",
@@ -36,6 +37,8 @@ class HarleyClivendon(CaseFileMixin, Mode):
         self.biggest_jackpot = 0
         self.safety_net_used = False
         self.shot_assist_used = False
+        self.rooftop_gate_open = False
+        self.waiting_for_upper_entry = False
         self.jackpot_per_area = self.BIGGER_JACKPOT_PER_AREA if self.has_case_file("bigger_jackpots") else self.BASE_JACKPOT_PER_AREA
         self.opening_save_seconds = 25 if self.has_case_file("more_time") else 15
 
@@ -53,6 +56,7 @@ class HarleyClivendon(CaseFileMixin, Mode):
         for saucer in (1, 2, 3):
             self.add_mode_event_handler(f"harley_saucer_{saucer}", partial(self._saucer_hit, saucer=saucer))
         self.add_mode_event_handler("harley_vuk_hit", self._vuk_hit)
+        self.add_mode_event_handler("s_upper_entrance_opto_active", self._upper_entrance_reached)
         self.add_mode_event_handler("multiball_harley_multiball_ended", self._multiball_ended)
 
         self.machine.events.post("disable_daily_bugle_mystery")
@@ -69,8 +73,9 @@ class HarleyClivendon(CaseFileMixin, Mode):
 
         self.machine.events.post("reset_drops")
         self.machine.events.post("clear_saucers_delayed")
+        self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("harley_start_multiball")
-        self.machine.events.post("harley_round_reset")
+        self.machine.events.post("harley_area_lights_clear")
         self.machine.events.post("show_mode_message_long", message_mode_title="HYPNOTIC HOLD", message_mode_subtitle="LOCK A BALL - LIGHT 4 AREAS")
         self._sync()
 
@@ -103,6 +108,9 @@ class HarleyClivendon(CaseFileMixin, Mode):
         self._score(self.SAUCER_SCORE)
         self.machine.events.post("harley_saucers_unavailable")
         self.machine.events.post(f"harley_saucer_{saucer}_held")
+        self.machine.events.post("harley_area_build_started")
+        for area in self.lit_areas:
+            self.machine.events.post(f"harley_area_{area}_lit")
         self.machine.events.post("show_mode_message_long", message_mode_title="BALL CAPTURED", message_mode_subtitle="LIGHT PLAYFIELD AREAS", message_mode_value=self.SAUCER_SCORE)
         self._sync()
 
@@ -126,11 +134,21 @@ class HarleyClivendon(CaseFileMixin, Mode):
         )
         self.machine.events.post("show_mode_jackpot", message_mode_title="HARLEY JACKPOT", message_mode_subtitle=f"{len(self.lit_areas)} AREAS", message_mode_value=value)
 
+        # Keep the gate open through the delayed VUK kick. Close it only after
+        # the ball reaches the upper entrance, with a fallback for a missed opto.
+        self.waiting_for_upper_entry = True
+        self._open_rooftop_gate()
+        self.delay.reset(
+            name="harley_gate_close_fallback",
+            ms=self.GATE_CLOSE_FALLBACK_MS,
+            callback=self._finish_vuk_gate_passage,
+        )
+
         keep = set()
         if self.has_case_file("more_jackpots"):
             keep = set(random.sample(list(self.lit_areas), min(2, len(self.lit_areas))))
         self.lit_areas = keep
-        self.machine.events.post("harley_round_reset")
+        self.machine.events.post("harley_area_lights_clear")
         for area in keep:
             self.machine.events.post(f"harley_area_{area}_lit")
 
@@ -161,6 +179,31 @@ class HarleyClivendon(CaseFileMixin, Mode):
     def _eject_vuk(self, delay_ms=750):
         self.delay.reset(name="harley_vuk_eject", ms=delay_ms, callback=self.machine.events.post, event="up_kick")
 
+    def _vuk_ready(self):
+        return self.held_saucer is not None and len(self.lit_areas) >= self.MIN_JACKPOT_AREAS
+
+    def _open_rooftop_gate(self):
+        if self.rooftop_gate_open:
+            return
+        self.rooftop_gate_open = True
+        self.machine.events.post("rooftop_diverter_open")
+
+    def _close_rooftop_gate(self):
+        if not self.rooftop_gate_open:
+            return
+        self.rooftop_gate_open = False
+        self.machine.events.post("rooftop_diverter_close")
+
+    def _upper_entrance_reached(self, **kwargs):
+        if self.waiting_for_upper_entry:
+            self._finish_vuk_gate_passage()
+
+    def _finish_vuk_gate_passage(self, **kwargs):
+        self.delay.remove("harley_gate_close_fallback")
+        self.waiting_for_upper_entry = False
+        if not self._vuk_ready():
+            self._close_rooftop_gate()
+
     def _multiball_ended(self, **kwargs):
         if self.mode_done:
             return
@@ -187,15 +230,24 @@ class HarleyClivendon(CaseFileMixin, Mode):
         if self.held_saucer is not None:
             status = f"VUK JACKPOT {value:,}" if len(self.lit_areas) >= 4 else "LIGHT 4 AREAS"
         self.machine.events.post("update_mode_status", mode_status_title=title, mode_status_value=status)
-        self.machine.events.post("harley_vuk_ready" if self.held_saucer is not None and len(self.lit_areas) >= 4 else "harley_vuk_not_ready")
+        ready = self._vuk_ready()
+        self.machine.events.post("harley_vuk_ready" if ready else "harley_vuk_not_ready")
+        if ready:
+            self._open_rooftop_gate()
+        elif not self.waiting_for_upper_entry:
+            self._close_rooftop_gate()
 
     def mode_stop(self, **kwargs):
+        self.delay.remove("harley_gate_close_fallback")
         self.machine.events.post("hide_mode_status")
         self.machine.events.post("harley_mode_ended")
         self.clear_active_case_file_helpers()
         if self.held_saucer is not None:
             self._eject_saucer(self.held_saucer)
         self._eject_vuk(0)
+        self.waiting_for_upper_entry = False
+        self._close_rooftop_gate()
+        self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("enable_daily_bugle_mystery")
         self.machine.events.post("daily_bugle_restore_state")
         super().mode_stop(**kwargs)

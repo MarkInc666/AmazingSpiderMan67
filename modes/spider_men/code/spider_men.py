@@ -184,6 +184,12 @@ class SpiderMen(CaseFileMixin, Mode):
         self._sync_vars()
 
         if all(self.aligned):
+            terminal_saucer = (
+                self.SHOTS[index]["key"].startswith("saucer_")
+                and not self.has_case_file("more_jackpots")
+            )
+            if terminal_saucer:
+                self.machine.events.post("villain_summary_hold_saucer_until_done")
             self._alignment_complete()
 
     def _award_alignment(self, index, assisted=False):

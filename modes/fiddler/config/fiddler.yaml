@@ -17,19 +17,18 @@ widget_player:
   mode_fiddler_stopping:
     fiddler: {action: remove}
 
-# Temporary mappings. Replace these sound assets with the final violin notes later;
-# the Python gameplay only posts play_note_1..4 and play_bad_note.
+# The Python gameplay posts play_note_1..4 and play_bad_note.
 sound_player:
   play_note_1:
-    spark_1: {action: play, bus: effects}
+    violin_1: {action: play, bus: effects}
   play_note_2:
-    spark_1: {action: play, bus: effects}
+    violin_2: {action: play, bus: effects}
   play_note_3:
-    spark_1: {action: play, bus: effects}
+    violin_3: {action: play, bus: effects}
   play_note_4:
-    spark_1: {action: play, bus: effects}
+    violin_4: {action: play, bus: effects}
   play_bad_note:
-    electro_zap: {action: play, bus: effects}
+    violin_bad_note: {action: play, bus: effects}
 
 event_player:
   s_web_target_left_active: fiddler_left_web_hit
@@ -81,64 +80,3 @@ light_player:
     l_mid_web_target: off
     l_gi_5bank_lower: off
     l_gi_5bank_upper: off
-
-shows:
-  fiddler_left_web_flash_show:
-    - duration: 200ms
-      lights: {l_left_web_target: white}
-    - duration: 200ms
-      lights: {l_left_web_target: off}
-  fiddler_left_bank_flash_show:
-    - duration: 200ms
-      lights: {l_gi_3bank: 60F060}
-    - duration: 200ms
-      lights: {l_gi_3bank: off}
-  fiddler_center_web_flash_show:
-    - duration: 200ms
-      lights: {l_mid_web_target: white}
-    - duration: 200ms
-      lights: {l_mid_web_target: off}
-  fiddler_right_bank_flash_show:
-    - duration: 200ms
-      lights:
-        l_gi_5bank_lower: 60F060
-        l_gi_5bank_upper: 60F060
-    - duration: 200ms
-      lights:
-        l_gi_5bank_lower: off
-        l_gi_5bank_upper: off
-
-show_player:
-  fiddler_left_web_flash:
-    fiddler_left_web_flash_show: {loops: 5}
-  fiddler_left_web_solid:
-    fiddler_left_web_flash_show: {action: stop}
-  fiddler_left_web_off:
-    fiddler_left_web_flash_show: {action: stop}
-
-  fiddler_left_bank_flash:
-    fiddler_left_bank_flash_show: {loops: 5}
-  fiddler_left_bank_solid:
-    fiddler_left_bank_flash_show: {action: stop}
-  fiddler_left_bank_off:
-    fiddler_left_bank_flash_show: {action: stop}
-
-  fiddler_center_web_flash:
-    fiddler_center_web_flash_show: {loops: 5}
-  fiddler_center_web_solid:
-    fiddler_center_web_flash_show: {action: stop}
-  fiddler_center_web_off:
-    fiddler_center_web_flash_show: {action: stop}
-
-  fiddler_right_bank_flash:
-    fiddler_right_bank_flash_show: {loops: 5}
-  fiddler_right_bank_solid:
-    fiddler_right_bank_flash_show: {action: stop}
-  fiddler_right_bank_off:
-    fiddler_right_bank_flash_show: {action: stop}
-
-  fiddler_all_notes_off:
-    fiddler_left_web_flash_show: {action: stop}
-    fiddler_left_bank_flash_show: {action: stop}
-    fiddler_center_web_flash_show: {action: stop}
-    fiddler_right_bank_flash_show: {action: stop}

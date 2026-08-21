@@ -463,14 +463,14 @@ class VillainBookends(Mode):
         #   stat_2_label: MAJOR HITS
         'kotep': {
             'title': 'KOTEP',
-            'intro_1': 'Kotep, the Kotep, summons his demons.',
-            'intro_2': 'Hit mystic shots.',
-            'intro_3': 'Break the curse.',
+            'intro_1': 'Demons appear every 4 seconds.',
+            'intro_2': 'Destroy all four lit demons.',
+            'intro_3': 'Then shoot the VUK for the scepter.',
             'summary_title_complete': 'KOTEP DEFEATED',
             'summary_title_failed': 'KOTEP ESCAPED',
-            'stat_1_label': 'HITS',
+            'stat_1_label': 'DEMONS',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'MAJORS',
+            'stat_2_label': 'SUPERS',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'kotep_state',
@@ -543,14 +543,14 @@ class VillainBookends(Mode):
         #   stat_2_label: MAJOR HITS
         'dr_magneto': {
             'title': 'DR. MAGNETO',
-            'intro_1': 'Magneto moves shots.',
-            'intro_2': 'Spinner stabilizes.',
-            'intro_3': 'Cash the lit shot.',
+            'intro_1': 'Slings and inlanes light A / B.',
+            'intro_2': 'Collect A / B, then hit its pop.',
+            'intro_3': 'Both pops light center web Super.',
             'summary_title_complete': 'DR. MAGNETO DEFEATED',
             'summary_title_failed': 'DR. MAGNETO ESCAPED',
-            'stat_1_label': 'HITS',
+            'stat_1_label': 'CIRCUIT SHOTS',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'MAJORS',
+            'stat_2_label': 'SUPERS',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'dr_magneto_state',
@@ -1451,6 +1451,7 @@ class VillainBookends(Mode):
                     ms=1_200,
                     callback=self._restore_daily_bugle_after_vuk_release,
                 )
+            self.machine.events.post("villain_summary_release_saucer_holds")
 
         self.machine.events.post("clear_saucers_delayed")
         self.current_stage = None

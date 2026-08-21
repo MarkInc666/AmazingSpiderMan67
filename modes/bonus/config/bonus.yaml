@@ -16,11 +16,9 @@ slide_player:
     main_game:
       action: remove
 
-  bonus_start:
-    bonus:
-      action: update
-      tokens:
-        entry: initial
+  # Do not update the slide immediately on bonus_start. A gameplay MPFWidget
+  # may still be queued for deletion during the ball-ending transition.
+  # The first bonus_entry token update follows after teardown has settled.
 
   bonus_entry:
     bonus:

@@ -279,6 +279,7 @@ class VillainProgression(Mode):
         self.mini_wizard_gate_open_reason = ""
         self.mini_wizard_gate_open_cycle_active = False
         self.mini_wizard_gate_open_attempts = 0
+        self.summary_held_saucers = set()
 
         # Player vars are initialized in config/player_vars.yaml. This mode is
         # a stateless interpreter of those durable vars: it recovers unresolved
@@ -716,6 +717,12 @@ class VillainProgression(Mode):
         self.info_log("CLEAR SAUCERS NOW called. kwargs=%s", kwargs)
 
         for saucer_number, (switch_name, kickout_event) in self.SAUCER_EJECTS.items():
+            if saucer_number in self.summary_held_saucers:
+                self.machine.events.post(
+                    "villain_summary_saucer_eject_suppressed",
+                    saucer=saucer_number,
+                )
+                continue
             active = self.machine.switch_controller.is_active(self.machine.switches[switch_name])
             self.info_log("Saucer check %s active=%s", switch_name, active)
 
@@ -725,12 +732,19 @@ class VillainProgression(Mode):
 
     def _delayed_kickout_saucer(self, saucer_number, **kwargs):
         """Public delayed kickout event for modes that hold/release saucers."""
-        if str(saucer_number) not in self.SAUCER_EJECTS:
+        saucer_number = str(saucer_number)
+        if saucer_number not in self.SAUCER_EJECTS:
             self.warning_log("Unknown delayed saucer kickout requested: %s", saucer_number)
             return
 
         delay_name = f"delayed_kickout_saucer_{saucer_number}"
         self.delay.remove(delay_name)
+        if saucer_number in self.summary_held_saucers:
+            self.machine.events.post(
+                "villain_summary_saucer_eject_suppressed",
+                saucer=saucer_number,
+            )
+            return
         self.delay.add(
             name=delay_name,
             ms=self.SAUCER_EJECT_DELAY_MS,
@@ -739,7 +753,14 @@ class VillainProgression(Mode):
         )
 
     def _kickout_saucer_if_occupied(self, saucer_number, **kwargs):
-        switch_name, kickout_event = self.SAUCER_EJECTS[str(saucer_number)]
+        saucer_number = str(saucer_number)
+        if saucer_number in self.summary_held_saucers:
+            self.machine.events.post(
+                "villain_summary_saucer_eject_suppressed",
+                saucer=saucer_number,
+            )
+            return
+        switch_name, kickout_event = self.SAUCER_EJECTS[saucer_number]
         active = self.machine.switch_controller.is_active(self.machine.switches[switch_name])
         self.info_log("Delayed saucer %s eject check %s active=%s", saucer_number, switch_name, active)
 
@@ -747,6 +768,36 @@ class VillainProgression(Mode):
             self.machine.events.post(kickout_event)
         else:
             self.machine.events.post("delayed_saucer_kickout_skipped_empty", saucer=saucer_number)
+
+    def _hold_saucer_until_summary_done(self, saucer_number=None, **kwargs):
+        """Suppress normal ejects for a terminal saucer shot until summary."""
+        requested = []
+        if saucer_number is not None:
+            requested.append(str(saucer_number).replace("saucer_", ""))
+        else:
+            for number, (switch_name, _kickout_event) in self.SAUCER_EJECTS.items():
+                if self.machine.switch_controller.is_active(self.machine.switches[switch_name]):
+                    requested.append(number)
+
+        for number in requested:
+            if number not in self.SAUCER_EJECTS:
+                continue
+            self.summary_held_saucers.add(number)
+            self.delay.remove(f"delayed_kickout_saucer_{number}")
+            self.machine.events.post(
+                "villain_summary_saucer_hold_started",
+                saucer=number,
+            )
+
+    def _release_summary_saucer_holds(self, **kwargs):
+        """Allow the existing end-of-summary saucer cleanup to eject balls."""
+        held = sorted(self.summary_held_saucers)
+        self.summary_held_saucers.clear()
+        for number in held:
+            self.machine.events.post(
+                "villain_summary_saucer_hold_released",
+                saucer=number,
+            )
 
     def _add_handlers(self):
         # Public API for the rest of the game.
@@ -805,6 +856,8 @@ class VillainProgression(Mode):
         self.add_mode_event_handler("cancel_vuk_eject_request", self._cancel_vuk_eject_request)
         self.add_mode_event_handler("up_kick", self._up_kick_requested)
         self.add_mode_event_handler("villain_summary_hold_vuk_until_done", self._cancel_vuk_eject_request)
+        self.add_mode_event_handler("villain_summary_hold_saucer_until_done", self._hold_saucer_until_summary_done)
+        self.add_mode_event_handler("villain_summary_release_saucer_holds", self._release_summary_saucer_holds)
 
         # Delayed saucer eject API. Raw kickout_saucer_* events still exist for
         # explicit immediate coil tests/manual use, but gameplay modes should use

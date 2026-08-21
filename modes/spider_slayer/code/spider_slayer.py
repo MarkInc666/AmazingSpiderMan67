@@ -19,6 +19,7 @@ class SpiderSlayer(CaseFileMixin, Mode):
     MORE_TIME_DECAY = 50_000
     MIN_JACKPOT = 100_000
     MORE_JACKPOTS_FREEZE_SECONDS = 10
+    VUK_EJECT_DELAY_MS = 1_500
 
     SHOTS = (
         "left_web", "center_web", "left_sling", "right_sling",
@@ -135,10 +136,14 @@ class SpiderSlayer(CaseFileMixin, Mode):
 
     def _vuk_hit(self, **kwargs):
         if self.mode_done:
-            self.machine.events.post("up_kick")
+            # The winning VUK ball is owned by the villain-summary hold. Ignore
+            # switch chatter until VillainBookends releases it after summary.
             return
         if self.phase != "jackpot":
-            self.machine.events.post("up_kick")
+            self.machine.events.post(
+                "request_vuk_eject",
+                delay_ms=self.VUK_EJECT_DELAY_MS,
+            )
             return
 
         self.delay.remove("spider_slayer_begin_decay")

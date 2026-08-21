@@ -72,7 +72,7 @@ widget_player:
     daily_bugle_ab_swap_a:
       action: play
       key: daily_bugle_ab_swap_a
-      expire: 1s
+      expire: 2.45s
 
   daily_bugle_ab_sling_swapped_to_b:
     daily_bugle_ab_swap_a:
@@ -81,7 +81,7 @@ widget_player:
     daily_bugle_ab_swap_b:
       action: play
       key: daily_bugle_ab_swap_b
-      expire: 1s
+      expire: 2.45s
 
   daily_bugle_widget_remove:
     daily_bugle_ready:
@@ -147,16 +147,38 @@ random_event_player:
     - daily_bugle_rooftop_right_exit_1
     - daily_bugle_rooftop_right_exit_2
 
+  daily_bugle_ab_sling_swapped_to_a:
+    - daily_bugle_ab_callout_1
+    - daily_bugle_ab_callout_2
+    - daily_bugle_ab_callout_3
+    - daily_bugle_ab_callout_4
+
+  daily_bugle_ab_sling_swapped_to_b:
+    - daily_bugle_ab_callout_1
+    - daily_bugle_ab_callout_2
+    - daily_bugle_ab_callout_3
+    - daily_bugle_ab_callout_4
+
 
 sound_player:
-  # Play the impostor line only when a sling actually swaps the active A/B
-  # letter and the matching pointing visual is shown.
-  daily_bugle_ab_sling_swapped_to_a:
+  # Four randomized callout slots. They intentionally use the current line as
+  # a placeholder until four replacement recordings are available.
+  daily_bugle_ab_callout_1:
     that_man_is_an_impostor:
       action: play
       bus: voice
 
-  daily_bugle_ab_sling_swapped_to_b:
+  daily_bugle_ab_callout_2:
+    that_man_is_an_impostor:
+      action: play
+      bus: voice
+
+  daily_bugle_ab_callout_3:
+    that_man_is_an_impostor:
+      action: play
+      bus: voice
+
+  daily_bugle_ab_callout_4:
     that_man_is_an_impostor:
       action: play
       bus: voice

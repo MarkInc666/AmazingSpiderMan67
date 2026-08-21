@@ -140,7 +140,10 @@ class Plutonians(CaseFileMixin, Mode):
         for area_name, switches in self.AREA_SWITCHES.items():
             for switch_name in switches:
                 self.add_mode_event_handler(
-                    f"{switch_name}_active", self._area_switch_hit, area=area_name
+                    f"{switch_name}_active",
+                    self._area_switch_hit,
+                    area=area_name,
+                    switch_name=switch_name,
                 )
 
         self.add_mode_event_handler(f"{self.MODE_KEY}_fail_request", self._fail_mode)
@@ -185,7 +188,7 @@ class Plutonians(CaseFileMixin, Mode):
         self.clear_active_case_file_helpers()
         super().mode_stop(**kwargs)
 
-    def _area_switch_hit(self, area=None, **kwargs):
+    def _area_switch_hit(self, area=None, switch_name=None, **kwargs):
         if self.mode_done or not area or area in self.thawed:
             return
 
@@ -203,6 +206,11 @@ class Plutonians(CaseFileMixin, Mode):
                 message_mode_value=self.thaw_value,
             )
 
+        if (
+            len(self.thawed) >= len(self.AREA_SWITCHES)
+            and str(switch_name).startswith("s_saucer_")
+        ):
+            self.machine.events.post("villain_summary_hold_saucer_until_done")
         self._check_completion()
 
     def _thaw_area(self, area, announce=True):

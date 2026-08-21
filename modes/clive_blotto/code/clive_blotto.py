@@ -114,7 +114,10 @@ class CliveBlotto(CaseFileMixin, Mode):
                 # Spinners get their meter action first; an infected spinner area
                 # may also be cleared by the same physical hit.
                 self.add_mode_event_handler(
-                    f"{switch_name}_active", self._area_switch_hit, area=area_name
+                    f"{switch_name}_active",
+                    self._area_switch_hit,
+                    area=area_name,
+                    switch_name=switch_name,
                 )
 
         self.add_mode_event_handler("s_web_spinner_active", self._spinner_hit)
@@ -226,7 +229,7 @@ class CliveBlotto(CaseFileMixin, Mode):
         if len(self.infected) >= len(self.AREA_SWITCHES):
             self._fail_mode(reason="BLOTTO OVERRUN")
 
-    def _area_switch_hit(self, area=None, **kwargs):
+    def _area_switch_hit(self, area=None, switch_name=None, **kwargs):
         if self.mode_done or not area or area not in self.infected:
             return
         self._clear_area(area, assisted=False)
@@ -244,6 +247,12 @@ class CliveBlotto(CaseFileMixin, Mode):
                 message_mode_subtitle=f"{self.AREA_LABELS[assisted_area]} CLEARED",
             )
 
+        if (
+            self.meter == 0
+            and not self.infected
+            and str(switch_name).startswith("s_saucer_")
+        ):
+            self.machine.events.post("villain_summary_hold_saucer_until_done")
         self._check_completion()
 
     def _clear_area(self, area, assisted=False):

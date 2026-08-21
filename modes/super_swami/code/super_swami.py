@@ -50,7 +50,12 @@ class SuperSwami(CaseFileMixin, Mode):
 
         for area_name, switches in self.AREA_SWITCHES.items():
             for switch_name in switches:
-                self.add_mode_event_handler(f"{switch_name}_active", self._area_switch_hit, area=area_name)
+                self.add_mode_event_handler(
+                    f"{switch_name}_active",
+                    self._area_switch_hit,
+                    area=area_name,
+                    switch_name=switch_name,
+                )
 
         self.add_mode_event_handler("s_vuk_switch_active", self._vuk_hit)
         self.add_mode_event_handler(f"{self.MODE_KEY}_fail_request", self._fail_mode)
@@ -89,7 +94,7 @@ class SuperSwami(CaseFileMixin, Mode):
         self.clear_active_case_file_helpers()
         super().mode_stop(**kwargs)
 
-    def _area_switch_hit(self, area=None, **kwargs):
+    def _area_switch_hit(self, area=None, switch_name=None, **kwargs):
         if self.mode_done or self.final_jackpot_lit or not area or area in self.restored:
             return
         self._restore_area(area, scored=True)
@@ -98,6 +103,12 @@ class SuperSwami(CaseFileMixin, Mode):
             other = next(name for name in self.AREA_SWITCHES if name not in self.restored)
             self._restore_area(other, scored=False)
             self.machine.events.post("show_mode_message", message_mode_title="SHOT ASSIST", message_mode_subtitle=f"{self.AREA_LABELS[other]} RESTORED")
+        if (
+            len(self.restored) >= len(self.AREA_SWITCHES)
+            and not self.has_case_file("more_jackpots")
+            and str(switch_name).startswith("s_saucer_")
+        ):
+            self.machine.events.post("villain_summary_hold_saucer_until_done")
         self._check_completion()
 
     def _restore_area(self, area, scored):

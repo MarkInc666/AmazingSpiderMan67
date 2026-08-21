@@ -307,6 +307,8 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
             message_mode_subtitle=f"ROUND {self.rounds_started} / {self.total_rounds}",
             message_mode_value=jackpot,
         )
+        if source == "saucers" and self.rounds_started >= self.total_rounds:
+            self.machine.events.post("villain_summary_hold_saucer_until_done")
         self._sync_vars()
         self._queue_next_round_or_complete()
 
@@ -408,8 +410,11 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
         event = self.LOCATION_LIGHT_EVENTS.get(location)
         if event:
             self.machine.events.post(event)
+        if location == "upper_targets":
+            self.machine.events.post("rooftop_diverter_open")
 
     def _clear_lit_location(self):
+        self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("fifth_avenue_phantom_clear_lights")
         for event in self.LOCATION_STOP_EVENTS.values():
             self.machine.events.post(event)

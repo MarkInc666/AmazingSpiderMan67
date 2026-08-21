@@ -165,12 +165,16 @@ class MetalEatingRobot(CaseFileMixin, Mode):
         self._schedule_next_attack(self.ATTACK_INTERVAL_MS)
         self._sync_vars()
 
-    def _zone_hit(self, zone=None, **kwargs):
+    def _zone_hit(self, zone=None, saucer_number=None, **kwargs):
         if self.mode_done or zone not in self.ZONES:
             return
 
         if zone in self.attacked_zones:
-            self._save_zone(zone, assisted=False)
+            self._save_zone(
+                zone,
+                assisted=False,
+                saucer_number=saucer_number,
+            )
             return
 
         if zone in self.repeat_available:
@@ -186,7 +190,7 @@ class MetalEatingRobot(CaseFileMixin, Mode):
             )
             self._sync_vars()
 
-    def _save_zone(self, zone, assisted=False):
+    def _save_zone(self, zone, assisted=False, saucer_number=None):
         if self.mode_done or zone not in self.attacked_zones:
             return
 
@@ -214,6 +218,15 @@ class MetalEatingRobot(CaseFileMixin, Mode):
             self._schedule_next_attack(self.RETALIATION_INTERVAL_MS)
 
         self._sync_vars()
+        if (
+            saucer_number is not None
+            and len(self.saved_zones) >= self.SAVES_TO_WIN
+            and not self.attacked_zones
+        ):
+            self.machine.events.post(
+                "villain_summary_hold_saucer_until_done",
+                saucer_number=saucer_number,
+            )
         self._check_end_conditions()
 
     def _zone_urgent(self, zone=None):

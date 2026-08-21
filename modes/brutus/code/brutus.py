@@ -218,10 +218,13 @@ class Brutus(CaseFileMixin, Mode):
             value=self._format_score(value),
             event="show_mode_jackpot",
         )
+        terminal_saucer = self.jackpots >= self.required_jackpots
+        if terminal_saucer:
+            self.machine.events.post("villain_summary_hold_saucer_until_done")
         self._eject_saucer(saucer)
         self._sync_vars()
 
-        if self.jackpots >= self.required_jackpots:
+        if terminal_saucer:
             self.mode_done = True
             self.machine.game.player[f"{self.MODE_KEY}_state"] = 2
             self.delay.reset(
