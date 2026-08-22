@@ -174,7 +174,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'mysterio_state',
-            'song': 'play_song_24',
+            'song': 'play_song_63',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Build Venom with the upper spinner.
@@ -251,7 +251,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'vulcan_state',
-            'song': 'play_song_19',
+            'song': 'play_song_64',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Diana takes aim with Trubble's arrows.
@@ -350,7 +350,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'fifth_avenue_phantom_state',
-            'song': 'play_song_25',
+            'song': 'play_song_60',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Work the crime zones: drops, pops, and right bank.
@@ -752,7 +752,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'doctor_atlantean_state',
-            'song': 'play_song_37',
+            'song': 'play_song_62',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Desperado attacks from above the clouds.
@@ -772,7 +772,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'desperado_state',
-            'song': 'play_song_41',
+            'song': 'play_song_59',
         },
         'devargas': {
             'title': 'DEVARGAS',
