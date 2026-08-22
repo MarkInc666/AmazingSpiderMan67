@@ -5,7 +5,9 @@ mode:
   stop_events:
     - cerberus_mode_complete
     - cerberus_mode_completed_summary
-    - ball_ended
+    # Stop before the end-of-ball bonus starts. Waiting for ball_ended leaves
+    # the Cerberus widget/timer alive throughout bonus presentation.
+    - ball_ending
   code: cerberus.Cerberus
   priority: 300
 

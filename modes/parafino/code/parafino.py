@@ -94,10 +94,10 @@ class Parafino(CaseFileMixin, Mode):
         "saucer_3": "right",
     }
 
-    SAUCER_EJECT_EVENTS = {
-        "saucer_1": "delayed_kickout_saucer_1",
-        "saucer_2": "delayed_kickout_saucer_2",
-        "saucer_3": "delayed_kickout_saucer_3",
+    SAUCER_NUMBERS = {
+        "saucer_1": 1,
+        "saucer_2": 2,
+        "saucer_3": 3,
     }
 
     def mode_start(self, **kwargs):
@@ -442,11 +442,12 @@ class Parafino(CaseFileMixin, Mode):
         self.machine.events.post("parafino_case_file_safety_net_started")
 
     def _eject_saucer(self, saucer):
-        if saucer not in self.SAUCER_EJECT_EVENTS:
+        saucer_number = self.SAUCER_NUMBERS.get(saucer)
+        if saucer_number is None:
             return
         self.machine.events.post(
             "request_saucer_eject",
-            saucer_number=saucer,
+            saucer_number=saucer_number,
             delay_ms=self.SAUCER_EJECT_DELAY_MS,
         )
 

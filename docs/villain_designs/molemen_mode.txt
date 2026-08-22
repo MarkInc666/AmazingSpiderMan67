@@ -12,6 +12,8 @@ AREAS AND SAUCERS
 - Left pop -> Saucer 1.
 - Center web target -> Saucer 2.
 - Right pop -> Saucer 3.
+- Both drop banks reset at mode start and whenever a bank is completed.
+- Left pop, center web, and right pop remain lit as the three build zones.
 - One area hit lights its matching saucer jackpot.
 - Pop hits score 50K, or 75K with Bigger Jackpots.
 - Center web hits score 100K, or 150K with Bigger Jackpots.
@@ -24,6 +26,7 @@ ADD-A-BALL
 - Add-a-ball can be awarded only once per saucer per mode.
 - Each add-a-ball starts a 10-second shoot-again save, or 15 seconds with More Time.
 - After a saucer has used add-a-ball, later jackpots at that saucer still work normally.
+- While add-a-ball is ready, the matching green 1, 2, or 3 insert stays solid and the red saucer-hole lamps flash. Collection resets the numbered insert with the area.
 
 JACKPOTS
 - Jackpot value is 250K multiplied by balls currently in play.

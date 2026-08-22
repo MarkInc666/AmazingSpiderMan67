@@ -242,6 +242,7 @@ class VillainProgression(Mode):
         'fakir_mode_complete': ('fakir', True),
         'kotep_mode_complete': ('kotep', True),
         'super_swami_mode_complete': ('super_swami', True),
+        'super_swami_mode_failed': ('super_swami', False),
         'infinata_mode_complete': ('infinata', True),
         'noah_boddy_mode_complete': ('noah_boddy', True),
         'dr_magneto_mode_complete': ('dr_magneto', True),
@@ -977,6 +978,10 @@ class VillainProgression(Mode):
             completed=1 if completed else 0,
         )
 
+        # Apply the same summary hold rule used by ordinary villains. This is
+        # inert for normal drain endings and protects any occupied saucer.
+        self._hold_saucer_until_summary_done()
+
         # Arm the controlled chapter-select drain before the summary starts.
         # If the wizard-ending drain reaches the trough during the summary,
         # the transition ball save replaces it without ending the ball, while
@@ -1454,6 +1459,11 @@ class VillainProgression(Mode):
             self.machine.events.post("villain_finish_ignored_wrong_active_villain", villain_key=villain_key, current_key=current_key)
             return
 
+        # Snapshot any ball physically sitting in a saucer before the gameplay
+        # mode stops. Mode-stop cleanup and already-scheduled eject requests are
+        # suppressed until the bookend summary has finished.
+        self._hold_saucer_until_summary_done()
+
         completed = bool(completed)
         finish_state = self.COMPLETED
 
@@ -1528,6 +1538,9 @@ class VillainProgression(Mode):
             player["villain_current_name"] = ""
             player["villain_mode_running_name"] = ""
 
+        # Release suppression first. villain_full_cleanup then uses the normal
+        # occupancy-checked, staggered clear_saucers path after the summary.
+        self._release_summary_saucer_holds()
         self.machine.events.post("villain_full_cleanup", villain_key=villain, villain=villain)
         self.machine.events.post("villain_summary_cleanup_complete", villain_key=villain, villain=villain)
         self.machine.events.post("villain_mode_ended", villain_key=villain, villain=villain)
@@ -1656,6 +1669,8 @@ class VillainProgression(Mode):
             self._safe_int(player[f"chapter_{chapter_number}_collected"], 0) == 1
             and self._safe_int(player["chapter_select_needed"], 0) == 1
         ):
+            self._release_summary_saucer_holds()
+            self.machine.events.post("clear_saucers")
             self._release_chapter_select_summary_hold(mini_wizard=mini_key)
             self.machine.events.post("chapter_mini_wizard_completion_ignored_duplicate", mini_wizard=mini_key)
             return
@@ -1680,6 +1695,7 @@ class VillainProgression(Mode):
         self._reset_chapter_case_file_bonus()
         self._recalculate_progression_from_states(post_events=False)
 
+        self._release_summary_saucer_holds()
         self._post_global_cleanup_events(reason="mini_wizard_completed")
         self.machine.events.post("chapter_comic_collected", chapter_number=chapter_number, chapter_name=chapter["name"])
         self.machine.events.post("chapter_select_transition_ready", chapter_number=chapter_number, chapter_name=chapter["name"])
@@ -1735,6 +1751,7 @@ class VillainProgression(Mode):
         player["villain_current_key"] = self.FINAL_WIZARD_KEY
         player["villain_current_name"] = self.FINAL_WIZARD_KEY
         player["villain_mode_running_name"] = self.FINAL_WIZARD_KEY
+        self._hold_saucer_until_summary_done()
         self.machine.events.post(
             "final_wizard_gameplay_finished",
             villain=self.FINAL_WIZARD_KEY,

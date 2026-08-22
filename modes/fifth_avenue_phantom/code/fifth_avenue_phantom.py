@@ -12,6 +12,7 @@ Rules:
 - Each round begins with the Phantom hiding at one random shot/location.
 - Hit any right-bank drop target to reveal the jackpot shot and start the timer.
 - Additional right-bank drops in the same round add more time, but reduce the jackpot value.
+- STAR gives a live 4-second reveal, or adds 4 seconds to an active reveal, without reducing value.
 - Hit the revealed jackpot shot to collect and advance to the next round.
 - If the timer expires, that round is missed and the mode advances to the next round.
 - After the final round is collected or missed, the mode completes.
@@ -35,13 +36,13 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
     BASE_JACKPOTS = (1_000_000, 800_000, 600_000, 400_000, 200_000)
     BIGGER_JACKPOTS = (1_000_000, 900_000, 800_000, 700_000, 600_000)
     MORE_TIME_BONUS_SECONDS = 2
+    STAR_REVEAL_SECONDS = 4
 
     RIGHT_DROP_TARGETS = ("right_1", "right_2", "right_3", "right_4", "right_5")
 
     LOCATIONS = (
         "left_web",
         "center_web",
-        "star",
         "left_drops",
         "upper_targets",
         "saucers",
@@ -50,7 +51,6 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
     LOCATION_LABELS = {
         "left_web": "LEFT WEB",
         "center_web": "CENTER WEB",
-        "star": "STAR ROLLOVER",
         "left_drops": "LEFT DROPS",
         "upper_targets": "UPPER TARGETS",
         "saucers": "SAUCERS",
@@ -59,7 +59,6 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
     LOCATION_LIGHT_EVENTS = {
         "left_web": "fifth_avenue_phantom_light_left_web",
         "center_web": "fifth_avenue_phantom_light_center_web",
-        "star": "fifth_avenue_phantom_light_star",
         "left_drops": "fifth_avenue_phantom_light_left_drops",
         "upper_targets": "fifth_avenue_phantom_light_upper_targets",
         "saucers": "fifth_avenue_phantom_light_saucers",
@@ -68,7 +67,6 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
     LOCATION_STOP_EVENTS = {
         "left_web": "fifth_avenue_phantom_stop_left_web",
         "center_web": "fifth_avenue_phantom_stop_center_web",
-        "star": "fifth_avenue_phantom_stop_star",
         "left_drops": "fifth_avenue_phantom_stop_left_drops",
         "upper_targets": "fifth_avenue_phantom_stop_upper_targets",
         "saucers": "fifth_avenue_phantom_stop_saucers",
@@ -80,6 +78,22 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
         "right_3": "fifth_avenue_phantom_light_right_3",
         "right_4": "fifth_avenue_phantom_light_right_4",
         "right_5": "fifth_avenue_phantom_light_right_5",
+    }
+
+    RIGHT_DROP_STOP_EVENTS = {
+        "right_1": "fifth_avenue_phantom_stop_right_1",
+        "right_2": "fifth_avenue_phantom_stop_right_2",
+        "right_3": "fifth_avenue_phantom_stop_right_3",
+        "right_4": "fifth_avenue_phantom_stop_right_4",
+        "right_5": "fifth_avenue_phantom_stop_right_5",
+    }
+
+    RIGHT_DROP_SOLID_EVENTS = {
+        "right_1": "fifth_avenue_phantom_mark_right_1",
+        "right_2": "fifth_avenue_phantom_mark_right_2",
+        "right_3": "fifth_avenue_phantom_mark_right_3",
+        "right_4": "fifth_avenue_phantom_mark_right_4",
+        "right_5": "fifth_avenue_phantom_mark_right_5",
     }
 
     def mode_start(self, **kwargs):
@@ -125,7 +139,7 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
 
         self.add_mode_event_handler("s_web_target_left_active", self._location_hit, location="left_web")
         self.add_mode_event_handler("s_web_target_mid_active", self._location_hit, location="center_web")
-        self.add_mode_event_handler("s_star_rollover_active", self._location_hit, location="star")
+        self.add_mode_event_handler("s_star_rollover_active", self._star_hit)
 
         self.add_mode_event_handler("s_left_drops_1_active", self._location_hit, location="left_drops")
         self.add_mode_event_handler("s_left_drops_2_active", self._location_hit, location="left_drops")
@@ -192,6 +206,9 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
         self.rounds_started += 1
 
         self.machine.events.post("drop_target_bank_dt_bank_right_reset")
+        self.machine.events.post("fifth_avenue_phantom_reset_right_drop_lights")
+        for event in self.RIGHT_DROP_LIGHT_EVENTS.values():
+            self.machine.events.post(event)
         self.machine.events.post(
             "fifth_avenue_phantom_round_started",
             round=self.rounds_started,
@@ -221,9 +238,12 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
         self.current_jackpot = self._jackpot_for_reveal(self.reveal_number)
         self.reveal_seconds_left += self._seconds_for_reveal(self.reveal_number)
 
-        light_event = self.RIGHT_DROP_LIGHT_EVENTS.get(target)
-        if light_event:
-            self.machine.events.post(light_event)
+        stop_event = self.RIGHT_DROP_STOP_EVENTS.get(target)
+        if stop_event:
+            self.machine.events.post(stop_event)
+        solid_event = self.RIGHT_DROP_SOLID_EVENTS.get(target)
+        if solid_event:
+            self.machine.events.post(solid_event)
 
         if self.phase == "build":
             self.phase = "reveal"
@@ -254,6 +274,40 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
         self.machine.events.post(
             "show_mode_countdown",
             message_mode_title=f"ROUND {self.rounds_started}: PHANTOM REVEALED",
+            message_mode_subtitle=self.LOCATION_LABELS[self.current_location],
+            message_mode_value=self.current_jackpot,
+            message_mode_seconds=self.reveal_seconds_left,
+        )
+        self._sync_vars()
+        self._schedule_timer_tick()
+
+    def _star_hit(self, **kwargs):
+        if self._in_summary_or_done() or self.phase not in ("build", "reveal"):
+            return
+
+        first_reveal = self.phase == "build"
+        self.reveal_seconds_left += self.STAR_REVEAL_SECONDS
+
+        if first_reveal:
+            self.phase = "reveal"
+            self.current_jackpot = self._jackpot_for_reveal(max(1, self.reveal_number))
+            self._clear_lit_location()
+            self._light_location(self.current_location)
+
+        self.machine.events.post(
+            "fifth_avenue_phantom_star_reveal",
+            round=self.rounds_started,
+            total_rounds=self.total_rounds,
+            seconds=self.reveal_seconds_left,
+            seconds_added=self.STAR_REVEAL_SECONDS,
+            jackpot=self.current_jackpot,
+            location=self.current_location,
+            location_label=self.LOCATION_LABELS[self.current_location],
+            first_reveal=first_reveal,
+        )
+        self.machine.events.post(
+            "show_mode_countdown",
+            message_mode_title="STAR FREE REVEAL" if first_reveal else "STAR ADDS 4 SECONDS",
             message_mode_subtitle=self.LOCATION_LABELS[self.current_location],
             message_mode_value=self.current_jackpot,
             message_mode_seconds=self.reveal_seconds_left,
@@ -415,7 +469,7 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
 
     def _clear_lit_location(self):
         self.machine.events.post("rooftop_diverter_close")
-        self.machine.events.post("fifth_avenue_phantom_clear_lights")
+        self.machine.events.post("fifth_avenue_phantom_clear_reveal_lights")
         for event in self.LOCATION_STOP_EVENTS.values():
             self.machine.events.post(event)
 

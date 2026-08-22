@@ -55,8 +55,10 @@ class CaseFiles(Mode):
 
     def mode_stop(self, **kwargs):
         self.case_files_logic_active = False
-        self.machine.events.post("case_files_active_helpers_changed")
-        self.machine.events.post("daily_bugle_widget_update")
+        # ball_ending owns display teardown. Do not publish helper/status update
+        # events here: they can replay the Crime Tracker while GMC is deleting
+        # gameplay widgets for the bonus slide.
+        self.machine.events.post("daily_bugle_widget_remove")
         super().mode_stop(**kwargs)
 
     def _add_handlers(self):

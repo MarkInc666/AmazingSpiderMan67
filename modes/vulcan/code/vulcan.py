@@ -20,6 +20,8 @@ Rules:
   banks. Banks do not auto-reset when completed.
 - More Jackpots makes the left 3-bank a second Jackpot bank under the same
   rules as the right bank.
+- Without More Jackpots, each left drop scores the normal 2K drop value and
+  the left bank resets immediately when completed.
 - Bigger Jackpots raises the starting Jackpot from 100K to 150K.
 - More Time extends the upper-left-exit post hold from 8s to 12s.
 - Safety Net extends the opening multiball ball save from 10s to 20s. The
@@ -94,6 +96,9 @@ class Vulcan(CaseFileMixin, Mode):
         self.add_mode_event_handler("vulcan_multiball_ended", self._complete_mode)
         self.add_mode_event_handler("vulcan_complete_request", self._complete_mode)
         self.add_mode_event_handler("vulcan_fail_request", self._complete_mode)
+        self.add_mode_event_handler(
+            "drop_target_bank_dt_bank_left_down", self._left_bank_completed
+        )
 
         for number in self.RIGHT_DROPS:
             self.add_mode_event_handler(
@@ -157,14 +162,25 @@ class Vulcan(CaseFileMixin, Mode):
         self._sync_vars()
 
     def _left_drop_hit(self, number=None, **kwargs):
-        if self._done() or number is None or not self.has_case_file("more_jackpots"):
+        if self._done() or number is None:
             return
+
+        if not self.has_case_file("more_jackpots"):
+            self.machine.events.post("drop_hit_no_mode")
+            return
+
         if number in self.left_drops_down:
             return
 
         self._collect_drop("left", number)
         self._check_bank_completion("left")
         self._sync_vars()
+
+    def _left_bank_completed(self, **kwargs):
+        if self._done() or self.has_case_file("more_jackpots"):
+            return
+
+        self.machine.events.post("drop_target_bank_dt_bank_left_reset")
 
     def _collect_drop(self, bank, number):
         drops_down = self.right_drops_down if bank == "right" else self.left_drops_down

@@ -267,7 +267,13 @@ class DrManta(CaseFileMixin, Mode):
         self.machine.events.post("rooftop_diverter_close")
 
         if release_saucer and self.held_saucer is not None:
-            self._eject_saucer(self.held_saucer, 0)
+            # The relay-ending saucer contains the continuing ball. Keep it
+            # parked through the villain summary; the shared progression
+            # cleanup releases it only after the summary is complete.
+            self.machine.events.post(
+                "villain_summary_hold_saucer_until_done",
+                saucer_number=self.held_saucer,
+            )
             self.held_saucer = None
 
         if enable_flippers:
@@ -347,8 +353,8 @@ class DrManta(CaseFileMixin, Mode):
         self.machine.events.post("daily_bugle_restore_state")
         self.clear_active_case_file_helpers()
 
-        # Cleanup for abnormal stops only. Normal completion clears held_saucer
-        # before this method runs, so the continuing ball is not double-ejected.
+        # Cleanup for abnormal stops only. Normal completion transfers the
+        # terminal hold to villain_progression before this method runs.
         if self.held_saucer is not None:
             self._eject_saucer(self.held_saucer, 0)
             self.held_saucer = None

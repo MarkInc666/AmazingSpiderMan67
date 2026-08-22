@@ -70,6 +70,8 @@ show_player:
       loops: -1
     doctor_cool_left_bank_build:
       loops: -1
+    doctor_cool_star_flash:
+      loops: -1
 
   doctor_cool_saucer_chase_started:
     doctor_cool_right_bank_build:
@@ -128,6 +130,8 @@ show_player:
       action: stop
     doctor_cool_wrong_saucer_show:
       action: stop
+    doctor_cool_star_flash:
+      action: stop
 
 light_player:
   # Full-playfield GI theme while this mode is active.
@@ -153,6 +157,7 @@ light_player:
     l_5bank_4: off
     l_5bank_5: off
     l_gi_3bank: off
+    l_star: off
 
   doctor_cool_clear_saucer_lights:
     l_1: off
@@ -273,3 +278,14 @@ shows:
         l_3: off
         l_3_hole_l: off
         l_3_hole_r: off
+
+  # The STAR has a red physical lens. Keep it visibly available throughout
+  # Doctor Cool; hitting it always banks Diamond Bonus and freezes an active
+  # saucer chase.
+  doctor_cool_star_flash:
+    - duration: 250ms
+      lights:
+        l_star: red
+    - duration: 250ms
+      lights:
+        l_star: off

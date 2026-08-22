@@ -15,6 +15,11 @@ Three lower-playfield areas independently light their matching saucer jackpots:
 * Center web target -> Saucer 2
 * Right pop bumper -> Saucer 3
 
+Both drop banks reset when the mode starts and reset again whenever a bank is
+completed. The left pop ring, center web insert, and right pop ring remain lit
+white throughout the mode as the three available build zones. Saucer-hole
+lights remain separate and flash only after their matching zone is built.
+
 Area scoring
 ------------
 * Left/right pop hit: 50,000
@@ -39,6 +44,8 @@ Each area can qualify add-a-ball once:
 
 Shoot the matching lit saucer to collect the jackpot and add a ball. Add-a-ball is limited to once per area.
 
+When add-a-ball is available, the matching green 1, 2, or 3 insert remains lit solid while the red saucer-hole lamps flash. The numbered insert turns off after that saucer is collected and its area resets.
+
 More Jackpots lowers the left/right pop requirement from 3 hits to 2 hits.
 
 Each add-a-ball starts a 10-second shoot-again save. More Time extends that save to 15 seconds.
@@ -61,11 +68,11 @@ The widget and status display track the three areas, lit saucers, add-a-ball rea
 
 Playtest checklist
 ------------------
-1. Confirm two-ball multiball starts and the rooftop gate remains closed.
-2. Confirm each area lights only its mapped saucer.
+1. Confirm both drop banks reset, two-ball multiball starts, and the rooftop gate remains closed.
+2. Confirm the left pop, center web, and right pop zones remain lit white and each area lights only its mapped saucer.
 3. Confirm saucer value scales with balls in play.
-4. Confirm each area's add-a-ball can be awarded only once.
-5. Confirm saucer lights and area progress reset after collection.
+4. Confirm each area's add-a-ball can be awarded only once and the matching green 1, 2, or 3 insert stays solid while it is available.
+5. Confirm the numbered insert, saucer lights, and area progress reset after collection.
 6. Confirm the mode ends immediately when Molemen multiball ends.
 7. Confirm add-a-ball gives a 10-second shoot-again save, or 15 seconds with More Time.
 8. Confirm all Case File effects and helper text.

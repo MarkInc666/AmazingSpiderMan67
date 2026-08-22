@@ -19,8 +19,10 @@ CORE FLOW
 7. Any upper target collects the current jackpot. The value does not reset.
 8. The timer continues even if the ball leaves the rooftop.
 9. At zero, jackpot scoring stops and ALL flippers disable immediately.
-10. When the active ball reaches the trough, the mode ends, the saucer ball is
-    released, and all flippers re-enable for normal single-ball play.
+10. When the active ball reaches the trough, the mode ends and all flippers
+    re-enable. The continuing ball stays parked in its saucer throughout the
+    villain summary, then releases through the shared occupancy-checked saucer
+    cleanup when the summary finishes or is skipped.
 
 The mode is tracked only as PLAYED for chapter progression. Jackpot count is
 used for score, status and summary presentation; it does not determine whether
@@ -99,7 +101,9 @@ PLAYTEST CHECKLIST
 - Bigger Jackpots applies 150K / 200K / 200K start values.
 - Shot Assist maps saucer 1/2/3 to left/center/right and scores 3X only once.
 - All flippers disable exactly at timeout, even if the ball has left the roof.
-- Trough arrival ends the mode, releases only the held saucer and re-enables all
-  flippers without double-ejecting either held device.
+- Trough arrival ends gameplay and re-enables all flippers, but the held saucer
+  does not eject until the villain summary finishes or is skipped.
+- Summary completion releases only the held saucer through the shared staggered
+  cleanup without double-ejecting either held device.
 - Losing Ball 2 after the ball save but before a saucer lock releases the VUK
   ball and ends the mode cleanly.

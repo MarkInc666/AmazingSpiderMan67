@@ -106,6 +106,8 @@ class DailyBugleMystery(Mode):
 
     def mode_stop(self, **kwargs):
         self.daily_bugle_enabled = False
+        self.delay.remove("daily_bugle_widget_update_deferred")
+        self.machine.events.post("daily_bugle_widget_remove")
         self._cancel_vuk_delay_eject()
         self._release_left_exit_hold(cancel_delay=True, reason="mode_stop")
         super().mode_stop(**kwargs)
@@ -635,13 +637,19 @@ class DailyBugleMystery(Mode):
             self._post_widget_update()
 
     def _post_widget_update(self):
+        if not getattr(self, "daily_bugle_enabled", False):
+            return
         self.machine.events.post("daily_bugle_widget_update")
         self.delay.remove("daily_bugle_widget_update_deferred")
         self.delay.add(
             name="daily_bugle_widget_update_deferred",
             ms=50,
-            callback=lambda: self.machine.events.post("daily_bugle_widget_update"),
+            callback=self._post_deferred_widget_update,
         )
+
+    def _post_deferred_widget_update(self):
+        if getattr(self, "daily_bugle_enabled", False):
+            self.machine.events.post("daily_bugle_widget_update")
 
     def _restore_lights_and_widgets(self, **kwargs):
         """Restore visuals from state without replaying hit animations."""

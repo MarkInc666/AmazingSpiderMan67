@@ -20,6 +20,21 @@ Shared handling
 - Every up_kick pulse is checked after 900 ms. If s_vuk_switch is still active,
   up_kick_retry pulses the VUK coil one additional time.
 
+Saucer summary handling
+-----------------------
+
+- At every villain, mini-wizard, or final-wizard gameplay completion, villain
+  progression snapshots all physically occupied saucers before the gameplay
+  mode stops.
+- Pending request_saucer_eject, delayed_kickout_saucer_N, clear_saucers, and
+  mode-stop cleanup requests are suppressed for those occupied saucers while
+  the summary is running. Normal mid-mode saucer ejects are unchanged.
+- When the summary finishes or is skipped, progression clears the hold first
+  and then uses the existing occupancy-checked clear_saucers cleanup. Multiple
+  occupied saucers remain staggered by 300 ms to avoid simultaneous coils.
+- Dr. Manta explicitly transfers its continuing saucer ball to this shared
+  summary hold when the rooftop attack ball reaches the trough.
+
 Mode ownership rules
 --------------------
 
@@ -32,6 +47,7 @@ Mode ownership rules
   ejects. A VUK hit that qualifies the Blackout Jackpot cannot collect that
   Jackpot on the same switch event.
 - Dr. Manta intentionally holds its first VUK ball until a second ball locks in
-  a saucer. Its later releases remain mode controlled.
+  a saucer. Its VUK release remains mode controlled; its terminal saucer ball
+  remains held until the villain summary ends.
 - Clive and Blotto and Plutonians leave Daily Bugle enabled intentionally; the
   VUK can count for their area rules while Daily Bugle owns the release.

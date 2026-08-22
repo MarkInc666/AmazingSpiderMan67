@@ -33,8 +33,16 @@ variable_player:
 event_player:
   molemen_startup_complete:
     - clear_saucers_delayed
+    - reset_drops
     - rooftop_diverter_close
+    - molemen_light_area_zones
     - molemen_start_multiball|1s
+
+  drop_target_bank_dt_bank_left_down:
+    - drop_target_bank_dt_bank_left_reset
+
+  drop_target_bank_dt_bank_right_down:
+    - drop_target_bank_dt_bank_right_reset
 
   mode_molemen_stopping:
     - molemen_clear_all_lights
@@ -54,12 +62,20 @@ widget_player:
 
 show_player:
   molemen_clear_all_lights:
+    molemen_left_area_show: {action: stop}
+    molemen_center_area_show: {action: stop}
+    molemen_right_area_show: {action: stop}
     molemen_saucer_1_jackpot_show: {action: stop}
     molemen_saucer_2_jackpot_show: {action: stop}
     molemen_saucer_3_jackpot_show: {action: stop}
     molemen_saucer_1_add_ball_show: {action: stop}
     molemen_saucer_2_add_ball_show: {action: stop}
     molemen_saucer_3_add_ball_show: {action: stop}
+
+  molemen_light_area_zones:
+    molemen_left_area_show: {action: play, loops: -1}
+    molemen_center_area_show: {action: play, loops: -1}
+    molemen_right_area_show: {action: play, loops: -1}
 
   molemen_saucer_1_jackpot_lit:
     molemen_saucer_1_jackpot_show: {action: play, loops: -1}
@@ -86,6 +102,43 @@ show_player:
     molemen_saucer_3_add_ball_show: {action: stop}
 
 shows:
+  molemen_left_area_show:
+    - duration: -1
+      lights:
+        l_pop_1_1: white
+        l_pop_1_2: white
+        l_pop_1_3: white
+        l_pop_1_4: white
+        l_pop_1_5: white
+        l_pop_1_6: white
+        l_pop_1_7: white
+        l_pop_1_8: white
+        l_pop_1_9: white
+        l_pop_1_10: white
+        l_pop_1_11: white
+        l_pop_1_12: white
+
+  molemen_center_area_show:
+    - duration: -1
+      lights:
+        l_mid_web_target: white
+
+  molemen_right_area_show:
+    - duration: -1
+      lights:
+        l_pop_2_1: white
+        l_pop_2_2: white
+        l_pop_2_3: white
+        l_pop_2_4: white
+        l_pop_2_5: white
+        l_pop_2_6: white
+        l_pop_2_7: white
+        l_pop_2_8: white
+        l_pop_2_9: white
+        l_pop_2_10: white
+        l_pop_2_11: white
+        l_pop_2_12: white
+
   molemen_saucer_1_jackpot_show:
     - duration: 500ms
       lights: {l_1_hole_l: red, l_1_hole_r: red}
@@ -104,19 +157,19 @@ shows:
 
   molemen_saucer_1_add_ball_show:
     - duration: 250ms
-      lights: {l_1_hole_l: red, l_1_hole_r: red}
+      lights: {l_1: green, l_1_hole_l: red, l_1_hole_r: red}
     - duration: 250ms
-      lights: {l_1_hole_l: off, l_1_hole_r: off}
+      lights: {l_1: green, l_1_hole_l: off, l_1_hole_r: off}
   molemen_saucer_2_add_ball_show:
     - duration: 250ms
-      lights: {l_2_hole_l: red, l_2_hole_r: red}
+      lights: {l_2: green, l_2_hole_l: red, l_2_hole_r: red}
     - duration: 250ms
-      lights: {l_2_hole_l: off, l_2_hole_r: off}
+      lights: {l_2: green, l_2_hole_l: off, l_2_hole_r: off}
   molemen_saucer_3_add_ball_show:
     - duration: 250ms
-      lights: {l_3_hole_l: red, l_3_hole_r: red}
+      lights: {l_3: green, l_3_hole_l: red, l_3_hole_r: red}
     - duration: 250ms
-      lights: {l_3_hole_l: off, l_3_hole_r: off}
+      lights: {l_3: green, l_3_hole_l: off, l_3_hole_r: off}
 
 light_player:
   mode_molemen_started:

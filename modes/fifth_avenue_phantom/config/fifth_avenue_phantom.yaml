@@ -3,6 +3,7 @@
 # Fifth Avenue Phantom — Vanish and Reveal
 # Five-round reveal/collect mode. More Jackpots adds a sixth round.
 # Right drops reveal the jackpot shot, add time, and lower the jackpot value.
+# STAR gives a live 4-second reveal without lowering the jackpot value.
 # Timer expiry ends only the current round; after the final round the mode completes.
 
 mode:
@@ -46,16 +47,18 @@ event_player:
     - fifth_avenue_phantom_clear_lights
 
 show_player:
+  fifth_avenue_phantom_started:
+    fifth_avenue_phantom_right_bank_gi_show:
+      loops: -1
+    fifth_avenue_phantom_star_show:
+      loops: -1
+
   fifth_avenue_phantom_light_left_web:
     fifth_avenue_phantom_left_web_show:
       loops: -1
 
   fifth_avenue_phantom_light_center_web:
     fifth_avenue_phantom_center_web_show:
-      loops: -1
-
-  fifth_avenue_phantom_light_star:
-    fifth_avenue_phantom_star_show:
       loops: -1
 
   fifth_avenue_phantom_light_left_drops:
@@ -76,10 +79,6 @@ show_player:
 
   fifth_avenue_phantom_stop_center_web:
     fifth_avenue_phantom_center_web_show:
-      action: stop
-
-  fifth_avenue_phantom_stop_star:
-    fifth_avenue_phantom_star_show:
       action: stop
 
   fifth_avenue_phantom_stop_left_drops:
@@ -135,6 +134,8 @@ show_player:
       action: stop
 
   fifth_avenue_phantom_clear_lights:
+    fifth_avenue_phantom_right_bank_gi_show:
+      action: stop
     fifth_avenue_phantom_left_web_show:
       action: stop
     fifth_avenue_phantom_center_web_show:
@@ -158,115 +159,143 @@ show_player:
     fifth_avenue_phantom_right_5_show:
       action: stop
 
+  fifth_avenue_phantom_clear_reveal_lights:
+    fifth_avenue_phantom_left_web_show:
+      action: stop
+    fifth_avenue_phantom_center_web_show:
+      action: stop
+    fifth_avenue_phantom_left_drops_show:
+      action: stop
+    fifth_avenue_phantom_upper_targets_show:
+      action: stop
+    fifth_avenue_phantom_saucers_show:
+      action: stop
+
+  fifth_avenue_phantom_reset_right_drop_lights:
+    fifth_avenue_phantom_right_1_show:
+      action: stop
+    fifth_avenue_phantom_right_2_show:
+      action: stop
+    fifth_avenue_phantom_right_3_show:
+      action: stop
+    fifth_avenue_phantom_right_4_show:
+      action: stop
+    fifth_avenue_phantom_right_5_show:
+      action: stop
+
 
 shows:
   fifth_avenue_phantom_left_web_show:
-    - duration: 150ms
+    - duration: 250ms
       lights:
         l_left_web_target: purple
-    - duration: 150ms
+    - duration: 250ms
       lights:
         l_left_web_target: off
 
   fifth_avenue_phantom_center_web_show:
-    - duration: 150ms
+    - duration: 250ms
       lights:
         l_mid_web_target: purple
-    - duration: 150ms
+    - duration: 250ms
       lights:
         l_mid_web_target: off
 
   fifth_avenue_phantom_star_show:
-    - duration: 150ms
+    - duration: 250ms
       lights:
-        l_star: purple
-    - duration: 150ms
+        l_star: red
+    - duration: 250ms
       lights:
         l_star: off
 
   fifth_avenue_phantom_left_drops_show:
-    - duration: 150ms
+    - duration: 250ms
       lights:
         l_gi_3bank: purple
-    - duration: 150ms
+    - duration: 250ms
       lights:
         l_gi_3bank: off
 
   fifth_avenue_phantom_upper_targets_show:
-    - duration: 150ms
+    - duration: 250ms
       lights:
         l_upper_left: purple
         l_upper_middle: purple
         l_upper_right: purple
-    - duration: 150ms
+    - duration: 250ms
       lights:
         l_upper_left: off
         l_upper_middle: off
         l_upper_right: off
 
   fifth_avenue_phantom_saucers_show:
-    - duration: 150ms
+    - duration: 250ms
       lights:
-        l_1: purple
-        l_1_hole_l: purple
-        l_1_hole_r: purple
-        l_2: purple
-        l_2_hole_l: purple
-        l_2_hole_r: purple
-        l_3: purple
-        l_3_hole_l: purple
-        l_3_hole_r: purple
-    - duration: 150ms
+        l_1_hole_l: red
+        l_1_hole_r: red
+        l_2_hole_l: red
+        l_2_hole_r: red
+        l_3_hole_l: red
+        l_3_hole_r: red
+    - duration: 250ms
       lights:
-        l_1: off
         l_1_hole_l: off
         l_1_hole_r: off
-        l_2: off
         l_2_hole_l: off
         l_2_hole_r: off
-        l_3: off
         l_3_hole_l: off
         l_3_hole_r: off
 
   fifth_avenue_phantom_right_1_show:
-    - duration: 150ms
+    - duration: 250ms
       lights:
-        l_5bank_1: "0080FF"
-    - duration: 150ms
+        l_5bank_1: green
+    - duration: 250ms
       lights:
         l_5bank_1: off
 
   fifth_avenue_phantom_right_2_show:
-    - duration: 150ms
+    - duration: 250ms
       lights:
-        l_5bank_2: "0080FF"
-    - duration: 150ms
+        l_5bank_2: green
+    - duration: 250ms
       lights:
         l_5bank_2: off
 
   fifth_avenue_phantom_right_3_show:
-    - duration: 150ms
+    - duration: 250ms
       lights:
-        l_5bank_3: "0080FF"
-    - duration: 150ms
+        l_5bank_3: green
+    - duration: 250ms
       lights:
         l_5bank_3: off
 
   fifth_avenue_phantom_right_4_show:
-    - duration: 150ms
+    - duration: 250ms
       lights:
-        l_5bank_4: "0080FF"
-    - duration: 150ms
+        l_5bank_4: green
+    - duration: 250ms
       lights:
         l_5bank_4: off
 
   fifth_avenue_phantom_right_5_show:
-    - duration: 150ms
+    - duration: 250ms
       lights:
-        l_5bank_5: "0080FF"
-    - duration: 150ms
+        l_5bank_5: green
+    - duration: 250ms
       lights:
         l_5bank_5: off
+
+  fifth_avenue_phantom_right_bank_gi_show:
+    - duration: 500ms
+      lights:
+        l_gi_5bank_lower: 6A40A8
+        l_gi_5bank_upper: 6A40A8
+    - duration: 500ms
+      lights:
+        l_gi_5bank_lower: 201030
+        l_gi_5bank_upper: 201030
 
 light_player:
   # Full-playfield GI theme while this mode is active.
@@ -276,3 +305,44 @@ light_player:
   mode_fifth_avenue_phantom_stopping:
     gi: E0E0E0
 
+  fifth_avenue_phantom_mark_right_1:
+    l_5bank_1: green
+  fifth_avenue_phantom_mark_right_2:
+    l_5bank_2: green
+  fifth_avenue_phantom_mark_right_3:
+    l_5bank_3: green
+  fifth_avenue_phantom_mark_right_4:
+    l_5bank_4: green
+  fifth_avenue_phantom_mark_right_5:
+    l_5bank_5: green
+
+  fifth_avenue_phantom_reset_right_drop_lights:
+    l_5bank_1: off
+    l_5bank_2: off
+    l_5bank_3: off
+    l_5bank_4: off
+    l_5bank_5: off
+
+  fifth_avenue_phantom_clear_reveal_lights:
+    l_left_web_target: off
+    l_mid_web_target: off
+    l_gi_3bank: off
+    l_upper_left: off
+    l_upper_middle: off
+    l_upper_right: off
+    l_1_hole_l: off
+    l_1_hole_r: off
+    l_2_hole_l: off
+    l_2_hole_r: off
+    l_3_hole_l: off
+    l_3_hole_r: off
+
+  fifth_avenue_phantom_clear_lights:
+    l_star: off
+    l_gi_5bank_lower: off
+    l_gi_5bank_upper: off
+    l_5bank_1: off
+    l_5bank_2: off
+    l_5bank_3: off
+    l_5bank_4: off
+    l_5bank_5: off

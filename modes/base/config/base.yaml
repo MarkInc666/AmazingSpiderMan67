@@ -242,6 +242,14 @@ sound_player:
 
 
 widget_player:
+  # When a ball begins in Chapter Select flow, cover the short delayed mode
+  # start immediately so the normal main-game screen cannot flash first.
+  mode_base_started{current_player.chapter_select_needed == 1}:
+    chapter_select_transition:
+      action: play
+      key: chapter_select_transition
+      priority: 2100
+
   chapter_select_summary_complete:
     chapter_select_transition:
       action: play
@@ -374,7 +382,22 @@ widget_player:
 
 
 slide_player:
-  mode_base_started:
+  mode_base_started{current_player.chapter_select_needed != 1}:
+    main_game:
+      action: play
+    attract:
+      action: remove
+
+  mode_base_started{current_player.chapter_select_needed == 1}:
+    main_game:
+      action: remove
+    attract:
+      action: remove
+
+  # The initial main-game slide was intentionally suppressed while the comic
+  # carousel owned the display. Restore it behind the two-second selection
+  # confirmation once a chapter has been chosen.
+  chapter_select_selected:
     main_game:
       action: play
     attract:

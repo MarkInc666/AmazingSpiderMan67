@@ -7,13 +7,10 @@ mode:
   priority: 300
 
 event_player:
-
-  # Refresh the Daily Bugle widget by removing and re-adding it.
-  # Avoid action:update on an MPFWidget; GMC expects update() on registered
-  # updaters and a plain MPFWidget does not provide that method.
-  daily_bugle_widget_update:
-    - daily_bugle_widget_remove
-    - daily_bugle_widget_readd|10ms
+  # daily_bugle_widget_update is consumed directly by the MPFVariable and
+  # MPFConditional nodes inside daily_bugle_ready.tscn. Do not remove/re-add
+  # the parent MPFWidget for a data refresh; that creates a teardown race when
+  # ball_ending starts the bonus slide.
 
   # A rollovers
   s_inlane_a_active:
@@ -88,16 +85,6 @@ widget_player:
       action: remove
       key: daily_bugle_ready
 
-  daily_bugle_widget_readd{current_player.chapter_mini_wizard_ready != 1 and current_player.mini_wizard_daily_bugle_ready != 1 and current_player.mini_wizard_vuk_hold_active != 1 and current_player.final_wizard_ready != 1}:
-    daily_bugle_ready:
-      action: play
-      key: daily_bugle_ready
-
-  daily_bugle_widget_readd{current_player.chapter_mini_wizard_ready == 1 or current_player.mini_wizard_daily_bugle_ready == 1 or current_player.mini_wizard_vuk_hold_active == 1 or current_player.final_wizard_ready == 1}:
-    daily_bugle_ready:
-      action: remove
-      key: daily_bugle_ready
-
   chapter_mini_wizard_ready:
     daily_bugle_ready:
       action: remove
@@ -164,22 +151,22 @@ sound_player:
   # Four randomized callout slots. They intentionally use the current line as
   # a placeholder until four replacement recordings are available.
   daily_bugle_ab_callout_1:
-    impostor_1:
+    that_man_is_an_impostor:
       action: play
       bus: voice
 
   daily_bugle_ab_callout_2:
-    impostor_2:
+    that_man_is_an_impostor:
       action: play
       bus: voice
 
   daily_bugle_ab_callout_3:
-    impostor_3:
+    that_man_is_an_impostor:
       action: play
       bus: voice
 
   daily_bugle_ab_callout_4:
-    impostor_4:
+    that_man_is_an_impostor:
       action: play
       bus: voice
 

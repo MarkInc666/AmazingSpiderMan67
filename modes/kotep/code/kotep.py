@@ -263,6 +263,7 @@ class Kotep(CaseFileMixin, Mode):
 
         self.phase = "scepter"
         self.delay.remove("kotep_add_demon")
+        self.machine.events.post("cancel_mode_message_reminder")
         for shot in tuple(self.active_demons):
             self._stop_demon_flash(shot)
         self.active_demons.clear()
@@ -282,7 +283,8 @@ class Kotep(CaseFileMixin, Mode):
         subtitle = "SHOOT THE VUK"
         if self.bonus_demon_available:
             subtitle = "OPTIONAL 500K DEMON - THEN VUK"
-        self._show_countdown("DESTROY THE SCEPTER", self.scepter_seconds_left, subtitle)
+        self._show_message("DESTROY THE SCEPTER", subtitle)
+        self._update_scepter_status()
         self._schedule_scepter_tick()
 
     def _collect_bonus_demon(self):
@@ -302,6 +304,7 @@ class Kotep(CaseFileMixin, Mode):
         )
         self._show_jackpot("BONUS DEMON JACKPOT", self.BONUS_DEMON_VALUE, "NOW DESTROY THE SCEPTER")
         self._sync_vars()
+        self._update_scepter_status()
 
     def _schedule_scepter_tick(self):
         self.delay.reset(
@@ -316,13 +319,24 @@ class Kotep(CaseFileMixin, Mode):
         self.scepter_seconds_left -= 1
         self._sync_vars()
         if self.scepter_seconds_left <= 0:
+            self.machine.events.post("hide_mode_status")
             self._fail_mode()
             return
-        subtitle = "SHOOT THE VUK"
-        if self.bonus_demon_available:
-            subtitle = "OPTIONAL 500K DEMON - THEN VUK"
-        self._show_countdown("DESTROY THE SCEPTER", self.scepter_seconds_left, subtitle)
+        self._update_scepter_status()
         self._schedule_scepter_tick()
+
+    def _update_scepter_status(self):
+        if self.mode_done or self.phase != "scepter":
+            return
+
+        instruction = "SHOOT THE VUK"
+        if self.bonus_demon_available:
+            instruction = "OPTIONAL DEMON - THEN VUK"
+        self.machine.events.post(
+            "update_mode_status",
+            mode_status_title="SCEPTER TIME",
+            mode_status_value=f"{max(0, self.scepter_seconds_left)}s  {instruction}",
+        )
 
     def _vuk_hit(self, **kwargs):
         if self.mode_done or self.completion_pending:
@@ -339,6 +353,7 @@ class Kotep(CaseFileMixin, Mode):
             self.bonus_demon_available = False
 
         self.delay.remove("kotep_scepter_tick")
+        self.machine.events.post("hide_mode_status")
         self.super_jackpots = 1
         self._score(self.scepter_super_value)
         self._sync_vars()
@@ -360,6 +375,7 @@ class Kotep(CaseFileMixin, Mode):
     def _complete_mode(self, **kwargs):
         if self.mode_done:
             return
+        self.machine.events.post("hide_mode_status")
         self.mode_done = True
         self.phase = "done"
         player = self.machine.game.player
@@ -371,6 +387,7 @@ class Kotep(CaseFileMixin, Mode):
     def _fail_mode(self, **kwargs):
         if self.mode_done:
             return
+        self.machine.events.post("hide_mode_status")
         self.mode_done = True
         self.phase = "done"
         player = self.machine.game.player
@@ -410,13 +427,4 @@ class Kotep(CaseFileMixin, Mode):
             message_mode_subtitle=subtitle,
             message_mode_value=value,
             message_mode_seconds="",
-        )
-
-    def _show_countdown(self, title, seconds, subtitle=""):
-        self.machine.events.post(
-            "show_mode_countdown",
-            message_mode_title=title,
-            message_mode_subtitle=subtitle,
-            message_mode_value="",
-            message_mode_seconds=seconds,
         )
