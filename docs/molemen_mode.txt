@@ -41,26 +41,23 @@ Shoot the matching lit saucer to collect the jackpot and add a ball. Add-a-ball 
 
 More Jackpots lowers the left/right pop requirement from 3 hits to 2 hits.
 
-One-ball grace
---------------
-When multiball drops to one ball, a short grace timer begins before the mode ends:
+Each add-a-ball starts a 10-second shoot-again save. More Time extends that save to 15 seconds.
 
-* Normal: 5 seconds
-* More Time: 10 seconds
-
-If another ball is added during grace, the mode continues.
+Mode end
+--------
+The mode ends immediately when Molemen multiball ends. There is no one-ball grace because MPF has already ended the multiball device at that point, so another add-a-ball cannot reliably continue it.
 
 Case Files
 ----------
 * More Jackpots: left/right add-a-ball qualifies after 2 pop hits instead of 3.
 * Bigger Jackpots: area scores increase and saucer jackpot base increases from 250,000 to 300,000 per ball.
-* More Time: one-ball grace increases from 5 to 10 seconds.
+* More Time: the shoot-again save after every add-a-ball increases from 10 to 15 seconds.
 * Safety Net: opening multiball save increases from 15 to 25 seconds.
 * Shot Assist: the left web target also counts as a center-web hit.
 
 Presentation and tracking
 -------------------------
-The widget and status display track the three areas, lit saucers, add-a-ball readiness, total jackpots, biggest jackpot, opening save, and grace time.
+The widget and status display track the three areas, lit saucers, add-a-ball readiness, total jackpots, biggest jackpot, and opening save.
 
 Playtest checklist
 ------------------
@@ -69,6 +66,7 @@ Playtest checklist
 3. Confirm saucer value scales with balls in play.
 4. Confirm each area's add-a-ball can be awarded only once.
 5. Confirm saucer lights and area progress reset after collection.
-6. Confirm the 5-second one-ball grace and 10-second More Time grace.
-7. Confirm all Case File effects and helper text.
-8. Confirm saucer ejection delay and mode cleanup at ball end.
+6. Confirm the mode ends immediately when Molemen multiball ends.
+7. Confirm add-a-ball gives a 10-second shoot-again save, or 15 seconds with More Time.
+8. Confirm all Case File effects and helper text.
+9. Confirm every saucer uses the two-second eject delay and mode cleanup releases occupied saucers.

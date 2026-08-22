@@ -1,0 +1,35 @@
+FIDDLER MODE
+
+STATUS
+Implemented. The startup lockout and three-mistake rule require physical-machine playtesting.
+
+CORE GAMEPLAY
+- Watch the demonstrated note pattern and repeat it in order.
+- Round 1 contains one note, Round 2 contains two notes, and Round 3 contains three notes.
+- More Jackpots adds a four-note encore round.
+- Each required light demonstrates its position with one, two, three, or four short pulses, repeated four times, then remains solid.
+- Correct-note values are 100K; 200K/300K; 400K/500K/600K; and 700K/800K/900K/1M for the optional fourth round.
+
+WRONG NOTES
+- Fiddler allows three mistakes during the entire mode.
+- The first and second mistakes play violin_bad_note, reset the current round to its first note, and replay the complete pattern after 1.5 seconds.
+- The third mistake ends the mode and Fiddler escapes.
+- Mistakes do not erase points already scored in earlier rounds or earlier correct notes.
+- Shot Assist forgives the first wrong input, awards the expected note, and does not consume a mistake.
+
+INPUT LOCKOUT
+- Note inputs are ignored from mode start until the first demonstration is complete.
+- Inputs remain locked while drop targets are being knocked down, during round setup delays, throughout demonstrations, and during wrong-note replay delays.
+- Inputs become live only when PLAY THE PATTERN is shown.
+
+CASE FILES
+- More Jackpots: adds the four-note encore round.
+- Bigger Jackpots: adds 100K to every correct note.
+- More Time: repeats an unfinished pattern after 8 seconds instead of 14 seconds.
+- Safety Net: starts a 10-second ball save.
+- Shot Assist: forgives the first wrong input and awards the expected note.
+
+SUMMARY
+- Completing all required rounds reports FIDDLER SILENCED.
+- Reaching three mistakes reports FIDDLER ESCAPED.
+- Summary stats remain ROUND and NOTES HIT.

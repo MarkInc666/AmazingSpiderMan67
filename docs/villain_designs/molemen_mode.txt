@@ -5,7 +5,7 @@ CORE
 - Opening multiball save is 15 seconds, or 25 seconds with Safety Net.
 - There is no overall mode timer.
 - Rooftop gate remains closed for the entire mode. Gate-open requests are ignored, and normal gate control returns when the mode stops.
-- When multiball drops to one ball, start a 5-second grace period, or 10 seconds with More Time. End the mode if still at one ball when grace expires.
+- End the mode immediately when Molemen multiball ends. There is no one-ball grace after MPF has ended the multiball device.
 - Playing the mode counts as completion when it ends.
 
 AREAS AND SAUCERS
@@ -22,6 +22,7 @@ ADD-A-BALL
 - With More Jackpots, the pop requirement is 2 hits.
 - Center web requires only 1 hit for both jackpot and add-a-ball qualification.
 - Add-a-ball can be awarded only once per saucer per mode.
+- Each add-a-ball starts a 10-second shoot-again save, or 15 seconds with More Time.
 - After a saucer has used add-a-ball, later jackpots at that saucer still work normally.
 
 JACKPOTS

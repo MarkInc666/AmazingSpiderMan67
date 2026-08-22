@@ -164,22 +164,22 @@ sound_player:
   # Four randomized callout slots. They intentionally use the current line as
   # a placeholder until four replacement recordings are available.
   daily_bugle_ab_callout_1:
-    that_man_is_an_impostor:
+    impostor_1:
       action: play
       bus: voice
 
   daily_bugle_ab_callout_2:
-    that_man_is_an_impostor:
+    impostor_2:
       action: play
       bus: voice
 
   daily_bugle_ab_callout_3:
-    that_man_is_an_impostor:
+    impostor_3:
       action: play
       bus: voice
 
   daily_bugle_ab_callout_4:
-    that_man_is_an_impostor:
+    impostor_4:
       action: play
       bus: voice
 

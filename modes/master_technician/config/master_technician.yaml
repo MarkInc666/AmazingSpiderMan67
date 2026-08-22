@@ -26,7 +26,7 @@ widget_player:
 event_player:
   mode_master_technician_started:
     - master_technician_reset_banks
-    - enable_up_post_event
+    - rooftop_diverter_close
     - master_technician_start
 
   s_web_spinner_active: master_technician_spinner_hit
@@ -51,13 +51,24 @@ event_player:
 
   master_technician_reset_banks:
     - drop_target_bank_dt_bank_left_reset
-    - drop_target_bank_dt_bank_right_reset
+    - drop_target_bank_dt_bank_right_reset|300ms
 
   mode_master_technician_stopping:
     - master_technician_reset_banks
     - master_technician_clear_lights
+    - rooftop_diverter_close
 
 show_player:
+  master_technician_drop_scored:
+    master_technician_drop_hit_show:
+      loops: 1
+      priority: 340
+
+  master_technician_spinner_scored:
+    master_technician_spinner_hit_show:
+      loops: 1
+      priority: 340
+
   master_technician_level_0:
     master_technician_level_pulse:
       action: stop
@@ -129,6 +140,16 @@ show_player:
       key: master_technician_level_pulse
 
 light_player:
+  mode_master_technician_started:
+    gi: "203060"
+  mode_master_technician_stopping:
+    gi: E0E0E0
+
+  master_technician_level_0:
+    l_spinner: off
+    l_gi_3bank: off
+    l_gi_5bank_lower: off
+    l_gi_5bank_upper: off
   master_technician_light_webs:
     l_left_web_target: white
     l_mid_web_target: white
@@ -144,6 +165,26 @@ light_player:
     l_gi_5bank_upper: off
 
 shows:
+  master_technician_drop_hit_show:
+    - duration: 100ms
+      lights:
+        l_gi_3bank: A0D0FF
+        l_gi_5bank_lower: A0D0FF
+        l_gi_5bank_upper: A0D0FF
+    - duration: 100ms
+      lights:
+        l_gi_3bank: off
+        l_gi_5bank_lower: off
+        l_gi_5bank_upper: off
+
+  master_technician_spinner_hit_show:
+    - duration: 100ms
+      lights:
+        l_spinner: FFFF40
+    - duration: 100ms
+      lights:
+        l_spinner: white
+
   master_technician_level_pulse:
     - duration: 500ms
       lights:

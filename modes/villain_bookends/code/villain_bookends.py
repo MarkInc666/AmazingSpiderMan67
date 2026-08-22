@@ -417,10 +417,10 @@ class VillainBookends(Mode):
             'points_var': 'active_mode_points', 'state_var': 'metal_eating_robot_state', 'song': 'play_song_58',
         },
         'fiddler': {
-            'title': 'FIDDLER', 'intro_1': 'Watch the flashing notes.', 'intro_2': 'Repeat each melody in order.', 'intro_3': 'One wrong note and Fiddler escapes.',
+            'title': 'FIDDLER', 'intro_1': 'Watch the flashing notes.', 'intro_2': 'Repeat each melody in order.', 'intro_3': 'Three wrong notes and Fiddler escapes.',
             'summary_title_complete': 'FIDDLER SILENCED', 'summary_title_failed': 'FIDDLER ESCAPED',
             'stat_1_label': 'ROUND', 'stat_1_var': 'active_mode_stat_1', 'stat_2_label': 'NOTES HIT', 'stat_2_var': 'active_mode_stat_2',
-            'points_var': 'active_mode_points', 'state_var': 'fiddler_state', 'song': 'play_song_50',
+            'points_var': 'active_mode_points', 'state_var': 'fiddler_state', 'completion_var': 'active_mode_completed', 'song': 'play_song_50',
         },
         'pardo': {
             'title': 'PARDO',

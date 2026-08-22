@@ -789,6 +789,9 @@ player_vars:
   molemen_opening_save_seconds:
     initial_value: 15
     value_type: int
+  molemen_add_a_ball_save_seconds:
+    initial_value: 10
+    value_type: int
   brutus_state:
     initial_value: 0
     value_type: int

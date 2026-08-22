@@ -36,10 +36,10 @@ class Molemen(CaseFileMixin, Mode):
         "saucer_3": "right",
     }
 
-    EJECT_EVENTS = {
-        "saucer_1": "delayed_kickout_saucer_1",
-        "saucer_2": "delayed_kickout_saucer_2",
-        "saucer_3": "delayed_kickout_saucer_3",
+    SAUCER_NUMBERS = {
+        "saucer_1": "1",
+        "saucer_2": "2",
+        "saucer_3": "3",
     }
 
     def mode_start(self, **kwargs):
@@ -48,7 +48,6 @@ class Molemen(CaseFileMixin, Mode):
         self.mode_exiting = False
         self.jackpots_collected = 0
         self.biggest_jackpot = 0
-        self.grace_active = False
 
         self.case_files = self.get_case_file_bonuses()
         self.pop_score = self.POP_SCORE_BIGGER if self.has_case_file("bigger_jackpots") else self.POP_SCORE
@@ -64,7 +63,7 @@ class Molemen(CaseFileMixin, Mode):
             else self.POP_ADD_A_BALL_HITS
         )
         self.opening_save_seconds = 25 if self.has_case_file("safety_net") else 15
-        self.one_ball_grace_seconds = 10 if self.has_case_file("more_time") else 5
+        self.add_a_ball_save_seconds = 15 if self.has_case_file("more_time") else 10
         self.shot_assist = self.has_case_file("shot_assist")
 
         self._reset_player_vars()
@@ -73,7 +72,7 @@ class Molemen(CaseFileMixin, Mode):
         self.publish_active_case_file_helpers([
             ("more_jackpots", "POP ADD-A-BALL IN 2 HITS"),
             ("bigger_jackpots", "BIGGER AREA AND SAUCER JACKPOTS"),
-            ("more_time", "10 SECOND ONE-BALL GRACE"),
+            ("more_time", "15 SECOND SAVE AFTER ADD-A-BALL"),
             ("safety_net", "25 SECOND OPENING SAVE"),
             ("shot_assist", "LEFT WEB ALSO COUNTS AS CENTER WEB"),
         ])
@@ -89,8 +88,6 @@ class Molemen(CaseFileMixin, Mode):
 
     def mode_stop(self, **kwargs):
         self.mode_exiting = True
-        self.grace_active = False
-        self.delay.remove("molemen_one_ball_grace")
         self.delay.remove("molemen_ball_added_message")
         self.machine.events.post("molemen_clear_all_lights")
         self.machine.events.post("clear_saucers_delayed")
@@ -110,7 +107,6 @@ class Molemen(CaseFileMixin, Mode):
         self.add_mode_event_handler("s_saucer_2_active", self._saucer_2_hit)
         self.add_mode_event_handler("s_saucer_3_active", self._saucer_3_hit)
         self.add_mode_event_handler("multiball_molemen_multiball_ended", self._multiball_ended)
-        self.add_mode_event_handler("multiball_molemen_multiball_started", self._multiball_started)
 
         # Keep the rooftop closed even if another subsystem asks to open it.
         self.add_mode_event_handler("rooftop_diverter_open", self._force_gate_closed)
@@ -123,6 +119,7 @@ class Molemen(CaseFileMixin, Mode):
         player["active_mode_stat_1"] = self.biggest_jackpot
         player["active_mode_stat_2"] = self.jackpots_collected
         player["molemen_opening_save_seconds"] = self.opening_save_seconds
+        player["molemen_add_a_ball_save_seconds"] = self.add_a_ball_save_seconds
         self.area_state = {
             area: {"hits": 0, "lit": False, "add_ready": False, "add_used": False}
             for area in self.AREAS
@@ -228,37 +225,8 @@ class Molemen(CaseFileMixin, Mode):
                 message_mode_subtitle="MULTIBALL CONTINUES",
             )
 
-    def _multiball_started(self, **kwargs):
-        self.grace_active = False
-        self.delay.remove("molemen_one_ball_grace")
-
     def _multiball_ended(self, **kwargs):
-        if self.mode_exiting or self.grace_active:
-            return
-        self.grace_active = True
-        self.machine.events.post(
-            "show_mode_message",
-            message_mode_title="ONE BALL REMAINS",
-            message_mode_subtitle="GRACE PERIOD",
-            message_mode_seconds=self.one_ball_grace_seconds,
-        )
-        self.machine.events.post(
-            "show_mode_status",
-            mode_status_title="ONE BALL GRACE",
-            mode_status_value=f"{self.one_ball_grace_seconds} SEC",
-        )
-        self.delay.add(
-            name="molemen_one_ball_grace",
-            ms=self.one_ball_grace_seconds * 1000,
-            callback=self._finish_grace,
-        )
-
-    def _finish_grace(self):
         if self.mode_exiting:
-            return
-        if self._balls_in_play() > 1:
-            self.grace_active = False
-            self._update_status()
             return
         self.mode_exiting = True
         self.machine.game.player["molemen_state"] = 2
@@ -269,7 +237,7 @@ class Molemen(CaseFileMixin, Mode):
             self.machine.events.post("rooftop_diverter_close")
 
     def _update_status(self):
-        if self.mode_exiting or self.grace_active:
+        if self.mode_exiting:
             return
         self.machine.events.post(
             "show_mode_status",
@@ -282,11 +250,12 @@ class Molemen(CaseFileMixin, Mode):
         )
 
     def _eject_saucer(self, saucer):
-        if saucer not in self.EJECT_EVENTS:
+        saucer_number = self.SAUCER_NUMBERS.get(saucer)
+        if saucer_number is None:
             return
         self.machine.events.post(
             "request_saucer_eject",
-            saucer_number=saucer,
+            saucer_number=saucer_number,
             delay_ms=self.SAUCER_EJECT_MS,
         )
 

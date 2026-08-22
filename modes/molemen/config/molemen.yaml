@@ -17,7 +17,7 @@ multiballs:
     start_events: molemen_start_multiball
     add_a_ball_events:
       - molemen_add_a_ball
-    add_a_ball_shoot_again: 10s
+    add_a_ball_shoot_again: (current_player.molemen_add_a_ball_save_seconds)
     add_a_ball_hurry_up_time: 3s
 
 variable_player:

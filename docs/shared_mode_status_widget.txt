@@ -1,0 +1,25 @@
+SHARED MODE STATUS WIDGET
+
+The persistent mode-status widget is shared by all modes through
+widgets/mode_status.tscn.
+
+LAYOUT
+
+- The panel is 720 pixels wide and centered near the bottom of the display.
+- It fits inside the 740-pixel gap between the Player 3 and Player 4 panels,
+  leaving 10 pixels of clearance on each side.
+- The status title occupies a centered full-width upper row.
+- The status value occupies a centered full-width lower row.
+- Title size is 30 pixels.
+- Value size is 40 pixels.
+- Existing colors, outlines, variable names, and mode-provided text are unchanged.
+
+The stacked layout gives longer values, including multi-area shot status, enough
+horizontal room without competing with the title.
+
+TESTING
+
+Check the widget with both short and long status strings. In particular, verify
+Parafino, Master Technician, Cyclops, Igor, Magneto, and Professor Pretorius on
+the real display and adjust only the shared scene if final cabinet overscan
+requires additional padding.

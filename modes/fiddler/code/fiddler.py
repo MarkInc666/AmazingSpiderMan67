@@ -16,6 +16,8 @@ class Fiddler(CaseFileMixin, Mode):
     DEMO_PULSE_GAP_MS = 100
     DEMO_PATTERN_END_GAP_MS = 400
     STAGE_DELAY_MS = 2_000
+    WRONG_NOTE_REPLAY_DELAY_MS = 1_500
+    MAX_MISTAKES = 3
     BASE_REMINDER_MS = 14_000
     MORE_TIME_REMINDER_MS = 8_000
 
@@ -53,8 +55,11 @@ class Fiddler(CaseFileMixin, Mode):
         self.round_number = 0
         self.sequence = []
         self.expected_index = 0
-        self.demonstrating = False
+        # Lock note input until the first demonstration is fully complete. This
+        # also protects startup from switch activity while the drop banks fall.
+        self.demonstrating = True
         self.shot_assist_used = False
+        self.mistakes = 0
         self.max_round = 4 if self.has_case_file("more_jackpots") else 3
         self.reminder_ms = (
             self.MORE_TIME_REMINDER_MS
@@ -129,6 +134,8 @@ class Fiddler(CaseFileMixin, Mode):
     def _start_next_round(self):
         if self.mode_done:
             return
+        # Keep input locked during the round setup delay and demonstration.
+        self.demonstrating = True
         self.round_number += 1
         if self.round_number > self.max_round:
             self._finish_mode(won=True)
@@ -253,7 +260,30 @@ class Fiddler(CaseFileMixin, Mode):
             self._award_expected_note(assisted=True)
             return
 
-        self._finish_mode(won=False)
+        self.mistakes += 1
+        if self.mistakes >= self.MAX_MISTAKES:
+            self._finish_mode(won=False)
+            return
+
+        self._restart_round_after_wrong_note()
+
+    def _restart_round_after_wrong_note(self):
+        """Replay the full current pattern after a non-terminal mistake."""
+        self._cancel_reminder()
+        self.demonstrating = True
+        self.expected_index = 0
+        self.machine.events.post("fiddler_all_notes_off")
+        chances_left = self.MAX_MISTAKES - self.mistakes
+        self._show_message(
+            "WRONG NOTE",
+            f"{chances_left} CHANCE" + ("S" if chances_left != 1 else "") + " LEFT - WATCH AGAIN",
+        )
+        self._sync_vars()
+        self.delay.reset(
+            name="fiddler_wrong_note_replay",
+            ms=self.WRONG_NOTE_REPLAY_DELAY_MS,
+            callback=self._begin_demonstration,
+        )
 
     def _award_expected_note(self, assisted=False):
         if self.mode_done or self.expected_index >= len(self.sequence):
@@ -283,6 +313,7 @@ class Fiddler(CaseFileMixin, Mode):
         if self.mode_done:
             return
         self._cancel_reminder()
+        self.demonstrating = True
         self.machine.events.post("fiddler_all_notes_off")
         if self.round_number >= self.max_round:
             self._finish_mode(won=True)
@@ -302,6 +333,7 @@ class Fiddler(CaseFileMixin, Mode):
         self.machine.events.post("fiddler_all_notes_off")
         player = self.machine.game.player
         player["fiddler_state"] = 2
+        player["active_mode_completed"] = 1 if won else 0
         self._sync_vars()
 
         if won:
@@ -333,6 +365,7 @@ class Fiddler(CaseFileMixin, Mode):
             "fiddler_demo_step",
             "fiddler_pattern_reminder",
             "fiddler_next_round",
+            "fiddler_wrong_note_replay",
         ):
             self.delay.remove(name)
         for target_name in self.DROP_TARGETS:
