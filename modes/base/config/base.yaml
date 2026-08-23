@@ -270,9 +270,14 @@ widget_player:
       priority: 2200
       expire: 2s
 
-  mode_base_started:
+  # Attach the left chapter/status panel only after GMC has actually made
+  # main_game the active slide.  Playing it on mode_base_started races the
+  # main_game slide_player entry and can attach the widget to the outgoing
+  # slide instead, leaving the left panel missing.
+  slide_main_game_active:
     villain_chapter_status:
       action: play
+      key: villain_chapter_status
 
   mode_base_started{current_player.chapter_mini_wizard_ready != 1 and current_player.mini_wizard_daily_bugle_ready != 1 and current_player.mini_wizard_vuk_hold_active != 1 and current_player.final_wizard_ready != 1}:
     daily_bugle_ready:
