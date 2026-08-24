@@ -112,6 +112,10 @@ class DrManta(CaseFileMixin, Mode):
         ])
 
         self.machine.events.post("disable_daily_bugle_mystery")
+        # Dr. Manta intentionally owns the VUK hold. Clear any release or
+        # switch-confirmed retry left queued by the shared VUK service before
+        # the player reaches it.
+        self.machine.events.post("cancel_vuk_eject_request")
         self.machine.events.post("clear_saucers_delayed")
         self.machine.events.post("rooftop_diverter_open")
         self.machine.events.post("dr_manta_clear_all")
@@ -128,6 +132,9 @@ class DrManta(CaseFileMixin, Mode):
             self._eject_vuk(750)
             return
 
+        # A pending shared eject/retry must never release Ball 1 during the
+        # relay. Ball 1 remains here until Ball 2 is locked in a saucer.
+        self.machine.events.post("cancel_vuk_eject_request")
         self._score(self.vuk_value)
         self.phase = "lock_saucer"
         self.machine.events.post("rooftop_diverter_close")

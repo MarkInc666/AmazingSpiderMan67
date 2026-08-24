@@ -192,17 +192,19 @@ Authored shot sets:
 
 ```text
 1. Right drop bank good; both pops bad.
-2. Center web good; both pops bad.
-3. Upper-center target good; upper-left and upper-right targets bad.
-4. Main spinner good; left web and right drop bank bad.
+2. Right pop good; left pop and right drop bank bad.
+3. Left drop bank good; main spinner and right pop bad.
+4. Main spinner good; left web and left drop bank bad.
 5. Left drop bank good; left web, main spinner, and both pops bad.
+6. Right pop good; left and right drop banks bad.
+7. Right pop good; center web and right drop bank bad.
 ```
 
 The good shot flashes green, bad shots are solid red, and neutral shots are
 unlit. Drop-bank indications use the left/right bank GI sections rather than
-individual drop inserts. The upper-target set opens the rooftop gate; every
-other set closes it. After any good or bad shot, randomly choose one of the
-other four sets with no immediate repeat.
+individual drop inserts. Igor does not use the rooftop targets, and the rooftop
+gate remains closed. After any good or bad shot, randomly choose one of the
+other six sets with no immediate repeat.
 
 Scoring and end conditions:
 

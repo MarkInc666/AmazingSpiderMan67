@@ -1,0 +1,37 @@
+ASM67 MPF 0.80 — VUK AND LIGHTING PATCH
+Source: ASM67_2026_08_24_1am.zip
+Patch date: August 24, 2026
+
+CURRENT REQUEST
+
+- Conner's Reptiles now pulses both complete pop-bumper lamp rings throughout
+  the mode.
+- A shared copy of Master Vine's five-step VUK route chase is owned by the
+  always-active light_feedback mode.
+- The shared chase is active only while the VUK is the required terminal shot
+  in Conner's Reptiles, Spider-Slayer, Super Swami's optional Blackout phase,
+  The Plotter's VUK phase, Professor Pretorius, Dr. Von Schlick, and Kotep.
+- Chapter mini-wizard ready at the Daily Bugle VUK also starts the chase. Final
+  Showdown ready does not, because that wizard starts from a lower saucer.
+- Every participating path explicitly stops and clears the chase on collection,
+  failure/timeout, or mode cleanup.
+
+EARLIER REPAIRS INCLUDED IN THIS CHANGED-FILES-ONLY PACKAGE
+
+- Dr. Manta keeps the first ball in the VUK until the second ball enters a
+  saucer, then releases the VUK ball to begin the attack.
+- Dr. Von Schlick keeps the winning VUK ball through the flood sequence and
+  villain summary.
+- Charles Cameo lights both physical A inserts or both physical B inserts and
+  accepts either corresponding switch during the A+B stage.
+- Skymaster opens the rooftop gate while upper targets/spinner progression is
+  required and closes it for the final Web Super.
+- Master Vine explicitly clears every VUK chase output, including spinner GI,
+  before the next active-wave lighting takes over.
+
+VALIDATION SCOPE
+
+Static validation covers Python compilation, YAML parsing, duplicate YAML keys,
+targeted event producer/consumer coverage, changed-file inventory, and ZIP CRC
+and path structure. No physical-machine testing is claimed. All affected modes
+still require on-machine playtesting.

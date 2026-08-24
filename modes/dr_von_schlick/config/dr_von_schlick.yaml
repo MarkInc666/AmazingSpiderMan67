@@ -43,6 +43,7 @@ event_player:
 
   mode_dr_von_schlick_started:
     - disable_daily_bugle_mystery
+    - cancel_vuk_eject_request
     - rooftop_diverter_close
     - clear_saucers_delayed
     - reset_drops

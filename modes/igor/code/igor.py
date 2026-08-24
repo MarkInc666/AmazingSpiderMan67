@@ -26,34 +26,40 @@ class Igor(CaseFileMixin, Mode):
     SHOT_SETS = {
         1: {
             "good": "right_bank",
-            "bad": ("pops",),
+            "bad": ("left_pop", "right_pop"),
         },
         2: {
-            "good": "center_web",
-            "bad": ("pops",),
+            "good": "right_pop",
+            "bad": ("left_pop", "right_bank"),
         },
         3: {
-            "good": "upper_center",
-            "bad": ("upper_left", "upper_right"),
+            "good": "left_bank",
+            "bad": ("spinner", "right_pop"),
         },
         4: {
             "good": "spinner",
-            "bad": ("left_web", "right_bank"),
+            "bad": ("left_web", "left_bank"),
         },
         5: {
             "good": "left_bank",
-            "bad": ("left_web", "spinner", "pops"),
+            "bad": ("left_web", "spinner", "left_pop", "right_pop"),
+        },
+        6: {
+            "good": "right_pop",
+            "bad": ("left_bank", "right_bank"),
+        },
+        7: {
+            "good": "right_pop",
+            "bad": ("center_web", "right_bank"),
         },
     }
 
     SHOT_GROUPS = (
         "right_bank",
         "left_bank",
-        "pops",
+        "left_pop",
+        "right_pop",
         "center_web",
-        "upper_center",
-        "upper_left",
-        "upper_right",
         "spinner",
         "left_web",
     )
@@ -218,10 +224,7 @@ class Igor(CaseFileMixin, Mode):
         for group in shot_set["bad"]:
             self.machine.events.post(f"igor_bad_{group}")
 
-        if self.current_set == 3:
-            self.machine.events.post("rooftop_diverter_open")
-        else:
-            self.machine.events.post("rooftop_diverter_close")
+        self.machine.events.post("rooftop_diverter_close")
 
         self.machine.events.post(
             "igor_shot_set_selected",

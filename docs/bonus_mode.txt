@@ -1,0 +1,21 @@
+ASM67 END-OF-BALL BONUS
+
+The upper score panel continues to show the current player's overall score
+throughout the bonus count. Its title uses the current player number and reads
+PLAYER 1 SCORE, PLAYER 2 SCORE, PLAYER 3 SCORE, or PLAYER 4 SCORE.
+
+The lower bonus panel counts regular bonus buckets, mode bonuses, Held Bonus,
+and Hold Bonus messages. At the end of the sequence, the lower panel displays:
+
+TOTAL BONUS
+<total awarded during this bonus count>
+
+The final total includes regular bonus after its multiplier, all mode-bonus
+entries awarded on this ball, a carried Held Bonus collected on this ball, and
+the duplicated bonus awarded when Hold Bonus is earned on the last ball.
+
+When Hold Bonus is earned before the last ball, the current total is banked for
+the next ball but is not added a second time to the current final total.
+
+The final total remains on screen for the existing 2.5-second hold.
+Machine testing remains required.

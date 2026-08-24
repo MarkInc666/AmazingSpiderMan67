@@ -38,6 +38,11 @@ class DeVargas(CaseFileMixin, Mode):
         "medium": 175_000,
         "fast": 150_000,
     }
+    PHASE_MESSAGES = {
+        "slow": "AWESOME!",
+        "medium": "GREAT!",
+        "fast": "GOOD!",
+    }
 
     SHOTS = (
         "left_web",
@@ -300,7 +305,7 @@ class DeVargas(CaseFileMixin, Mode):
         else:
             self._show_jackpot(
                 "GOLD COLLECTED",
-                phase.upper(),
+                self.PHASE_MESSAGES[phase],
                 value,
             )
 

@@ -132,6 +132,7 @@ class MasterVine(CaseFileMixin, Mode):
 
     def _register_handlers(self):
         self.add_mode_event_handler("master_vine_upper_entrance", self._upper_entrance)
+        self.add_mode_event_handler("master_vine_vuk_entered", self._vuk_entered)
         self.add_mode_event_handler("master_vine_upper_spinner_hit", self._spinner_hit)
         self.add_mode_event_handler("master_vine_complete_request", self._complete_mode)
         self.add_mode_event_handler("master_vine_fail_request", self._complete_mode)
@@ -139,6 +140,11 @@ class MasterVine(CaseFileMixin, Mode):
             self.add_mode_event_handler(
                 f"master_vine_{shot}_hit", self._lower_shot_hit, shot=shot
             )
+
+    def _vuk_entered(self, **kwargs):
+        # Clear every lamp owned by the VUK route chase before the active-wave
+        # spinner pulse takes over the spinner-area GI.
+        self.machine.events.post("master_vine_vuk_route_cleared")
 
     def _upper_entrance(self, **kwargs):
         if self._done_or_summary() or self.phase not in (

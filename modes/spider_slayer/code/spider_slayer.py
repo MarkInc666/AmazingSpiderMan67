@@ -109,6 +109,7 @@ class SpiderSlayer(CaseFileMixin, Mode):
         self.phase = "jackpot"
         self.machine.events.post("spider_slayer_clear_hunt_shots")
         self.machine.events.post("spider_slayer_hunt_complete")
+        self.machine.events.post("final_vuk_chase_start")
         self.machine.events.post("rooftop_diverter_open")
         if self.has_case_file("safety_net"):
             self.machine.events.post("spider_slayer_enable_safety_net")
@@ -148,6 +149,7 @@ class SpiderSlayer(CaseFileMixin, Mode):
 
         self.delay.remove("spider_slayer_begin_decay")
         self.delay.remove("spider_slayer_decay")
+        self.machine.events.post("final_vuk_chase_stop")
         self.collected_jackpot = self.slayers_jackpot
         self._score(self.collected_jackpot)
         self.mode_done = True
@@ -201,6 +203,7 @@ class SpiderSlayer(CaseFileMixin, Mode):
         self.delay.remove("spider_slayer_decay")
         self.delay.remove("spider_slayer_finish")
         self.machine.events.post("spider_slayer_clear_all")
+        self.machine.events.post("final_vuk_chase_stop")
         self.machine.events.post("spider_slayer_disable_safety_net")
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("enable_daily_bugle_mystery")

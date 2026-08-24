@@ -52,15 +52,11 @@ event_player:
   s_left_drops_2_active: igor_left_bank_hit
   s_left_drops_3_active: igor_left_bank_hit
 
-  s_pop_left_active: igor_pops_hit
-  s_pop_right_active: igor_pops_hit
+  s_pop_left_active: igor_left_pop_hit
+  s_pop_right_active: igor_right_pop_hit
 
   s_web_target_mid_active: igor_center_web_hit
   s_web_target_left_active: igor_left_web_hit
-
-  s_upper_target_center_active: igor_upper_center_hit
-  s_upper_target_left_active: igor_upper_left_hit
-  s_upper_target_right_active: igor_upper_right_hit
 
   # "Spinner" in Igor means the main/lower spinner. The upper spinner is neutral.
   s_web_spinner_active: igor_spinner_hit
@@ -97,10 +93,8 @@ event_player:
 show_player:
   igor_good_right_bank:
     igor_good_right_bank_show: {loops: -1}
-  igor_good_center_web:
-    igor_good_center_web_show: {loops: -1}
-  igor_good_upper_center:
-    igor_good_upper_center_show: {loops: -1}
+  igor_good_right_pop:
+    igor_good_right_pop_show: {loops: -1}
   igor_good_spinner:
     igor_good_spinner_show: {loops: -1}
   igor_good_left_bank:
@@ -108,15 +102,13 @@ show_player:
 
   igor_all_shot_lights_off:
     igor_good_right_bank_show: {action: stop}
-    igor_good_center_web_show: {action: stop}
-    igor_good_upper_center_show: {action: stop}
+    igor_good_right_pop_show: {action: stop}
     igor_good_spinner_show: {action: stop}
     igor_good_left_bank_show: {action: stop}
 
   mode_igor_stopping:
     igor_good_right_bank_show: {action: stop}
-    igor_good_center_web_show: {action: stop}
-    igor_good_upper_center_show: {action: stop}
+    igor_good_right_pop_show: {action: stop}
     igor_good_spinner_show: {action: stop}
     igor_good_left_bank_show: {action: stop}
 
@@ -136,9 +128,6 @@ light_player:
     l_gi_5bank_upper: off
     l_mid_web_target: off
     l_left_web_target: off
-    l_upper_left: off
-    l_upper_middle: off
-    l_upper_right: off
     l_spinner: off
     l_pop_1_1: off
     l_pop_1_2: off
@@ -171,13 +160,13 @@ light_player:
     l_gi_5bank_upper: red
   igor_bad_left_web:
     l_left_web_target: red
+  igor_bad_left_bank:
+    l_gi_3bank: red
+  igor_bad_center_web:
+    l_mid_web_target: red
   igor_bad_spinner:
     l_spinner: red
-  igor_bad_upper_left:
-    l_upper_left: red
-  igor_bad_upper_right:
-    l_upper_right: red
-  igor_bad_pops:
+  igor_bad_left_pop:
     l_pop_1_1: red
     l_pop_1_2: red
     l_pop_1_3: red
@@ -190,6 +179,7 @@ light_player:
     l_pop_1_10: red
     l_pop_1_11: red
     l_pop_1_12: red
+  igor_bad_right_pop:
     l_pop_2_1: red
     l_pop_2_2: red
     l_pop_2_3: red
@@ -216,17 +206,35 @@ shows:
         l_gi_5bank_lower: off
         l_gi_5bank_upper: off
 
-  igor_good_center_web_show:
+  igor_good_right_pop_show:
     - duration: 250ms
-      lights: {l_mid_web_target: green}
+      lights:
+        l_pop_2_1: green
+        l_pop_2_2: green
+        l_pop_2_3: green
+        l_pop_2_4: green
+        l_pop_2_5: green
+        l_pop_2_6: green
+        l_pop_2_7: green
+        l_pop_2_8: green
+        l_pop_2_9: green
+        l_pop_2_10: green
+        l_pop_2_11: green
+        l_pop_2_12: green
     - duration: 250ms
-      lights: {l_mid_web_target: off}
-
-  igor_good_upper_center_show:
-    - duration: 250ms
-      lights: {l_upper_middle: green}
-    - duration: 250ms
-      lights: {l_upper_middle: off}
+      lights:
+        l_pop_2_1: off
+        l_pop_2_2: off
+        l_pop_2_3: off
+        l_pop_2_4: off
+        l_pop_2_5: off
+        l_pop_2_6: off
+        l_pop_2_7: off
+        l_pop_2_8: off
+        l_pop_2_9: off
+        l_pop_2_10: off
+        l_pop_2_11: off
+        l_pop_2_12: off
 
   igor_good_spinner_show:
     - duration: 250ms

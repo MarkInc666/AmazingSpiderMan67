@@ -111,6 +111,7 @@ class ConnersReptiles(CaseFileMixin, Mode):
         self.machine.events.post("disable_daily_bugle_mystery")
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("conners_reptiles_clear_all_lights")
+        self.machine.events.post("conners_reptiles_pop_pulse_start")
         self.machine.events.post("clear_saucers_delayed")
 
         if self.safety_net_active:
@@ -132,6 +133,7 @@ class ConnersReptiles(CaseFileMixin, Mode):
         self.machine.events.post("hide_mode_status")
         self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post("conners_reptiles_clear_all_lights")
+        self.machine.events.post("final_vuk_chase_stop")
         self.machine.events.post("clear_saucers_delayed")
         if not self.super_collected:
             self.machine.events.post("request_vuk_eject")
@@ -239,6 +241,7 @@ class ConnersReptiles(CaseFileMixin, Mode):
         self.super_lit = True
         self.machine.events.post("conners_reptiles_clear_jackpot_lights")
         self.machine.events.post("conners_reptiles_super_jackpot_lit")
+        self.machine.events.post("final_vuk_chase_start")
         self.machine.events.post("rooftop_diverter_open")
         self._show_message(
             "SWAMP SUPER READY",
@@ -256,6 +259,7 @@ class ConnersReptiles(CaseFileMixin, Mode):
             return
 
         self.super_lit = False
+        self.machine.events.post("final_vuk_chase_stop")
         self.super_collected = True
         self._score(self.SUPER_VALUE)
         self.machine.events.post("conners_reptiles_super_jackpot_collected", value=self.SUPER_VALUE)
@@ -266,6 +270,7 @@ class ConnersReptiles(CaseFileMixin, Mode):
     def _complete_mode(self):
         if self.mode_done:
             return
+        self.machine.events.post("final_vuk_chase_stop")
         self.mode_done = True
         self.machine.game.player["conners_reptiles_state"] = 2
         self.machine.events.post("cancel_mode_message_reminder")

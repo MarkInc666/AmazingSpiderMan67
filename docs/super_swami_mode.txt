@@ -1,0 +1,21 @@
+SUPER SWAMI — RESTORE NEW YORK
+
+STATUS
+Implemented. Physical-machine playtest still required.
+
+CORE FLOW
+- Restore all six playfield areas before the city timer expires.
+- Without More Jackpots, restoring the sixth area completes the mode normally.
+- With More Jackpots, restoring the sixth area opens rooftop access and lights
+  the Daily Bugle VUK for the 500,000 Blackout Jackpot.
+- The shared Master Vine route chase runs from the lower spinner through the
+  ramp to the VUK while the Blackout Jackpot is lit.
+- The chase stops immediately on the VUK hit, timer failure, or mode cleanup.
+
+CASE FILES
+- More Jackpots: adds the final 500,000 Blackout Jackpot at the VUK.
+- Bigger Jackpots: restoration values begin at 200,000.
+- More Time: extends the city timer from 40 to 50 seconds.
+- Safety Net: starts the opening ball save.
+- Shot Assist: the first restored area also spots another unlit area.
+

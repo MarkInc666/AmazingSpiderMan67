@@ -1,5 +1,5 @@
 CONNER'S REPTILES — SWAMP RAMPAGE
-Final rules sync: August 14, 2026
+Final rules sync: August 24, 2026
 
 Core rules
 
@@ -48,8 +48,11 @@ Case Files
 
 Lighting
 
+- Both complete pop-bumper lamp rings pulse green for the full mode to identify
+  the shots that reveal Jackpot objectives.
 - Revealed rollovers pulse yellow, web targets pulse white, and the grouped saucers
   and optional star pulse red to match their physical lenses.
 - Collected objectives turn off.
-- When the Super is ready, the Jackpot objective lights clear and the VUK path GI
-  flashes green.
+- When the Super is ready, the Jackpot objective lights clear and the shared
+  Master Vine route chase runs from the lower spinner through the ramp to the
+  VUK. It stops immediately on the VUK hit or mode cleanup.

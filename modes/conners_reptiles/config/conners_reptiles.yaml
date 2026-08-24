@@ -85,6 +85,8 @@ light_player:
     gi: E0E0E0
 
 show_player:
+  conners_reptiles_pop_pulse_start:
+    conners_reptiles_pop_pulse: {loops: -1, priority: 330}
   conners_reptiles_upper_a_lit:
     conners_reptiles_upper_a_pulse: {loops: -1, priority: 340}
   conners_reptiles_upper_a_collected:
@@ -117,8 +119,6 @@ show_player:
     conners_reptiles_star_pulse: {loops: -1, priority: 340}
   conners_reptiles_star_collected:
     conners_reptiles_star_pulse: {action: stop}
-  conners_reptiles_super_jackpot_lit:
-    conners_reptiles_vuk_super_pulse: {loops: -1, priority: 350}
 
   conners_reptiles_clear_jackpot_lights: &stop_reptile_jackpots
     conners_reptiles_upper_a_pulse: {action: stop}
@@ -131,9 +131,63 @@ show_player:
     conners_reptiles_star_pulse: {action: stop}
   conners_reptiles_clear_all_lights:
     <<: *stop_reptile_jackpots
-    conners_reptiles_vuk_super_pulse: {action: stop}
+    conners_reptiles_pop_pulse: {action: stop}
 
 shows:
+  conners_reptiles_pop_pulse:
+    - duration: 450ms
+      lights:
+        l_pop_1_1: 60F060
+        l_pop_1_2: 60F060
+        l_pop_1_3: 60F060
+        l_pop_1_4: 60F060
+        l_pop_1_5: 60F060
+        l_pop_1_6: 60F060
+        l_pop_1_7: 60F060
+        l_pop_1_8: 60F060
+        l_pop_1_9: 60F060
+        l_pop_1_10: 60F060
+        l_pop_1_11: 60F060
+        l_pop_1_12: 60F060
+        l_pop_2_1: 60F060
+        l_pop_2_2: 60F060
+        l_pop_2_3: 60F060
+        l_pop_2_4: 60F060
+        l_pop_2_5: 60F060
+        l_pop_2_6: 60F060
+        l_pop_2_7: 60F060
+        l_pop_2_8: 60F060
+        l_pop_2_9: 60F060
+        l_pop_2_10: 60F060
+        l_pop_2_11: 60F060
+        l_pop_2_12: 60F060
+    - duration: 450ms
+      lights:
+        l_pop_1_1: off
+        l_pop_1_2: off
+        l_pop_1_3: off
+        l_pop_1_4: off
+        l_pop_1_5: off
+        l_pop_1_6: off
+        l_pop_1_7: off
+        l_pop_1_8: off
+        l_pop_1_9: off
+        l_pop_1_10: off
+        l_pop_1_11: off
+        l_pop_1_12: off
+        l_pop_2_1: off
+        l_pop_2_2: off
+        l_pop_2_3: off
+        l_pop_2_4: off
+        l_pop_2_5: off
+        l_pop_2_6: off
+        l_pop_2_7: off
+        l_pop_2_8: off
+        l_pop_2_9: off
+        l_pop_2_10: off
+        l_pop_2_11: off
+        l_pop_2_12: off
+
   conners_reptiles_upper_a_pulse:
     - duration: 450ms
       lights: {l_a_rollover: yellow}
@@ -186,8 +240,3 @@ shows:
       lights: {l_star: red}
     - duration: 450ms
       lights: {l_star: off}
-  conners_reptiles_vuk_super_pulse:
-    - duration: 300ms
-      lights: {l_gi_ramp: 40FF60}
-    - duration: 300ms
-      lights: {l_gi_ramp: off}

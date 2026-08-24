@@ -57,6 +57,7 @@ widget_player:
 
 event_player:
   mode_dr_manta_started:
+    - cancel_vuk_eject_request
     - clear_saucers_delayed
     - rooftop_diverter_open
   mode_dr_manta_stopping:

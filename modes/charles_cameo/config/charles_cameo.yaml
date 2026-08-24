@@ -45,6 +45,8 @@ event_player:
 
   s_inlane_a_active: charles_cameo_a_hit
   s_inlane_b_active: charles_cameo_b_hit
+  s_inlane_m_r_active: charles_cameo_a_hit
+  s_inlane_m_l_active: charles_cameo_b_hit
 
   s_web_target_left_active: charles_cameo_web_left_hit
   s_web_target_mid_active: charles_cameo_web_right_hit
@@ -160,6 +162,8 @@ light_player:
     l_gi_5bank_upper: stop
     l_a_rollover: stop
     l_b_rollover: stop
+    l_right_a: stop
+    l_left_b: stop
     l_left_web_target: stop
     l_mid_web_target: stop
 
@@ -256,14 +260,22 @@ shows:
 
   charles_cameo_a_pulse:
     - duration: 500ms
-      lights: {l_a_rollover: yellow}
+      lights:
+        l_a_rollover: yellow
+        l_right_a: yellow
     - duration: 500ms
-      lights: {l_a_rollover: "302800"}
+      lights:
+        l_a_rollover: "302800"
+        l_right_a: "302800"
   charles_cameo_b_pulse:
     - duration: 500ms
-      lights: {l_b_rollover: yellow}
+      lights:
+        l_b_rollover: yellow
+        l_left_b: yellow
     - duration: 500ms
-      lights: {l_b_rollover: "302800"}
+      lights:
+        l_b_rollover: "302800"
+        l_left_b: "302800"
 
   charles_cameo_left_web_pulse:
     - duration: 500ms

@@ -10,6 +10,9 @@ CORE FLOW
 1. Start with one ball. The rooftop gate opens and the main spinner / access GI
    flash to lead the player to the VUK.
 2. Shoot the VUK for 100,000. Ball 1 remains physically held in the VUK.
+   Dr. Manta cancels any pending shared VUK eject or retry both when the mode
+   starts and when Ball 1 is captured, preventing an earlier release request
+   from interrupting the hold.
 3. A second ball is served with a 10-second ball save.
 4. Lock Ball 2 in any saucer for 150,000. The saucer keeps Ball 2 held.
 5. Ball 1 is kicked from the VUK to the upper playfield and the 20-second
@@ -92,6 +95,8 @@ Persistent/shared player data is limited to:
 PLAYTEST CHECKLIST
 ------------------
 - VUK reliably holds Ball 1 while the second ball serves.
+- A pending shared VUK eject/retry from earlier play is cancelled at mode start
+  and again on capture; it must not release Ball 1 before a saucer lock.
 - Second-ball save is 10 seconds normally and 25 with Safety Net.
 - Unqualified saucers eject normally; the first qualified saucer holds Ball 2.
 - VUK eject reaches the rooftop after the saucer settles.

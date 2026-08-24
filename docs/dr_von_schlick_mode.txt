@@ -1,0 +1,57 @@
+DR. VON SCHLICK — OIL PELLETS / REACTOR FLOOD
+================================================
+
+STATUS
+------
+Implemented. Needs on-machine playtest.
+
+CORE FLOW
+---------
+1. Follow the moving green shot and collect five Oil Pellets.
+2. The rooftop gate opens and the VUK lights for a 1,000,000 Super Jackpot.
+3. The shared Master Vine route chase runs from the lower spinner through the
+   ramp to the VUK until the shot is made or the timer expires.
+4. Shoot the VUK before its 20-second timer expires.
+5. The qualified VUK shot immediately cancels any pending shared VUK eject or
+   retry and transfers the occupied VUK to the villain-summary hold.
+6. Ball remains physically held while the four-second, eight-band reactor flood
+   animation plays.
+7. The Super Jackpot is awarded at the final flood band and the mode ends.
+8. Ball remains in the VUK for the complete villain summary, then ejects when
+   the summary finishes or is skipped.
+
+The VUK must not eject between the qualified shot, flood animation and summary.
+An unqualified VUK hit still ejects normally.
+
+SCORING
+-------
+- Oil Pellet: 100,000.
+- Reactor Flood Super Jackpot: 1,000,000.
+
+CASE FILES
+----------
+More Jackpots
+  Two additional Oil Pellets remain available after the Super is qualified.
+
+Bigger Jackpots
+  Oil Pellets score 150,000.
+
+More Time
+  Super timer is 30 seconds instead of 20.
+
+Safety Net
+  Starts the Case File ball save when the Super is qualified.
+
+Shot Assist
+  The first collected Oil Pellet counts twice.
+
+PLAYTEST CHECKLIST
+------------------
+- Pending shared VUK ejects/retries are cancelled when the mode starts.
+- A qualified VUK hit immediately arms the summary hold.
+- The ball remains in the VUK throughout all eight flood bands.
+- The ball remains held throughout the villain summary.
+- Summary completion or skip ejects the VUK ball exactly once.
+- An unqualified VUK hit still ejects normally.
+- The route chase stops immediately when the qualified VUK switch closes and
+  also clears on timeout or mode stop.

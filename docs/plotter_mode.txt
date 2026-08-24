@@ -50,8 +50,8 @@ LIGHTING
 - If all three saucers are lit, pop and spinner guidance turns off so only the
   three red saucer objectives remain.
 - When the VUK phase begins, all pop, spinner-objective, and saucer lighting is
-  cleared. The lower spinner insert and the adjacent upper-left VUK GI pulse
-  yellow for the entire VUK timer.
+  cleared. The shared Master Vine route chase runs from the lower spinner
+  through the ramp to the VUK for the entire VUK timer.
 - After the VUK Super with More Jackpots, the VUK guidance stops and all three
   white-lens upper-target inserts flash red together until collected or expired.
 - All Plotter shows stop on completion, failure, ball end, or mode stop, and GI

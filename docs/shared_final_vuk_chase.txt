@@ -1,0 +1,25 @@
+SHARED FINAL VUK ROUTE CHASE
+Rules sync: August 24, 2026
+
+The always-active light_feedback mode owns a shared copy of the Master Vine VUK
+route chase. final_vuk_chase_start loops the five-step, 200ms-per-step route:
+
+1. Lower spinner insert: white.
+2. Lower-left and spinner GI: green.
+3. Upper-left GI: green.
+4. Ramp GI: green.
+5. Top VUK GI: green.
+
+final_vuk_chase_stop stops the show and explicitly clears all six route lights,
+including l_gi_spinner, so no green step can remain behind.
+
+The shared chase is enabled only while the VUK is the required final objective
+in Conner's Reptiles, Spider-Slayer, Super Swami's optional Blackout phase, The
+Plotter's VUK phase, Professor Pretorius, Dr. Von Schlick, and Kotep. It is also
+enabled while a chapter mini-wizard is ready at the Daily Bugle VUK. It is not
+used for the final wizard ready flag because Final Showdown starts from a lower
+saucer rather than the VUK.
+
+All participating modes post the stop event on collection, timeout/failure, and
+mode cleanup. The chapter mini-wizard path stops it as soon as the VUK starts the
+wizard intro.

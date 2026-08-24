@@ -16,6 +16,8 @@ Core rules
 - Complete all eight drops in strict left-to-right order:
   left 1, left 2, left 3, right 1, right 2, right 3, right 4, right 5.
 - Each upper-spinner spin knocks down and awards the next required target.
+- The rooftop gate opens after the startup bank reset and remains open for the
+  complete ordered-drop phase so the upper spinner is always reachable.
 - The player may also hit the targets directly, but only the next required
   target advances the sequence.
 - A wrong direct hit resets only that target's bank. The first restored target
@@ -24,6 +26,10 @@ Core rules
   already-completed target in that bank is then knocked back down in order,
   with 200ms between knockdowns. Sequence progress is preserved.
 - Upper-playfield entry does not reset either bank.
+- Completing all eight drops closes the rooftop gate before the Web Super
+  round. Mode stop also closes the gate and restores Daily Bugle control.
+- A VUK capture during the ordered-drop phase uses the shared eject path to
+  feed the ball through the open rooftop gate.
 - Each correct target scores 100,000 points.
 
 Super round
@@ -50,6 +56,8 @@ Case Files
 Lighting
 --------
 - The upper-spinner lamp flashes during the ordered-drop phase.
+- The rooftop gate is open whenever the upper spinner is required, and closed
+  during the Web Super round.
 - The green left-bank lamp flashes while a left-bank target is required.
 - The individual green right-bank lamp flashes for the required right target.
 - The center web flashes white during the main Super window.

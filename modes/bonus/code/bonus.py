@@ -6,11 +6,12 @@ class Bonus(MpfBonus):
     """ASM67 clean end-of-ball bonus sequence.
 
     Presentation rules:
-      * Bonus slide appears first with player score visible.
+      * Bonus slide appears first with player score visible in the upper panel.
       * Regular bonus buckets count from low to high once per multiplier cycle.
       * Each shown bucket is added to score immediately.
       * Multiplier lamps 2X-5X go out after their cycle is counted.
       * Mode/chapter bonuses are shown after a longer pause and scored as shown.
+      * The lower final panel holds on the total bonus awarded for this count.
     """
 
     BONUS_BUCKETS_DESC = [
@@ -301,11 +302,14 @@ class Bonus(MpfBonus):
             if self._is_last_ball():
                 # There is no future ball on which to collect the held value.
                 # Award the entire current bonus a second time now and present
-                # it as the final HELD BONUS entry.
-                self._player["score"] += self._final_total
+                # it as the final HELD BONUS entry. Include that duplicate in
+                # the total-bonus value shown after the callout.
+                held_value = self._final_total
+                self._player["score"] += held_value
+                self._final_total += held_value
                 self._player["held_bonus"] = 0
-                self._show_bonus_entry("held_bonus", "HELD BONUS", self._final_total)
-                self.machine.events.post("asm_hold_bonus_awarded", total=self._final_total)
+                self._show_bonus_entry("held_bonus", "HELD BONUS", held_value)
+                self.machine.events.post("asm_hold_bonus_awarded", total=held_value)
             else:
                 # Bank the current total for the next ball. Do not award it
                 # again now and do not show an amount until it is collected.
@@ -324,15 +328,15 @@ class Bonus(MpfBonus):
         self.machine.events.post("asm_bonus_total_awarded", total=self._final_total)
 
         self.delay.add(
-            name="asm_bonus_show_final_score",
+            name="asm_bonus_show_final_total",
             ms=self.HELD_BONUS_DISPLAY_MS if held_entry_was_shown else 0,
-            callback=self._show_final_score,
+            callback=self._show_final_total,
         )
 
-    def _show_final_score(self):
+    def _show_final_total(self):
         if not self._sequence_available():
             return
-        self._show_bonus_entry("final_score_hold", "PLAYER SCORE", int(self._player["score"]))
+        self._show_bonus_entry("final_score_hold", "TOTAL BONUS", self._final_total)
         self.delay.add(
             name="asm_bonus_finish",
             ms=self.FINAL_SCORE_HOLD_MS,

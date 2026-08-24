@@ -23,7 +23,9 @@ Lighting
 - Dark red GI during the hunt.
 - Active shots pulse red. Bank categories use bank GI lights.
 - Successful shots flash the playfield red.
-- At fifteen hits, build lights turn off, GI changes green, and the Daily Bugle/VUK area flashes green.
+- At fifteen hits, build lights turn off, GI changes green, and the shared
+  Master Vine route chase runs from the lower spinner through the ramp to the
+  Daily Bugle VUK. It stops on the VUK hit or mode cleanup.
 
 Summary
 - MODE SCORE

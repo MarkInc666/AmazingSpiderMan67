@@ -86,6 +86,9 @@ class CharlesCameo(CaseFileMixin, Mode):
         self.add_mode_event_handler("charles_cameo_pop_right_hit", self._pair_hit, stage="pops", side="right")
         self.add_mode_event_handler("charles_cameo_drop_left_hit", self._pair_hit, stage="drops", side="left")
         self.add_mode_event_handler("charles_cameo_drop_right_hit", self._pair_hit, stage="drops", side="right")
+        # YAML combines both physical A switches into the A event and both
+        # physical B switches into the B event, so either matching insert can
+        # complete the currently lit side of the A+B pair.
         self.add_mode_event_handler("charles_cameo_a_hit", self._pair_hit, stage="ab", side="a")
         self.add_mode_event_handler("charles_cameo_b_hit", self._pair_hit, stage="ab", side="b")
         self.add_mode_event_handler("charles_cameo_web_left_hit", self._pair_hit, stage="webs", side="left")

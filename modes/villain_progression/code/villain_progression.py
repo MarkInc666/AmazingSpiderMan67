@@ -1586,6 +1586,7 @@ class VillainProgression(Mode):
         mini_key = chapter["mini_wizard_key"]
 
         self.machine.game.player["mini_wizard_daily_bugle_ready"] = 1
+        self.machine.events.post("final_vuk_chase_start")
         if self._normalize_state(self.machine.game.player[f"{mini_key}_state"]) != self.PLAYING:
             self.machine.game.player[f"{mini_key}_state"] = self.NOT_PLAYED
 
@@ -1610,6 +1611,7 @@ class VillainProgression(Mode):
         if not chapter:
             return
         mini_key = chapter["mini_wizard_key"]
+        self.machine.events.post("final_vuk_chase_stop")
         player["mini_wizard_daily_bugle_ready"] = 0
         player["mini_wizard_vuk_hold_active"] = 1
         player["mini_wizard_current_key"] = mini_key
@@ -1723,6 +1725,7 @@ class VillainProgression(Mode):
     def _start_final_wizard(self, **kwargs):
         if self._safe_int(self.machine.game.player["final_wizard_ready"], 0) != 1:
             return
+        self.machine.events.post("final_vuk_chase_stop")
         self.machine.game.player[f"{self.FINAL_WIZARD_KEY}_state"] = self.PLAYING
         self.machine.game.player["villain_current_key"] = self.FINAL_WIZARD_KEY
         self.machine.game.player["villain_current_name"] = self.FINAL_WIZARD_KEY

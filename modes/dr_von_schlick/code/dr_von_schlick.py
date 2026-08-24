@@ -84,6 +84,7 @@ class DrVonSchlick(CaseFileMixin, Mode):
         self.add_mode_event_handler("dr_von_schlick_fail_request", self._fail_mode)
 
         self.machine.events.post("daily_bugle_cancel_vuk_delay_eject")
+        self.machine.events.post("cancel_vuk_eject_request")
         self.machine.events.post("dr_von_schlick_gi_red")
         self.machine.events.post("dr_von_schlick_clear_shot_lights")
         self._light_current_shot()
@@ -98,6 +99,7 @@ class DrVonSchlick(CaseFileMixin, Mode):
         for band in range(1, self.FLOOD_BANDS + 1):
             self.delay.remove(f"dr_von_schlick_flood_{band}")
         self.machine.events.post("dr_von_schlick_clear_shot_lights")
+        self.machine.events.post("final_vuk_chase_stop")
         self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post("hide_mode_status")
         self.clear_active_case_file_helpers()
@@ -184,6 +186,7 @@ class DrVonSchlick(CaseFileMixin, Mode):
         self.super_seconds_left = self.super_seconds
         self.machine.events.post("rooftop_diverter_open")
         self.machine.events.post("dr_von_schlick_light_vuk")
+        self.machine.events.post("final_vuk_chase_start")
         if self.has_case_file("safety_net"):
             self.machine.events.post("start_case_file_ball_save")
         self._show_message("REACTOR READY", "SHOOT VUK", self.SUPER_VALUE, self.super_seconds_left, reminder=True)
@@ -206,6 +209,13 @@ class DrVonSchlick(CaseFileMixin, Mode):
         if self.phase != "super":
             self.machine.events.post("request_vuk_eject")
             return
+
+        # The winning ball must remain in the VUK throughout the four-second
+        # flood sequence and the villain summary. Take ownership immediately,
+        # before any queued shared eject or retry can release it.
+        self.machine.events.post("cancel_vuk_eject_request")
+        self.machine.events.post("villain_summary_hold_vuk_until_done")
+        self.machine.events.post("final_vuk_chase_stop")
         self.phase = "flood"
         self.delay.remove("dr_von_schlick_move_shot")
         self.delay.remove("dr_von_schlick_super_tick")
@@ -231,12 +241,12 @@ class DrVonSchlick(CaseFileMixin, Mode):
                 message_mode_subtitle="SUPER JACKPOT",
                 message_mode_value=self.SUPER_VALUE,
             )
-            self.machine.events.post("villain_summary_hold_vuk_until_done")
             self._complete_mode()
 
     def _complete_mode(self, **kwargs):
         if self.mode_done:
             return
+        self.machine.events.post("final_vuk_chase_stop")
         self.mode_done = True
         self.machine.game.player[f"{self.MODE_KEY}_state"] = 2
         self.machine.events.post("dr_von_schlick_mode_complete")
@@ -244,6 +254,7 @@ class DrVonSchlick(CaseFileMixin, Mode):
     def _fail_mode(self, **kwargs):
         if self.mode_done:
             return
+        self.machine.events.post("final_vuk_chase_stop")
         self.mode_done = True
         self.machine.game.player[f"{self.MODE_KEY}_state"] = 2
         self.machine.events.post("show_mode_message", message_mode_title="REACTOR ESCAPED", message_mode_subtitle="SUPER LOST")

@@ -109,9 +109,10 @@ class Skymaster(CaseFileMixin, Mode):
         self.add_mode_event_handler("skymaster_fail_request", self._fail_mode)
 
         self.machine.events.post("clear_saucers_delayed")
+        self.machine.events.post("disable_daily_bugle_mystery")
+        self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("skymaster_reset_left_bank")
         self.machine.events.post("skymaster_reset_right_bank")
-        self.machine.events.post("skymaster_sequence_started")
         if self.has_case_file("safety_net"):
             self.machine.events.post("start_case_file_ball_save")
 
@@ -133,6 +134,9 @@ class Skymaster(CaseFileMixin, Mode):
         self.machine.events.post("skymaster_reset_left_bank")
         self.machine.events.post("skymaster_reset_right_bank")
         self.machine.events.post("clear_saucers_delayed")
+        self.machine.events.post("rooftop_diverter_close")
+        self.machine.events.post("enable_daily_bugle_mystery")
+        self.machine.events.post("daily_bugle_restore_state")
         self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post("hide_mode_status")
         self.clear_active_case_file_helpers()
@@ -142,6 +146,9 @@ class Skymaster(CaseFileMixin, Mode):
         if self._done_or_summary() or self.phase != "starting_reset":
             return
         self.phase = "sequence"
+        # The upper spinner can advance every ordered target, so rooftop access
+        # remains open for the complete sequence phase.
+        self.machine.events.post("skymaster_sequence_started")
         self._light_expected_target()
 
     def _spinner_hit(self, **kwargs):

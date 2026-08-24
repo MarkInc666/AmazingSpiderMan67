@@ -16,13 +16,17 @@ LIGHTING
 - The demon phase uses dim dark-red background GI.
 - Every active demon flashes yellow independently at 300ms on and 300ms dim/off.
 - A destroyed demon immediately returns to the dim background state.
-- During the scepter phase, only the ramp/VUK area flashes yellow. The old full-playfield red/off strobe is not used.
+- During the scepter phase, the shared Master Vine route chase runs from the
+  lower spinner through the ramp to the VUK. The old full-playfield red/off
+  strobe is not used.
 - The optional fifth demon flashes independently from the ramp/VUK cue.
 - Collecting the Super plays a short 600ms full-playfield success burst before the summary begins.
 
 VUK AND SAUCERS
 - A VUK hit before the scepter phase requests a normal 1-second eject.
 - A successful scepter shot holds the VUK through the villain summary. The summary is responsible for the final release.
+- The route chase stops immediately on a successful VUK hit, timer failure, or
+  mode cleanup.
 - Kotep does not use the three lower saucers; they use the normal delayed kickout path.
 
 CASE FILES

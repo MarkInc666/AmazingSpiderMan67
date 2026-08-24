@@ -1,0 +1,21 @@
+PROFESSOR PRETORIUS — REACTOR EXPERIMENT
+
+STATUS
+Implemented. Physical-machine playtest still required.
+
+CORE FLOW
+- Complete the left pop, right pop, left bank, and right bank reactor stations.
+- Spinner cooling controls reactor temperature and the existing overheat grace.
+- Completing all four stations opens rooftop access and lights the VUK for the
+  500,000 Reactor Super.
+- The shared Master Vine route chase runs from the lower spinner through the
+  ramp to the VUK while the Reactor Super is ready.
+- The chase stops immediately on the VUK hit, failure, or mode cleanup.
+
+CASE FILES
+- More Jackpots: all five right-bank targets score reactor hits.
+- Bigger Jackpots: reactor hits score 150,000.
+- More Time: extends overheat grace from 4 to 8 seconds.
+- Safety Net: starts a 10-second opening ball save.
+- Shot Assist: the first left drop adds one random remaining left drop.
+

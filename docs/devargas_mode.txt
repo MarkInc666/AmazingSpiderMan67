@@ -89,7 +89,9 @@ and eject after 750 ms. Daily Bugle state is restored when the mode stops.
 
 MESSAGES
 - Start: CITY OF GOLD / HIT THE PULSING SHOTS
-- Collection: GOLD COLLECTED / timing tier / value
+- Collection during slow pulse: GOLD COLLECTED / AWESOME! / value
+- Collection during medium pulse: GOLD COLLECTED / GREAT! / value
+- Collection during fast pulse: GOLD COLLECTED / GOOD! / value
 - Expiration: GOLD LOST / shot name
 - Shot Assist: GOLD RECOVERED / SHOT ASSIST / value
 - Status: gold banked this mode, opportunities used, and gold shots collected

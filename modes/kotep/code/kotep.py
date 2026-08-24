@@ -116,6 +116,7 @@ class Kotep(CaseFileMixin, Mode):
             self._stop_demon_flash(shot)
         self.machine.events.post("kotep_clear_lights")
         self.machine.events.post("kotep_stop_scepter_ramp_flash")
+        self.machine.events.post("final_vuk_chase_stop")
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("reset_drops")
         self.machine.events.post("clear_saucers_delayed")
@@ -271,6 +272,7 @@ class Kotep(CaseFileMixin, Mode):
         self.machine.events.post("kotep_start_scepter_ramp_flash")
         self.machine.events.post("rooftop_diverter_open")
         self.machine.events.post("kotep_scepter_lit")
+        self.machine.events.post("final_vuk_chase_start")
 
         if self.bonus_demon:
             self.bonus_demon_available = True
@@ -353,6 +355,7 @@ class Kotep(CaseFileMixin, Mode):
             self.bonus_demon_available = False
 
         self.delay.remove("kotep_scepter_tick")
+        self.machine.events.post("final_vuk_chase_stop")
         self.machine.events.post("hide_mode_status")
         self.super_jackpots = 1
         self._score(self.scepter_super_value)
@@ -376,6 +379,7 @@ class Kotep(CaseFileMixin, Mode):
         if self.mode_done:
             return
         self.machine.events.post("hide_mode_status")
+        self.machine.events.post("final_vuk_chase_stop")
         self.mode_done = True
         self.phase = "done"
         player = self.machine.game.player
@@ -388,6 +392,7 @@ class Kotep(CaseFileMixin, Mode):
         if self.mode_done:
             return
         self.machine.events.post("hide_mode_status")
+        self.machine.events.post("final_vuk_chase_stop")
         self.mode_done = True
         self.phase = "done"
         player = self.machine.game.player

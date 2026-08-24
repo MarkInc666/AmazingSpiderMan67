@@ -86,6 +86,7 @@ class Plotter(CaseFileMixin, Mode):
     def mode_stop(self, **kwargs):
         self._cleanup_mode_display_and_delays()
         self.machine.events.post("plotter_clear_lights")
+        self.machine.events.post("final_vuk_chase_stop")
         self.machine.events.post("rooftop_diverter_close")
         self.clear_active_case_file_helpers()
         super().mode_stop(**kwargs)
@@ -192,6 +193,7 @@ class Plotter(CaseFileMixin, Mode):
         self.lit_saucers.clear()
 
         self.vuk_lit = True
+        self.machine.events.post("final_vuk_chase_start")
         self.seconds_left = self.vuk_seconds
         self.machine.events.post("rooftop_diverter_open")
         self.machine.events.post(
@@ -233,6 +235,7 @@ class Plotter(CaseFileMixin, Mode):
             return
 
         self.vuk_collected = True
+        self.machine.events.post("final_vuk_chase_stop")
         self._score(self.SUPER_VALUE)
 
         if self.has_case_file("more_jackpots"):
@@ -272,6 +275,7 @@ class Plotter(CaseFileMixin, Mode):
     def _complete_mode(self, **kwargs):
         if self.mode_done:
             return
+        self.machine.events.post("final_vuk_chase_stop")
         self.mode_done = True
         self.delay.remove("plotter_vuk_timer_tick")
         self.machine.game.player[f"{self.MODE_KEY}_state"] = 2
@@ -283,6 +287,7 @@ class Plotter(CaseFileMixin, Mode):
     def _fail_mode(self, **kwargs):
         if self.mode_done:
             return
+        self.machine.events.post("final_vuk_chase_stop")
         self.mode_done = True
         self.delay.remove("plotter_vuk_timer_tick")
         self.machine.game.player[f"{self.MODE_KEY}_state"] = 0

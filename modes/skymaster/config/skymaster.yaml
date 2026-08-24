@@ -26,6 +26,7 @@ widget_player:
 
 event_player:
   s_trispinner_opto_active: skymaster_upper_spinner_hit
+  s_vuk_switch_active: request_vuk_eject
 
   s_left_drops_1_active:
     skymaster_drop_hit:
@@ -62,6 +63,16 @@ event_player:
   mode_skymaster_stopping:
     - clear_saucers_delayed
     - skymaster_clear_lights
+    - rooftop_diverter_close
+    - enable_daily_bugle_mystery
+    - daily_bugle_restore_state
+
+  mode_skymaster_started:
+    - disable_daily_bugle_mystery
+    - rooftop_diverter_close
+
+  skymaster_sequence_started: rooftop_diverter_open
+  skymaster_super_ready: rooftop_diverter_close
 
   skymaster_reset_left_bank: drop_target_bank_dt_bank_left_reset
   skymaster_reset_right_bank: drop_target_bank_dt_bank_right_reset

@@ -25,7 +25,9 @@ SHOT DEFINITIONS
 - Pops: left pop paired with right pop.
 - Drop banks: any target or bank rubber on the lit side. Cameo never forces a
   bank reset, so its rubber remains available if all targets are down.
-- A + B: upper A rollover paired with upper B rollover.
+- A + B: both physical A inserts light together and either A switch counts;
+  both physical B inserts light together and either B switch counts. This
+  includes the upper A/B rollovers and the matching lower A/B inlanes.
 - Web Super: left web target paired with center/right web target. The mirrored
   follow-up is a fixed 1M Super Jackpot and completes the mode.
 
