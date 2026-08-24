@@ -132,7 +132,7 @@ sound_player:
       loops: -1
 
   play_music_song_26: 
-    intro_mild:
+    intro_mild_2:
       bus: music
       loops: -1
 
@@ -325,3 +325,88 @@ sound_player:
     bombora:
       bus: music
       loops: -1      
+
+  play_music_song_65:
+    assault_course:
+      bus: music
+      loops: -1
+
+  play_music_song_66:
+    tropic_waters:
+      bus: music
+      loops: -1
+
+  play_music_song_67:
+    sample_syndicate:
+      bus: music
+      loops: -1
+
+  play_music_song_68:
+    men_of_action:
+      bus: music
+      loops: -1
+
+  play_music_song_69:
+    shaker_loop_1:
+      bus: music
+      loops: -1
+
+  play_music_song_70:
+    news_views:
+      bus: music
+      loops: -1
+
+  play_music_song_71:
+    hell_raisers:
+      bus: music
+      loops: -1
+
+  play_music_song_72:
+    scorpion:
+      bus: music
+      loops: -1
+
+  play_music_song_73:
+    last_night:
+      bus: music
+      loops: -1
+
+  play_music_song_74:
+    teen_beat:
+      bus: music
+      loops: -1
+
+  play_music_song_75:
+    harlem_intro:
+      bus: music
+      loops: -1
+
+  play_music_song_76:
+    bulldog:
+      bus: music
+      loops: -1
+
+  play_music_song_77:
+    orinoco:
+      bus: music
+      loops: -1
+
+  play_music_song_78:
+    not_so_private_eye:
+      bus: music
+      loops: -1
+
+  play_music_song_79:
+    traffic_jam:
+      bus: music
+      loops: -1
+
+  play_music_song_80:
+    sand_storm:
+      bus: music
+      loops: -1
+
+  play_music_song_81:
+    let_there_be_drums:
+      bus: music
+      loops: -1

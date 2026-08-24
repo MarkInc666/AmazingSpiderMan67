@@ -183,6 +183,8 @@ timers:
         action: restart
       - event: electro_shot_timer_stop
         action: stop
+      - event: mode_electro_stopping
+        action: stop
 
   electro_shot_assist_timer:
     start_value: 8
@@ -193,6 +195,8 @@ timers:
       - event: electro_shot_assist_timer_start
         action: restart
       - event: electro_shot_assist_timer_stop
+        action: stop
+      - event: mode_electro_stopping
         action: stop
 
   electro_super_timer:
@@ -205,6 +209,8 @@ timers:
         action: restart
       - event: electro_super_timer_stop
         action: stop
+      - event: mode_electro_stopping
+        action: stop
 
   electro_value_timer:
     start_value: 100
@@ -215,6 +221,8 @@ timers:
       - event: electro_value_timer_start
         action: restart
       - event: electro_value_timer_stop
+        action: stop
+      - event: mode_electro_stopping
         action: stop
 
 show_player:
@@ -541,6 +549,5 @@ shows:
     - duration: 500ms
       lights:
         gi: green
-
 
 

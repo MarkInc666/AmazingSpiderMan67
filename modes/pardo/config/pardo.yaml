@@ -315,3 +315,27 @@ light_player:
     l_gi_bright: red
   pardo_result_gi_restore:
     l_gi_bright: A0A0F0
+
+show_player:
+  # The main spinner reveals the hidden answer. Flash its white insert only
+  # while the three choices are hidden; the reveal clears it until hidden play resumes.
+  pardo_spinner_needed:
+    pardo_spinner_needed_flash:
+      loops: -1
+
+  pardo_all_lights_off:
+    pardo_spinner_needed_flash:
+      action: stop
+
+  mode_pardo_stopping:
+    pardo_spinner_needed_flash:
+      action: stop
+
+shows:
+  pardo_spinner_needed_flash:
+    - duration: 250ms
+      lights:
+        l_spinner: white
+    - duration: 250ms
+      lights:
+        l_spinner: off

@@ -27,6 +27,7 @@ class Base(Mode):
         "mode_cerberus_stopping",
         "mode_chapter_select_stopping",
         "mode_charles_cameo_stopping",
+        "mode_conquistador_stopping",
         "mode_cyclops_stopping",
         "mode_doctor_cool_stopping",
         "mode_diana_stopping",
@@ -44,6 +45,7 @@ class Base(Mode):
         "mode_fakir_stopping",
         "mode_fifth_avenue_phantom_stopping",
         "mode_fifth_dimension_curse_stopping",
+        "mode_fiddler_stopping",
         "mode_final_showdown_stopping",
         "mode_goblin_stopping",
         "mode_von_rantenraven_stopping",
@@ -57,6 +59,7 @@ class Base(Mode):
         "mode_master_technician_stopping",
         "mode_master_vine_stopping",
         "mode_mastermind_trap_stopping",
+        "mode_metal_eating_robot_stopping",
         "mode_spider_men_stopping",
         "mode_monster_island_breakout_stopping",
         "mode_mysterio_stopping",
@@ -65,6 +68,7 @@ class Base(Mode):
         "mode_parafino_stopping",
         "mode_pardo_stopping",
         "mode_sir_galahad_stopping",
+        "mode_spider_slayer_stopping",
         "mode_devargas_stopping",
         "mode_pod_stopping",
         "mode_professor_pretorius_stopping",
@@ -85,12 +89,20 @@ class Base(Mode):
         "mode_vulcan_stopping",
         "mode_vulture_stopping",
         "mode_who_is_the_real_villain_stopping",
+        "mode_harley_clivendon_stopping",
+        "mode_crime_wave_stopping",
+        "mode_daily_bugle_rooftop_riot_stopping",
     )
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
         for event in self.MESSAGE_EVENTS:
-            self.add_mode_event_handler(event, self._sync_mode_message_vars, priority=10000)
+            self.add_mode_event_handler(
+                event,
+                self._sync_mode_message_vars,
+                priority=10000,
+                guarded_display_event=f"base_{event}",
+            )
         self.add_mode_event_handler("show_mode_countdown", self._sync_mode_countdown_vars, priority=10000)
         self.add_mode_event_handler("hide_mode_message", self._hide_mode_message, priority=10000)
         self.add_mode_event_handler("reset_mode_message_reminder", self._reset_mode_message_reminder, priority=10000)
@@ -100,8 +112,18 @@ class Base(Mode):
         self.add_mode_event_handler("ball_ending", self._lock_and_clear_mode_display_context, priority=10000)
         self.add_mode_event_handler("ball_ended", self._lock_and_clear_mode_display_context, priority=10000)
 
-        self.add_mode_event_handler("show_mode_status", self._sync_mode_status_vars, priority=10000)
-        self.add_mode_event_handler("update_mode_status", self._sync_mode_status_vars, priority=10000)
+        self.add_mode_event_handler(
+            "show_mode_status",
+            self._sync_mode_status_vars,
+            priority=10000,
+            guarded_display_event="base_show_mode_status",
+        )
+        self.add_mode_event_handler(
+            "update_mode_status",
+            self._sync_mode_status_vars,
+            priority=10000,
+            guarded_display_event="base_update_mode_status",
+        )
         self.add_mode_event_handler("hide_mode_status", self._hide_mode_status, priority=10000)
         self.add_mode_event_handler("clear_mode_display_context", self._clear_mode_display_context, priority=10000)
         self.add_mode_event_handler("dr_zapp_upper_flipper_lockout", self._start_dr_zapp_upper_flipper_lockout, priority=10000)
@@ -138,6 +160,7 @@ class Base(Mode):
         message_mode_value="",
         message_mode_seconds="",
         reminder=False,
+        guarded_display_event="base_show_mode_message",
         **kwargs,
     ):
         if getattr(self, "_ball_end_display_lock", False):
@@ -148,6 +171,7 @@ class Base(Mode):
             message_mode_value=message_mode_value,
             message_mode_seconds=message_mode_seconds,
         )
+        self.machine.events.post(guarded_display_event)
         if reminder:
             self._reminder_payload = dict(
                 message_mode_title=message_mode_title,
@@ -183,6 +207,7 @@ class Base(Mode):
             message_mode_value=message_mode_value,
             message_mode_seconds="",
         )
+        self.machine.events.post("base_show_mode_countdown")
 
         seconds = self._parse_seconds(message_mode_seconds)
         if seconds is None or seconds <= 0:
@@ -217,6 +242,7 @@ class Base(Mode):
         self,
         mode_status_title="",
         mode_status_value="",
+        guarded_display_event="base_update_mode_status",
         **kwargs,
     ):
         if getattr(self, "_ball_end_display_lock", False):
@@ -225,6 +251,7 @@ class Base(Mode):
             mode_status_title=mode_status_title,
             mode_status_value=mode_status_value,
         )
+        self.machine.events.post(guarded_display_event)
 
     def _set_mode_status_vars(
         self,

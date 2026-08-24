@@ -117,14 +117,26 @@ light_player:
     gi: E0E0E0
 
   von_rantenraven_saucers_needed:
-    l_1: green
-    l_2: green
-    l_3: green
+    l_1: off
+    l_2: off
+    l_3: off
+    l_1_hole_l: red
+    l_1_hole_r: red
+    l_2_hole_l: red
+    l_2_hole_r: red
+    l_3_hole_l: red
+    l_3_hole_r: red
 
   von_rantenraven_saucers_off:
     l_1: off
     l_2: off
     l_3: off
+    l_1_hole_l: off
+    l_1_hole_r: off
+    l_2_hole_l: off
+    l_2_hole_r: off
+    l_3_hole_l: off
+    l_3_hole_r: off
 
   von_rantenraven_target_left_solid:
     l_upper_left: white
@@ -149,6 +161,12 @@ light_player:
     l_1: off
     l_2: off
     l_3: off
+    l_1_hole_l: off
+    l_1_hole_r: off
+    l_2_hole_l: off
+    l_2_hole_r: off
+    l_3_hole_l: off
+    l_3_hole_r: off
     l_upper_left: off
     l_upper_middle: off
     l_upper_right: off

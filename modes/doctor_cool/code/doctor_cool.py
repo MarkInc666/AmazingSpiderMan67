@@ -85,6 +85,7 @@ class DoctorCool(Mode, CaseFileMixin):
         self.delay.remove("doctor_cool_saucer_cycle")
         self.delay.remove("doctor_cool_star_freeze")
         self.delay.remove("doctor_cool_resume_chase")
+        self.delay.remove("doctor_cool_complete_delay")
         self.clear_active_case_file_helpers()
         self.machine.events.post("doctor_cool_clear_lights")
         super().mode_stop(**kwargs)
@@ -353,6 +354,8 @@ class DoctorCool(Mode, CaseFileMixin):
         self._update_mode_status()
 
     def _update_mode_status(self):
+        if self.mode_done:
+            return
         if self.saucer_chase_active:
             title = "DIAMOND CHASE"
             value = f"JACKPOTS {self.jackpots_collected}/{self.required_jackpots}"

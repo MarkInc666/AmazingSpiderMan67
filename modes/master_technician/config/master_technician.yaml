@@ -24,7 +24,8 @@ widget_player:
       action: remove
 
 event_player:
-  mode_master_technician_started:
+  # Python posts this only after all gameplay handlers are registered.
+  master_technician_startup_complete:
     - master_technician_reset_banks
     - rooftop_diverter_close
     - master_technician_start

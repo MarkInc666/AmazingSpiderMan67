@@ -27,6 +27,12 @@ Case Files
   a second time.
 
 Hardware notes
+- While the rooftop gate is open, a five-step chase runs in this physical order:
+  spinner insert; left-lower GI and spinner GI together; left-upper GI; ramp
+  GI; and the top GI beside the VUK. The chase clears as soon as the VUK
+  captures the ball.
+- During an active rooftop wave, the GI directly below the upper spinner
+  flashes to identify the spinner shot. This flash begins on VUK capture.
 - The three left drops share l_3bankbonus, so the display names the selected
   left target while the shared bank insert pulses whenever any left drop is lit.
 - Drop targets already knocked down during a wave are excluded from later

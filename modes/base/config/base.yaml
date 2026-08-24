@@ -50,12 +50,6 @@ variable_player:
 
 
 random_event_player:
-  play_random_main_song:
-    - play_song_1
-    - play_song_2
-    - play_song_9
-    - play_song_16
-
   play_random_player_added_callout:
     - player_added_callout_1
     - player_added_callout_2
@@ -66,7 +60,7 @@ random_event_player:
 
 event_player:
   finish_skillshot:
-    - play_random_main_song
+    - play_chapter_base_music
 
   play_bonus_music:
     - play_song_6
@@ -87,6 +81,9 @@ event_player:
 
   chapter_select_selected:
     - chapter_select_confirmed|2s
+
+  chapter_select_confirmed:
+    - play_song_5
 
   s_plunger_active{current_player.saved_ball_pending_plunger == 1}:
     - saved_ball_arrived_at_plunger
@@ -340,22 +337,22 @@ widget_player:
       expire: 2s
 
 
-  show_mode_message:
+  base_show_mode_message:
     mode_message:
       expire: 2s
       action: play
 
-  show_mode_message_long:
+  base_show_mode_message_long:
     mode_message:
       expire: 4s
       action: play
 
-  show_mode_jackpot:
+  base_show_mode_jackpot:
     mode_message:
       expire: 2s
       action: play
 
-  show_mode_countdown:
+  base_show_mode_countdown:
     mode_message:
       action: play
       expire: 2s
@@ -365,12 +362,12 @@ widget_player:
     mode_message:
       action: remove
 
-  show_mode_status:
+  base_show_mode_status:
     mode_status:
       action: play
       priority: 2500
 
-  update_mode_status:
+  base_update_mode_status:
     mode_status:
       action: play
       priority: 2500

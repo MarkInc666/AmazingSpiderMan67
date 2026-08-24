@@ -86,6 +86,11 @@ class MasterTechnician(CaseFileMixin, Mode):
                 target=target,
             )
 
+        # Do not rely on mode_master_technician_started to post the gameplay
+        # start event. Announce readiness only after every Python handler above
+        # is registered, then let the mode config perform its ordered startup.
+        self.machine.events.post("master_technician_startup_complete")
+
     def mode_stop(self, **kwargs):
         self.delay.remove("master_technician_timer_tick")
         self.delay.remove("master_technician_shot_assist_second_drop")

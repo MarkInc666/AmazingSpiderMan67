@@ -123,6 +123,8 @@ timers:
         action: start
       - event: vulture_mode_complete
         action: stop
+      - event: mode_vulture_stopping
+        action: stop
 
 show_player:
   vulture_show_left_green:

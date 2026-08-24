@@ -48,9 +48,7 @@ class Desperado(Mode, CaseFileMixin):
         self._reset_shared_vars()
         self._add_handlers()
 
-        self.machine.events.post("desperado_started")
         self.machine.events.post("desperado_clear_lights")
-        self.machine.events.post("desperado_reset_banks")
         self._start_round()
         self._start_timer()
 
@@ -60,7 +58,6 @@ class Desperado(Mode, CaseFileMixin):
         self.clear_active_case_file_helpers()
         self.machine.events.post("hide_mode_status")
         self.machine.events.post("desperado_clear_lights")
-        self.machine.events.post("desperado_reset_banks")
         super().mode_stop(**kwargs)
 
     def _apply_case_file_bonuses(self):
@@ -116,7 +113,6 @@ class Desperado(Mode, CaseFileMixin):
         if self.mode_done:
             return
         self._show_message("TIME UP", "DESPERADO ESCAPES", event="show_mode_jackpot")
-        self.machine.events.post("desperado_goal_missed")
         self._finish_mode(defeated=False)
 
     def _left_bank_complete(self, **kwargs):
@@ -226,6 +222,7 @@ class Desperado(Mode, CaseFileMixin):
     def _start_round(self):
         allowed = self._hits_allowed()
         self.machine.events.post("desperado_round_started", round=self.round_number, allowed=allowed)
+        self._restore_target_lights()
         # Do not use show_mode_countdown here. That shared display event owns
         # its own one-second countdown, which used to run alongside this mode's
         # Python timer and become stale when the left bank added time.
@@ -238,16 +235,18 @@ class Desperado(Mode, CaseFileMixin):
     def _show_status(self):
         self.machine.events.post(
             "update_mode_status",
-            mode_status_title=f"ROUND {self.round_number}",
+            mode_status_title=f"ROUND {self.round_number}  {max(0, self.remaining_seconds)}s",
             mode_status_value=f"{self._completed_count()}/5  {self.round_hits}/{self._hits_allowed()}",
         )
 
     def _show_timer_status(self):
-        self.machine.events.post(
-            "update_mode_status",
-            mode_status_title="SECONDS LEFT",
-            mode_status_value=max(0, self.remaining_seconds),
-        )
+        self._show_status()
+
+    def _restore_target_lights(self):
+        """Restore persistent unique-target state after every physical bank reset."""
+        for target in self.TARGETS:
+            state = "complete" if self.completed[target] else "available"
+            self.machine.events.post(f"desperado_target_{target}_{state}")
 
     def _drop_targets(self, excluding=None):
         for target in self.TARGETS:

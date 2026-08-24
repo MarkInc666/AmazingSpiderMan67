@@ -5,7 +5,8 @@ Gameplay identity
 - Distinct from Vulture, whose upper-playfield identity is spinner volume and value building.
 
 Flow
-1. Hit any saucer to open roof access.
+1. Hit any saucer to open roof access. The six red saucer-hole lamps identify
+   this qualification shot; the green 1, 2, and 3 inserts are not used.
 2. Enter the upper playfield to begin a Sky Harbor assault with 10 flips.
 3. Hit all three unique upper targets before the flips run out.
 4. The first two unique targets award jackpots.

@@ -11,6 +11,7 @@ mode:
 event_player:
   mode_desperado_started:
     - desperado_setup
+    - rooftop_diverter_close
 
   desperado_setup:
     - drop_target_bank_dt_bank_left_reset
@@ -21,11 +22,6 @@ event_player:
   mode_desperado_stopping:
     - desperado_clear_lights
     - clear_saucers
-
-  desperado_mode_complete:
-    villain_bookend_summary_request:
-      villain: desperado
-      done_event: desperado_mode_completed_summary
 
   s_right_drops_1_active: desperado_right_drop_1_hit
   s_right_drops_2_active: desperado_right_drop_2_hit
@@ -38,6 +34,7 @@ event_player:
   s_saucer_1_active: delayed_kickout_saucer_1
   s_saucer_2_active: delayed_kickout_saucer_2
   s_saucer_3_active: delayed_kickout_saucer_3
+  s_vuk_switch_active: up_kick
 
 widget_player:
   mode_desperado_started:
@@ -72,20 +69,25 @@ light_player:
   desperado_target_5_complete:
     l_5bank_5: green
   desperado_extra_round_started:
-    l_5bank_1: yellow
-    l_5bank_2: yellow
-    l_5bank_3: yellow
-    l_5bank_4: yellow
-    l_5bank_5: yellow
+    l_5bank_1: green
+    l_5bank_2: green
+    l_5bank_3: green
+    l_5bank_4: green
+    l_5bank_5: green
 
 show_player:
   desperado_round_started:
-    desperado_right_drop_1_available_show: {action: play, loops: -1, speed: 2}
-    desperado_right_drop_2_available_show: {action: play, loops: -1, speed: 2}
-    desperado_right_drop_3_available_show: {action: play, loops: -1, speed: 2}
-    desperado_right_drop_4_available_show: {action: play, loops: -1, speed: 2}
-    desperado_right_drop_5_available_show: {action: play, loops: -1, speed: 2}
     desperado_left_bank_time_show: {action: play, loops: -1, speed: 2}
+  desperado_target_1_available:
+    desperado_right_drop_1_available_show: {action: play, loops: -1, speed: 2}
+  desperado_target_2_available:
+    desperado_right_drop_2_available_show: {action: play, loops: -1, speed: 2}
+  desperado_target_3_available:
+    desperado_right_drop_3_available_show: {action: play, loops: -1, speed: 2}
+  desperado_target_4_available:
+    desperado_right_drop_4_available_show: {action: play, loops: -1, speed: 2}
+  desperado_target_5_available:
+    desperado_right_drop_5_available_show: {action: play, loops: -1, speed: 2}
   desperado_target_1_complete:
     desperado_right_drop_1_available_show: {action: stop}
   desperado_target_2_complete:
@@ -119,29 +121,29 @@ show_player:
 shows:
   desperado_right_drop_1_available_show:
     - duration: 250ms
-      lights: {l_5bank_1: yellow}
+      lights: {l_5bank_1: green}
     - duration: 250ms
-      lights: {l_5bank_1: off}
+      lights: {l_5bank_1: "003000"}
   desperado_right_drop_2_available_show:
     - duration: 250ms
-      lights: {l_5bank_2: yellow}
+      lights: {l_5bank_2: green}
     - duration: 250ms
-      lights: {l_5bank_2: off}
+      lights: {l_5bank_2: "003000"}
   desperado_right_drop_3_available_show:
     - duration: 250ms
-      lights: {l_5bank_3: yellow}
+      lights: {l_5bank_3: green}
     - duration: 250ms
-      lights: {l_5bank_3: off}
+      lights: {l_5bank_3: "003000"}
   desperado_right_drop_4_available_show:
     - duration: 250ms
-      lights: {l_5bank_4: yellow}
+      lights: {l_5bank_4: green}
     - duration: 250ms
-      lights: {l_5bank_4: off}
+      lights: {l_5bank_4: "003000"}
   desperado_right_drop_5_available_show:
     - duration: 250ms
-      lights: {l_5bank_5: yellow}
+      lights: {l_5bank_5: green}
     - duration: 250ms
-      lights: {l_5bank_5: off}
+      lights: {l_5bank_5: "003000"}
   desperado_left_bank_time_show:
     - duration: 400ms
       lights: {l_3bankbonus: blue}

@@ -1,0 +1,52 @@
+ASM67 SHARED DISPLAY / TIMER CLEANUP
+Date: 2026-08-23
+
+Problem
+-------
+Doctor Cool and Conquistador could reach the bonus screen after a ball-drain
+mode end while a late gameplay display event was still pending. The base Python
+guard rejected stale player-variable changes, but base.yaml still responded to
+the original public event and told GMC to play/update a widget that no longer
+existed.
+
+Changes
+-------
+1. Public show/update events now pass through base.py first. Only accepted
+   events generate the private base_* events used by base.yaml's widget_player.
+   Events rejected after ball teardown no longer produce a GMC widget command.
+
+2. Added missing shared stop cleanup for:
+   - Harley Clivendon
+   - The Conquistador
+   - Spider-Slayer
+   - Metal Monster (metal_eating_robot)
+   - Fiddler
+   - Crime Wave
+   - Daily Bugle Rooftop Riot
+
+3. Doctor Cool now cancels doctor_cool_complete_delay at mode_stop and refuses
+   to post a status update once mode_done is true.
+
+4. Added explicit mode-stopping control events to all previously implicit
+   villain timer devices:
+   - Electro: shot, shot-assist, super, and value timers
+   - Lizard: normal and More Time delivery timers
+   - Vulture: mode timer
+
+Audit result
+------------
+All 55 villain modes, all 11 chapter wizard modes, Final Showdown, and Daily
+Bugle Rooftop Riot are now represented in the shared display cleanup list.
+
+Python delay callbacks were also reviewed. Modes using custom DelayManager
+instances either cancel their named gameplay delays in mode_stop or rely on the
+mode's DelayManager cleanup with inactive/mode_done callback guards. Conquistador
+explicitly cancels all four of its delays. No additional live display-producing
+timer was found that required a gameplay change.
+
+Validation
+----------
+- Python compilation passed.
+- Changed YAML files parsed successfully.
+- Shared cleanup inventory check reported no missing gameplay modes.
+- Machine testing is still required.

@@ -17,7 +17,7 @@ event_player:
     - villain_bookend_intro_hold_release
 
   villain_bookend_summary_done:
-    - play_random_main_song
+    - play_chapter_base_music
 
 
 widget_player:

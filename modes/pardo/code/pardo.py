@@ -259,6 +259,7 @@ class Pardo(CaseFileMixin, Mode):
         self.machine.events.post("pardo_all_lights_off")
         for group in self.current_groups:
             self.machine.events.post(f"pardo_hidden_{group}")
+        self.machine.events.post("pardo_spinner_needed")
 
     def _schedule_result_gi_restore(self):
         """Return the result-flash GI section to Pardo's normal GI color."""

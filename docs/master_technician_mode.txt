@@ -2,6 +2,9 @@ MASTER TECHNICIAN — CURRENT MODE RULES
 
 STATUS
 - Redesigned and coded.
+- Startup now uses master_technician_startup_complete after all Python gameplay
+  handlers are registered. This prevents the portrait widget from appearing
+  while the timer, scoring, status display, and target lighting remain inactive.
 - Automated validation completed with the patch.
 - Physical-machine playtest still required.
 

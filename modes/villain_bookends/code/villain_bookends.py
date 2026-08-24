@@ -58,7 +58,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'sandman_state',
-            'song': 'play_song_8',
+            'song': 'play_song_80',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Get to the rooftop.
@@ -193,7 +193,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'scorpion_state',
-            'song': 'play_song_25',
+            'song': 'play_song_72',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Parafino's wax traps the city.
@@ -496,7 +496,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'super_swami_state',
-            'song': 'play_song_35',
+            'song': 'play_song_73',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Frog Ghosts slip through the Fifth Dimension.
@@ -822,7 +822,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'charles_cameo_state',
-            'song': 'play_song_28',
+            'song': 'play_song_70',
         },
         'brutus': {
             'title': 'BRUTUS',
@@ -837,7 +837,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'brutus_state',
-            'song': 'play_song_52',
+            'song': 'play_song_76',
         },
         'igor': {
             'title': 'IGOR',
@@ -961,7 +961,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'spider_men_state',
-            'song': 'play_song_27',
+            'song': 'play_song_74',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: The Baron Von Rantenraven commands the final attack.

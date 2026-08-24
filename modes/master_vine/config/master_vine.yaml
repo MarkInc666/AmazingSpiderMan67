@@ -57,7 +57,11 @@ event_player:
   s_inlane_m_r_active: master_vine_middle_a_hit
   s_inlane_m_l_active: master_vine_middle_b_hit
   s_star_rollover_active: master_vine_star_hit
-  s_vuk_switch_active: request_vuk_eject
+  s_vuk_switch_active:
+    - master_vine_vuk_entered
+    - request_vuk_eject
+
+  rooftop_diverter_open: master_vine_gate_open_lighting
 
   master_vine_reset_banks:
     - drop_target_bank_dt_bank_left_reset
@@ -67,7 +71,19 @@ event_player:
     - master_vine_all_lights_off
 
 show_player:
+  master_vine_gate_open_lighting:
+    master_vine_vuk_chase:
+      loops: -1
+      priority: 340
+  master_vine_vuk_entered:
+    master_vine_vuk_chase:
+      action: stop
+    master_vine_upper_spinner_pulse:
+      loops: -1
+      priority: 320
   master_vine_attempt_started:
+    master_vine_vuk_chase:
+      action: stop
     master_vine_upper_spinner_pulse:
       loops: -1
       priority: 320
@@ -99,6 +115,7 @@ show_player:
 
   master_vine_all_lights_off:
     <<: *vine_stop_shot_shows
+    master_vine_vuk_chase: {action: stop}
     master_vine_upper_spinner_pulse: {action: stop}
 
   master_vine_left_web_lit:
@@ -188,6 +205,8 @@ light_player:
   mode_master_vine_started:
     gi: 204020
     l_gi_a: off
+    l_spinner: off
+    l_gi_spinner: off
     l_gi_left_sling_lower: off
     l_gi_left_sling_upper: off
     l_gi_right_sling: off
@@ -217,7 +236,17 @@ light_player:
     l_pop_2_12: off
 
   master_vine_attempt_expired:
-    l_gi_a: off
+    l_gi_spinner: off
+
+  master_vine_vuk_entered: &vine_vuk_route_off
+    l_spinner: off
+    l_gi_left_lower: off
+    l_gi_left_upper: off
+    l_gi_ramp: off
+    l_gi_top_1: off
+
+  master_vine_attempt_started:
+    <<: *vine_vuk_route_off
 
   master_vine_shots_reset: &vine_all_objectives_off
     l_left_web_target: off
@@ -266,7 +295,12 @@ light_player:
 
   master_vine_all_lights_off:
     <<: *vine_all_objectives_off
-    l_gi_a: off
+    l_spinner: off
+    l_gi_spinner: off
+    l_gi_left_lower: off
+    l_gi_left_upper: off
+    l_gi_ramp: off
+    l_gi_top_1: off
     gi: E0E0E0
 
   master_vine_left_web_collected: {l_left_web_target: "303030"}
@@ -318,11 +352,53 @@ light_player:
   master_vine_star_collected: {l_star: "300000"}
 
 shows:
+  master_vine_vuk_chase:
+    - duration: 200ms
+      lights:
+        l_spinner: white
+        l_gi_left_lower: off
+        l_gi_spinner: off
+        l_gi_left_upper: off
+        l_gi_ramp: off
+        l_gi_top_1: off
+    - duration: 200ms
+      lights:
+        l_spinner: off
+        l_gi_left_lower: 60F060
+        l_gi_spinner: 60F060
+        l_gi_left_upper: off
+        l_gi_ramp: off
+        l_gi_top_1: off
+    - duration: 200ms
+      lights:
+        l_spinner: off
+        l_gi_left_lower: off
+        l_gi_spinner: off
+        l_gi_left_upper: 60F060
+        l_gi_ramp: off
+        l_gi_top_1: off
+    - duration: 200ms
+      lights:
+        l_spinner: off
+        l_gi_left_lower: off
+        l_gi_spinner: off
+        l_gi_left_upper: off
+        l_gi_ramp: 60F060
+        l_gi_top_1: off
+    - duration: 200ms
+      lights:
+        l_spinner: off
+        l_gi_left_lower: off
+        l_gi_spinner: off
+        l_gi_left_upper: off
+        l_gi_ramp: off
+        l_gi_top_1: 60F060
+
   master_vine_upper_spinner_pulse:
     - duration: 250ms
-      lights: {l_gi_a: 60F060}
+      lights: {l_gi_spinner: 60F060}
     - duration: 250ms
-      lights: {l_gi_a: "103010"}
+      lights: {l_gi_spinner: "103010"}
   master_vine_left_web_pulse:
     - duration: 500ms
       lights: {l_left_web_target: white}

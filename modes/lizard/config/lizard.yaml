@@ -85,6 +85,8 @@ timers:
         action: restart
       - event: lizard_delivery_timer_stop
         action: stop
+      - event: mode_lizard_stopping
+        action: stop
 
   lizard_delivery_timer_more_time:
     start_value: 20
@@ -95,6 +97,8 @@ timers:
       - event: lizard_delivery_timer_more_time_start
         action: restart
       - event: lizard_delivery_timer_more_time_stop
+        action: stop
+      - event: mode_lizard_stopping
         action: stop
 
 show_player:

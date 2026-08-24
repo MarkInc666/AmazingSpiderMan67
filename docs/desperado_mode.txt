@@ -1,0 +1,31 @@
+DESPERADO — RIGHT-BANK PURSUIT
+
+Complete all five unique right-bank targets before the 60-second pursuit
+expires. Round 1 allows one right-bank hit before Desperado escapes and the
+bank resets. Each later round allows one additional hit, up to five hits.
+
+New unique targets score 200K. Previously completed targets score 50K and
+still consume one of the round's allowed hits. Completing the left 3-bank adds
+10 seconds and resets that bank.
+
+Incomplete right-bank inserts pulse bright/dim green through their physical
+green lenses. Completed targets remain solid green across later bank resets.
+The status display shows the round, seconds remaining, unique targets found,
+and hits used in the current round.
+
+The rooftop gate closes when gameplay begins. An unexpected ball entering the
+Daily Bugle VUK is immediately ejected.
+
+CASE FILES
+- More Jackpots: after all five unique targets, reset the bank for one 500K
+  Showdown Jackpot on any right drop.
+- Bigger Jackpots: new targets score 250K and repeats score 75K.
+- More Time: start with 70 seconds.
+- Safety Net: start the 10-second Case File ball save.
+- Shot Assist: the first right-bank hit in round 2 spots another unique target.
+
+SUMMARY
+MODE SCORE, BANK HITS, OUTLAWS.
+
+The progression system exclusively owns gameplay stop and summary sequencing.
+Machine testing remains required.
