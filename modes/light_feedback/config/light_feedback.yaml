@@ -19,6 +19,8 @@ show_player:
     shared_final_vuk_chase:
       loops: -1
       priority: 340
+      show_tokens:
+        color: "60F060"
   final_vuk_chase_stop:
     shared_final_vuk_chase:
       action: stop
@@ -303,7 +305,7 @@ shows:
   shared_final_vuk_chase:
     - duration: 200ms
       lights:
-        l_spinner: white
+        l_spinner: (color)
         l_gi_left_lower: off
         l_gi_spinner: off
         l_gi_left_upper: off
@@ -312,8 +314,8 @@ shows:
     - duration: 200ms
       lights:
         l_spinner: off
-        l_gi_left_lower: 60F060
-        l_gi_spinner: 60F060
+        l_gi_left_lower: (color)
+        l_gi_spinner: (color)
         l_gi_left_upper: off
         l_gi_ramp: off
         l_gi_top_1: off
@@ -322,7 +324,7 @@ shows:
         l_spinner: off
         l_gi_left_lower: off
         l_gi_spinner: off
-        l_gi_left_upper: 60F060
+        l_gi_left_upper: (color)
         l_gi_ramp: off
         l_gi_top_1: off
     - duration: 200ms
@@ -331,7 +333,7 @@ shows:
         l_gi_left_lower: off
         l_gi_spinner: off
         l_gi_left_upper: off
-        l_gi_ramp: 60F060
+        l_gi_ramp: (color)
         l_gi_top_1: off
     - duration: 200ms
       lights:
@@ -340,7 +342,7 @@ shows:
         l_gi_spinner: off
         l_gi_left_upper: off
         l_gi_ramp: off
-        l_gi_top_1: 60F060
+        l_gi_top_1: (color)
 
   switch_feedback_single:
     - duration: 100ms

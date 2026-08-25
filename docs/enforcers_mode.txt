@@ -18,6 +18,12 @@ Core rules
 - Collecting all three rooftop jackpots lights the center web target for Ox.
 - Collecting Ox completes the mode.
 
+Zone lighting
+-------------
+During the build phase, the left 3-bank GI, both right 5-bank GI lamps, and all LEDs
+in both pop-bumper rings pulse together on a 1-second repeating cycle. The pulse uses
+five 200ms steps: FFFF30 -> FF9F30 -> FF3030 -> FF9F30 -> FFFF30.
+
 Ox-ready lighting
 -----------------
 When Ox is ready, the center inserts chase in this exact order:

@@ -1,35 +1,71 @@
 FIDDLER MODE
 
 STATUS
-Implemented. The startup lockout and three-mistake rule require physical-machine playtesting.
+Implemented to the August 25, 2026 reviewed rules. Requires physical-machine playtesting for saucer hold/release timing, note readability, and the failure/retry flow.
 
 CORE GAMEPLAY
-- Watch the demonstrated note pattern and repeat it in order.
-- Round 1 contains one note, Round 2 contains two notes, and Round 3 contains three notes.
-- More Jackpots adds a four-note encore round.
-- Each required light demonstrates its position with one, two, three, or four short pulses, repeated four times, then remains solid.
-- Correct-note values are 100K; 200K/300K; 400K/500K/600K; and 700K/800K/900K/1M for the optional fourth round.
+- Fiddler is a saucer-started Simon Says / musical-memory mode.
+- The four note shots are:
+  1. Left Web = violin note 1
+  2. Left Bank Rubber = violin note 2
+  3. Right Pop = violin note 3
+  4. Right Bank Rubber = violin note 4
+- Left and right drop targets are forced down during the mode so the bank rubbers remain available.
+- All three saucers pulse while Fiddler is waiting for the player to start/restart a round.
+- Entering any saucer holds the ball during WATCH and ejects that same saucer when YOUR TURN begins.
 
-WRONG NOTES
-- Fiddler allows three mistakes during the entire mode.
-- The first and second mistakes play violin_bad_note, reset the current round to its first note, and replay the complete pattern after 1.5 seconds.
-- The third mistake ends the mode and Fiddler escapes.
-- Mistakes do not erase points already scored in earlier rounds or earlier correct notes.
-- Shot Assist forgives the first wrong input, awards the expected note, and does not consume a mistake.
+WATCH PHASE
+- Each note is demonstrated for exactly 1 second as a rapid burst:
+  200ms ON / 50ms OFF, repeated for the full second.
+- The note's proper violin SFX plays when its one-second burst starts.
+- There is a 500ms gap between notes.
+- After the complete pattern there is a 2-second pause, then the exact same pattern is demonstrated a second time.
+- After the second demonstration, YOUR TURN begins and the held saucer ejects.
+- Note inputs are locked during WATCH.
 
-INPUT LOCKOUT
-- Note inputs are ignored from mode start until the first demonstration is complete.
-- Inputs remain locked while drop targets are being knocked down, during round setup delays, throughout demonstrations, and during wrong-note replay delays.
-- Inputs become live only when PLAY THE PATTERN is shown.
+SAUCER REMINDER
+- If the player returns to any saucer while the current attempt is still clean, Fiddler repeats the complete WATCH phase for the same pattern.
+- Correct-note progress already made in that pattern is preserved.
+- The pattern is not randomized by a clean reminder.
+
+CORRECT NOTES
+- A correct note plays its proper violin SFX and flashes its own shot for 1 second using the same 200ms ON / 50ms OFF burst.
+- Each correct note scores 250,000 points.
+- Bigger Jackpots raises every correct-note award to 300,000.
+- Correct-note feedback locks note inputs for its 1-second burst.
+
+PATTERN PROGRESSION
+- The first pattern contains 1 note.
+- Each successful pattern increases the pattern length by one, to a maximum of 5 notes.
+- Once 5 notes is reached, later successful rounds continue with newly randomized 5-note patterns.
+- Repeated note shots are allowed in a pattern; this is required for 5-note patterns because there are four physical note shots.
+- Completing the first pattern is enough to count Fiddler as defeated for villain progression, but the gameplay continues until the failure limit is reached.
+- After every successful pattern the player must return to a saucer to start the next WATCH phase.
+
+FAILED ROUND
+- The first unassisted incorrect note in an attempt plays violin_bad_note and flashes the CORRECT shot for 1 second.
+- That mistake counts as exactly one failed round.
+- After a round has failed, all four note shots are inactive for progression: hitting any of them plays violin_bad_note and flashes THAT SHOT'S own light for 1 second.
+- Additional note hits while the round is already failed do not add more failures.
+- The player must return to a saucer to continue.
+- After a failed round, the saucer starts a NEW randomized pattern with the SAME number of notes as the failed pattern.
+
+MODE END
+- Fiddler normally allows 3 failed rounds.
+- More Jackpots allows a fourth failed round before the mode ends.
+- The mode continues regardless of successful patterns until the failure limit is reached or the ball ends.
+- If at least one pattern was completed before the failure limit, Fiddler is recorded as defeated when the mode ends.
+- If the player reaches the failure limit without completing any pattern, Fiddler escapes and is recorded as failed.
+- Villain/wizard modes never resume on the next ball; a drain ends the active Fiddler attempt.
 
 CASE FILES
-- More Jackpots: adds the four-note encore round.
-- Bigger Jackpots: adds 100K to every correct note.
-- More Time: repeats an unfinished pattern after 8 seconds instead of 14 seconds.
-- Safety Net: starts a 10-second ball save.
-- Shot Assist: forgives the first wrong input and awards the expected note.
+- More Jackpots: allows 4 failed rounds instead of 3.
+- Bigger Jackpots: correct notes are worth 300,000 instead of 250,000.
+- More Time: starts a 25-second ball save.
+- Safety Net: starts the standard 10-second Case File ball save.
+- Shot Assist: one-time mistake forgiveness. On the first wrong note, play violin_bad_note and flash the correct shot for 1 second, but do not fail the round and do not advance the pattern. The player still needs to hit the same correct note.
 
 SUMMARY
-- Completing all required rounds reports FIDDLER SILENCED.
-- Reaching three mistakes reports FIDDLER ESCAPED.
-- Summary stats remain ROUND and NOTES HIT.
+- Mode score = all correct-note awards.
+- PATTERNS = successful patterns completed.
+- NOTES HIT = total correct notes scored.

@@ -298,10 +298,10 @@ lights:
     number: playfield-4-9
     #yellow    
   l_advance_multiplier:
-    number: playfield-4-10
+    number: playfield-4-11
     #green
   l_mid_multibonus:
-    number: playfield-4-11
+    number: playfield-4-10
     #white
   l_mid_web_target:
     number: playfield-4-12

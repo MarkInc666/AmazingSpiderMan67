@@ -94,6 +94,18 @@ event_player:
     - clear_saucers
 
 show_player:
+  fakir_saucers_available:
+    fakir_saucers_pulse:
+      loops: -1
+
+  fakir_saucers_off:
+    fakir_saucers_pulse:
+      action: stop
+
+  fakir_all_lights_off:
+    fakir_saucers_pulse:
+      action: stop
+
   fakir_restore_base_gi:
     fakir_ruby_search_gi:
       action: stop
@@ -103,6 +115,8 @@ show_player:
       loops: -1
 
   fakir_fake_ruby_locked:
+    fakir_saucers_pulse:
+      action: stop
     fakir_base_gi:
       action: stop
     fakir_ruby_jackpot_gi_flash:
@@ -174,17 +188,6 @@ light_player:
     l_upper_middle: FF4444
     l_upper_right: FF4444
 
-  fakir_saucers_available:
-    l_1: yellow
-    l_1_hole_l: red
-    l_1_hole_r: red
-    l_2: yellow
-    l_2_hole_l: red
-    l_2_hole_r: red
-    l_3: yellow
-    l_3_hole_l: red
-    l_3_hole_r: red
-
   fakir_saucers_off:
     l_1: off
     l_1_hole_l: off
@@ -223,6 +226,24 @@ light_player:
     l_3_hole_r: red
 
 shows:
+  fakir_saucers_pulse:
+    - duration: 500ms
+      lights:
+        l_1_hole_l: red
+        l_1_hole_r: red
+        l_2_hole_l: red
+        l_2_hole_r: red
+        l_3_hole_l: red
+        l_3_hole_r: red
+    - duration: 500ms
+      lights:
+        l_1_hole_l: 400000
+        l_1_hole_r: 400000
+        l_2_hole_l: 400000
+        l_2_hole_r: 400000
+        l_3_hole_l: 400000
+        l_3_hole_r: 400000
+
   fakir_base_gi:
     - duration: 1s
       lights:

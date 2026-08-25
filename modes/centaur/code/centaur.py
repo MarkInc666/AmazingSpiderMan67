@@ -39,6 +39,7 @@ class Centaur(CaseFileMixin, Mode):
     MORE_TIME_FINAL_TIMER_SECONDS = 12
     SECOND_CHANCE_GATE_SECONDS = 12
     RESULT_HOLD_MS = 1500
+    VUK_EJECT_MS = 1000
 
     LEFT_DROPS = ("left_1", "left_2", "left_3")
     RIGHT_DROPS = ("right_1", "right_2", "right_3", "right_4", "right_5")
@@ -94,6 +95,7 @@ class Centaur(CaseFileMixin, Mode):
         self.add_mode_event_handler("centaur_right_rubber_hit", self._right_rubber_hit)
         self.add_mode_event_handler("centaur_bank_rubber_hit", self._bank_rubber_hit)
         self.add_mode_event_handler("centaur_upper_entered", self._upper_entered)
+        self.add_mode_event_handler("centaur_vuk_to_roof", self._vuk_to_roof)
         self.add_mode_event_handler("centaur_upper_left_exit", self._upper_left_exit)
         self.add_mode_event_handler("centaur_post_hold_cancel", self._post_hold_cancel)
         self.add_mode_event_handler("centaur_complete_request", self._complete_mode)
@@ -220,6 +222,12 @@ class Centaur(CaseFileMixin, Mode):
             return
 
         self._bank_rubber_hit()
+
+
+    def _vuk_to_roof(self, **kwargs):
+        if self._done_or_summary():
+            return
+        self.machine.events.post("request_vuk_eject", delay_ms=self.VUK_EJECT_MS)
 
     def _upper_entered(self, **kwargs):
         if self._done_or_summary():

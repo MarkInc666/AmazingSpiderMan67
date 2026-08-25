@@ -4,15 +4,28 @@ mode:
   start_events: start_mode_fiddler
   stop_events:
     - fiddler_mode_complete
+    - fiddler_mode_failed
     - fiddler_mode_completed_summary
     - ball_ended
   code: fiddler.Fiddler
   priority: 300
 
+ball_saves:
+  fiddler_more_time_ball_save:
+    active_time: 25s
+    hurry_up_time: 3s
+    grace_period: 2s
+    enable_events:
+      - start_fiddler_more_time_ball_save
+    disable_events:
+      - mode_fiddler_stopping
+
 widget_player:
   mode_fiddler_started:
     fiddler: {action: play}
   fiddler_mode_complete:
+    fiddler: {action: remove}
+  fiddler_mode_failed:
     fiddler: {action: remove}
   mode_fiddler_stopping:
     fiddler: {action: remove}
@@ -33,22 +46,32 @@ sound_player:
 event_player:
   s_web_target_left_active: fiddler_left_web_hit
   s_left_drops_rubber_active: fiddler_left_bank_hit
-  s_web_target_mid_active: fiddler_center_web_hit
+  s_pop_right_active: fiddler_right_pop_hit
   s_right_drops_rubber_active: fiddler_right_bank_hit
 
-  # Keep ordinary devices safe while Fiddler owns the drop-bank playfield space.
-  s_saucer_1_active: clear_saucers_delayed
-  s_saucer_2_active: clear_saucers_delayed
-  s_saucer_3_active: clear_saucers_delayed
+  # A saucer holds the ball while WATCH is shown. Python requests the exact
+  # saucer eject after the second presentation of the pattern.
+  s_saucer_1_active: fiddler_saucer_1_hit
+  s_saucer_2_active: fiddler_saucer_2_hit
+  s_saucer_3_active: fiddler_saucer_3_hit
 
   mode_fiddler_started:
     - rooftop_diverter_close
     - clear_saucers_delayed
 
   mode_fiddler_stopping:
+    - fiddler_saucers_not_ready
     - clear_saucers_delayed
     - drop_target_bank_dt_bank_left_reset
     - drop_target_bank_dt_bank_right_reset
+
+show_player:
+  fiddler_saucers_ready:
+    fiddler_saucer_ready_pulse:
+      loops: -1
+  fiddler_saucers_not_ready:
+    fiddler_saucer_ready_pulse:
+      action: stop
 
 light_player:
   mode_fiddler_started:
@@ -60,23 +83,79 @@ light_player:
     l_left_web_target: white
   fiddler_left_web_off:
     l_left_web_target: off
+
   fiddler_left_bank_solid:
     l_gi_3bank: 60F060
   fiddler_left_bank_off:
     l_gi_3bank: off
-  fiddler_center_web_solid:
-    l_mid_web_target: white
-  fiddler_center_web_off:
-    l_mid_web_target: off
+
+  fiddler_right_pop_solid:
+    l_pop_2_1: 60F060
+    l_pop_2_2: 60F060
+    l_pop_2_3: 60F060
+    l_pop_2_4: 60F060
+    l_pop_2_5: 60F060
+    l_pop_2_6: 60F060
+    l_pop_2_7: 60F060
+    l_pop_2_8: 60F060
+    l_pop_2_9: 60F060
+    l_pop_2_10: 60F060
+    l_pop_2_11: 60F060
+    l_pop_2_12: 60F060
+  fiddler_right_pop_off:
+    l_pop_2_1: off
+    l_pop_2_2: off
+    l_pop_2_3: off
+    l_pop_2_4: off
+    l_pop_2_5: off
+    l_pop_2_6: off
+    l_pop_2_7: off
+    l_pop_2_8: off
+    l_pop_2_9: off
+    l_pop_2_10: off
+    l_pop_2_11: off
+    l_pop_2_12: off
+
   fiddler_right_bank_solid:
     l_gi_5bank_lower: 60F060
     l_gi_5bank_upper: 60F060
   fiddler_right_bank_off:
     l_gi_5bank_lower: off
     l_gi_5bank_upper: off
+
   fiddler_all_notes_off:
     l_left_web_target: off
     l_gi_3bank: off
-    l_mid_web_target: off
     l_gi_5bank_lower: off
     l_gi_5bank_upper: off
+    l_pop_2_1: off
+    l_pop_2_2: off
+    l_pop_2_3: off
+    l_pop_2_4: off
+    l_pop_2_5: off
+    l_pop_2_6: off
+    l_pop_2_7: off
+    l_pop_2_8: off
+    l_pop_2_9: off
+    l_pop_2_10: off
+    l_pop_2_11: off
+    l_pop_2_12: off
+
+shows:
+  fiddler_saucer_ready_pulse:
+    - duration: 500ms
+      lights:
+        l_1_hole_l: 60F060
+        l_1_hole_r: 60F060
+        l_2_hole_l: 60F060
+        l_2_hole_r: 60F060
+        l_3_hole_l: 60F060
+        l_3_hole_r: 60F060
+    - duration: 500ms
+      lights:
+        l_1_hole_l: 404040
+        l_1_hole_r: 404040
+        l_2_hole_l: 404040
+        l_2_hole_r: 404040
+        l_3_hole_l: 404040
+        l_3_hole_r: 404040

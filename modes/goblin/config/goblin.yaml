@@ -379,4 +379,4 @@ shows:
   goblin_gi_safe_show:
     - duration: -1
       lights:
-        gi: green
+        gi: "40F080"

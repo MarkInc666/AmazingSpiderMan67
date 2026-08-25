@@ -90,6 +90,13 @@ class Goblin(CaseFileMixin, Mode):
         self.add_mode_event_handler("multiball_goblin_chaos_multiball_started", self.multiball_started)
         self.add_mode_event_handler("multiball_goblin_chaos_multiball_ended", self.multiball_ended)
 
+        # Goblin owns the rooftop gate for the entire mode. Reject both the
+        # modern diverter-open event and the legacy open request if another
+        # subsystem tries to reopen it during Chaos/Safe play.
+        self.add_mode_event_handler("rooftop_diverter_open", self._force_gate_closed)
+        self.add_mode_event_handler("open_rooftop_gate", self._force_gate_closed)
+
+        self.machine.events.post("rooftop_diverter_close")
         self.begin_mode()
 
     def begin_mode(self):
@@ -448,6 +455,10 @@ class Goblin(CaseFileMixin, Mode):
             message_mode_value=value,
         )
 
+    def _force_gate_closed(self, **kwargs):
+        if not self.mode_finishing:
+            self.machine.events.post("rooftop_diverter_close")
+
     def _queue_safe_messages(self, immediate, chaos_bonus):
         self.delay.remove("goblin_temp_followup")
         self._show_temp(f"SAFE JACKPOT - {immediate // 1000}K")
@@ -500,6 +511,7 @@ class Goblin(CaseFileMixin, Mode):
         self.clear_shot_shows()
         self.machine.events.post("goblin_gi_stop")
         self.machine.events.post("goblin_mode_ended")
+        self.machine.events.post("rooftop_diverter_close")
         self.machine.game.player["goblin_state"] = 2
         self.machine.events.post("goblin_mode_complete")
 
@@ -510,6 +522,7 @@ class Goblin(CaseFileMixin, Mode):
         self.clear_shot_shows()
         self.machine.events.post("goblin_gi_stop")
         self.machine.events.post("goblin_mode_ended")
+        self.machine.events.post("rooftop_diverter_close")
         self.machine.game.player["multiball_autoplunge_active"] = 0
         super().mode_stop(**kwargs)
 

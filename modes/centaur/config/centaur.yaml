@@ -45,9 +45,7 @@ event_player:
   s_upper_entrance_opto_active: centaur_upper_entered
 
   # The VUK is the physical entrance to the upper playfield after Centaur opens the roof gate.
-  s_vuk_switch_active:
-    - centaur_vuk_to_roof
-    - up_kick
+  s_vuk_switch_active: centaur_vuk_to_roof
 
   # Centaur does not use the three saucers during gameplay; kick out any ball that lands there.
   s_saucer_1_active: clear_saucers

@@ -50,16 +50,31 @@ class CaseFiles(Mode):
         self.case_files_logic_active = True
         self._suppress_intel_bank = False
         self._add_handlers()
+        self.add_mode_event_handler("ball_will_end", self._ball_ending)
+        self.add_mode_event_handler("ball_ending", self._ball_ending)
         self._restore_state()
         self._publish_widget_vars()
 
     def mode_stop(self, **kwargs):
-        self.case_files_logic_active = False
-        # ball_ending owns display teardown. Do not publish helper/status update
-        # events here: they can replay the Crime Tracker while GMC is deleting
-        # gameplay widgets for the bonus slide.
-        self.machine.events.post("daily_bugle_widget_remove")
+        self._shutdown_for_ball_end()
         super().mode_stop(**kwargs)
+
+    def _ball_ending(self, **kwargs):
+        """Make Case Files inert before bonus/display teardown begins."""
+        self._shutdown_for_ball_end()
+
+    def _shutdown_for_ball_end(self):
+        if not getattr(self, "case_files_logic_active", False):
+            return
+
+        # Stop switch-driven Case File logic before bonus can begin.  In
+        # particular, a settling right-bank target must never collect a Case
+        # File or publish a widget update after the gameplay panel is removed.
+        self.case_files_logic_active = False
+        self.delay.remove("case_files_clear_intel_suppression")
+        self.machine.events.post("case_file_selected_stop")
+        self.machine.events.post("case_files_clear_lights")
+        self.machine.events.post("daily_bugle_widget_remove")
 
     def _add_handlers(self):
         self.add_mode_event_handler("case_file_spinner_hit", self._spinner_hit)
@@ -372,6 +387,11 @@ class CaseFiles(Mode):
         return None
 
     def _publish_widget_vars(self):
+        # GMC may already be tearing down the Daily Bugle widget at ball end.
+        # Never publish update events once Case Files has been shut down.
+        if not getattr(self, "case_files_logic_active", False):
+            return
+
         if self._case_files_hidden_for_wizard():
             self.machine.events.post("case_files_hidden_for_wizard")
             self.machine.events.post("daily_bugle_widget_remove")

@@ -6,39 +6,37 @@ from modes.common.case_file_mixin import CaseFileMixin
 
 
 class Fiddler(CaseFileMixin, Mode):
-    """Fiddler: repeat increasingly long light-and-violin patterns."""
+    """Fiddler: saucer-started Simon Says with persistent failure limit."""
 
     MODE_KEY = "fiddler"
     DISPLAY_NAME = "FIDDLER"
-    DEMO_PATTERN_REPEATS = 4
-    DEMO_PATTERN_TICK_MS = 100
-    DEMO_PULSE_ON_MS = 200
-    DEMO_PULSE_GAP_MS = 100
-    DEMO_PATTERN_END_GAP_MS = 400
-    STAGE_DELAY_MS = 2_000
-    WRONG_NOTE_REPLAY_DELAY_MS = 1_500
-    MAX_MISTAKES = 3
-    BASE_REMINDER_MS = 14_000
-    MORE_TIME_REMINDER_MS = 8_000
 
-    SHOTS = ("left_web", "left_bank", "center_web", "right_bank")
+    MAX_PATTERN_LENGTH = 5
+    BASE_FAILURE_LIMIT = 3
+    MORE_JACKPOTS_FAILURE_LIMIT = 4
+    BASE_NOTE_VALUE = 250_000
+    BIGGER_NOTE_VALUE = 300_000
+
+    NOTE_FLASH_ON_MS = 200
+    NOTE_FLASH_OFF_MS = 50
+    NOTE_FLASH_TOTAL_MS = 1_000
+    NOTE_GAP_MS = 500
+    PATTERN_REPEAT_PAUSE_MS = 2_000
+    PATTERN_REPEATS = 2
+    FEEDBACK_FLASH_MS = 1_000
+
+    SHOTS = ("left_web", "left_bank", "right_pop", "right_bank")
     SHOT_LABELS = {
         "left_web": "LEFT WEB",
         "left_bank": "LEFT BANK",
-        "center_web": "CENTER WEB",
+        "right_pop": "RIGHT POP",
         "right_bank": "RIGHT BANK",
     }
     NOTE_EVENTS = {
         "left_web": "play_note_1",
         "left_bank": "play_note_2",
-        "center_web": "play_note_3",
+        "right_pop": "play_note_3",
         "right_bank": "play_note_4",
-    }
-    ROUND_VALUES = {
-        1: (100_000,),
-        2: (200_000, 300_000),
-        3: (400_000, 500_000, 600_000),
-        4: (700_000, 800_000, 900_000, 1_000_000),
     }
 
     DROP_TARGETS = (
@@ -50,63 +48,84 @@ class Fiddler(CaseFileMixin, Mode):
         super().mode_start(**kwargs)
         self.reset_active_mode_summary(stat_count=3)
         self.case_files = self.get_case_file_bonuses()
+
         self.mode_done = False
         self.mode_points = 0
-        self.round_number = 0
+        self.pattern_length = 1
         self.sequence = []
         self.expected_index = 0
-        # Lock note input until the first demonstration is fully complete. This
-        # also protects startup from switch activity while the drop banks fall.
-        self.demonstrating = True
-        self.shot_assist_used = False
-        self.mistakes = 0
-        self.max_round = 4 if self.has_case_file("more_jackpots") else 3
-        self.reminder_ms = (
-            self.MORE_TIME_REMINDER_MS
-            if self.has_case_file("more_time")
-            else self.BASE_REMINDER_MS
+        self.rounds_completed = 0
+        self.notes_hit = 0
+        self.failures = 0
+        self.failure_limit = (
+            self.MORE_JACKPOTS_FAILURE_LIMIT
+            if self.has_case_file("more_jackpots")
+            else self.BASE_FAILURE_LIMIT
         )
-        self.bigger_increment = 100_000 if self.has_case_file("bigger_jackpots") else 0
+        self.note_value = (
+            self.BIGGER_NOTE_VALUE
+            if self.has_case_file("bigger_jackpots")
+            else self.BASE_NOTE_VALUE
+        )
+        self.shot_assist_used = False
+        self.defeated = False
+        self.round_failed = False
+        self.waiting_for_saucer = True
+        self.demonstrating = False
+        self.feedback_active = False
+        self.held_saucer = None
+        self._watch_notes = []
+        self._watch_repeat = 0
+        self._watch_note_index = 0
 
         for shot in self.SHOTS:
             self.add_mode_event_handler(
                 f"fiddler_{shot}_hit", partial(self._shot_hit, shot=shot)
             )
+        for saucer in (1, 2, 3):
+            self.add_mode_event_handler(
+                f"fiddler_saucer_{saucer}_hit",
+                partial(self._saucer_hit, saucer=saucer),
+            )
 
         player = self.machine.game.player
         player["fiddler_state"] = 1
         player["active_mode_points"] = 0
-        player["active_mode_stat_2"] = 0
         player["active_mode_stat_1"] = 0
+        player["active_mode_stat_2"] = 0
+        player["active_mode_completed"] = 0
         player["fiddler_note"] = 0
         player["fiddler_notes_completed"] = 0
-        player["fiddler_notes_required"] = 0
+        player["fiddler_notes_required"] = self.pattern_length
         player["fiddler_shot_assist_used"] = 0
 
         self.publish_case_file_bonus_events(self.MODE_KEY)
         self.publish_active_case_file_helpers([
-            ("more_jackpots", "FOUR-NOTE ENCORE ROUND ADDED"),
-            ("bigger_jackpots", "+100,000 PER CORRECT NOTE"),
-            ("more_time", "PATTERN REPEATS EVERY 8 SECONDS"),
+            ("more_jackpots", "FOURTH FAILED ROUND ALLOWED"),
+            ("bigger_jackpots", "CORRECT NOTES WORTH 300,000"),
+            ("more_time", "25 SECOND BALL SAVE ACTIVE"),
             ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
-            ("shot_assist", "FIRST WRONG SHOT PLAYS CORRECT NOTE"),
+            ("shot_assist", "FIRST WRONG NOTE IS FORGIVEN"),
         ])
 
         if self.has_case_file("safety_net"):
             self.machine.events.post("start_case_file_ball_save")
+        if self.has_case_file("more_time"):
+            self.machine.events.post("start_fiddler_more_time_ball_save")
 
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("clear_saucers_delayed")
         self.machine.events.post("fiddler_all_notes_off")
         self._force_drop_banks_down()
-        self._show_message("SIMON SAYS", "WATCH THE NOTES")
-        self.delay.add(name="fiddler_first_round", ms=750, callback=self._start_next_round)
+        self._show_waiting_for_saucer("SHOOT A SAUCER", "WATCH THE PATTERN")
         self._sync_vars()
 
     def mode_stop(self, **kwargs):
+        self.mode_done = True
         self._clear_delays()
         self.clear_active_case_file_helpers()
         self.machine.events.post("fiddler_all_notes_off")
+        self.machine.events.post("fiddler_saucers_not_ready")
         self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post("hide_mode_status")
         self.machine.events.post("clear_saucers_delayed")
@@ -131,217 +150,329 @@ class Fiddler(CaseFileMixin, Mode):
             return
         target.knockdown()
 
-    def _start_next_round(self):
-        if self.mode_done:
-            return
-        # Keep input locked during the round setup delay and demonstration.
-        self.demonstrating = True
-        self.round_number += 1
-        if self.round_number > self.max_round:
-            self._finish_mode(won=True)
-            return
-
-        self.sequence = random.sample(list(self.SHOTS), self.round_number)
+    def _new_pattern(self):
+        # Five-note patterns intentionally allow repeated shots because Fiddler
+        # has four physical note shots.
+        self.sequence = [random.choice(self.SHOTS) for _ in range(self.pattern_length)]
         self.expected_index = 0
-        self.machine.events.post("fiddler_all_notes_off")
-        self._show_message(
-            f"ROUND {self.round_number}",
-            f"REMEMBER {self.round_number} NOTE" + ("S" if self.round_number != 1 else ""),
-        )
-        self._sync_vars()
-        self.delay.add(
-            name="fiddler_round_demo_start",
-            ms=750,
-            callback=self._begin_demonstration,
-        )
+        self.round_failed = False
 
-    def _begin_demonstration(self):
-        if self.mode_done:
+    def _saucer_hit(self, saucer=None, **kwargs):
+        if self.mode_done or saucer not in (1, 2, 3):
             return
-        self._cancel_reminder()
+        if self.demonstrating or self.feedback_active:
+            return
+
+        self.held_saucer = saucer
+        self.machine.events.post("fiddler_saucers_not_ready")
+
+        if self.round_failed or not self.sequence:
+            self._new_pattern()
+
+        # A clean saucer return is a voluntary reminder: replay the same full
+        # pattern and preserve progress already made in that pattern.
+        self.waiting_for_saucer = False
+        self._begin_watch_phase()
+
+    def _begin_watch_phase(self):
+        if self.mode_done or not self.sequence:
+            return
+        self._clear_watch_delays()
         self.demonstrating = True
+        self.feedback_active = False
         self.machine.events.post("fiddler_all_notes_off")
-        remaining = self.sequence[self.expected_index:]
-        if not remaining:
-            self.demonstrating = False
-            self._complete_round()
-            return
-        self._demonstrate_note(remaining, 0, self.expected_index)
-
-    def _demonstrate_note(self, notes, index, position_offset):
-        if self.mode_done:
-            return
-        if index >= len(notes):
-            self.demonstrating = False
-            self._begin_response_phase()
-            return
-
-        shot = notes[index]
-        position = position_offset + index + 1
-        self.machine.events.post(self.NOTE_EVENTS[shot])
-        self._demo_pattern_tick(notes, index, position_offset, shot, position, 0)
-
-    def _demo_pattern_tick(self, notes, index, position_offset, shot, position, elapsed_ms):
-        if self.mode_done:
-            return
-
-        cycle_ms = (
-            position * self.DEMO_PULSE_ON_MS
-            + (position - 1) * self.DEMO_PULSE_GAP_MS
-            + self.DEMO_PATTERN_END_GAP_MS
-        )
-        total_ms = cycle_ms * self.DEMO_PATTERN_REPEATS
-        if elapsed_ms >= total_ms:
-            self.machine.events.post(f"fiddler_{shot}_solid")
-            self._demonstrate_note(notes, index + 1, position_offset)
-            return
-
-        cycle_elapsed = elapsed_ms % cycle_ms
-        pulse_spacing_ms = self.DEMO_PULSE_ON_MS + self.DEMO_PULSE_GAP_MS
-        light_on = any(
-            pulse * pulse_spacing_ms <= cycle_elapsed < pulse * pulse_spacing_ms + self.DEMO_PULSE_ON_MS
-            for pulse in range(position)
-        )
-        self.machine.events.post(f"fiddler_{shot}_{'solid' if light_on else 'off'}")
-        self.delay.reset(
-            name="fiddler_demo_step",
-            ms=self.DEMO_PATTERN_TICK_MS,
-            callback=partial(
-                self._demo_pattern_tick,
-                notes,
-                index,
-                position_offset,
-                shot,
-                position,
-                elapsed_ms + self.DEMO_PATTERN_TICK_MS,
-            ),
-        )
-
-    def _begin_response_phase(self):
-        if self.mode_done:
-            return
+        self._watch_notes = list(self.sequence)
+        self._watch_repeat = 0
+        self._watch_note_index = 0
         self._show_message(
-            "PLAY THE PATTERN",
+            "WATCH",
+            f"{len(self.sequence)} NOTE" + ("S" if len(self.sequence) != 1 else ""),
+        )
+        self._watch_play_next_note()
+
+    def _watch_play_next_note(self):
+        if self.mode_done or not self.demonstrating:
+            return
+
+        if self._watch_note_index >= len(self._watch_notes):
+            self._watch_repeat += 1
+            if self._watch_repeat >= self.PATTERN_REPEATS:
+                self._finish_watch_phase()
+                return
+            self._watch_note_index = 0
+            self.machine.events.post("fiddler_all_notes_off")
+            self.delay.reset(
+                name="fiddler_watch_repeat_pause",
+                ms=self.PATTERN_REPEAT_PAUSE_MS,
+                callback=self._watch_play_next_note,
+            )
+            return
+
+        shot = self._watch_notes[self._watch_note_index]
+        self.machine.events.post(self.NOTE_EVENTS[shot])
+        self._start_note_flash(
+            shot,
+            done_callback=self._watch_note_flash_done,
+            delay_name="fiddler_watch_flash",
+        )
+
+    def _watch_note_flash_done(self):
+        if self.mode_done or not self.demonstrating:
+            return
+        self._watch_note_index += 1
+        if self._watch_note_index >= len(self._watch_notes):
+            self._watch_play_next_note()
+            return
+        self.delay.reset(
+            name="fiddler_watch_note_gap",
+            ms=self.NOTE_GAP_MS,
+            callback=self._watch_play_next_note,
+        )
+
+    def _finish_watch_phase(self):
+        if self.mode_done:
+            return
+        self.demonstrating = False
+        self.machine.events.post("fiddler_all_notes_off")
+        self._show_message(
+            "YOUR TURN",
             f"NOTE {self.expected_index + 1} OF {len(self.sequence)}",
             reminder=True,
         )
-        self._schedule_reminder()
+        self._eject_held_saucer()
         self._sync_vars()
 
-    def _schedule_reminder(self):
-        self._cancel_reminder()
-        if self.mode_done or self.demonstrating or self.expected_index >= len(self.sequence):
+    def _eject_held_saucer(self):
+        if self.held_saucer not in (1, 2, 3):
             return
-        self.delay.add(
-            name="fiddler_pattern_reminder",
-            ms=self.reminder_ms,
-            callback=self._begin_demonstration,
+        saucer = self.held_saucer
+        self.held_saucer = None
+        self.machine.events.post(
+            "request_saucer_eject",
+            saucer_number=saucer,
+            delay_ms=0,
         )
 
-    def _cancel_reminder(self):
-        self.delay.remove("fiddler_pattern_reminder")
-
     def _shot_hit(self, shot=None, **kwargs):
-        if self.mode_done or self.demonstrating or shot not in self.SHOTS:
+        if self.mode_done or shot not in self.SHOTS:
+            return
+        if self.demonstrating or self.feedback_active:
+            return
+
+        # Once a round has failed, note shots are deliberately "dead wrong"
+        # until the player returns to a saucer. They provide feedback but do
+        # not consume additional failures.
+        if self.round_failed:
+            self.machine.events.post("play_bad_note")
+            self.feedback_active = True
+            self._start_note_flash(
+                shot,
+                done_callback=self._failed_round_feedback_done,
+                delay_name="fiddler_failed_round_flash",
+            )
+            return
+
+        if self.waiting_for_saucer or not self.sequence:
             return
         if self.expected_index >= len(self.sequence):
             return
 
         expected = self.sequence[self.expected_index]
         if shot == expected:
-            self._award_expected_note(assisted=False)
+            self._correct_note_hit(expected)
             return
 
         self.machine.events.post("play_bad_note")
+        self.feedback_active = True
         if self.has_case_file("shot_assist") and not self.shot_assist_used:
             self.shot_assist_used = True
             self.machine.game.player["fiddler_shot_assist_used"] = 1
-            self._show_message("SHOT ASSIST", f"{self.SHOT_LABELS[expected]} AWARDED")
-            self._award_expected_note(assisted=True)
+            self._show_message("SHOT ASSIST", f"TRY {self.SHOT_LABELS[expected]}")
+            self._start_note_flash(
+                expected,
+                done_callback=self._shot_assist_feedback_done,
+                delay_name="fiddler_shot_assist_flash",
+            )
             return
 
-        self.mistakes += 1
-        if self.mistakes >= self.MAX_MISTAKES:
-            self._finish_mode(won=False)
-            return
-
-        self._restart_round_after_wrong_note()
-
-    def _restart_round_after_wrong_note(self):
-        """Replay the full current pattern after a non-terminal mistake."""
-        self._cancel_reminder()
-        self.demonstrating = True
-        self.expected_index = 0
-        self.machine.events.post("fiddler_all_notes_off")
-        chances_left = self.MAX_MISTAKES - self.mistakes
+        self.failures += 1
+        self.round_failed = True
         self._show_message(
             "WRONG NOTE",
-            f"{chances_left} CHANCE" + ("S" if chances_left != 1 else "") + " LEFT - WATCH AGAIN",
+            f"{self.failures} OF {self.failure_limit} FAILURES",
+        )
+        self._start_note_flash(
+            expected,
+            done_callback=self._wrong_note_feedback_done,
+            delay_name="fiddler_wrong_note_flash",
         )
         self._sync_vars()
-        self.delay.reset(
-            name="fiddler_wrong_note_replay",
-            ms=self.WRONG_NOTE_REPLAY_DELAY_MS,
-            callback=self._begin_demonstration,
-        )
 
-    def _award_expected_note(self, assisted=False):
-        if self.mode_done or self.expected_index >= len(self.sequence):
-            return
-
-        self._cancel_reminder()
-        shot = self.sequence[self.expected_index]
-        value = self.ROUND_VALUES[self.round_number][self.expected_index] + self.bigger_increment
+    def _correct_note_hit(self, shot):
         self.machine.events.post(self.NOTE_EVENTS[shot])
-        self.machine.events.post(f"fiddler_{shot}_off")
-        self._score(value)
-        self.expected_index += 1
+        self._score(self.note_value)
+        self.notes_hit += 1
+        self.feedback_active = True
         self.machine.events.post(
             "show_mode_jackpot",
-            message_mode_title="CORRECT NOTE" if not assisted else "ASSISTED NOTE",
+            message_mode_title="CORRECT NOTE",
             message_mode_subtitle=self.SHOT_LABELS[shot],
-            message_mode_value=value,
+            message_mode_value=self.note_value,
+        )
+        self._start_note_flash(
+            shot,
+            done_callback=self._correct_note_feedback_done,
+            delay_name="fiddler_correct_note_flash",
         )
         self._sync_vars()
 
-        if self.expected_index >= len(self.sequence):
-            self._complete_round()
-        else:
-            self._begin_response_phase()
-
-    def _complete_round(self):
+    def _correct_note_feedback_done(self):
         if self.mode_done:
             return
-        self._cancel_reminder()
-        self.demonstrating = True
-        self.machine.events.post("fiddler_all_notes_off")
-        if self.round_number >= self.max_round:
-            self._finish_mode(won=True)
+        self.feedback_active = False
+        self.expected_index += 1
+        if self.expected_index >= len(self.sequence):
+            self._complete_pattern()
             return
-        self._show_message(f"ROUND {self.round_number} COMPLETE", "NEXT PATTERN")
-        self.delay.add(
-            name="fiddler_next_round",
-            ms=self.STAGE_DELAY_MS,
-            callback=self._start_next_round,
+        self._show_message(
+            "YOUR TURN",
+            f"NOTE {self.expected_index + 1} OF {len(self.sequence)}",
+            reminder=True,
         )
+        self._sync_vars()
 
-    def _finish_mode(self, won):
+    def _shot_assist_feedback_done(self):
+        if self.mode_done:
+            return
+        self.feedback_active = False
+        self._show_message(
+            "YOUR TURN",
+            f"NOTE {self.expected_index + 1} OF {len(self.sequence)}",
+            reminder=True,
+        )
+        self._sync_vars()
+
+    def _wrong_note_feedback_done(self):
+        if self.mode_done:
+            return
+        self.feedback_active = False
+        if self.failures >= self.failure_limit:
+            self._finish_mode_after_failures()
+            return
+        self.waiting_for_saucer = True
+        self.machine.events.post("fiddler_all_notes_off")
+        self.machine.events.post("fiddler_saucers_ready")
+        self._show_message("ROUND FAILED", "SHOOT A SAUCER")
+        self._sync_vars()
+
+    def _failed_round_feedback_done(self):
+        if self.mode_done:
+            return
+        self.feedback_active = False
+        self.machine.events.post("fiddler_all_notes_off")
+        self.machine.events.post("fiddler_saucers_ready")
+        self._show_message("ROUND FAILED", "SHOOT A SAUCER")
+
+    def _complete_pattern(self):
+        if self.mode_done:
+            return
+        self.feedback_active = False
+        self.rounds_completed += 1
+        if not self.defeated:
+            self.defeated = True
+            player = self.machine.game.player
+            player["fiddler_state"] = 2
+            player["active_mode_completed"] = 1
+
+        self.pattern_length = min(self.MAX_PATTERN_LENGTH, self.pattern_length + 1)
+        self.sequence = []
+        self.expected_index = 0
+        self.round_failed = False
+        self.waiting_for_saucer = True
+        self.machine.events.post("fiddler_all_notes_off")
+        self.machine.events.post("fiddler_saucers_ready")
+        self._show_message(
+            "PATTERN COMPLETE",
+            f"NEXT: {self.pattern_length} NOTE" + ("S" if self.pattern_length != 1 else ""),
+        )
+        self._sync_vars()
+
+    def _finish_mode_after_failures(self):
         if self.mode_done:
             return
         self.mode_done = True
         self._clear_delays()
         self.machine.events.post("fiddler_all_notes_off")
+        self.machine.events.post("fiddler_saucers_not_ready")
         player = self.machine.game.player
-        player["fiddler_state"] = 2
-        player["active_mode_completed"] = 1 if won else 0
-        self._sync_vars()
-
-        if won:
+        player["active_mode_completed"] = 1 if self.defeated else 0
+        if self.defeated:
+            player["fiddler_state"] = 2
             self._show_message("FIDDLER SILENCED", f"{self.mode_points:,} POINTS", jackpot=True)
+            self.machine.events.post("fiddler_mode_complete")
         else:
-            self._show_message("WRONG NOTE", "FIDDLER ESCAPES")
-        self.machine.events.post("cancel_mode_message_reminder")
-        self.machine.events.post("fiddler_mode_complete")
+            self._show_message("FIDDLER ESCAPES", "NO PATTERN COMPLETED")
+            self.machine.events.post("fiddler_mode_failed")
+
+    def _start_note_flash(self, shot, done_callback, delay_name):
+        self.machine.events.post(f"fiddler_{shot}_solid")
+        self._note_flash_tick(
+            shot=shot,
+            elapsed_ms=0,
+            light_on=True,
+            done_callback=done_callback,
+            delay_name=delay_name,
+        )
+
+    def _note_flash_tick(self, shot, elapsed_ms, light_on, done_callback, delay_name):
+        if self.mode_done:
+            return
+        interval = self.NOTE_FLASH_ON_MS if light_on else self.NOTE_FLASH_OFF_MS
+        next_elapsed = elapsed_ms + interval
+        if next_elapsed >= self.NOTE_FLASH_TOTAL_MS:
+            remaining = self.NOTE_FLASH_TOTAL_MS - elapsed_ms
+            self.delay.reset(
+                name=delay_name,
+                ms=max(1, remaining),
+                callback=partial(self._note_flash_done, shot, done_callback),
+            )
+            return
+
+        self.delay.reset(
+            name=delay_name,
+            ms=interval,
+            callback=partial(
+                self._note_flash_toggle,
+                shot,
+                next_elapsed,
+                not light_on,
+                done_callback,
+                delay_name,
+            ),
+        )
+
+    def _note_flash_toggle(self, shot, elapsed_ms, light_on, done_callback, delay_name):
+        if self.mode_done:
+            return
+        self.machine.events.post(f"fiddler_{shot}_{'solid' if light_on else 'off'}")
+        self._note_flash_tick(
+            shot=shot,
+            elapsed_ms=elapsed_ms,
+            light_on=light_on,
+            done_callback=done_callback,
+            delay_name=delay_name,
+        )
+
+    def _note_flash_done(self, shot, done_callback):
+        if self.mode_done:
+            return
+        self.machine.events.post(f"fiddler_{shot}_off")
+        done_callback()
+
+    def _show_waiting_for_saucer(self, title, subtitle):
+        self.waiting_for_saucer = True
+        self.machine.events.post("fiddler_saucers_ready")
+        self._show_message(title, subtitle)
 
     def _score(self, points):
         player = self.machine.game.player
@@ -351,21 +482,30 @@ class Fiddler(CaseFileMixin, Mode):
     def _sync_vars(self):
         player = self.machine.game.player
         player["active_mode_points"] = self.mode_points
-        player["active_mode_stat_2"] = sum(len(self.ROUND_VALUES[r]) for r in range(1, self.round_number)) + self.expected_index
-        player["active_mode_stat_1"] = self.round_number
-        player["fiddler_note"] = min(self.expected_index + 1, len(self.sequence)) if self.sequence else 0
+        player["active_mode_stat_1"] = self.rounds_completed
+        player["active_mode_stat_2"] = self.notes_hit
+        player["fiddler_note"] = (
+            min(self.expected_index + 1, len(self.sequence)) if self.sequence else 0
+        )
         player["fiddler_notes_completed"] = self.expected_index
-        player["fiddler_notes_required"] = len(self.sequence)
+        player["fiddler_notes_required"] = len(self.sequence) if self.sequence else self.pattern_length
         self.machine.events.post("fiddler_status_changed")
 
-    def _clear_delays(self):
+    def _clear_watch_delays(self):
         for name in (
-            "fiddler_first_round",
-            "fiddler_round_demo_start",
-            "fiddler_demo_step",
-            "fiddler_pattern_reminder",
-            "fiddler_next_round",
-            "fiddler_wrong_note_replay",
+            "fiddler_watch_flash",
+            "fiddler_watch_note_gap",
+            "fiddler_watch_repeat_pause",
+        ):
+            self.delay.remove(name)
+
+    def _clear_delays(self):
+        self._clear_watch_delays()
+        for name in (
+            "fiddler_correct_note_flash",
+            "fiddler_wrong_note_flash",
+            "fiddler_shot_assist_flash",
+            "fiddler_failed_round_flash",
         ):
             self.delay.remove(name)
         for target_name in self.DROP_TARGETS:

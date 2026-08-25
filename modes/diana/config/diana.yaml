@@ -3,6 +3,7 @@
 # Diana - Archery Volley
 # Limited arrows/flips. Upper entry stages a Hunt; either upper exit prompts the
 # player, and the first right-bank hit starts the 8s timer (12s with More Time).
+# A Hunt ends immediately when all staged right-bank targets are down.
 
 mode:
   start_events: start_mode_diana
@@ -86,6 +87,28 @@ coil_player:
   diana_drop_right_target_5:
     c_right_bank_drop_5:
       action: pulse
+
+show_player:
+  # Guide the player back through the VUK/roof route before each Hunt.
+  diana_rearm_phase_started:
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: "A080F0"
+
+  # Once the upper entrance is reached, the roof route is no longer the objective.
+  diana_upper_entered:
+    shared_final_vuk_chase:
+      action: stop
+
+  diana_hunt_mode_on:
+    shared_final_vuk_chase:
+      action: stop
+
+  mode_diana_stopping:
+    shared_final_vuk_chase:
+      action: stop
 
 light_player:
   # Normal Diana GI before and between Hunts.

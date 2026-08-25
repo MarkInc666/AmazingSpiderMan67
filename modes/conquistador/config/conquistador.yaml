@@ -46,6 +46,10 @@ event_player:
   s_web_target_mid_active: conquistador_center_web_hit
   s_vuk_switch_active: conquistador_vuk_hit
 
+  s_saucer_1_active: clear_saucers_delayed
+  s_saucer_2_active: clear_saucers_delayed
+  s_saucer_3_active: clear_saucers_delayed
+
   mode_conquistador_started:
     - clear_saucers_delayed
     - drop_target_bank_dt_bank_left_reset

@@ -105,6 +105,25 @@ show_player:
     sandman_gi_show:
       loops: -1
 
+  # Explicitly kill every Sandman-owned show when gameplay stops.  The Python
+  # cleanup handles delayed callbacks; this prevents any moving-target light
+  # state from leaking into end-of-ball bonus.
+  sandman_gameplay_cleanup:
+    sandman_gi_show:
+      action: stop
+    sandman_flash_1_show:
+      action: stop
+    sandman_flash_2_show:
+      action: stop
+    sandman_flash_3_show:
+      action: stop
+    sandman_flash_4_show:
+      action: stop
+    sandman_flash_5_show:
+      action: stop
+    sandman_bank_complete_show:
+      action: stop
+
   sandman_gi_sync_stop:
     sandman_gi_show:
       action: stop

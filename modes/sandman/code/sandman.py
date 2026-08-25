@@ -72,6 +72,17 @@ class Sandman(CaseFileMixin, Mode):
         self.machine.events.post("sandman_startup_complete")
 
     def mode_stop(self, **kwargs):
+        # Sandman uses a machine-level DelayManager so its callbacks are not
+        # automatically owned/cancelled by the MPF mode lifecycle.  Mark the
+        # gameplay dead first, then remove every Sandman callback that can
+        # pulse the right drop bank.  Without this, a scheduled shift can fire
+        # after ball_ended and keep moving drops during end-of-ball bonus.
+        self.mode_done = True
+        self.delay.remove("sandman_shift")
+        self.delay.remove("sandman_after_bank_reset")
+        self.delay.remove("sandman_next_bank")
+
+        self.machine.events.post("sandman_gameplay_cleanup")
         self.machine.events.post("hide_mode_status")
         self.clear_active_case_file_helpers()
         self.machine.events.post("cancel_mode_message_reminder")
@@ -295,7 +306,9 @@ class Sandman(CaseFileMixin, Mode):
             self.machine.events.post("reset_5bank_delayed")
             return
 
+        self.delay.remove("sandman_next_bank")
         self.delay.add(
+            name="sandman_next_bank",
             ms=750,
             callback=self.start_bank
         )

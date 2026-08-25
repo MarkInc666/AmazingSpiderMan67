@@ -140,9 +140,11 @@ class DailyBugleMystery(Mode):
         self.update_player_vars(post_widget_update=False)
 
     def disable_db(self, **kwargs):
+        # Suspend Daily Bugle activity without erasing earned A/B, photo,
+        # or Mystery progress. Villain/wizard modes may disable the feature
+        # temporarily and the existing state should resume afterward.
         self.daily_bugle_enabled = False
         self._cancel_vuk_delay_eject()
-        self.reset_cycle(post_restore=False)
         self.machine.events.post("daily_bugle_mystery_stop_all")
         self.update_player_vars()
         self._restore_lights_and_widgets()
@@ -152,7 +154,7 @@ class DailyBugleMystery(Mode):
         self._restore_lights_and_widgets()
 
     def a_rollover_hit(self, **kwargs):
-        if not self.daily_bugle_enabled:
+        if not self.daily_bugle_enabled or self._villain_ab_progress_paused():
             return
 
         player = self.machine.game.player
@@ -169,7 +171,7 @@ class DailyBugleMystery(Mode):
             self.update_player_vars()
 
     def b_rollover_hit(self, **kwargs):
-        if not self.daily_bugle_enabled:
+        if not self.daily_bugle_enabled or self._villain_ab_progress_paused():
             return
 
         player = self.machine.game.player
@@ -187,7 +189,12 @@ class DailyBugleMystery(Mode):
 
     def sling_swap_ab(self, **kwargs):
         """Swap a single completed A/B qualification light on a sling hit."""
-        if not self.daily_bugle_enabled or self.mystery_ab_ready or self.mystery_ready:
+        if (
+            not self.daily_bugle_enabled
+            or self._villain_ab_progress_paused()
+            or self.mystery_ab_ready
+            or self.mystery_ready
+        ):
             return
 
         # Slings only move a single lit/completed letter. Neither or both lit
@@ -208,6 +215,14 @@ class DailyBugleMystery(Mode):
             if lit_letter == "A"
             else "daily_bugle_ab_sling_swapped_to_b"
         )
+
+    def _villain_ab_progress_paused(self):
+        """Return True while villain gameplay/progression owns the ball."""
+        if not self.machine.game:
+            return False
+        return self._safe_int(
+            self.machine.game.player["villain_mode_running"], 0
+        ) == 1
 
     def check_ab_complete(self):
         if not self.a_hit or not self.b_hit:

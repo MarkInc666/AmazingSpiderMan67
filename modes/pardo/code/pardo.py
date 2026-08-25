@@ -24,28 +24,22 @@ class Pardo(CaseFileMixin, Mode):
     BIGGER_JACKPOT_STEP = 75_000
     BAD_SHOT_SCORE = 10_000
 
-    NORMAL_REVEAL_MS = 3_000
-    MORE_TIME_REVEAL_MS = 5_000
+    NORMAL_REVEAL_MS = 4_000
+    MORE_TIME_REVEAL_MS = 6_000
     REVEAL_FLASH_INTERVAL_MS = 250
     RESULT_GI_FLASH_MS = 350
 
     SHOT_GROUPS = [
         "left_web",
         "center_web",
-        "upper_target_left",
-        "upper_target_center",
-        "upper_target_right",
+        "upper_targets",
         "left_drops",
         "right_drops",
         "pop_left",
         "pop_right",
     ]
 
-    UPPER_GROUPS = {
-        "upper_target_left",
-        "upper_target_center",
-        "upper_target_right",
-    }
+    UPPER_GROUPS = {"upper_targets"}
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)

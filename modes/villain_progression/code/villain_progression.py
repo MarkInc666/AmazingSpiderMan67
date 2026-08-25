@@ -238,6 +238,7 @@ class VillainProgression(Mode):
         'spider_slayer_mode_complete': ('spider_slayer', True),
         'metal_eating_robot_mode_complete': ('metal_eating_robot', True),
         'fiddler_mode_complete': ('fiddler', True),
+        'fiddler_mode_failed': ('fiddler', False),
         'pardo_mode_complete': ('pardo', True),
         'fakir_mode_complete': ('fakir', True),
         'kotep_mode_complete': ('kotep', True),

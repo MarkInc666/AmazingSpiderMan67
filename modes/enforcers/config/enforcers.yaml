@@ -80,6 +80,14 @@ event_player:
     - drop_target_bank_dt_bank_right_reset
 
 show_player:
+  enforcers_build_phase_started:
+    enforcers_zone_pulse:
+      loops: -1
+
+  enforcers_clear_all_lights:
+    enforcers_zone_pulse:
+      action: stop
+
   enforcers_clear_upper_shows:
     enforcers_upper_left_flash_1x:
       action: stop
@@ -214,11 +222,6 @@ light_player:
   mode_enforcers_stopping:
     gi: E0E0E0
 
-  enforcers_build_phase_started:
-    l_gi_3bank: orange
-    l_gi_5bank_lower: orange
-    l_gi_5bank_upper: orange
-
   enforcers_left_saucer_lit:
     l_1: yellow
     l_1_hole_l: yellow
@@ -264,6 +267,30 @@ light_player:
     l_gi_3bank: off
     l_gi_5bank_lower: off
     l_gi_5bank_upper: off
+    l_pop_1_1: off
+    l_pop_1_2: off
+    l_pop_1_3: off
+    l_pop_1_4: off
+    l_pop_1_5: off
+    l_pop_1_6: off
+    l_pop_1_7: off
+    l_pop_1_8: off
+    l_pop_1_9: off
+    l_pop_1_10: off
+    l_pop_1_11: off
+    l_pop_1_12: off
+    l_pop_2_1: off
+    l_pop_2_2: off
+    l_pop_2_3: off
+    l_pop_2_4: off
+    l_pop_2_5: off
+    l_pop_2_6: off
+    l_pop_2_7: off
+    l_pop_2_8: off
+    l_pop_2_9: off
+    l_pop_2_10: off
+    l_pop_2_11: off
+    l_pop_2_12: off
     l_upper_left: off
     l_upper_middle: off
     l_upper_right: off
@@ -282,6 +309,153 @@ light_player:
     l_3_hole_r: off
 
 shows:
+  enforcers_zone_pulse:
+    - duration: 200ms
+      lights:
+        l_gi_3bank: FFFF30
+        l_gi_5bank_lower: FFFF30
+        l_gi_5bank_upper: FFFF30
+        l_pop_1_1: FFFF30
+        l_pop_1_2: FFFF30
+        l_pop_1_3: FFFF30
+        l_pop_1_4: FFFF30
+        l_pop_1_5: FFFF30
+        l_pop_1_6: FFFF30
+        l_pop_1_7: FFFF30
+        l_pop_1_8: FFFF30
+        l_pop_1_9: FFFF30
+        l_pop_1_10: FFFF30
+        l_pop_1_11: FFFF30
+        l_pop_1_12: FFFF30
+        l_pop_2_1: FFFF30
+        l_pop_2_2: FFFF30
+        l_pop_2_3: FFFF30
+        l_pop_2_4: FFFF30
+        l_pop_2_5: FFFF30
+        l_pop_2_6: FFFF30
+        l_pop_2_7: FFFF30
+        l_pop_2_8: FFFF30
+        l_pop_2_9: FFFF30
+        l_pop_2_10: FFFF30
+        l_pop_2_11: FFFF30
+        l_pop_2_12: FFFF30
+    - duration: 200ms
+      lights:
+        l_gi_3bank: FF9F30
+        l_gi_5bank_lower: FF9F30
+        l_gi_5bank_upper: FF9F30
+        l_pop_1_1: FF9F30
+        l_pop_1_2: FF9F30
+        l_pop_1_3: FF9F30
+        l_pop_1_4: FF9F30
+        l_pop_1_5: FF9F30
+        l_pop_1_6: FF9F30
+        l_pop_1_7: FF9F30
+        l_pop_1_8: FF9F30
+        l_pop_1_9: FF9F30
+        l_pop_1_10: FF9F30
+        l_pop_1_11: FF9F30
+        l_pop_1_12: FF9F30
+        l_pop_2_1: FF9F30
+        l_pop_2_2: FF9F30
+        l_pop_2_3: FF9F30
+        l_pop_2_4: FF9F30
+        l_pop_2_5: FF9F30
+        l_pop_2_6: FF9F30
+        l_pop_2_7: FF9F30
+        l_pop_2_8: FF9F30
+        l_pop_2_9: FF9F30
+        l_pop_2_10: FF9F30
+        l_pop_2_11: FF9F30
+        l_pop_2_12: FF9F30
+    - duration: 200ms
+      lights:
+        l_gi_3bank: FF3030
+        l_gi_5bank_lower: FF3030
+        l_gi_5bank_upper: FF3030
+        l_pop_1_1: FF3030
+        l_pop_1_2: FF3030
+        l_pop_1_3: FF3030
+        l_pop_1_4: FF3030
+        l_pop_1_5: FF3030
+        l_pop_1_6: FF3030
+        l_pop_1_7: FF3030
+        l_pop_1_8: FF3030
+        l_pop_1_9: FF3030
+        l_pop_1_10: FF3030
+        l_pop_1_11: FF3030
+        l_pop_1_12: FF3030
+        l_pop_2_1: FF3030
+        l_pop_2_2: FF3030
+        l_pop_2_3: FF3030
+        l_pop_2_4: FF3030
+        l_pop_2_5: FF3030
+        l_pop_2_6: FF3030
+        l_pop_2_7: FF3030
+        l_pop_2_8: FF3030
+        l_pop_2_9: FF3030
+        l_pop_2_10: FF3030
+        l_pop_2_11: FF3030
+        l_pop_2_12: FF3030
+    - duration: 200ms
+      lights:
+        l_gi_3bank: FF9F30
+        l_gi_5bank_lower: FF9F30
+        l_gi_5bank_upper: FF9F30
+        l_pop_1_1: FF9F30
+        l_pop_1_2: FF9F30
+        l_pop_1_3: FF9F30
+        l_pop_1_4: FF9F30
+        l_pop_1_5: FF9F30
+        l_pop_1_6: FF9F30
+        l_pop_1_7: FF9F30
+        l_pop_1_8: FF9F30
+        l_pop_1_9: FF9F30
+        l_pop_1_10: FF9F30
+        l_pop_1_11: FF9F30
+        l_pop_1_12: FF9F30
+        l_pop_2_1: FF9F30
+        l_pop_2_2: FF9F30
+        l_pop_2_3: FF9F30
+        l_pop_2_4: FF9F30
+        l_pop_2_5: FF9F30
+        l_pop_2_6: FF9F30
+        l_pop_2_7: FF9F30
+        l_pop_2_8: FF9F30
+        l_pop_2_9: FF9F30
+        l_pop_2_10: FF9F30
+        l_pop_2_11: FF9F30
+        l_pop_2_12: FF9F30
+    - duration: 200ms
+      lights:
+        l_gi_3bank: FFFF30
+        l_gi_5bank_lower: FFFF30
+        l_gi_5bank_upper: FFFF30
+        l_pop_1_1: FFFF30
+        l_pop_1_2: FFFF30
+        l_pop_1_3: FFFF30
+        l_pop_1_4: FFFF30
+        l_pop_1_5: FFFF30
+        l_pop_1_6: FFFF30
+        l_pop_1_7: FFFF30
+        l_pop_1_8: FFFF30
+        l_pop_1_9: FFFF30
+        l_pop_1_10: FFFF30
+        l_pop_1_11: FFFF30
+        l_pop_1_12: FFFF30
+        l_pop_2_1: FFFF30
+        l_pop_2_2: FFFF30
+        l_pop_2_3: FFFF30
+        l_pop_2_4: FFFF30
+        l_pop_2_5: FFFF30
+        l_pop_2_6: FFFF30
+        l_pop_2_7: FFFF30
+        l_pop_2_8: FFFF30
+        l_pop_2_9: FFFF30
+        l_pop_2_10: FFFF30
+        l_pop_2_11: FFFF30
+        l_pop_2_12: FFFF30
+
   enforcers_upper_left_flash_1x:
     - duration: 1000ms
       lights:

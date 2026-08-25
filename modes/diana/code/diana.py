@@ -11,7 +11,8 @@ Three staged right-bank Hunts with a limited-arrow economy.
 - Upper spinner earns +1 arrow, upper-right exit earns +5, and every right-rubber hit earns +1.
 - Entering the upper playfield stages the next Hunt, closes the gate, and turns the GI red.
 - Either upper exit prompts HIT THE RIGHT DROPS. The Hunt timer starts on the first staged drop or rubber hit.
-- Every Hunt lasts 8s, or 12s with More Time.
+- Each Hunt ends when all staged right-bank targets are down or when its timer expires.
+- Hunt timer is 8s, or 12s with More Time.
 - Hunt 1: right drops 1/3/5, worth 150K each (200K with Bigger Jackpots).
 - Hunt 2: right drops 2/4, worth 250K each (300K with Bigger Jackpots).
 - Hunt 3: right drop 3, worth 500K (750K with Bigger Jackpots).
@@ -117,6 +118,7 @@ class Diana(CaseFileMixin, Mode):
             )
 
         self.add_mode_event_handler("diana_right_rubber_hit", self._right_rubber_hit)
+        self.add_mode_event_handler("drop_target_bank_dt_bank_right_down", self._right_bank_all_down)
 
         self.machine.events.post("clear_saucers")
         self.machine.events.post("drop_target_bank_dt_bank_right_reset")
@@ -449,6 +451,19 @@ class Diana(CaseFileMixin, Mode):
         self._use_shot_assist_if_available(source="drop", hit_target=target)
         self._sync_vars()
         self._check_hunt_complete()
+
+    def _right_bank_all_down(self, **kwargs):
+        """Finish the current Hunt as soon as the staged bank is physically down."""
+        if self._done_or_summary():
+            return
+        if self.phase not in ("waiting_hit", "hunt"):
+            return
+        if self.current_hunt not in self.HUNTS:
+            return
+
+        self.standing_targets.clear()
+        self._sync_vars()
+        self._finish_hunt(reason="targets_complete")
 
     def _right_rubber_hit(self, **kwargs):
         if self._done_or_summary():
