@@ -1,16 +1,23 @@
 🎭 MYSTERIO — ILLUSION TRIAL
 
 Mode flow
-- Nine shot groups are lit.
+- Eight shot groups are lit: left web, center web, left pop, right pop,
+  left drops, right drops, saucers, and upper targets.
 - One random shot is the hidden Mysterio Super Jackpot.
 - Five random non-Super shots provide the existing directional Spidey-Sense clues.
-- Three random non-Super shots provide no useful clue and call out “He must be here somewhere.”
-- The spinner is not a shot. Left and right pops are separate shot groups.
+- Two random non-Super shots provide no useful clue and call out “He must be here somewhere.”
+- The first attempted shot can never collect the Super. If it was the initially
+  selected location, the hidden Super moves to another active shot before the
+  attempt is resolved.
+- Neither the main spinner nor the upper spinner is a Mysterio shot. Left and
+  right pops are separate shot groups.
 
 Scoring
 - Super starts at 1,000,000 and cannot fall below 100,000.
 - Every incorrect shot scores 50,000 and lowers the Super by 100,000.
 - Clue shots use the same score and penalty as other incorrect shots, then provide their directional clue.
+- Every incorrect shot counts as a Clue Shot in the villain summary, including
+  the two non-directional “He must be here somewhere” locations.
 - Collecting the hidden shot awards the current Super value and completes Mysterio.
 
 Case Files
@@ -18,7 +25,7 @@ Case Files
 - Bigger Jackpots: Super starts at 1,500,000.
 - More Time: incorrect-shot penalties are reduced to 50,000.
 - Safety Net: starts a one-time 10-second ball save with the mode.
-- Shot Assist: removes one of the three false, non-clue shots at mode start.
+- Shot Assist: removes one of the two false, non-clue shots at mode start.
 
 Presentation and completion
 - Keep the existing Mysterio shot-lighting style.
@@ -26,4 +33,6 @@ Presentation and completion
 - Correct shot displays “MYSTERIO SUPER JACKPOT” and the collected value.
 - The ball remains live while Mysterio rules stop scoring for a 2-second completion hold, then the normal villain-complete summary begins.
 - Ball-ending teardown skips the completion delay and stops immediately.
-- Saucers use delayed clearing at mode start and on saucer hits.
+- Ordinary, incorrect, and disabled saucer hits use delayed clearing. If the
+  saucers are the hidden Super, the ball remains held through the villain
+  summary and is kicked out when that summary finishes.

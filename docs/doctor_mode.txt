@@ -32,6 +32,13 @@ Display
 - Final release: DOCTOR OCTOPUS HAS BROKEN FREE!
 - Summary uses the standard villain layout with final mode score and JACKPOTS: count.
 
+Lighting
+- A free arm's lane rollover pulses bright blue to show that it is required.
+- A locked arm's lane rollover remains solid blue.
+- The left-bank GI pulses slowly in blue while at least one arm is free because
+  completing that bank locks one free arm.
+- The left-bank pulse stops when all four arms are locked.
+
 Persistent bonus
 - BREAKOUT BONUS increases by 100K for every collected web jackpot, including
   the first two protected jackpots supplied by More Jackpots.

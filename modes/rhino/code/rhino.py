@@ -6,7 +6,8 @@ class RhinoBash(CaseFileMixin, Mode):
     """Build Rhino's rage with pops, build the pending jackpot with other shots."""
 
     MAX_JACKPOTS_DEFAULT = 5
-    BASE_VALUES = [100000, 150000, 200000, 250000, 300000, 350000]
+    BASE_VALUES = [200000, 300000, 400000, 500000, 600000, 700000]
+    BIGGER_JACKPOT_ADD = 200000
     BERSERK_TIME_MS = 10000
 
     # Cumulative pop totals required to reach each stage in every cycle.
@@ -19,11 +20,11 @@ class RhinoBash(CaseFileMixin, Mode):
     }
 
     STAGE_ADD_VALUES = {
-        1: 5000,
-        2: 10000,
-        3: 25000,
-        4: 50000,
-        5: 100000,
+        1: 25000,
+        2: 50000,
+        3: 75000,
+        4: 100000,
+        5: 150000,
     }
 
     POP_SCORE = 10000
@@ -56,7 +57,7 @@ class RhinoBash(CaseFileMixin, Mode):
         self.publish_case_file_bonus_events("rhino")
         self.publish_active_case_file_helpers([
             ("more_jackpots", "EXTRA RHINO JACKPOT AVAILABLE"),
-            ("bigger_jackpots", "+100K TO EVERY RHINO JACKPOT"),
+            ("bigger_jackpots", "+200K TO EVERY RHINO JACKPOT"),
             ("more_time", "BERSERK TIMER EXTENDED 5s"),
             ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
             ("shot_assist", "ONE BERSERK CRASH SAVE"),
@@ -117,7 +118,7 @@ class RhinoBash(CaseFileMixin, Mode):
         index = min(self.jackpots, len(self.BASE_VALUES) - 1)
         self.jackpot_base = self.BASE_VALUES[index]
         if self.bigger_jackpots:
-            self.jackpot_base += 100000
+            self.jackpot_base += self.BIGGER_JACKPOT_ADD
         self.jackpot_value = self.jackpot_base
 
     def start_rh(self, **kwargs):
@@ -201,7 +202,7 @@ class RhinoBash(CaseFileMixin, Mode):
         self.berserk_running = True
         self._show_message(
             "BERSERK!",
-            "COLLECT AT B ROLLOVER",
+            "COLLECT AT ANY A/B ROLLOVER",
             value=self.jackpot_value,
             seconds=int(self.berserk_time_ms() / 1000),
             event="show_mode_countdown",

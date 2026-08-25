@@ -30,12 +30,12 @@ Cerberus | Each saucer stays lit once | Bigger Cerberus Jackpots | Cerberus time
 Vulcan | Left 3-bank adds Jackpots | Jackpots start at 150K | Upper-left post holds 12s | 20s multiball ball save | First right drop adds two drops
 Diana | Rubber shots score 100K | Bullseyes boosted | 30 arrows / 18s hunts | 10-arrow safety net | First hit drops a target
 Cyclops | Second Eye with 20s window | Eye Jackpot 150K per flip | Start with 30 flips | 10s ball save | First drop adds two right drops
-Centaur | Left-rubber secret half Jackpot | Centaur Jackpot 2X | Final timer 12s | 10s ball save on final shot | Right drops score Jackpot
+Centaur | 12s rooftop re-entry window for one second attempt | Centaur Jackpot 2X | Final timer 12s | 10s ball save on final shot | Right drops score Jackpot
 
 CHAPTER 4 — CRIME WAVE
 The Plotter | Any upper target collects a 500K Back Page after the VUK | Pops 50K / spinner 100K / schemes 500K; VUK stays 1M and Back Page stays 500K | VUK/Back Page timer 30s | 10s ball save | First unlit saucer hit collects one currently lit saucer
 The Fly Twins | +1X saucer multiplier | 300K base / +50K per spin | Longer multiball save | One outlane save | One upper hit lights all
-The Fifth Avenue Phantom | Sixth Phantom round | Phantom values improved | Reveals +2s | Phantom ball save | First expired reveal awarded
+The Fifth Avenue Phantom | Sixth Phantom round | Phantom values improved | First reveal 10s; later adds +2s | Phantom ball save | First expired reveal awarded
 Enforcers | Saucer bonus Jackpots lit | Base Jackpot 150K | Ox ball save ready | 10s ball save | First hit lights Jackpots
 Doctor Cool | Second frozen shipment | Frozen diamond values increased | Star freeze 15s | 10s ball save | First wrong saucer counts
 

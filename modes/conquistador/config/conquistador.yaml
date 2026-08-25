@@ -38,7 +38,6 @@ event_player:
   s_left_drops_1_active: conquistador_left_drop_hit
   s_left_drops_2_active: conquistador_left_drop_hit
   s_left_drops_3_active: conquistador_left_drop_hit
-  drop_target_bank_dt_bank_left_down: conquistador_left_bank_complete
 
   s_trispinner_opto_active: conquistador_spinner_hit
   s_upper_target_left_active: conquistador_upper_target_hit

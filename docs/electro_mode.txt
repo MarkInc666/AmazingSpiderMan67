@@ -5,25 +5,31 @@ Core flow
 - A spark travels randomly among eight shot groups:
   left web, main spinner, left drops, saucers, center web,
   upper spinner, upper targets, and right drops.
-- Normal spark windows last 5 seconds.
+- Lower-playfield spark windows last 5 seconds; upper spinner and upper
+  target spark windows last 10 seconds.
 - If the lit shot is missed, it remains available and the spark moves.
-- Every new or moved spark resets to its maximum jackpot value before
-  the once-per-second value decay starts again.
+- Every new or moved spark resets to its maximum jackpot value. Lower
+  sparks then decay once per second; upper sparks decay once every 2 seconds.
 - Collected shot groups are disabled until one final group remains.
-- The final group becomes a 10-second Super Jackpot.
+- The final group becomes a Super Jackpot: 10 seconds for a lower shot
+  or 15 seconds for the upper spinner and upper targets.
 
 Scoring
-- Normal spark starts at 250K and falls 10K per second to a 50K floor.
+- Normal spark starts at 250K and falls by 10K per decay step to a 50K floor.
 - Bigger Jackpots starts normal sparks at 300K and raises the Super
   Jackpot from 1M to 1.25M.
-- More Time halves the normal jackpot decay rate.
+- More Time doubles the decay intervals: lower sparks decay every 2 seconds
+  and upper sparks decay every 4 seconds.
 - More Jackpots returns the first collected group to the pool, allowing
   one additional normal spark jackpot before the Super.
-- Shot Assist makes the first normal spark window last 8 seconds.
+- Shot Assist makes the first lower spark last 8 seconds or the first
+  upper spark last 13 seconds.
 
 Presentation and devices
 - Existing Electro light-show timing is retained.
-- The Super uses the SUPER SURGE LIT 10-second countdown and persistent
-  SUPER SPARK status showing the required shot.
+- The Super uses a 10-second lower or 15-second upper countdown and
+  persistent SUPER SPARK status showing the required shot.
 - The rooftop gate opens only for upper-playfield spark shots.
-- Saucer groups use delayed clearing.
+- Ordinary and unlit saucer hits use delayed clearing. If the saucers
+  collect the final Super, the ball remains held through the villain
+  summary and is kicked out when the summary finishes.

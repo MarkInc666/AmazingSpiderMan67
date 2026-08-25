@@ -1,8 +1,6 @@
 #config_version=6
 
 
-#todo: open gate to upper for upper shots
-
 mode:
   start_events: start_mode_electro
   stop_events:
@@ -90,10 +88,6 @@ event_player:
   drop_target_bank_dt_bank_right_down:
     - drop_target_bank_dt_bank_right_reset
 
-  electro_saucers_hit:
-    - clear_saucers_delayed
-
-
   # -------------------------------
   # Real switches / shot groups -> Electro Python events
   # -------------------------------
@@ -111,7 +105,10 @@ event_player:
   # -------------------------------
   timer_electro_shot_timer_complete: electro_lit_shot_timeout
   timer_electro_shot_assist_timer_complete: electro_lit_shot_timeout
+  timer_electro_upper_shot_timer_complete: electro_lit_shot_timeout
+  timer_electro_upper_shot_assist_timer_complete: electro_lit_shot_timeout
   timer_electro_super_timer_complete: electro_super_timeout
+  timer_electro_upper_super_timer_complete: electro_super_timeout
 
 
 shot_groups:
@@ -199,6 +196,32 @@ timers:
       - event: mode_electro_stopping
         action: stop
 
+  electro_upper_shot_timer:
+    start_value: 10
+    end_value: 0
+    direction: down
+    tick_interval: 1s
+    control_events:
+      - event: electro_upper_shot_timer_start
+        action: restart
+      - event: electro_upper_shot_timer_stop
+        action: stop
+      - event: mode_electro_stopping
+        action: stop
+
+  electro_upper_shot_assist_timer:
+    start_value: 13
+    end_value: 0
+    direction: down
+    tick_interval: 1s
+    control_events:
+      - event: electro_upper_shot_assist_timer_start
+        action: restart
+      - event: electro_upper_shot_assist_timer_stop
+        action: stop
+      - event: mode_electro_stopping
+        action: stop
+
   electro_super_timer:
     start_value: 10
     end_value: 0
@@ -208,6 +231,19 @@ timers:
       - event: electro_super_timer_start
         action: restart
       - event: electro_super_timer_stop
+        action: stop
+      - event: mode_electro_stopping
+        action: stop
+
+  electro_upper_super_timer:
+    start_value: 15
+    end_value: 0
+    direction: down
+    tick_interval: 1s
+    control_events:
+      - event: electro_upper_super_timer_start
+        action: restart
+      - event: electro_upper_super_timer_stop
         action: stop
       - event: mode_electro_stopping
         action: stop
@@ -549,5 +585,4 @@ shows:
     - duration: 500ms
       lights:
         gi: green
-
 

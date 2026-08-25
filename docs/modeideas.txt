@@ -25,45 +25,48 @@ case file bonuses
 
 ### Centaur — “Charge the Trap”
 
-**Core idea:** Centaur charges across the playfield. You must set traps before he breaks through.
+**Implemented rule:** Build the Centaur Jackpot with four unique drop targets,
+then follow the rooftop route to stage one decisive right-bank shot.
 
 ```text
-Goal:
-Hit lit standups/drops to build TRAP.
-Then shoot a saucer to spring the trap for jackpot.
+Build:
+- Each unique drop scores 25K and adds 100K to the Jackpot.
+- Bank rubbers score 25K.
+- Four unique drops open the rooftop gate.
 
-Main mechanic:
-A moving lit shot advances every few seconds.
-Hit it to build charge control.
-Miss too long and Centaur “charges,” resetting one trap step.
+Finale:
+- Enter the rooftop and take the upper-left exit.
+- The post holds for 6 seconds while right targets 2, 3, and 4 are dropped.
+- Right rubber awards the built Jackpot.
+- Right target 1 or 5 awards 50K consolation.
+- The first right rubber/outer target resolves the attempt: one shot only.
+
+More Jackpots:
+- After attempt one resolves, the rooftop gate opens for a fixed 12 seconds.
+- Re-enter the rooftop and take the upper-left exit to restage the bank.
+- Attempt two is also one-shot only.
 ```
 
-Good use of case files:
+Case Files:
 
 ```text
-Case File 1 (More Jackpots): Add one extra trap jackpot.
-Case File 2 (Bigger Jackpots): Increase trap jackpot.
-Case File 3 (More Time): Slow Centaur charge movement.
-Case File 4 (Safety Net): One failed charge does not reset trap progress.
-Case File 5 (Shot Assist): Spot one trap shot.
+More Jackpots: 12-second rooftop re-entry window for one second attempt.
+Bigger Jackpots: Double the built Centaur Jackpot.
+More Time: Final-shot timer is 12 seconds instead of 6.
+Safety Net: Start the 10-second Case File ball save for each staged finale.
+Shot Assist: Right target 1 or 5 awards the Jackpot instead of consolation.
 ```
-
-Possible physical fit:
-
-* Left/right drops = trap pieces
-* Saucer = trap collect
-* Pop-up post = “trap gate” moment
 
 ---
 
 ### Cerberus — “Three Heads”
 
-**Current implemented rules:** Upper targets control the three saucer jackpots.
+**Current implemented rules:** Matching lower and upper shots control the three saucer jackpots.
 
 ```text
-Any upper target lights all three saucer jackpots.
-The matching upper target makes its corresponding saucer 3X.
-Additional upper targets can build multiple 3X saucers before a collect.
+Each left-bank drop lights its corresponding saucer jackpot at 1X.
+Each upper target lights and upgrades its corresponding saucer jackpot to 2X.
+Additional target hits can build multiple lit or 2X saucers before a collect.
 The upper spinner builds jackpot value.
 
 After the first jackpot, a 16-second timer starts.
@@ -74,8 +77,9 @@ Timer expiry ends the played mode normally.
 After a jackpot, the gate opens and any other lit saucers return to 1X.
 
 Three jackpot collections show `CERBERUS DEFEATED` for 2 seconds, but this is
-display-only: play continues, and villain progression considers Cerberus
-complete after the mode has been played rather than requiring three jackpots.
+display-only: play continues until the running Cerberus timer expires or the
+ball ends. Villain progression considers Cerberus complete after the mode has
+been played rather than requiring three jackpots.
 
 Case files:
 
@@ -134,6 +138,44 @@ full values to vulcan_bonus.
 Lighting: active right-bank GI pulses green; with More Jackpots, the left-bank
 GI pulses green too. A completed bank's GI goes dark until upper entry resets
 that bank. Upper targets pulse purple normally and flash green for Add-a-Ball.
+
+---
+
+### Diana — “Archery Volley”
+
+**Current implemented rules:** Three staged right-bank Hunts with a limited-arrow economy.
+
+```text
+Start with 20 arrows. Each normal flipper press spends one arrow; a simultaneous
+double-flipper release of the upper-left post does not. The upper spinner adds
+one arrow, the upper-right exit adds five, and a right-rubber hit adds one.
+
+Entering the upper playfield stages the next Hunt, closes the rooftop gate, and
+turns the GI red. Either upper exit prompts the right-bank shot. The Hunt timer
+starts on the first staged right-drop or right-rubber hit.
+
+Every Hunt lasts 8 seconds, or 12 seconds with More Time.
+Hunt 1 stages right drops 1/3/5 for 150K each.
+Hunt 2 stages right drops 2/4 for 250K each.
+Hunt 3 stages right drop 3 for 500K.
+
+Completing the staged targets or timer expiry ends the current Hunt. After Hunt
+3, remaining arrows score 50K each and the mode ends. Running out of arrows also
+ends the mode.
+```
+
+Case files:
+
+```text
+More Jackpots: right-rubber hits score 100K instead of 50K.
+Bigger Jackpots: Hunt values become 200K, 300K, and 750K.
+More Time: start with 30 arrows and use 12-second Hunts instead of 8 seconds.
+Safety Net: restore 10 arrows once when the arrow supply reaches zero.
+Shot Assist: the first valid hit in each Hunt drops one additional staged target.
+```
+
+Lighting: normal/rearm GI is D8D0FF. Staging a Hunt turns the full-playfield GI
+red; active staged right-bank inserts are green and turn off when collected.
 
 ---
 
@@ -350,33 +392,124 @@ Case File 5 (Shot Assist): Reveal one correct tunnel clue.
 
 ### Enforcers — “Take Down the Crew”
 
-**Core idea:** Multiple enemies, each with a different shot.
+**Implemented rules:** Build three lower-playfield crime zones, collect their
+matching rooftop jackpots, then collect the Ox Super Jackpot at the center web
+target.
 
 ```text
 Goal:
-Defeat Fancy Dan, Montana, and Ox-style enforcers.
+Collect all three rooftop jackpots, then hit the center web target for Ox.
 
 Main mechanic:
-Three enforcers are lit.
-Each has a different shot type:
-- Drops
-- Spinner/upper
-- Pops/saucer
+Left 3-bank builds the upper-left jackpot.
+Pop bumpers build the upper-center jackpot.
+Right 5-bank builds the upper-right jackpot.
+Two zone hits light the matching rooftop jackpot; Shot Assist reduces this to one.
+Continued lower-zone hits build that zone's jackpot multiplier from 1X to 5X.
+The upper spinner adds 50K to the Ox Super Jackpot value.
+Collecting a rooftop jackpot also adds its award to the Ox value.
+After all three rooftop jackpots, the center web target lights for Ox.
 
-Defeating all three lights crew jackpot.
+Ox-ready lighting:
+l_mid_multibonus -> l_advance_multiplier -> l_special -> l_mid_web_target
+300ms per step, color 80F0F0. All four inserts are explicitly cleared when
+the chase or mode stops.
 ```
-
-This could become a nice “mini checklist” mode.
 
 Case files:
 
 ```text
-Case File 1 (More Jackpots): Add one extra crew jackpot.
-Case File 2 (Bigger Jackpots): Increase each enforcer value.
-Case File 3 (More Time): Extend takedown timer.
-Case File 4 (Safety Net): One enforcer escape is blocked.
-Case File 5 (Shot Assist): Spot one enforcer target.
+Case File 1 (More Jackpots): Matching saucer bonus jackpots light with rooftop jackpots.
+Case File 2 (Bigger Jackpots): Base rooftop jackpot increases from 100K to 150K.
+Case File 3 (More Time): Starts the shared ball save when Ox lights.
+Case File 4 (Safety Net): Starts the shared 10-second ball save at mode start.
+Case File 5 (Shot Assist): One lower-zone hit lights its rooftop jackpot.
 ```
+
+---
+
+### Doctor Cool — “Frozen Shipment”
+
+**Implemented rules:** Build the Frozen Diamond value with the drop banks, then
+collect the moving shipment at an available saucer.
+
+```text
+Right-bank and left-bank drops score 25K, add to the Frozen Diamond Jackpot,
+and bank 25K to the persistent Diamond Bonus.
+Any right drop starts the moving saucer chase.
+
+Saucer progression:
+- Begin with one moving available saucer.
+- Completing/resetting the right bank arms an availability upgrade.
+- The first right drop after that reset expands the moving window to two saucers.
+- Repeat once more to expand it to all three saucers; cap at three.
+- The active window moves 1 -> 2 -> 3 and wraps around the three saucers.
+- Only the red saucer hole lamps indicate availability. Green 1/2/3 inserts stay off.
+
+STAR banks 100K to Diamond Bonus and freezes the currently available one, two,
+or three saucers for 10 seconds. More Time extends the freeze to 15 seconds.
+A lit saucer collects the Frozen Diamond Jackpot. A wrong saucer scores 10K,
+ejects, and resumes the chase after one second.
+```
+
+Case files:
+
+```text
+More Jackpots: Require a second frozen shipment.
+Bigger Jackpots: Start at 200K; right drops add 50K and left drops add 75K.
+More Time: Extend the STAR freeze from 10 seconds to 15 seconds.
+Safety Net: Start the shared 10-second ball save.
+Shot Assist: The first wrong saucer collects the shipment.
+```
+
+The terminal saucer remains held until the villain summary completes. Physical
+machine testing is still required for the moving 1/2/3-saucer timing.
+
+---
+
+### Harley Clivendon — “Hypnotic Hold”
+
+**Implemented rules:** Controlled two-ball area multiball. One ball is held in
+a lower saucer while the other ball lights independent playfield areas and
+collects repeatable VUK jackpots.
+
+```text
+Start two-ball multiball with a 15-second opening save, or 25 seconds with More Time.
+The second ball is automatically plunged using the shared delayed 2-second autofire.
+Any saucer may capture the controlled lock ball for 50K.
+Only the six red saucer hole lamps show lock availability; green 1/2/3 lamps stay off.
+
+After the lock:
+- Eight independent areas become available.
+- Each unique area scores 50K and turns solid blue.
+- Four lit areas qualify the VUK; up to eight increase its value.
+- Both upper and lower left-sling GI lamps act as one left-sling area.
+- The main spinner insert flashes yellow when the VUK Jackpot is ready.
+
+VUK Jackpot:
+- 100K per lit area, or 150K with Bigger Jackpots.
+- The full award also banks to persistent HARLEY JACKPOTS.
+- The rooftop gate stays open through the delayed VUK kick and closes at the
+  upper-entrance opto or after the 5-second fallback.
+- The held saucer ball is released once, and the next lock becomes available
+  after 2.2 seconds.
+- Area lamps stay dark before the next lock. With More Jackpots, two areas are
+  retained internally and reappear when the next ball is captured.
+```
+
+Case files:
+
+```text
+More Jackpots: Retain two lit areas for the next lock-and-build round.
+Bigger Jackpots: Increase the VUK Jackpot from 100K to 150K per lit area.
+More Time: Extend the opening multiball save from 15 seconds to 25 seconds.
+Safety Net: Start the shared ball save after the first VUK Jackpot.
+Shot Assist: The first scored area also spots another unlit area.
+```
+
+The physical occupied-saucer congestion issue remains intentionally unresolved:
+a second ball may lodge behind the controlled held ball. No new ball-search or
+automatic rescue behavior is added without machine testing.
 
 ---
 
@@ -415,32 +548,32 @@ Case File 5 (Shot Assist): Spot one smash target.
 
 ### Fifth Avenue Phantom — “Vanish and Reveal”
 
-**Core idea:** Phantom appears briefly, then disappears.
+**Implemented rule:** Phantom hides at one of five playfield locations. Right
+drops or STAR reveal the live location; collect it before the reveal expires.
 
 ```text
-Goal:
-Reveal Phantom, then shoot him before he vanishes.
+Rounds:
+- Five reveal/collect rounds; More Jackpots adds a sixth.
+- The first unique right drop reveals the Phantom for 8 seconds at 1M.
+- More Time makes that first reveal 10 seconds.
+- Later unique right drops add 8/10/12/14 seconds while reducing the current
+  Jackpot to 800K/600K/400K/200K.
+- STAR gives a repeatable 4-second reveal/add without reducing value.
+- Collect or miss advances to the next round; the final round ends the mode.
 
-Main mechanic:
-A lit shot appears for a few seconds.
-Hit clues to extend reveal time.
-If he vanishes, you must reveal again.
+Locations:
+- Left web, center web, left drops, upper targets, or all three saucers.
+- STAR is a reveal control and is never a hiding location.
 ```
-
-Good physical fit:
-
-* Upper targets = clues
-* Spinner = reveal meter
-* Saucer = capture
 
 Case files:
 
 ```text
-Case File 1 (More Jackpots): Add one extra phantom jackpot.
-Case File 2 (Bigger Jackpots): Increase reveal jackpot.
-Case File 3 (More Time): Phantom stays visible longer.
-Case File 4 (Safety Net): One vanish is prevented.
-Case File 5 (Shot Assist): Reveal Phantom location briefly.
+More Jackpots: Add a sixth Phantom round.
+Bigger Jackpots: Use 1M/900K/800K/700K/600K values.
+More Time: Add 2 seconds to every right-drop reveal/add.
+Safety Net: Start the shared 10-second ball save.
+Shot Assist: Award the first revealed Jackpot that expires.
 ```
 
 ---

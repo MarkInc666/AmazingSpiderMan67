@@ -5,10 +5,9 @@ from modes.common.case_file_mixin import CaseFileMixin
 """
 Cerberus - Three Heads
 
-- Upper targets light saucer jackpots.
-- Any upper target lights regular jackpot status for all three saucers.
-- The specific upper target also lights the matching saucer for 3X.
-- Additional upper-target hits can make multiple or all saucers 3X.
+- Each left-bank drop lights its matching saucer jackpot at 1X.
+- Each upper target lights and upgrades its matching saucer jackpot to 2X.
+- Additional target hits can build multiple lit or 2X saucers.
 - Any lit saucer collects a jackpot at its current multiplier.
 - After a collect, the gate opens and all remaining lit saucers return to 1X.
 - More Jackpots lets each saucer remain lit once after its first collect, at
@@ -62,7 +61,7 @@ class Cerberus(CaseFileMixin, Mode):
         ])
 
         self.saucer_jackpot_lit = {1: False, 2: False, 3: False}
-        self.saucer_triple_lit = {1: False, 2: False, 3: False}
+        self.saucer_double_lit = {1: False, 2: False, 3: False}
         self.more_jackpots_active = self.has_case_file("more_jackpots")
         self.more_jackpots_repeat_available = {
             saucer: self.more_jackpots_active for saucer in [1, 2, 3]
@@ -77,11 +76,16 @@ class Cerberus(CaseFileMixin, Mode):
         self.mode_points = 0
         self.timer_running = False
         self.timer_seconds = self.base_timer_seconds
-        self.gate_open_after_collect = False
+        self.gate_open_for_upper = False
 
         self._sync_vars()
 
         for target in [1, 2, 3]:
+            self.add_mode_event_handler(
+                f"cerberus_left_drop_{target}_hit",
+                self._left_drop_hit,
+                drop=target,
+            )
             self.add_mode_event_handler(
                 f"cerberus_upper_target_{target}_hit",
                 self._upper_target_hit,
@@ -100,7 +104,7 @@ class Cerberus(CaseFileMixin, Mode):
 
         self._update_gate_state()
         self.machine.events.post("cerberus_startup_complete")
-        self.machine.events.post("show_mode_message_long", message_mode_title="THREE HEADS", message_mode_subtitle="HIT UPPER TARGETS")
+        self.machine.events.post("show_mode_message_long", message_mode_title="THREE HEADS", message_mode_subtitle="HIT DROPS OR UPPER TARGETS")
         self._refresh_lights()
 
     def mode_stop(self, **kwargs):
@@ -123,6 +127,34 @@ class Cerberus(CaseFileMixin, Mode):
         if self.has_case_file("safety_net"):
             self.machine.events.post("start_case_file_ball_save")
 
+    def _left_drop_hit(self, drop=None, **kwargs):
+        if self._in_summary_or_done():
+            return
+
+        self.targets_hit += 1
+        self._score(self.TARGET_SCORE)
+
+        matching_saucer = self.TARGET_TO_SAUCER.get(drop)
+        if matching_saucer:
+            self.saucer_jackpot_lit[matching_saucer] = True
+
+        # Keep the roof available after the lower 1X qualification so the
+        # player can choose between collecting now or upgrading the shot to 2X.
+        self.gate_open_for_upper = True
+        self._sync_vars()
+        self._refresh_lights()
+        self._update_gate_state()
+        self.machine.events.post(
+            "cerberus_left_drop_hit",
+            drop=drop,
+            saucer=matching_saucer,
+        )
+        self.machine.events.post(
+            "show_mode_message",
+            message_mode_title="SAUCER LIT",
+            message_mode_subtitle=f"SAUCER {matching_saucer} - 1X",
+        )
+
     def _upper_target_hit(self, target=None, **kwargs):
         if self._in_summary_or_done():
             return
@@ -130,23 +162,20 @@ class Cerberus(CaseFileMixin, Mode):
         self.targets_hit += 1
         self._score(self.TARGET_SCORE)
 
-        # Any target lights/re-lights the regular jackpot state for all saucers.
-        for saucer in [1, 2, 3]:
-            self.saucer_jackpot_lit[saucer] = True
-
-        # The matching target upgrades that saucer to 3X. Other previously
-        # upgraded saucers remain at 3X, so all three can be built before a collect.
+        # The matching upper target lights its saucer and upgrades it to 2X.
+        # Other previously upgraded saucers remain at 2X.
         matching_saucer = self.TARGET_TO_SAUCER.get(target)
         if matching_saucer:
-            self.saucer_triple_lit[matching_saucer] = True
+            self.saucer_jackpot_lit[matching_saucer] = True
+            self.saucer_double_lit[matching_saucer] = True
 
-        self.gate_open_after_collect = False
+        self.gate_open_for_upper = False
         self._reset_timer_if_running()
         self._sync_vars()
         self._refresh_lights()
         self._update_gate_state()
         self.machine.events.post("cerberus_target_hit", target=target)
-        self.machine.events.post("show_mode_message", message_mode_title="HEAD STUNNED", message_mode_subtitle=f"SAUCER {target} 3X")
+        self.machine.events.post("show_mode_message", message_mode_title="HEAD STUNNED", message_mode_subtitle=f"SAUCER {target} - 2X")
 
     def _spinner_hit(self, **kwargs):
         if self._in_summary_or_done():
@@ -186,11 +215,11 @@ class Cerberus(CaseFileMixin, Mode):
             self._sync_vars()
             self._update_gate_state()
             self.machine.events.post("cerberus_unlit_saucer_hit", saucer=saucer)
-            self.machine.events.post("show_mode_message", message_mode_title="SAUCER UNLIT", message_mode_subtitle="HIT UPPER TARGETS")
+            self.machine.events.post("show_mode_message", message_mode_title="SAUCER UNLIT", message_mode_subtitle="HIT DROPS OR UPPER TARGETS")
             return
         else:
             collect_saucer = saucer
-            multiplier = 3 if self.saucer_triple_lit.get(saucer, False) else 1
+            multiplier = 2 if self.saucer_double_lit.get(saucer, False) else 1
 
         award = self.jackpot_value * multiplier
 
@@ -199,7 +228,7 @@ class Cerberus(CaseFileMixin, Mode):
         self.best_jackpot = max(self.best_jackpot, award)
 
         # More Jackpots gives each saucer one retained first collection. The
-        # retained shot stays exactly as it was, including 3X when applicable.
+        # retained shot stays exactly as it was, including 2X when applicable.
         # Shot Assist reaches this same path, so it consumes only one collection
         # state from the saucer it actually awards.
         keep_collected_saucer_lit = self.more_jackpots_repeat_available.get(
@@ -212,9 +241,9 @@ class Cerberus(CaseFileMixin, Mode):
         self.saucer_jackpot_lit[collect_saucer] = keep_collected_saucer_lit
         for candidate in [1, 2, 3]:
             if candidate != collect_saucer or not keep_collected_saucer_lit:
-                self.saucer_triple_lit[candidate] = False
+                self.saucer_double_lit[candidate] = False
 
-        self.gate_open_after_collect = True
+        self.gate_open_for_upper = True
 
         if not self.timer_running:
             self._restart_timer()
@@ -244,8 +273,8 @@ class Cerberus(CaseFileMixin, Mode):
     def _best_available_saucer_or_default(self, default_saucer):
         # Prefer the best lit jackpot on the playfield, even if the entered saucer is unlit.
         for saucer in [1, 2, 3]:
-            if self.saucer_jackpot_lit.get(saucer, False) and self.saucer_triple_lit.get(saucer, False):
-                return saucer, 3
+            if self.saucer_jackpot_lit.get(saucer, False) and self.saucer_double_lit.get(saucer, False):
+                return saucer, 2
 
         for saucer in [1, 2, 3]:
             if self.saucer_jackpot_lit.get(saucer, False):
@@ -300,17 +329,16 @@ class Cerberus(CaseFileMixin, Mode):
     def _update_gate_state(self):
         """Keep the rooftop gate aligned with the Cerberus scoring loop.
 
-        Upper-target activity lights the saucers and closes the gate. A saucer
-        jackpot collect opens the gate even when other saucers remain lit, so
-        the player can return upstairs to rebuild 3X values. The next upper
-        target hit closes the gate again.
+        A lower-drop qualification or saucer jackpot collect keeps the gate
+        open so the player can return upstairs for 2X. An upper-target hit
+        closes the gate while the ball returns to the lower playfield.
         """
         if self._in_summary_or_done():
             return
 
-        if self.gate_open_after_collect:
+        if self.gate_open_for_upper:
             self.machine.events.post("rooftop_diverter_open")
-            self.machine.events.post("cerberus_gate_open_after_collect")
+            self.machine.events.post("cerberus_gate_open_for_upper")
         elif any(self.saucer_jackpot_lit.get(saucer, False) for saucer in [1, 2, 3]):
             self.machine.events.post("rooftop_diverter_close")
             self.machine.events.post("cerberus_gate_closed_for_saucers")
@@ -328,10 +356,10 @@ class Cerberus(CaseFileMixin, Mode):
             else:
                 self.machine.events.post(f"cerberus_saucer_{saucer}_jackpot_off")
 
-            if self.saucer_triple_lit[saucer]:
-                self.machine.events.post(f"cerberus_saucer_{saucer}_triple_lit")
+            if self.saucer_double_lit[saucer]:
+                self.machine.events.post(f"cerberus_saucer_{saucer}_double_lit")
             else:
-                self.machine.events.post(f"cerberus_saucer_{saucer}_triple_off")
+                self.machine.events.post(f"cerberus_saucer_{saucer}_double_off")
 
     def _sync_vars(self):
         player = self.machine.game.player if self.machine.game else None
@@ -352,16 +380,16 @@ class Cerberus(CaseFileMixin, Mode):
 
         for saucer in [1, 2, 3]:
             player[f"cerberus_saucer_{saucer}_jackpot_lit"] = int(self.saucer_jackpot_lit[saucer])
-            player[f"cerberus_saucer_{saucer}_triple_lit"] = int(self.saucer_triple_lit[saucer])
+            player[f"cerberus_saucer_{saucer}_double_lit"] = int(self.saucer_double_lit[saucer])
 
     def _update_mode_status(self):
         lit = sum(1 for saucer in [1, 2, 3] if self.saucer_jackpot_lit[saucer])
-        triples = sum(1 for saucer in [1, 2, 3] if self.saucer_triple_lit[saucer])
+        doubles = sum(1 for saucer in [1, 2, 3] if self.saucer_double_lit[saucer])
         if lit:
-            title = "SAUCERS LIT / 3X"
-            value = f"{lit} LIT / {triples} AT 3X"
+            title = "SAUCERS LIT / 2X"
+            value = f"{lit} LIT / {doubles} AT 2X"
         else:
-            title = "HIT UPPER TARGETS"
+            title = "HIT DROPS OR UPPER TARGETS"
             value = f"JACKPOTS {self.jackpots_collected}"
         self.machine.events.post("update_mode_status", mode_status_title=title, mode_status_value=value)
 

@@ -99,11 +99,13 @@ event_player:
     - rhino_smash_hit
 
   s_inlane_a_active:
-    - rhino_smash_hit
+    - rhino_jackpot_collect_request
   s_inlane_b_active:
-    - rhino_smash_hit
+    - rhino_jackpot_collect_request
 
-  # Left Middle B lane jackpot collect
+  # All four A/B rollovers collect the current jackpot.
+  s_inlane_m_r_active:
+    - rhino_jackpot_collect_request
   s_inlane_m_l_active:
     - rhino_jackpot_collect_request
 
@@ -182,12 +184,16 @@ shows:
   rhino_left_b_lit:
     - duration: 300ms
       lights:
+        l_a_rollover: white
+        l_b_rollover: white
+        l_right_a: white
         l_left_b: white
-        l_left_multibonus: white
     - duration: 300ms
       lights:
+        l_a_rollover: off
+        l_b_rollover: off
+        l_right_a: off
         l_left_b: off
-        l_left_multibonus: off
 
   rhino_rage_1:
     - duration: 1s

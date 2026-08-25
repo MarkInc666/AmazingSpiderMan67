@@ -6,12 +6,11 @@ from modes.common.case_file_mixin import CaseFileMixin
 
 
 class Scorpion(CaseFileMixin, Mode):
-    """Scorpion: build Venom, choose an exit, then hit one staged drop."""
-    VENOM_READY_HITS = 2
+    """Scorpion: enter the roof, build a jackpot, then stage one drop."""
     BASE_MAX_ATTEMPTS = 3
     BASE_STING_SECONDS = 8
     MORE_TIME_STING_SECONDS = 12
-    SPINNER_SCORE = 50_000
+    SPINNER_JACKPOT_STEP = 50_000
     FULL_AWARDS = (250_000, 500_000, 1_000_000, 1_500_000)
     PARTIAL_AWARDS = (200_000, 300_000, 400_000, 500_000)
 
@@ -33,7 +32,6 @@ class Scorpion(CaseFileMixin, Mode):
         )
         self.bigger_multiplier = 1.5 if self.has_case_file("bigger_jackpots") else 1.0
         self.shot_assist_available = self.has_case_file("shot_assist")
-        self.venom_hits = 0
         self.attempts_used = 0
         self.state = "build"
         self.mode_done = False
@@ -42,6 +40,8 @@ class Scorpion(CaseFileMixin, Mode):
         self.required_target = None
         self.seconds_left = 0
         self.rubber_enabled = False
+        self.rubber_awarded = False
+        self.jackpot_value = self._base_jackpot_for_attempt()
 
         self.scorpion_stings = 0
         self.scorpion_biggest_jackpot = 0
@@ -53,12 +53,13 @@ class Scorpion(CaseFileMixin, Mode):
             ("bigger_jackpots", "STING AWARDS BOOSTED"),
             ("more_time", "12 SECOND STING WINDOW"),
             ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
-            ("shot_assist", "FIRST RUBBER COUNTS AS TARGET"),
+            ("shot_assist", "FIRST RUBBER PAYS FULL BASE VALUE"),
         ])
         if self.has_case_file("safety_net"):
             self.machine.events.post("start_case_file_ball_save")
 
         self.add_mode_event_handler("scorpion_spinner_hit", self.spinner_hit)
+        self.add_mode_event_handler("scorpion_upper_entered", self.upper_entered)
         self.add_mode_event_handler("scorpion_right_exit_chosen", self.right_exit_chosen)
         self.add_mode_event_handler("scorpion_left_exit_chosen", self.left_exit_chosen)
         for i in range(1, 4):
@@ -74,8 +75,8 @@ class Scorpion(CaseFileMixin, Mode):
         self.add_mode_event_handler("s_right_drops_rubber_active", self.sting_rubber_right)
         self.machine.events.post(
             "show_mode_message",
-            message_mode_title="BUILD VENOM",
-            message_mode_subtitle="HIT THE ROOF SPINNER",
+            message_mode_title="ENTER THE ROOFTOP",
+            message_mode_subtitle="SPINNER BUILDS THE STING JACKPOT",
             reminder=True,
         )
         self._update_mode_status()
@@ -113,11 +114,11 @@ class Scorpion(CaseFileMixin, Mode):
         if self.mode_done:
             return
         if self.state == "build":
-            title = "VENOM"
-            value = f"{self.venom_hits}/{self.VENOM_READY_HITS}"
+            title = "ENTER ROOFTOP"
+            value = f"JACKPOT: {self._display_jackpot_value():,}"
         elif self.state == "ready":
             title = "STING READY"
-            value = "CHOOSE UPPER EXIT"
+            value = f"JACKPOT: {self._display_jackpot_value():,}"
         elif self.state == "sting":
             title = f"ATTEMPT {self.attempts_used + 1} OF {self.max_attempts}"
             value = f"TIME: {self.seconds_left}"
@@ -133,25 +134,28 @@ class Scorpion(CaseFileMixin, Mode):
         if self.mode_done or not self.scoring_enabled:
             return
 
-        self._add_score(self.SPINNER_SCORE)
-        if self.state != "build":
+        if self.state != "ready":
             return
-        self.venom_hits = min(self.VENOM_READY_HITS, self.venom_hits + 1)
+        self.jackpot_value += self.SPINNER_JACKPOT_STEP
         self.machine.events.post("scorpion_spinner_build")
         self.machine.events.post(
             "show_mode_message",
-            message_mode_title="VENOM BUILDS",
-            message_mode_subtitle=f"{self.venom_hits}/{self.VENOM_READY_HITS}",
-            message_mode_value=self.SPINNER_SCORE,
+            message_mode_title="STING JACKPOT BUILDS",
+            message_mode_value=self._display_jackpot_value(),
         )
-        if self.venom_hits >= self.VENOM_READY_HITS:
-            self.state = "ready"
-            self.machine.events.post("scorpion_sting_ready")
-            self.machine.events.post(
-                "show_mode_message_long",
-                message_mode_title="STING READY",
-                message_mode_subtitle="CHOOSE LEFT OR RIGHT EXIT",
-            )
+        self._update_mode_status()
+
+    def upper_entered(self, **kwargs):
+        if self.mode_done or not self.scoring_enabled or self.state != "build":
+            return
+        self.state = "ready"
+        self.machine.events.post("scorpion_sting_ready")
+        self.machine.events.post(
+            "show_mode_message_long",
+            message_mode_title="STING READY",
+            message_mode_subtitle="SPIN TO BUILD OR CHOOSE AN EXIT",
+            message_mode_value=self._display_jackpot_value(),
+        )
         self._update_mode_status()
 
     def right_exit_chosen(self, **kwargs):
@@ -169,6 +173,7 @@ class Scorpion(CaseFileMixin, Mode):
         self.state = "sting"
         self.active_target_side = side
         self.seconds_left = self.sting_seconds
+        self.rubber_awarded = False
 
         # Ignore mechanical vibration/bounce while the selected bank resets
         # and the non-required drops are knocked down.
@@ -278,11 +283,30 @@ class Scorpion(CaseFileMixin, Mode):
             self._resolve_rubber()
 
     def _resolve_rubber(self):
+        if self.rubber_awarded:
+            return
+        self.rubber_awarded = True
+        values = self.PARTIAL_AWARDS
+        title = "CONSOLATION AWARD"
         if self.shot_assist_available and self.attempts_used == 0:
             self.shot_assist_available = False
-            self._resolve_attempt(result="target")
-        else:
-            self._resolve_attempt(result="rubber")
+            values = self.FULL_AWARDS
+            title = "SHOT ASSIST AWARD"
+        value = self._award_for_attempt(values)
+        self._add_score(value)
+        self.machine.events.post(
+            "show_mode_message",
+            message_mode_title=title,
+            message_mode_subtitle="STING ATTEMPT CONTINUES",
+            message_mode_value=value,
+        )
+
+    def _base_jackpot_for_attempt(self):
+        index = min(self.attempts_used, len(self.FULL_AWARDS) - 1)
+        return self.FULL_AWARDS[index]
+
+    def _display_jackpot_value(self):
+        return int(self.jackpot_value * self.bigger_multiplier)
 
     def _award_for_attempt(self, values):
         index = min(self.attempts_used, len(values) - 1)
@@ -298,7 +322,7 @@ class Scorpion(CaseFileMixin, Mode):
         self.delay.remove("scorpion_sting_tick")
         self.machine.events.post("scorpion_sting_lights_off")
         if result == "target":
-            value = self._award_for_attempt(self.FULL_AWARDS)
+            value = self._display_jackpot_value()
             self._add_score(value)
             self.scorpion_stings += 1
             self.scorpion_biggest_jackpot = max(self.scorpion_biggest_jackpot, value)
@@ -309,15 +333,6 @@ class Scorpion(CaseFileMixin, Mode):
                 message_mode_title="SCORPION STING",
                 message_mode_value=value,
             )
-        elif result == "rubber":
-            value = self._award_for_attempt(self.PARTIAL_AWARDS)
-            self._add_score(value)
-            self.machine.events.post("scorpion_sting_miss")
-            self.machine.events.post(
-                "show_mode_message",
-                message_mode_title="PARTIAL STING",
-                message_mode_value=value,
-            )
         else:
             self.machine.events.post("scorpion_sting_failed")
             self.machine.events.post(
@@ -325,20 +340,21 @@ class Scorpion(CaseFileMixin, Mode):
                 message_mode_title="STING MISSED",
             )
         self.attempts_used += 1
-        self.venom_hits = 0
         self.active_target_side = None
         self.required_target = None
         self.seconds_left = 0
+        self.rubber_awarded = False
 
         if self.attempts_used >= self.max_attempts:
             self._begin_completion_hold()
             return
         self.state = "build"
+        self.jackpot_value = self._base_jackpot_for_attempt()
         self.machine.events.post("scorpion_build_phase_started")
         self.machine.events.post(
             "show_mode_message",
-            message_mode_title="BUILD VENOM",
-            message_mode_subtitle="HIT THE ROOF SPINNER",
+            message_mode_title="ENTER THE ROOFTOP",
+            message_mode_subtitle="SPINNER BUILDS THE STING JACKPOT",
             reminder=True,
         )
         self._update_mode_status()

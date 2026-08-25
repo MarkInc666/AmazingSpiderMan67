@@ -83,33 +83,31 @@ event_player:
 
   s_upper_entrance_opto_active:
     - vulture_upper_entered
-    - vulture_upper_switch_hit
 
   s_upper_exit_left_opto_active:
     - vulture_upper_exited
-    - vulture_upper_switch_hit
 
   s_upper_exit_right_opto_active:
     - vulture_upper_exited
-    - vulture_upper_switch_hit
 
   s_inlane_m_r_active:
     - vulture_gi_lower
 
   s_upper_target_left_active:
-    - vulture_upper_switch_hit
     - vulture_left_target_hit
 
   s_upper_target_center_active:
-    - vulture_upper_switch_hit
     - vulture_center_target_hit
 
   s_upper_target_right_active:
-    - vulture_upper_switch_hit
     - vulture_right_target_hit
 
   s_trispinner_opto_active:
-    - vulture_upper_switch_hit
+    - vulture_spinner_hit
+
+  # Once rooftop entry starts the mode timer, the lower spinner contributes
+  # the same combined target value as the upper spinner.
+  s_web_spinner_active:
     - vulture_spinner_hit
 
 timers:
@@ -127,55 +125,37 @@ timers:
         action: stop
 
 show_player:
-  vulture_show_left_green:
-    vulture_left_green:
-      loops: -1
-
   vulture_show_left_yellow:
-    vulture_left_green:
+    vulture_left_red:
       action: stop
     vulture_left_yellow:
       loops: -1
 
   vulture_show_left_red:
-    vulture_left_green:
-      action: stop
     vulture_left_yellow:
       action: stop
     vulture_left_red:
       loops: -1
 
-  vulture_show_center_green:
-    vulture_center_green:
-      loops: -1
-
   vulture_show_center_yellow:
-    vulture_center_green:
+    vulture_center_red:
       action: stop
     vulture_center_yellow:
       loops: -1
 
   vulture_show_center_red:
-    vulture_center_green:
-      action: stop
     vulture_center_yellow:
       action: stop
     vulture_center_red:
       loops: -1
 
-  vulture_show_right_green:
-    vulture_right_green:
-      loops: -1
-
   vulture_show_right_yellow:
-    vulture_right_green:
+    vulture_right_red:
       action: stop
     vulture_right_yellow:
       loops: -1
 
   vulture_show_right_red:
-    vulture_right_green:
-      action: stop
     vulture_right_yellow:
       action: stop
     vulture_right_red:
@@ -210,19 +190,13 @@ show_player:
       loops: 1
 
   vulture_mode_complete:
-    vulture_left_green:
-      action: stop
     vulture_left_yellow:
       action: stop
     vulture_left_red:
       action: stop
-    vulture_center_green:
-      action: stop
     vulture_center_yellow:
       action: stop
     vulture_center_red:
-      action: stop
-    vulture_right_green:
       action: stop
     vulture_right_yellow:
       action: stop
@@ -234,50 +208,53 @@ show_player:
       action: stop
 
 shows:
-  vulture_left_green:
-    - duration: 1s
-      lights:
-        l_upper_left: green
-
   vulture_left_yellow:
-    - duration: 1s
+    - duration: 250ms
       lights:
         l_upper_left: D0D020
+    - duration: 250ms
+      lights:
+        l_upper_left: off
 
   vulture_left_red:
-    - duration: 1s
+    - duration: 250ms
       lights:
         l_upper_left: red
-
-  vulture_center_green:
-    - duration: 1s
+    - duration: 250ms
       lights:
-        l_upper_middle: green
+        l_upper_left: off
 
   vulture_center_yellow:
-    - duration: 1s
+    - duration: 250ms
       lights:
         l_upper_middle: D0D020
+    - duration: 250ms
+      lights:
+        l_upper_middle: off
 
   vulture_center_red:
-    - duration: 1s
+    - duration: 250ms
       lights:
         l_upper_middle: red
-
-  vulture_right_green:
-    - duration: 1s
+    - duration: 250ms
       lights:
-        l_upper_right: green
+        l_upper_middle: off
 
   vulture_right_yellow:
-    - duration: 1s
+    - duration: 250ms
       lights:
         l_upper_right: D0D020
+    - duration: 250ms
+      lights:
+        l_upper_right: off
 
   vulture_right_red:
-    - duration: 1s
+    - duration: 250ms
       lights:
         l_upper_right: red
+    - duration: 250ms
+      lights:
+        l_upper_right: off
 
   vulture_gi_lower_show:
     - duration: 1s

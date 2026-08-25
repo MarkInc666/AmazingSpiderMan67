@@ -4,7 +4,8 @@
 
 - Pops advance Rhino through five Rage levels.
 - Every other configured Rhino Smash switch adds the current Rage amount to the pending jackpot.
-- The always-flashing left B lane (`s_inlane_m_l`) collects the current jackpot.
+- All four always-flashing A/B rollovers collect the current jackpot: upper A,
+  upper B, right A, and left B.
 - Each collected jackpot resets Rage to level 1 and starts the next jackpot at its new base value.
 - Five jackpots complete the mode; More Jackpots adds a sixth cycle.
 
@@ -12,30 +13,30 @@
 
 | Rage | Pops required | Add per Smash |
 |---|---:|---:|
-| 1 | 1 | 5K |
-| 2 | 2 | 10K |
-| 3 | 3 | 25K |
-| 4 | 4 | 50K |
-| 5 / Berserk | 5 | 100K |
+| 1 | 1 | 25K |
+| 2 | 2 | 50K |
+| 3 | 3 | 75K |
+| 4 | 4 | 100K |
+| 5 / Berserk | 5 | 150K |
 
 The pop requirements are cumulative within each jackpot cycle. Pops score normally but do not also add the Rage amount to the jackpot.
 
 ## Jackpot bases
 
-- Jackpot 1: 100K
-- Jackpot 2: 150K
-- Jackpot 3: 200K
-- Jackpot 4: 250K
-- Jackpot 5: 300K
-- Jackpot 6 with More Jackpots: 350K
+- Jackpot 1: 200K
+- Jackpot 2: 300K
+- Jackpot 3: 400K
+- Jackpot 4: 500K
+- Jackpot 5: 600K
+- Jackpot 6 with More Jackpots: 700K
 
-Bigger Jackpots adds 100K to every base value.
+Bigger Jackpots adds 200K to every base value.
 
 ## Berserk
 
 - Reaching Rage 5 starts a 10-second collect timer.
 - More Time extends every Berserk timer to 15 seconds.
-- Smash switches continue adding 100K during Berserk.
+- Smash switches continue adding 150K during Berserk.
 - Missing the collect ends the mode.
 - Shot Assist automatically awards one missed Berserk jackpot, once per mode.
 
@@ -43,13 +44,13 @@ Bigger Jackpots adds 100K to every base value.
 
 - GI steps from yellow through orange to red as Rage rises.
 - Berserk uses rapidly flashing red GI.
-- Left B and its associated collect insert flash throughout the mode.
+- All four A/B rollover lamps flash throughout the mode.
 - Rooftop gate remains under normal Daily Bugle control.
 
 ## Case Files
 
 - More Jackpots: adds a sixth jackpot cycle using the same five-pop progression and Berserk timer.
-- Bigger Jackpots: adds 100K to every jackpot base.
+- Bigger Jackpots: adds 200K to every jackpot base.
 - More Time: adds 5 seconds to Berserk.
 - Safety Net: standard 10-second ball save.
 - Shot Assist: saves one missed Berserk by awarding the jackpot automatically.

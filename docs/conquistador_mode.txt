@@ -1,6 +1,6 @@
 THE CONQUISTADOR — FIND THE FOUNTAIN
 
-Stage 1: complete the left drop bank before the 20-second timer expires. Each drop scores 50K in addition to normal switch scoring. Completing the bank awards 50K per second remaining, opens the rooftop gate, resets the bank normally, and changes GI from green to yellow.
+Stage 1: hit any single left 3-bank drop before the 20-second timer expires. The hit scores 50K in addition to normal switch scoring, immediately awards 50K per second remaining, opens the rooftop gate, resets the bank, and changes GI from green to yellow. Full-bank completion is not required.
 
 Stage 2: spin the upper spinner three times. Every spin scores 50K in addition to normal switch scoring. Upper targets add to the Fountain Jackpot at any time. The third spin closes the gate, lights center web, changes GI to blue, and starts the Fountain timer.
 
@@ -11,3 +11,5 @@ More Time gives 30 seconds for both main timers. Safety Net starts a 10-second b
 Failure messages: FOUNTAIN NOT FOUND for either main timer; WASTED YOUTH for the missed extra-sip window.
 
 Summary: MODE SCORE, FOUNTAIN JP, SPEED BONUS.
+
+Music: dedicated Conquistador track, Song 54 (`conquistador`).

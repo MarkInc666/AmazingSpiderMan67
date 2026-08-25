@@ -145,6 +145,11 @@ class doc_ock(CaseFileMixin, Mode):
             state = "solid" if self.locked_arms[arm - 1] else "pulse"
             self.machine.events.post(f"doc_ock_arm_{arm}_{state}")
 
+        if all(self.locked_arms):
+            self.machine.events.post("doc_ock_left_bank_not_needed")
+        else:
+            self.machine.events.post("doc_ock_left_bank_needed")
+
     def _set_jackpot_lit(self, lit):
         self.jackpot_lit = bool(lit)
         if self.jackpot_lit and sum(self.locked_arms) > 0:

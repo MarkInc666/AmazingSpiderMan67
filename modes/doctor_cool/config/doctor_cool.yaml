@@ -1,9 +1,9 @@
 #config_version=6
 
 # Doctor Cool villain mode.
-# Hit any right drop to start a cycling saucer chase. Additional drops build the
-# Diamond Jackpot and banks reset when completed. Star rollover freezes the
-# chase and lights all three saucers briefly.
+# Hit any right drop to start a cycling saucer chase. Right-bank completions arm
+# the first post-reset right drop to expand the moving availability window from
+# one saucer to two, then three. STAR freezes the current available window.
 
 mode:
   start_events: start_mode_doctor_cool
@@ -91,16 +91,12 @@ show_player:
     doctor_cool_saucer_3_lit_show:
       loops: -1
 
-  doctor_cool_all_saucers_lit:
-    doctor_cool_all_saucers_lit_show:
-      loops: -1
-
   doctor_cool_wrong_saucer:
     doctor_cool_wrong_saucer_show:
       loops: 2
 
   doctor_cool_jackpot_collected:
-    doctor_cool_all_saucers_lit_show:
+    doctor_cool_shipment_collected_show:
       loops: 3
 
   doctor_cool_clear_saucer_lights:
@@ -110,7 +106,7 @@ show_player:
       action: stop
     doctor_cool_saucer_3_lit_show:
       action: stop
-    doctor_cool_all_saucers_lit_show:
+    doctor_cool_shipment_collected_show:
       action: stop
     doctor_cool_wrong_saucer_show:
       action: stop
@@ -126,7 +122,7 @@ show_player:
       action: stop
     doctor_cool_saucer_3_lit_show:
       action: stop
-    doctor_cool_all_saucers_lit_show:
+    doctor_cool_shipment_collected_show:
       action: stop
     doctor_cool_wrong_saucer_show:
       action: stop
@@ -198,84 +194,66 @@ shows:
   doctor_cool_saucer_1_lit_show:
     - duration: 200ms
       lights:
-        l_1: yellow
-        l_1_hole_l: yellow
-        l_1_hole_r: yellow
+        l_1_hole_l: red
+        l_1_hole_r: red
     - duration: 200ms
       lights:
-        l_1: off
         l_1_hole_l: off
         l_1_hole_r: off
 
   doctor_cool_saucer_2_lit_show:
     - duration: 200ms
       lights:
-        l_2: yellow
-        l_2_hole_l: yellow
-        l_2_hole_r: yellow
+        l_2_hole_l: red
+        l_2_hole_r: red
     - duration: 200ms
       lights:
-        l_2: off
         l_2_hole_l: off
         l_2_hole_r: off
 
   doctor_cool_saucer_3_lit_show:
     - duration: 200ms
       lights:
-        l_3: yellow
-        l_3_hole_l: yellow
-        l_3_hole_r: yellow
+        l_3_hole_l: red
+        l_3_hole_r: red
     - duration: 200ms
       lights:
-        l_3: off
         l_3_hole_l: off
         l_3_hole_r: off
 
-  doctor_cool_all_saucers_lit_show:
+  doctor_cool_shipment_collected_show:
     - duration: 150ms
       lights:
-        l_1: white
         l_1_hole_l: white
         l_1_hole_r: white
-        l_2: white
         l_2_hole_l: white
         l_2_hole_r: white
-        l_3: white
         l_3_hole_l: white
         l_3_hole_r: white
     - duration: 150ms
       lights:
-        l_1: off
         l_1_hole_l: off
         l_1_hole_r: off
-        l_2: off
         l_2_hole_l: off
         l_2_hole_r: off
-        l_3: off
         l_3_hole_l: off
         l_3_hole_r: off
 
   doctor_cool_wrong_saucer_show:
     - duration: 100ms
       lights:
-        l_1: red
         l_1_hole_l: red
         l_1_hole_r: red
-        l_2: red
         l_2_hole_l: red
         l_2_hole_r: red
-        l_3: red
         l_3_hole_l: red
         l_3_hole_r: red
     - duration: 100ms
       lights:
-        l_1: off
         l_1_hole_l: off
         l_1_hole_r: off
-        l_2: off
         l_2_hole_l: off
         l_2_hole_r: off
-        l_3: off
         l_3_hole_l: off
         l_3_hole_r: off
 

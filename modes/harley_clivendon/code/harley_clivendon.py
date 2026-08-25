@@ -98,9 +98,19 @@ class HarleyClivendon(CaseFileMixin, Mode):
         self._sync()
 
     def _saucer_hit(self, saucer=None, **kwargs):
-        if self.mode_done or saucer not in self.SAUCER_EJECT_EVENTS:
+        if saucer not in self.SAUCER_EJECT_EVENTS:
             return
-        if self.held_saucer is not None or not self.lock_accepting:
+        if self.mode_done:
+            if saucer != self.held_saucer:
+                self._eject_saucer(saucer, 750)
+            return
+        if self.held_saucer is not None:
+            # Ignore a repeat/bounce from the switch owned by the held ball.
+            # A different occupied saucer is not part of the controlled lock.
+            if saucer != self.held_saucer:
+                self._eject_saucer(saucer, 750)
+            return
+        if not self.lock_accepting:
             self._eject_saucer(saucer, 750)
             return
         self.held_saucer = saucer
@@ -149,12 +159,8 @@ class HarleyClivendon(CaseFileMixin, Mode):
             keep = set(random.sample(list(self.lit_areas), min(2, len(self.lit_areas))))
         self.lit_areas = keep
         self.machine.events.post("harley_area_lights_clear")
-        for area in keep:
-            self.machine.events.post(f"harley_area_{area}_lit")
 
-        held = self.held_saucer
-        self.held_saucer = None
-        self._eject_saucer(held, 1000)
+        self._release_held_saucer(1000)
         self._eject_vuk(1000)
         self.delay.reset(name="harley_accept_next_lock", ms=2200, callback=self._enable_next_lock)
 
@@ -178,6 +184,16 @@ class HarleyClivendon(CaseFileMixin, Mode):
                 saucer_number=saucer,
                 delay_ms=delay_ms,
             )
+
+    def _release_held_saucer(self, delay_ms=0):
+        """Release the one saucer ball currently owned by Harley exactly once."""
+        held = self.held_saucer
+        if held is None:
+            return False
+        self.held_saucer = None
+        self.machine.events.post("harley_saucer_released", saucer=held)
+        self._eject_saucer(held, delay_ms)
+        return True
 
     def _eject_vuk(self, delay_ms=750):
         self.machine.events.post("request_vuk_eject", delay_ms=delay_ms)
@@ -211,8 +227,9 @@ class HarleyClivendon(CaseFileMixin, Mode):
         if self.mode_done:
             return
         self.mode_done = True
-        if self.held_saucer is not None:
-            self._eject_saucer(self.held_saucer)
+        self.delay.remove("harley_accept_next_lock")
+        self.delay.remove("harley_gate_close_fallback")
+        self._release_held_saucer()
         self.machine.game.player["harley_clivendon_state"] = 2
         self.machine.events.post("harley_clivendon_mode_complete")
 
@@ -242,11 +259,11 @@ class HarleyClivendon(CaseFileMixin, Mode):
 
     def mode_stop(self, **kwargs):
         self.delay.remove("harley_gate_close_fallback")
+        self.delay.remove("harley_accept_next_lock")
         self.machine.events.post("hide_mode_status")
         self.machine.events.post("harley_mode_ended")
         self.clear_active_case_file_helpers()
-        if self.held_saucer is not None:
-            self._eject_saucer(self.held_saucer)
+        self._release_held_saucer()
         self.waiting_for_upper_entry = False
         self._close_rooftop_gate()
         self.machine.events.post("rooftop_diverter_close")

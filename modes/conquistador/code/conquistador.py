@@ -52,7 +52,6 @@ class Conquistador(CaseFileMixin, Mode):
         ])
 
         self.add_mode_event_handler("conquistador_left_drop_hit", self._left_drop_hit)
-        self.add_mode_event_handler("conquistador_left_bank_complete", self._left_bank_complete)
         self.add_mode_event_handler("conquistador_spinner_hit", self._spinner_hit)
         self.add_mode_event_handler("conquistador_upper_target_hit", self._upper_target_hit)
         self.add_mode_event_handler("conquistador_center_web_hit", self._center_web_hit)
@@ -64,7 +63,7 @@ class Conquistador(CaseFileMixin, Mode):
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("drop_target_bank_dt_bank_left_reset")
         self.machine.events.post("conquistador_left_bank_phase")
-        self._show_status("LEFT DROPS TO OPEN GATE", self.seconds_left)
+        self._show_status("HIT LEFT DROP TO OPEN GATE", self.seconds_left)
         self._schedule_tick()
 
     def _vuk_hit(self, **kwargs):
@@ -88,8 +87,9 @@ class Conquistador(CaseFileMixin, Mode):
             return
         self._score(self.DROP_SCORE)
         self.machine.events.post("conquistador_drop_scored", value=self.DROP_SCORE)
+        self._start_spinner_phase()
 
-    def _left_bank_complete(self, **kwargs):
+    def _start_spinner_phase(self):
         if self._done() or self.phase != "left_bank":
             return
         self._award_speed_bonus()
@@ -207,7 +207,7 @@ class Conquistador(CaseFileMixin, Mode):
                 self._fail_main_phase()
             return
         if self.phase == "left_bank":
-            self._show_status("LEFT DROPS TO OPEN GATE", self.seconds_left)
+            self._show_status("HIT LEFT DROP TO OPEN GATE", self.seconds_left)
         elif self.phase == "fountain":
             self._show_status("HIT FOUNTAIN TO COLLECT", self.seconds_left)
         else:

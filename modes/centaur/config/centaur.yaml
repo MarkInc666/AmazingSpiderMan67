@@ -42,6 +42,7 @@ event_player:
   s_right_drops_top_rubber_active: centaur_bank_rubber_hit
 
   s_upper_exit_left_opto_active: centaur_upper_left_exit
+  s_upper_entrance_opto_active: centaur_upper_entered
 
   # The VUK is the physical entrance to the upper playfield after Centaur opens the roof gate.
   s_vuk_switch_active:
@@ -80,6 +81,42 @@ coil_player:
     c_right_bank_drop_4:
       action: pulse
 
+show_player:
+  centaur_build_phase_started:
+    centaur_build_bank_pulse: {loops: -1}
+
+  centaur_gate_open:
+    centaur_build_bank_pulse: {action: stop}
+    centaur_roof_route_pulse: {loops: -1}
+
+  centaur_gate_closed:
+    centaur_roof_route_pulse: {action: stop}
+
+  centaur_roof_entered:
+    centaur_roof_route_pulse: {action: stop}
+    centaur_left_exit_pulse: {loops: -1}
+
+  centaur_post_hold_started:
+    centaur_left_exit_pulse: {action: stop}
+
+  centaur_final_shot_staged:
+    centaur_final_one_shot_pulse: {loops: -1}
+
+  centaur_jackpot_awarded:
+    centaur_final_one_shot_pulse: {action: stop}
+
+  centaur_consolation_awarded:
+    centaur_final_one_shot_pulse: {action: stop}
+
+  centaur_final_timer_expired:
+    centaur_final_one_shot_pulse: {action: stop}
+
+  centaur_clear_all_lights:
+    centaur_build_bank_pulse: {action: stop}
+    centaur_roof_route_pulse: {action: stop}
+    centaur_left_exit_pulse: {action: stop}
+    centaur_final_one_shot_pulse: {action: stop}
+
 light_player:
   # Full-playfield GI theme while this mode is active.
   mode_centaur_started:
@@ -88,27 +125,46 @@ light_player:
   mode_centaur_stopping:
     gi: E0E0E0
 
-  centaur_build_phase_started:
-    l_gi_3bank: yellow
-    l_gi_5bank_lower: yellow
-    l_gi_5bank_upper: yellow
-
   centaur_gate_open:
-    l_gi_ramp: green
+    l_gi_3bank: off
+    l_gi_5bank_lower: off
+    l_gi_5bank_upper: off
+
+  centaur_gate_closed:
+    l_gi_ramp: off
+    l_gi_top_1: off
+    l_gi_top_2: off
+
+  centaur_roof_entered:
+    l_gi_ramp: off
+    l_gi_top_1: off
+    l_gi_top_2: off
+
+  centaur_post_hold_started:
+    l_upper_left: off
+    l_gi_mid_spider: off
 
   centaur_final_shot_staged:
-    l_5bank_1: cyan
-    l_5bank_5: cyan
-    l_gi_5bank_lower: red
-    l_gi_5bank_upper: red
+    l_5bank_1: white
+    l_5bank_5: white
 
   centaur_jackpot_awarded:
     l_5bank_1: white
     l_5bank_5: white
+    l_gi_5bank_lower: off
+    l_gi_5bank_upper: off
 
-  centaur_secret_half_jackpot_awarded:
-    l_3bankbonus: white
-    l_gi_3bank: white
+  centaur_consolation_awarded:
+    l_5bank_1: off
+    l_5bank_5: off
+    l_gi_5bank_lower: off
+    l_gi_5bank_upper: off
+
+  centaur_final_timer_expired:
+    l_5bank_1: off
+    l_5bank_5: off
+    l_gi_5bank_lower: off
+    l_gi_5bank_upper: off
 
   centaur_clear_all_lights:
     l_gi_3bank: off
@@ -117,4 +173,56 @@ light_player:
     l_gi_ramp: off
     l_5bank_1: off
     l_5bank_5: off
-    l_3bankbonus: off
+    l_gi_top_1: off
+    l_gi_top_2: off
+    l_gi_mid_spider: off
+    l_upper_left: off
+
+shows:
+  centaur_build_bank_pulse:
+    - duration: 750ms
+      lights:
+        l_gi_3bank: F0D040
+        l_gi_5bank_lower: F0D040
+        l_gi_5bank_upper: F0D040
+    - duration: 750ms
+      lights:
+        l_gi_3bank: 503810
+        l_gi_5bank_lower: 503810
+        l_gi_5bank_upper: 503810
+
+  centaur_roof_route_pulse:
+    - duration: 400ms
+      lights:
+        l_gi_ramp: 60F060
+        l_gi_top_1: 206020
+        l_gi_top_2: 206020
+    - duration: 400ms
+      lights:
+        l_gi_ramp: 206020
+        l_gi_top_1: 60F060
+        l_gi_top_2: 60F060
+
+  centaur_left_exit_pulse:
+    - duration: 400ms
+      lights:
+        l_upper_left: F0D040
+        l_gi_mid_spider: 503810
+    - duration: 400ms
+      lights:
+        l_upper_left: 503810
+        l_gi_mid_spider: F0D040
+
+  centaur_final_one_shot_pulse:
+    - duration: 250ms
+      lights:
+        l_5bank_1: white
+        l_5bank_5: white
+        l_gi_5bank_lower: F02020
+        l_gi_5bank_upper: F02020
+    - duration: 250ms
+      lights:
+        l_5bank_1: off
+        l_5bank_5: off
+        l_gi_5bank_lower: 501010
+        l_gi_5bank_upper: 501010

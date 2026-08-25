@@ -399,7 +399,7 @@ class VillainBookends(Mode):
             'points_var': 'active_mode_points', 'state_var': 'harley_clivendon_state', 'song': 'play_song_51',
         },
         'conquistador': {
-            'title': 'THE CONQUISTADOR', 'intro_1': 'Complete the left bank.', 'intro_2': 'Spin to find the Fountain.', 'intro_3': 'Build and collect at center web.',
+            'title': 'THE CONQUISTADOR', 'intro_1': 'Hit any left drop.', 'intro_2': 'Spin to find the Fountain.', 'intro_3': 'Build and collect at center web.',
             'summary_title_complete': 'FOUNTAIN FOUND', 'summary_title_failed': 'FOUNTAIN NOT FOUND',
             'stat_1_label': 'FOUNTAIN JP', 'stat_1_var': 'active_mode_stat_1', 'stat_2_label': 'SPEED BONUS', 'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points', 'state_var': 'conquistador_state', 'song': 'play_song_54',
