@@ -51,6 +51,7 @@ event_player:
   drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset
 
   mode_doctor_atlantean_started:
+    - bonus_lights_dim
     - disable_daily_bugle_mystery
     - rooftop_diverter_open|500ms
     - clear_saucers
@@ -58,6 +59,7 @@ event_player:
     - drop_target_bank_dt_bank_right_reset
 
   mode_doctor_atlantean_stopping:
+    - bonus_lights_restore
     - enable_daily_bugle_mystery
     - daily_bugle_restore_state
     - doctor_atlantean_all_targets_off
@@ -118,123 +120,47 @@ light_player:
   doctor_atlantean_target_right_collected:
     l_upper_right: off
 
-  # Horizontal water bands copied from the established eight-band playfield
-  # layout. Each gameplay level owns exactly one band.
+  # Horizontal water bands use shared physical-height tags from config/lights.yaml.
+  # This keeps rising/falling effects geographically consistent across modes.
   doctor_atlantean_water_band_1_blue:
-    l_gi_right_return: blue
-    l_gi_left_sling_lower: blue
-    l_gi_right_sling: blue
-    l_gi_left_sling_upper: blue
-    l_gi_left_upper_flipper: blue
-    l_gi_right_lower_triangle: blue
+    band_1: blue
   doctor_atlantean_water_band_1_orange:
-    l_gi_right_return: orange
-    l_gi_left_sling_lower: orange
-    l_gi_right_sling: orange
-    l_gi_left_sling_upper: orange
-    l_gi_left_upper_flipper: orange
-    l_gi_right_lower_triangle: orange
+    band_1: orange
 
   doctor_atlantean_water_band_2_blue:
-    l_gi_5bank_lower: blue
-    l_gi_3bank: blue
-    l_gi_5bank_upper: blue
-    l_gi_left_lower: blue
-    l_gi_spinner: blue
-    l_pop_2_6: blue
+    band_2: blue
   doctor_atlantean_water_band_2_orange:
-    l_gi_5bank_lower: orange
-    l_gi_3bank: orange
-    l_gi_5bank_upper: orange
-    l_gi_left_lower: orange
-    l_gi_spinner: orange
-    l_pop_2_6: orange
+    band_2: orange
 
   doctor_atlantean_water_band_3_blue:
-    l_gi_left_upper: blue
-    l_pop_2_7: blue
-    l_pop_2_5: blue
-    l_pop_1_6: blue
-    l_pop_1_5: blue
-    l_pop_1_7: blue
+    band_3: blue
   doctor_atlantean_water_band_3_orange:
-    l_gi_left_upper: orange
-    l_pop_2_7: orange
-    l_pop_2_5: orange
-    l_pop_1_6: orange
-    l_pop_1_5: orange
-    l_pop_1_7: orange
+    band_3: orange
 
   doctor_atlantean_water_band_4_blue:
-    l_pop_2_8: blue
-    l_pop_1_4: blue
-    l_pop_1_8: blue
-    l_pop_2_4: blue
-    l_pop_2_9: blue
+    band_4: blue
   doctor_atlantean_water_band_4_orange:
-    l_pop_2_8: orange
-    l_pop_1_4: orange
-    l_pop_1_8: orange
-    l_pop_2_4: orange
-    l_pop_2_9: orange
+    band_4: orange
 
   doctor_atlantean_water_band_5_blue:
-    l_pop_1_9: blue
-    l_pop_1_3: blue
-    l_pop_2_3: blue
-    l_pop_2_10: blue
-    l_pop_1_2: blue
-    l_pop_1_10: blue
+    band_5: blue
   doctor_atlantean_water_band_5_orange:
-    l_pop_1_9: orange
-    l_pop_1_3: orange
-    l_pop_2_3: orange
-    l_pop_2_10: orange
-    l_pop_1_2: orange
-    l_pop_1_10: orange
+    band_5: orange
 
   doctor_atlantean_water_band_6_blue:
-    l_pop_2_2: blue
-    l_pop_2_11: blue
-    l_pop_1_11: blue
-    l_pop_1_1: blue
-    l_pop_1_12: blue
-    l_pop_2_12: blue
+    band_6: blue
   doctor_atlantean_water_band_6_orange:
-    l_pop_2_2: orange
-    l_pop_2_11: orange
-    l_pop_1_11: orange
-    l_pop_1_1: orange
-    l_pop_1_12: orange
-    l_pop_2_12: orange
+    band_6: orange
 
   doctor_atlantean_water_band_7_blue:
-    l_pop_2_1: blue
-    l_gi_upflip: blue
-    l_gi_ramp: blue
-    l_gi_bright: blue
-    l_gi_ab: blue
-    l_gi_a: blue
+    band_7: blue
   doctor_atlantean_water_band_7_orange:
-    l_pop_2_1: orange
-    l_gi_upflip: orange
-    l_gi_ramp: orange
-    l_gi_bright: orange
-    l_gi_ab: orange
-    l_gi_a: orange
+    band_7: orange
 
   doctor_atlantean_water_band_8_blue:
-    l_gi_mid_spider: blue
-    l_gi_top_4: blue
-    l_gi_top_3: blue
-    l_gi_top_1: blue
-    l_gi_top_2: blue
+    band_8: blue
   doctor_atlantean_water_band_8_orange:
-    l_gi_mid_spider: orange
-    l_gi_top_4: orange
-    l_gi_top_3: orange
-    l_gi_top_1: orange
-    l_gi_top_2: orange
+    band_8: orange
 
 
 shows:
