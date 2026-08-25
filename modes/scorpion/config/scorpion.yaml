@@ -47,6 +47,10 @@ event_player:
   s_trispinner_opto_active:
     - scorpion_spinner_hit
 
+  # Rooftop entry immediately enables both exit choices.
+  s_upper_entrance_opto_active:
+    - scorpion_upper_entered
+
   # Upper exits choose risk path
   s_upper_exit_right_opto_active:
     - scorpion_right_exit_chosen
@@ -146,20 +150,6 @@ show_player:
     scorpion_success_show:
       loops: 1
 
-  scorpion_sting_miss:
-    scorpion_safe_sting_show:
-      action: stop
-    scorpion_right_sting_target_1_show:
-      action: stop
-    scorpion_right_sting_target_2_show:
-      action: stop
-    scorpion_right_sting_target_3_show:
-      action: stop
-    scorpion_right_sting_target_4_show:
-      action: stop
-    scorpion_right_sting_target_5_show:
-      action: stop
-
   scorpion_sting_failed:
     scorpion_safe_sting_show:
       action: stop
@@ -212,11 +202,13 @@ shows:
   scorpion_ready_show:
     - duration: 300ms
       lights:
+        l_spinner: green
         l_upper_left: yellow
         l_upper_right: green
         l_gi_a: yellow
     - duration: 300ms
       lights:
+        l_spinner: yellow
         l_upper_left: green
         l_upper_right: yellow
         l_gi_a: green

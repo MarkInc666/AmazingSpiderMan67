@@ -15,6 +15,8 @@ class Parafino(CaseFileMixin, Mode):
     - Right drops -> Saucer 3
 
     All three target zones light when the mode starts with no jackpot value.
+    Their clear-lens area lamps pulse red together while the surrounding mode
+    GI stays solid 8080F0 blue.
     Each zone hit adds one count and lights that zone's saucer.
     Jackpot value is 100K x hits, or 150K x hits with Bigger Jackpots.
     Zone hit counts cap at 20.

@@ -29,6 +29,10 @@ class Electro(CaseFileMixin, Mode):
     NORMAL_VALUE_DECAY = 10000
     NORMAL_SHOT_SECONDS = 5
     SHOT_ASSIST_SECONDS = 8
+    UPPER_NORMAL_SHOT_SECONDS = 10
+    UPPER_SHOT_ASSIST_SECONDS = 13
+    LOWER_SUPER_SECONDS = 10
+    UPPER_SUPER_SECONDS = 15
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
@@ -43,7 +47,6 @@ class Electro(CaseFileMixin, Mode):
 
         self.case_file_extra_spark_available = False
         self.case_file_slow_value_drain = False
-        self.case_file_value_tick_toggle = False
         self.case_file_shot_assist_available = False
         self._apply_case_file_bonuses()
 
@@ -58,6 +61,7 @@ class Electro(CaseFileMixin, Mode):
         self._show_message("POWER SURGE", "HIT THE LIT SPARK", reminder=True)
 
         self.value_deduct = 0
+        self.value_tick_count = 0
         self.super_active = False
         self.current_shot = None
         self.mode_done = False
@@ -93,8 +97,11 @@ class Electro(CaseFileMixin, Mode):
     def mode_stop(self, **kwargs):
         self.machine.events.post("electro_shot_timer_stop")
         self.machine.events.post("electro_shot_assist_timer_stop")
+        self.machine.events.post("electro_upper_shot_timer_stop")
+        self.machine.events.post("electro_upper_shot_assist_timer_stop")
         self.machine.events.post("electro_value_timer_stop")
         self.machine.events.post("electro_super_timer_stop")
+        self.machine.events.post("electro_upper_super_timer_stop")
         self.machine.events.post("hide_mode_status")
         self.clear_active_case_file_helpers()
         self.machine.events.post("cancel_mode_message_reminder")
@@ -164,10 +171,13 @@ class Electro(CaseFileMixin, Mode):
         if self.super_active or not self.current_shot or not self.current_shot.is_lit:
             return
 
+        self.value_tick_count += 1
+        decay_interval = 2 if self.current_shot.group == "upper" else 1
         if self.case_file_slow_value_drain:
-            self.case_file_value_tick_toggle = not self.case_file_value_tick_toggle
-            if self.case_file_value_tick_toggle:
-                return
+            decay_interval *= 2
+
+        if self.value_tick_count % decay_interval:
+            return
 
         current_value = self._current_normal_jackpot_value()
         if current_value > self.MIN_NORMAL_JACKPOT_VALUE:
@@ -205,16 +215,23 @@ class Electro(CaseFileMixin, Mode):
 
         # Every newly selected or moved spark starts again at maximum value.
         self.value_deduct = 0
-        self.case_file_value_tick_toggle = False
+        self.value_tick_count = 0
 
-        shot_seconds = self.NORMAL_SHOT_SECONDS
+        is_upper_shot = self.current_shot.group == "upper"
+        shot_seconds = self.UPPER_NORMAL_SHOT_SECONDS if is_upper_shot else self.NORMAL_SHOT_SECONDS
         if self.case_file_shot_assist_available:
-            shot_seconds = self.SHOT_ASSIST_SECONDS
+            shot_seconds = self.UPPER_SHOT_ASSIST_SECONDS if is_upper_shot else self.SHOT_ASSIST_SECONDS
             self.case_file_shot_assist_available = False
             self.machine.events.post("electro_case_file_next_spark_held")
-            self.machine.events.post("electro_shot_assist_timer_start")
+            timer_event = (
+                "electro_upper_shot_assist_timer_start"
+                if is_upper_shot
+                else "electro_shot_assist_timer_start"
+            )
         else:
-            self.machine.events.post("electro_shot_timer_start")
+            timer_event = "electro_upper_shot_timer_start" if is_upper_shot else "electro_shot_timer_start"
+
+        self.machine.events.post(timer_event)
 
         self._show_message(
             "HIT THE SPARK",
@@ -247,6 +264,8 @@ class Electro(CaseFileMixin, Mode):
 
         self.machine.events.post("electro_shot_timer_stop")
         self.machine.events.post("electro_shot_assist_timer_stop")
+        self.machine.events.post("electro_upper_shot_timer_stop")
+        self.machine.events.post("electro_upper_shot_assist_timer_stop")
         self.machine.events.post("electro_value_timer_stop")
 
     def lit_shot_timeout(self, **kwargs):
@@ -271,21 +290,38 @@ class Electro(CaseFileMixin, Mode):
             return
 
         shot = self.shots_by_name.get(shot_name)
-        if not shot or shot.disabled:
+        if not shot:
+            return
+
+        is_saucer_shot = shot.name == "saucers"
+
+        if shot.disabled:
+            if is_saucer_shot:
+                self._release_saucers()
             return
 
         if self.super_active:
             if shot == self.current_shot:
                 self.machine.events.post("electro_super_timer_stop")
+                self.machine.events.post("electro_upper_super_timer_stop")
                 self.collect_super()
+            elif is_saucer_shot:
+                self._release_saucers()
             return
 
         # Unlit shots do not pause or stop the active spark's value decay.
         if shot != self.current_shot:
+            if is_saucer_shot:
+                self._release_saucers()
             return
 
         self.machine.events.post("electro_value_timer_stop")
         self.collect_normal_jackpot(shot)
+        if is_saucer_shot:
+            self._release_saucers()
+
+    def _release_saucers(self):
+        self.machine.events.post("clear_saucers_delayed")
 
     def collect_normal_jackpot(self, shot):
         if self.mode_done:
@@ -293,6 +329,8 @@ class Electro(CaseFileMixin, Mode):
 
         self.machine.events.post("electro_shot_timer_stop")
         self.machine.events.post("electro_shot_assist_timer_stop")
+        self.machine.events.post("electro_upper_shot_timer_stop")
+        self.machine.events.post("electro_upper_shot_assist_timer_stop")
         self.awaiting_next_shot = True
 
         jackpot_value = self._current_normal_jackpot_value()
@@ -341,16 +379,20 @@ class Electro(CaseFileMixin, Mode):
         self.machine.game.player["electro_super_jackpot_value"] = self.super_jackpot_value
         self._set_gate_for_shot(shot)
 
+        is_upper_shot = shot.group == "upper"
+        super_seconds = self.UPPER_SUPER_SECONDS if is_upper_shot else self.LOWER_SUPER_SECONDS
+
         self._show_message(
             "SUPER SURGE LIT",
             self._shot_label(shot),
             value=self.super_jackpot_value,
-            seconds=10,
+            seconds=super_seconds,
             event="show_mode_countdown",
         )
         self.machine.events.post("electro_super_lit")
         self.machine.events.post(f"electro_super_lite_{shot.name}")
-        self.machine.events.post("electro_super_timer_start")
+        super_timer_event = "electro_upper_super_timer_start" if is_upper_shot else "electro_super_timer_start"
+        self.machine.events.post(super_timer_event)
         self._update_status()
 
     def collect_super(self):
@@ -373,6 +415,7 @@ class Electro(CaseFileMixin, Mode):
         self._show_message("ELECTRO SUPER", "SUPER JACKPOT", value=self.electro_super_jackpot, event="show_mode_jackpot")
         self.machine.events.post("electro_super_collected")
         self.machine.events.post("electro_super_timer_stop")
+        self.machine.events.post("electro_upper_super_timer_stop")
         self.machine.events.post("electro_mode_almost_complete")
 
     def super_timeout(self, **kwargs):

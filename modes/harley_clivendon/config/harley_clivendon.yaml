@@ -19,6 +19,20 @@ multiballs:
       - harley_clivendon_mode_completed_summary
       - ball_ended
 
+variable_player:
+  multiball_harley_multiball_started:
+    multiball_autoplunge_active:
+      action: set
+      int: 1
+  multiball_harley_multiball_ended:
+    multiball_autoplunge_active:
+      action: set
+      int: 0
+  mode_harley_clivendon_stopping:
+    multiball_autoplunge_active:
+      action: set
+      int: 0
+
 widget_player:
   mode_harley_clivendon_started:
     harley_clivendon: {action: play}
@@ -59,8 +73,6 @@ event_player:
   mode_harley_clivendon_started:
     - harley_saucers_available
     - rooftop_diverter_close
-  mode_harley_clivendon_stopping:
-    - clear_saucers_delayed
 
 light_player:
   mode_harley_clivendon_started:
@@ -71,6 +83,9 @@ light_player:
 show_player:
   harley_saucers_available:
     harley_saucers_available_show: {loops: -1}
+    harley_saucer_1_held_show: {action: stop}
+    harley_saucer_2_held_show: {action: stop}
+    harley_saucer_3_held_show: {action: stop}
   harley_saucers_unavailable:
     harley_saucers_available_show: {action: stop}
   harley_saucer_1_held:
@@ -79,11 +94,15 @@ show_player:
     harley_saucer_2_held_show: {loops: -1}
   harley_saucer_3_held:
     harley_saucer_3_held_show: {loops: -1}
+  harley_saucer_released:
+    harley_saucer_1_held_show: {action: stop}
+    harley_saucer_2_held_show: {action: stop}
+    harley_saucer_3_held_show: {action: stop}
   harley_vuk_ready:
     harley_vuk_ready_show: {loops: -1}
   harley_vuk_not_ready:
     harley_vuk_ready_show: {action: stop}
-  harley_round_reset:
+  harley_area_build_started:
     harley_left_sling_available_show: {loops: -1}
     harley_left_sling_lit_show: {action: stop}
     harley_right_sling_available_show: {loops: -1}
@@ -99,6 +118,23 @@ show_player:
     harley_left_web_available_show: {loops: -1}
     harley_left_web_lit_show: {action: stop}
     harley_center_web_available_show: {loops: -1}
+    harley_center_web_lit_show: {action: stop}
+  harley_area_lights_clear:
+    harley_left_sling_available_show: {action: stop}
+    harley_left_sling_lit_show: {action: stop}
+    harley_right_sling_available_show: {action: stop}
+    harley_right_sling_lit_show: {action: stop}
+    harley_left_pop_available_show: {action: stop}
+    harley_left_pop_lit_show: {action: stop}
+    harley_right_pop_available_show: {action: stop}
+    harley_right_pop_lit_show: {action: stop}
+    harley_left_bank_available_show: {action: stop}
+    harley_left_bank_lit_show: {action: stop}
+    harley_right_bank_available_show: {action: stop}
+    harley_right_bank_lit_show: {action: stop}
+    harley_left_web_available_show: {action: stop}
+    harley_left_web_lit_show: {action: stop}
+    harley_center_web_available_show: {action: stop}
     harley_center_web_lit_show: {action: stop}
   harley_area_left_sling_lit:
     harley_left_sling_available_show: {action: stop}
@@ -183,13 +219,16 @@ shows:
   harley_left_sling_available_show:
     - duration: 700ms
       lights:
+        l_gi_left_sling_upper: 808080
         l_gi_left_sling_lower: 808080
     - duration: 700ms
       lights:
+        l_gi_left_sling_upper: off
         l_gi_left_sling_lower: off
   harley_left_sling_lit_show:
     - duration: -1
       lights:
+        l_gi_left_sling_upper: blue
         l_gi_left_sling_lower: blue
   harley_right_sling_available_show:
     - duration: 700ms

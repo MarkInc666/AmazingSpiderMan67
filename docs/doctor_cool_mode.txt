@@ -1,0 +1,58 @@
+DOCTOR COOL MODE
+================
+
+Implementation status
+---------------------
+Implemented for MPF 0.80. Physical machine testing remains required for the
+moving saucer window and device timing.
+
+Core rules and scoring
+----------------------
+- The Frozen Diamond Jackpot starts at 100K, or 200K with Bigger Jackpots.
+- Every drop scores 25K and banks 25K to the persistent Diamond Bonus.
+- Right drops add 25K to the Jackpot, or 50K with Bigger Jackpots.
+- Left drops add 40K to the Jackpot, or 75K with Bigger Jackpots.
+- Any right drop starts the moving frozen-shipment chase.
+- A wrong saucer scores 10K, ejects, and resumes the chase after one second.
+- A correct saucer collects the current Frozen Diamond Jackpot.
+- One shipment completes the normal mode. More Jackpots requires two shipments.
+- A terminal saucer is held until the villain summary finishes.
+
+Saucer availability progression
+-------------------------------
+- The chase begins with one moving available saucer.
+- Completing and resetting the right 5-bank arms the next availability upgrade.
+- The first right drop after that reset expands the moving window to two saucers.
+- Completing/resetting the bank again arms the next upgrade.
+- The first following right drop expands the moving window to three saucers.
+- Availability is capped at three.
+- With one available saucer, the window cycles 1, 2, 3.
+- With two, it cycles 1+2, 2+3, 3+1.
+- With three, all three saucers remain valid.
+
+Saucer lighting
+---------------
+Only the two red hole lamps at each available saucer pulse red. The green
+number inserts l_1, l_2, and l_3 stay off. Wrong-saucer and shipment-collected
+feedback also use only the red hole lamps.
+
+STAR freeze
+-----------
+STAR always banks 100K to Diamond Bonus. During a chase it freezes the current
+one-, two-, or three-saucer availability window for 10 seconds, or 15 seconds
+with More Time. STAR does not make unavailable saucers valid.
+
+Case Files
+----------
+- More Jackpots: requires a second frozen shipment.
+- Bigger Jackpots: 200K base; +50K right drop; +75K left drop.
+- More Time: extends STAR freeze to 15 seconds.
+- Safety Net: starts the shared 10-second ball save.
+- Shot Assist: the first wrong saucer collects the shipment.
+
+Preserved behavior
+------------------
+The patch preserves the existing scoring, shipment count, chase speeds, one-
+second wrong-saucer resume, Diamond Bonus banking, red STAR flash, VUK feed,
+Daily Bugle Mystery ownership, completion delay cleanup, and terminal summary
+hold.

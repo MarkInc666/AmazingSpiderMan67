@@ -7,9 +7,10 @@ class DoctorCool(Mode, CaseFileMixin):
 
     Build the frozen-diamond jackpot with both drop banks. Any right drop starts
     a cycling shipment chase across the saucers; additional drops keep increasing
-    the jackpot. The lit saucer collects the frozen shipment; wrong saucers are
-    decoys. The STAR rollover freezes the chase and lights all three saucers for
-    a short collect window.
+    the jackpot. One saucer is available initially. Completing and resetting the
+    right bank arms the first following right drop to increase the moving window
+    to two, then three, available saucers. The STAR rollover freezes the current
+    available window for a short collect period.
     """
 
     MODE_KEY = "doctor_cool"
@@ -60,7 +61,10 @@ class DoctorCool(Mode, CaseFileMixin):
         self.mode_points = 0
         self.saucer_chase_active = False
         self.star_freeze_active = False
-        self.lit_saucer = 0
+        self.available_saucer_count = 1
+        self.saucer_upgrade_armed = False
+        self.lit_saucers = set()
+        self.lit_window_start = 1
         self.next_saucer = 1
         self.shot_assist_used = False
 
@@ -119,6 +123,13 @@ class DoctorCool(Mode, CaseFileMixin):
         if self.mode_done:
             return
 
+        availability_increased = False
+        if bank == "right" and self.saucer_upgrade_armed:
+            self.saucer_upgrade_armed = False
+            if self.available_saucer_count < 3:
+                self.available_saucer_count += 1
+                availability_increased = True
+
         add_value = self.right_drop_add if bank == "right" else self.left_drop_add
         score_value = 25_000
         self.drop_hits += 1
@@ -142,6 +153,16 @@ class DoctorCool(Mode, CaseFileMixin):
             message_mode_value=self.jackpot_value,
         )
 
+        if availability_increased:
+            if self.saucer_chase_active:
+                self._light_saucer_window(self.lit_window_start)
+            self.machine.events.post(
+                "show_mode_message_long",
+                message_mode_title=f"{self.available_saucer_count} SAUCERS AVAILABLE",
+                message_mode_subtitle="FROZEN SHIPMENT WINDOW EXPANDED",
+                message_mode_value=self.jackpot_value,
+            )
+
         if bank == "right" and not self.saucer_chase_active and self.jackpots_collected < self.required_jackpots:
             self._start_saucer_chase()
 
@@ -150,6 +171,14 @@ class DoctorCool(Mode, CaseFileMixin):
             return
         self.machine.events.post("drop_target_bank_dt_bank_right_reset")
         self.machine.events.post("doctor_cool_right_bank_completed")
+        if self.available_saucer_count < 3 and not self.saucer_upgrade_armed:
+            self.saucer_upgrade_armed = True
+            self.machine.events.post(
+                "show_mode_message_long",
+                message_mode_title="SAUCER UPGRADE READY",
+                message_mode_subtitle="HIT A RIGHT DROP AFTER RESET",
+                message_mode_value=self.available_saucer_count + 1,
+            )
 
     def _left_bank_complete(self, **kwargs):
         if self.mode_done:
@@ -166,7 +195,8 @@ class DoctorCool(Mode, CaseFileMixin):
     def _start_saucer_chase(self):
         self.saucer_chase_active = True
         self.star_freeze_active = False
-        self.lit_saucer = 0
+        self.lit_saucers.clear()
+        self.lit_window_start = 1
         self.next_saucer = 1
         self.machine.events.post("doctor_cool_saucer_chase_started")
         self.machine.events.post(
@@ -182,17 +212,25 @@ class DoctorCool(Mode, CaseFileMixin):
         if self.mode_done or not self.saucer_chase_active or self.star_freeze_active:
             return
 
-        self.lit_saucer = self.next_saucer
+        self.lit_window_start = self.next_saucer
         self.next_saucer = 1 if self.next_saucer >= 3 else self.next_saucer + 1
-        self.machine.events.post("doctor_cool_clear_saucer_lights")
-        self.machine.events.post(f"doctor_cool_saucer_{self.lit_saucer}_lit")
-        self._sync_vars()
+        self._light_saucer_window(self.lit_window_start)
 
         self.delay.add(
             name="doctor_cool_saucer_cycle",
             ms=self._current_cycle_ms(),
             callback=self._cycle_saucer,
         )
+
+    def _light_saucer_window(self, start_saucer):
+        self.lit_saucers = {
+            ((start_saucer - 1 + offset) % 3) + 1
+            for offset in range(self.available_saucer_count)
+        }
+        self.machine.events.post("doctor_cool_clear_saucer_lights")
+        for saucer in sorted(self.lit_saucers):
+            self.machine.events.post(f"doctor_cool_saucer_{saucer}_lit")
+        self._sync_vars()
 
     def _current_cycle_ms(self):
         index = min(self.jackpots_collected, len(self.SAUCER_CYCLE_MS_BY_ROUND) - 1)
@@ -210,7 +248,7 @@ class DoctorCool(Mode, CaseFileMixin):
 
         self.delay.remove("doctor_cool_saucer_cycle")
 
-        correct = self.star_freeze_active or saucer == self.lit_saucer
+        correct = saucer in self.lit_saucers
         if not correct and self.has_case_file("shot_assist") and not self.shot_assist_used:
             self.shot_assist_used = True
             correct = True
@@ -222,6 +260,9 @@ class DoctorCool(Mode, CaseFileMixin):
             self._wrong_saucer(saucer)
 
     def _wrong_saucer(self, saucer):
+        self.delay.remove("doctor_cool_star_freeze")
+        self.star_freeze_active = False
+        self.machine.events.post("doctor_cool_clear_saucer_lights")
         self._score(self.WRONG_SAUCER_SCORE)
         self.machine.events.post("doctor_cool_wrong_saucer", saucer=saucer)
         self.machine.events.post(
@@ -243,6 +284,7 @@ class DoctorCool(Mode, CaseFileMixin):
 
         self.saucer_chase_active = False
         self.star_freeze_active = False
+        self.lit_saucers.clear()
         self.delay.remove("doctor_cool_star_freeze")
         self.machine.events.post("doctor_cool_clear_saucer_lights")
 
@@ -290,12 +332,11 @@ class DoctorCool(Mode, CaseFileMixin):
         self.delay.remove("doctor_cool_saucer_cycle")
         self.delay.remove("doctor_cool_star_freeze")
         self.star_freeze_active = True
-        self.lit_saucer = 0
-        self.machine.events.post("doctor_cool_all_saucers_lit")
+        saucer_word = "SAUCER" if self.available_saucer_count == 1 else "SAUCERS"
         self.machine.events.post(
             "show_mode_message_long",
             message_mode_title="OPEN SHIPMENT",
-            message_mode_subtitle=f"ALL SAUCERS {int(self.star_freeze_ms / 1000)} SECONDS",
+            message_mode_subtitle=f"{self.available_saucer_count} {saucer_word} OPEN {int(self.star_freeze_ms / 1000)} SECONDS",
             message_mode_value=self.jackpot_value,
         )
         self._sync_vars()
@@ -358,10 +399,10 @@ class DoctorCool(Mode, CaseFileMixin):
             return
         if self.saucer_chase_active:
             title = "DIAMOND CHASE"
-            value = f"JACKPOTS {self.jackpots_collected}/{self.required_jackpots}"
+            value = f"SAUCERS {self.available_saucer_count} / JACKPOTS {self.jackpots_collected}/{self.required_jackpots}"
         else:
-            title = "DROP HITS / JACKPOTS"
-            value = f"{self.drop_hits} / {self.jackpots_collected}"
+            title = "FROZEN DIAMONDS"
+            value = f"SAUCERS {self.available_saucer_count} / DROP HITS {self.drop_hits}"
         self.machine.events.post("update_mode_status", mode_status_title=title, mode_status_value=value)
 
     def _format_score(self, value):

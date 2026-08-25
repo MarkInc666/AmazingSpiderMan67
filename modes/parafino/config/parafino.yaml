@@ -83,11 +83,7 @@ widget_player:
 show_player:
 
   parafino_clear_all_lights:
-    parafino_left_target_zone_show:
-      action: stop
-    parafino_pops_target_zone_show:
-      action: stop
-    parafino_right_target_zone_show:
+    parafino_target_zones_show:
       action: stop
     parafino_left_jackpot_show:
       action: stop
@@ -103,13 +99,7 @@ show_player:
       action: stop
 
   parafino_light_target_zones:
-    parafino_left_target_zone_show:
-      action: play
-      loops: -1
-    parafino_pops_target_zone_show:
-      action: play
-      loops: -1
-    parafino_right_target_zone_show:
+    parafino_target_zones_show:
       action: play
       loops: -1
 
@@ -195,14 +185,15 @@ show_player:
 
 shows:
 
-  parafino_left_target_zone_show:
-    - duration: 1s
+  # The two clear-lens bank GI areas and both pop rings pulse in one shared
+  # show so all three heat zones stay synchronized. The green bank inserts are
+  # intentionally not used for the red presentation.
+  parafino_target_zones_show:
+    - duration: 500ms
       lights:
-        l_3bankbonus: green
-
-  parafino_pops_target_zone_show:
-    - duration: 1s
-      lights:
+        l_gi_3bank: red
+        l_gi_5bank_lower: red
+        l_gi_5bank_upper: red
         l_pop_1_1: red
         l_pop_1_2: red
         l_pop_1_3: red
@@ -227,15 +218,35 @@ shows:
         l_pop_2_10: red
         l_pop_2_11: red
         l_pop_2_12: red
-
-  parafino_right_target_zone_show:
-    - duration: 1s
+    - duration: 500ms
       lights:
-        l_5bank_1: green
-        l_5bank_2: green
-        l_5bank_3: green
-        l_5bank_4: green
-        l_5bank_5: green
+        l_gi_3bank: off
+        l_gi_5bank_lower: off
+        l_gi_5bank_upper: off
+        l_pop_1_1: off
+        l_pop_1_2: off
+        l_pop_1_3: off
+        l_pop_1_4: off
+        l_pop_1_5: off
+        l_pop_1_6: off
+        l_pop_1_7: off
+        l_pop_1_8: off
+        l_pop_1_9: off
+        l_pop_1_10: off
+        l_pop_1_11: off
+        l_pop_1_12: off
+        l_pop_2_1: off
+        l_pop_2_2: off
+        l_pop_2_3: off
+        l_pop_2_4: off
+        l_pop_2_5: off
+        l_pop_2_6: off
+        l_pop_2_7: off
+        l_pop_2_8: off
+        l_pop_2_9: off
+        l_pop_2_10: off
+        l_pop_2_11: off
+        l_pop_2_12: off
 
   parafino_left_jackpot_show:  
     - duration: 250ms
@@ -294,7 +305,7 @@ shows:
 light_player:
   # Full-playfield GI theme while this mode is active.
   mode_parafino_started:
-    gi: FF7A20
+    gi: 8080F0
 
   mode_parafino_stopping:
     gi: E0E0E0

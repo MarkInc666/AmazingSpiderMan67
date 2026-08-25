@@ -3,8 +3,10 @@ Lizard Mode: “Serum Chase”
 Core rules:
 - The rooftop gate stays closed for the entire mode.
 - The player gets two serum delivery attempts, or three with More Jackpots.
-- During serum collection, GI is red and the red star rollover flashes.
-- Hitting the star immediately starts the delivery timer and changes GI to green.
+- During serum collection, GI slowly fades between F0F040 yellow and F02040
+  red while the red star rollover flashes.
+- Hitting the star immediately starts the delivery timer. Delivery GI is teal
+  406060 with a 250ms F02040 red flash every 1.5 seconds.
 - Both deliveries are made at the left web target, which flashes purple.
 - A missed/expired serum consumes that delivery attempt.
 
@@ -20,6 +22,14 @@ Delivery scoring:
 - A successful serum delivery plays a 2-second white/green left-web success show before the next serum is lit.
 - If a delivery timer expires, GI fades to off over 2 seconds. The next serum attempt does not light until that fade finishes; after the final expired attempt, mode completion also waits for the fade.
 - One or more successful deliveries produces the CURED summary. If every attempt expires, the summary reports that Lizard escaped.
+
+Lighting:
+- Star-needed GI uses a slow 1.5-second fade to F0F040 followed by a
+  1.5-second fade to F02040.
+- Active-delivery GI holds teal 406060 for 1.25 seconds, flashes F02040 for
+  250ms, and repeats every 1.5 seconds.
+- The red star insert continues flashing while serum is needed.
+- The left-web delivery target continues flashing purple while serum is active.
 
 A+B serum boost:
 - The A and B inserts flash yellow while that letter is available and go solid yellow when collected.

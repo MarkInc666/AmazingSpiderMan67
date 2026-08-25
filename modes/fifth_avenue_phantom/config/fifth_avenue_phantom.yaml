@@ -3,6 +3,7 @@
 # Fifth Avenue Phantom — Vanish and Reveal
 # Five-round reveal/collect mode. More Jackpots adds a sixth round.
 # Right drops reveal the jackpot shot, add time, and lower the jackpot value.
+# The first reveal is 8s normally or 10s with More Time; later adds are unchanged.
 # STAR gives a live 4-second reveal without lowering the jackpot value.
 # Timer expiry ends only the current round; after the final round the mode completes.
 

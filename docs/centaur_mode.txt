@@ -1,0 +1,55 @@
+Centaur — Charge the Trap
+=========================
+
+Implementation status
+---------------------
+Implemented in MPF 0.80-compatible Python/YAML. Needs machine playtest for
+shot timing, gate travel, post staging, and physical light-color readability.
+
+Approved gameplay
+-----------------
+- Build phase uses both drop banks. Each unique drop scores 25K and adds 100K
+  to the Centaur Jackpot. Bank rubbers score 25K.
+- Four unique drops open the rooftop gate.
+- The ball must enter the rooftop and take the upper-left exit.
+- The post holds for 6 seconds, or releases early through the established
+  two-flipper cancel. The right bank resets, then targets 2, 3, and 4 drop.
+- The staged finale lasts 6 seconds, or 12 seconds with More Time.
+- Right-bank rubber awards the built Jackpot.
+- Right target 1 or 5 awards 50K consolation unless Shot Assist is active.
+- Each staged finale is one-shot: the first right rubber or outer target hit
+  resolves that attempt. The timer may also expire without a result.
+
+More Jackpots
+-------------
+The former left-rubber half-Jackpot behavior has been replaced.
+
+After the first finale resolves or times out, the rooftop gate opens for a
+fixed 12-second re-entry window. Entering the rooftop closes the gate and
+prompts the upper-left exit. Taking that exit restages the post and right bank
+for one second finale. The second finale is also one-shot only. If the re-entry
+window expires, no second finale is staged.
+
+Other Case Files
+----------------
+- Bigger Jackpots: doubles the built Centaur Jackpot.
+- More Time: changes each final-shot timer from 6 seconds to 12 seconds.
+- Safety Net: starts the shared 10-second Case File ball save when a finale is
+  staged.
+- Shot Assist: right target 1 or 5 awards the full Jackpot rather than 50K.
+
+Presentation
+------------
+- Slow yellow bank-GI pulses identify the four-drop build.
+- A green ramp/top-GI pulse directs the player to rooftop access.
+- Yellow upper-left/upper-GI pulses identify the required left exit.
+- The two outer right inserts flash through their green lenses while the
+  right-bank GI pulses red for the one-shot finale.
+- Messages explicitly call out the gate, left exit, second-chance countdown,
+  staged attempt number, and ONE SHOT ONLY.
+
+Validation boundary
+-------------------
+Static Python, YAML, duplicate-key, event-coverage, workbook, and ZIP checks
+are part of the patch workflow. Physical gate, post, switch, lamp, and timing
+behavior still requires machine testing.

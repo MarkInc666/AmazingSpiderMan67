@@ -1,19 +1,69 @@
-HARLEY CLIVENDON — HYPNOTIC HOLD
+HARLEY CLIVENDON MODE
+====================
 
-Two-ball multiball. Lock one ball in any saucer for 50K, 
-then use the other ball to light eight lower-playfield areas: 
-left/right sling, left/right pop, left/right bank, left web, and center web. 
-Any single bank target or matching bank rubber qualifies that bank area; normal bank resets remain active.
+Implementation status
+---------------------
+Implemented for MPF 0.80. Physical machine testing remains required for the
+multiball autoplunge, saucer releases, gate passage, and occupied-saucer
+congestion behavior.
 
-Each newly lit area scores 50K. At four lit areas the main spinner insert flashes yellow to indicate that the Daily Bugle VUK jackpot is ready. 
-The player may collect immediately or continue building. 
-The VUK jackpot is 100K per lit area, or 150K with Bigger Jackpots. 
-Every collected VUK jackpot also adds its full value to the persistent
-harley_bonus bank, displayed during end-of-ball bonus as HARLEY JACKPOTS.
-On collect, the VUK and held saucer ball eject and a new round begins. 
-More Jackpots preserves two random lit areas. 
-The mode ends when multiball returns to one ball.
+Core rules
+----------
+- Start controlled two-ball multiball with a 15-second opening ball save.
+- The shared multiball autoplunge flag triggers the machine's delayed 2-second
+  plunger autofire for Ball 2.
+- Capture one ball in any lower saucer for 50K.
+- While that ball is held, light eight independent playfield areas.
+- Each unique area scores 50K and turns solid blue.
+- Four lit areas qualify the VUK Jackpot; additional areas increase its value.
+- The VUK Jackpot is repeatable and ends only when multiball reaches one ball.
 
-Helpers: More Time changes the opening multiball save from 15s to 25s; Safety Net starts a one-time ball save after the first VUK jackpot; Shot Assist spots one random unlit area after the first area hit without awarding its 50K.
+Areas and lighting
+------------------
+- Left sling: l_gi_left_sling_upper and l_gi_left_sling_lower act together.
+- Right sling: right-sling GI.
+- Left and right pop bumpers.
+- Left and right drop-bank areas.
+- Left and center web targets.
+- Available areas pulse grey only while a ball is held.
+- Collected areas are solid blue.
+- Before a lock, all area guidance stays off.
+- Lock availability uses only the six red saucer hole lamps. Green l_1, l_2,
+  and l_3 inserts are not used.
+- The main spinner insert flashes yellow when the VUK Jackpot is ready.
 
-Summary: MODE SCORE, VUK JACKPOTS, HARLEY JACKPOTS.
+Jackpot and gate flow
+---------------------
+- Jackpot value is 100K per lit area, or 150K with Bigger Jackpots.
+- Every VUK award also adds its full value to persistent HARLEY JACKPOTS.
+- The gate is closed while seeking the saucer lock.
+- With a held ball and at least four lit areas, the gate opens for the VUK route.
+- It stays open through the delayed VUK kick, then closes at the upper-entrance
+  opto or the 5-second fallback.
+- The held saucer ball is released exactly once through Harley's explicit
+  ownership helper. Broad stop-time saucer cleanup does not issue a second eject.
+- The next controlled lock is enabled 2.2 seconds after the Jackpot release.
+
+Round lighting cleanup
+----------------------
+At VUK collection, every available and collected-area show stops. With More
+Jackpots, two areas remain in the internal set but stay dark before the next
+lock. When the next ball is captured, all available guidance starts and those
+two retained areas are redrawn solid blue. Releasing a held saucer explicitly
+stops all held-ball shows.
+
+Case Files
+----------
+- More Jackpots: retain two areas for the next round.
+- Bigger Jackpots: 150K per lit area.
+- More Time: 25-second opening save.
+- Safety Net: shared ball save after the first VUK Jackpot.
+- Shot Assist: first scored area spots another unlit area.
+
+Preserved behavior and test boundary
+------------------------------------
+Scoring, Case Files, gate timing, VUK timing, persistent HARLEY JACKPOTS,
+spinner-ready prompt, and multiball-ending rules are unchanged. The patch does
+not add ball-search or automatic congestion rescue behavior. A second ball may
+still physically lodge behind the controlled held ball; this remains a machine-
+test issue requiring a separately approved strategy.

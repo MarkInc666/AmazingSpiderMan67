@@ -36,6 +36,7 @@ class Mysterio(CaseFileMixin, Mode):
         self.mysterio_illusions_cleared = 0
         self.mysterio_jackpot_value = 0
         self.clues_used = 0
+        self.first_attempt_pending = True
         self.active_mode_points = 0
         self.mode_done = False
         self.mode_finishing = False
@@ -52,7 +53,8 @@ class Mysterio(CaseFileMixin, Mode):
         if self.has_case_file("safety_net"):
             self.machine.events.post("start_case_file_ball_save")
 
-        # Nine distinct shot groups: five clues, three false shots, one hidden Super.
+        # Eight distinct shot groups: five clues, two false shots, one hidden Super.
+        # Neither playfield spinner participates in Mysterio.
         self.shots = [
             Shot("left_web", 10, 70, "mysterio_left_web_hit", group="left"),
             Shot("left_pop", 25, 45, "mysterio_left_pop_hit", group="left"),
@@ -60,7 +62,6 @@ class Mysterio(CaseFileMixin, Mode):
             Shot("saucers", 50, 30, "mysterio_saucers_hit", group="left"),
             Shot("center_web", 60, 30, "mysterio_center_web_hit", group="center"),
             Shot("right_pop", 75, 45, "mysterio_right_pop_hit", group="right"),
-            Shot("upper_spinner", 90, 30, "mysterio_upper_spinner_hit", group="upper"),
             Shot("upper_targets", 95, 20, "mysterio_upper_targets_hit", group="upper"),
             Shot("right_drops", 100, 80, "mysterio_right_drops_hit", group="right"),
         ]
@@ -168,8 +169,19 @@ class Mysterio(CaseFileMixin, Mode):
             return
 
         shot = self.shots_by_name.get(shot_name)
-        if not shot or shot.disabled:
+        if not shot:
             return
+
+        is_saucer_shot = shot.name == "saucers"
+        if shot.disabled:
+            if is_saucer_shot:
+                self._release_saucers()
+            return
+
+        if self.first_attempt_pending:
+            self.first_attempt_pending = False
+            if shot.is_jackpot:
+                self._move_super_off_first_shot(shot)
 
         self.mysterio_illusions_cleared += 1
         self.machine.game.player["mysterio_illusions_cleared"] = self.mysterio_illusions_cleared
@@ -177,6 +189,11 @@ class Mysterio(CaseFileMixin, Mode):
         if shot.is_jackpot:
             self.collect_super(shot)
             return
+
+        # The summary counts every non-Super attempt as a Clue Shot, even when
+        # the internal result is one of the two non-directional false locations.
+        self.clues_used += 1
+        self.machine.game.player["active_mode_stat_1"] = self.clues_used
 
         protected = self.extra_chance_available
         if protected:
@@ -188,7 +205,34 @@ class Mysterio(CaseFileMixin, Mode):
         else:
             self.handle_wrong_shot(shot, protected=protected)
 
+        if is_saucer_shot:
+            self._release_saucers()
+
         self.check_gate_status()
+
+    def _move_super_off_first_shot(self, first_shot):
+        candidates = [
+            shot for shot in self.shots
+            if shot is not first_shot and not shot.disabled
+        ]
+        replacement = random.choice(candidates)
+
+        # Swap the replacement's clue/false role onto the attempted shot so the
+        # mode retains five directional clues, two false shots, and one Super.
+        first_shot.is_jackpot = False
+        first_shot.is_clue = replacement.is_clue
+        replacement.is_jackpot = True
+        replacement.is_clue = False
+        replacement.hint = None
+
+        for shot in self.shots:
+            if shot.is_clue:
+                shot.hint = self.build_hint(replacement)
+
+        self.machine.events.post(
+            "mysterio_first_attempt_super_moved",
+            new_shot=replacement.name,
+        )
 
     def check_gate_status(self):
         upper_active = any(
@@ -223,8 +267,6 @@ class Mysterio(CaseFileMixin, Mode):
         self._update_mode_status()
 
     def handle_clue_shot(self, shot, protected=False):
-        self.clues_used += 1
-        self.machine.game.player["active_mode_stat_1"] = self.clues_used
         self.machine.events.post("mysterio_clue_shot")
         self.machine.events.post("mysterio_score_wrong_shot")
         self._award_points(self.WRONG_SCORE)
@@ -263,6 +305,9 @@ class Mysterio(CaseFileMixin, Mode):
         shot.disabled = True
         shot.is_lit = False
         self.machine.events.post(f"mysterio_stop_{shot.name}")
+
+    def _release_saucers(self):
+        self.machine.events.post("clear_saucers_delayed")
 
     def reduce_super(self, amount):
         self.super_value = max(self.SUPER_FLOOR, self.super_value - int(amount))

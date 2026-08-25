@@ -10,7 +10,7 @@ Fifth Avenue Phantom — Vanish and Reveal
 Rules:
 - Mode is 5 rounds. More Jackpots adds a 6th round.
 - Each round begins with the Phantom hiding at one random shot/location.
-- Hit any right-bank drop target to reveal the jackpot shot and start the timer.
+- Hit any right-bank drop target to reveal the jackpot shot and start an 8-second timer.
 - Additional right-bank drops in the same round add more time, but reduce the jackpot value.
 - STAR gives a live 4-second reveal, or adds 4 seconds to an active reveal, without reducing value.
 - Hit the revealed jackpot shot to collect and advance to the next round.
@@ -32,7 +32,7 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
 
     TOTAL_ROUNDS = 5
     MORE_JACKPOTS_TOTAL_ROUNDS = 6
-    REVEAL_SECONDS = (6, 8, 10, 12, 14)
+    REVEAL_SECONDS = (8, 8, 10, 12, 14)
     BASE_JACKPOTS = (1_000_000, 800_000, 600_000, 400_000, 200_000)
     BIGGER_JACKPOTS = (1_000_000, 900_000, 800_000, 700_000, 600_000)
     MORE_TIME_BONUS_SECONDS = 2

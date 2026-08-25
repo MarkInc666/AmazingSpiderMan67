@@ -2,20 +2,21 @@
 
 ## Core loop
 
-1. Hit the upper spinner twice to fill Venom.
-2. Choose either upper exit.
+1. Enter the rooftop. Rooftop entry immediately enables both upper exits.
+2. Spin the upper spinner to build the pending Sting Jackpot, then choose either upper exit.
 3. The opposite drop bank resets and stages one flashing target.
-4. Hit the staged target, hit the bank rubber for a partial award, or let the timer expire.
-5. Venom resets after every attempt. Complete three attempts, or four with More Jackpots.
+4. Hit the staged target to collect the jackpot and end the attempt, or let the timer expire.
+5. A bank-rubber hit gives one consolation award per attempt but does not end it.
+6. Complete three attempts, or four with More Jackpots.
 
 Left and right routes use the same awards. Their challenge comes from the physical shot geometry.
 
 ## Scoring
 
-- Upper spinner: 50K additional Scorpion score per spin.
-- Two spins qualify each attempt.
-- Full staged-target awards: 250K, 500K, 1M, then 1.5M on the fourth More Jackpots attempt.
+- Base staged-target jackpots: 250K, 500K, 1M, then 1.5M on the fourth More Jackpots attempt.
+- Every upper-spinner hit adds 50K to the pending jackpot. Spinner hits do not score separately.
 - Rubber partial awards: 200K, 300K, 400K, then 500K.
+- A rubber consolation can be collected only once during each attempt. The attempt and timer continue afterward.
 - Timeout: no award.
 - Bigger Jackpots increases staged target and rubber awards by 50%.
 
@@ -24,16 +25,17 @@ Left and right routes use the same awards. Their challenge comes from the physic
 - Base staged-shot window: 8 seconds.
 - More Time: 12 seconds.
 - More Jackpots: adds a fourth attempt.
-- Shot Assist: on the first attempt only, a rubber hit counts as the full target hit.
+- Shot Assist: the first-attempt rubber consolation uses that attempt's full base value instead of its partial value; the attempt still continues.
 - Safety Net: starts the standard 10-second case-file ball save.
 
 ## Lighting and display
 
 - The staged target insert flashes using the existing Scorpion shows.
 - The corresponding left- or right-bank GI lights during the staged attempt.
-- Build status shows `VENOM: 0/2`.
+- Before rooftop entry, status prompts `ENTER ROOFTOP` and shows the pending jackpot.
+- On the rooftop, status shows `STING READY` and the spinner-built jackpot value.
 - Staged status shows the attempt number and persistent countdown.
-- Temporary messages show `SCORPION STING`, `PARTIAL STING`, or `STING MISSED`.
+- Temporary messages show `SCORPION STING`, `CONSOLATION AWARD`, or `STING MISSED`.
 
 ## Completion
 

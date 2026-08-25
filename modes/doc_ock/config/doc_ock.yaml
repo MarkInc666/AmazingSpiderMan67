@@ -118,6 +118,8 @@ show_player:
   mode_doc_ock_stopping:
     doc_ock_spinner_active_show:
       action: stop
+    doc_ock_left_bank_needed_show:
+      action: stop
 
   doc_ock_arm_1_pulse:
     doc_ock_arm_1_solid:
@@ -166,6 +168,14 @@ show_player:
       action: stop
     doc_ock_arm_4_solid:
       loops: -1
+
+  doc_ock_left_bank_needed:
+    doc_ock_left_bank_needed_show:
+      loops: -1
+
+  doc_ock_left_bank_not_needed:
+    doc_ock_left_bank_needed_show:
+      action: stop
 
 
   doc_ock_jackpot_lit:
@@ -247,6 +257,8 @@ show_player:
       action: stop
     doc_ock_arm_4_pulse:
       action: stop
+    doc_ock_left_bank_needed_show:
+      action: stop
     doc_ock_web_jackpot_show:
       action: stop
     doc_ock_breakout_1_show:
@@ -276,66 +288,62 @@ shows:
   doc_ock_arm_1_pulse:
     - duration: 250ms
       lights:
-        l_left_outlane: 202060
+        l_left_outlane: 2060C0
     - duration: 250ms
       lights:
-        l_left_outlane: 2020C0
+        l_left_outlane: 60A0FF
 
   doc_ock_arm_2_pulse:
     - duration: 250ms
       lights:
-        l_left_inlane: 202060
+        l_left_inlane: 2060C0
     - duration: 250ms
       lights:
-        l_left_inlane: 2020C0
+        l_left_inlane: 60A0FF
 
   doc_ock_arm_3_pulse:
     - duration: 250ms
       lights:
-        l_right_inlane: 202060
+        l_right_inlane: 2060C0
     - duration: 250ms
       lights:
-        l_right_inlane: 2020C0
+        l_right_inlane: 60A0FF
 
   doc_ock_arm_4_pulse:
     - duration: 250ms
       lights:
-        l_right_outlane: 202060
+        l_right_outlane: 2060C0
     - duration: 250ms
       lights:
-        l_right_outlane: 2020C0
+        l_right_outlane: 60A0FF
 
   doc_ock_arm_1_solid:
-    - duration: 400ms
+    - duration: -1
       lights:
-        l_left_outlane: white
-    - duration: 400ms
-      lights:
-        l_left_outlane: 20D0D0
+        l_left_outlane: 4080F0
 
   doc_ock_arm_2_solid:
-    - duration: 400ms
+    - duration: -1
       lights:
-        l_left_inlane: white
-    - duration: 400ms
-      lights:
-        l_left_inlane: 20D0D0
+        l_left_inlane: 4080F0
 
   doc_ock_arm_3_solid:
-    - duration: 400ms
+    - duration: -1
       lights:
-        l_right_inlane: white
-    - duration: 400ms
-      lights:
-        l_right_inlane: 20D0D0
+        l_right_inlane: 4080F0
 
   doc_ock_arm_4_solid:
-    - duration: 400ms
+    - duration: -1
       lights:
-        l_right_outlane: white
-    - duration: 400ms
+        l_right_outlane: 4080F0
+
+  doc_ock_left_bank_needed_show:
+    - duration: 500ms
       lights:
-        l_right_outlane: 20D0D0
+        l_gi_3bank: "204080"
+    - duration: 500ms
+      lights:
+        l_gi_3bank: 4080F0
 
   doc_ock_web_jackpot_show:
     - duration: 250ms

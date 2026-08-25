@@ -1,0 +1,45 @@
+The Fifth Avenue Phantom — Vanish and Reveal
+============================================
+
+Implementation status
+---------------------
+Implemented in MPF 0.80-compatible Python/YAML. Needs machine playtest for
+shot-travel timing, switch behavior, lamp readability, and overall pacing.
+
+Approved gameplay
+-----------------
+- Five rounds are played; More Jackpots adds a sixth.
+- Each round secretly selects left web, center web, left drops, upper targets,
+  or all three saucers as the Phantom location.
+- The first unique right drop reveals that location for 8 seconds and sets the
+  normal Jackpot to 1M. More Time makes the first reveal 10 seconds.
+- Later unique right drops add 8, 10, 12, and 14 seconds respectively while
+  lowering the normal Jackpot to 800K, 600K, 400K, and 200K.
+- More Time still adds two seconds to every right-drop reveal/add, so later
+  additions become 10, 12, 14, and 16 seconds.
+- STAR is never a hiding location. It gives a repeatable live 4-second reveal
+  or adds 4 seconds to an active reveal without lowering the Jackpot.
+- Collecting the revealed location awards the current Jackpot and advances.
+- Expiry misses the current round and advances. The final collect or miss ends
+  the mode, giving the mode a clear five/six-round ending.
+
+Case Files
+----------
+- More Jackpots: adds round six.
+- Bigger Jackpots: uses 1M, 900K, 800K, 700K, and 600K reveal values.
+- More Time: adds two seconds to every right-drop reveal/add.
+- Safety Net: starts the shared 10-second Case File ball save.
+- Shot Assist: awards the first revealed Jackpot that expires.
+
+Lighting
+--------
+- Right-bank GI pulses continuously.
+- Standing right-drop inserts flash green; collected drop inserts stay green.
+- The live Phantom location flashes purple through white lenses.
+- SAUCERS flashes only the six red saucer-hole lamps, not green number inserts.
+- STAR flashes red throughout the mode to indicate its repeatable reveal role.
+
+Validation boundary
+-------------------
+Static Python, YAML, duplicate-key, event-coverage, workbook, and ZIP checks
+are part of the patch workflow. Machine testing is still required.

@@ -191,14 +191,24 @@ show_player:
 shows:
 
   lizard_gi_show:
-    - duration: 500ms
+    - duration: 1.5s
       lights:
-        gi: FF0000
+        gi:
+          color: F0F040
+          fade: 1.5s
+    - duration: 1.5s
+      lights:
+        gi:
+          color: F02040
+          fade: 1.5s
 
   lizard_gi_hurry_show:
-    - duration: 500ms
+    - duration: 1.25s
       lights:
-        gi: "00FF00"
+        gi: "406060"
+    - duration: 250ms
+      lights:
+        gi: F02040
 
   lizard_serum_star_show:
     - duration: 500ms

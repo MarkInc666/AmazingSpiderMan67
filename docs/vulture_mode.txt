@@ -7,20 +7,24 @@ Core flow
 - If multiball is not active at time expiry, the mode ends immediately.
 
 Upper targets
-- Each upper target advances independently through GREEN, YELLOW, and RED.
+- Each upper target starts at pulsing YELLOW and lights pulsing RED when hit.
 - Every target hit scores 50K.
-- Four seconds without upper-playfield activity drops every target above green by one stage.
-- More Time increases decay time to six seconds.
-- Shot Assist makes the first upper-target hit advance all three targets by one stage. The hit target advances only once.
-- Reaching all three red awards the one-time automatic add-a-ball.
+- Each red target has its own eight-second timer. Re-hitting that target restarts
+  only its timer. When its timer expires, it returns to yellow.
+- More Time increases each individual timer to twelve seconds.
+- Shot Assist makes the first upper-target hit light all three targets red.
+- When all three targets are red, the next upper-target hit awards the one-time
+  add-a-ball. If any target returns to yellow first, add-a-ball is no longer ready.
 
-Upper spinner
-- Each spin scores the combined value of all three target stages:
-  GREEN 10K / YELLOW 25K / RED 50K.
-- Bigger Jackpots doubles stage values to 20K / 50K / 100K.
+Spinners
+- After the first rooftop entry starts the mode timer, both the upper and lower
+  spinners score the combined value of all three target stages:
+  YELLOW 20K / RED 50K.
+- Bigger Jackpots doubles stage values to 40K / 100K.
 - Two balls on the upper playfield doubles the total spinner value again.
 - More Jackpots adds 100K per spin while all three targets are red.
-- Spinner scoring is also banked into vulture_bonus for end-of-ball bonus.
+- Spinner scoring from either spinner is also banked into vulture_bonus for
+  end-of-ball bonus.
 
 GI
 - Base/lower-playfield GI is yellow.

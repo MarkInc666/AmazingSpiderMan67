@@ -10,7 +10,8 @@ Rules:
 - Each unique drop scores 25K and adds 100K to the Centaur Jackpot.
 - Both drop banks stay down during the build phase; they do not reset when complete.
 - Drop-bank rubbers score 25K during the build phase.
-- After 4 total drops are down, the rooftop gate opens.
+- After 4 unique drops are down, the rooftop gate opens.
+- Enter the rooftop and take the upper-left exit to stage the right bank.
 - Exit the upper playfield left to raise the pop-up post and stage the right bank.
 - Post holds for 6 seconds, or releases early by flipper/cradle cancel.
 - During the hold, the right bank is reset and targets 2, 3, and 4 are knocked down.
@@ -18,9 +19,9 @@ Rules:
 - Right-bank rubber awards the Centaur Jackpot.
 - Right-bank target 1 or 5 awards 50K consolation, unless Shot Assist is active.
 - Shot Assist makes right-bank target 1 or 5 award the Centaur Jackpot instead.
-- More Jackpots lights the left-bank rubber for a secret half-jackpot.
-- Without More Jackpots, a right-bank hit/rubber ends the mode immediately.
-- With More Jackpots, right-bank hits do not end the mode; the mode ends when the timer expires.
+- Each staged finale is one-shot: the first right rubber or outer right drop resolves it.
+- More Jackpots opens the rooftop gate for 12 seconds after the first finale.
+- Re-entering the rooftop and taking the upper-left exit restages the bank for one second chance.
 """
 
 
@@ -36,6 +37,8 @@ class Centaur(CaseFileMixin, Mode):
     POST_HOLD_MS = 6000
     FINAL_TIMER_SECONDS = 6
     MORE_TIME_FINAL_TIMER_SECONDS = 12
+    SECOND_CHANCE_GATE_SECONDS = 12
+    RESULT_HOLD_MS = 1500
 
     LEFT_DROPS = ("left_1", "left_2", "left_3")
     RIGHT_DROPS = ("right_1", "right_2", "right_3", "right_4", "right_5")
@@ -56,23 +59,24 @@ class Centaur(CaseFileMixin, Mode):
         self.jackpot_base_value = 0
         self.best_jackpot = 0
         self.jackpots_collected = 0
-        self.secret_jackpots_collected = 0
         self.consolation_awarded = 0
         self.gate_open = False
+        self.roof_entered = False
         self.post_hold_active = False
         self.final_active = False
+        self.final_attempt = 0
         self.final_seconds = self.FINAL_TIMER_SECONDS
         self.final_seconds_left = 0
+        self.second_gate_seconds_left = 0
         self.right_result_collected = False
         self.right_full_jackpot_collected = False
-        self.left_secret_collected = False
 
         self._apply_case_file_bonuses()
         self._sync_vars()
 
         self.publish_case_file_bonus_events(self.MODE_KEY)
         self.publish_active_case_file_helpers([
-            ("more_jackpots", "LEFT RUBBER SECRET 1/2 JACKPOT"),
+            ("more_jackpots", "12s ROOF RE-ENTRY FOR SECOND CHANCE"),
             ("bigger_jackpots", "CENTAUR JACKPOT 2X"),
             ("more_time", "FINAL TIMER EXTENDED TO 12s"),
             ("safety_net", "10 SECOND BALL SAVE ON FINAL SHOT"),
@@ -89,6 +93,7 @@ class Centaur(CaseFileMixin, Mode):
         self.add_mode_event_handler("centaur_left_rubber_hit", self._left_rubber_hit)
         self.add_mode_event_handler("centaur_right_rubber_hit", self._right_rubber_hit)
         self.add_mode_event_handler("centaur_bank_rubber_hit", self._bank_rubber_hit)
+        self.add_mode_event_handler("centaur_upper_entered", self._upper_entered)
         self.add_mode_event_handler("centaur_upper_left_exit", self._upper_left_exit)
         self.add_mode_event_handler("centaur_post_hold_cancel", self._post_hold_cancel)
         self.add_mode_event_handler("centaur_complete_request", self._complete_mode)
@@ -106,6 +111,8 @@ class Centaur(CaseFileMixin, Mode):
         self.delay.remove("centaur_post_hold_release")
         self.delay.remove("centaur_stage_right_bank")
         self.delay.remove("centaur_final_timer_tick")
+        self.delay.remove("centaur_second_chance_start")
+        self.delay.remove("centaur_second_gate_tick")
         if self.post_hold_active:
             self.machine.events.post("timer_timer_up_post_hold_complete")
         self.machine.events.post("centaur_clear_all_lights")
@@ -183,10 +190,9 @@ class Centaur(CaseFileMixin, Mode):
         )
 
         if not self.gate_open and len(self.drops_down) >= self.DROPS_TO_OPEN_GATE:
-            self.gate_open = True
             self.phase = "roof_ready"
-            self.machine.events.post("rooftop_diverter_open")
-            self.machine.events.post("centaur_gate_open")
+            self.roof_entered = False
+            self._open_gate()
             self._show_mode_message("GATE OPEN", "GET TO THE ROOF", reminder=True)
             self._sync_vars()
 
@@ -203,18 +209,6 @@ class Centaur(CaseFileMixin, Mode):
         if self._done_or_summary():
             return
 
-        if self.phase == "final" and self.has_case_file("more_jackpots"):
-            if self.left_secret_collected:
-                return
-            self.left_secret_collected = True
-            secret_value = self._secret_jackpot_value()
-            self.secret_jackpots_collected += 1
-            self._score(secret_value)
-            self.machine.events.post("centaur_secret_half_jackpot_awarded", value=secret_value)
-            self._show_mode_jackpot("SECRET HALF JACKPOT", secret_value)
-            self._sync_vars()
-            return
-
         self._bank_rubber_hit()
 
     def _right_rubber_hit(self, **kwargs):
@@ -227,17 +221,41 @@ class Centaur(CaseFileMixin, Mode):
 
         self._bank_rubber_hit()
 
+    def _upper_entered(self, **kwargs):
+        if self._done_or_summary():
+            return
+
+        if self.phase == "roof_ready":
+            self.roof_entered = True
+            self.phase = "roof"
+            self._close_gate()
+            self.machine.events.post("centaur_roof_entered", attempt=1)
+            self._show_mode_message("TAKE LEFT EXIT", "STAGE THE FINAL SHOT", reminder=True)
+            self._sync_vars()
+            return
+
+        if self.phase == "second_gate":
+            self.roof_entered = True
+            self.phase = "second_roof"
+            self.second_gate_seconds_left = 0
+            self.delay.remove("centaur_second_gate_tick")
+            self._close_gate()
+            self.machine.events.post("centaur_roof_entered", attempt=2)
+            self._show_mode_message("SECOND CHANCE", "TAKE THE LEFT EXIT", reminder=True)
+            self._sync_vars()
+
     def _upper_left_exit(self, **kwargs):
         if self._done_or_summary():
             return
 
-        if self.phase != "roof_ready":
+        if self.phase not in ("roof", "second_roof"):
             return
 
+        attempt = 2 if self.phase == "second_roof" else 1
         self.phase = "post_hold"
         self.post_hold_active = True
-        self.machine.events.post("centaur_post_hold_started")
-        self._show_mode_message("POST HOLD", "RIGHT BANK IS STAGING")
+        self.machine.events.post("centaur_post_hold_started", attempt=attempt)
+        self._show_mode_message("POST HOLD", f"STAGING ATTEMPT {attempt}")
         self.machine.events.post("enable_up_post_event")
         self._stage_right_bank()
 
@@ -287,10 +305,11 @@ class Centaur(CaseFileMixin, Mode):
 
         self.phase = "final"
         self.final_active = True
+        self.final_attempt += 1
         self.final_seconds_left = self.final_seconds
+        self.second_gate_seconds_left = 0
         self.right_result_collected = False
         self.right_full_jackpot_collected = False
-        self.left_secret_collected = False
 
         if self.has_case_file("safety_net"):
             self.machine.events.post("start_case_file_ball_save")
@@ -299,8 +318,9 @@ class Centaur(CaseFileMixin, Mode):
             "centaur_final_timer_started",
             seconds=self.final_seconds_left,
             jackpot=self._current_jackpot_value(),
+            attempt=self.final_attempt,
         )
-        self._show_mode_countdown("HIT RIGHT RUBBER", self.final_seconds_left, "CENTAUR JACKPOT")
+        self._show_mode_countdown("HIT RIGHT RUBBER", self.final_seconds_left, "ONE SHOT ONLY")
         self._sync_vars()
         self._schedule_final_tick()
 
@@ -336,11 +356,7 @@ class Centaur(CaseFileMixin, Mode):
         self.final_active = False
         self.machine.events.post("centaur_final_timer_expired")
         self._show_mode_message("CENTAUR ESCAPED", "FINAL TIMER EXPIRED")
-
-        if self.right_full_jackpot_collected:
-            self._complete_mode()
-        else:
-            self._fail_mode()
+        self._resolve_final_attempt()
 
     def _right_drop_final_hit(self, target):
         if self.right_result_collected:
@@ -369,9 +385,7 @@ class Centaur(CaseFileMixin, Mode):
         )
         self._show_mode_jackpot("CENTAUR JACKPOT", jackpot_value)
         self._sync_vars()
-
-        if not self.has_case_file("more_jackpots"):
-            self._complete_mode()
+        self._resolve_final_attempt(delay_second_chance=True)
 
     def _award_consolation(self, source=None):
         if self.right_result_collected:
@@ -383,8 +397,96 @@ class Centaur(CaseFileMixin, Mode):
         self.machine.events.post("centaur_consolation_awarded", value=self.CONSOLATION_SCORE, source=source)
         self._show_mode_jackpot("CONSOLATION", self.CONSOLATION_SCORE)
         self._sync_vars()
+        self._resolve_final_attempt(delay_second_chance=True)
 
-        if not self.has_case_file("more_jackpots"):
+    def _resolve_final_attempt(self, delay_second_chance=False):
+        self.final_active = False
+        self.delay.remove("centaur_final_timer_tick")
+
+        if self.final_attempt == 1 and self.has_case_file("more_jackpots"):
+            self.phase = "second_pending"
+            delay_ms = self.RESULT_HOLD_MS if delay_second_chance else 0
+            if delay_ms == 0:
+                self._start_second_chance_gate()
+                return
+            self.delay.add(
+                name="centaur_second_chance_start",
+                ms=delay_ms,
+                callback=self._start_second_chance_gate,
+            )
+            self._sync_vars()
+            return
+
+        self._finish_from_results()
+
+    def _start_second_chance_gate(self):
+        if self._done_or_summary() or self.phase != "second_pending":
+            return
+
+        self.phase = "second_gate"
+        self.roof_entered = False
+        self.second_gate_seconds_left = self.SECOND_CHANCE_GATE_SECONDS
+        self._open_gate()
+        self.machine.events.post(
+            "centaur_second_chance_gate_started",
+            seconds=self.second_gate_seconds_left,
+        )
+        self._show_mode_countdown(
+            "SECOND CHANCE",
+            self.second_gate_seconds_left,
+            "GET TO THE ROOF",
+        )
+        self._sync_vars()
+        self._schedule_second_gate_tick()
+
+    def _schedule_second_gate_tick(self):
+        if self._done_or_summary() or self.phase != "second_gate":
+            return
+        self.delay.add(
+            name="centaur_second_gate_tick",
+            ms=1000,
+            callback=self._second_gate_tick,
+        )
+
+    def _second_gate_tick(self):
+        if self._done_or_summary() or self.phase != "second_gate":
+            return
+
+        self.second_gate_seconds_left -= 1
+        self.machine.events.post(
+            "centaur_second_chance_gate_changed",
+            seconds=self.second_gate_seconds_left,
+        )
+        self.machine.events.post(
+            "update_mode_status",
+            mode_status_title="ROOF WINDOW",
+            mode_status_value=max(0, self.second_gate_seconds_left),
+        )
+        self._sync_vars()
+
+        if self.second_gate_seconds_left <= 0:
+            self._close_gate()
+            self.machine.events.post("centaur_second_chance_gate_expired")
+            self._show_mode_message("SECOND CHANCE LOST", "ROOF WINDOW EXPIRED")
+            self._finish_from_results()
+            return
+
+        self._schedule_second_gate_tick()
+
+    def _open_gate(self):
+        self.gate_open = True
+        self.machine.events.post("rooftop_diverter_open")
+        self.machine.events.post("centaur_gate_open")
+
+    def _close_gate(self):
+        self.gate_open = False
+        self.machine.events.post("rooftop_diverter_close")
+        self.machine.events.post("centaur_gate_closed")
+
+    def _finish_from_results(self):
+        if self.jackpots_collected > 0:
+            self._complete_mode()
+        else:
             self._fail_mode()
 
     def _complete_mode(self, **kwargs):
@@ -394,6 +496,9 @@ class Centaur(CaseFileMixin, Mode):
         self.mode_done = True
         self.final_active = False
         self.delay.remove("centaur_final_timer_tick")
+        self.delay.remove("centaur_second_chance_start")
+        self.delay.remove("centaur_second_gate_tick")
+        self._close_gate()
         player = self.machine.game.player
         player["centaur_state"] = 2
         self._sync_vars()
@@ -406,6 +511,9 @@ class Centaur(CaseFileMixin, Mode):
         self.mode_done = True
         self.final_active = False
         self.delay.remove("centaur_final_timer_tick")
+        self.delay.remove("centaur_second_chance_start")
+        self.delay.remove("centaur_second_gate_tick")
+        self._close_gate()
         player = self.machine.game.player
         player["centaur_state"] = 2
         self._sync_vars()
@@ -416,9 +524,6 @@ class Centaur(CaseFileMixin, Mode):
         if self.has_case_file("bigger_jackpots"):
             jackpot *= 2
         return jackpot
-
-    def _secret_jackpot_value(self):
-        return self._current_jackpot_value() // 2
 
     def _score(self, points):
         player = self.machine.game.player
@@ -433,9 +538,9 @@ class Centaur(CaseFileMixin, Mode):
         player["centaur_jackpot_value"] = self._current_jackpot_value()
         player["active_mode_stat_2"] = self.best_jackpot
         player["centaur_jackpots"] = self.jackpots_collected
-        player["centaur_secret_jackpots"] = self.secret_jackpots_collected
         player["centaur_consolation_awarded"] = self.consolation_awarded
-        player["centaur_final_seconds"] = self.final_seconds_left
+        active_seconds = self.final_seconds_left if self.final_active else self.second_gate_seconds_left
+        player["centaur_final_seconds"] = active_seconds
         player["centaur_phase"] = self.phase
         player["centaur_gate_open"] = 1 if self.gate_open else 0
         player["centaur_final_active"] = 1 if self.final_active else 0

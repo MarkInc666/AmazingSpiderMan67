@@ -42,6 +42,15 @@ show_player:
       action: stop
 
 event_player:
+  s_left_drops_1_active:
+    - cerberus_left_drop_1_hit
+
+  s_left_drops_2_active:
+    - cerberus_left_drop_2_hit
+
+  s_left_drops_3_active:
+    - cerberus_left_drop_3_hit
+
   s_upper_target_left_active:
     - cerberus_upper_target_1_hit
 
@@ -113,23 +122,23 @@ light_player:
     l_3_hole_l: off
     l_3_hole_r: off
 
-  # Green number inserts mark the corresponding 3X jackpot.
-  cerberus_saucer_1_triple_lit:
+  # Green number inserts mark the corresponding 2X jackpot.
+  cerberus_saucer_1_double_lit:
     l_1: green
 
-  cerberus_saucer_2_triple_lit:
+  cerberus_saucer_2_double_lit:
     l_2: green
 
-  cerberus_saucer_3_triple_lit:
+  cerberus_saucer_3_double_lit:
     l_3: green
 
-  cerberus_saucer_1_triple_off:
+  cerberus_saucer_1_double_off:
     l_1: off
 
-  cerberus_saucer_2_triple_off:
+  cerberus_saucer_2_double_off:
     l_2: off
 
-  cerberus_saucer_3_triple_off:
+  cerberus_saucer_3_double_off:
     l_3: off
 
   cerberus_clear_all_lights:

@@ -11,7 +11,7 @@ Three staged right-bank Hunts with a limited-arrow economy.
 - Upper spinner earns +1 arrow, upper-right exit earns +5, and every right-rubber hit earns +1.
 - Entering the upper playfield stages the next Hunt, closes the gate, and turns the GI red.
 - Either upper exit prompts HIT THE RIGHT DROPS. The Hunt timer starts on the first staged drop or rubber hit.
-- Every Hunt lasts 12s, or 18s with More Time.
+- Every Hunt lasts 8s, or 12s with More Time.
 - Hunt 1: right drops 1/3/5, worth 150K each (200K with Bigger Jackpots).
 - Hunt 2: right drops 2/4, worth 250K each (300K with Bigger Jackpots).
 - Hunt 3: right drop 3, worth 500K (750K with Bigger Jackpots).
@@ -37,22 +37,22 @@ class Diana(CaseFileMixin, Mode):
     HUNTS = {
         1: {
             "targets": (1, 3, 5),
-            "seconds": 12,
-            "more_time_seconds": 18,
+            "seconds": 8,
+            "more_time_seconds": 12,
             "value": 150_000,
             "bigger_value": 200_000,
         },
         2: {
             "targets": (2, 4),
-            "seconds": 12,
-            "more_time_seconds": 18,
+            "seconds": 8,
+            "more_time_seconds": 12,
             "value": 250_000,
             "bigger_value": 300_000,
         },
         3: {
             "targets": (3,),
-            "seconds": 12,
-            "more_time_seconds": 18,
+            "seconds": 8,
+            "more_time_seconds": 12,
             "value": 500_000,
             "bigger_value": 750_000,
         },

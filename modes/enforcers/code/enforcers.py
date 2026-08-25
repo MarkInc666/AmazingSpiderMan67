@@ -12,7 +12,8 @@ class Enforcers(Mode, CaseFileMixin):
 
     Zone hits light the matching upper target. Upper spinner builds the OX
     Super Jackpot. Collect all three upper target jackpots, then hit the center
-    web target to collect OX and complete the mode.
+    web target to collect OX and complete the mode. When OX is ready, the four
+    center inserts chase toward the web target in 80F0F0 at 300ms per step.
     """
 
     MODE_KEY = "enforcers"

@@ -1,0 +1,45 @@
+THE ENFORCERS MODE
+==================
+
+Implementation status
+---------------------
+Implemented for MPF 0.80. Physical playfield testing remains required.
+
+Core rules
+----------
+- Left 3-bank hits build the upper-left rooftop jackpot.
+- Pop bumper hits build the upper-center rooftop jackpot.
+- Right 5-bank hits build the upper-right rooftop jackpot.
+- Two hits in a zone light its rooftop jackpot. Shot Assist reduces this to one.
+- Continued zone hits build that zone's multiplier from 1X through 5X.
+- Rooftop jackpots begin at 100K, or 150K with Bigger Jackpots.
+- Upper-spinner spins score 5K and add 50K to the Ox Super Jackpot.
+- Each collected rooftop jackpot adds its award to the Ox Super Jackpot value.
+- Collecting all three rooftop jackpots lights the center web target for Ox.
+- Collecting Ox completes the mode.
+
+Ox-ready lighting
+-----------------
+When Ox is ready, the center inserts chase in this exact order:
+
+1. l_mid_multibonus
+2. l_advance_multiplier
+3. l_special
+4. l_mid_web_target
+
+Each step lasts 300ms and uses color 80F0F0. The other three inserts are off
+during each step. All four chase inserts, including l_special, are explicitly
+turned off during Enforcers light cleanup.
+
+Case Files
+----------
+- More Jackpots: lights a matching saucer bonus jackpot with each rooftop jackpot.
+- Bigger Jackpots: increases the base rooftop jackpot from 100K to 150K.
+- More Time: starts the shared ball save when Ox becomes ready.
+- Safety Net: starts the shared 10-second ball save when the mode begins.
+- Shot Assist: reduces the hits needed to light each rooftop jackpot from two to one.
+
+Preserved gameplay
+------------------
+This lighting patch does not change scoring, shot qualification, multipliers,
+spinner value building, Case File behavior, gate behavior, or completion rules.
