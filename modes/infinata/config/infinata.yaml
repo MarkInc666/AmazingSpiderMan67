@@ -134,6 +134,28 @@ show_player:
     infinata_right_bank_flash_show:
       loops: -1
 
+  # Each area owns cleanup of the show it started. This is required when the
+  # completed area is the final required area and no next-area cleanup occurs.
+  infinata_unlight_pops:
+    infinata_pop_left_flash_show:
+      action: stop
+    infinata_pop_right_flash_show:
+      action: stop
+  infinata_unlight_webs:
+    infinata_web_left_flash_show:
+      action: stop
+    infinata_web_mid_flash_show:
+      action: stop
+  infinata_unlight_upper_targets:
+    infinata_upper_targets_flash_show:
+      action: stop
+  infinata_unlight_left_drops:
+    infinata_left_bank_flash_show:
+      action: stop
+  infinata_unlight_right_drops:
+    infinata_right_bank_flash_show:
+      action: stop
+
   infinata_clear_area_lights:
     infinata_pop_left_flash_show:
       action: stop

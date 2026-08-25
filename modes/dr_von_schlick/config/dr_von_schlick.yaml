@@ -48,6 +48,7 @@ event_player:
     - clear_saucers_delayed
     - reset_drops
   mode_dr_von_schlick_stopping:
+    - bonus_lights_restore
     - dr_von_schlick_gi_restore
     - rooftop_diverter_close
     - clear_saucers_delayed
@@ -179,63 +180,25 @@ light_player:
     l_gi_ramp: green
 
   dr_von_schlick_flood_band_1:
-    l_gi_right_return: blue
-    l_gi_left_sling_lower: blue
-    l_gi_right_sling: blue
-    l_gi_left_sling_upper: blue
-    l_gi_left_upper_flipper: blue
-    l_gi_right_lower_triangle: blue
+    band_1: blue
 
   dr_von_schlick_flood_band_2:
-    l_gi_5bank_lower: blue
-    l_gi_3bank: blue
-    l_gi_5bank_upper: blue
-    l_gi_left_lower: blue
-    l_gi_spinner: blue
-    l_pop_2_6: blue
+    band_2: blue
 
   dr_von_schlick_flood_band_3:
-    l_gi_left_upper: blue
-    l_pop_2_7: blue
-    l_pop_2_5: blue
-    l_pop_1_6: blue
-    l_pop_1_5: blue
-    l_pop_1_7: blue
+    band_3: blue
 
   dr_von_schlick_flood_band_4:
-    l_pop_2_8: blue
-    l_pop_1_4: blue
-    l_pop_1_8: blue
-    l_pop_2_4: blue
-    l_pop_2_9: blue
+    band_4: blue
 
   dr_von_schlick_flood_band_5:
-    l_pop_1_9: blue
-    l_pop_1_3: blue
-    l_pop_2_3: blue
-    l_pop_2_10: blue
-    l_pop_1_2: blue
-    l_pop_1_10: blue
+    band_5: blue
 
   dr_von_schlick_flood_band_6:
-    l_pop_2_2: blue
-    l_pop_2_11: blue
-    l_pop_1_11: blue
-    l_pop_1_1: blue
-    l_pop_1_12: blue
-    l_pop_2_12: blue
+    band_6: blue
 
   dr_von_schlick_flood_band_7:
-    l_pop_2_1: blue
-    l_gi_upflip: blue
-    l_gi_ramp: blue
-    l_gi_bright: blue
-    l_gi_ab: blue
-    l_gi_a: blue
+    band_7: blue
 
   dr_von_schlick_flood_band_8:
-    l_gi_mid_spider: blue
-    l_gi_top_4: blue
-    l_gi_top_3: blue
-    l_gi_top_1: blue
-    l_gi_top_2: blue
+    band_8: blue

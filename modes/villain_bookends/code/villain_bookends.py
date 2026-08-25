@@ -370,7 +370,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'enforcers_state',
-            'song': 'play_song_33',
+            'song': 'play_song_39',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Hit drops to build the Diamond Jackpot.
@@ -697,7 +697,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'snowman_state',
-            'song': 'play_song_39',
+            'song': 'play_song_2',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: The Plutonians blocks the city in frozen chaos.
@@ -961,7 +961,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'spider_men_state',
-            'song': 'play_song_74',
+            'song': 'play_song_33',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: The Baron Von Rantenraven commands the final attack.
@@ -1122,7 +1122,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'mad_science_meltdown_state',
             'points_var': 'active_mode_points',
             'state_var': 'mad_science_meltdown_state',
-            'song': 'play_song_56',
+            'song': 'play_song_67',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Chapter 7 mini-wizard multiball.
@@ -1141,7 +1141,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'nature_strikes_back_state',
             'points_var': 'active_mode_points',
             'state_var': 'nature_strikes_back_state',
-            'song': 'play_song_44',
+            'song': 'play_song_66',
         },
         # ORIGINAL DISPLAY TEXT:
         #   title: INVASION FROM EVERYWHERE

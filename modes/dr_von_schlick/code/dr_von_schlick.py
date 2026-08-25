@@ -217,6 +217,7 @@ class DrVonSchlick(CaseFileMixin, Mode):
         self.machine.events.post("villain_summary_hold_vuk_until_done")
         self.machine.events.post("final_vuk_chase_stop")
         self.phase = "flood"
+        self.machine.events.post("bonus_lights_dim")
         self.delay.remove("dr_von_schlick_move_shot")
         self.delay.remove("dr_von_schlick_super_tick")
         self.machine.events.post("dr_von_schlick_clear_shot_lights")

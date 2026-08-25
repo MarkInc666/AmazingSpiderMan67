@@ -225,108 +225,243 @@ show_player:
 
 
   bonus_light_l_1k_on:
+    bonus_light_l_1k_dim:
+      action: stop
     bonus_light_l_1k_on:
+      loops: -1
+  bonus_light_l_1k_dim:
+    bonus_light_l_1k_on:
+      action: stop
+    bonus_light_l_1k_dim:
       loops: -1    
   bonus_light_l_1k_off:
     bonus_light_l_1k_on:
       action: stop
+    bonus_light_l_1k_dim:
+      action: stop
 
   bonus_light_l_2k_on:
+    bonus_light_l_2k_dim:
+      action: stop
     bonus_light_l_2k_on:
+      loops: -1
+  bonus_light_l_2k_dim:
+    bonus_light_l_2k_on:
+      action: stop
+    bonus_light_l_2k_dim:
       loops: -1
   bonus_light_l_2k_off:
     bonus_light_l_2k_on:
       action: stop
+    bonus_light_l_2k_dim:
+      action: stop
 
   bonus_light_l_3k_on:
+    bonus_light_l_3k_dim:
+      action: stop
     bonus_light_l_3k_on:
+      loops: -1
+  bonus_light_l_3k_dim:
+    bonus_light_l_3k_on:
+      action: stop
+    bonus_light_l_3k_dim:
       loops: -1
   bonus_light_l_3k_off:
     bonus_light_l_3k_on:
       action: stop
+    bonus_light_l_3k_dim:
+      action: stop
       
   bonus_light_l_4k_on:
+    bonus_light_l_4k_dim:
+      action: stop
     bonus_light_l_4k_on:
+      loops: -1
+  bonus_light_l_4k_dim:
+    bonus_light_l_4k_on:
+      action: stop
+    bonus_light_l_4k_dim:
       loops: -1
   bonus_light_l_4k_off:
     bonus_light_l_4k_on:
       action: stop
+    bonus_light_l_4k_dim:
+      action: stop
 
   bonus_light_l_5k_on:
+    bonus_light_l_5k_dim:
+      action: stop
     bonus_light_l_5k_on:
+      loops: -1
+  bonus_light_l_5k_dim:
+    bonus_light_l_5k_on:
+      action: stop
+    bonus_light_l_5k_dim:
       loops: -1    
   bonus_light_l_5k_off:
     bonus_light_l_5k_on:
       action: stop
+    bonus_light_l_5k_dim:
+      action: stop
 
   bonus_light_l_6k_on:
+    bonus_light_l_6k_dim:
+      action: stop
     bonus_light_l_6k_on:
+      loops: -1
+  bonus_light_l_6k_dim:
+    bonus_light_l_6k_on:
+      action: stop
+    bonus_light_l_6k_dim:
       loops: -1
   bonus_light_l_6k_off:
     bonus_light_l_6k_on:
       action: stop
+    bonus_light_l_6k_dim:
+      action: stop
 
   bonus_light_l_7k_on:
+    bonus_light_l_7k_dim:
+      action: stop
     bonus_light_l_7k_on:
+      loops: -1
+  bonus_light_l_7k_dim:
+    bonus_light_l_7k_on:
+      action: stop
+    bonus_light_l_7k_dim:
       loops: -1
   bonus_light_l_7k_off:
     bonus_light_l_7k_on:
       action: stop
+    bonus_light_l_7k_dim:
+      action: stop
       
   bonus_light_l_8k_on:
+    bonus_light_l_8k_dim:
+      action: stop
     bonus_light_l_8k_on:
+      loops: -1
+  bonus_light_l_8k_dim:
+    bonus_light_l_8k_on:
+      action: stop
+    bonus_light_l_8k_dim:
       loops: -1
   bonus_light_l_8k_off:
     bonus_light_l_8k_on:
       action: stop
+    bonus_light_l_8k_dim:
+      action: stop
 
   bonus_light_l_9k_on:
+    bonus_light_l_9k_dim:
+      action: stop
     bonus_light_l_9k_on:
+      loops: -1
+  bonus_light_l_9k_dim:
+    bonus_light_l_9k_on:
+      action: stop
+    bonus_light_l_9k_dim:
       loops: -1    
   bonus_light_l_9k_off:
     bonus_light_l_9k_on:
       action: stop
+    bonus_light_l_9k_dim:
+      action: stop
 
   bonus_light_l_10k_on:
+    bonus_light_l_10k_dim:
+      action: stop
     bonus_light_l_10k_on:
+      loops: -1
+  bonus_light_l_10k_dim:
+    bonus_light_l_10k_on:
+      action: stop
+    bonus_light_l_10k_dim:
       loops: -1
   bonus_light_l_10k_off:
     bonus_light_l_10k_on:
       action: stop
+    bonus_light_l_10k_dim:
+      action: stop
 
   bonus_light_l_20k_on:
+    bonus_light_l_20k_dim:
+      action: stop
     bonus_light_l_20k_on:
+      loops: -1
+  bonus_light_l_20k_dim:
+    bonus_light_l_20k_on:
+      action: stop
+    bonus_light_l_20k_dim:
       loops: -1
   bonus_light_l_20k_off:
     bonus_light_l_20k_on:
       action: stop
+    bonus_light_l_20k_dim:
+      action: stop
 
   bonus_light_l_2x_on:
+    bonus_light_l_2x_dim:
+      action: stop
     bonus_light_l_2x_on:
+      loops: -1
+  bonus_light_l_2x_dim:
+    bonus_light_l_2x_on:
+      action: stop
+    bonus_light_l_2x_dim:
       loops: -1
   bonus_light_l_2x_off:
     bonus_light_l_2x_on:
       action: stop
+    bonus_light_l_2x_dim:
+      action: stop
 
   bonus_light_l_3x_on:
+    bonus_light_l_3x_dim:
+      action: stop
     bonus_light_l_3x_on:
+      loops: -1
+  bonus_light_l_3x_dim:
+    bonus_light_l_3x_on:
+      action: stop
+    bonus_light_l_3x_dim:
       loops: -1
   bonus_light_l_3x_off:
     bonus_light_l_3x_on:
       action: stop
+    bonus_light_l_3x_dim:
+      action: stop
 
   bonus_light_l_4x_on:
+    bonus_light_l_4x_dim:
+      action: stop
     bonus_light_l_4x_on:
+      loops: -1
+  bonus_light_l_4x_dim:
+    bonus_light_l_4x_on:
+      action: stop
+    bonus_light_l_4x_dim:
       loops: -1
   bonus_light_l_4x_off:
     bonus_light_l_4x_on:
       action: stop
+    bonus_light_l_4x_dim:
+      action: stop
 
   bonus_light_l_5x_on:
+    bonus_light_l_5x_dim:
+      action: stop
     bonus_light_l_5x_on:
+      loops: -1
+  bonus_light_l_5x_dim:
+    bonus_light_l_5x_on:
+      action: stop
+    bonus_light_l_5x_dim:
       loops: -1
   bonus_light_l_5x_off:
     bonus_light_l_5x_on:
+      action: stop
+    bonus_light_l_5x_dim:
       action: stop
 
 
@@ -428,69 +563,144 @@ shows:
       lights:
         l_1k: white
 
+  bonus_light_l_1k_dim:
+    - duration: 1s
+      lights:
+        l_1k: "404040"
+
   bonus_light_l_2k_on:
     - duration: 1s
       lights:
         l_2k: white
+
+  bonus_light_l_2k_dim:
+    - duration: 1s
+      lights:
+        l_2k: "404040"
 
   bonus_light_l_3k_on:
     - duration: 1s
       lights:
         l_3k: white
 
+  bonus_light_l_3k_dim:
+    - duration: 1s
+      lights:
+        l_3k: "404040"
+
   bonus_light_l_4k_on:
     - duration: 1s
       lights:
         l_4k: white
+
+  bonus_light_l_4k_dim:
+    - duration: 1s
+      lights:
+        l_4k: "404040"
 
   bonus_light_l_5k_on:
     - duration: 1s
       lights:
         l_5k: white
 
+  bonus_light_l_5k_dim:
+    - duration: 1s
+      lights:
+        l_5k: "404040"
+
   bonus_light_l_6k_on:
     - duration: 1s
       lights:
         l_6k: white
+
+  bonus_light_l_6k_dim:
+    - duration: 1s
+      lights:
+        l_6k: "404040"
 
   bonus_light_l_7k_on:
     - duration: 1s
       lights:
         l_7k: white
 
+  bonus_light_l_7k_dim:
+    - duration: 1s
+      lights:
+        l_7k: "404040"
+
   bonus_light_l_8k_on:
     - duration: 1s
       lights:
         l_8k: white
+
+  bonus_light_l_8k_dim:
+    - duration: 1s
+      lights:
+        l_8k: "404040"
 
   bonus_light_l_9k_on:
     - duration: 1s
       lights:
         l_9k: white
 
+  bonus_light_l_9k_dim:
+    - duration: 1s
+      lights:
+        l_9k: "404040"
+
   bonus_light_l_10k_on:
     - duration: 1s
       lights:
         l_10k: white
+
+  bonus_light_l_10k_dim:
+    - duration: 1s
+      lights:
+        l_10k: "404040"
 
   bonus_light_l_20k_on:
     - duration: 1s
       lights:
         l_20k: white
 
+  bonus_light_l_20k_dim:
+    - duration: 1s
+      lights:
+        l_20k: "404040"
+
   bonus_light_l_2x_on:
     - duration: 1s
       lights:
         l_2x: white
+
+  bonus_light_l_2x_dim:
+    - duration: 1s
+      lights:
+        l_2x: "404040"
   bonus_light_l_3x_on:
     - duration: 1s
       lights:
         l_3x: white
+
+  bonus_light_l_3x_dim:
+    - duration: 1s
+      lights:
+        l_3x: "404040"
   bonus_light_l_4x_on:
     - duration: 1s
       lights:
         l_4x: white
+
+  bonus_light_l_4x_dim:
+    - duration: 1s
+      lights:
+        l_4x: "404040"
   bonus_light_l_5x_on:
     - duration: 1s
       lights:
         l_5x: white
+
+  bonus_light_l_5x_dim:
+    - duration: 1s
+      lights:
+        l_5x: "404040"

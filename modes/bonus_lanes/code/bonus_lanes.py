@@ -43,6 +43,7 @@ class BonusLanes(Mode):
         self.completed = [False, False, False, False]
         self.center_web_lit = False
         self.left_web_lit = False
+        self.bonus_lights_dimmed = False
 
         self.add_mode_event_handler("bonus_lanes_start", self.blane_start)
         self.add_mode_event_handler("bonus_count_add", self.add_bonus_count)
@@ -65,6 +66,8 @@ class BonusLanes(Mode):
         self.add_mode_event_handler("bonus_left_bank_complete", self.add_bonus_count, amount=2)
         self.add_mode_event_handler("bonus_right_bank_complete", self.add_bonus_count, amount=3)
         self.add_mode_event_handler("custom_bonus_base_tick", self.update_bonus_lights)
+        self.add_mode_event_handler("bonus_lights_dim", self.dim_bonus_lights)
+        self.add_mode_event_handler("bonus_lights_restore", self.restore_bonus_lights)
 
 
     def blane_start(self, **kwargs):
@@ -193,6 +196,15 @@ class BonusLanes(Mode):
                 self.machine.events.post(f"bonus_lane_{lane}_off")
 
         
+
+    def dim_bonus_lights(self, **kwargs):
+        self.bonus_lights_dimmed = True
+        self.update_bonus_lights()
+
+    def restore_bonus_lights(self, **kwargs):
+        self.bonus_lights_dimmed = False
+        self.update_bonus_lights()
+
     def update_bonus_lights(self, **kwargs):
         player = self.machine.game.player
         bonus_count = player["bonus_count"]
@@ -202,7 +214,8 @@ class BonusLanes(Mode):
         # Light additive combo
         for value, light_name in self.BONUS_LIGHTS:
             if remaining >= value:
-                self.machine.events.post(f"bonus_light_{light_name}_on")
+                state = "dim" if self.bonus_lights_dimmed else "on"
+                self.machine.events.post(f"bonus_light_{light_name}_{state}")
                 remaining -= value
             else:
                 self.machine.events.post(f"bonus_light_{light_name}_off")
@@ -211,7 +224,8 @@ class BonusLanes(Mode):
 
         for value, light_name in self.BONUS_X_LIGHTS.items():
             if mx >= value:
-                self.machine.events.post(f"bonus_light_{light_name}_on")
+                state = "dim" if self.bonus_lights_dimmed else "on"
+                self.machine.events.post(f"bonus_light_{light_name}_{state}")
                 remaining -= value
             else:
                 self.machine.events.post(f"bonus_light_{light_name}_off")
