@@ -11,14 +11,16 @@ class SpiderSlayer(CaseFileMixin, Mode):
     DISPLAY_NAME = "Spider-Slayer"
 
     REQUIRED_HITS = 15
-    SHOT_SCORE = 50_000
-    BIGGER_SHOT_SCORE = 75_000
+    NORMAL_SHOT_VALUES = (50_000, 25_000, 10_000, 5_000)
+    MORE_JACKPOTS_SHOT_VALUES = (50_000, 50_000, 10_000, 5_000)
+    BIGGER_SHOT_VALUES = (75_000, 50_000, 25_000, 10_000)
+    BIGGER_MORE_JACKPOTS_SHOT_VALUES = (75_000, 75_000, 25_000, 10_000)
     BASE_JACKPOT = 2_000_000
     BIGGER_JACKPOT = 2_500_000
-    NORMAL_DECAY = 100_000
-    MORE_TIME_DECAY = 50_000
+    JACKPOT_DECAY = 100_000
     MIN_JACKPOT = 100_000
-    MORE_JACKPOTS_FREEZE_SECONDS = 10
+    JACKPOT_SECONDS = 20
+    MORE_TIME_JACKPOT_SECONDS = 25
     VUK_EJECT_DELAY_MS = 1_500
 
     SHOTS = (
@@ -29,21 +31,33 @@ class SpiderSlayer(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
-        self.reset_active_mode_summary(stat_count=3)
+        self.reset_active_mode_summary(stat_count=2)
         self.delay = DelayManager(self.machine)
         self.case_files = self.get_case_file_bonuses()
 
         self.mode_done = False
         self.phase = "hunt"
         self.active_shots = set()
+        self.shot_hits = {shot: 0 for shot in self.SHOTS}
         self.hits = 0
         self.mode_points = 0
         self.hunt_started_at = None
+        self.hunt_completed = False
         self.hunt_time_tenths = 0
         self.slayers_jackpot = self.BIGGER_JACKPOT if self.has_case_file("bigger_jackpots") else self.BASE_JACKPOT
         self.collected_jackpot = 0
-        self.shot_value = self.BIGGER_SHOT_SCORE if self.has_case_file("bigger_jackpots") else self.SHOT_SCORE
-        self.decay_value = self.MORE_TIME_DECAY if self.has_case_file("more_time") else self.NORMAL_DECAY
+        bigger = self.has_case_file("bigger_jackpots")
+        more_jackpots = self.has_case_file("more_jackpots")
+        if bigger and more_jackpots:
+            self.shot_values = self.BIGGER_MORE_JACKPOTS_SHOT_VALUES
+        elif bigger:
+            self.shot_values = self.BIGGER_SHOT_VALUES
+        elif more_jackpots:
+            self.shot_values = self.MORE_JACKPOTS_SHOT_VALUES
+        else:
+            self.shot_values = self.NORMAL_SHOT_VALUES
+        self.jackpot_seconds = self.MORE_TIME_JACKPOT_SECONDS if self.has_case_file("more_time") else self.JACKPOT_SECONDS
+        self.jackpot_seconds_left = 0
         self.shot_assist_used = False
 
         player = self.machine.game.player
@@ -52,11 +66,11 @@ class SpiderSlayer(CaseFileMixin, Mode):
 
         self.publish_case_file_bonus_events(self.MODE_KEY)
         self.publish_active_case_file_helpers([
-            ("more_jackpots", "FULL JACKPOT FROZEN 10 SECONDS"),
-            ("bigger_jackpots", "75K SHOTS / 2.5M JACKPOT"),
-            ("more_time", "JACKPOT DECAYS 50K PER SECOND"),
+            ("more_jackpots", "SECOND SHOT STAYS AT FULL VALUE"),
+            ("bigger_jackpots", "BIGGER SHOTS / 2.5M JACKPOT"),
+            ("more_time", "25 SECOND SLAYER JACKPOT"),
             ("safety_net", "10 SECOND SAVE AT DAILY BUGLE"),
-            ("shot_assist", "FIRST HIT ADDS TWO SHOTS"),
+            ("shot_assist", "FIRST SHOT SCORES AND COUNTS TWICE"),
         ])
 
         for shot in self.SHOTS:
@@ -72,26 +86,39 @@ class SpiderSlayer(CaseFileMixin, Mode):
         self._update_status()
 
     def _shot_hit(self, shot=None, **kwargs):
-        if self.mode_done or self.phase != "hunt" or shot not in self.active_shots:
+        if self.mode_done or self.phase not in ("hunt", "jackpot", "expired") or shot not in self.active_shots:
             return
 
         if self.hits == 0:
             self.hunt_started_at = time.monotonic()
 
-        self.hits += 1
-        self._score(self.shot_value)
-        self.machine.events.post("spider_slayer_successful_hit", shot=shot, hits=self.hits, value=self.shot_value)
+        hit_count = 1
+        if self.phase == "hunt" and self.has_case_file("shot_assist") and not self.shot_assist_used:
+            self.shot_assist_used = True
+            hit_count = 2
+            self.machine.events.post("spider_slayer_case_file_shot_assist_used")
+
+        total_value = 0
+        for _ in range(hit_count):
+            repeat_index = min(self.shot_hits[shot], len(self.shot_values) - 1)
+            total_value += self.shot_values[repeat_index]
+            self.shot_hits[shot] += 1
+        self._score(total_value)
+
+        if self.phase != "hunt":
+            self.machine.events.post("spider_slayer_successful_hit", shot=shot, hits=self.hits, value=total_value)
+            self._sync_vars()
+            self._update_status()
+            return
+
+        self.hits = min(self.REQUIRED_HITS, self.hits + hit_count)
+        self.machine.events.post("spider_slayer_successful_hit", shot=shot, hits=self.hits, value=total_value)
 
         if self.hits >= self.REQUIRED_HITS:
             self._finish_hunt()
             return
 
-        add_count = 1
-        if self.has_case_file("shot_assist") and not self.shot_assist_used:
-            self.shot_assist_used = True
-            add_count = 2
-            self.machine.events.post("spider_slayer_case_file_shot_assist_used")
-        self._add_random_shots(add_count)
+        self._add_random_shots(hit_count)
         self._sync_vars()
         self._update_status()
 
@@ -107,7 +134,7 @@ class SpiderSlayer(CaseFileMixin, Mode):
             self.hunt_time_tenths = int(round(elapsed * 10.0))
 
         self.phase = "jackpot"
-        self.machine.events.post("spider_slayer_clear_hunt_shots")
+        self.hunt_completed = True
         self.machine.events.post("spider_slayer_hunt_complete")
         self.machine.events.post("final_vuk_chase_start")
         self.machine.events.post("rooftop_diverter_open")
@@ -115,25 +142,35 @@ class SpiderSlayer(CaseFileMixin, Mode):
             self.machine.events.post("spider_slayer_enable_safety_net")
 
         self._show_message("SLAYER EXPOSED", "SHOOT THE DAILY BUGLE", self.slayers_jackpot)
+        self.jackpot_seconds_left = self.jackpot_seconds
         self._sync_vars()
         self._update_status()
-
-        freeze_ms = self.MORE_JACKPOTS_FREEZE_SECONDS * 1000 if self.has_case_file("more_jackpots") else 0
-        self.delay.add(name="spider_slayer_begin_decay", ms=freeze_ms, callback=self._schedule_decay)
-
-    def _schedule_decay(self):
-        if self.mode_done or self.phase != "jackpot" or self.slayers_jackpot <= self.MIN_JACKPOT:
-            return
         self.delay.add(name="spider_slayer_decay", ms=1000, callback=self._decay_tick)
 
     def _decay_tick(self):
         if self.mode_done or self.phase != "jackpot":
             return
-        self.slayers_jackpot = max(self.MIN_JACKPOT, self.slayers_jackpot - self.decay_value)
+        self.jackpot_seconds_left = max(0, self.jackpot_seconds_left - 1)
+        self.slayers_jackpot = max(self.MIN_JACKPOT, self.slayers_jackpot - self.JACKPOT_DECAY)
         self.machine.events.post("spider_slayer_jackpot_changed", value=self.slayers_jackpot)
         self._sync_vars()
         self._update_status()
-        self._schedule_decay()
+        if self.jackpot_seconds_left <= 0:
+            self._expire_jackpot()
+        else:
+            self.delay.add(name="spider_slayer_decay", ms=1000, callback=self._decay_tick)
+
+    def _expire_jackpot(self):
+        self.phase = "expired"
+        self.slayers_jackpot = 0
+        self.collected_jackpot = 0
+        self.machine.events.post("final_vuk_chase_stop")
+        self.machine.events.post("spider_slayer_jackpot_expired")
+        self.machine.events.post("spider_slayer_disable_safety_net")
+        self.machine.events.post("rooftop_diverter_close")
+        self._show_message("SLAYER ESCAPED", "JACKPOT EXPIRED")
+        self._sync_vars()
+        self._update_status()
 
     def _vuk_hit(self, **kwargs):
         if self.mode_done:
@@ -147,7 +184,6 @@ class SpiderSlayer(CaseFileMixin, Mode):
             )
             return
 
-        self.delay.remove("spider_slayer_begin_decay")
         self.delay.remove("spider_slayer_decay")
         self.machine.events.post("final_vuk_chase_stop")
         self.collected_jackpot = self.slayers_jackpot
@@ -177,7 +213,8 @@ class SpiderSlayer(CaseFileMixin, Mode):
         player = self.machine.game.player
         player["active_mode_points"] = self.mode_points
         player["spider_slayer_hits"] = self.hits
-        player["active_mode_stat_1"] = self.collected_jackpot or self.slayers_jackpot
+        player["active_mode_stat_count"] = 3 if self.hunt_completed else 2
+        player["active_mode_stat_1"] = self.collected_jackpot
         player["spider_slayer_hunt_time_tenths"] = self.hunt_time_tenths
         player["active_mode_stat_2"] = self.hunt_time_tenths
 
@@ -185,9 +222,12 @@ class SpiderSlayer(CaseFileMixin, Mode):
         if self.phase == "hunt":
             title = f"HUNT {self.hits}/{self.REQUIRED_HITS}"
             value = "HIT THE LIT SHOT"
-        else:
-            title = "SHOOT THE DAILY BUGLE"
+        elif self.phase == "jackpot":
+            title = f"DAILY BUGLE {self.jackpot_seconds_left}S"
             value = f"SLAYER JP {self.slayers_jackpot:,}"
+        else:
+            title = "SLAYER JACKPOT EXPIRED"
+            value = "LIT SHOTS STILL SCORE"
         self.machine.events.post("update_mode_status", mode_status_title=title, mode_status_value=value)
 
     def _show_message(self, title, subtitle="", value=""):
@@ -199,7 +239,6 @@ class SpiderSlayer(CaseFileMixin, Mode):
         )
 
     def mode_stop(self, **kwargs):
-        self.delay.remove("spider_slayer_begin_decay")
         self.delay.remove("spider_slayer_decay")
         self.delay.remove("spider_slayer_finish")
         self.machine.events.post("spider_slayer_clear_all")

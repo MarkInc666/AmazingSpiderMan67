@@ -1,0 +1,50 @@
+METAL-EATING MONSTER — ZONES UNDER ATTACK
+
+Core rules
+- Eight playfield zones can be attacked once each.
+- The first attack begins after 5 seconds. While fewer than four zones have
+  been saved, another safe zone comes under attack every 5 seconds.
+- Each attack lasts 12 seconds. Hitting any mapped switch in that zone saves it
+  for 250,000; an expired attack permanently destroys the zone.
+- A save resets the next-attack delay to 2 seconds.
+- Saving four zones stops new attacks. The player wins after every remaining
+  active attack has resolved. Three destroyed zones ends the mode immediately.
+- Multiple zones may be under attack at the same time.
+
+Zone mapping
+1. Left sling: left sling and left inlane.
+2. Right sling: right sling, right inlane, and right return.
+3. Left web: left web, left B, and the adjacent left area.
+4. Upper right: STAR, A/B rollovers, and the upper-right area.
+5. Left bank: all left-bank targets/rubbers and the main spinner route.
+6. Right bank: all right-bank targets/rubbers and the right-side return area.
+7. Center: both pops and the center web.
+8. Saucers: all three saucers and their approach area.
+
+Case Files
+- Bigger Jackpots: zone saves score 400,000.
+- More Time: each zone timer lasts 16 seconds.
+- More Jackpots: each saved zone relights once for half its save value.
+- Safety Net: starts a 10-second, one-ball save.
+- Shot Assist: automatically saves the first attacked zone that reaches
+  2 seconds remaining.
+
+Lighting
+- Base mode GI is dim white (303030).
+- Attacked zones flash every 250ms. Fixed-color inserts use their native lens
+  colors and surrounding RGB GI flashes orange at 100% brightness.
+- Saved zones keep their native inserts solid. Surrounding RGB GI is solid
+  green at 75% brightness (00BF00).
+- A More Jackpots repeat opportunity pulses the saved zone at 600ms while
+  retaining the same 75% green GI level.
+- Destroyed zones are dark.
+
+Summary
+- MODE SCORE
+- ZONES SAVED
+- DESTROYED
+
+Status
+- Gameplay reviewed and implemented.
+- Saved-zone 75% GI presentation is statically validated; machine testing is
+  still required.

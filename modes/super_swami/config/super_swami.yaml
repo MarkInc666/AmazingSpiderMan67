@@ -84,6 +84,13 @@ light_player:
     l_pop_1_1: FFFFFF
     l_pop_1_11: FFFFFF
     l_pop_1_12: FFFFFF
+  super_swami_dim_upper_left:
+    l_gi_ramp: 404040
+    l_gi_top_1: 404040
+    l_gi_top_2: 404040
+    l_pop_1_1: 404040
+    l_pop_1_11: 404040
+    l_pop_1_12: 404040
   super_swami_restore_upper_right:
     l_gi_a: FFFFFF
     l_gi_ab: FFFFFF
@@ -95,6 +102,17 @@ light_player:
     l_pop_2_1: FFFFFF
     l_pop_2_11: FFFFFF
     l_pop_2_12: FFFFFF
+  super_swami_dim_upper_right:
+    l_gi_a: 404040
+    l_gi_ab: 404040
+    l_gi_bright: 404040
+    l_gi_mid_spider: 404040
+    l_gi_top_3: 404040
+    l_gi_top_4: 404040
+    l_gi_upflip: 404040
+    l_pop_2_1: 404040
+    l_pop_2_11: 404040
+    l_pop_2_12: 404040
   super_swami_restore_middle_left:
     l_gi_3bank: FFFFFF
     l_gi_left_lower: FFFFFF
@@ -110,6 +128,21 @@ light_player:
     l_pop_1_7: FFFFFF
     l_pop_1_8: FFFFFF
     l_pop_1_9: FFFFFF
+  super_swami_dim_middle_left:
+    l_gi_3bank: 404040
+    l_gi_left_lower: 404040
+    l_gi_left_upper: 404040
+    l_gi_left_upper_flipper: 404040
+    l_gi_spinner: 404040
+    l_pop_1_10: 404040
+    l_pop_1_2: 404040
+    l_pop_1_3: 404040
+    l_pop_1_4: 404040
+    l_pop_1_5: 404040
+    l_pop_1_6: 404040
+    l_pop_1_7: 404040
+    l_pop_1_8: 404040
+    l_pop_1_9: 404040
   super_swami_restore_middle_right:
     l_gi_5bank_lower: FFFFFF
     l_gi_5bank_upper: FFFFFF
@@ -123,12 +156,31 @@ light_player:
     l_pop_2_7: FFFFFF
     l_pop_2_8: FFFFFF
     l_pop_2_9: FFFFFF
+  super_swami_dim_middle_right:
+    l_gi_5bank_lower: 404040
+    l_gi_5bank_upper: 404040
+    l_gi_right_lower_triangle: 404040
+    l_pop_2_10: 404040
+    l_pop_2_2: 404040
+    l_pop_2_3: 404040
+    l_pop_2_4: 404040
+    l_pop_2_5: 404040
+    l_pop_2_6: 404040
+    l_pop_2_7: 404040
+    l_pop_2_8: 404040
+    l_pop_2_9: 404040
   super_swami_restore_lower_left:
     l_gi_left_sling_lower: FFFFFF
     l_gi_left_sling_upper: FFFFFF
+  super_swami_dim_lower_left:
+    l_gi_left_sling_lower: 404040
+    l_gi_left_sling_upper: 404040
   super_swami_restore_lower_right:
     l_gi_right_return: FFFFFF
     l_gi_right_sling: FFFFFF
+  super_swami_dim_lower_right:
+    l_gi_right_return: 404040
+    l_gi_right_sling: 404040
   super_swami_restore_all_lights:
     l_gi_3bank: E0E0E0
     l_gi_5bank_lower: E0E0E0

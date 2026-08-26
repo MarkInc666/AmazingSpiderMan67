@@ -333,14 +333,14 @@ shows:
     - duration: -1
       lights:
         l_left_inlane: blue
-        l_gi_left_sling_upper: green
-        l_gi_left_sling_lower: green
+        l_gi_left_sling_upper: 00BF00
+        l_gi_left_sling_lower: 00BF00
   metal_left_sling_repeat_show:
     - duration: 600ms
       lights:
         l_left_inlane: blue
-        l_gi_left_sling_upper: green
-        l_gi_left_sling_lower: green
+        l_gi_left_sling_upper: 00BF00
+        l_gi_left_sling_lower: 00BF00
     - duration: 600ms
       lights:
         l_left_inlane: off
@@ -361,14 +361,14 @@ shows:
     - duration: -1
       lights:
         l_right_inlane: blue
-        l_gi_right_sling: green
-        l_gi_right_return: green
+        l_gi_right_sling: 00BF00
+        l_gi_right_return: 00BF00
   metal_right_sling_repeat_show:
     - duration: 600ms
       lights:
         l_right_inlane: blue
-        l_gi_right_sling: green
-        l_gi_right_return: green
+        l_gi_right_sling: 00BF00
+        l_gi_right_return: 00BF00
     - duration: 600ms
       lights:
         l_right_inlane: off
@@ -394,17 +394,17 @@ shows:
       lights:
         l_left_web_target: white
         l_left_b: yellow
-        l_gi_left_upper: green
-        l_gi_left_lower: green
-        l_gi_left_upper_flipper: green
+        l_gi_left_upper: 00BF00
+        l_gi_left_lower: 00BF00
+        l_gi_left_upper_flipper: 00BF00
   metal_left_web_repeat_show:
     - duration: 600ms
       lights:
         l_left_web_target: white
         l_left_b: yellow
-        l_gi_left_upper: green
-        l_gi_left_lower: green
-        l_gi_left_upper_flipper: green
+        l_gi_left_upper: 00BF00
+        l_gi_left_lower: 00BF00
+        l_gi_left_upper_flipper: 00BF00
     - duration: 600ms
       lights:
         l_left_web_target: off
@@ -441,24 +441,24 @@ shows:
         l_star: red
         l_a_rollover: yellow
         l_b_rollover: yellow
-        l_gi_ab: green
-        l_gi_a: green
-        l_gi_upflip: green
-        l_gi_bright: green
-        l_gi_top_3: green
-        l_gi_top_4: green
+        l_gi_ab: 00BF00
+        l_gi_a: 00BF00
+        l_gi_upflip: 00BF00
+        l_gi_bright: 00BF00
+        l_gi_top_3: 00BF00
+        l_gi_top_4: 00BF00
   metal_upper_right_repeat_show:
     - duration: 600ms
       lights:
         l_star: red
         l_a_rollover: yellow
         l_b_rollover: yellow
-        l_gi_ab: green
-        l_gi_a: green
-        l_gi_upflip: green
-        l_gi_bright: green
-        l_gi_top_3: green
-        l_gi_top_4: green
+        l_gi_ab: 00BF00
+        l_gi_a: 00BF00
+        l_gi_upflip: 00BF00
+        l_gi_bright: 00BF00
+        l_gi_top_3: 00BF00
+        l_gi_top_4: 00BF00
     - duration: 600ms
       lights:
         l_star: off
@@ -488,15 +488,15 @@ shows:
       lights:
         l_3bankbonus: green
         l_spinner: white
-        l_gi_3bank: green
-        l_gi_spinner: green
+        l_gi_3bank: 00BF00
+        l_gi_spinner: 00BF00
   metal_left_bank_repeat_show:
     - duration: 600ms
       lights:
         l_3bankbonus: green
         l_spinner: white
-        l_gi_3bank: green
-        l_gi_spinner: green
+        l_gi_3bank: 00BF00
+        l_gi_spinner: 00BF00
     - duration: 600ms
       lights:
         l_3bankbonus: off
@@ -535,9 +535,9 @@ shows:
         l_5bank_4: green
         l_5bank_5: green
         l_right_a: yellow
-        l_gi_5bank_lower: green
-        l_gi_5bank_upper: green
-        l_gi_right_lower_triangle: green
+        l_gi_5bank_lower: 00BF00
+        l_gi_5bank_upper: 00BF00
+        l_gi_right_lower_triangle: 00BF00
   metal_right_bank_repeat_show:
     - duration: 600ms
       lights:
@@ -547,9 +547,9 @@ shows:
         l_5bank_4: green
         l_5bank_5: green
         l_right_a: yellow
-        l_gi_5bank_lower: green
-        l_gi_5bank_upper: green
-        l_gi_right_lower_triangle: green
+        l_gi_5bank_lower: 00BF00
+        l_gi_5bank_upper: 00BF00
+        l_gi_right_lower_triangle: 00BF00
     - duration: 600ms
       lights:
         l_5bank_1: off
@@ -646,7 +646,7 @@ shows:
         l_pop_2_11: white
         l_pop_2_12: white
         l_mid_web_target: white
-        l_gi_mid_spider: green
+        l_gi_mid_spider: 00BF00
   metal_center_repeat_show:
     - duration: 600ms
       lights:
@@ -675,7 +675,7 @@ shows:
         l_pop_2_11: white
         l_pop_2_12: white
         l_mid_web_target: white
-        l_gi_mid_spider: green
+        l_gi_mid_spider: 00BF00
     - duration: 600ms
       lights:
         l_pop_1_1: off
@@ -744,7 +744,7 @@ shows:
         l_2: green
         l_3: green
         l_123_bonus: white
-        l_gi_ramp: green
+        l_gi_ramp: 00BF00
   metal_saucers_repeat_show:
     - duration: 600ms
       lights:
@@ -758,7 +758,7 @@ shows:
         l_2: green
         l_3: green
         l_123_bonus: white
-        l_gi_ramp: green
+        l_gi_ramp: 00BF00
     - duration: 600ms
       lights:
         l_1_hole_l: off

@@ -126,6 +126,10 @@ show_player:
     spider_slayer_vuk_flash:
       loops: -1
 
+  spider_slayer_jackpot_expired:
+    spider_slayer_vuk_flash:
+      action: stop
+
   spider_slayer_clear_hunt_shots:
     spider_slayer_left_web_pulse: {action: stop}
     spider_slayer_center_web_pulse: {action: stop}
@@ -169,6 +173,10 @@ light_player:
     l_star: stop
     l_1_hole_l: stop
     l_1_hole_r: stop
+    l_2_hole_l: stop
+    l_2_hole_r: stop
+    l_3_hole_l: stop
+    l_3_hole_r: stop
     l_gi_left_upper: stop
 
 shows:
@@ -230,9 +238,9 @@ shows:
       lights: {l_star: 401010}
   spider_slayer_saucer_pulse:
     - duration: 500ms
-      lights: {l_1_hole_l: FF2020, l_1_hole_r: FF2020}
+      lights: {l_1_hole_l: FF2020, l_1_hole_r: FF2020, l_2_hole_l: FF2020, l_2_hole_r: FF2020, l_3_hole_l: FF2020, l_3_hole_r: FF2020}
     - duration: 500ms
-      lights: {l_1_hole_l: 401010, l_1_hole_r: 401010}
+      lights: {l_1_hole_l: 401010, l_1_hole_r: 401010, l_2_hole_l: 401010, l_2_hole_r: 401010, l_3_hole_l: 401010, l_3_hole_r: 401010}
   spider_slayer_vuk_flash:
     - duration: 300ms
       lights: {l_gi_left_upper: 30FF60}

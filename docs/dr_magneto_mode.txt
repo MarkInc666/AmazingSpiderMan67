@@ -1,0 +1,31 @@
+DR. MAGNETO (MODE 32)
+=====================
+
+GAMEPLAY
+- Left sling or left inlane lights right-side A; right sling or right inlane lights left-side B.
+- A feeds the left pop and B feeds the right pop.
+- A/B and flashing-pop objectives last 8 seconds, or 10 seconds with More Time.
+- Rollover awards are 100K, or 150K with Bigger Jackpots. Each completed pop awards 250K.
+- Completing both pops lights the center-web Super for 16 seconds, or 20 seconds with More Time.
+- The Super is 500K, or 750K with Bigger Jackpots. Collection defeats Dr. Magneto; expiry ends the mode.
+
+CASE FILES
+- More Jackpots: each newly lit objective also lights STAR for six seconds at 250K.
+- Bigger Jackpots: 150K rollovers and 750K Super.
+- More Time: 10-second circuit objectives and 20-second Super.
+- Safety Net: 10-second opening ball save.
+- Shot Assist: the first qualifier hit lights both A and B.
+
+LIGHTING AND STATUS
+- Overall mode GI is solid purple 6030A0.
+- The available left and right sling/inlane qualifier areas pulse bright purple over the base GI.
+- A/B and flashing-pop objectives begin at normal pulse speed and double after four seconds.
+- Completed pop rings remain solid blue.
+- The center-web Super uses a white four-light chase: multibonus, advance multiplier, special, center web.
+- The chase begins at 250ms per step and doubles in speed after eight seconds.
+- More Jackpots STAR remains a fast red pulse for its six-second window.
+- The persistent Super status updates every second with the live countdown.
+
+VALIDATION STATUS
+- Static validation is required after patching.
+- Physical machine testing remains required for cue readability and timing.

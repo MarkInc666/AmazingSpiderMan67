@@ -1,3 +1,5 @@
+import random
+
 from mpf.core.mode import Mode
 from modes.common.case_file_mixin import CaseFileMixin
 
@@ -11,6 +13,9 @@ class SuperSwami(CaseFileMixin, Mode):
     BIGGER_BASE_VALUE = 200_000
     VALUE_STEP = 50_000
     MORE_JACKPOTS_VALUE = 500_000
+    FLICKER_MIN_MS = 2_000
+    FLICKER_MAX_MS = 5_000
+    FLICKER_DURATION_MS = 100
 
     AREA_SWITCHES = {
         "upper_left": ['s_leaf_next_to_1', 's_saucer_1', 's_saucer_2', 's_saucer_3', 's_upper_entrance_opto', 's_upper_exit_left_opto'],
@@ -66,6 +71,8 @@ class SuperSwami(CaseFileMixin, Mode):
         self.machine.events.post("clear_saucers")
         self.machine.events.post("drop_target_bank_dt_bank_left_reset")
         self.machine.events.post("drop_target_bank_dt_bank_right_reset")
+        for area_name in self.AREA_SWITCHES:
+            self._schedule_area_flicker(area_name)
         if self.has_case_file("safety_net"):
             self.machine.events.post("start_case_file_ball_save")
 
@@ -77,13 +84,16 @@ class SuperSwami(CaseFileMixin, Mode):
             ("shot_assist", "FIRST AREA SPOTS ANOTHER"),
         ])
         self.machine.events.post("show_mode_message", message_mode_title="RESTORE NEW YORK", message_mode_subtitle=f"6 AREAS - {self.seconds_left} SECONDS", reminder=True)
+        self._update_status()
         self.delay.add(name="super_swami_tick", ms=1000, callback=self._timer_tick)
 
     def mode_stop(self, **kwargs):
         self.delay.remove("super_swami_tick")
-        self.delay.remove("super_swami_open_gate_retry_1")
-        self.delay.remove("super_swami_open_gate_retry_2")
+        for area_name in self.AREA_SWITCHES:
+            self.delay.remove(f"super_swami_flicker_{area_name}")
+            self.delay.remove(f"super_swami_flicker_end_{area_name}")
         self.machine.events.post("cancel_mode_message_reminder")
+        self.machine.events.post("hide_mode_status")
         self.machine.events.post("super_swami_restore_all_lights")
         self.machine.events.post("final_vuk_chase_stop")
         self.machine.events.post("rooftop_diverter_close")
@@ -115,6 +125,8 @@ class SuperSwami(CaseFileMixin, Mode):
     def _restore_area(self, area, scored):
         if area in self.restored:
             return
+        self.delay.remove(f"super_swami_flicker_{area}")
+        self.delay.remove(f"super_swami_flicker_end_{area}")
         value = self.base_value + self.VALUE_STEP * len(self.restored)
         self.restored.add(area)
         if scored:
@@ -124,35 +136,50 @@ class SuperSwami(CaseFileMixin, Mode):
         self.machine.events.post(f"super_swami_restore_{area}")
         self.machine.events.post("reset_mode_message_reminder")
         self.machine.events.post("show_mode_message", message_mode_title=f"{self.AREA_LABELS[area]} RESTORED", message_mode_subtitle=f"{value // 1000}K - {len(self.restored)} OF 6")
+        self._update_status()
+
+    def _schedule_area_flicker(self, area):
+        if self.mode_done or self.final_jackpot_lit or area in self.restored:
+            return
+        self.delay.reset(
+            name=f"super_swami_flicker_{area}",
+            ms=random.randint(self.FLICKER_MIN_MS, self.FLICKER_MAX_MS),
+            callback=self._flicker_area,
+            area=area,
+        )
+
+    def _flicker_area(self, area=None, **kwargs):
+        if self.mode_done or self.final_jackpot_lit or area in self.restored:
+            return
+        self.machine.events.post(f"super_swami_restore_{area}")
+        self.delay.reset(
+            name=f"super_swami_flicker_end_{area}",
+            ms=self.FLICKER_DURATION_MS,
+            callback=self._finish_area_flicker,
+            area=area,
+        )
+
+    def _finish_area_flicker(self, area=None, **kwargs):
+        if self.mode_done or self.final_jackpot_lit or area in self.restored:
+            return
+        self.machine.events.post(f"super_swami_dim_{area}")
+        self._schedule_area_flicker(area)
 
     def _check_completion(self):
         if len(self.restored) < 6:
             return
         if self.has_case_file("more_jackpots"):
             self.final_jackpot_lit = True
-            self._open_gate_for_blackout_jackpot()
+            for area_name in self.AREA_SWITCHES:
+                self.delay.remove(f"super_swami_flicker_{area_name}")
+                self.delay.remove(f"super_swami_flicker_end_{area_name}")
+            self.machine.events.post("rooftop_diverter_open")
             self.machine.events.post("super_swami_light_vuk")
             self.machine.events.post("final_vuk_chase_start")
             self.machine.events.post("show_mode_message", message_mode_title="BLACKOUT JACKPOT", message_mode_subtitle="SHOOT THE VUK", reminder=True)
+            self._update_status()
         else:
             self._complete_mode()
-
-
-    def _open_gate_for_blackout_jackpot(self):
-        """Open roof access for the Blackout Jackpot VUK shot.
-
-        The project uses the state-guarded rooftop_diverter_open event, so
-        repeated requests are safe and help if another cleanup/close event lands
-        at the same time the jackpot is lit.
-        """
-        self.machine.events.post("rooftop_diverter_open")
-        self.delay.add(name="super_swami_open_gate_retry_1", ms=500, callback=self._retry_open_gate)
-        self.delay.add(name="super_swami_open_gate_retry_2", ms=1500, callback=self._retry_open_gate)
-
-    def _retry_open_gate(self, **kwargs):
-        if self.mode_done or not self.final_jackpot_lit:
-            return
-        self.machine.events.post("rooftop_diverter_open")
 
     def _vuk_hit(self, **kwargs):
         if self.mode_done:
@@ -180,12 +207,28 @@ class SuperSwami(CaseFileMixin, Mode):
             self._fail_mode()
             return
         self.machine.events.post("super_swami_timer_changed", seconds=self.seconds_left)
+        self._update_status()
         self.delay.add(name="super_swami_tick", ms=1000, callback=self._timer_tick)
+
+    def _update_status(self):
+        if self.mode_done:
+            return
+        objective = (
+            "BLACKOUT AT DAILY BUGLE"
+            if self.final_jackpot_lit
+            else f"{len(self.restored)}/6 RESTORED"
+        )
+        self.machine.events.post(
+            "update_mode_status",
+            mode_status_title="CITY TIME",
+            mode_status_value=f"{max(0, self.seconds_left)}s  {objective}",
+        )
 
     def _complete_mode(self, **kwargs):
         if self.mode_done:
             return
         self.machine.events.post("final_vuk_chase_stop")
+        self.machine.events.post("hide_mode_status")
         self.mode_done = True
         self.machine.game.player[f"{self.MODE_KEY}_state"] = 2
         self.machine.events.post("super_swami_mode_complete")
@@ -194,6 +237,7 @@ class SuperSwami(CaseFileMixin, Mode):
         if self.mode_done:
             return
         self.machine.events.post("final_vuk_chase_stop")
+        self.machine.events.post("hide_mode_status")
         self.mode_done = True
         self.machine.events.post("show_mode_message", message_mode_title="NEW YORK STAYS DARK", message_mode_subtitle=f"{len(self.restored)} OF 6 RESTORED")
         self.machine.events.post("super_swami_mode_failed")

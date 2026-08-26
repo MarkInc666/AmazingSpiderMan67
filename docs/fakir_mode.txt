@@ -1,0 +1,56 @@
+THE FANTASTIC FAKIR — RUBY HEIST
+
+Core rules
+- Starts 2-ball multiball with a 10-second opening ball save.
+- The three saucers are fake rubies. Hitting one scores 25,000, holds that ball,
+  opens the rooftop gate, and reveals the matching real Ruby target:
+  Saucer 1 -> upper-left; Saucer 2 -> upper-center; Saucer 3 -> upper-right.
+- The shared VUK route chase starts with the gate opening and guides the live
+  ball from the lower spinner route toward the VUK/rooftop entrance.
+- The chase stops when the live ball enters the rooftop, when the Ruby attempt
+  resolves or expires, when multiball ends, and during mode cleanup.
+- The Ruby countdown starts only when the live ball enters the rooftop. It lasts
+  10 seconds, or 15 seconds with More Time.
+- Either spinner adds 25,000 to the active Ruby or Super Jackpot.
+- A wrong upper target does not end the attempt; the correct target remains lit.
+- A successful collect holds the saucer for 2 seconds before releasing it.
+- If the other live ball enters a different saucer while one ball is held, that
+  second saucer ejects after 350ms without starting another Ruby attempt.
+
+Jackpot progression
+- Ruby Jackpot base: 250,000, or 400,000 with Bigger Jackpots.
+- Collect three Ruby Jackpots to qualify one Super Ruby Jackpot.
+- The Super starts at the sum of the first three collected Ruby values, including
+  their spinner builds. Additional spinner hits continue building the Super.
+- After the Super is collected, ordinary base-value Rubies continue until
+  multiball ends. No additional Supers are qualified.
+- The mode ends when Fakir multiball returns to one ball.
+
+Case Files
+- More Jackpots: the first post-Super Ruby scores 2X.
+- Bigger Jackpots: Ruby base becomes 400,000.
+- More Time: rooftop Ruby countdown becomes 15 seconds.
+- Safety Net: starts one ball save after the first held-saucer release.
+- Shot Assist: the first reveal lights all three upper targets as valid.
+
+Lighting
+- Base GI is DDDDDD.
+- Available saucer hole lamps pulse red; the locked saucer uses its red hole
+  lamps plus its white number insert.
+- The revealed upper target lights red. Ruby-search GI rapidly sweeps white to
+  red and back; a successful Jackpot flashes the GI white three times.
+- The VUK route uses the shared green final-VUK chase only while rooftop access
+  is being sought.
+
+Summary
+- MODE SCORE
+- RUBIES
+- SUPER JACKPOTS
+
+Status
+- Gameplay reviewed and unchanged.
+- Shared VUK route chase added.
+- Status display now uses the real Ruby/Super state and honors live messages for
+  saucer locks, spinner builds, collections, timeouts, Super readiness, and
+  post-release saucer availability.
+- Machine testing is required.

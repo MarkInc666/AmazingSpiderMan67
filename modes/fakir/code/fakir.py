@@ -111,6 +111,7 @@ class Fakir(CaseFileMixin, Mode):
         self._release_locked_saucer()
         self.machine.events.post("fakir_all_lights_off")
         self.machine.events.post("fakir_stop_all_gi")
+        self.machine.events.post("final_vuk_chase_stop")
         self.machine.events.post("rooftop_diverter_close")
         self.clear_active_case_file_helpers()
         super().mode_stop(**kwargs)
@@ -173,6 +174,7 @@ class Fakir(CaseFileMixin, Mode):
         self.machine.events.post("fakir_fake_ruby_locked", saucer=saucer, target=self.current_target, value=self.current_jackpot_value)
         self.machine.events.post(f"fakir_saucer_{saucer}_locked")
         self.machine.events.post("rooftop_diverter_open")
+        self.machine.events.post("final_vuk_chase_start")
         self.machine.events.post("show_mode_message", message_mode_title="FAKE RUBY!", message_mode_subtitle=f"{self.TARGET_NAMES[self.current_target]}", message_mode_value=self.current_jackpot_value)
         self._light_current_target()
 
@@ -181,6 +183,7 @@ class Fakir(CaseFileMixin, Mode):
         if self._inactive() or not self.ruby_active or self.ruby_timer_started:
             return
 
+        self.machine.events.post("final_vuk_chase_stop")
         self.ruby_timer_started = True
         self.delay.reset(
             name="fakir_ruby_timer",
@@ -263,6 +266,7 @@ class Fakir(CaseFileMixin, Mode):
 
     def _end_ruby_attempt(self, release_saucer=True, jackpot_collected=False):
         self.machine.events.post("fakir_all_targets_off")
+        self.machine.events.post("final_vuk_chase_stop")
         self.machine.events.post("rooftop_diverter_close")
 
         if jackpot_collected:
@@ -379,6 +383,7 @@ class Fakir(CaseFileMixin, Mode):
         self._release_locked_saucer()
         self.machine.events.post("fakir_all_lights_off")
         self.machine.events.post("fakir_stop_all_gi")
+        self.machine.events.post("final_vuk_chase_stop")
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("show_mode_message_long", message_mode_title="FAKIR DEFEATED", message_mode_subtitle="RUBY HEIST STOPPED")
         self.machine.events.post("fakir_mode_complete")
@@ -398,18 +403,33 @@ class Fakir(CaseFileMixin, Mode):
         player["active_mode_points"] = self.mode_points
         player["active_mode_stat_1"] = self.total_rubies_collected
         player["active_mode_stat_2"] = self.super_jackpots_collected
-        self._update_mode_status()
+        if status is not None:
+            self.machine.events.post(
+                "update_mode_status",
+                mode_status_title=status,
+                mode_status_value=target or "",
+            )
+        else:
+            self._update_mode_status()
 
     def _update_mode_status(self):
-        if getattr(self, "super_lit", False):
-            title = "SUPER JACKPOT LIT"
-            value = f"RUBIES {self.total_rubies_collected}"
-        elif getattr(self, "ruby_attempt_active", False):
-            title = "HIT REVEALED RUBY"
-            value = f"RUBIES {self.total_rubies_collected}/3"
+        if self.ruby_active:
+            title = "HIT SUPER RUBY" if self.current_award_is_super else "HIT REVEALED RUBY"
+            value = (
+                "ANY UPPER TARGET"
+                if self.shot_assist_active
+                else self.TARGET_NAMES.get(self.current_target, "UPPER TARGET")
+            )
+        elif self.super_qualified and not self.super_collected:
+            title = "SUPER READY"
+            value = "SHOOT SAUCER"
         else:
             title = "SAUCERS REVEAL RUBY"
-            value = f"RUBIES {self.total_rubies_collected}/3"
+            value = (
+                f"RUBIES {self.total_rubies_collected}"
+                if self.super_collected
+                else f"RUBIES {self.total_rubies_collected}/3"
+            )
         self.machine.events.post("update_mode_status", mode_status_title=title, mode_status_value=value)
 
     def _inactive(self):

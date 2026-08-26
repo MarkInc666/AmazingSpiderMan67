@@ -1,0 +1,42 @@
+DR. NOAH BODDY — FIND THE INVISIBLE TARGET
+
+STATUS
+Implemented. Lifecycle, gate, and shared VUK-chase repairs require physical-machine testing.
+
+CORE GAMEPLAY
+- Rooftop access opens at mode start. The shared VUK route chase guides the
+  player to the roof and stops when the upper-entrance switch is reached.
+- The first rooftop visit secretly selects one of the eight lower drop targets.
+- Each upper-target hit eliminates one random false location. Eliminated
+  locations persist across rooftop visits and are physically re-dropped after
+  both banks reset on the next entry.
+- Leaving the rooftop before completing the reveal, or hitting a lower drop
+  prematurely, resets both banks but preserves the secret target and eliminated
+  locations. The shared route chase restarts until the player returns upstairs.
+- The upper spinner adds 25,000 per hit to the uncapped Secret Jackpot and banks
+  the effective increase into persistent INVISIBLE FORTUNE.
+- When only the secret drop remains, a 16-second hurry-up begins. Hit that drop
+  to collect the Secret Jackpot. Expiry displays NOAH BODDY ESCAPED.
+
+SCORING
+- Secret Jackpot starts at 250,000.
+- Upper-target reveal hits score 25,000.
+- Bigger Jackpots doubles the full Secret Jackpot, including spinner additions.
+- More Jackpots changes upper-target reveal scoring to 75,000.
+
+CASE FILES
+- More Jackpots: upper-target reveals score 75,000.
+- Bigger Jackpots: doubles the base and spinner-built Secret Jackpot.
+- More Time: extends the hurry-up from 16 to 24 seconds.
+- Safety Net: starts its ball save when the secret target is revealed.
+- Shot Assist: the rubber from the secret target's bank collects the Jackpot.
+
+PROGRESSION AND PRESENTATION
+- State 1 means the mode is currently playing.
+- Both the collected Jackpot and an expired/missed objective finish at state 2,
+  because completed progression is what matters. Their result messages remain
+  distinct: the Jackpot display indicates success; failure displays NOAH BODDY
+  ESCAPED / SECRET TARGET LOST.
+- Rooftop access is requested once from Python; the duplicate YAML request has
+  been removed.
+- The shared VUK chase stops on roof entry, success, failure, and mode cleanup.

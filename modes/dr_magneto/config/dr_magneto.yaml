@@ -54,10 +54,31 @@ event_player:
     - clear_saucers_delayed
 
 show_player:
+  dr_magneto_left_qualifier_ready:
+    dr_magneto_left_qualifier_pulse:
+      loops: -1
+      priority: 325
+  dr_magneto_left_qualifier_stop:
+    dr_magneto_left_qualifier_pulse:
+      action: stop
+  dr_magneto_right_qualifier_ready:
+    dr_magneto_right_qualifier_pulse:
+      loops: -1
+      priority: 325
+  dr_magneto_right_qualifier_stop:
+    dr_magneto_right_qualifier_pulse:
+      action: stop
+
   dr_magneto_a_lit:
     dr_magneto_a_pulse:
       loops: -1
       priority: 330
+      speed: 1
+  dr_magneto_a_fast:
+    dr_magneto_a_pulse:
+      loops: -1
+      priority: 330
+      speed: 2
   dr_magneto_a_collected:
     dr_magneto_a_pulse:
       action: stop
@@ -69,6 +90,12 @@ show_player:
     dr_magneto_b_pulse:
       loops: -1
       priority: 330
+      speed: 1
+  dr_magneto_b_fast:
+    dr_magneto_b_pulse:
+      loops: -1
+      priority: 330
+      speed: 2
   dr_magneto_b_collected:
     dr_magneto_b_pulse:
       action: stop
@@ -80,6 +107,12 @@ show_player:
     dr_magneto_left_pop_pulse:
       loops: -1
       priority: 330
+      speed: 1
+  dr_magneto_left_pop_fast:
+    dr_magneto_left_pop_pulse:
+      loops: -1
+      priority: 330
+      speed: 2
   dr_magneto_left_pop_expired:
     dr_magneto_left_pop_pulse:
       action: stop
@@ -94,6 +127,12 @@ show_player:
     dr_magneto_right_pop_pulse:
       loops: -1
       priority: 330
+      speed: 1
+  dr_magneto_right_pop_fast:
+    dr_magneto_right_pop_pulse:
+      loops: -1
+      priority: 330
+      speed: 2
   dr_magneto_right_pop_expired:
     dr_magneto_right_pop_pulse:
       action: stop
@@ -105,14 +144,20 @@ show_player:
       priority: 330
 
   dr_magneto_super_ready:
-    dr_magneto_center_web_pulse:
+    dr_magneto_center_web_chase:
       loops: -1
       priority: 340
+      speed: 1
+  dr_magneto_super_chase_fast:
+    dr_magneto_center_web_chase:
+      loops: -1
+      priority: 340
+      speed: 2
   dr_magneto_super_collected:
-    dr_magneto_center_web_pulse:
+    dr_magneto_center_web_chase:
       action: stop
   dr_magneto_super_expired:
-    dr_magneto_center_web_pulse:
+    dr_magneto_center_web_chase:
       action: stop
 
   dr_magneto_star_lit:
@@ -127,22 +172,46 @@ show_player:
       action: stop
 
   dr_magneto_clear_all:
+    dr_magneto_left_qualifier_pulse: {action: stop}
+    dr_magneto_right_qualifier_pulse: {action: stop}
     dr_magneto_a_pulse: {action: stop}
     dr_magneto_b_pulse: {action: stop}
     dr_magneto_left_pop_pulse: {action: stop}
     dr_magneto_left_pop_solid: {action: stop}
     dr_magneto_right_pop_pulse: {action: stop}
     dr_magneto_right_pop_solid: {action: stop}
-    dr_magneto_center_web_pulse: {action: stop}
+    dr_magneto_center_web_chase: {action: stop}
     dr_magneto_star_pulse: {action: stop}
 
 light_player:
   mode_dr_magneto_started:
-    gi: 4060FF
+    gi: 6030A0
   mode_dr_magneto_stopping:
     gi: E0E0E0
 
 shows:
+  dr_magneto_left_qualifier_pulse:
+    - duration: 300ms
+      lights:
+        l_gi_left_sling_upper: C060FF
+        l_gi_left_sling_lower: C060FF
+        l_gi_left_lower: C060FF
+    - duration: 300ms
+      lights:
+        l_gi_left_sling_upper: 6030A0
+        l_gi_left_sling_lower: 6030A0
+        l_gi_left_lower: 6030A0
+
+  dr_magneto_right_qualifier_pulse:
+    - duration: 300ms
+      lights:
+        l_gi_right_sling: C060FF
+        l_gi_right_return: C060FF
+    - duration: 300ms
+      lights:
+        l_gi_right_sling: 6030A0
+        l_gi_right_return: 6030A0
+
   dr_magneto_a_pulse:
     - duration: 300ms
       lights:
@@ -251,13 +320,31 @@ shows:
         l_pop_2_11: 4060FF
         l_pop_2_12: 4060FF
 
-  dr_magneto_center_web_pulse:
-    - duration: 200ms
+  dr_magneto_center_web_chase:
+    - duration: 250ms
       lights:
-        l_mid_web_target: 4060FF
-    - duration: 200ms
-      lights:
+        l_mid_multibonus: white
+        l_advance_multiplier: off
+        l_special: off
         l_mid_web_target: off
+    - duration: 250ms
+      lights:
+        l_mid_multibonus: off
+        l_advance_multiplier: white
+        l_special: off
+        l_mid_web_target: off
+    - duration: 250ms
+      lights:
+        l_mid_multibonus: off
+        l_advance_multiplier: off
+        l_special: white
+        l_mid_web_target: off
+    - duration: 250ms
+      lights:
+        l_mid_multibonus: off
+        l_advance_multiplier: off
+        l_special: off
+        l_mid_web_target: white
 
   dr_magneto_star_pulse:
     - duration: 200ms

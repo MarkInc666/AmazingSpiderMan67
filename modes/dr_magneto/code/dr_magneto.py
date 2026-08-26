@@ -22,6 +22,8 @@ class DrMagneto(CaseFileMixin, Mode):
     STAR_SECONDS = 6
     SUPER_SECONDS = 16
     MORE_TIME_SUPER_SECONDS = 20
+    OBJECTIVE_FAST_AFTER_MS = 4_000
+    SUPER_CHASE_FAST_AFTER_MS = 8_000
 
     POP_FOR_ROLLOVER = {"a": "left", "b": "right"}
 
@@ -79,6 +81,8 @@ class DrMagneto(CaseFileMixin, Mode):
         self.add_mode_event_handler("dr_magneto_fail_request", self._fail_mode)
 
         self.machine.events.post("dr_magneto_clear_all")
+        self.machine.events.post("dr_magneto_left_qualifier_ready")
+        self.machine.events.post("dr_magneto_right_qualifier_ready")
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("clear_saucers_delayed")
         if self.has_case_file("safety_net"):
@@ -130,6 +134,15 @@ class DrMagneto(CaseFileMixin, Mode):
             callback=self._rollover_expired,
             rollover=rollover,
         )
+        self.delay.reset(
+            name=f"dr_magneto_{rollover}_fast_delay",
+            ms=self.OBJECTIVE_FAST_AFTER_MS,
+            callback=self._objective_fast,
+            objective=rollover,
+        )
+        self.machine.events.post(f"dr_magneto_{rollover}_lit")
+        qualifier_side = "left" if rollover == "a" else "right"
+        self.machine.events.post(f"dr_magneto_{qualifier_side}_qualifier_stop")
 
         if was_lit:
             self.machine.events.post(
@@ -139,7 +152,6 @@ class DrMagneto(CaseFileMixin, Mode):
             )
             return False
 
-        self.machine.events.post(f"dr_magneto_{rollover}_lit")
         self.machine.events.post(
             "dr_magneto_objective_lit",
             objective=rollover,
@@ -153,7 +165,10 @@ class DrMagneto(CaseFileMixin, Mode):
         if self.mode_done or self.phase != "circuits" or not self.rollover_lit[rollover]:
             return
         self.rollover_lit[rollover] = False
+        self.delay.remove(f"dr_magneto_{rollover}_fast_delay")
         self.machine.events.post(f"dr_magneto_{rollover}_expired")
+        qualifier_side = "left" if rollover == "a" else "right"
+        self.machine.events.post(f"dr_magneto_{qualifier_side}_qualifier_ready")
         self._update_status()
         self._sync_vars()
 
@@ -168,6 +183,7 @@ class DrMagneto(CaseFileMixin, Mode):
 
         self.rollover_lit[rollover] = False
         self.delay.remove(f"dr_magneto_{rollover}_timeout")
+        self.delay.remove(f"dr_magneto_{rollover}_fast_delay")
         self.machine.events.post(f"dr_magneto_{rollover}_collected")
 
         value = (
@@ -199,10 +215,16 @@ class DrMagneto(CaseFileMixin, Mode):
             callback=self._pop_expired,
             side=side,
         )
+        self.delay.reset(
+            name=f"dr_magneto_{side}_pop_fast_delay",
+            ms=self.OBJECTIVE_FAST_AFTER_MS,
+            callback=self._objective_fast,
+            objective=f"{side}_pop",
+        )
+        self.machine.events.post(f"dr_magneto_{side}_pop_flashing")
         if was_flashing:
             return
 
-        self.machine.events.post(f"dr_magneto_{side}_pop_flashing")
         self.machine.events.post(
             "dr_magneto_objective_lit",
             objective=f"{side}_pop",
@@ -214,7 +236,9 @@ class DrMagneto(CaseFileMixin, Mode):
         if self.mode_done or self.phase != "circuits" or self.pop_state[side] != "flashing":
             return
         self.pop_state[side] = "off"
+        self.delay.remove(f"dr_magneto_{side}_pop_fast_delay")
         self.machine.events.post(f"dr_magneto_{side}_pop_expired")
+        self.machine.events.post(f"dr_magneto_{side}_qualifier_ready")
         self._show_message("POP CIRCUIT LOST", f"RELIGHT {side.upper()} POP")
         self._update_status()
         self._sync_vars()
@@ -230,6 +254,7 @@ class DrMagneto(CaseFileMixin, Mode):
 
         self.pop_state[side] = "solid"
         self.delay.remove(f"dr_magneto_{side}_pop_timeout")
+        self.delay.remove(f"dr_magneto_{side}_pop_fast_delay")
         self.pops_completed += 1
         self._score(self.POP_VALUE)
         self.machine.events.post(f"dr_magneto_{side}_pop_solid")
@@ -246,6 +271,8 @@ class DrMagneto(CaseFileMixin, Mode):
             return
         self.phase = "super"
         self.seconds_left = self.super_seconds
+        self.machine.events.post("dr_magneto_left_qualifier_stop")
+        self.machine.events.post("dr_magneto_right_qualifier_stop")
         self.machine.events.post("dr_magneto_super_ready")
         self.machine.events.post(
             "dr_magneto_objective_lit",
@@ -258,6 +285,11 @@ class DrMagneto(CaseFileMixin, Mode):
             "show_mode_status",
             mode_status_title="MAGNETO SUPER",
             mode_status_value=f"CENTER WEB - {self.seconds_left}s",
+        )
+        self.delay.reset(
+            name="dr_magneto_super_chase_fast_delay",
+            ms=self.SUPER_CHASE_FAST_AFTER_MS,
+            callback=self._super_chase_fast,
         )
         self._schedule_super_tick()
         self._sync_vars()
@@ -275,6 +307,11 @@ class DrMagneto(CaseFileMixin, Mode):
             self._fail_mode()
             return
         self._show_countdown("MAGNETO SUPER", self.seconds_left, "HIT CENTER WEB")
+        self.machine.events.post(
+            "show_mode_status",
+            mode_status_title="MAGNETO SUPER",
+            mode_status_value=f"CENTER WEB - {self.seconds_left}s",
+        )
         self._schedule_super_tick()
         self._sync_vars()
 
@@ -282,6 +319,7 @@ class DrMagneto(CaseFileMixin, Mode):
         if self.mode_done or self.phase != "super":
             return
         self.delay.remove("dr_magneto_super_tick")
+        self.delay.remove("dr_magneto_super_chase_fast_delay")
         value = self.BIGGER_SUPER_VALUE if self.has_case_file("bigger_jackpots") else self.SUPER_VALUE
         self.super_jackpots = 1
         self._score(value)
@@ -348,6 +386,20 @@ class DrMagneto(CaseFileMixin, Mode):
         player["active_mode_stat_1"] = self.rollovers_collected + self.pops_completed
         player["active_mode_stat_2"] = self.super_jackpots
 
+    def _objective_fast(self, objective):
+        if self.mode_done or self.phase != "circuits":
+            return
+        if objective in self.rollover_lit and self.rollover_lit[objective]:
+            self.machine.events.post(f"dr_magneto_{objective}_fast")
+        elif objective.endswith("_pop"):
+            side = objective.removesuffix("_pop")
+            if self.pop_state.get(side) == "flashing":
+                self.machine.events.post(f"dr_magneto_{side}_pop_fast")
+
+    def _super_chase_fast(self):
+        if not self.mode_done and self.phase == "super":
+            self.machine.events.post("dr_magneto_super_chase_fast")
+
     def _update_status(self):
         if self.mode_done or self.phase != "circuits":
             return
@@ -391,9 +443,14 @@ class DrMagneto(CaseFileMixin, Mode):
         for name in (
             "dr_magneto_a_timeout",
             "dr_magneto_b_timeout",
+            "dr_magneto_a_fast_delay",
+            "dr_magneto_b_fast_delay",
             "dr_magneto_left_pop_timeout",
             "dr_magneto_right_pop_timeout",
+            "dr_magneto_left_pop_fast_delay",
+            "dr_magneto_right_pop_fast_delay",
             "dr_magneto_star_timeout",
             "dr_magneto_super_tick",
+            "dr_magneto_super_chase_fast_delay",
         ):
             self.delay.remove(name)

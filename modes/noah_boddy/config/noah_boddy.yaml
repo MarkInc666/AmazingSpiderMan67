@@ -32,7 +32,6 @@ widget_player:
 event_player:
   mode_noah_boddy_started:
     - clear_saucers
-    - rooftop_diverter_open
 
   s_saucer_1_active:
     - clear_saucers
@@ -254,4 +253,3 @@ light_player:
 
   mode_noah_boddy_stopping:
     gi: E0E0E0
-

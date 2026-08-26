@@ -282,9 +282,9 @@ class Kotep(CaseFileMixin, Mode):
 
         self.scepter_seconds_left = self.scepter_timer_seconds
         self._sync_vars()
-        subtitle = "SHOOT THE VUK"
+        subtitle = "SUPER AT DAILY BUGLE"
         if self.bonus_demon_available:
-            subtitle = "OPTIONAL 500K DEMON - THEN VUK"
+            subtitle = "KILL THE DEMON, COLLECT THE SUPER"
         self._show_message("DESTROY THE SCEPTER", subtitle)
         self._update_scepter_status()
         self._schedule_scepter_tick()
@@ -331,9 +331,9 @@ class Kotep(CaseFileMixin, Mode):
         if self.mode_done or self.phase != "scepter":
             return
 
-        instruction = "SHOOT THE VUK"
+        instruction = "SUPER AT DAILY BUGLE"
         if self.bonus_demon_available:
-            instruction = "OPTIONAL DEMON - THEN VUK"
+            instruction = "KILL THE DEMON, COLLECT THE SUPER"
         self.machine.events.post(
             "update_mode_status",
             mode_status_title="SCEPTER TIME",

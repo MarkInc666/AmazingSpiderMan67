@@ -9,7 +9,9 @@ CORE GAMEPLAY
 - Introduced demons remain available, so the player can choose among all currently active demon shots.
 - Demon Jackpots are 200,000, 250,000, 300,000, and 350,000.
 - Destroying all four demons begins the scepter phase, opens rooftop access, and starts a 20-second timer.
-- Shoot the VUK before time expires to destroy the scepter and score a 1,000,000 Super Jackpot.
+- Shoot the Daily Bugle VUK before time expires to destroy the scepter and score a 1,000,000 Super Jackpot.
+- During the scepter timer, the normal status instruction is `SUPER AT DAILY BUGLE`.
+- With an optional fifth demon still available, the instruction is `KILL THE DEMON, COLLECT THE SUPER`.
 - If the timer expires, Kotep escapes. The summary now distinguishes this result from a successful defeat.
 
 LIGHTING
