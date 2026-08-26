@@ -8,6 +8,8 @@
 mode:
   start_events: start_mode_fakir
   stop_events:
+    - ball_will_end
+    - bonus_start
     - fakir_mode_complete
     - fakir_mode_completed_summary
     - ball_ended
@@ -211,17 +213,14 @@ light_player:
     l_3_hole_r: off
 
   fakir_saucer_1_locked:
-    l_1: white
     l_1_hole_l: red
     l_1_hole_r: red
 
   fakir_saucer_2_locked:
-    l_2: white
     l_2_hole_l: red
     l_2_hole_r: red
 
   fakir_saucer_3_locked:
-    l_3: white
     l_3_hole_l: red
     l_3_hole_r: red
 
@@ -294,3 +293,13 @@ shows:
     - duration: 100ms
       lights:
         gi: off
+
+sound_player:
+  play_mode_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
+  play_mode_super_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects

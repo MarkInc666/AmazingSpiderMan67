@@ -255,6 +255,7 @@ class SpiderMen(CaseFileMixin, Mode):
         self.delay.remove("spider_men_proton_tick")
         self.seconds_left = 0
         self.machine.events.post("spider_men_homeworld_ray_aligned")
+        self.machine.events.post("play_mode_jackpot")
 
         if self.has_case_file("more_jackpots"):
             self.phase = "super"
@@ -292,6 +293,7 @@ class SpiderMen(CaseFileMixin, Mode):
         self.machine.events.post(
             "spider_men_super_collected", value=self.SUPER_VALUE
         )
+        self.machine.events.post("play_mode_super_jackpot")
         self.machine.events.post(
             "show_mode_jackpot",
             message_mode_title="HOMEWORLD SUPER",
@@ -315,12 +317,10 @@ class SpiderMen(CaseFileMixin, Mode):
             self._begin_success()
             return
 
-        self._show_countdown(
-            "SUPER JACKPOT LIT",
-            "CENTER WEB",
-            self.seconds_left,
-            value=self.SUPER_VALUE,
-            reminder=True,
+        self.machine.events.post(
+            "update_mode_status",
+            mode_status_title="SECONDS LEFT",
+            mode_status_value=self.seconds_left,
         )
         self.delay.reset(
             name="spider_men_super_tick",
@@ -390,7 +390,6 @@ class SpiderMen(CaseFileMixin, Mode):
             self.machine.events.post(
                 f"spider_men_{self.SHOTS[index]['key']}_{state}"
             )
-        self.machine.events.post(f"spider_men_gi_{sum(self.aligned)}")
 
     def _score(self, points):
         player = self.machine.game.player

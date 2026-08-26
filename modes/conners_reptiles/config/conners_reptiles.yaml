@@ -6,6 +6,8 @@
 mode:
   start_events: start_mode_conners_reptiles
   stop_events:
+    - ball_will_end
+    - bonus_start
     - conners_reptiles_mode_complete
     - conners_reptiles_mode_completed_summary
     - ball_ended
@@ -240,3 +242,13 @@ shows:
       lights: {l_star: red}
     - duration: 450ms
       lights: {l_star: off}
+
+sound_player:
+  play_mode_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
+  play_mode_super_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects

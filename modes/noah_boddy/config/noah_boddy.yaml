@@ -8,6 +8,8 @@
 mode:
   start_events: start_mode_noah_boddy
   stop_events:
+    - ball_will_end
+    - bonus_start
     - noah_boddy_mode_complete
     - noah_boddy_mode_completed_summary
     - ball_ended
@@ -253,3 +255,13 @@ light_player:
 
   mode_noah_boddy_stopping:
     gi: E0E0E0
+
+sound_player:
+  play_mode_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
+  play_mode_super_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects

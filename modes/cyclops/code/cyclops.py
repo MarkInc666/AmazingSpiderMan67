@@ -124,6 +124,8 @@ class Cyclops(CaseFileMixin, Mode):
         self.clear_active_case_file_helpers()
         self.machine.events.post("hide_mode_status")
         self.machine.events.post("cancel_mode_message_reminder")
+        # Catch-all: no delayed villain/wizard callback may survive into bonus.
+        self.delay.clear()
         super().mode_stop(**kwargs)
 
     def _flipper_pressed(self, **kwargs):

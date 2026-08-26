@@ -139,6 +139,8 @@ class Vulcan(CaseFileMixin, Mode):
         self.machine.events.post("vulcan_clear_all_lights")
         self.machine.events.post("rooftop_diverter_close")
         self.clear_active_case_file_helpers()
+        # Catch-all: no delayed villain/wizard callback may survive into bonus.
+        self.delay.clear()
         super().mode_stop(**kwargs)
 
     def _right_drop_hit(self, number=None, **kwargs):

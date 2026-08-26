@@ -424,9 +424,9 @@ class VillainBookends(Mode):
         },
         'pardo': {
             'title': 'PARDO',
-            'intro_1': 'Five chances. Three correct shots win.',
-            'intro_2': 'Spinner reveals the true shot.',
-            'intro_3': 'Choose the correct shot from three.',
+            'intro_1': 'FOUR ROUNDS TO DEFEAT PARDO',
+            'intro_2': 'SPINNER REVEALS THE RIGHT SHOT',
+            'intro_3': 'WRONG SHOT LEAVES TWO CHOICES',
             'summary_title_complete': 'PARDO DEFEATED',
             'summary_title_failed': 'PARDO ESCAPED',
             'stat_1_label': 'GOOD SHOTS',
@@ -605,14 +605,14 @@ class VillainBookends(Mode):
         #   stat_2_label: MAJOR HITS
         'dr_von_schlick': {
             'title': 'DR. VON SCHLICK',
-            'intro_1': 'Slick shots slide.',
-            'intro_2': 'Control the pattern.',
-            'intro_3': 'End the oil scheme.',
+            'intro_1': 'Follow the moving green shots.',
+            'intro_2': 'Collect five of them.',
+            'intro_3': 'Then flood the reactor.',
             'summary_title_complete': 'SCHLICK STOPPED',
             'summary_title_failed': 'SCHLICK ESCAPED',
-            'stat_1_label': 'HITS',
+            'stat_1_label': 'OIL PELLETS',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'MAJORS',
+            'stat_2_label': 'SUPERS',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'dr_von_schlick_state',
@@ -646,9 +646,9 @@ class VillainBookends(Mode):
         #   stat_2_label: MAJOR HITS
         'dr_zapp': {
             'title': 'DOCTOR ZAPP',
-            'intro_1': 'Zap chains shots.',
-            'intro_2': 'Follow the charge.',
-            'intro_3': 'Break the circuit.',
+            'intro_1': 'A DROP ON BOTH BANKS OPENS THE ROOF',
+            'intro_2': 'SPINNER BUILDS CAMERA FLASHES',
+            'intro_3': 'UPPER TARGETS BOOST EACH SPIN',
             'summary_title_complete': 'DOCTOR ZAPP DEFEATED',
             'summary_title_failed': 'DOCTOR ZAPP ESCAPED',
             'stat_1_label': 'HITS',
@@ -666,9 +666,9 @@ class VillainBookends(Mode):
         #   stat_2_label: MAJOR HITS
         'bolton_boomer': {
             'title': 'BOLTON AND BOOMER',
-            'intro_1': 'Thunder hides crimes.',
-            'intro_2': 'Follow the storm.',
-            'intro_3': 'Stop the next strike.',
+            'intro_1': 'TWO-BALL TARGET ATTACK',
+            'intro_2': 'SAUCER LOCK',
+            'intro_3': 'DAILY BUGLE REWARD',
             'summary_title_complete': 'THUNDER RUMBLE STOPPED',
             'summary_title_failed': 'BOLTON AND BOOMER ESCAPED',
             'stat_1_label': 'HITS',
@@ -686,9 +686,9 @@ class VillainBookends(Mode):
         #   stat_2_label: MAJOR HITS
         'snowman': {
             'title': 'THE SNOWMAN',
-            'intro_1': 'Snowman freezes all.',
-            'intro_2': 'Thaw frozen shots.',
-            'intro_3': 'Break the freeze.',
+            'intro_1': 'CONNECT THE WEBS',
+            'intro_2': 'THEN SHOOT THE SPINNER',
+            'intro_3': 'KEEP SPINNING FOR BONUS POINTS',
             'summary_title_complete': 'SNOWMAN MELTED',
             'summary_title_failed': 'SNOWMAN ESCAPED',
             'stat_1_label': 'HITS',
@@ -706,9 +706,9 @@ class VillainBookends(Mode):
         #   stat_2_label: MAJOR HITS
         'plutonians': {
             'title': 'THE PLUTONIANS',
-            'intro_1': 'Ice blocks the city.',
-            'intro_2': 'Hit thaw shots.',
-            'intro_3': 'Restore their escape.',
+            'intro_1': 'THAW ALL SIX FROZEN AREAS',
+            'intro_2': 'UPPER TARGETS DISABLE THE FREEZE RAY',
+            'intro_3': 'KEEP THEM THAWED TO WIN',
             'summary_title_complete': 'PLUTONIANS STOPPED',
             'summary_title_failed': 'PLUTONIANS STRANDED',
             'stat_1_label': 'HITS',
@@ -726,9 +726,9 @@ class VillainBookends(Mode):
         #   stat_2_label: MAJOR HITS
         'dr_manta': {
             'title': 'DR. MANTA',
-            'intro_1': 'Manta dives deep.',
-            'intro_2': 'Escape saucer traps.',
-            'intro_3': 'Hit rescue shots.',
+            'intro_1': 'GET TO THE DAILY BUGLE',
+            'intro_2': 'SAUCER ASSIST',
+            'intro_3': 'ATTACK BEFORE POWER RUNS OUT',
             'summary_title_complete': 'DR. MANTA DEFEATED',
             'summary_title_failed': 'DR. MANTA ESCAPED',
             'stat_1_label': 'HITS',
@@ -844,7 +844,7 @@ class VillainBookends(Mode):
             'intro_1': 'Hit flashing green shots.',
             'intro_2': 'Avoid solid red defenses.',
             'intro_3': 'Five bad shots end the mode.',
-            'summary_title_complete': "IGOR'S DEFENSES WIN",
+            'summary_title_complete': "IGOR'S DEFENSES FALL",
             'summary_title_failed': "IGOR'S DEFENSES WIN",
             'stat_1_label': 'JACKPOTS',
             'stat_1_var': 'active_mode_stat_1',
@@ -954,7 +954,7 @@ class VillainBookends(Mode):
             'intro_2': 'Flippers rotate the lights.',
             'intro_3': 'Hit pulsing shots.',
             'summary_title_complete': 'THE SPIDER-MEN RETURN HOME',
-            'summary_title_failed': 'PROTON TEST ACTIVATED',
+            'summary_title_failed': 'PROTON TEST FAILED',
             'stat_1_label': 'JACKPOTS',
             'stat_1_var': 'active_mode_stat_1',
             'stat_2_label': 'FINE ADJUSTMENTS',
@@ -970,9 +970,9 @@ class VillainBookends(Mode):
         #   stat_2_label: MAJOR HITS
         'von_rantenraven': {
             'title': 'BARON VON RANTENRAVEN',
-            'intro_1': 'Emperor commands all.',
-            'intro_2': 'Identity to be chosen.',
-            'intro_3': 'Stop the signal.',
+            'intro_1': 'SAUCER OPENS THE ROOF',
+            'intro_2': 'TEN FLIPS TO HIT THREE TARGETS',
+            'intro_3': 'THIRD TARGET SCORES THE SUPER',
             'summary_title_complete': 'BARON VON RANTENRAVEN DEFEATED',
             'summary_title_failed': 'BARON VON RANTENRAVEN ESCAPED',
             'stat_1_label': 'HITS',
@@ -1232,6 +1232,7 @@ class VillainBookends(Mode):
         self.current_done_event = None
         self.current_villain = None
         self.current_summary_can_skip = False
+        self.current_summary_skip_unlocked = False
         self.summary_vuk_release_pending = False
 
         self.add_mode_event_handler("villain_bookend_intro_request", self._intro_request)
@@ -1358,8 +1359,18 @@ class VillainBookends(Mode):
         else:
             self._set_machine_var("villain_bookend_line_2", "")
         self._set_machine_var("villain_bookend_line_3", f"POINTS: {points:,}")
-        footer = "HOLD BOTH FLIPPERS TO SPEED UP" if self.current_summary_can_skip else ""
-        self._set_machine_var("villain_bookend_footer", footer)
+        # Do not advertise or accept the double-flipper speedup until the
+        # summary has been visible for at least two seconds. This gives the
+        # final award callout/SFX a guaranteed minimum presentation window.
+        self.current_summary_skip_unlocked = False
+        self._set_machine_var("villain_bookend_footer", "")
+        self.delay.remove("villain_summary_skip_unlock")
+        if self.current_summary_can_skip:
+            self.delay.add(
+                name="villain_summary_skip_unlock",
+                ms=2_000,
+                callback=self._unlock_summary_skip,
+            )
 
         self.machine.events.post("villain_bookend_intro_hide")
         self.machine.events.post("villain_bookend_summary_show", villain=villain)
@@ -1401,12 +1412,23 @@ class VillainBookends(Mode):
         self.machine.events.post("villain_bookend_intro_hide")
 
     def _skip_current_bookend(self, **kwargs):
-        # Intros may always be skipped. Regular villain summaries may be sped up.
-        # Wizard/chapter-transition summaries must run their full duration so the
-        # controlled drain and chapter select setup have time to complete.
-        if self.current_stage == "intro" or (self.current_stage == "summary" and self.current_summary_can_skip):
+        # Intros may always be skipped. Regular villain summaries may be sped up
+        # only after their two-second minimum display window. Wizard/chapter-
+        # transition summaries that are marked unskippable still run full length.
+        if self.current_stage == "intro" or (
+            self.current_stage == "summary"
+            and self.current_summary_can_skip
+            and self.current_summary_skip_unlocked
+        ):
             self.delay.remove("villain_bookend_done")
+            self.delay.remove("villain_summary_skip_unlock")
             self._finish_current_bookend()
+
+    def _unlock_summary_skip(self):
+        if self.current_stage != "summary" or not self.current_summary_can_skip:
+            return
+        self.current_summary_skip_unlocked = True
+        self._set_machine_var("villain_bookend_footer", "HOLD BOTH FLIPPERS TO SPEED UP")
 
     def _summary_can_be_skipped(self, villain):
         if villain in self.UNSKIPPABLE_SUMMARY_VILLAINS:
@@ -1455,10 +1477,12 @@ class VillainBookends(Mode):
             self.machine.events.post("villain_summary_release_saucer_holds")
 
         self.machine.events.post("clear_saucers_delayed")
+        self.delay.remove("villain_summary_skip_unlock")
         self.current_stage = None
         self.current_villain = None
         self.current_done_event = None
         self.current_summary_can_skip = False
+        self.current_summary_skip_unlocked = False
 
         if done_event:
             self.machine.events.post(done_event, villain=villain)

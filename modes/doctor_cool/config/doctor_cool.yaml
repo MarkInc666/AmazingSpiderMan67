@@ -8,6 +8,8 @@
 mode:
   start_events: start_mode_doctor_cool
   stop_events:
+    - ball_will_end
+    - bonus_start
     - doctor_cool_mode_complete
     - doctor_cool_mode_completed_summary
     - ball_ended

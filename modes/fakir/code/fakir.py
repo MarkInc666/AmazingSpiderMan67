@@ -53,6 +53,7 @@ class Fakir(CaseFileMixin, Mode):
         self.mode_done = False
         self.ruby_active = False
         self.ruby_timer_started = False
+        self.ruby_seconds_remaining = 0
         self.locked_saucer = None
         self.release_pending_saucer = None
         self.current_target = None
@@ -105,6 +106,7 @@ class Fakir(CaseFileMixin, Mode):
     def mode_stop(self, **kwargs):
         self.machine.events.post("hide_mode_status")
         self.delay.remove("fakir_ruby_timer")
+        self.delay.remove("fakir_ruby_timer_tick")
         self.delay.remove("fakir_restore_base_gi")
         self.delay.remove("fakir_safety_net_after_kickout")
         self.delay.remove("fakir_finish_ruby_release")
@@ -114,6 +116,8 @@ class Fakir(CaseFileMixin, Mode):
         self.machine.events.post("final_vuk_chase_stop")
         self.machine.events.post("rooftop_diverter_close")
         self.clear_active_case_file_helpers()
+        # Catch-all: no delayed villain/wizard callback may survive into bonus.
+        self.delay.clear()
         super().mode_stop(**kwargs)
 
     def _apply_case_file_bonuses(self):
@@ -185,11 +189,31 @@ class Fakir(CaseFileMixin, Mode):
 
         self.machine.events.post("final_vuk_chase_stop")
         self.ruby_timer_started = True
+        self.ruby_seconds_remaining = self.ruby_timer_ms // 1000
+        self._update_mode_status()
         self.delay.reset(
             name="fakir_ruby_timer",
             ms=self.ruby_timer_ms,
             callback=self._ruby_timer_expired,
         )
+        self.delay.reset(
+            name="fakir_ruby_timer_tick",
+            ms=1000,
+            callback=self._ruby_timer_tick,
+        )
+
+    def _ruby_timer_tick(self, **kwargs):
+        if self._inactive() or not self.ruby_active or not self.ruby_timer_started:
+            return
+
+        self.ruby_seconds_remaining = max(0, self.ruby_seconds_remaining - 1)
+        if self.ruby_seconds_remaining > 0:
+            self._update_mode_status()
+            self.delay.reset(
+                name="fakir_ruby_timer_tick",
+                ms=1000,
+                callback=self._ruby_timer_tick,
+            )
 
     def _spinner_hit(self, **kwargs):
         if self._inactive() or not self.ruby_active:
@@ -215,6 +239,7 @@ class Fakir(CaseFileMixin, Mode):
             return
 
         self.delay.remove("fakir_ruby_timer")
+        self.delay.remove("fakir_ruby_timer_tick")
         award = self.current_jackpot_value
 
         if self.current_award_is_super:
@@ -258,6 +283,8 @@ class Fakir(CaseFileMixin, Mode):
         if self._inactive() or not self.ruby_active:
             return
 
+        self.delay.remove("fakir_ruby_timer_tick")
+        self.ruby_seconds_remaining = 0
         self.incorrect_shots += 1
         self.machine.events.post("fakir_ruby_timer_expired", target=self.current_target)
         self.machine.events.post("show_mode_message", message_mode_title="RUBY VANISHES", message_mode_subtitle="SHOOT SAUCER AGAIN")
@@ -283,6 +310,7 @@ class Fakir(CaseFileMixin, Mode):
         released_saucer = self.locked_saucer
         self.ruby_active = False
         self.ruby_timer_started = False
+        self.ruby_seconds_remaining = 0
         self.locked_saucer = None
         self.current_target = None
         self.current_award_is_super = False
@@ -415,10 +443,15 @@ class Fakir(CaseFileMixin, Mode):
     def _update_mode_status(self):
         if self.ruby_active:
             title = "HIT SUPER RUBY" if self.current_award_is_super else "HIT REVEALED RUBY"
-            value = (
+            target = (
                 "ANY UPPER TARGET"
                 if self.shot_assist_active
                 else self.TARGET_NAMES.get(self.current_target, "UPPER TARGET")
+            )
+            value = (
+                f"{target} - {self.ruby_seconds_remaining}s"
+                if self.ruby_timer_started and self.ruby_seconds_remaining > 0
+                else target
             )
         elif self.super_qualified and not self.super_collected:
             title = "SUPER READY"

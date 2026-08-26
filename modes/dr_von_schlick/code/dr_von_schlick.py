@@ -24,6 +24,10 @@ class DrVonSchlick(CaseFileMixin, Mode):
     MORE_JACKPOTS_PELLETS = 7
     BASE_PELLET_VALUE = 100_000
     BIGGER_PELLET_VALUE = 150_000
+    MORE_JACKPOTS_PELLET_6_VALUE = 200_000
+    MORE_JACKPOTS_PELLET_7_VALUE = 250_000
+    BIGGER_MORE_JACKPOTS_PELLET_6_VALUE = 300_000
+    BIGGER_MORE_JACKPOTS_PELLET_7_VALUE = 350_000
     SUPER_VALUE = 1_000_000
     SUPER_SECONDS = 20
     MORE_TIME_SUPER_SECONDS = 30
@@ -68,8 +72,13 @@ class DrVonSchlick(CaseFileMixin, Mode):
 
         self.publish_case_file_bonus_events(self.MODE_KEY)
         self.publish_active_case_file_helpers([
-            ("more_jackpots", "TWO EXTRA OIL PELLETS AVAILABLE"),
-            ("bigger_jackpots", "OIL PELLETS WORTH 150K"),
+            (
+                "more_jackpots",
+                "EXTRA PELLETS WORTH 300K / 350K"
+                if self.has_case_file("bigger_jackpots")
+                else "EXTRA PELLETS WORTH 200K / 250K",
+            ),
+            ("bigger_jackpots", "FIRST FIVE OIL PELLETS WORTH 150K"),
             ("more_time", "SUPER TIMER EXTENDED TO 30 SECONDS"),
             ("safety_net", "BALL SAVE STARTS WITH SUPER"),
             ("shot_assist", "FIRST PELLET COUNTS TWICE"),
@@ -85,7 +94,7 @@ class DrVonSchlick(CaseFileMixin, Mode):
 
         self.machine.events.post("daily_bugle_cancel_vuk_delay_eject")
         self.machine.events.post("cancel_vuk_eject_request")
-        self.machine.events.post("dr_von_schlick_gi_red")
+        self.machine.events.post("dr_von_schlick_gi_orange")
         self.machine.events.post("dr_von_schlick_clear_shot_lights")
         self._light_current_shot()
         self._schedule_move()
@@ -103,6 +112,8 @@ class DrVonSchlick(CaseFileMixin, Mode):
         self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post("hide_mode_status")
         self.clear_active_case_file_helpers()
+        # Catch-all: no delayed villain/wizard callback may survive into bonus.
+        self.delay.clear()
         super().mode_stop(**kwargs)
 
     def _shot_hit(self, shot=None, **kwargs):
@@ -116,22 +127,25 @@ class DrVonSchlick(CaseFileMixin, Mode):
             self.shot_assist_used = True
             awards = 2
 
+        award_value = 0
         for _ in range(awards):
             if self.pellets >= self.pellet_limit:
                 break
             self.pellets += 1
-            self._score(self.pellet_value)
+            pellet_award = self._pellet_value_for_number(self.pellets)
+            award_value += pellet_award
+            self._score(pellet_award)
 
         self.machine.events.post(
             "dr_von_schlick_pellet_collected",
             pellets=self.pellets,
             pellet_limit=self.pellet_limit,
-            value=self.pellet_value * awards,
+            value=award_value,
         )
         self._show_message(
             "OIL PELLET",
             f"{self.pellets} / {self.pellet_limit}",
-            self.pellet_value * awards,
+            award_value,
         )
 
         if self.pellets >= self.PELLETS_TO_SUPER and self.phase == "pellets":
@@ -144,6 +158,23 @@ class DrVonSchlick(CaseFileMixin, Mode):
             self._advance_shot()
             self._schedule_move()
         self._sync_vars()
+
+    def _pellet_value_for_number(self, pellet_number):
+        """Return the value for a specific Oil Pellet in the current helper state."""
+        bigger = self.has_case_file("bigger_jackpots")
+        if pellet_number == 6 and self.has_case_file("more_jackpots"):
+            return (
+                self.BIGGER_MORE_JACKPOTS_PELLET_6_VALUE
+                if bigger
+                else self.MORE_JACKPOTS_PELLET_6_VALUE
+            )
+        if pellet_number >= 7 and self.has_case_file("more_jackpots"):
+            return (
+                self.BIGGER_MORE_JACKPOTS_PELLET_7_VALUE
+                if bigger
+                else self.MORE_JACKPOTS_PELLET_7_VALUE
+            )
+        return self.BIGGER_PELLET_VALUE if bigger else self.BASE_PELLET_VALUE
 
     @property
     def current_shot(self):

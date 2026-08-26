@@ -313,6 +313,11 @@ class Skymaster(CaseFileMixin, Mode):
         if self.has_case_file("more_jackpots"):
             self.machine.events.post("skymaster_left_super_ready")
         self._show_super_status()
+        self.machine.events.post(
+            "show_mode_status",
+            mode_status_title="SECONDS LEFT",
+            mode_status_value=self.seconds_left,
+        )
         self._schedule_super_tick()
 
     def _center_web_hit(self, **kwargs):
@@ -338,6 +343,7 @@ class Skymaster(CaseFileMixin, Mode):
             f"skymaster_{web}_super_collected", web=web, value=self.super_value
         )
         self._show_jackpot("SKYMASTER SUPER", self.super_value, f"{web.upper()} WEB")
+        self.machine.events.post("play_mode_super_jackpot")
         self._sync_vars()
 
         required = {"center"}
@@ -376,7 +382,11 @@ class Skymaster(CaseFileMixin, Mode):
             else:
                 self._fail_mode()
             return
-        self._show_super_status()
+        self.machine.events.post(
+            "update_mode_status",
+            mode_status_title="SECONDS LEFT",
+            mode_status_value=self.seconds_left,
+        )
         self._schedule_super_tick()
 
     def _complete_mode(self, **kwargs):

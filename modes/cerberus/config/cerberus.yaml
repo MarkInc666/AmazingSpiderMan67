@@ -3,6 +3,8 @@
 mode:
   start_events: start_mode_cerberus
   stop_events:
+    - ball_will_end
+    - bonus_start
     - cerberus_mode_complete
     - cerberus_mode_completed_summary
     # Stop before the end-of-ball bonus starts. Waiting for ball_ended leaves
@@ -167,3 +169,13 @@ shows:
         l_upper_left: off
         l_upper_middle: off
         l_upper_right: off
+
+sound_player:
+  play_mode_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
+  play_mode_super_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects

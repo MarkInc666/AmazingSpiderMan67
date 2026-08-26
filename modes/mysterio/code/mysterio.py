@@ -78,6 +78,8 @@ class Mysterio(CaseFileMixin, Mode):
             self.delay.remove(self.COMPLETION_DELAY_NAME)
         self.machine.events.post("rooftop_diverter_close")
         self.clear_active_case_file_helpers()
+        # Catch-all: no delayed villain/wizard callback may survive into bonus.
+        self.delay.clear()
         super().mode_stop(**kwargs)
 
     def _rules_active(self):

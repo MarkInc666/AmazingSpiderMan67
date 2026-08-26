@@ -7,6 +7,8 @@
 mode:
   start_events: start_mode_invasion_from_everywhere
   stop_events:
+    - ball_will_end
+    - bonus_start
     - stop_mode_invasion_from_everywhere
     - ball_ended
   code: invasion_from_everywhere.InvasionFromEverywhere
@@ -104,3 +106,13 @@ light_player:
 
   mode_invasion_from_everywhere_stopping:
     gi: E0E0E0
+
+sound_player:
+  play_mode_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
+  play_mode_super_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects

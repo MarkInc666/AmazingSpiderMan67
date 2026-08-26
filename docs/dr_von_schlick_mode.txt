@@ -7,7 +7,7 @@ Implemented. Needs on-machine playtest.
 
 CORE FLOW
 ---------
-1. Follow the moving green shot and collect five Oil Pellets.
+1. Follow the moving flashing green shot and collect five Oil Pellets.
 2. The rooftop gate opens and the VUK lights for a 1,000,000 Super Jackpot.
 3. The shared Master Vine route chase runs from the lower spinner through the
    ramp to the VUK until the shot is made or the timer expires.
@@ -25,16 +25,21 @@ An unqualified VUK hit still ejects normally.
 
 SCORING
 -------
-- Oil Pellet: 100,000.
+- Oil Pellets 1-5: 100,000 each.
+- Bigger Jackpots: Oil Pellets 1-5 score 150,000 each.
+- With More Jackpots, optional Pellet 6 scores 200,000 and Pellet 7 scores 250,000.
+- With More Jackpots + Bigger Jackpots, Pellet 6 scores 300,000 and Pellet 7 scores 350,000.
 - Reactor Flood Super Jackpot: 1,000,000.
 
 CASE FILES
 ----------
 More Jackpots
   Two additional Oil Pellets remain available after the Super is qualified.
+  Pellet 6 is worth 200,000 and Pellet 7 is worth 250,000.
 
 Bigger Jackpots
-  Oil Pellets score 150,000.
+  The first five Oil Pellets score 150,000. With More Jackpots active too,
+  Pellet 6 is worth 300,000 and Pellet 7 is worth 350,000.
 
 More Time
   Super timer is 30 seconds instead of 20.
@@ -44,6 +49,12 @@ Safety Net
 
 Shot Assist
   The first collected Oil Pellet counts twice.
+
+LIGHTING
+--------
+- Base GI is E0E040.
+- The current moving shot flashes green at 250ms on / 250ms off.
+- The reactor flood remains the eight-band blue rise.
 
 PLAYTEST CHECKLIST
 ------------------

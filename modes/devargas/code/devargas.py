@@ -131,6 +131,8 @@ class DeVargas(CaseFileMixin, Mode):
         self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post("hide_mode_status")
         self.clear_active_case_file_helpers()
+        # Catch-all: no delayed villain/wizard callback may survive into bonus.
+        self.delay.clear()
         super().mode_stop(**kwargs)
 
     def _register_handlers(self):

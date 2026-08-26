@@ -89,6 +89,8 @@ class Plotter(CaseFileMixin, Mode):
         self.machine.events.post("final_vuk_chase_stop")
         self.machine.events.post("rooftop_diverter_close")
         self.clear_active_case_file_helpers()
+        # Catch-all: no delayed villain/wizard callback may survive into bonus.
+        self.delay.clear()
         super().mode_stop(**kwargs)
 
     def _ball_ending(self, **kwargs):

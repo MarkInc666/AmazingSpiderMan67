@@ -9,6 +9,8 @@
 mode:
   start_events: start_mode_doctor_atlantean
   stop_events:
+    - ball_will_end
+    - bonus_start
     - doctor_atlantean_mode_complete
     - doctor_atlantean_mode_completed_summary
     - ball_ended
@@ -187,3 +189,13 @@ shows:
       lights: {l_gi_a: "00FF00"}
     - duration: 500ms
       lights: {l_gi_a: "004000"}
+
+sound_player:
+  play_mode_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
+  play_mode_super_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects

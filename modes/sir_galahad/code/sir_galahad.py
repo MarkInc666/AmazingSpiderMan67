@@ -15,7 +15,7 @@ class SirGalahad(CaseFileMixin, Mode):
     BASE_WINDOW_SECONDS = 8
     MORE_TIME_WINDOW_SECONDS = 12
     EXIT_SCORE = 100_000
-    COLLAPSE_STEP_MS = 500
+    COLLAPSE_STEP_MS = 30
     VUK_EJECT_MS = 750
     COMPLETION_HOLD_MS = 2_000
 
@@ -36,9 +36,12 @@ class SirGalahad(CaseFileMixin, Mode):
         5: 100_000,
     }
 
-    COLLAPSE_GROUPS = {
-        "left": ((2,), (1, 3)),
-        "right": ((3,), (2, 4), (1, 5)),
+    # Rapid center-outward collapse order after a joust target is collected.
+    # Already-down targets are skipped; each remaining target falls 30 ms after
+    # the previous one rather than dropping in simultaneous groups.
+    COLLAPSE_ORDER = {
+        "left": (2, 1, 3),
+        "right": (3, 2, 4, 1, 5),
     }
     CENTER_TARGET = {"left": 2, "right": 3}
 
@@ -133,6 +136,8 @@ class SirGalahad(CaseFileMixin, Mode):
         self.machine.events.post("hide_mode_status")
         self.machine.events.post("cancel_mode_message_reminder")
         self.clear_active_case_file_helpers()
+        # Catch-all: no delayed villain/wizard callback may survive into bonus.
+        self.delay.clear()
         super().mode_stop(**kwargs)
 
     def _clear_delays(self):
@@ -338,23 +343,26 @@ class SirGalahad(CaseFileMixin, Mode):
         if self.mode_done or self.phase != "collapse" or self.active_bank is None:
             return
 
-        groups = self.COLLAPSE_GROUPS[self.active_bank]
-        if stage >= len(groups):
+        order = self.COLLAPSE_ORDER[self.active_bank]
+
+        # Skip targets that are already down (including the shot the player just
+        # made) so every remaining physical knockdown is separated by 30 ms.
+        while stage < len(order) and order[stage] in self.drops_down:
+            stage += 1
+
+        if stage >= len(order):
             self._finish_round()
             return
 
-        targets = groups[stage]
-        for target in targets:
-            if target in self.drops_down:
-                continue
-            self.drops_down.add(target)
-            self.programmatic_drops.add((self.active_bank, target))
-            self.machine.drop_targets[f"dt_{self.active_bank}_{target}"].knockdown()
+        target = order[stage]
+        self.drops_down.add(target)
+        self.programmatic_drops.add((self.active_bank, target))
+        self.machine.drop_targets[f"dt_{self.active_bank}_{target}"].knockdown()
 
         self.machine.events.post(
             "sir_galahad_collapse_step",
             bank=self.active_bank,
-            targets=",".join(str(target) for target in targets),
+            targets=str(target),
             stage=stage + 1,
             round=self.round_number,
         )

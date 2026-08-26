@@ -5,6 +5,8 @@
 mode:
   start_events: start_mode_dr_magneto
   stop_events:
+    - ball_will_end
+    - bonus_start
     - dr_magneto_mode_complete
     - dr_magneto_mode_completed_summary
     - ball_ended
@@ -195,12 +197,10 @@ shows:
       lights:
         l_gi_left_sling_upper: C060FF
         l_gi_left_sling_lower: C060FF
-        l_gi_left_lower: C060FF
     - duration: 300ms
       lights:
         l_gi_left_sling_upper: 6030A0
         l_gi_left_sling_lower: 6030A0
-        l_gi_left_lower: 6030A0
 
   dr_magneto_right_qualifier_pulse:
     - duration: 300ms
@@ -353,3 +353,13 @@ shows:
     - duration: 200ms
       lights:
         l_star: off
+
+sound_player:
+  play_mode_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
+  play_mode_super_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects

@@ -197,6 +197,8 @@ class NoahBoddy(CaseFileMixin, Mode):
         self._cancel_drop_rebuild()
         self.clear_active_case_file_helpers()
         self.machine.events.post("rooftop_diverter_close")
+        # Catch-all: no delayed villain/wizard callback may survive into bonus.
+        self.delay.clear()
         super().mode_stop(**kwargs)
 
     def _apply_case_file_bonuses(self):

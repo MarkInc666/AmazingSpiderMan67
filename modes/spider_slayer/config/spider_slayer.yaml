@@ -3,6 +3,8 @@
 mode:
   start_events: start_mode_spider_slayer
   stop_events:
+    - ball_will_end
+    - bonus_start
     - spider_slayer_mode_complete
     - spider_slayer_mode_completed_summary
     - ball_ended
@@ -246,3 +248,13 @@ shows:
       lights: {l_gi_left_upper: 30FF60}
     - duration: 300ms
       lights: {l_gi_left_upper: off}
+
+sound_player:
+  play_mode_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
+  play_mode_super_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects

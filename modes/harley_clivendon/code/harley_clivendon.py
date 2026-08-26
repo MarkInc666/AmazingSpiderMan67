@@ -73,6 +73,10 @@ class HarleyClivendon(CaseFileMixin, Mode):
 
         self.machine.events.post("reset_drops")
         self.machine.events.post("clear_saucers_delayed")
+        # Harley is a two-ball multiball from mode start.  The multiball
+        # device listens for this event and adds Ball 2, with the existing
+        # multiball_autoplunge_active flag handling the delayed autofire.
+        self.machine.events.post("harley_start_multiball")
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("harley_area_lights_clear")
         self.machine.events.post("show_mode_message_long", message_mode_title="HYPNOTIC HOLD", message_mode_subtitle="LOCK A BALL - LIGHT 4 AREAS")

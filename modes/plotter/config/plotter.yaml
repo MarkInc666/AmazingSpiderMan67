@@ -3,6 +3,8 @@
 mode:
   start_events: start_mode_plotter
   stop_events:
+    - ball_will_end
+    - bonus_start
     - plotter_mode_complete
     - plotter_mode_completed_summary
     - ball_ended
@@ -255,3 +257,13 @@ light_player:
 
   mode_plotter_stopping:
     gi: E0E0E0
+
+sound_player:
+  play_mode_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
+  play_mode_super_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects

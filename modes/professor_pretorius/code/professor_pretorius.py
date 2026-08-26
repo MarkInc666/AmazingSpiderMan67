@@ -18,6 +18,8 @@ class ProfessorPretorius(CaseFileMixin, Mode):
     BIGGER_REACTOR_HIT_VALUE = 150_000
     COOLING_VALUE = 50_000
     SUPER_VALUE = 500_000
+    SUPER_TIME_MS = 15_000
+    MORE_TIME_SUPER_MS = 20_000
 
     OVERHEAT_TEMPERATURE = 5
     OVERHEAT_GRACE_MS = 4_000
@@ -41,6 +43,8 @@ class ProfessorPretorius(CaseFileMixin, Mode):
         self.cooling_spins = 0
         self.super_jackpots = 0
         self.grace_active = False
+        self.overheat_seconds_remaining = 0
+        self.super_seconds_remaining = 0
         self.shot_assist_used = False
         self.pop_hits = {"left_pop": 0, "right_pop": 0}
         self.left_drops = set()
@@ -62,6 +66,11 @@ class ProfessorPretorius(CaseFileMixin, Mode):
             if self.has_case_file("more_time")
             else self.OVERHEAT_GRACE_MS
         )
+        self.super_time_ms = (
+            self.MORE_TIME_SUPER_MS
+            if self.has_case_file("more_time")
+            else self.SUPER_TIME_MS
+        )
 
         player = self.machine.game.player
         player[f"{self.MODE_KEY}_state"] = 1
@@ -71,7 +80,7 @@ class ProfessorPretorius(CaseFileMixin, Mode):
         self.publish_active_case_file_helpers([
             ("more_jackpots", "ALL FIVE RIGHT DROPS SCORE"),
             ("bigger_jackpots", "REACTOR HITS WORTH 150K"),
-            ("more_time", "OVERHEAT GRACE EXTENDED TO 8 SECONDS"),
+            ("more_time", "OVERHEAT 8s / REACTOR SUPER 20s"),
             ("safety_net", "10 SECOND OPENING BALL SAVE"),
             ("shot_assist", "FIRST LEFT DROP ADDS A RANDOM DROP"),
         ])
@@ -249,24 +258,53 @@ class ProfessorPretorius(CaseFileMixin, Mode):
         if self.temperature < self.OVERHEAT_TEMPERATURE or self.grace_active or self.mode_done:
             return
         self.grace_active = True
+        self.overheat_seconds_remaining = self.overheat_grace_ms // 1000
         self.delay.reset(
             name="professor_pretorius_overheat_grace",
             ms=self.overheat_grace_ms,
             callback=self._overheat_grace_expired,
         )
-        seconds = self.overheat_grace_ms // 1000
-        self.machine.events.post("professor_pretorius_overheat_started", seconds=seconds)
-        self._show_message("REACTOR OVERHEATING", f"COOL WITH SPINNER - {seconds} SECONDS", reminder=True)
+        self.delay.reset(
+            name="professor_pretorius_overheat_status_tick",
+            ms=1000,
+            callback=self._overheat_status_tick,
+        )
+        self.machine.events.post(
+            "professor_pretorius_overheat_started",
+            seconds=self.overheat_seconds_remaining,
+        )
+        self._show_message(
+            "REACTOR OVERHEATING",
+            f"COOL WITH SPINNER - {self.overheat_seconds_remaining} SECONDS",
+            reminder=True,
+        )
+        self._update_status()
+
+    def _overheat_status_tick(self):
+        if self.mode_done or not self.grace_active:
+            return
+        self.overheat_seconds_remaining = max(0, self.overheat_seconds_remaining - 1)
+        if self.overheat_seconds_remaining > 0:
+            self._update_status()
+            self.delay.reset(
+                name="professor_pretorius_overheat_status_tick",
+                ms=1000,
+                callback=self._overheat_status_tick,
+            )
 
     def _cancel_overheat_grace(self):
         self.grace_active = False
+        self.overheat_seconds_remaining = 0
         self.delay.remove("professor_pretorius_overheat_grace")
+        self.delay.remove("professor_pretorius_overheat_status_tick")
         self.machine.events.post("professor_pretorius_overheat_cancelled")
 
     def _overheat_grace_expired(self):
         if self.mode_done:
             return
         self.grace_active = False
+        self.overheat_seconds_remaining = 0
+        self.delay.remove("professor_pretorius_overheat_status_tick")
         if self.temperature >= self.OVERHEAT_TEMPERATURE:
             self.machine.events.post("professor_pretorius_overheated")
             self._show_message("REACTOR OVERHEATED", "PROFESSOR PRETORIUS ESCAPED")
@@ -279,10 +317,37 @@ class ProfessorPretorius(CaseFileMixin, Mode):
         self.machine.events.post("rooftop_diverter_open")
         self.machine.events.post("professor_pretorius_super_ready")
         self.machine.events.post("final_vuk_chase_start")
+        self.super_seconds_remaining = self.super_time_ms // 1000
+        self.delay.reset(
+            name="professor_pretorius_super_tick",
+            ms=1000,
+            callback=self._super_tick,
+        )
         self._update_spinner_insert()
-        self._show_message("REACTOR SUPER READY", "SHOOT THE VUK", value=self.SUPER_VALUE, reminder=True)
+        self._show_message(
+            "REACTOR SUPER READY",
+            f"SHOOT THE VUK - {self.super_seconds_remaining} SECONDS",
+            value=self.SUPER_VALUE,
+            reminder=True,
+        )
         self._update_status()
         self._sync_vars()
+
+    def _super_tick(self):
+        if self.mode_done or self.phase != "super":
+            return
+        self.super_seconds_remaining = max(0, self.super_seconds_remaining - 1)
+        if self.super_seconds_remaining <= 0:
+            self.machine.events.post("professor_pretorius_super_expired")
+            self._show_message("REACTOR SUPER EXPIRED", "PROFESSOR PRETORIUS ESCAPED")
+            self._fail_mode()
+            return
+        self._update_status()
+        self.delay.reset(
+            name="professor_pretorius_super_tick",
+            ms=1000,
+            callback=self._super_tick,
+        )
 
     def _vuk_hit(self, **kwargs):
         self.machine.events.post("daily_bugle_cancel_vuk_delay_eject")
@@ -297,6 +362,7 @@ class ProfessorPretorius(CaseFileMixin, Mode):
         self._score(self.SUPER_VALUE)
         self.machine.events.post("professor_pretorius_super_collected", value=self.SUPER_VALUE)
         self._show_jackpot("REACTOR SUPER", self.SUPER_VALUE)
+        self.machine.events.post("play_mode_super_jackpot")
         self.machine.events.post("villain_summary_hold_vuk_until_done")
         self._complete_mode()
 
@@ -348,19 +414,27 @@ class ProfessorPretorius(CaseFileMixin, Mode):
         if self.mode_done:
             return
         if self.phase == "super":
+            value = f"VUK {self.super_seconds_remaining}s / TEMP {self.temperature}"
+            if self.grace_active and self.overheat_seconds_remaining > 0:
+                value += f" / OVERHEAT {self.overheat_seconds_remaining}s"
             self.machine.events.post(
                 "show_mode_status",
                 mode_status_title="REACTOR SUPER READY",
-                mode_status_value=f"VUK / TEMP {self.temperature}",
+                mode_status_value=value,
             )
             return
+        value = (
+            f"{min(self.reactor_hits, self.TOTAL_REACTOR_HITS)} / "
+            f"{self.TOTAL_REACTOR_HITS} - TEMP {self.temperature}"
+        )
+        title = "PRETORIUS REACTOR"
+        if self.grace_active and self.overheat_seconds_remaining > 0:
+            title = "COOL REACTOR"
+            value += f" - {self.overheat_seconds_remaining}s"
         self.machine.events.post(
             "show_mode_status",
-            mode_status_title="PRETORIUS REACTOR",
-            mode_status_value=(
-                f"{min(self.reactor_hits, self.TOTAL_REACTOR_HITS)} / "
-                f"{self.TOTAL_REACTOR_HITS} - TEMP {self.temperature}"
-            ),
+            mode_status_title=title,
+            mode_status_value=value,
         )
 
     def _show_message(self, title, subtitle="", value="", reminder=False):
@@ -384,4 +458,6 @@ class ProfessorPretorius(CaseFileMixin, Mode):
 
     def _clear_delays(self):
         self.delay.remove("professor_pretorius_overheat_grace")
+        self.delay.remove("professor_pretorius_overheat_status_tick")
+        self.delay.remove("professor_pretorius_super_tick")
         self.delay.remove("professor_pretorius_shot_assist")

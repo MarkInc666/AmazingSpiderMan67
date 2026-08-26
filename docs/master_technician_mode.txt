@@ -49,11 +49,16 @@ DISPLAY AND LIGHTING
 - The Master Technician widget uses the existing Master Technician portrait
   instead of requiring a separate master_technician_1.ogv video file.
 - Spinner awards, 50,000 web jackpots, short circuits, Safety Net use, and the
-  Shot Assist final-target hold each produce player-facing messages.
-- The spinner insert and both bank GI groups pulse faster at each level from one
+  Shot Assist final-target hold each produce player-facing messages. The build
+  reminder reads BUILD THE SPINNER / DROP TARGETS INCREASE VALUE through six
+  targets down, then switches at seven down to SPINNER MAXED / SHOOT SPINNER -
+  AVOID LAST TARGET.
+- Both bank GI groups pulse immediately from mode start. After the first drop,
+  the existing spinner-and-bank level pulse takes over and increases in speed
   through seven targets down.
-- Mode GI uses a cool blue base. At zero down, the spinner and both bank GI
-  groups are explicitly off. Each drop gives a brief pale-blue bank flash, and
+- Mode GI uses a cool blue base. At zero down, the spinner insert remains off
+  while both bank GI groups pulse to show the build shots. Each drop gives a
+  brief pale-blue bank flash, and
   each spinner award gives a brief yellow/white spinner flash before the current
   level pulse resumes.
 - An eight-target short circuit flashes the bank GI red. Safety Net cancellation

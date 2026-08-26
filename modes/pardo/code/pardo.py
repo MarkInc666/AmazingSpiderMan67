@@ -8,21 +8,22 @@ import random
 class Pardo(CaseFileMixin, Mode):
     """Pardo: Hypnosis Reel.
 
-    Five-chance illusion puzzle for the Hypnosis Reel.
+    Hypnosis Reel choice puzzle.
     Each round lights three identical-looking choices. The spinner briefly
-    reveals the real shot. Three correct choices defeat Pardo. If the available
-    chances expire first, Pardo escapes.
+    reveals the real shot. The first wrong choice is removed and reduces the
+    Jackpot; a second wrong choice ends that round. Four correct rounds defeat
+    Pardo before the available rounds expire.
     """
 
-    BASE_ROUNDS = 5
+    BASE_ROUNDS = 4
     EXTRA_ROUNDS = 2
-    CORRECT_SHOTS_TO_WIN = 3
+    CORRECT_SHOTS_TO_WIN = 4
 
-    BASE_JACKPOT_VALUE = 100_000
-    JACKPOT_STEP = 50_000
-    BIGGER_BASE_JACKPOT_VALUE = 150_000
-    BIGGER_JACKPOT_STEP = 75_000
-    BAD_SHOT_SCORE = 10_000
+    BASE_JACKPOT_VALUES = (200_000, 300_000, 400_000, 500_000)
+    BIGGER_JACKPOT_VALUES = (300_000, 450_000, 600_000, 750_000)
+    JACKPOT_MISS_PENALTY = 100_000
+    BIGGER_JACKPOT_MISS_PENALTY = 150_000
+    BAD_SHOT_SCORE = 20_000
 
     NORMAL_REVEAL_MS = 4_000
     MORE_TIME_REVEAL_MS = 6_000
@@ -58,14 +59,16 @@ class Pardo(CaseFileMixin, Mode):
         self.first_round_all_good = False
         self.reveal_flash_on = False
         self.reveal_ms = self.NORMAL_REVEAL_MS
-        self.jackpot_value = self.BASE_JACKPOT_VALUE
-        self.jackpot_step = self.JACKPOT_STEP
+        self.jackpot_values = self.BASE_JACKPOT_VALUES
+        self.jackpot_miss_penalty = self.JACKPOT_MISS_PENALTY
+        self.jackpot_value = self.jackpot_values[0]
+        self.wrong_this_round = 0
 
         self.case_files = self.get_case_file_bonuses()
         self._apply_case_file_bonuses()
         self.publish_case_file_bonus_events("pardo")
         self.publish_active_case_file_helpers([
-            ("more_jackpots", "TWO EXTRA HYPNOSIS CHANCES"),
+            ("more_jackpots", "TWO EXTRA HYPNOSIS ROUNDS"),
             ("bigger_jackpots", "BIGGER HYPNOSIS JACKPOTS"),
             ("more_time", "LONGER SPINNER REVEAL"),
             ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
@@ -94,6 +97,8 @@ class Pardo(CaseFileMixin, Mode):
         self.machine.events.post("pardo_all_lights_off")
         self.machine.events.post("rooftop_diverter_close")
         self.clear_active_case_file_helpers()
+        # Catch-all: no delayed villain/wizard callback may survive into bonus.
+        self.delay.clear()
         super().mode_stop(**kwargs)
 
     def _apply_case_file_bonuses(self):
@@ -101,8 +106,9 @@ class Pardo(CaseFileMixin, Mode):
             self.rounds_to_play += self.EXTRA_ROUNDS
 
         if self.has_case_file("bigger_jackpots"):
-            self.jackpot_value = self.BIGGER_BASE_JACKPOT_VALUE
-            self.jackpot_step = self.BIGGER_JACKPOT_STEP
+            self.jackpot_values = self.BIGGER_JACKPOT_VALUES
+            self.jackpot_miss_penalty = self.BIGGER_JACKPOT_MISS_PENALTY
+            self.jackpot_value = self.jackpot_values[0]
 
         if self.has_case_file("more_time"):
             self.reveal_ms = self.MORE_TIME_REVEAL_MS
@@ -132,6 +138,9 @@ class Pardo(CaseFileMixin, Mode):
         self.round_number += 1
         self.current_groups = random.sample(self.SHOT_GROUPS, 3)
         self.correct_group = random.choice(self.current_groups)
+        self.wrong_this_round = 0
+        value_index = min(self.round_number - 1, len(self.jackpot_values) - 1)
+        self.jackpot_value = self.jackpot_values[value_index]
 
         self._sync_player_vars()
         self.machine.events.post(
@@ -155,18 +164,26 @@ class Pardo(CaseFileMixin, Mode):
         all_good = self.first_round_all_good and self.round_number == 1
         is_correct = all_good or group == self.correct_group
 
-        self.round_awarding = True
         self.delay.remove("pardo_hide_reveal")
         self.delay.remove("pardo_reveal_flash")
 
         if is_correct:
+            self.round_awarding = True
             self._collect_jackpot(group)
-        else:
-            self._collect_bad_shot(group)
-
-        if self.mode_done:
+            if self.mode_done:
+                return
+            self.machine.events.post("pardo_all_lights_off")
+            self._start_next_round()
             return
 
+        if self.wrong_this_round == 0:
+            self._collect_first_bad_shot(group)
+            return
+
+        self.round_awarding = True
+        self._collect_second_bad_shot(group)
+        if self.mode_done:
+            return
         self.machine.events.post("pardo_all_lights_off")
         self._start_next_round()
 
@@ -182,27 +199,51 @@ class Pardo(CaseFileMixin, Mode):
         self.machine.events.post(f"pardo_correct_{group}")
         self._schedule_result_gi_restore()
         self.machine.events.post("show_mode_jackpot", message_mode_title="HYPNOSIS JACKPOT", message_mode_subtitle=group.replace("_", " ").upper(), message_mode_value=self.jackpot_value)
-        self.jackpot_value += self.jackpot_step
         self._sync_player_vars()
         if self.correct_shots >= self.CORRECT_SHOTS_TO_WIN:
             self._complete_mode()
 
-    def _collect_bad_shot(self, group):
+    def _collect_first_bad_shot(self, group):
+        self._score(self.BAD_SHOT_SCORE)
+        self.incorrect_shots += 1
+        self.wrong_this_round = 1
+        self.jackpot_value = max(0, self.jackpot_value - self.jackpot_miss_penalty)
+        self.current_groups.remove(group)
+        self.machine.events.post(
+            "pardo_incorrect_shot",
+            group=group,
+            incorrect_shots=self.incorrect_shots,
+            round=self.round_number,
+            total_rounds=self.rounds_to_play,
+        )
+        self.machine.events.post(f"pardo_incorrect_{group}")
+        self._schedule_result_gi_restore()
+        self.machine.events.post(
+            "show_mode_message",
+            message_mode_title="WRONG SHOT - 20,000",
+            message_mode_subtitle="2 SHOTS REMAIN",
+            message_mode_value=self.jackpot_value,
+        )
+        self._sync_player_vars()
+        self._show_hidden_round()
+        self._update_rooftop_diverter()
+
+    def _collect_second_bad_shot(self, group):
         self._score(self.BAD_SHOT_SCORE)
         self.incorrect_shots += 1
         self.machine.events.post(
             "pardo_incorrect_shot",
             group=group,
             incorrect_shots=self.incorrect_shots,
-            chances_used=self.round_number,
-            total_chances=self.rounds_to_play,
+            round=self.round_number,
+            total_rounds=self.rounds_to_play,
         )
         self.machine.events.post(f"pardo_incorrect_{group}")
         self._schedule_result_gi_restore()
         self.machine.events.post(
             "show_mode_message",
-            message_mode_title="WRONG SHOT",
-            message_mode_subtitle=f"CHANCE {self.round_number} OF {self.rounds_to_play}",
+            message_mode_title="WRONG SHOT - 20,000",
+            message_mode_subtitle=f"ROUND {self.round_number} LOST",
         )
         self._sync_player_vars()
 
@@ -315,7 +356,7 @@ class Pardo(CaseFileMixin, Mode):
         self._update_mode_status()
 
     def _update_mode_status(self):
-        title = "CORRECT / CHANCE"
+        title = "CORRECT / ROUND"
         value = f"{self.correct_shots}/{self.CORRECT_SHOTS_TO_WIN} / {self.round_number}/{self.rounds_to_play}"
         self.machine.events.post("update_mode_status", mode_status_title=title, mode_status_value=value)
 

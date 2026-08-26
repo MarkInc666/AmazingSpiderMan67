@@ -7,6 +7,8 @@
 mode:
   start_events: start_mode_nature_strikes_back
   stop_events:
+    - ball_will_end
+    - bonus_start
     - stop_mode_nature_strikes_back
     - ball_ended
   code: nature_strikes_back.NatureStrikesBack
@@ -103,3 +105,13 @@ light_player:
 
   mode_nature_strikes_back_stopping:
     gi: E0E0E0
+
+sound_player:
+  play_mode_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
+  play_mode_super_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects

@@ -328,6 +328,7 @@ class Scorpion(CaseFileMixin, Mode):
             self.scorpion_biggest_jackpot = max(self.scorpion_biggest_jackpot, value)
             self._sync_player_vars()
             self.machine.events.post("scorpion_sting_success")
+            self.machine.events.post("play_mode_jackpot")
             self.machine.events.post(
                 "show_mode_jackpot",
                 message_mode_title="SCORPION STING",

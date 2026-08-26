@@ -1,12 +1,15 @@
 #config_version=6
 
 # Pardo: Hypnosis Reel.
-# Each chance presents three choices. Spinner reveals which shot is real.
-# Three correct shots within five chances defeats Pardo.
+# Each round presents three choices. Spinner reveals which shot is real.
+# First wrong removes that choice and reduces the Jackpot; second wrong ends the round.
+# Four correct rounds defeat Pardo.
 
 mode:
   start_events: start_mode_pardo
   stop_events:
+    - ball_will_end
+    - bonus_start
     - pardo_mode_complete
     - pardo_mode_completed_summary
     - ball_ended
@@ -333,3 +336,13 @@ shows:
     - duration: 250ms
       lights:
         l_spinner: off
+
+sound_player:
+  play_mode_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
+  play_mode_super_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects

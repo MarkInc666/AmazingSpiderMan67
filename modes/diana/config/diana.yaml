@@ -8,6 +8,8 @@
 mode:
   start_events: start_mode_diana
   stop_events:
+    - ball_will_end
+    - bonus_start
     - diana_mode_complete
     - diana_mode_completed_summary
     - ball_ended
@@ -191,3 +193,13 @@ light_player:
     l_5bank_5: off
     l_gi_5bank_lower: off
     l_gi_5bank_upper: off
+
+sound_player:
+  play_mode_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
+  play_mode_super_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects

@@ -25,6 +25,16 @@ show_player:
     shared_final_vuk_chase:
       action: stop
 
+  center_web_chase_start:
+    shared_center_web_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: "FFFFFF"
+  center_web_chase_stop:
+    shared_center_web_chase:
+      action: stop
+
   s_leaf_next_to_1_active:
     switch_feedback_single:
       loops: 1
@@ -343,6 +353,34 @@ shows:
         l_gi_left_upper: off
         l_gi_ramp: off
         l_gi_top_1: (color)
+
+  # Shared bottom-to-top center-web approach chase. Modes select the color
+  # with the show token; current rollout uses white.
+  shared_center_web_chase:
+    - duration: 250ms
+      lights:
+        l_mid_multibonus: (color)
+        l_advance_multiplier: off
+        l_special: off
+        l_mid_web_target: off
+    - duration: 250ms
+      lights:
+        l_mid_multibonus: off
+        l_advance_multiplier: (color)
+        l_special: off
+        l_mid_web_target: off
+    - duration: 250ms
+      lights:
+        l_mid_multibonus: off
+        l_advance_multiplier: off
+        l_special: (color)
+        l_mid_web_target: off
+    - duration: 250ms
+      lights:
+        l_mid_multibonus: off
+        l_advance_multiplier: off
+        l_special: off
+        l_mid_web_target: (color)
 
   switch_feedback_single:
     - duration: 100ms

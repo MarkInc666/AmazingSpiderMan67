@@ -7,6 +7,8 @@
 mode:
   start_events: start_mode_von_rantenraven
   stop_events:
+    - ball_will_end
+    - bonus_start
     - von_rantenraven_mode_complete
     - von_rantenraven_mode_completed_summary
     - ball_ended
@@ -225,3 +227,13 @@ shows:
         l_upper_left: off
         l_upper_middle: off
         l_upper_right: off
+
+sound_player:
+  play_mode_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
+  play_mode_super_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects

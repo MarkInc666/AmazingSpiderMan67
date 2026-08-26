@@ -6,6 +6,8 @@
 mode:
   start_events: start_mode_devargas
   stop_events:
+    - ball_will_end
+    - bonus_start
     - devargas_mode_complete
     - devargas_mode_completed_summary
     - ball_ended
@@ -357,3 +359,13 @@ shows:
       lights: {l_gi_a: F0F060}
     - duration: 500ms
       lights: {l_gi_a: "303000"}
+
+sound_player:
+  play_mode_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
+  play_mode_super_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects

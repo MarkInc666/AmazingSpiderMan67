@@ -99,6 +99,8 @@ class doc_ock(CaseFileMixin, Mode):
                 self.delay.remove(name)
         self.timed_release_running = False
         self.clear_active_case_file_helpers()
+        # Catch-all: no delayed villain/wizard callback may survive into bonus.
+        self.delay.clear()
         super().mode_stop(**kwargs)
 
     def _rules_active(self):

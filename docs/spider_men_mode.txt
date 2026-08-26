@@ -68,19 +68,13 @@ CASE FILES
 
 LIGHTING
 
-Alignment lights pulse/hold red. GI begins dim yellow and grows brighter after
-each completed position:
+Alignment lights pulse/hold red. The full playfield GI uses the shared physical
+height bands 1-8 as a continuous bottom-to-top chase. All bands are blue while
+one band is red; the red band advances from band 1 through band 8 every 250ms
+and then repeats.
 
-- 0: 303000
-- 1: 505000
-- 2: 707000
-- 3: 909000
-- 4: B0B000
-- 5: D0D000
-- 6: FFFF00
-
-During the optional Super window, the six positions remain solid red, GI stays
-at full yellow, and the center web flashes red.
+During the optional Super window, the six positions remain solid red, the
+blue/red band chase continues, and the center web flashes red.
 
 
 SUMMARY

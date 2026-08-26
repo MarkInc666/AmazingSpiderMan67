@@ -11,7 +11,7 @@ class Fiddler(CaseFileMixin, Mode):
     MODE_KEY = "fiddler"
     DISPLAY_NAME = "FIDDLER"
 
-    MAX_PATTERN_LENGTH = 5
+    MAX_PATTERN_LENGTH = 4
     BASE_FAILURE_LIMIT = 3
     MORE_JACKPOTS_FAILURE_LIMIT = 4
     BASE_NOTE_VALUE = 250_000
@@ -22,7 +22,8 @@ class Fiddler(CaseFileMixin, Mode):
     NOTE_FLASH_TOTAL_MS = 1_000
     NOTE_GAP_MS = 500
     PATTERN_REPEAT_PAUSE_MS = 2_000
-    PATTERN_REPEATS = 2
+    FRESH_PATTERN_REPEATS = 2
+    REMINDER_PATTERN_REPEATS = 1
     FEEDBACK_FLASH_MS = 1_000
 
     SHOTS = ("left_web", "left_bank", "right_pop", "right_bank")
@@ -77,6 +78,7 @@ class Fiddler(CaseFileMixin, Mode):
         self._watch_notes = []
         self._watch_repeat = 0
         self._watch_note_index = 0
+        self._watch_repeats_target = self.FRESH_PATTERN_REPEATS
 
         for shot in self.SHOTS:
             self.add_mode_event_handler(
@@ -114,7 +116,6 @@ class Fiddler(CaseFileMixin, Mode):
             self.machine.events.post("start_fiddler_more_time_ball_save")
 
         self.machine.events.post("rooftop_diverter_close")
-        self.machine.events.post("clear_saucers_delayed")
         self.machine.events.post("fiddler_all_notes_off")
         self._force_drop_banks_down()
         self._show_waiting_for_saucer("SHOOT A SAUCER", "WATCH THE PATTERN")
@@ -151,8 +152,8 @@ class Fiddler(CaseFileMixin, Mode):
         target.knockdown()
 
     def _new_pattern(self):
-        # Five-note patterns intentionally allow repeated shots because Fiddler
-        # has four physical note shots.
+        # Patterns may repeat shots; the four-note cap is a gameplay limit,
+        # not a uniqueness requirement.
         self.sequence = [random.choice(self.SHOTS) for _ in range(self.pattern_length)]
         self.expected_index = 0
         self.round_failed = False
@@ -166,15 +167,23 @@ class Fiddler(CaseFileMixin, Mode):
         self.held_saucer = saucer
         self.machine.events.post("fiddler_saucers_not_ready")
 
-        if self.round_failed or not self.sequence:
+        fresh_pattern = self.round_failed or not self.sequence
+        if fresh_pattern:
             self._new_pattern()
 
         # A clean saucer return is a voluntary reminder: replay the same full
-        # pattern and preserve progress already made in that pattern.
+        # pattern once and preserve progress already made. Fresh attempts get
+        # the normal two-play WATCH presentation.
         self.waiting_for_saucer = False
-        self._begin_watch_phase()
+        self._begin_watch_phase(
+            repeats=(
+                self.FRESH_PATTERN_REPEATS
+                if fresh_pattern
+                else self.REMINDER_PATTERN_REPEATS
+            )
+        )
 
-    def _begin_watch_phase(self):
+    def _begin_watch_phase(self, repeats=None):
         if self.mode_done or not self.sequence:
             return
         self._clear_watch_delays()
@@ -184,6 +193,7 @@ class Fiddler(CaseFileMixin, Mode):
         self._watch_notes = list(self.sequence)
         self._watch_repeat = 0
         self._watch_note_index = 0
+        self._watch_repeats_target = max(1, int(repeats or self.FRESH_PATTERN_REPEATS))
         self._show_message(
             "WATCH",
             f"{len(self.sequence)} NOTE" + ("S" if len(self.sequence) != 1 else ""),
@@ -196,7 +206,7 @@ class Fiddler(CaseFileMixin, Mode):
 
         if self._watch_note_index >= len(self._watch_notes):
             self._watch_repeat += 1
-            if self._watch_repeat >= self.PATTERN_REPEATS:
+            if self._watch_repeat >= self._watch_repeats_target:
                 self._finish_watch_phase()
                 return
             self._watch_note_index = 0

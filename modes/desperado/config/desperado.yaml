@@ -3,6 +3,8 @@
 mode:
   start_events: start_mode_desperado
   stop_events:
+    - ball_will_end
+    - bonus_start
     - desperado_mode_completed_summary
     - ball_ended
   priority: 300
@@ -149,3 +151,13 @@ shows:
       lights: {l_3bankbonus: blue}
     - duration: 400ms
       lights: {l_3bankbonus: off}
+
+sound_player:
+  play_mode_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
+  play_mode_super_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects

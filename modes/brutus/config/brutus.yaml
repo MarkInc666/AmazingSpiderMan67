@@ -6,6 +6,8 @@
 mode:
   start_events: start_mode_brutus
   stop_events:
+    - ball_will_end
+    - bonus_start
     - brutus_mode_complete
     - brutus_mode_completed_summary
     - ball_ended
@@ -43,8 +45,12 @@ event_player:
     - rooftop_diverter_close
 
 sound_player:
-  brutus_artwork_jackpot_collected:
-    jackpot:
+  play_mode_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
+  play_mode_super_jackpot:
+    jackpot_2:
       action: play
       bus: effects
 

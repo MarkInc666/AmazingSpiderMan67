@@ -5,6 +5,8 @@
 mode:
   start_events: start_mode_professor_pretorius
   stop_events:
+    - ball_will_end
+    - bonus_start
     - professor_pretorius_mode_complete
     - professor_pretorius_mode_completed_summary
     - ball_ended
@@ -259,38 +261,49 @@ shows:
         l_5bank_4: green
         l_5bank_5: green
 
-  # GI accelerates with reactor temperature: solid, then 500/400/300/200/100ms.
+  # GI shows reactor temperature by both color and pulse speed:
+  # green -> yellow-green -> yellow -> orange -> red-orange -> red.
   professor_pretorius_temp_0:
     - duration: 1s
-      lights: {gi: F03010}
+      lights: {gi: 40F080}
   professor_pretorius_temp_1:
     - duration: 500ms
-      lights: {gi: F03010}
+      lights: {gi: 80F040}
     - duration: 500ms
-      lights: {gi: "301008"}
+      lights: {gi: "203C10"}
   professor_pretorius_temp_2:
     - duration: 400ms
-      lights: {gi: F03010}
+      lights: {gi: F0E040}
     - duration: 400ms
-      lights: {gi: "301008"}
+      lights: {gi: "3C3810"}
   professor_pretorius_temp_3:
     - duration: 300ms
-      lights: {gi: F03010}
+      lights: {gi: F0A040}
     - duration: 300ms
-      lights: {gi: "301008"}
+      lights: {gi: "3C2810"}
   professor_pretorius_temp_4:
     - duration: 200ms
-      lights: {gi: F03010}
+      lights: {gi: F06040}
     - duration: 200ms
-      lights: {gi: "301008"}
+      lights: {gi: "3C1810"}
   professor_pretorius_temp_5:
     - duration: 100ms
-      lights: {gi: F03010}
+      lights: {gi: F04040}
     - duration: 100ms
-      lights: {gi: "301008"}
+      lights: {gi: "3C1010"}
 
   professor_pretorius_spinner_flash:
     - duration: 200ms
       lights: {l_spinner: blue}
     - duration: 200ms
       lights: {l_spinner: off}
+
+sound_player:
+  play_mode_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
+  play_mode_super_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects

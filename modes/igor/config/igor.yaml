@@ -8,6 +8,8 @@
 mode:
   start_events: start_mode_igor
   stop_events:
+    - ball_will_end
+    - bonus_start
     - igor_mode_complete
     - igor_mode_completed_summary
     - ball_ended
@@ -247,3 +249,13 @@ shows:
       lights: {l_gi_3bank: green}
     - duration: 250ms
       lights: {l_gi_3bank: off}
+
+sound_player:
+  play_mode_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
+  play_mode_super_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects

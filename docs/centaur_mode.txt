@@ -11,7 +11,7 @@ Approved gameplay
 - Build phase uses both drop banks. Each unique drop scores 25K and adds 100K
   to the Centaur Jackpot. Bank rubbers score 25K.
 - Four unique drops open the rooftop gate.
-- The ball must enter the rooftop and take the upper-left exit.
+- The ball must enter the rooftop and take the upper-left exit. Rooftop access remains open until that left exit is actually made; leaving by the right exit returns the player to the VUK/roof-entry cue for another attempt.
 - The post holds for 6 seconds, or releases early through the established
   two-flipper cancel. The right bank resets, then targets 2, 3, and 4 drop.
 - The staged finale lasts 6 seconds, or 12 seconds with More Time.
@@ -25,8 +25,7 @@ More Jackpots
 The former left-rubber half-Jackpot behavior has been replaced.
 
 After the first finale resolves or times out, the rooftop gate opens for a
-fixed 12-second re-entry window. Entering the rooftop closes the gate and
-prompts the upper-left exit. Taking that exit restages the post and right bank
+fixed 12-second re-entry window. Entering the rooftop within that window locks in the second chance, but the gate remains open for repeated roof attempts until the upper-left exit is made. Taking that exit restages the post and right bank
 for one second finale. The second finale is also one-shot only. If the re-entry
 window expires, no second finale is staged.
 

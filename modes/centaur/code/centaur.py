@@ -97,6 +97,7 @@ class Centaur(CaseFileMixin, Mode):
         self.add_mode_event_handler("centaur_upper_entered", self._upper_entered)
         self.add_mode_event_handler("centaur_vuk_to_roof", self._vuk_to_roof)
         self.add_mode_event_handler("centaur_upper_left_exit", self._upper_left_exit)
+        self.add_mode_event_handler("centaur_upper_right_exit", self._upper_right_exit)
         self.add_mode_event_handler("centaur_post_hold_cancel", self._post_hold_cancel)
         self.add_mode_event_handler("centaur_complete_request", self._complete_mode)
         self.add_mode_event_handler("centaur_fail_request", self._fail_mode)
@@ -236,7 +237,8 @@ class Centaur(CaseFileMixin, Mode):
         if self.phase == "roof_ready":
             self.roof_entered = True
             self.phase = "roof"
-            self._close_gate()
+            # Keep the rooftop gate open until the required left exit is actually made.
+            # If the ball leaves via the right exit, the player gets another VUK/roof attempt.
             self.machine.events.post("centaur_roof_entered", attempt=1)
             self._show_mode_message("TAKE LEFT EXIT", "STAGE THE FINAL SHOT", reminder=True)
             self._sync_vars()
@@ -247,10 +249,39 @@ class Centaur(CaseFileMixin, Mode):
             self.phase = "second_roof"
             self.second_gate_seconds_left = 0
             self.delay.remove("centaur_second_gate_tick")
-            self._close_gate()
+            # Reaching the roof inside the second-chance window earns repeated attempts.
+            # The gate stays open until the left exit is taken.
             self.machine.events.post("centaur_roof_entered", attempt=2)
             self._show_mode_message("SECOND CHANCE", "TAKE THE LEFT EXIT", reminder=True)
             self._sync_vars()
+            return
+
+        if self.phase in ("roof", "second_roof"):
+            # Re-entry after missing the left exit. The gate has deliberately remained open.
+            attempt = 2 if self.phase == "second_roof" else 1
+            self.roof_entered = True
+            self.machine.events.post("centaur_roof_entered", attempt=attempt)
+            self._show_mode_message(
+                "SECOND CHANCE" if attempt == 2 else "TAKE LEFT EXIT",
+                "TAKE THE LEFT EXIT" if attempt == 2 else "STAGE THE FINAL SHOT",
+                reminder=True,
+            )
+            self._sync_vars()
+
+    def _upper_right_exit(self, **kwargs):
+        if self._done_or_summary():
+            return
+
+        if self.phase not in ("roof", "second_roof"):
+            return
+
+        attempt = 2 if self.phase == "second_roof" else 1
+        self.roof_entered = False
+        # Missing the required left exit does not consume the gate. Guide the player
+        # back through the VUK for another rooftop attempt.
+        self.machine.events.post("centaur_roof_retry_needed", attempt=attempt)
+        self._show_mode_message("BACK TO THE ROOF", "TAKE THE LEFT EXIT", reminder=True)
+        self._sync_vars()
 
     def _upper_left_exit(self, **kwargs):
         if self._done_or_summary():
@@ -260,6 +291,8 @@ class Centaur(CaseFileMixin, Mode):
             return
 
         attempt = 2 if self.phase == "second_roof" else 1
+        # The required rooftop exit has finally been made; consume roof access now.
+        self._close_gate()
         self.phase = "post_hold"
         self.post_hold_active = True
         self.machine.events.post("centaur_post_hold_started", attempt=attempt)

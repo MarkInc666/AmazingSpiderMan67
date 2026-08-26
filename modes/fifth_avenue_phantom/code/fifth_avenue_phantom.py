@@ -177,6 +177,8 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
         self.clear_active_case_file_helpers()
         self.machine.events.post("clear_saucers")
         self.machine.events.post("drop_target_bank_dt_bank_right_reset")
+        # Catch-all: no delayed villain/wizard callback may survive into bonus.
+        self.delay.clear()
         super().mode_stop(**kwargs)
 
     def _init_player_vars(self):

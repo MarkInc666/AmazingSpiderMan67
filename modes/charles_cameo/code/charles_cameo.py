@@ -281,7 +281,7 @@ class CharlesCameo(CaseFileMixin, Mode):
         self._stop_timer()
         self.machine.game.player[f"{self.MODE_KEY}_state"] = 2
         self._sync_vars()
-        self.machine.events.post("charles_cameo_mode_complete")
+        self.machine.events.post("charles_cameo_mode_almost_complete")
 
     def _ball_ending(self, **kwargs):
         if self.mode_done:

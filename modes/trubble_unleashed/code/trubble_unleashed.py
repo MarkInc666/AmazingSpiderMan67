@@ -113,6 +113,8 @@ class TrubbleUnleashed(Mode):
         self.machine.events.post("trubble_unleashed_close_gate")
         self.machine.events.post("clear_saucers")
         self.machine.events.post("cancel_mode_message_reminder")
+        # Catch-all: no delayed villain/wizard callback may survive into bonus.
+        self.delay.clear()
         super().mode_stop(**kwargs)
 
     def _left_drop_hit(self, **kwargs):

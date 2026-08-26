@@ -6,6 +6,8 @@
 mode:
   start_events: start_mode_master_vine
   stop_events:
+    - ball_will_end
+    - bonus_start
     - master_vine_mode_complete
     - master_vine_mode_completed_summary
     - ball_ended
@@ -524,3 +526,13 @@ shows:
       lights: {l_star: white}
     - duration: 500ms
       lights: {l_star: "300000"}
+
+sound_player:
+  play_mode_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
+  play_mode_super_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects

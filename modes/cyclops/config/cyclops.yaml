@@ -7,6 +7,8 @@
 mode:
   start_events: start_mode_cyclops
   stop_events:
+    - ball_will_end
+    - bonus_start
     - cyclops_mode_complete
     - cyclops_mode_completed_summary
     - ball_ended
@@ -198,3 +200,13 @@ light_player:
 
   mode_cyclops_stopping:
     gi: E0E0E0
+
+sound_player:
+  play_mode_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
+  play_mode_super_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects

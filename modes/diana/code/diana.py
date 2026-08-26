@@ -137,6 +137,7 @@ class Diana(CaseFileMixin, Mode):
         self.machine.events.post("rooftop_diverter_close")
         self.clear_active_case_file_helpers()
         self.machine.events.post("cancel_mode_message_reminder")
+        self.delay.clear()
         super().mode_stop(**kwargs)
 
 
@@ -146,6 +147,7 @@ class Diana(CaseFileMixin, Mode):
         self.delay.remove("diana_hunt_timer_tick")
         self.delay.remove("diana_post_flipper_left")
         self.delay.remove("diana_post_flipper_right")
+        self.delay.remove("diana_right_bank_all_down_settle")
 
     def _show_mode_message(self, title, subtitle="", value="", seconds="", reminder=False):
         self.machine.events.post(
@@ -259,8 +261,18 @@ class Diana(CaseFileMixin, Mode):
         if self._done_or_summary() or self.phase != "staged":
             return
 
-        self.phase = "post_hold"
+        # The up-post hold and Hunt waiting state overlap.  The player may
+        # legitimately hit the staged right-bank target or rubber immediately
+        # after taking the left exit, so do not block Hunt start while the post
+        # is still held.  This is especially important on Hunt 3, where the
+        # single staged target could otherwise fall during the 6s post hold and
+        # leave the Hunt with no remaining switch capable of starting its timer.
+        self.phase = "waiting_hit"
         self.post_hold_active = True
+        # Raise the upper-left post only when the ball actually takes the left exit.
+        # Enabling it on upper entry can trap/interfere with a ball that never chooses
+        # the left exit.
+        self.machine.events.post("enable_up_post_event")
         self.machine.events.post("diana_upper_left_post_hold_started", hunt=self.current_hunt)
         self._show_mode_message("HIT THE RIGHT DROPS", f"HUNT {self.current_hunt}", reminder=True)
         self.delay.add(
@@ -290,18 +302,15 @@ class Diana(CaseFileMixin, Mode):
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("diana_hunt_mode_on", hunt=hunt_number)
         self.machine.events.post("diana_hunt_prepare", hunt=hunt_number)
-        self.machine.events.post("enable_up_post_event")
         self._stage_right_bank_for_hunt(hunt_number)
         self._show_mode_message(f"HUNT {hunt_number}", "FIND YOUR TARGETS")
         self._sync_vars()
 
     def _arm_hunt_from_upper_exit(self):
-        if self.phase not in ("staged", "post_hold"):
+        if self.phase not in ("staged", "post_hold", "waiting_hit"):
             return
         self.phase = "waiting_hit"
-        self.post_hold_active = False
         self.pending_post_flippers.clear()
-        self.delay.remove("diana_post_hold_release")
         self.machine.events.post("diana_hunt_waiting_for_first_hit", hunt=self.current_hunt)
         self._show_mode_message("HIT THE RIGHT DROPS", f"HUNT {self.current_hunt}", reminder=True)
         self._sync_vars()
@@ -339,7 +348,10 @@ class Diana(CaseFileMixin, Mode):
         self.post_hold_active = False
         self.machine.events.post("timer_timer_up_post_hold_complete")
         self.machine.events.post("diana_post_hold_released", reason=reason, hunt=self.current_hunt)
-        self._arm_hunt_from_upper_exit()
+        # If no shot has started the Hunt yet, remain waiting for the first hit.
+        # If the Hunt already started during the post hold, leave it running.
+        if self.phase in ("staged", "post_hold", "waiting_hit"):
+            self._arm_hunt_from_upper_exit()
 
     def _start_hunt_timer(self):
         if self._done_or_summary():
@@ -430,9 +442,14 @@ class Diana(CaseFileMixin, Mode):
         if self._done_or_summary():
             return
 
+        # Only a currently staged target may start the Hunt timer.  Programmatic
+        # knockdowns of the non-staged targets can report their switches late;
+        # Hunt 3 is especially vulnerable because four targets are auto-dropped.
+        if target not in self.standing_targets:
+            return
         if self.phase == "waiting_hit":
             self._start_hunt_timer()
-        if not self.hunt_active or target not in self.standing_targets:
+        if not self.hunt_active:
             return
 
         self.standing_targets.discard(target)
@@ -448,12 +465,30 @@ class Diana(CaseFileMixin, Mode):
             value=value,
         )
         self._show_mode_jackpot("BULLSEYE", value, f"HUNT {self.current_hunt}")
+        self.machine.events.post("play_mode_jackpot")
         self._use_shot_assist_if_available(source="drop", hit_target=target)
         self._sync_vars()
         self._check_hunt_complete()
 
     def _right_bank_all_down(self, **kwargs):
-        """Finish the current Hunt as soon as the staged bank is physically down."""
+        """Fallback for a physically all-down bank without racing the final target hit."""
+        if self._done_or_summary():
+            return
+        if self.phase not in ("waiting_hit", "hunt"):
+            return
+        if self.current_hunt not in self.HUNTS:
+            return
+
+        # On Hunt 3 the single staged target also produces the bank-all-down event.
+        # Let its individual switch handler score the Bullseye first.  If that event
+        # never arrives, this short settle still guarantees the Hunt ends cleanly.
+        self.delay.add(
+            name="diana_right_bank_all_down_settle",
+            ms=50,
+            callback=self._right_bank_all_down_settled,
+        )
+
+    def _right_bank_all_down_settled(self):
         if self._done_or_summary():
             return
         if self.phase not in ("waiting_hit", "hunt"):

@@ -7,6 +7,8 @@
 mode:
   start_events: start_mode_master_technician
   stop_events:
+    - ball_will_end
+    - bonus_start
     - master_technician_mode_complete
     - ball_ended
   code: master_technician.MasterTechnician
@@ -74,8 +76,16 @@ show_player:
     master_technician_level_pulse:
       action: stop
       key: master_technician_level_pulse
+    master_technician_bank_start_pulse:
+      action: play
+      loops: -1
+      key: master_technician_bank_start_pulse
+      priority: 320
 
   master_technician_level_1:
+    master_technician_bank_start_pulse:
+      action: stop
+      key: master_technician_bank_start_pulse
     master_technician_level_pulse:
       action: play
       loops: -1
@@ -139,6 +149,9 @@ show_player:
     master_technician_level_pulse:
       action: stop
       key: master_technician_level_pulse
+    master_technician_bank_start_pulse:
+      action: stop
+      key: master_technician_bank_start_pulse
 
 light_player:
   mode_master_technician_started:
@@ -186,6 +199,18 @@ shows:
       lights:
         l_spinner: white
 
+  master_technician_bank_start_pulse:
+    - duration: 500ms
+      lights:
+        l_gi_3bank: white
+        l_gi_5bank_lower: white
+        l_gi_5bank_upper: white
+    - duration: 500ms
+      lights:
+        l_gi_3bank: off
+        l_gi_5bank_lower: off
+        l_gi_5bank_upper: off
+
   master_technician_level_pulse:
     - duration: 500ms
       lights:
@@ -223,3 +248,13 @@ shows:
         l_gi_3bank: off
         l_gi_5bank_lower: off
         l_gi_5bank_upper: off
+
+sound_player:
+  play_mode_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
+  play_mode_super_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects

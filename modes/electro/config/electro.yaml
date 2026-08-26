@@ -4,6 +4,8 @@
 mode:
   start_events: start_mode_electro
   stop_events:
+    - ball_will_end
+    - bonus_start
     - electro_mode_complete
     - electro_mode_completed_summary
     - ball_ended
@@ -412,9 +414,11 @@ shows:
     - duration: 120ms
       lights:
         l_3bankbonus: yellow
+        l_gi_3bank: yellow
     - duration: 120ms
       lights:
         l_3bankbonus: blue
+        l_gi_3bank: blue
 
   electro_saucers_lit_show:
     - duration: 150ms
@@ -470,6 +474,8 @@ shows:
         l_5bank_3: yellow
         l_5bank_4: yellow
         l_5bank_5: yellow
+        l_gi_5bank_upper: yellow
+        l_gi_5bank_lower: yellow
     - duration: 120ms
       lights:
         l_5bank_1: blue
@@ -477,6 +483,8 @@ shows:
         l_5bank_3: blue
         l_5bank_4: blue
         l_5bank_5: blue
+        l_gi_5bank_upper: blue
+        l_gi_5bank_lower: blue
 
   # -------------------------------
   # Super shows
@@ -501,9 +509,11 @@ shows:
     - duration: 120ms
       lights:
         l_3bankbonus: white
+        l_gi_3bank: white
     - duration: 120ms
       lights:
         l_3bankbonus: off
+        l_gi_3bank: off
 
   electro_saucers_super_show:
     - duration: 150ms
@@ -559,6 +569,8 @@ shows:
         l_5bank_3: white
         l_5bank_4: white
         l_5bank_5: white
+        l_gi_5bank_upper: white
+        l_gi_5bank_lower: white
     - duration: 120ms
       lights:
         l_5bank_1: off
@@ -566,6 +578,8 @@ shows:
         l_5bank_3: off
         l_5bank_4: off
         l_5bank_5: off
+        l_gi_5bank_upper: off
+        l_gi_5bank_lower: off
 
   electro_super_collected_show:
     - duration: 500ms

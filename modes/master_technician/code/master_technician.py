@@ -108,11 +108,7 @@ class MasterTechnician(CaseFileMixin, Mode):
         self.started = True
         self.machine.events.post("master_technician_level_0")
         self.machine.events.post("master_technician_clear_webs")
-        self._show_message(
-            "BUILD THE SPINNER",
-            "STOP AT SEVEN - ALL EIGHT COSTS 10s",
-            reminder=True,
-        )
+        self._show_instruction_reminder()
         self._update_mode_status()
         self._schedule_timer_tick()
 
@@ -169,6 +165,8 @@ class MasterTechnician(CaseFileMixin, Mode):
             return
 
         self._update_level_lights()
+        if self.total_drops_down() == 7:
+            self._show_instruction_reminder()
         self._update_mode_status()
 
     def _short_circuit(self):
@@ -203,6 +201,7 @@ class MasterTechnician(CaseFileMixin, Mode):
         self.machine.events.post("master_technician_reset_banks")
         self.machine.events.post("master_technician_level_0")
         self.machine.events.post("master_technician_clear_webs")
+        self._show_instruction_reminder()
         self._update_mode_status()
 
         if self.seconds_left <= 0:
@@ -302,6 +301,21 @@ class MasterTechnician(CaseFileMixin, Mode):
             if self.has_case_file("more_jackpots") and level > 0
             else "master_technician_clear_webs"
         )
+
+    def _show_instruction_reminder(self):
+        self.machine.events.post("cancel_mode_message_reminder")
+        if self.total_drops_down() >= 7:
+            self._show_message(
+                "SPINNER MAXED",
+                "SHOOT SPINNER - AVOID LAST TARGET",
+                reminder=True,
+            )
+        else:
+            self._show_message(
+                "BUILD THE SPINNER",
+                "DROP TARGETS INCREASE VALUE",
+                reminder=True,
+            )
 
     def _update_mode_status(self):
         self.machine.events.post(

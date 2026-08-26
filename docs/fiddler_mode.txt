@@ -12,7 +12,7 @@ CORE GAMEPLAY
   4. Right Bank Rubber = violin note 4
 - Left and right drop targets are forced down during the mode so the bank rubbers remain available.
 - All three saucers pulse while Fiddler is waiting for the player to start/restart a round.
-- Entering any saucer holds the ball during WATCH and ejects that same saucer when YOUR TURN begins.
+- Entering any saucer holds the ball during WATCH and ejects that same saucer only when YOUR TURN begins. The first pattern therefore remains physically held in the saucer for the full WATCH presentation.
 
 WATCH PHASE
 - Each note is demonstrated for exactly 1 second as a rapid burst:
@@ -24,7 +24,7 @@ WATCH PHASE
 - Note inputs are locked during WATCH.
 
 SAUCER REMINDER
-- If the player returns to any saucer while the current attempt is still clean, Fiddler repeats the complete WATCH phase for the same pattern.
+- If the player returns to any saucer while the current attempt is still clean, Fiddler replays the current pattern once as a reminder.
 - Correct-note progress already made in that pattern is preserved.
 - The pattern is not randomized by a clean reminder.
 
@@ -36,9 +36,9 @@ CORRECT NOTES
 
 PATTERN PROGRESSION
 - The first pattern contains 1 note.
-- Each successful pattern increases the pattern length by one, to a maximum of 5 notes.
-- Once 5 notes is reached, later successful rounds continue with newly randomized 5-note patterns.
-- Repeated note shots are allowed in a pattern; this is required for 5-note patterns because there are four physical note shots.
+- Each successful pattern increases the pattern length by one, to a maximum of 4 notes.
+- Once 4 notes is reached, later successful rounds continue with newly randomized 4-note patterns.
+- Repeated note shots are allowed in a pattern.
 - Completing the first pattern is enough to count Fiddler as defeated for villain progression, but the gameplay continues until the failure limit is reached.
 - After every successful pattern the player must return to a saucer to start the next WATCH phase.
 

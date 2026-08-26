@@ -80,6 +80,8 @@ class Infinata(CaseFileMixin, Mode):
         self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post("hide_mode_status")
         self.clear_active_case_file_helpers()
+        # Catch-all: no delayed villain/wizard callback may survive into bonus.
+        self.delay.clear()
         super().mode_stop(**kwargs)
 
     def _light_next_area(self):
@@ -169,8 +171,12 @@ class Infinata(CaseFileMixin, Mode):
         self.machine.events.post("infinata_light_saucers")
         if self.completed_areas < len(self.selected_areas):
             self._light_next_area()
-        else:
-            self._show_countdown()
+        self._show_countdown()
+        self.machine.events.post(
+            "show_mode_status",
+            mode_status_title="SECONDS LEFT",
+            mode_status_value=self.super_seconds_left,
+        )
         self._schedule_super_tick()
 
     def _schedule_super_tick(self):
@@ -184,7 +190,11 @@ class Infinata(CaseFileMixin, Mode):
         if self.super_seconds_left <= 0:
             self._fail_mode()
             return
-        self._show_countdown()
+        self.machine.events.post(
+            "update_mode_status",
+            mode_status_title="SECONDS LEFT",
+            mode_status_value=self.super_seconds_left,
+        )
         self._schedule_super_tick()
 
     def _show_countdown(self):

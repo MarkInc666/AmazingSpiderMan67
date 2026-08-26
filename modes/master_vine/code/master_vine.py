@@ -128,6 +128,8 @@ class MasterVine(CaseFileMixin, Mode):
         self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post("hide_mode_status")
         self.clear_active_case_file_helpers()
+        # Catch-all: no delayed villain/wizard callback may survive into bonus.
+        self.delay.clear()
         super().mode_stop(**kwargs)
 
     def _register_handlers(self):
@@ -209,7 +211,7 @@ class MasterVine(CaseFileMixin, Mode):
         elif selected:
             subtitle = f"{len(selected)} VINE SHOTS LIT"
         else:
-            subtitle = "ALL AVAILABLE SHOTS PROGRAMMED"
+            subtitle = "ALL SHOTS LIT - AND SO AM I!"
         self._show_message("VINES SPREAD", subtitle, value=self.SPINNER_VALUE)
         self._update_status()
         self._sync_vars()

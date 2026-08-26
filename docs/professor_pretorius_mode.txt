@@ -5,17 +5,26 @@ Implemented. Physical-machine playtest still required.
 
 CORE FLOW
 - Complete the left pop, right pop, left bank, and right bank reactor stations.
-- Spinner cooling controls reactor temperature and the existing overheat grace.
+- Each reactor hit raises temperature by 1; spinner hits cool it by 1.
+- GI communicates temperature from green at TEMP 0 through yellow/orange to red
+  at TEMP 5, while also pulsing faster as the reactor gets hotter.
+- At TEMP 5, an overheat grace starts: 4 seconds normally or 8 seconds with
+  More Time. The persistent status counts down the remaining grace time.
 - Completing all four stations opens rooftop access and lights the VUK for the
   500,000 Reactor Super.
+- Reactor Super is timed: 15 seconds normally or 20 seconds with More Time.
+  Its remaining time is shown in the persistent mode status. Expiry fails the
+  mode if the VUK Super is not collected.
 - The shared Master Vine route chase runs from the lower spinner through the
   ramp to the VUK while the Reactor Super is ready.
+- Temperature/overheat remains active during the Super phase; if both timers
+  are active, the status shows both the Super time and overheat time.
 - The chase stops immediately on the VUK hit, failure, or mode cleanup.
 
 CASE FILES
 - More Jackpots: all five right-bank targets score reactor hits.
 - Bigger Jackpots: reactor hits score 150,000.
-- More Time: extends overheat grace from 4 to 8 seconds.
+- More Time: extends overheat grace from 4 to 8 seconds and Reactor Super from
+  15 to 20 seconds.
 - Safety Net: starts a 10-second opening ball save.
 - Shot Assist: the first left drop adds one random remaining left drop.
-

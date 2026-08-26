@@ -3,6 +3,8 @@
 mode:
   start_events: start_mode_enforcers
   stop_events:
+    - ball_will_end
+    - bonus_start
     - enforcers_mode_complete
     - enforcers_mode_completed_summary
     - ball_ended
@@ -589,3 +591,13 @@ shows:
         l_advance_multiplier: off
         l_special: off
         l_mid_web_target: 80F0F0
+
+sound_player:
+  play_mode_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
+  play_mode_super_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects

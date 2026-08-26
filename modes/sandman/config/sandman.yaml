@@ -3,6 +3,8 @@
 mode:
   start_events: start_mode_sandman
   stop_events:
+    - ball_will_end
+    - bonus_start
     - sandman_mode_complete
     - sandman_mode_completed_summary
     - ball_ended
@@ -48,6 +50,14 @@ variable_player:
 
 
 sound_player:
+  play_mode_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
+  play_mode_super_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
   sandman_start_bank:
     sm_i_need_to_hit_flashing_drops:
       action: play

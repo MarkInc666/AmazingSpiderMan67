@@ -79,6 +79,8 @@ class DrZapp(CaseFileMixin, Mode):
         self.machine.events.post("hide_mode_status")
         self.clear_active_case_file_helpers()
         self.machine.events.post("rooftop_diverter_close")
+        # Catch-all: no delayed villain/wizard callback may survive into bonus.
+        self.delay.clear()
         super().mode_stop(**kwargs)
 
     def _bank_hit(self, bank, **kwargs):

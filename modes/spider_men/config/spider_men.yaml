@@ -8,6 +8,8 @@
 mode:
   start_events: start_mode_spider_men
   stop_events:
+    - ball_will_end
+    - bonus_start
     - spider_men_mode_complete
     - spider_men_mode_failed
     - spider_men_mode_completed_summary
@@ -50,6 +52,7 @@ event_player:
     - disable_daily_bugle_mystery
     - rooftop_diverter_close
     - clear_saucers_delayed
+    - spider_men_band_chase_start
 
   mode_spider_men_stopping:
     - enable_daily_bugle_mystery
@@ -73,6 +76,9 @@ show_player:
   spider_men_upper_b_pulse:
     spider_men_upper_b_pulse_show: {loops: -1}
 
+  spider_men_band_chase_start:
+    spider_men_band_chase_show: {loops: -1}
+
   spider_men_super_ready:
     spider_men_center_web_super_show: {loops: -1}
   spider_men_super_collected:
@@ -87,6 +93,7 @@ show_player:
     spider_men_upper_b_pulse_show: {action: stop}
 
   spider_men_clear_lights:
+    spider_men_band_chase_show: {action: stop}
     spider_men_saucer_1_pulse_show: {action: stop}
     spider_men_saucer_2_pulse_show: {action: stop}
     spider_men_saucer_3_pulse_show: {action: stop}
@@ -96,6 +103,7 @@ show_player:
     spider_men_center_web_super_show: {action: stop}
 
   mode_spider_men_stopping:
+    spider_men_band_chase_show: {action: stop}
     spider_men_saucer_1_pulse_show: {action: stop}
     spider_men_saucer_2_pulse_show: {action: stop}
     spider_men_saucer_3_pulse_show: {action: stop}
@@ -150,26 +158,31 @@ light_player:
   spider_men_upper_b_solid:
     l_b_rollover: red
 
-  # Yellow GI grows brighter after every aligned position.
-  spider_men_gi_0:
-    gi: "303000"
-  spider_men_gi_1:
-    gi: "505000"
-  spider_men_gi_2:
-    gi: "707000"
-  spider_men_gi_3:
-    gi: "909000"
-  spider_men_gi_4:
-    gi: "B0B000"
-  spider_men_gi_5:
-    gi: "D0D000"
-  spider_men_gi_6:
-    gi: "FFFF00"
   spider_men_gi_restore:
     gi: "E0E0E0"
 
 
 shows:
+  # Full-playfield horizontal band chase. All bands stay blue while one red
+  # band travels from the bottom (band_1) to the top (band_8) every 250ms.
+  spider_men_band_chase_show:
+    - duration: 250ms
+      lights: {band_1: red, band_2: blue, band_3: blue, band_4: blue, band_5: blue, band_6: blue, band_7: blue, band_8: blue}
+    - duration: 250ms
+      lights: {band_1: blue, band_2: red, band_3: blue, band_4: blue, band_5: blue, band_6: blue, band_7: blue, band_8: blue}
+    - duration: 250ms
+      lights: {band_1: blue, band_2: blue, band_3: red, band_4: blue, band_5: blue, band_6: blue, band_7: blue, band_8: blue}
+    - duration: 250ms
+      lights: {band_1: blue, band_2: blue, band_3: blue, band_4: red, band_5: blue, band_6: blue, band_7: blue, band_8: blue}
+    - duration: 250ms
+      lights: {band_1: blue, band_2: blue, band_3: blue, band_4: blue, band_5: red, band_6: blue, band_7: blue, band_8: blue}
+    - duration: 250ms
+      lights: {band_1: blue, band_2: blue, band_3: blue, band_4: blue, band_5: blue, band_6: red, band_7: blue, band_8: blue}
+    - duration: 250ms
+      lights: {band_1: blue, band_2: blue, band_3: blue, band_4: blue, band_5: blue, band_6: blue, band_7: red, band_8: blue}
+    - duration: 250ms
+      lights: {band_1: blue, band_2: blue, band_3: blue, band_4: blue, band_5: blue, band_6: blue, band_7: blue, band_8: red}
+
   # Unaligned positions pulse between full and low red. Completed positions
   # are set solid red by light_player and rotate with the same state array.
   spider_men_saucer_1_pulse_show:
@@ -225,3 +238,13 @@ shows:
       lights: {l_mid_web_target: red}
     - duration: 250ms
       lights: {l_mid_web_target: off}
+
+sound_player:
+  play_mode_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
+  play_mode_super_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects

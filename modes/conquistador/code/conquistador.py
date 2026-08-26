@@ -206,12 +206,11 @@ class Conquistador(CaseFileMixin, Mode):
             else:
                 self._fail_main_phase()
             return
-        if self.phase == "left_bank":
-            self._show_status("HIT LEFT DROP TO OPEN GATE", self.seconds_left)
-        elif self.phase == "fountain":
-            self._show_status("HIT FOUNTAIN TO COLLECT", self.seconds_left)
-        else:
-            self._show_status("TAKE ANOTHER SIP", self.seconds_left)
+        self.machine.events.post(
+            "update_mode_status",
+            mode_status_title="SECONDS LEFT",
+            mode_status_value=max(0, self.seconds_left),
+        )
         self._schedule_tick()
 
     def _award_speed_bonus(self):
@@ -283,14 +282,27 @@ class Conquistador(CaseFileMixin, Mode):
         player["conquistador_seconds_left"] = max(0, self.seconds_left)
 
     def _show_status(self, text, seconds=""):
+        # Timed Conquistador phases use their own gameplay timer. Show the
+        # objective as a temporary/reminder message, and keep seconds visible
+        # in the persistent mode-status widget. Re-posting show_mode_countdown
+        # every second would continually restart the temporary message overlay
+        # and obscure the status widget.
         self.machine.events.post(
-            "show_mode_countdown" if seconds != "" else "show_mode_message",
+            "show_mode_message",
             message_mode_title=text,
             message_mode_subtitle="",
             message_mode_value=self.jackpot_value if self.phase in ("fountain", "extra_sip") else "",
-            message_mode_seconds=seconds,
+            message_mode_seconds="",
             reminder=True,
         )
+        if seconds != "":
+            self.machine.events.post(
+                "show_mode_status",
+                mode_status_title="SECONDS LEFT",
+                mode_status_value=max(0, int(seconds)),
+            )
+        else:
+            self.machine.events.post("hide_mode_status")
 
     def _show_message(self, title, subtitle="", value=""):
         self.machine.events.post(

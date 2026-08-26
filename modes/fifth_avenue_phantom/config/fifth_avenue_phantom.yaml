@@ -10,6 +10,8 @@
 mode:
   start_events: start_mode_fifth_avenue_phantom
   stop_events:
+    - ball_will_end
+    - bonus_start
     - fifth_avenue_phantom_mode_complete
     - fifth_avenue_phantom_mode_completed_summary
     - ball_ended
@@ -347,3 +349,13 @@ light_player:
     l_5bank_3: off
     l_5bank_4: off
     l_5bank_5: off
+
+sound_player:
+  play_mode_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
+  play_mode_super_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects

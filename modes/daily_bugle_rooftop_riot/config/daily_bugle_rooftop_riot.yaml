@@ -6,6 +6,8 @@
 mode:
   start_events: start_mode_daily_bugle_rooftop_riot
   stop_events:
+    - ball_will_end
+    - bonus_start
     - stop_mode_daily_bugle_rooftop_riot
     - ball_ended
   code: daily_bugle_rooftop_riot.DailyBugleRooftopRiot

@@ -3,6 +3,8 @@
 mode:
   start_events: start_mode_doc_ock
   stop_events:
+    - ball_will_end
+    - bonus_start
     - doc_ock_mode_complete
     - doc_ock_mode_completed_summary
     - ball_ended
@@ -88,6 +90,14 @@ event_player:
 
 
 sound_player:
+  play_mode_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
+  play_mode_super_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
   doc_ock_breakout_hit:
     arm_powerup:
       action: play
@@ -103,10 +113,6 @@ sound_player:
       action: play
       bus: effects
 
-  doc_ock_jackpot_award:
-    drum_1:
-      action: play
-      bus: effects
 
 
 show_player:

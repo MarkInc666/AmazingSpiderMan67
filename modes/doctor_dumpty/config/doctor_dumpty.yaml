@@ -16,6 +16,8 @@
 mode:
   start_events: start_mode_doctor_dumpty
   stop_events:
+    - ball_will_end
+    - bonus_start
     - doctor_dumpty_mode_complete
     - doctor_dumpty_mode_completed_summary
     - ball_ended
@@ -81,11 +83,14 @@ random_event_player:
 
 
 sound_player:
-  doctor_dumpty_jackpot_collected_1:
-    jackpot:
+  play_mode_jackpot:
+    jackpot_2:
       action: play
       bus: effects
-
+  play_mode_super_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
   doctor_dumpty_jackpot_collected_2:
     light_smash_1:
       action: play

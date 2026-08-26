@@ -353,6 +353,7 @@ class Lizard(CaseFileMixin, Mode):
             message_mode_value=delivery_value,
         )
         self.machine.events.post("lizard_serum_delivered")
+        self.machine.events.post("play_mode_jackpot")
         self._stop_delivery_timers()
 
         self._delivery_completes_mode = player["lizard_deliveries"] >= self.delivery_attempts

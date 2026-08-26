@@ -8,6 +8,8 @@
 mode:
   start_events: start_mode_dr_manta
   stop_events:
+    - ball_will_end
+    - bonus_start
     - dr_manta_mode_complete
     - dr_manta_mode_completed_summary
     - ball_ended
@@ -278,3 +280,13 @@ shows:
         l_gi_top_2: 2060A8
         l_gi_top_3: 2060A8
         l_gi_top_4: 2060A8
+
+sound_player:
+  play_mode_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
+  play_mode_super_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects

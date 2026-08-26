@@ -283,8 +283,8 @@ class DrMagneto(CaseFileMixin, Mode):
         self._show_countdown("MAGNETO SUPER", self.seconds_left, "HIT CENTER WEB")
         self.machine.events.post(
             "show_mode_status",
-            mode_status_title="MAGNETO SUPER",
-            mode_status_value=f"CENTER WEB - {self.seconds_left}s",
+            mode_status_title="SECONDS LEFT",
+            mode_status_value=self.seconds_left,
         )
         self.delay.reset(
             name="dr_magneto_super_chase_fast_delay",
@@ -306,11 +306,10 @@ class DrMagneto(CaseFileMixin, Mode):
             self._show_message("DR. MAGNETO ESCAPED", "SUPER EXPIRED")
             self._fail_mode()
             return
-        self._show_countdown("MAGNETO SUPER", self.seconds_left, "HIT CENTER WEB")
         self.machine.events.post(
-            "show_mode_status",
-            mode_status_title="MAGNETO SUPER",
-            mode_status_value=f"CENTER WEB - {self.seconds_left}s",
+            "update_mode_status",
+            mode_status_title="SECONDS LEFT",
+            mode_status_value=self.seconds_left,
         )
         self._schedule_super_tick()
         self._sync_vars()
@@ -325,6 +324,7 @@ class DrMagneto(CaseFileMixin, Mode):
         self._score(value)
         self.machine.events.post("dr_magneto_super_collected", value=value)
         self._show_jackpot("MAGNETO SUPER", value)
+        self.machine.events.post("play_mode_super_jackpot")
         self._complete_mode()
 
     def _light_star(self):

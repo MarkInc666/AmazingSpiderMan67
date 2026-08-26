@@ -222,6 +222,7 @@ class DoctorDumpty(CaseFileMixin, Mode):
         self._sync_vars()
 
         self.machine.events.post("doctor_dumpty_jackpot_collected", shot=awarded_shot, value=jackpot_value, shot_assist=shot_assist)
+        self.machine.events.post("play_mode_jackpot")
         self.machine.events.post("show_mode_jackpot", message_mode_title="PREDICTION HIT", message_mode_subtitle=awarded_shot.replace("_", " ").upper(), message_mode_value=jackpot_value)
         self._advance_after_delay()
 

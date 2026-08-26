@@ -212,6 +212,7 @@ class FlyTwins(CaseFileMixin, Mode):
             self.captures += 1
             self._score(award)
             self.machine.events.post("fly_twins_brother_captured", brother=self.round_number, value=award)
+            self.machine.events.post("play_mode_jackpot")
             self._show_mode_jackpot("HUMAN FLY CAUGHT", award, self._round_name())
             self._advance_round_after_capture()
 

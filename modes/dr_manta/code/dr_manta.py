@@ -58,6 +58,7 @@ class DrManta(CaseFileMixin, Mode):
         self.biggest_jackpot = 0
         self.mode_points = 0
         self.shot_assist_available = self.has_case_file("shot_assist")
+        self.second_ball_save_relaunching = False
 
         if self.has_case_file("bigger_jackpots"):
             self.vuk_value = self.BIGGER_VUK_VALUE
@@ -94,7 +95,7 @@ class DrManta(CaseFileMixin, Mode):
         self.add_mode_event_handler("s_upper_target_center_active", partial(self._upper_target_hit, target=2))
         self.add_mode_event_handler("s_upper_target_right_active", partial(self._upper_target_hit, target=3))
         self.add_mode_event_handler("balldevice_bd_trough_ball_enter", self._trough_ball_enter)
-        self.add_mode_event_handler("multiball_dr_manta_relay_ended", self._relay_multiball_ended)
+        self.add_mode_event_handler("ball_save_dr_manta_second_ball_save_saving_ball", self._second_ball_saved)
         self.add_mode_event_handler("ball_ending", self._ball_ending)
 
         player = self.machine.game.player
@@ -139,6 +140,10 @@ class DrManta(CaseFileMixin, Mode):
         self.phase = "lock_saucer"
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("dr_manta_phase_saucers")
+        # Ball 1 must remain physically held in the VUK while Ball 2 is served.
+        # Cancel again immediately before the relay starts so no stale shared
+        # VUK eject/retry can race the multiball start.
+        self.machine.events.post("cancel_vuk_eject_request")
         self.machine.events.post("dr_manta_start_relay")
         self.machine.events.post("dr_manta_enable_second_ball_save")
         self._show_message("BALL ONE CAPTURED", "LOCK BALL TWO IN A SAUCER", value=self.vuk_value, reminder=True)
@@ -241,16 +246,47 @@ class DrManta(CaseFileMixin, Mode):
         self._update_status()
 
     def _trough_ball_enter(self, **kwargs):
-        if self.mode_done or self.phase != "drain_wait":
+        if self.mode_done:
             return
-        self._finish_relay()
 
-    def _relay_multiball_ended(self, **kwargs):
-        # Before the saucer lock, losing the served ball ends the attempt and
-        # releases the VUK ball. After the lock, the custom relay owns ending.
+        if self.phase == "lock_saucer":
+            # Ball 1 is still held in the raw VUK. Do not use MPF's
+            # multiball-ended event to decide that Ball 2 was lost: the raw
+            # VUK is not a ball device, so that event can race the relay start
+            # and prematurely release Ball 1. Instead confirm an actual trough
+            # entry after giving the second-ball save a chance to claim it.
+            self.delay.reset(
+                name="dr_manta_second_ball_drain_check",
+                ms=300,
+                callback=self._confirm_second_ball_lost,
+            )
+            return
+
+        if self.phase == "drain_wait":
+            self._finish_relay()
+
+    def _second_ball_saved(self, **kwargs):
+        # A trough entry covered by the relay ball save is not a lost second
+        # ball. Suppress the pending drain decision while MPF relaunches it.
+        self.second_ball_save_relaunching = True
+        self.delay.remove("dr_manta_second_ball_drain_check")
+        self.delay.reset(
+            name="dr_manta_second_ball_save_clear",
+            ms=1500,
+            callback=self._clear_second_ball_save_relaunching,
+        )
+
+    def _clear_second_ball_save_relaunching(self):
+        self.second_ball_save_relaunching = False
+
+    def _confirm_second_ball_lost(self):
         if self.mode_done or self.phase != "lock_saucer":
             return
+        if self.second_ball_save_relaunching:
+            return
+
         self._show_message("SECOND BALL LOST", "MANTA ESCAPES")
+        self.machine.events.post("dr_manta_disable_second_ball_save")
         self._eject_vuk(0)
         self._complete_mode(release_saucer=False, enable_flippers=True)
 
@@ -290,6 +326,8 @@ class DrManta(CaseFileMixin, Mode):
 
     def _ball_ending(self, **kwargs):
         self.delay.remove("dr_manta_attack_tick")
+        self.delay.remove("dr_manta_second_ball_drain_check")
+        self.delay.remove("dr_manta_second_ball_save_clear")
         self.machine.events.post("dr_manta_disable_second_ball_save")
 
     def _eject_saucer(self, saucer, delay_ms=0):
@@ -349,6 +387,8 @@ class DrManta(CaseFileMixin, Mode):
 
     def mode_stop(self, **kwargs):
         self.delay.remove("dr_manta_attack_tick")
+        self.delay.remove("dr_manta_second_ball_drain_check")
+        self.delay.remove("dr_manta_second_ball_save_clear")
 
         self.machine.events.post("dr_manta_disable_second_ball_save")
         self.machine.events.post("dr_manta_clear_all")
