@@ -238,6 +238,10 @@ shows:
   bolton_boomer_saucer_3_solid:
     - duration: -1
       lights: {l_3_hole_l: red, l_3_hole_r: red}
+      
+      
+sound_player:
+    
   play_mode_jackpot:
     jackpot_2:
       action: play
