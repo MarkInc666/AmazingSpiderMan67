@@ -410,3 +410,58 @@ sound_player:
     let_there_be_drums:
       bus: music
       loops: -1
+
+  play_music_song_82:
+    rescue_squad:
+      bus: music
+      loops: -1
+
+  play_music_song_83:
+    galatea:
+      bus: music
+      loops: -1
+
+  play_music_song_84:
+    uptight:
+      bus: music
+      loops: -1
+
+  play_music_song_85:
+    monte_carlo:
+      bus: music
+      loops: -1
+
+  play_music_song_86:
+    mersey_front:
+      bus: music
+      loops: -1
+
+  play_music_song_87:
+    mas_que_nada:
+      bus: music
+      loops: -1
+
+  play_music_song_88:
+    fuzz:
+      bus: music
+      loops: -1
+
+  play_music_song_89:
+    cardova:
+      bus: music
+      loops: -1
+
+  play_music_song_90:
+    birds_lament:
+      bus: music
+      loops: -1
+
+  play_music_song_91:
+    come_september:
+      bus: music
+      loops: -1
+
+  play_music_song_92:
+    runaway:
+      bus: music
+      loops: -1

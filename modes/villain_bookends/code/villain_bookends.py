@@ -677,7 +677,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'bolton_boomer_state',
-            'song': 'play_song_58',
+            'song': 'play_song_92',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: The Snowman is freezing the city.
@@ -807,7 +807,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'molemen_state',
-            'song': 'play_song_42',
+            'song': 'play_song_85',
         },
         'charles_cameo': {
             'title': 'CHARLES CAMEO',
@@ -916,7 +916,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'sir_galahad_state',
-            'song': 'play_song_57',
+            'song': 'play_song_91',
         },
         'master_vine': {
             'title': 'MASTER VINE',
@@ -931,7 +931,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'master_vine_state',
-            'song': 'play_song_53',
+            'song': 'play_song_89',
         },
         'master_technician': {
             'title': 'MASTER TECHNICIAN',
@@ -1000,7 +1000,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'sinister_surge_state',
             'points_var': 'active_mode_points',
             'state_var': 'sinister_surge_state',
-            'song': 'play_song_50',
+            'song': 'play_song_88',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Chapter 2 mini-wizard multiball.
@@ -1038,7 +1038,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'trubble_unleashed_staged_hits',
             'points_var': 'active_mode_points',
             'state_var': 'trubble_unleashed_state',
-            'song': 'play_song_47',
+            'song': 'play_song_87',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Decode the Plotter’s scheme.
@@ -1072,7 +1072,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'crime_wave_state',
-            'song': 'play_song_43',
+            'song': 'play_song_86',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Chapter 7 mini-wizard multiball.
@@ -1088,7 +1088,7 @@ class VillainBookends(Mode):
             'summary_title_failed': 'THE WEB TIGHTENS',
             'stat_1_label': 'HITS', 'stat_1_var': 'active_mode_hits',
             'stat_2_label': 'STATE', 'stat_2_var': 'the_web_tightens_state',
-            'points_var': 'active_mode_points', 'state_var': 'the_web_tightens_state', 'song': 'play_song_38',
+            'points_var': 'active_mode_points', 'state_var': 'the_web_tightens_state', 'song': 'play_song_84',
         },
         'fifth_dimension_curse': {
             'title': 'FIFTH DIMENSION CURSE',
@@ -1161,7 +1161,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'invasion_from_everywhere_state',
             'points_var': 'active_mode_points',
             'state_var': 'invasion_from_everywhere_state',
-            'song': 'play_song_55',
+            'song': 'play_song_90',
         },
         # ORIGINAL DISPLAY TEXT:
         #   title: WHO IS THE REAL VILLAIN?
@@ -1201,7 +1201,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'time_tossed_showdown_state',
             'points_var': 'active_mode_points',
             'state_var': 'time_tossed_showdown_state',
-            'song': 'play_song_23',
+            'song': 'play_song_83',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: The citywide battle reaches its peak.
@@ -1221,7 +1221,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'final_showdown_jackpots',
             'points_var': 'active_mode_points',
             'state_var': 'final_showdown_state',
-            'song': 'play_song_3',
+            'song': 'play_song_82',
         },
     }
 

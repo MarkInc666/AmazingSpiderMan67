@@ -36,6 +36,11 @@ event_player:
   s_trispinner_opto_active: dr_zapp_spinner_hit
   s_upper_entrance_opto_active: dr_zapp_upper_entered
 
+  # Saucers are not Dr. Zapp objectives, but every captured ball must be served.
+  s_saucer_1_active: delayed_kickout_saucer_1
+  s_saucer_2_active: delayed_kickout_saucer_2
+  s_saucer_3_active: delayed_kickout_saucer_3
+
   drop_target_bank_dt_bank_left_down: drop_target_bank_dt_bank_left_reset
   drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset
 
