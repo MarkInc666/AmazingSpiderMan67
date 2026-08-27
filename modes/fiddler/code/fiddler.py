@@ -1,4 +1,5 @@
 import random
+import time
 from functools import partial
 
 from mpf.core.mode import Mode
@@ -24,6 +25,7 @@ class Fiddler(CaseFileMixin, Mode):
     PATTERN_REPEAT_PAUSE_MS = 2_000
     FRESH_PATTERN_REPEATS = 2
     REMINDER_PATTERN_REPEATS = 1
+    REMINDER_REENTRY_LOCKOUT_SECONDS = 4.0
     FEEDBACK_FLASH_MS = 1_000
 
     SHOTS = ("left_web", "left_bank", "right_pop", "right_bank")
@@ -79,6 +81,7 @@ class Fiddler(CaseFileMixin, Mode):
         self._watch_repeat = 0
         self._watch_note_index = 0
         self._watch_repeats_target = self.FRESH_PATTERN_REPEATS
+        self._last_saucer_eject_time = None
 
         for shot in self.SHOTS:
             self.add_mode_event_handler(
@@ -100,6 +103,7 @@ class Fiddler(CaseFileMixin, Mode):
         player["fiddler_notes_completed"] = 0
         player["fiddler_notes_required"] = self.pattern_length
         player["fiddler_shot_assist_used"] = 0
+        player["fiddler_saucer_hold"] = 0
 
         self.publish_case_file_bonus_events(self.MODE_KEY)
         self.publish_active_case_file_helpers([
@@ -129,6 +133,8 @@ class Fiddler(CaseFileMixin, Mode):
         self.machine.events.post("fiddler_saucers_not_ready")
         self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post("hide_mode_status")
+        if self.machine.game:
+            self.machine.game.player["fiddler_saucer_hold"] = 0
         self.machine.events.post("clear_saucers_delayed")
         self.machine.events.post("drop_target_bank_dt_bank_left_reset")
         self.machine.events.post("drop_target_bank_dt_bank_right_reset")
@@ -165,11 +171,21 @@ class Fiddler(CaseFileMixin, Mode):
             return
 
         self.held_saucer = saucer
+        self.machine.game.player["fiddler_saucer_hold"] = 1
         self.machine.events.post("fiddler_saucers_not_ready")
 
         fresh_pattern = self.round_failed or not self.sequence
         if fresh_pattern:
             self._new_pattern()
+        else:
+            # A clean saucer return is only a reminder if the ball has been
+            # back in play for at least four seconds. A ricochet straight back
+            # into a saucer is ejected immediately without replaying WATCH.
+            if self._last_saucer_eject_time is not None:
+                elapsed = time.monotonic() - self._last_saucer_eject_time
+                if elapsed < self.REMINDER_REENTRY_LOCKOUT_SECONDS:
+                    self._eject_held_saucer()
+                    return
 
         # A clean saucer return is a voluntary reminder: replay the same full
         # pattern once and preserve progress already made. Fresh attempts get
@@ -257,6 +273,8 @@ class Fiddler(CaseFileMixin, Mode):
             return
         saucer = self.held_saucer
         self.held_saucer = None
+        self.machine.game.player["fiddler_saucer_hold"] = 0
+        self._last_saucer_eject_time = time.monotonic()
         self.machine.events.post(
             "request_saucer_eject",
             saucer_number=saucer,

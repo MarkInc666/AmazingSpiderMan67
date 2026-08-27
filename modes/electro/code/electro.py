@@ -102,6 +102,8 @@ class Electro(CaseFileMixin, Mode):
         self.machine.events.post("electro_value_timer_stop")
         self.machine.events.post("electro_super_timer_stop")
         self.machine.events.post("electro_upper_super_timer_stop")
+        self.machine.events.post("electro_vuk_chase_stop")
+        self.machine.events.post("electro_center_web_chase_stop")
         self.machine.events.post("hide_mode_status")
         self.clear_active_case_file_helpers()
         self.machine.events.post("cancel_mode_message_reminder")
@@ -244,11 +246,15 @@ class Electro(CaseFileMixin, Mode):
         )
         self.machine.events.post("electro_lit_shot_changed")
         self.machine.events.post(f"electro_lite_{self.current_shot.name}")
+        if self.current_shot.name == "right_web":
+            self.machine.events.post("electro_center_web_chase_start")
 
         if previous_location == "upper" and self.current_shot.group != "upper":
             self.machine.events.post("rooftop_diverter_close")
+            self.machine.events.post("electro_vuk_chase_stop")
         if previous_location != "upper" and self.current_shot.group == "upper":
             self.machine.events.post("rooftop_diverter_open")
+            self.machine.events.post("electro_vuk_chase_start")
 
         self.machine.events.post("electro_value_timer_start")
         self._update_status()
@@ -256,11 +262,15 @@ class Electro(CaseFileMixin, Mode):
     def _set_gate_for_shot(self, shot):
         if shot and shot.group == "upper":
             self.machine.events.post("rooftop_diverter_open")
+            self.machine.events.post("electro_vuk_chase_start")
         else:
             self.machine.events.post("rooftop_diverter_close")
+            self.machine.events.post("electro_vuk_chase_stop")
 
     def stop_current_lit_shot(self):
         if self.current_shot:
+            if self.current_shot.name == "right_web":
+                self.machine.events.post("electro_center_web_chase_stop")
             self.current_shot.is_lit = False
             self.machine.events.post(f"electro_stop_{self.current_shot.name}")
 
@@ -393,6 +403,8 @@ class Electro(CaseFileMixin, Mode):
         )
         self.machine.events.post("electro_super_lit")
         self.machine.events.post(f"electro_super_lite_{shot.name}")
+        if shot.name == "right_web":
+            self.machine.events.post("electro_center_web_chase_start")
         super_timer_event = "electro_upper_super_timer_start" if is_upper_shot else "electro_super_timer_start"
         self.machine.events.post(super_timer_event)
         self._update_status()

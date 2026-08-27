@@ -7,11 +7,11 @@
 mode:
   start_events: start_mode_skymaster
   stop_events:
-    - ball_will_end
-    - bonus_start
-    - skymaster_mode_complete
-    - skymaster_mode_completed_summary
-    - ball_ended
+  - ball_will_end
+  - bonus_start
+  - skymaster_mode_complete
+  - skymaster_mode_completed_summary
+  - ball_ended
   code: skymaster.Skymaster
   priority: 300
 
@@ -63,15 +63,15 @@ event_player:
   s_saucer_3_active: clear_saucers_delayed
 
   mode_skymaster_stopping:
-    - clear_saucers_delayed
-    - skymaster_clear_lights
-    - rooftop_diverter_close
-    - enable_daily_bugle_mystery
-    - daily_bugle_restore_state
+  - clear_saucers_delayed
+  - skymaster_clear_lights
+  - rooftop_diverter_close
+  - enable_daily_bugle_mystery
+  - daily_bugle_restore_state
 
   mode_skymaster_started:
-    - disable_daily_bugle_mystery
-    - rooftop_diverter_close
+  - disable_daily_bugle_mystery
+  - rooftop_diverter_close
 
   skymaster_sequence_started: rooftop_diverter_open
   skymaster_super_ready: rooftop_diverter_close
@@ -84,18 +84,32 @@ show_player:
     skymaster_spinner_flash:
       loops: -1
       priority: 320
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: FFD040
   skymaster_super_ready:
     skymaster_spinner_flash:
       action: stop
     skymaster_center_super_flash:
       loops: -1
       priority: 330
+    shared_final_vuk_chase:
+      action: stop
+    shared_center_web_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: FFFFFF
   skymaster_left_super_ready:
     skymaster_left_super_flash:
       loops: -1
       priority: 330
   skymaster_center_super_collected:
     skymaster_center_super_flash:
+      action: stop
+    shared_center_web_chase:
       action: stop
   skymaster_left_super_collected:
     skymaster_left_super_flash:
@@ -104,6 +118,8 @@ show_player:
     skymaster_center_super_flash:
       action: stop
     skymaster_left_super_flash:
+      action: stop
+    shared_center_web_chase:
       action: stop
   skymaster_clear_lights:
     skymaster_spinner_flash:
@@ -125,6 +141,10 @@ show_player:
     skymaster_left_super_flash:
       action: stop
 
+    shared_center_web_chase:
+      action: stop
+    shared_final_vuk_chase:
+      action: stop
   skymaster_clear_target_lights:
     skymaster_expected_left_flash:
       action: stop
@@ -189,72 +209,72 @@ light_player:
 
 shows:
   skymaster_spinner_flash:
-    - duration: 250ms
-      lights:
-        l_spinner: white
-    - duration: 250ms
-      lights:
-        l_spinner: off
+  - duration: 250ms
+    lights:
+      l_spinner: white
+  - duration: 250ms
+    lights:
+      l_spinner: off
 
   skymaster_expected_left_flash:
-    - duration: 250ms
-      lights:
-        l_3bankbonus: green
-    - duration: 250ms
-      lights:
-        l_3bankbonus: off
+  - duration: 250ms
+    lights:
+      l_3bankbonus: green
+  - duration: 250ms
+    lights:
+      l_3bankbonus: off
 
   skymaster_expected_right_1_flash:
-    - duration: 250ms
-      lights:
-        l_5bank_1: green
-    - duration: 250ms
-      lights:
-        l_5bank_1: off
+  - duration: 250ms
+    lights:
+      l_5bank_1: green
+  - duration: 250ms
+    lights:
+      l_5bank_1: off
   skymaster_expected_right_2_flash:
-    - duration: 250ms
-      lights:
-        l_5bank_2: green
-    - duration: 250ms
-      lights:
-        l_5bank_2: off
+  - duration: 250ms
+    lights:
+      l_5bank_2: green
+  - duration: 250ms
+    lights:
+      l_5bank_2: off
   skymaster_expected_right_3_flash:
-    - duration: 250ms
-      lights:
-        l_5bank_3: green
-    - duration: 250ms
-      lights:
-        l_5bank_3: off
+  - duration: 250ms
+    lights:
+      l_5bank_3: green
+  - duration: 250ms
+    lights:
+      l_5bank_3: off
   skymaster_expected_right_4_flash:
-    - duration: 250ms
-      lights:
-        l_5bank_4: green
-    - duration: 250ms
-      lights:
-        l_5bank_4: off
+  - duration: 250ms
+    lights:
+      l_5bank_4: green
+  - duration: 250ms
+    lights:
+      l_5bank_4: off
   skymaster_expected_right_5_flash:
-    - duration: 250ms
-      lights:
-        l_5bank_5: green
-    - duration: 250ms
-      lights:
-        l_5bank_5: off
+  - duration: 250ms
+    lights:
+      l_5bank_5: green
+  - duration: 250ms
+    lights:
+      l_5bank_5: off
 
   skymaster_center_super_flash:
-    - duration: 200ms
-      lights:
-        l_mid_web_target: white
-    - duration: 200ms
-      lights:
-        l_mid_web_target: off
+  - duration: 200ms
+    lights:
+      l_mid_web_target: white
+  - duration: 200ms
+    lights:
+      l_mid_web_target: off
 
   skymaster_left_super_flash:
-    - duration: 200ms
-      lights:
-        l_left_web_target: white
-    - duration: 200ms
-      lights:
-        l_left_web_target: off
+  - duration: 200ms
+    lights:
+      l_left_web_target: white
+  - duration: 200ms
+    lights:
+      l_left_web_target: off
 
 sound_player:
   play_mode_jackpot:

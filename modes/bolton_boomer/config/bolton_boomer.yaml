@@ -106,9 +106,12 @@ show_player:
   bolton_boomer_saucer_3_held:
     bolton_boomer_saucer_3_solid: {loops: -1}
   bolton_boomer_vuk_ready:
-    bolton_boomer_vuk_flash: {loops: -1}
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 340
+      show_tokens: {color: "A0A0F0"}
   bolton_boomer_vuk_not_ready:
-    bolton_boomer_vuk_flash: {action: stop}
+    shared_final_vuk_chase: {action: stop}
 
   bolton_boomer_clear_targets:
     bolton_boomer_left_web_pulse: {action: stop}
@@ -135,7 +138,7 @@ show_player:
     bolton_boomer_saucer_1_solid: {action: stop}
     bolton_boomer_saucer_2_solid: {action: stop}
     bolton_boomer_saucer_3_solid: {action: stop}
-    bolton_boomer_vuk_flash: {action: stop}
+    shared_final_vuk_chase: {action: stop}
 
 light_player:
   mode_bolton_boomer_started:
@@ -235,13 +238,6 @@ shows:
   bolton_boomer_saucer_3_solid:
     - duration: -1
       lights: {l_3_hole_l: red, l_3_hole_r: red}
-  bolton_boomer_vuk_flash:
-    - duration: 300ms
-      lights: {l_gi_left_upper: 30FF60}
-    - duration: 300ms
-      lights: {l_gi_left_upper: off}
-
-sound_player:
   play_mode_jackpot:
     jackpot_2:
       action: play

@@ -3,9 +3,9 @@ from modes.common.case_file_mixin import CaseFileMixin
 
 """
     "title": "THE LIZARD MAN",
-    "intro_1": "Collect the antidote at the red star rollover.",
+    "intro_1": "Hit both pop bumpers to build the serum.",
     "intro_2": "Deliver it to Lizard Man at the left web target.",
-    "intro_3": "Move fast before the value drains.",
+    "intro_3": "Hit the red star during delivery to arm 10X.",
     "summary_title_complete": "LIZARD MAN CURED",
     "summary_title_failed": "LIZARD MAN ESCAPED",
     "stat_1_label": "DELIVERIES",
@@ -45,7 +45,12 @@ class Lizard(CaseFileMixin, Mode):
         self._init_player_vars()
         self.mode_done = False
 
-        self.add_mode_event_handler("s_star_rollover_active", self.serum_collect_request)
+        # Build each serum by hitting both pop bumpers once.
+        self.add_mode_event_handler("s_pop_left_active", self.pop_hit, side="left")
+        self.add_mode_event_handler("s_pop_right_active", self.pop_hit, side="right")
+
+        # During delivery the red star is an optional 10X multiplier.
+        self.add_mode_event_handler("s_star_rollover_active", self.star_multiplier_request)
         self.add_mode_event_handler("s_web_target_left_active", self.delivery_request, target="left")
 
         # A rollovers.
@@ -79,12 +84,12 @@ class Lizard(CaseFileMixin, Mode):
         # Lizard owns the gate for the full mode so the star remains reachable.
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("lizard_clear_ab")
-        self.machine.events.post("lizard_light_serum_location")
+        self._reset_serum_build_lights()
         self.machine.events.post("clear_saucers")
         self.machine.events.post(
             "show_mode_message",
-            message_mode_title="COLLECT SERUM",
-            message_mode_subtitle="HIT THE STAR ROLLOVER",
+            message_mode_title="BUILD THE SERUM",
+            message_mode_subtitle="HIT BOTH POP BUMPERS",
         )
         self._update_status()
 
@@ -133,6 +138,9 @@ class Lizard(CaseFileMixin, Mode):
         self._delivery_completes_mode = False
         self._serum_expiration_pending = False
         self._delivery_success_pending = False
+        self._left_pop_hit = False
+        self._right_pop_hit = False
+        self._star_10x_armed = False
 
         player["active_mode_points"] = 0
         player["lizard_state"] = 1
@@ -147,13 +155,17 @@ class Lizard(CaseFileMixin, Mode):
         if self.mode_done:
             return
         player = self.machine.game.player
-        deliveries = player["lizard_deliveries"]
         if player["lizard_serum_ready"] == 1:
-            title = "DELIVER SERUM"
-            value = "LEFT WEB"
+            title = f"DELIVERY {int(player['lizard_delivery_value']):,}"
+            value = "10X ARMED" if self._star_10x_armed else "STAR 10X READY"
         else:
-            title = "COLLECT SERUM"
-            value = f"STAR  {deliveries} OF {self.delivery_attempts}"
+            title = "BUILD THE SERUM"
+            if self._left_pop_hit and not self._right_pop_hit:
+                value = "RIGHT POP NEEDED"
+            elif self._right_pop_hit and not self._left_pop_hit:
+                value = "LEFT POP NEEDED"
+            else:
+                value = "HIT BOTH POP BUMPERS"
         self.machine.events.post("show_mode_status", mode_status_title=title, mode_status_value=value)
 
     def current_target(self):
@@ -203,7 +215,16 @@ class Lizard(CaseFileMixin, Mode):
         player["lizard_ab_ready"] = 0
         self.machine.events.post("lizard_clear_ab")
 
-    def serum_collect_request(self, **kwargs):
+    def _reset_serum_build_lights(self):
+        self._left_pop_hit = False
+        self._right_pop_hit = False
+        self._star_10x_armed = False
+        self.machine.events.post("lizard_pop_left_available")
+        self.machine.events.post("lizard_pop_right_available")
+        self.machine.events.post("lizard_star_10x_stop")
+        self.machine.events.post("lizard_light_serum_location")
+
+    def pop_hit(self, side=None, **kwargs):
         if self.mode_done or self.machine.game.player["villain_mode_in_summary"] is True:
             return
         if self._serum_expiration_pending or self._delivery_success_pending:
@@ -215,9 +236,36 @@ class Lizard(CaseFileMixin, Mode):
         if player["lizard_deliveries"] >= self.delivery_attempts:
             return
 
+        if side == "left":
+            if self._left_pop_hit:
+                return
+            self._left_pop_hit = True
+            self.machine.events.post("lizard_pop_left_collected")
+        elif side == "right":
+            if self._right_pop_hit:
+                return
+            self._right_pop_hit = True
+            self.machine.events.post("lizard_pop_right_collected")
+        else:
+            return
+
+        if not (self._left_pop_hit and self._right_pop_hit):
+            self.machine.events.post(
+                "show_mode_message",
+                message_mode_title="SERUM COMPONENT FOUND",
+                message_mode_subtitle="HIT THE OTHER POP",
+            )
+            self._update_status()
+            return
+
+        self._serum_ready_from_pops()
+
+    def _serum_ready_from_pops(self):
+        player = self.machine.game.player
         player["lizard_delivery_value"] = self.start_delivery_value
         self._award_points(self.SERUM_COLLECT_SCORE)
         player["lizard_serum_ready"] = 1
+        self._star_10x_armed = False
 
         subtitle = "LEFT WEB / SPINNER / LEFT B" if self.has_case_file("shot_assist") else "DELIVER TO LEFT WEB"
         self.machine.events.post(
@@ -229,7 +277,22 @@ class Lizard(CaseFileMixin, Mode):
         )
         self.machine.events.post("lizard_serum_collected")
         self.machine.events.post("lizard_light_delivery_target")
+        self.machine.events.post("lizard_star_10x_available")
         self._start_delivery_timer()
+        self._update_status()
+
+    def star_multiplier_request(self, **kwargs):
+        if self.mode_done or self.machine.game.player["villain_mode_in_summary"] is True:
+            return
+        if self.machine.game.player["lizard_serum_ready"] == 0 or self._star_10x_armed:
+            return
+        self._star_10x_armed = True
+        self.machine.events.post("lizard_star_10x_armed")
+        self.machine.events.post(
+            "show_mode_message",
+            message_mode_title="10X DELIVERY ARMED",
+            message_mode_subtitle="DELIVER TO LEFT WEB",
+        )
         self._update_status()
 
     def _start_delivery_timer(self):
@@ -256,10 +319,11 @@ class Lizard(CaseFileMixin, Mode):
             self.MINIMUM_DELIVERY_VALUE,
             player["lizard_delivery_value"] - self.delivery_tick_value,
         )
+        multiplier_status = "10X ARMED" if self._star_10x_armed else "STAR 10X READY"
         self.machine.events.post(
             "update_mode_status",
-            mode_status_title="SECONDS LEFT",
-            mode_status_value=int(ticks),
+            mode_status_title=f"DELIVERY {int(player['lizard_delivery_value']):,}",
+            mode_status_value=f"{multiplier_status} - {int(ticks)}s",
         )
         self.machine.events.post("lizard_delivery_tick")
 
@@ -274,6 +338,8 @@ class Lizard(CaseFileMixin, Mode):
         self._serum_expiration_pending = True
         player["lizard_serum_ready"] = 0
         player["lizard_delivery_value"] = self.start_delivery_value
+        self._star_10x_armed = False
+        self.machine.events.post("lizard_star_10x_stop")
 
         if self.has_case_file("safety_net") and not self._safety_net_used:
             self._safety_net_used = True
@@ -315,7 +381,7 @@ class Lizard(CaseFileMixin, Mode):
         if complete_mode:
             self._complete_mode()
             return
-        self.machine.events.post("lizard_light_serum_location")
+        self._reset_serum_build_lights()
         self._update_status()
 
     def delivery_request(self, target=None, **kwargs):
@@ -333,8 +399,10 @@ class Lizard(CaseFileMixin, Mode):
             return
 
         player["lizard_serum_ready"] = 0
-        delivery_value = max(self.MINIMUM_DELIVERY_VALUE, player["lizard_delivery_value"])
+        base_delivery_value = max(self.MINIMUM_DELIVERY_VALUE, player["lizard_delivery_value"])
+        delivery_value = base_delivery_value * (10 if self._star_10x_armed else 1)
         self._award_points(delivery_value)
+        self.machine.events.post("lizard_star_10x_stop")
 
         self.best_delivery_value = max(self.best_delivery_value, delivery_value)
         self.deliveries_made += 1
@@ -344,8 +412,12 @@ class Lizard(CaseFileMixin, Mode):
         player["lizard_deliveries"] += 1
         player["lizard_state"] = 2
         player["lizard_delivery_value"] = self.start_delivery_value
+        used_10x = self._star_10x_armed
+        self._star_10x_armed = False
 
         subtitle = "SHOT ASSIST" if used_shot_assist else "LEFT WEB"
+        if used_10x:
+            subtitle = f"{subtitle} - 10X"
         self.machine.events.post(
             "show_mode_jackpot",
             message_mode_title="SERUM DELIVERED",
@@ -373,7 +445,7 @@ class Lizard(CaseFileMixin, Mode):
         if self._delivery_completes_mode:
             self._complete_mode()
             return
-        self.machine.events.post("lizard_light_serum_location")
+        self._reset_serum_build_lights()
         self._update_status()
         self._prompt_next_serum()
 
@@ -388,14 +460,15 @@ class Lizard(CaseFileMixin, Mode):
         self.machine.events.post("lizard_more_serum_needed")
         self.machine.events.post(
             "show_mode_message",
-            message_mode_title="COLLECT MORE SERUM",
-            message_mode_subtitle="HIT THE STAR ROLLOVER",
+            message_mode_title="BUILD ANOTHER SERUM",
+            message_mode_subtitle="HIT BOTH POP BUMPERS",
             reminder=True,
         )
 
     def _complete_mode(self):
         self.mode_done = True
         self._stop_delivery_timers()
+        self.machine.events.post("lizard_star_10x_stop")
         self.machine.events.post(
             "show_mode_jackpot",
             message_mode_title="LIZARD CURED",

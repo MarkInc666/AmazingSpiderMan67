@@ -14,6 +14,8 @@ class Mysterio(CaseFileMixin, Mode):
     MORE_TIME_DEDUCT = 50_000
     COMPLETION_HOLD_MS = 2_000
     COMPLETION_DELAY_NAME = "mysterio_completion_hold"
+    VUK_CHASE_DELAY_NAME = "mysterio_vuk_chase_reminder"
+    VUK_CHASE_REMINDER_MS = 4_000
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
@@ -76,6 +78,8 @@ class Mysterio(CaseFileMixin, Mode):
         self.machine.events.post("hide_mode_status")
         if hasattr(self, "delay"):
             self.delay.remove(self.COMPLETION_DELAY_NAME)
+            self.delay.remove(self.VUK_CHASE_DELAY_NAME)
+        self.machine.events.post("mysterio_vuk_chase_stop")
         self.machine.events.post("rooftop_diverter_close")
         self.clear_active_case_file_helpers()
         # Catch-all: no delayed villain/wizard callback may survive into bonus.
@@ -243,6 +247,32 @@ class Mysterio(CaseFileMixin, Mode):
         )
         self.machine.events.post(
             "rooftop_diverter_open" if upper_active else "rooftop_diverter_close"
+        )
+        if upper_active:
+            self.delay.reset(
+                name=self.VUK_CHASE_DELAY_NAME,
+                ms=self.VUK_CHASE_REMINDER_MS,
+                callback=self._vuk_chase_reminder,
+            )
+        else:
+            self.delay.remove(self.VUK_CHASE_DELAY_NAME)
+            self.machine.events.post("mysterio_vuk_chase_stop")
+
+    def _vuk_chase_reminder(self):
+        if not self._rules_active():
+            return
+        upper_active = any(
+            not shot.disabled and shot.group == "upper"
+            for shot in self.shots
+        )
+        if not upper_active:
+            self.machine.events.post("mysterio_vuk_chase_stop")
+            return
+        self.machine.events.post("mysterio_vuk_chase_pulse")
+        self.delay.reset(
+            name=self.VUK_CHASE_DELAY_NAME,
+            ms=self.VUK_CHASE_REMINDER_MS,
+            callback=self._vuk_chase_reminder,
         )
 
     def handle_wrong_shot(self, shot, protected=False):

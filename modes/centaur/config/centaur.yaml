@@ -3,11 +3,11 @@
 mode:
   start_events: start_mode_centaur
   stop_events:
-    - ball_will_end
-    - bonus_start
-    - centaur_mode_complete
-    - centaur_mode_completed_summary
-    - ball_ended
+  - ball_will_end
+  - bonus_start
+  - centaur_mode_complete
+  - centaur_mode_completed_summary
+  - ball_ended
   code: centaur.Centaur
   priority: 300
 
@@ -57,21 +57,21 @@ event_player:
 
   # Same early release pattern as Daily Bugle: both flippers held/tapped while post is holding.
   s_left_flipper_active{device.switches.s_right_flipper.state == 1}:
-    - centaur_post_hold_cancel
+  - centaur_post_hold_cancel
 
   s_right_flipper_active{device.switches.s_left_flipper.state == 1}:
-    - centaur_post_hold_cancel
+  - centaur_post_hold_cancel
 
   mode_centaur_started:
-    - disable_daily_bugle_mystery
-    - clear_saucers
-    - reset_drops
+  - disable_daily_bugle_mystery
+  - clear_saucers
+  - reset_drops
 
   mode_centaur_stopping:
-    - clear_saucers
-    - centaur_clear_all_lights
-    - enable_daily_bugle_mystery
-    - daily_bugle_restore_state
+  - clear_saucers
+  - centaur_clear_all_lights
+  - enable_daily_bugle_mystery
+  - daily_bugle_restore_state
 
 coil_player:
   centaur_stage_right_bank_drops:
@@ -88,18 +88,34 @@ show_player:
 
   centaur_gate_open:
     centaur_build_bank_pulse: {action: stop}
-    centaur_roof_route_pulse: {loops: -1}
+    centaur_roof_route_pulse:
+      action: stop
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: F0F040
 
   centaur_gate_closed:
     centaur_roof_route_pulse: {action: stop}
+    shared_final_vuk_chase:
+      action: stop
 
   centaur_roof_entered:
     centaur_roof_route_pulse: {action: stop}
     centaur_left_exit_pulse: {loops: -1}
+    shared_final_vuk_chase:
+      action: stop
 
   centaur_roof_retry_needed:
     centaur_left_exit_pulse: {action: stop}
-    centaur_roof_route_pulse: {loops: -1}
+    centaur_roof_route_pulse:
+      action: stop
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: F0F040
 
   centaur_post_hold_started:
     centaur_left_exit_pulse: {action: stop}
@@ -121,6 +137,8 @@ show_player:
     centaur_roof_route_pulse: {action: stop}
     centaur_left_exit_pulse: {action: stop}
     centaur_final_one_shot_pulse: {action: stop}
+    shared_final_vuk_chase:
+      action: stop
 
 light_player:
   # Full-playfield GI theme while this mode is active.
@@ -185,49 +203,49 @@ light_player:
 
 shows:
   centaur_build_bank_pulse:
-    - duration: 750ms
-      lights:
-        l_gi_3bank: F0D040
-        l_gi_5bank_lower: F0D040
-        l_gi_5bank_upper: F0D040
-    - duration: 750ms
-      lights:
-        l_gi_3bank: 503810
-        l_gi_5bank_lower: 503810
-        l_gi_5bank_upper: 503810
+  - duration: 750ms
+    lights:
+      l_gi_3bank: F0D040
+      l_gi_5bank_lower: F0D040
+      l_gi_5bank_upper: F0D040
+  - duration: 750ms
+    lights:
+      l_gi_3bank: 503810
+      l_gi_5bank_lower: 503810
+      l_gi_5bank_upper: 503810
 
   centaur_roof_route_pulse:
-    - duration: 400ms
-      lights:
-        l_gi_ramp: 60F060
-        l_gi_top_1: 206020
-        l_gi_top_2: 206020
-    - duration: 400ms
-      lights:
-        l_gi_ramp: 206020
-        l_gi_top_1: 60F060
-        l_gi_top_2: 60F060
+  - duration: 400ms
+    lights:
+      l_gi_ramp: 60F060
+      l_gi_top_1: 206020
+      l_gi_top_2: 206020
+  - duration: 400ms
+    lights:
+      l_gi_ramp: 206020
+      l_gi_top_1: 60F060
+      l_gi_top_2: 60F060
 
   centaur_left_exit_pulse:
-    - duration: 400ms
-      lights:
-        l_upper_left: F0D040
-        l_gi_mid_spider: 503810
-    - duration: 400ms
-      lights:
-        l_upper_left: 503810
-        l_gi_mid_spider: F0D040
+  - duration: 400ms
+    lights:
+      l_upper_left: F0D040
+      l_gi_mid_spider: 503810
+  - duration: 400ms
+    lights:
+      l_upper_left: 503810
+      l_gi_mid_spider: F0D040
 
   centaur_final_one_shot_pulse:
-    - duration: 250ms
-      lights:
-        l_5bank_1: white
-        l_5bank_5: white
-        l_gi_5bank_lower: F02020
-        l_gi_5bank_upper: F02020
-    - duration: 250ms
-      lights:
-        l_5bank_1: off
-        l_5bank_5: off
-        l_gi_5bank_lower: 501010
-        l_gi_5bank_upper: 501010
+  - duration: 250ms
+    lights:
+      l_5bank_1: white
+      l_5bank_5: white
+      l_gi_5bank_lower: F02020
+      l_gi_5bank_upper: F02020
+  - duration: 250ms
+    lights:
+      l_5bank_1: off
+      l_5bank_5: off
+      l_gi_5bank_lower: 501010
+      l_gi_5bank_upper: 501010

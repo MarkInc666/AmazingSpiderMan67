@@ -8,11 +8,11 @@
 mode:
   start_events: start_mode_pardo
   stop_events:
-    - ball_will_end
-    - bonus_start
-    - pardo_mode_complete
-    - pardo_mode_completed_summary
-    - ball_ended
+  - ball_will_end
+  - bonus_start
+  - pardo_mode_complete
+  - pardo_mode_completed_summary
+  - ball_ended
   code: pardo.Pardo
   priority: 300
 
@@ -59,7 +59,7 @@ event_player:
   # Daily Bugle VUK is disabled during the mode, so Pardo
   # must always eject the ball itself.
   s_vuk_switch_active:
-    - request_vuk_eject
+  - request_vuk_eject
 
   # Saucers are not Pardo choices, but they must still kick out.
   s_saucer_1_active: clear_saucers
@@ -67,21 +67,21 @@ event_player:
   s_saucer_3_active: clear_saucers
 
   drop_target_bank_dt_bank_left_down:
-    - drop_target_bank_dt_bank_left_reset
+  - drop_target_bank_dt_bank_left_reset
   drop_target_bank_dt_bank_right_down:
-    - drop_target_bank_dt_bank_right_reset
+  - drop_target_bank_dt_bank_right_reset
 
   pardo_startup_complete:
-    - disable_daily_bugle_mystery
-    - clear_saucers
-    - drop_target_bank_dt_bank_left_reset
-    - drop_target_bank_dt_bank_right_reset
+  - disable_daily_bugle_mystery
+  - clear_saucers
+  - drop_target_bank_dt_bank_left_reset
+  - drop_target_bank_dt_bank_right_reset
 
   mode_pardo_stopping:
-    - enable_daily_bugle_mystery
-    - daily_bugle_restore_state
-    - pardo_all_lights_off
-    - clear_saucers
+  - enable_daily_bugle_mystery
+  - daily_bugle_restore_state
+  - pardo_all_lights_off
+  - clear_saucers
 
 light_player:
   # Full-playfield GI theme while this mode is active.
@@ -128,50 +128,8 @@ light_player:
     l_pop_2_11: off
     l_pop_2_12: off
 
-  # Hidden state: green works through both white and green physical lenses,
-  # so all three choices have the same visible color.
-  pardo_hidden_left_web:
-    l_left_web_target: green
-  pardo_hidden_center_web:
-    l_mid_web_target: green
-  pardo_hidden_upper_targets:
-    l_upper_left: green
-    l_upper_middle: green
-    l_upper_right: green
-  pardo_hidden_left_drops:
-    l_3bankbonus: green
-  pardo_hidden_right_drops:
-    l_5bank_1: green
-    l_5bank_2: green
-    l_5bank_3: green
-    l_5bank_4: green
-    l_5bank_5: green
-  pardo_hidden_pop_left:
-    l_pop_1_1: green
-    l_pop_1_2: green
-    l_pop_1_3: green
-    l_pop_1_4: green
-    l_pop_1_5: green
-    l_pop_1_6: green
-    l_pop_1_7: green
-    l_pop_1_8: green
-    l_pop_1_9: green
-    l_pop_1_10: green
-    l_pop_1_11: green
-    l_pop_1_12: green
-  pardo_hidden_pop_right:
-    l_pop_2_1: green
-    l_pop_2_2: green
-    l_pop_2_3: green
-    l_pop_2_4: green
-    l_pop_2_5: green
-    l_pop_2_6: green
-    l_pop_2_7: green
-    l_pop_2_8: green
-    l_pop_2_9: green
-    l_pop_2_10: green
-    l_pop_2_11: green
-    l_pop_2_12: green
+  # Hidden state is handled by looping shows below so every currently
+  # available choice flashes identically until the spinner reveal.
 
   # Correct reveal: green, toggled on/off by Python every 250ms.
   pardo_reveal_good_on_left_web:
@@ -320,22 +278,195 @@ show_player:
     pardo_spinner_needed_flash:
       loops: -1
 
+  pardo_hidden_left_web:
+    pardo_hidden_left_web_flash:
+      loops: -1
+  pardo_hidden_center_web:
+    pardo_hidden_center_web_flash:
+      loops: -1
+  pardo_hidden_upper_targets:
+    pardo_hidden_upper_targets_flash:
+      loops: -1
+  pardo_hidden_left_drops:
+    pardo_hidden_left_drops_flash:
+      loops: -1
+  pardo_hidden_right_drops:
+    pardo_hidden_right_drops_flash:
+      loops: -1
+  pardo_hidden_pop_left:
+    pardo_hidden_pop_left_flash:
+      loops: -1
+  pardo_hidden_pop_right:
+    pardo_hidden_pop_right_flash:
+      loops: -1
+
   pardo_all_lights_off:
     pardo_spinner_needed_flash:
+      action: stop
+    pardo_hidden_left_web_flash:
+      action: stop
+    pardo_hidden_center_web_flash:
+      action: stop
+    pardo_hidden_upper_targets_flash:
+      action: stop
+    pardo_hidden_left_drops_flash:
+      action: stop
+    pardo_hidden_right_drops_flash:
+      action: stop
+    pardo_hidden_pop_left_flash:
+      action: stop
+    pardo_hidden_pop_right_flash:
       action: stop
 
   mode_pardo_stopping:
     pardo_spinner_needed_flash:
       action: stop
+    pardo_hidden_left_web_flash:
+      action: stop
+    pardo_hidden_center_web_flash:
+      action: stop
+    pardo_hidden_upper_targets_flash:
+      action: stop
+    pardo_hidden_left_drops_flash:
+      action: stop
+    pardo_hidden_right_drops_flash:
+      action: stop
+    pardo_hidden_pop_left_flash:
+      action: stop
+    pardo_hidden_pop_right_flash:
+      action: stop
 
+    shared_final_vuk_chase:
+      action: stop
+  pardo_vuk_chase_start:
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: FFD040
+  pardo_vuk_chase_stop:
+    shared_final_vuk_chase:
+      action: stop
 shows:
   pardo_spinner_needed_flash:
-    - duration: 250ms
-      lights:
-        l_spinner: white
-    - duration: 250ms
-      lights:
-        l_spinner: off
+  - duration: 250ms
+    lights:
+      l_spinner: white
+  - duration: 250ms
+    lights:
+      l_spinner: off
+
+  pardo_hidden_left_web_flash:
+  - duration: 250ms
+    lights:
+      l_left_web_target: green
+  - duration: 250ms
+    lights:
+      l_left_web_target: off
+
+  pardo_hidden_center_web_flash:
+  - duration: 250ms
+    lights:
+      l_mid_web_target: green
+  - duration: 250ms
+    lights:
+      l_mid_web_target: off
+
+  pardo_hidden_upper_targets_flash:
+  - duration: 250ms
+    lights:
+      l_upper_left: green
+      l_upper_middle: green
+      l_upper_right: green
+  - duration: 250ms
+    lights:
+      l_upper_left: off
+      l_upper_middle: off
+      l_upper_right: off
+
+  pardo_hidden_left_drops_flash:
+  - duration: 250ms
+    lights:
+      l_3bankbonus: green
+  - duration: 250ms
+    lights:
+      l_3bankbonus: off
+
+  pardo_hidden_right_drops_flash:
+  - duration: 250ms
+    lights:
+      l_5bank_1: green
+      l_5bank_2: green
+      l_5bank_3: green
+      l_5bank_4: green
+      l_5bank_5: green
+  - duration: 250ms
+    lights:
+      l_5bank_1: off
+      l_5bank_2: off
+      l_5bank_3: off
+      l_5bank_4: off
+      l_5bank_5: off
+
+  pardo_hidden_pop_left_flash:
+  - duration: 250ms
+    lights:
+      l_pop_1_1: green
+      l_pop_1_2: green
+      l_pop_1_3: green
+      l_pop_1_4: green
+      l_pop_1_5: green
+      l_pop_1_6: green
+      l_pop_1_7: green
+      l_pop_1_8: green
+      l_pop_1_9: green
+      l_pop_1_10: green
+      l_pop_1_11: green
+      l_pop_1_12: green
+  - duration: 250ms
+    lights:
+      l_pop_1_1: off
+      l_pop_1_2: off
+      l_pop_1_3: off
+      l_pop_1_4: off
+      l_pop_1_5: off
+      l_pop_1_6: off
+      l_pop_1_7: off
+      l_pop_1_8: off
+      l_pop_1_9: off
+      l_pop_1_10: off
+      l_pop_1_11: off
+      l_pop_1_12: off
+
+  pardo_hidden_pop_right_flash:
+  - duration: 250ms
+    lights:
+      l_pop_2_1: green
+      l_pop_2_2: green
+      l_pop_2_3: green
+      l_pop_2_4: green
+      l_pop_2_5: green
+      l_pop_2_6: green
+      l_pop_2_7: green
+      l_pop_2_8: green
+      l_pop_2_9: green
+      l_pop_2_10: green
+      l_pop_2_11: green
+      l_pop_2_12: green
+  - duration: 250ms
+    lights:
+      l_pop_2_1: off
+      l_pop_2_2: off
+      l_pop_2_3: off
+      l_pop_2_4: off
+      l_pop_2_5: off
+      l_pop_2_6: off
+      l_pop_2_7: off
+      l_pop_2_8: off
+      l_pop_2_9: off
+      l_pop_2_10: off
+      l_pop_2_11: off
+      l_pop_2_12: off
 
 sound_player:
   play_mode_jackpot:

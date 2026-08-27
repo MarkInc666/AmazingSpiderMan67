@@ -27,6 +27,15 @@ widget_player:
       action: remove
 
 show_player:
+  cerberus_gate_open_for_upper:
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: "A0A0F0"
+  cerberus_gate_closed_for_saucers:
+    shared_final_vuk_chase:
+      action: stop
   cerberus_lite_upper_targets:
     cerberus_upper_targets_flash_show:
       loops: -1
@@ -41,6 +50,8 @@ show_player:
 
   mode_cerberus_stopping:
     cerberus_upper_targets_flash_show:
+      action: stop
+    shared_final_vuk_chase:
       action: stop
 
 event_player:

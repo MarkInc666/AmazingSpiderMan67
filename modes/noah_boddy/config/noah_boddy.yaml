@@ -8,11 +8,11 @@
 mode:
   start_events: start_mode_noah_boddy
   stop_events:
-    - ball_will_end
-    - bonus_start
-    - noah_boddy_mode_complete
-    - noah_boddy_mode_completed_summary
-    - ball_ended
+  - ball_will_end
+  - bonus_start
+  - noah_boddy_mode_complete
+  - noah_boddy_mode_completed_summary
+  - ball_ended
   code: noah_boddy.NoahBoddy
   priority: 300
 
@@ -33,20 +33,20 @@ widget_player:
 
 event_player:
   mode_noah_boddy_started:
-    - clear_saucers
+  - clear_saucers
 
   s_saucer_1_active:
-    - clear_saucers
+  - clear_saucers
 
   s_saucer_2_active:
-    - clear_saucers
+  - clear_saucers
 
   s_saucer_3_active:
-    - clear_saucers
+  - clear_saucers
 
   mode_noah_boddy_stopping:
-    - clear_saucers
-    - rooftop_diverter_close
+  - clear_saucers
+  - rooftop_diverter_close
 
 show_player:
   noah_boddy_get_to_upper:
@@ -171,82 +171,91 @@ show_player:
     noah_boddy_secret_right_5_show:
       action: stop
 
+  noah_boddy_vuk_chase_start:
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: FFD040
+  noah_boddy_vuk_chase_stop:
+    shared_final_vuk_chase:
+      action: stop
 shows:
   noah_boddy_roof_search_show:
-    - duration: 250ms
-      lights:
-        l_upper_left: yellow
-        l_upper_middle: yellow
-        l_upper_right: yellow
-        l_gi_a: yellow
-    - duration: 250ms
-      lights:
-        l_upper_left: green
-        l_upper_middle: green
-        l_upper_right: green
-        l_gi_a: green
+  - duration: 250ms
+    lights:
+      l_upper_left: yellow
+      l_upper_middle: yellow
+      l_upper_right: yellow
+      l_gi_a: yellow
+  - duration: 250ms
+    lights:
+      l_upper_left: green
+      l_upper_middle: green
+      l_upper_right: green
+      l_gi_a: green
 
   noah_boddy_lower_targets_search_show:
-    - duration: 300ms
-      lights:
-        l_3bankbonus: yellow
-        l_5bank_1: yellow
-        l_5bank_2: yellow
-        l_5bank_3: yellow
-        l_5bank_4: yellow
-        l_5bank_5: yellow
-    - duration: 300ms
-      lights:
-        l_3bankbonus: off
-        l_5bank_1: off
-        l_5bank_2: off
-        l_5bank_3: off
-        l_5bank_4: off
-        l_5bank_5: off
+  - duration: 300ms
+    lights:
+      l_3bankbonus: yellow
+      l_5bank_1: yellow
+      l_5bank_2: yellow
+      l_5bank_3: yellow
+      l_5bank_4: yellow
+      l_5bank_5: yellow
+  - duration: 300ms
+    lights:
+      l_3bankbonus: off
+      l_5bank_1: off
+      l_5bank_2: off
+      l_5bank_3: off
+      l_5bank_4: off
+      l_5bank_5: off
 
   noah_boddy_secret_left_show:
-    - duration: 120ms
-      lights:
-        l_3bankbonus: green
-    - duration: 120ms
-      lights:
-        l_3bankbonus: yellow
+  - duration: 120ms
+    lights:
+      l_3bankbonus: green
+  - duration: 120ms
+    lights:
+      l_3bankbonus: yellow
 
   noah_boddy_secret_right_1_show:
-    - duration: 120ms
-      lights:
-        l_5bank_1: green
-    - duration: 120ms
-      lights:
-        l_5bank_1: off
+  - duration: 120ms
+    lights:
+      l_5bank_1: green
+  - duration: 120ms
+    lights:
+      l_5bank_1: off
   noah_boddy_secret_right_2_show:
-    - duration: 120ms
-      lights:
-        l_5bank_2: green
-    - duration: 120ms
-      lights:
-        l_5bank_2: off
+  - duration: 120ms
+    lights:
+      l_5bank_2: green
+  - duration: 120ms
+    lights:
+      l_5bank_2: off
   noah_boddy_secret_right_3_show:
-    - duration: 120ms
-      lights:
-        l_5bank_3: green
-    - duration: 120ms
-      lights:
-        l_5bank_3: off
+  - duration: 120ms
+    lights:
+      l_5bank_3: green
+  - duration: 120ms
+    lights:
+      l_5bank_3: off
   noah_boddy_secret_right_4_show:
-    - duration: 120ms
-      lights:
-        l_5bank_4: green
-    - duration: 120ms
-      lights:
-        l_5bank_4: off
+  - duration: 120ms
+    lights:
+      l_5bank_4: green
+  - duration: 120ms
+    lights:
+      l_5bank_4: off
   noah_boddy_secret_right_5_show:
-    - duration: 120ms
-      lights:
-        l_5bank_5: green
-    - duration: 120ms
-      lights:
-        l_5bank_5: off
+  - duration: 120ms
+    lights:
+      l_5bank_5: green
+  - duration: 120ms
+    lights:
+      l_5bank_5: off
 
 light_player:
   # Full-playfield GI theme while this mode is active.

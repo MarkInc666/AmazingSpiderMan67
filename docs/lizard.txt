@@ -3,14 +3,17 @@ Lizard Mode: “Serum Chase”
 Core rules:
 - The rooftop gate stays closed for the entire mode.
 - The player gets two serum delivery attempts, or three with More Jackpots.
-- During serum collection, GI slowly fades between F0F040 yellow and F02040
-  red while the red star rollover flashes.
-- Hitting the star immediately starts the delivery timer. Delivery GI is teal
-  406060 with a 250ms F02040 red flash every 1.5 seconds.
+- Build each serum by hitting the left and right pop bumpers once each.
+- An unhit pop ring pulses green; after that pop is hit, its ring stays solid purple.
+- When both pops are complete, serum becomes ready and the delivery countdown starts.
 - Both deliveries are made at the left web target, which flashes purple.
-- A missed/expired serum consumes that delivery attempt.
+- During the delivery countdown, the red Star insert flashes as an optional 10X delivery multiplier.
+- Hitting the Star arms 10X for that delivery; the Star then stays solid red.
+- The 10X applies to whatever delivery value remains when the left web (or Shot Assist delivery) is hit.
+- A missed/expired serum consumes that delivery attempt unless Safety Net saves it.
 
 Delivery scoring:
+- Completing both pops awards the existing 100,000 serum-build score and starts the delivery.
 - Base timer: 16 seconds.
 - More Time: 20 seconds.
 - Base delivery jackpot: 1,000,000.
@@ -18,18 +21,18 @@ Delivery scoring:
 - Base decay: 100,000 per second.
 - More Time decay: 50,000 per second.
 - Delivery value cannot fall below 100,000.
+- If 10X is armed, the final award is 10 times the value remaining at the instant of delivery.
 - Each later attempt starts at the current full serum value and receives a fresh timer.
-- A successful serum delivery plays a 2-second white/green left-web success show before the next serum is lit.
-- If a delivery timer expires, GI fades to off over 2 seconds. The next serum attempt does not light until that fade finishes; after the final expired attempt, mode completion also waits for the fade.
+- A successful serum delivery plays a 2-second white/green left-web success show before the next serum build begins.
+- If a delivery timer expires, GI fades to off over 2 seconds. The next serum attempt does not begin until that fade finishes; after the final expired attempt, mode completion also waits for the fade.
 - One or more successful deliveries produces the CURED summary. If every attempt expires, the summary reports that Lizard escaped.
 
 Lighting:
-- Star-needed GI uses a slow 1.5-second fade to F0F040 followed by a
-  1.5-second fade to F02040.
-- Active-delivery GI holds teal 406060 for 1.25 seconds, flashes F02040 for
-  250ms, and repeats every 1.5 seconds.
-- The red star insert continues flashing while serum is needed.
-- The left-web delivery target continues flashing purple while serum is active.
+- Serum-build GI uses the existing slow F0F040 yellow / F02040 red treatment.
+- Unhit pop rings pulse green; completed pop rings are solid purple.
+- Active-delivery GI holds teal 406060 for 1.25 seconds, flashes F02040 for 250ms, and repeats every 1.5 seconds.
+- The left-web delivery target flashes purple while serum is active.
+- During delivery the red Star insert flashes at 250ms on / 250ms off while 10X is available, then goes solid red when 10X is armed.
 
 A+B serum boost:
 - The A and B inserts flash yellow while that letter is available and go solid yellow when collected.
@@ -40,8 +43,8 @@ A+B serum boost:
 - After A+B is completed, both letters reset and flash again for the next A+B cycle.
 
 Case Files:
-- More Jackpots: adds a third serum delivery attempt. It uses the same star collection and left-web delivery rules as the first two attempts.
+- More Jackpots: adds a third serum delivery attempt using the same pop-build, Star-10X, and left-web delivery rules.
 - Bigger Jackpots: raises the starting delivery value to 1,500,000.
 - More Time: adds 4 seconds and slows decay to 50,000 per second.
 - Safety Net: saves the first expired serum.
-- Shot Assist: during either active delivery, the main-playfield spinner or the left B rollover counts as the left-web delivery. The upper trispinner does not count.
+- Shot Assist: during an active delivery, the main-playfield spinner or the left B rollover counts as the left-web delivery. The upper trispinner does not count.

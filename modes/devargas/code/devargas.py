@@ -415,6 +415,9 @@ class DeVargas(CaseFileMixin, Mode):
         self.machine.events.post(
             "rooftop_diverter_open" if should_open else "rooftop_diverter_close"
         )
+        self.machine.events.post(
+            "devargas_vuk_chase_start" if should_open else "devargas_vuk_chase_stop"
+        )
 
     def _reject_unneeded_gate_open(self, **kwargs):
         if self.mode_done:
@@ -425,6 +428,7 @@ class DeVargas(CaseFileMixin, Mode):
         ):
             self.gate_open = False
             self.machine.events.post("rooftop_diverter_close")
+            self.machine.events.post("devargas_vuk_chase_stop")
 
     def _sync_vars(self, update_status=True):
         player = self.machine.game.player

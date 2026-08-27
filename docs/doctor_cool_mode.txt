@@ -15,7 +15,7 @@ Core rules and scoring
 - Any right drop starts the moving frozen-shipment chase.
 - A wrong saucer scores 10K, ejects, and resumes the chase after one second.
 - A correct saucer collects the current Frozen Diamond Jackpot.
-- One shipment completes the normal mode. More Jackpots requires two shipments.
+- Three shipments complete the normal mode. More Jackpots requires four shipments.
 - A terminal saucer is held until the villain summary finishes.
 
 Saucer availability progression
@@ -44,7 +44,7 @@ with More Time. STAR does not make unavailable saucers valid.
 
 Case Files
 ----------
-- More Jackpots: requires a second frozen shipment.
+- More Jackpots: requires a fourth frozen shipment.
 - Bigger Jackpots: 200K base; +50K right drop; +75K left drop.
 - More Time: extends STAR freeze to 15 seconds.
 - Safety Net: starts the shared 10-second ball save.

@@ -292,9 +292,13 @@ shows:
         l_5bank_5: white
 
   sandman_gi_show:
-    - duration: 750ms
+    - duration: 1.5s
       lights:
-        gi: yellow
-    - duration: 250ms
+        gi:
+          color: yellow
+          fade: 1.5s
+    - duration: 1.5s
       lights:
-        gi: white
+        gi:
+          color: white
+          fade: 1.5s

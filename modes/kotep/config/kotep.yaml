@@ -3,10 +3,10 @@
 mode:
   start_events: start_mode_kotep
   stop_events:
-    - ball_will_end
-    - bonus_start
-    - kotep_mode_complete
-    - ball_ended
+  - ball_will_end
+  - bonus_start
+  - kotep_mode_complete
+  - ball_ended
   code: kotep.Kotep
   priority: 300
 
@@ -41,7 +41,7 @@ event_player:
   s_pop_right_active: kotep_right_pop_hit
 
   s_vuk_switch_active:
-    - kotep_vuk_hit
+  - kotep_vuk_hit
 
   # Kotep does not use the three lower saucers. Always kick them out.
   s_saucer_1_active: delayed_kickout_saucer_1
@@ -49,17 +49,17 @@ event_player:
   s_saucer_3_active: delayed_kickout_saucer_3
 
   mode_kotep_started:
-    - disable_daily_bugle_mystery
-    - rooftop_diverter_close
-    - clear_saucers_delayed
-    - reset_drops
+  - disable_daily_bugle_mystery
+  - rooftop_diverter_close
+  - clear_saucers_delayed
+  - reset_drops
 
   mode_kotep_stopping:
-    - rooftop_diverter_close
-    - clear_saucers_delayed
-    - reset_drops
-    - enable_daily_bugle_mystery
-    - daily_bugle_restore_state
+  - rooftop_diverter_close
+  - clear_saucers_delayed
+  - reset_drops
+  - enable_daily_bugle_mystery
+  - daily_bugle_restore_state
 
   # Keep both physical banks playable even if a bank is completed.
   drop_target_bank_dt_bank_left_down: drop_target_bank_dt_bank_left_reset
@@ -76,6 +76,15 @@ show_player:
     kotep_super_burst:
       loops: 0
 
+  kotep_vuk_chase_start:
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: FFD040
+  kotep_vuk_chase_stop:
+    shared_final_vuk_chase:
+      action: stop
 light_player:
   kotep_gi_red:
     gi: 401010
@@ -233,25 +242,25 @@ light_player:
 
 shows:
   kotep_scepter_ramp_flash:
-    - duration: 300ms
-      lights:
-        l_gi_ramp: yellow
-    - duration: 300ms
-      lights:
-        l_gi_ramp: 401010
+  - duration: 300ms
+    lights:
+      l_gi_ramp: yellow
+  - duration: 300ms
+    lights:
+      l_gi_ramp: 401010
   kotep_super_burst:
-    - duration: 150ms
-      lights:
-        gi: white
-    - duration: 150ms
-      lights:
-        gi: 401010
-    - duration: 150ms
-      lights:
-        gi: white
-    - duration: 150ms
-      lights:
-        gi: 401010
+  - duration: 150ms
+    lights:
+      gi: white
+  - duration: 150ms
+    lights:
+      gi: 401010
+  - duration: 150ms
+    lights:
+      gi: white
+  - duration: 150ms
+    lights:
+      gi: 401010
 
 sound_player:
   play_mode_jackpot:

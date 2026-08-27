@@ -120,6 +120,7 @@ class DrZapp(CaseFileMixin, Mode):
         if self.mode_done or not self.roof_open or self.first_upper_entry_seen:
             return
         self.first_upper_entry_seen = True
+        self.machine.events.post("dr_zapp_vuk_chase_stop")
         if self.has_case_file("more_time"):
             self.machine.events.post("dr_zapp_enable_upper_entry_save")
         self._sync_vars()

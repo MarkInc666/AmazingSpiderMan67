@@ -57,10 +57,12 @@ event_player:
     - rooftop_diverter_open|500ms
     - clear_saucers_delayed
     - vulture_show_targets
+    - vulture_vuk_chase_start
 
   mode_vulture_stopping:
     - rooftop_diverter_close
     - vulture_gi_stop
+    - vulture_vuk_chase_stop
 
   drop_target_bank_dt_bank_left_down:
     - drop_target_bank_dt_bank_left_reset
@@ -127,6 +129,16 @@ timers:
         action: stop
 
 show_player:
+  vulture_vuk_chase_start:
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: "A0A0F0"
+  vulture_vuk_chase_stop:
+    shared_final_vuk_chase:
+      action: stop
+
   vulture_show_left_yellow:
     vulture_left_red:
       action: stop

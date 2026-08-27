@@ -39,6 +39,7 @@ event_player:
   s_trispinner_opto_active: doctor_atlantean_upper_spinner_hit
   s_upper_exit_left_opto_active: doctor_atlantean_upper_exit_hit
   s_upper_exit_right_opto_active: doctor_atlantean_upper_exit_hit
+  s_upper_entrance_opto_active: doctor_atlantean_roof_entered
 
   # Daily Bugle Mystery is disabled during this rooftop-control mode. The VUK
   # remains a route to the upper playfield and ejects normally.
@@ -71,6 +72,19 @@ event_player:
 
 
 show_player:
+  mode_doctor_atlantean_started:
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 340
+      show_tokens: {color: "FFD040"}
+  doctor_atlantean_roof_entered:
+    shared_final_vuk_chase: {action: stop}
+  doctor_atlantean_upper_exit_hit:
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 340
+      show_tokens: {color: "FFD040"}
+
   doctor_atlantean_target_left_available:
     doctor_atlantean_upper_left_pulse: {loops: -1}
   doctor_atlantean_target_center_available:
@@ -97,6 +111,7 @@ show_player:
     doctor_atlantean_upper_spinner_pulse: {action: stop}
 
   mode_doctor_atlantean_stopping:
+    shared_final_vuk_chase: {action: stop}
     doctor_atlantean_upper_left_pulse: {action: stop}
     doctor_atlantean_upper_center_pulse: {action: stop}
     doctor_atlantean_upper_right_pulse: {action: stop}

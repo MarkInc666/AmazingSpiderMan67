@@ -40,7 +40,7 @@ event_player:
   s_saucer_1_active: delayed_kickout_saucer_1
   s_saucer_2_active: delayed_kickout_saucer_2
   s_saucer_3_active: delayed_kickout_saucer_3
-
+  
   drop_target_bank_dt_bank_left_down: drop_target_bank_dt_bank_left_reset
   drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset
 
@@ -79,6 +79,13 @@ ball_saves:
     balls_to_save: 1
 
 show_player:
+  dr_zapp_vuk_chase_stop:
+    shared_final_vuk_chase:
+      action: stop
+  mode_dr_zapp_stopping:
+    shared_final_vuk_chase:
+      action: stop
+
   dr_zapp_qualification_started:
     dr_zapp_dark_blue_gi: {loops: -1}
     dr_zapp_left_bank_pulse: {loops: -1}
@@ -98,6 +105,11 @@ show_player:
     dr_zapp_dark_blue_gi: {action: stop}
     dr_zapp_one_bank_gi: {action: stop}
     dr_zapp_roof_gi: {loops: -1}
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: "FFD040"
     dr_zapp_upper_left_pulse: {loops: -1}
     dr_zapp_upper_center_pulse: {loops: -1}
     dr_zapp_upper_right_pulse: {loops: -1}

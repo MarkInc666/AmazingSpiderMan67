@@ -8,11 +8,11 @@
 mode:
   start_events: start_mode_dr_manta
   stop_events:
-    - ball_will_end
-    - bonus_start
-    - dr_manta_mode_complete
-    - dr_manta_mode_completed_summary
-    - ball_ended
+  - ball_will_end
+  - bonus_start
+  - dr_manta_mode_complete
+  - dr_manta_mode_completed_summary
+  - ball_ended
   code: dr_manta.DrManta
   priority: 500
 
@@ -22,9 +22,9 @@ multiballs:
     ball_count_type: total
     start_events: dr_manta_start_relay
     stop_events:
-      - dr_manta_mode_complete
-      - dr_manta_mode_completed_summary
-      - ball_ended
+    - dr_manta_mode_complete
+    - dr_manta_mode_completed_summary
+    - ball_ended
 
 variable_player:
   multiball_dr_manta_relay_started:
@@ -43,9 +43,9 @@ ball_saves:
     grace_period: 1s
     enable_events: dr_manta_enable_second_ball_save
     disable_events:
-      - dr_manta_disable_second_ball_save
-      - mode_dr_manta_stopping
-      - ball_ending
+    - dr_manta_disable_second_ball_save
+    - mode_dr_manta_stopping
+    - ball_ending
     auto_launch: true
     balls_to_save: 1
 
@@ -59,20 +59,28 @@ widget_player:
 
 event_player:
   mode_dr_manta_started:
-    - cancel_vuk_eject_request
-    - clear_saucers_delayed
-    - rooftop_diverter_open
+  - cancel_vuk_eject_request
+  - clear_saucers_delayed
+  - rooftop_diverter_open
   mode_dr_manta_stopping:
-    - dr_manta_clear_all
-    - dr_manta_disable_second_ball_save
+  - dr_manta_clear_all
+  - dr_manta_disable_second_ball_save
 
 show_player:
   dr_manta_phase_vuk:
-    dr_manta_vuk_path: {loops: -1}
+    dr_manta_vuk_path:
+      action: stop
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: FFD040
 
   dr_manta_phase_saucers:
     dr_manta_vuk_path: {action: stop}
     dr_manta_saucers_ready: {loops: -1}
+    shared_final_vuk_chase:
+      action: stop
 
   dr_manta_saucers_off:
     dr_manta_saucers_ready: {action: stop}
@@ -90,6 +98,8 @@ show_player:
     dr_manta_attack_gi: {loops: -1}
     dr_manta_spinner_ready: {loops: -1}
     dr_manta_upper_targets_ready: {loops: -1}
+    shared_final_vuk_chase:
+      action: stop
 
   dr_manta_shot_assist_left_ready:
     dr_manta_upper_left_3x: {loops: -1}
@@ -137,6 +147,8 @@ show_player:
     dr_manta_upper_left_3x: {action: stop}
     dr_manta_upper_center_3x: {action: stop}
     dr_manta_upper_right_3x: {action: stop}
+    shared_final_vuk_chase:
+      action: stop
 
 light_player:
   mode_dr_manta_started:
@@ -164,122 +176,122 @@ light_player:
 shows:
   # Phase 1: spinner and upper-access GI lead the player toward the VUK.
   dr_manta_vuk_path:
-    - duration: 500ms
-      lights:
-        l_spinner: FFFFFF
-        l_gi_spinner: 60C8FF
-        l_gi_top_1: 80D8FF
-        l_gi_top_2: 80D8FF
-    - duration: 500ms
-      lights:
-        l_spinner: 303030
-        l_gi_spinner: 102840
-        l_gi_top_1: 183858
-        l_gi_top_2: 183858
+  - duration: 500ms
+    lights:
+      l_spinner: FFFFFF
+      l_gi_spinner: 60C8FF
+      l_gi_top_1: 80D8FF
+      l_gi_top_2: 80D8FF
+  - duration: 500ms
+    lights:
+      l_spinner: 303030
+      l_gi_spinner: 102840
+      l_gi_top_1: 183858
+      l_gi_top_2: 183858
 
   dr_manta_saucers_ready:
-    - duration: 500ms
-      lights:
-        l_1_hole_l: FF0000
-        l_1_hole_r: FF0000
-        l_2_hole_l: FF0000
-        l_2_hole_r: FF0000
-        l_3_hole_l: FF0000
-        l_3_hole_r: FF0000
-    - duration: 500ms
-      lights:
-        l_1_hole_l: 400000
-        l_1_hole_r: 400000
-        l_2_hole_l: 400000
-        l_2_hole_r: 400000
-        l_3_hole_l: 400000
-        l_3_hole_r: 400000
+  - duration: 500ms
+    lights:
+      l_1_hole_l: FF0000
+      l_1_hole_r: FF0000
+      l_2_hole_l: FF0000
+      l_2_hole_r: FF0000
+      l_3_hole_l: FF0000
+      l_3_hole_r: FF0000
+  - duration: 500ms
+    lights:
+      l_1_hole_l: 400000
+      l_1_hole_r: 400000
+      l_2_hole_l: 400000
+      l_2_hole_r: 400000
+      l_3_hole_l: 400000
+      l_3_hole_r: 400000
 
   dr_manta_saucer_1_solid:
-    - duration: -1
-      lights: {l_1_hole_l: FF0000, l_1_hole_r: FF0000}
+  - duration: -1
+    lights: {l_1_hole_l: FF0000, l_1_hole_r: FF0000}
   dr_manta_saucer_2_solid:
-    - duration: -1
-      lights: {l_2_hole_l: FF0000, l_2_hole_r: FF0000}
+  - duration: -1
+    lights: {l_2_hole_l: FF0000, l_2_hole_r: FF0000}
   dr_manta_saucer_3_solid:
-    - duration: -1
-      lights: {l_3_hole_l: FF0000, l_3_hole_r: FF0000}
+  - duration: -1
+    lights: {l_3_hole_l: FF0000, l_3_hole_r: FF0000}
 
   dr_manta_attack_gi:
-    - duration: 1s
-      lights: {gi: 2060A8}
+  - duration: 1s
+    lights: {gi: 2060A8}
 
   dr_manta_hurry_gi:
-    - duration: 500ms
-      lights: {gi: 2060A8}
-    - duration: 250ms
-      lights: {gi: D0E8FF}
+  - duration: 500ms
+    lights: {gi: 2060A8}
+  - duration: 250ms
+    lights: {gi: D0E8FF}
 
   dr_manta_timeout_gi:
-    - duration: 1s
-      lights: {gi: "081828"}
+  - duration: 1s
+    lights: {gi: "081828"}
 
   dr_manta_spinner_ready:
-    - duration: 500ms
-      lights: {l_spinner: FFFFFF, l_gi_spinner: 40B0FF}
-    - duration: 500ms
-      lights: {l_spinner: 202020, l_gi_spinner: 102840}
+  - duration: 500ms
+    lights: {l_spinner: FFFFFF, l_gi_spinner: 40B0FF}
+  - duration: 500ms
+    lights: {l_spinner: 202020, l_gi_spinner: 102840}
 
   dr_manta_spinner_flash:
-    - duration: 250ms
-      lights:
-        l_gi_top_1: 80D8FF
-        l_gi_top_2: 80D8FF
-        l_gi_top_3: 80D8FF
-        l_gi_top_4: 80D8FF
-    - duration: 250ms
-      lights:
-        l_gi_top_1: 2060A8
-        l_gi_top_2: 2060A8
-        l_gi_top_3: 2060A8
-        l_gi_top_4: 2060A8
+  - duration: 250ms
+    lights:
+      l_gi_top_1: 80D8FF
+      l_gi_top_2: 80D8FF
+      l_gi_top_3: 80D8FF
+      l_gi_top_4: 80D8FF
+  - duration: 250ms
+    lights:
+      l_gi_top_1: 2060A8
+      l_gi_top_2: 2060A8
+      l_gi_top_3: 2060A8
+      l_gi_top_4: 2060A8
 
   dr_manta_upper_targets_ready:
-    - duration: 500ms
-      lights: {l_upper_left: 80C8FF, l_upper_middle: 80C8FF, l_upper_right: 80C8FF}
-    - duration: 500ms
-      lights: {l_upper_left: 204060, l_upper_middle: 204060, l_upper_right: 204060}
+  - duration: 500ms
+    lights: {l_upper_left: 80C8FF, l_upper_middle: 80C8FF, l_upper_right: 80C8FF}
+  - duration: 500ms
+    lights: {l_upper_left: 204060, l_upper_middle: 204060, l_upper_right: 204060}
 
   dr_manta_upper_left_3x:
-    - duration: 250ms
-      lights: {l_upper_left: FFFFFF}
-    - duration: 250ms
-      lights: {l_upper_left: 2080D0}
+  - duration: 250ms
+    lights: {l_upper_left: FFFFFF}
+  - duration: 250ms
+    lights: {l_upper_left: 2080D0}
   dr_manta_upper_center_3x:
-    - duration: 250ms
-      lights: {l_upper_middle: FFFFFF}
-    - duration: 250ms
-      lights: {l_upper_middle: 2080D0}
+  - duration: 250ms
+    lights: {l_upper_middle: FFFFFF}
+  - duration: 250ms
+    lights: {l_upper_middle: 2080D0}
   dr_manta_upper_right_3x:
-    - duration: 250ms
-      lights: {l_upper_right: FFFFFF}
-    - duration: 250ms
-      lights: {l_upper_right: 2080D0}
+  - duration: 250ms
+    lights: {l_upper_right: FFFFFF}
+  - duration: 250ms
+    lights: {l_upper_right: 2080D0}
 
   dr_manta_jackpot_flash:
-    - duration: 250ms
-      lights:
-        l_upper_left: FFFFFF
-        l_upper_middle: FFFFFF
-        l_upper_right: FFFFFF
-        l_gi_top_1: FFFFFF
-        l_gi_top_2: FFFFFF
-        l_gi_top_3: FFFFFF
-        l_gi_top_4: FFFFFF
-    - duration: 250ms
-      lights:
-        l_upper_left: 80C8FF
-        l_upper_middle: 80C8FF
-        l_upper_right: 80C8FF
-        l_gi_top_1: 2060A8
-        l_gi_top_2: 2060A8
-        l_gi_top_3: 2060A8
-        l_gi_top_4: 2060A8
+  - duration: 250ms
+    lights:
+      l_upper_left: FFFFFF
+      l_upper_middle: FFFFFF
+      l_upper_right: FFFFFF
+      l_gi_top_1: FFFFFF
+      l_gi_top_2: FFFFFF
+      l_gi_top_3: FFFFFF
+      l_gi_top_4: FFFFFF
+  - duration: 250ms
+    lights:
+      l_upper_left: 80C8FF
+      l_upper_middle: 80C8FF
+      l_upper_right: 80C8FF
+      l_gi_top_1: 2060A8
+      l_gi_top_2: 2060A8
+      l_gi_top_3: 2060A8
+      l_gi_top_4: 2060A8
 
 sound_player:
   play_mode_jackpot:

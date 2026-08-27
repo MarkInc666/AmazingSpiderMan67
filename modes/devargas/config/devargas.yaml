@@ -100,6 +100,16 @@ light_player:
 
 
 show_player:
+  devargas_vuk_chase_start:
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 340
+      show_tokens: {color: "FFD040"}
+  devargas_vuk_chase_stop:
+    shared_final_vuk_chase: {action: stop}
+  mode_devargas_stopping:
+    shared_final_vuk_chase: {action: stop}
+
   devargas_left_web_slow:
     devargas_left_web_pulse: {action: play, loops: -1, speed: 1}
   devargas_left_web_medium:

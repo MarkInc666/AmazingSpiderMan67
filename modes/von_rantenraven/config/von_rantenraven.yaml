@@ -37,6 +37,7 @@ event_player:
     - drop_target_bank_dt_bank_right_reset
 
   mode_von_rantenraven_stopping:
+    - von_rantenraven_vuk_chase_stop
     - enable_daily_bugle_mystery
     - daily_bugle_restore_state
     - cmd_upper_flippers_enable
@@ -52,6 +53,16 @@ event_player:
     - drop_target_bank_dt_bank_right_reset
 
 show_player:
+  von_rantenraven_vuk_chase_start:
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: "FFD040"
+  von_rantenraven_vuk_chase_stop:
+    shared_final_vuk_chase:
+      action: stop
+
   von_rantenraven_target_left_needed:
     von_rantenraven_upper_left_pulse:
       loops: -1

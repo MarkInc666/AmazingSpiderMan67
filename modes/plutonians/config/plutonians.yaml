@@ -15,12 +15,12 @@
 mode:
   start_events: start_mode_plutonians
   stop_events:
-    - ball_will_end
-    - bonus_start
-    - plutonians_mode_complete
-    - plutonians_mode_failed
-    - plutonians_mode_completed_summary
-    - ball_ended
+  - ball_will_end
+  - bonus_start
+  - plutonians_mode_complete
+  - plutonians_mode_failed
+  - plutonians_mode_completed_summary
+  - ball_ended
   code: plutonians.Plutonians
   priority: 300
 
@@ -47,17 +47,17 @@ event_player:
   drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset
 
   mode_plutonians_started:
-    - rooftop_diverter_open
-    - clear_saucers_delayed
-    - drop_target_bank_dt_bank_left_reset
-    - drop_target_bank_dt_bank_right_reset
+  - rooftop_diverter_open
+  - clear_saucers_delayed
+  - drop_target_bank_dt_bank_left_reset
+  - drop_target_bank_dt_bank_right_reset
 
   mode_plutonians_stopping:
-    - plutonians_clear_lights
-    - rooftop_diverter_close
-    - clear_saucers_delayed
-    - drop_target_bank_dt_bank_left_reset
-    - drop_target_bank_dt_bank_right_reset
+  - plutonians_clear_lights
+  - rooftop_diverter_close
+  - clear_saucers_delayed
+  - drop_target_bank_dt_bank_left_reset
+  - drop_target_bank_dt_bank_right_reset
 
 show_player:
   plutonians_ray_active:
@@ -66,12 +66,19 @@ show_player:
     plutonians_targets_yellow_pulse:
       action: stop
 
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: FFD040
   plutonians_ray_blocked:
     plutonians_targets_red_pulse:
       action: stop
     plutonians_targets_yellow_pulse:
       loops: -1
 
+    shared_final_vuk_chase:
+      action: stop
   plutonians_control_repaired:
     plutonians_targets_red_pulse:
       action: stop
@@ -80,6 +87,8 @@ show_player:
     plutonians_control_repaired_flash:
       loops: 1
 
+    shared_final_vuk_chase:
+      action: stop
   plutonians_clear_lights:
     plutonians_targets_red_pulse:
       action: stop
@@ -88,6 +97,8 @@ show_player:
     plutonians_control_repaired_flash:
       action: stop
 
+    shared_final_vuk_chase:
+      action: stop
 light_player:
   plutonians_all_areas_frozen:
     l_gi_3bank: 4080F0
@@ -301,36 +312,36 @@ light_player:
 
 shows:
   plutonians_targets_red_pulse:
-    - duration: 500ms
-      lights:
-        l_upper_left: F03030
-        l_upper_middle: F03030
-        l_upper_right: F03030
-    - duration: 500ms
-      lights:
-        l_upper_left: 500808
-        l_upper_middle: 500808
-        l_upper_right: 500808
+  - duration: 500ms
+    lights:
+      l_upper_left: F03030
+      l_upper_middle: F03030
+      l_upper_right: F03030
+  - duration: 500ms
+    lights:
+      l_upper_left: 500808
+      l_upper_middle: 500808
+      l_upper_right: 500808
 
   plutonians_targets_yellow_pulse:
-    - duration: 500ms
-      lights:
-        l_upper_left: F0D040
-        l_upper_middle: F0D040
-        l_upper_right: F0D040
-    - duration: 500ms
-      lights:
-        l_upper_left: 504010
-        l_upper_middle: 504010
-        l_upper_right: 504010
+  - duration: 500ms
+    lights:
+      l_upper_left: F0D040
+      l_upper_middle: F0D040
+      l_upper_right: F0D040
+  - duration: 500ms
+    lights:
+      l_upper_left: 504010
+      l_upper_middle: 504010
+      l_upper_right: 504010
 
   plutonians_control_repaired_flash:
-    - duration: 500ms
-      lights:
-        gi: FFFFFF
-    - duration: 1500ms
-      lights:
-        gi: F0D040
+  - duration: 500ms
+    lights:
+      gi: FFFFFF
+  - duration: 1500ms
+    lights:
+      gi: F0D040
 
 sound_player:
   play_mode_jackpot:

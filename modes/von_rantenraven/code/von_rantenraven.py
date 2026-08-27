@@ -146,6 +146,7 @@ class VonRantenraven(CaseFileMixin, Mode):
         self._update_mode_status()
         self.machine.events.post("von_rantenraven_saucers_off")
         self.machine.events.post("rooftop_diverter_open")
+        self.machine.events.post("von_rantenraven_vuk_chase_start")
         self.machine.events.post("clear_saucers_delayed")
         self._show_message("GATE OPEN", "GET TO THE ROOF", reminder=True)
 
@@ -159,6 +160,7 @@ class VonRantenraven(CaseFileMixin, Mode):
         self._update_mode_status()
         self.targets_hit = set()
         self.machine.events.post("rooftop_diverter_close")
+        self.machine.events.post("von_rantenraven_vuk_chase_stop")
         self.machine.events.post("von_rantenraven_saucers_off")
         self.machine.events.post("von_rantenraven_roof_attempt_started", flips=self.flips_remaining)
         self._light_targets_for_attempt()

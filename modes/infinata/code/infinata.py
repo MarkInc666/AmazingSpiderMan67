@@ -255,12 +255,14 @@ class Infinata(CaseFileMixin, Mode):
             return
         self.roof_gate_requested = True
         self.machine.events.post("rooftop_diverter_open")
+        self.machine.events.post("infinata_vuk_chase_start")
 
     def _close_roof_gate_if_requested(self):
         if not self.roof_gate_requested:
             return
         self.roof_gate_requested = False
         self.machine.events.post("rooftop_diverter_close")
+        self.machine.events.post("infinata_vuk_chase_stop")
 
     def _sync_vars(self):
         player = self.machine.game.player

@@ -891,6 +891,9 @@ player_vars:
   fiddler_state:
     initial_value: 0
     value_type: int
+  fiddler_saucer_hold:
+    initial_value: 0
+    value_type: int
   the_web_tightens_state:
     initial_value: 0
     value_type: int

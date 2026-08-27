@@ -113,7 +113,7 @@ class Fakir(CaseFileMixin, Mode):
         self._release_locked_saucer()
         self.machine.events.post("fakir_all_lights_off")
         self.machine.events.post("fakir_stop_all_gi")
-        self.machine.events.post("final_vuk_chase_stop")
+        self.machine.events.post("fakir_vuk_chase_stop")
         self.machine.events.post("rooftop_diverter_close")
         self.clear_active_case_file_helpers()
         # Catch-all: no delayed villain/wizard callback may survive into bonus.
@@ -178,7 +178,7 @@ class Fakir(CaseFileMixin, Mode):
         self.machine.events.post("fakir_fake_ruby_locked", saucer=saucer, target=self.current_target, value=self.current_jackpot_value)
         self.machine.events.post(f"fakir_saucer_{saucer}_locked")
         self.machine.events.post("rooftop_diverter_open")
-        self.machine.events.post("final_vuk_chase_start")
+        self.machine.events.post("fakir_vuk_chase_start")
         self.machine.events.post("show_mode_message", message_mode_title="FAKE RUBY!", message_mode_subtitle=f"{self.TARGET_NAMES[self.current_target]}", message_mode_value=self.current_jackpot_value)
         self._light_current_target()
 
@@ -187,7 +187,7 @@ class Fakir(CaseFileMixin, Mode):
         if self._inactive() or not self.ruby_active or self.ruby_timer_started:
             return
 
-        self.machine.events.post("final_vuk_chase_stop")
+        self.machine.events.post("fakir_vuk_chase_stop")
         self.ruby_timer_started = True
         self.ruby_seconds_remaining = self.ruby_timer_ms // 1000
         self._update_mode_status()
@@ -293,7 +293,7 @@ class Fakir(CaseFileMixin, Mode):
 
     def _end_ruby_attempt(self, release_saucer=True, jackpot_collected=False):
         self.machine.events.post("fakir_all_targets_off")
-        self.machine.events.post("final_vuk_chase_stop")
+        self.machine.events.post("fakir_vuk_chase_stop")
         self.machine.events.post("rooftop_diverter_close")
 
         if jackpot_collected:
@@ -411,7 +411,7 @@ class Fakir(CaseFileMixin, Mode):
         self._release_locked_saucer()
         self.machine.events.post("fakir_all_lights_off")
         self.machine.events.post("fakir_stop_all_gi")
-        self.machine.events.post("final_vuk_chase_stop")
+        self.machine.events.post("fakir_vuk_chase_stop")
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("show_mode_message_long", message_mode_title="FAKIR DEFEATED", message_mode_subtitle="RUBY HEIST STOPPED")
         self.machine.events.post("fakir_mode_complete")

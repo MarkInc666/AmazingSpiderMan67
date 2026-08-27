@@ -112,6 +112,9 @@ class DrManta(CaseFileMixin, Mode):
             ("shot_assist", "MATCHED UPPER TARGET SCORES 3X ONCE"),
         ])
 
+        # Hard-lock the physical VUK coil for the opening capture. This blocks
+        # any stray/shared up_kick event until Manta deliberately releases Ball 1.
+        self._set_vuk_hold(True)
         self.machine.events.post("disable_daily_bugle_mystery")
         # Dr. Manta intentionally owns the VUK hold. Clear any release or
         # switch-confirmed retry left queued by the shared VUK service before
@@ -136,6 +139,7 @@ class DrManta(CaseFileMixin, Mode):
         # A pending shared eject/retry must never release Ball 1 during the
         # relay. Ball 1 remains here until Ball 2 is locked in a saucer.
         self.machine.events.post("cancel_vuk_eject_request")
+        self._set_vuk_hold(True)
         self._score(self.vuk_value)
         self.phase = "lock_saucer"
         self.machine.events.post("rooftop_diverter_close")
@@ -171,6 +175,7 @@ class DrManta(CaseFileMixin, Mode):
             self.machine.events.post(self.TARGET_LIGHT_EVENTS[saucer])
 
         # Let the saucer settle before sending Ball 1 to the rooftop.
+        self._set_vuk_hold(False)
         self._eject_vuk(500)
         self.delay.reset(name="dr_manta_attack_tick", ms=1000, callback=self._attack_tick)
         self._show_message("MOUNTAIN MONSTER", f"{self.attack_seconds_remaining} SECONDS", value=self.saucer_value)
@@ -287,6 +292,7 @@ class DrManta(CaseFileMixin, Mode):
 
         self._show_message("SECOND BALL LOST", "MANTA ESCAPES")
         self.machine.events.post("dr_manta_disable_second_ball_save")
+        self._set_vuk_hold(False)
         self._eject_vuk(0)
         self._complete_mode(release_saucer=False, enable_flippers=True)
 
@@ -305,6 +311,7 @@ class DrManta(CaseFileMixin, Mode):
         player = self.machine.game.player
         player[f"{self.MODE_KEY}_state"] = 2
 
+        self._set_vuk_hold(False)
         self.machine.events.post("dr_manta_disable_second_ball_save")
         self.machine.events.post("dr_manta_clear_all")
         self.machine.events.post("rooftop_diverter_close")
@@ -329,6 +336,11 @@ class DrManta(CaseFileMixin, Mode):
         self.delay.remove("dr_manta_second_ball_drain_check")
         self.delay.remove("dr_manta_second_ball_save_clear")
         self.machine.events.post("dr_manta_disable_second_ball_save")
+
+    def _set_vuk_hold(self, active):
+        """Block/unblock the physical VUK coil while Manta owns Ball 1."""
+        if self.machine.game:
+            self.machine.game.player["dr_manta_vuk_hold_active"] = 1 if active else 0
 
     def _eject_saucer(self, saucer, delay_ms=0):
         if saucer not in self.SAUCER_EJECT_EVENTS:
@@ -406,6 +418,7 @@ class DrManta(CaseFileMixin, Mode):
             self._eject_saucer(self.held_saucer, 0)
             self.held_saucer = None
 
+        self._set_vuk_hold(False)
         if self.phase in ("shoot_vuk", "lock_saucer") and not self.mode_done:
             self.machine.events.post("request_vuk_eject")
 

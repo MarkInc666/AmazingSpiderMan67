@@ -100,6 +100,16 @@ event_player:
   drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset
 
 show_player:
+  infinata_vuk_chase_start:
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: "A0A0F0"
+  infinata_vuk_chase_stop:
+    shared_final_vuk_chase:
+      action: stop
+
   infinata_light_pops:
     infinata_pop_left_flash_show:
       loops: -1
@@ -117,11 +127,18 @@ show_player:
       loops: -1
     infinata_web_mid_flash_show:
       loops: -1
+    shared_center_web_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: "FFFFFF"
   infinata_web_left_complete:
     infinata_web_left_flash_show:
       action: stop
   infinata_web_mid_complete:
     infinata_web_mid_flash_show:
+      action: stop
+    shared_center_web_chase:
       action: stop
 
   infinata_light_upper_targets:
@@ -147,6 +164,8 @@ show_player:
     infinata_web_left_flash_show:
       action: stop
     infinata_web_mid_flash_show:
+      action: stop
+    shared_center_web_chase:
       action: stop
   infinata_unlight_upper_targets:
     infinata_upper_targets_flash_show:
@@ -191,6 +210,10 @@ show_player:
       action: stop
 
   mode_infinata_stopping:
+    shared_final_vuk_chase:
+      action: stop
+    shared_center_web_chase:
+      action: stop
     infinata_pop_left_flash_show:
       action: stop
     infinata_pop_right_flash_show:

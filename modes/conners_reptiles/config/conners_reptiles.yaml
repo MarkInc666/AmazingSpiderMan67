@@ -87,6 +87,16 @@ light_player:
     gi: E0E0E0
 
 show_player:
+  conners_reptiles_vuk_chase_start:
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 340
+      show_tokens: {color: "FFD040"}
+  conners_reptiles_vuk_chase_stop:
+    shared_final_vuk_chase: {action: stop}
+  mode_conners_reptiles_stopping:
+    shared_final_vuk_chase: {action: stop}
+
   conners_reptiles_pop_pulse_start:
     conners_reptiles_pop_pulse: {loops: -1, priority: 330}
   conners_reptiles_upper_a_lit:

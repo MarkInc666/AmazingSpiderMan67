@@ -9,8 +9,8 @@ Three staged right-bank Hunts with a limited-arrow economy.
 - Starts with 20 arrows, or 30 with More Time. Normal main-flipper presses spend 1 arrow.
 - A simultaneous double-flipper press used to release the upper-left post spends no arrows.
 - Upper spinner earns +1 arrow, upper-right exit earns +5, and every right-rubber hit earns +1.
-- Entering the upper playfield stages the next Hunt, closes the gate, and turns the GI red.
-- Either upper exit prompts HIT THE RIGHT DROPS. The Hunt timer starts on the first staged drop or rubber hit.
+- Entering the upper playfield selects the next Hunt, closes the gate, and turns the GI red.
+- On either upper exit, the right bank is reset/staged like Scorpion; the Hunt timer starts on the first staged drop or rubber hit.
 - Each Hunt ends when all staged right-bank targets are down or when its timer expires.
 - Hunt timer is 8s, or 12s with More Time.
 - Hunt 1: right drops 1/3/5, worth 150K each (200K with Bigger Jackpots).
@@ -87,6 +87,7 @@ class Diana(CaseFileMixin, Mode):
         self.pending_post_flippers = set()
         self.standing_targets = set()
         self.hit_targets = set()
+        self.bank_stage_started = False
 
         player = self.machine.game.player
         player["diana_state"] = 1
@@ -118,7 +119,6 @@ class Diana(CaseFileMixin, Mode):
             )
 
         self.add_mode_event_handler("diana_right_rubber_hit", self._right_rubber_hit)
-        self.add_mode_event_handler("drop_target_bank_dt_bank_right_down", self._right_bank_all_down)
 
         self.machine.events.post("clear_saucers")
         self.machine.events.post("drop_target_bank_dt_bank_right_reset")
@@ -147,7 +147,6 @@ class Diana(CaseFileMixin, Mode):
         self.delay.remove("diana_hunt_timer_tick")
         self.delay.remove("diana_post_flipper_left")
         self.delay.remove("diana_post_flipper_right")
-        self.delay.remove("diana_right_bank_all_down_settle")
 
     def _show_mode_message(self, title, subtitle="", value="", seconds="", reminder=False):
         self.machine.events.post(
@@ -261,13 +260,11 @@ class Diana(CaseFileMixin, Mode):
         if self._done_or_summary() or self.phase != "staged":
             return
 
-        # The up-post hold and Hunt waiting state overlap.  The player may
-        # legitimately hit the staged right-bank target or rubber immediately
-        # after taking the left exit, so do not block Hunt start while the post
-        # is still held.  This is especially important on Hunt 3, where the
-        # single staged target could otherwise fall during the 6s post hold and
-        # leave the Hunt with no remaining switch capable of starting its timer.
-        self.phase = "waiting_hit"
+        # Match Scorpion's bank staging pattern: the Hunt is selected upstairs,
+        # but the physical right bank is reset/staged only after the ball exits.
+        # This avoids leaving a staged target physically up while its switch state
+        # can become stale before the player is able to shoot it.
+        self._arm_hunt_from_upper_exit()
         self.post_hold_active = True
         # Raise the upper-left post only when the ball actually takes the left exit.
         # Enabling it on upper entry can trap/interfere with a ball that never chooses
@@ -299,10 +296,10 @@ class Diana(CaseFileMixin, Mode):
         self.shot_assist_used_this_hunt = False
         self.standing_targets = set(self.HUNTS[hunt_number]["targets"])
         self.hit_targets = set()
+        self.bank_stage_started = False
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("diana_hunt_mode_on", hunt=hunt_number)
         self.machine.events.post("diana_hunt_prepare", hunt=hunt_number)
-        self._stage_right_bank_for_hunt(hunt_number)
         self._show_mode_message(f"HUNT {hunt_number}", "FIND YOUR TARGETS")
         self._sync_vars()
 
@@ -311,6 +308,9 @@ class Diana(CaseFileMixin, Mode):
             return
         self.phase = "waiting_hit"
         self.pending_post_flippers.clear()
+        if not self.bank_stage_started:
+            self.bank_stage_started = True
+            self._stage_right_bank_for_hunt(self.current_hunt)
         self.machine.events.post("diana_hunt_waiting_for_first_hit", hunt=self.current_hunt)
         self._show_mode_message("HIT THE RIGHT DROPS", f"HUNT {self.current_hunt}", reminder=True)
         self._sync_vars()
@@ -469,36 +469,6 @@ class Diana(CaseFileMixin, Mode):
         self._use_shot_assist_if_available(source="drop", hit_target=target)
         self._sync_vars()
         self._check_hunt_complete()
-
-    def _right_bank_all_down(self, **kwargs):
-        """Fallback for a physically all-down bank without racing the final target hit."""
-        if self._done_or_summary():
-            return
-        if self.phase not in ("waiting_hit", "hunt"):
-            return
-        if self.current_hunt not in self.HUNTS:
-            return
-
-        # On Hunt 3 the single staged target also produces the bank-all-down event.
-        # Let its individual switch handler score the Bullseye first.  If that event
-        # never arrives, this short settle still guarantees the Hunt ends cleanly.
-        self.delay.add(
-            name="diana_right_bank_all_down_settle",
-            ms=50,
-            callback=self._right_bank_all_down_settled,
-        )
-
-    def _right_bank_all_down_settled(self):
-        if self._done_or_summary():
-            return
-        if self.phase not in ("waiting_hit", "hunt"):
-            return
-        if self.current_hunt not in self.HUNTS:
-            return
-
-        self.standing_targets.clear()
-        self._sync_vars()
-        self._finish_hunt(reason="targets_complete")
 
     def _right_rubber_hit(self, **kwargs):
         if self._done_or_summary():

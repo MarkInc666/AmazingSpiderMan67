@@ -32,8 +32,8 @@ class DoctorCool(Mode, CaseFileMixin):
     DIAMOND_STAR_BONUS_BANK = 100_000
 
     SAUCER_CYCLE_MS_BY_ROUND = (750, 500, 350, 300)
-    NORMAL_REQUIRED_JACKPOTS = 1
-    MORE_JACKPOTS_REQUIRED_JACKPOTS = 2
+    NORMAL_REQUIRED_JACKPOTS = 3
+    MORE_JACKPOTS_REQUIRED_JACKPOTS = 4
 
     SAUCER_KICK_EVENTS = {
         1: "delayed_kickout_saucer_1",
@@ -109,7 +109,7 @@ class DoctorCool(Mode, CaseFileMixin):
     def _apply_case_file_effects(self):
         self.publish_case_file_bonus_events(self.MODE_KEY)
         self.publish_active_case_file_helpers([
-            ("more_jackpots", "2ND FROZEN SHIPMENT ADDED"),
+            ("more_jackpots", "4TH FROZEN SHIPMENT ADDED"),
             ("bigger_jackpots", "FROZEN DIAMOND VALUES INCREASED"),
             ("more_time", "STAR FREEZE 15 SECONDS"),
             ("safety_net", "10 SECOND BALL SAVE ACTIVE"),

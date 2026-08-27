@@ -719,6 +719,11 @@ class VillainProgression(Mode):
         """
         self.info_log("CLEAR SAUCERS NOW called. kwargs=%s", kwargs)
 
+        player = self.machine.game.player if self.machine.game else None
+        if player and int(player["fiddler_saucer_hold"]) == 1:
+            self.machine.events.post("fiddler_saucer_clear_suppressed")
+            return
+
         occupied_saucers = []
         for saucer_number, (switch_name, _kickout_event) in self.SAUCER_EJECTS.items():
             if saucer_number in self.summary_held_saucers:

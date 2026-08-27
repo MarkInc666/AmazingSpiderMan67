@@ -3,11 +3,11 @@
 mode:
   start_events: start_mode_spider_slayer
   stop_events:
-    - ball_will_end
-    - bonus_start
-    - spider_slayer_mode_complete
-    - spider_slayer_mode_completed_summary
-    - ball_ended
+  - ball_will_end
+  - bonus_start
+  - spider_slayer_mode_complete
+  - spider_slayer_mode_completed_summary
+  - ball_ended
   code: spider_slayer.SpiderSlayer
   priority: 300
 
@@ -47,24 +47,24 @@ event_player:
   s_right_drops_top_rubber_active: spider_slayer_shot_right_bank
 
   s_saucer_1_active:
-    - spider_slayer_shot_saucer
-    - delayed_kickout_saucer_1
+  - spider_slayer_shot_saucer
+  - delayed_kickout_saucer_1
   s_saucer_2_active:
-    - spider_slayer_shot_saucer
-    - delayed_kickout_saucer_2
+  - spider_slayer_shot_saucer
+  - delayed_kickout_saucer_2
   s_saucer_3_active:
-    - spider_slayer_shot_saucer
-    - delayed_kickout_saucer_3
+  - spider_slayer_shot_saucer
+  - delayed_kickout_saucer_3
   s_vuk_switch_active: spider_slayer_vuk_hit
 
   drop_target_bank_dt_bank_left_down: drop_target_bank_dt_bank_left_reset
   drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset
 
   mode_spider_slayer_started:
-    - reset_drops
-    - clear_saucers_delayed
+  - reset_drops
+  - clear_saucers_delayed
   mode_spider_slayer_stopping:
-    - clear_saucers_delayed
+  - clear_saucers_delayed
 
 ball_saves:
   spider_slayer_safety_net:
@@ -73,8 +73,8 @@ ball_saves:
     grace_period: 1s
     enable_events: spider_slayer_enable_safety_net
     disable_events:
-      - spider_slayer_disable_safety_net
-      - mode_spider_slayer_stopping
+    - spider_slayer_disable_safety_net
+    - mode_spider_slayer_stopping
     auto_launch: true
     balls_to_save: 1
 
@@ -158,6 +158,15 @@ show_player:
     spider_slayer_right_bank_pulse: {action: stop}
     spider_slayer_star_pulse: {action: stop}
     spider_slayer_saucer_pulse: {action: stop}
+  spider_slayer_vuk_chase_start:
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: FFD040
+  spider_slayer_vuk_chase_stop:
+    shared_final_vuk_chase:
+      action: stop
 
 light_player:
   spider_slayer_clear_all:
@@ -183,71 +192,73 @@ light_player:
 
 shows:
   spider_slayer_build_gi:
-    - duration: 1s
-      lights: {gi: 401010}
+  - duration: 1s
+    lights: {gi: 401010}
   spider_slayer_jackpot_gi:
-    - duration: 1s
-      lights: {gi: 104020}
+  - duration: 1s
+    lights: {gi: 104020}
   spider_slayer_hit_flash:
-    - duration: 250ms
-      lights: {gi: FF3030}
-    - duration: 250ms
-      lights: {gi: 401010}
+  - duration: 250ms
+    lights: {gi: FF3030}
+  - duration: 250ms
+    lights: {gi: 401010}
   spider_slayer_left_web_pulse:
-    - duration: 500ms
-      lights: {l_left_web_target: FF2020}
-    - duration: 500ms
-      lights: {l_left_web_target: 401010}
+  - duration: 500ms
+    lights: {l_left_web_target: FF2020}
+  - duration: 500ms
+    lights: {l_left_web_target: 401010}
   spider_slayer_center_web_pulse:
-    - duration: 500ms
-      lights: {l_mid_web_target: FF2020}
-    - duration: 500ms
-      lights: {l_mid_web_target: 401010}
+  - duration: 500ms
+    lights: {l_mid_web_target: FF2020}
+  - duration: 500ms
+    lights: {l_mid_web_target: 401010}
   spider_slayer_left_sling_pulse:
-    - duration: 500ms
-      lights: {l_gi_left_sling_upper: FF2020, l_gi_left_sling_lower: FF2020}
-    - duration: 500ms
-      lights: {l_gi_left_sling_upper: 401010, l_gi_left_sling_lower: 401010}
+  - duration: 500ms
+    lights: {l_gi_left_sling_upper: FF2020, l_gi_left_sling_lower: FF2020}
+  - duration: 500ms
+    lights: {l_gi_left_sling_upper: 401010, l_gi_left_sling_lower: 401010}
   spider_slayer_right_sling_pulse:
-    - duration: 500ms
-      lights: {l_gi_right_sling: FF2020}
-    - duration: 500ms
-      lights: {l_gi_right_sling: 401010}
+  - duration: 500ms
+    lights: {l_gi_right_sling: FF2020}
+  - duration: 500ms
+    lights: {l_gi_right_sling: 401010}
   spider_slayer_left_pop_pulse:
-    - duration: 500ms
-      lights: {l_pop_1_1: FF2020}
-    - duration: 500ms
-      lights: {l_pop_1_1: 401010}
+  - duration: 500ms
+    lights: {l_pop_1_1: FF2020}
+  - duration: 500ms
+    lights: {l_pop_1_1: 401010}
   spider_slayer_right_pop_pulse:
-    - duration: 500ms
-      lights: {l_pop_2_1: FF2020}
-    - duration: 500ms
-      lights: {l_pop_2_1: 401010}
+  - duration: 500ms
+    lights: {l_pop_2_1: FF2020}
+  - duration: 500ms
+    lights: {l_pop_2_1: 401010}
   spider_slayer_left_bank_pulse:
-    - duration: 500ms
-      lights: {l_gi_3bank: FF2020}
-    - duration: 500ms
-      lights: {l_gi_3bank: 401010}
+  - duration: 500ms
+    lights: {l_gi_3bank: FF2020}
+  - duration: 500ms
+    lights: {l_gi_3bank: 401010}
   spider_slayer_right_bank_pulse:
-    - duration: 500ms
-      lights: {l_gi_5bank_lower: FF2020, l_gi_5bank_upper: FF2020}
-    - duration: 500ms
-      lights: {l_gi_5bank_lower: 401010, l_gi_5bank_upper: 401010}
+  - duration: 500ms
+    lights: {l_gi_5bank_lower: FF2020, l_gi_5bank_upper: FF2020}
+  - duration: 500ms
+    lights: {l_gi_5bank_lower: 401010, l_gi_5bank_upper: 401010}
   spider_slayer_star_pulse:
-    - duration: 500ms
-      lights: {l_star: FF2020}
-    - duration: 500ms
-      lights: {l_star: 401010}
+  - duration: 500ms
+    lights: {l_star: FF2020}
+  - duration: 500ms
+    lights: {l_star: 401010}
   spider_slayer_saucer_pulse:
-    - duration: 500ms
-      lights: {l_1_hole_l: FF2020, l_1_hole_r: FF2020, l_2_hole_l: FF2020, l_2_hole_r: FF2020, l_3_hole_l: FF2020, l_3_hole_r: FF2020}
-    - duration: 500ms
-      lights: {l_1_hole_l: 401010, l_1_hole_r: 401010, l_2_hole_l: 401010, l_2_hole_r: 401010, l_3_hole_l: 401010, l_3_hole_r: 401010}
+  - duration: 500ms
+    lights: {l_1_hole_l: FF2020, l_1_hole_r: FF2020, l_2_hole_l: FF2020, l_2_hole_r: FF2020, l_3_hole_l: FF2020, 
+        l_3_hole_r: FF2020}
+  - duration: 500ms
+    lights: {l_1_hole_l: 401010, l_1_hole_r: 401010, l_2_hole_l: 401010, l_2_hole_r: 401010, l_3_hole_l: 401010, 
+        l_3_hole_r: 401010}
   spider_slayer_vuk_flash:
-    - duration: 300ms
-      lights: {l_gi_left_upper: 30FF60}
-    - duration: 300ms
-      lights: {l_gi_left_upper: off}
+  - duration: 300ms
+    lights: {l_gi_left_upper: 30FF60}
+  - duration: 300ms
+    lights: {l_gi_left_upper: off}
 
 sound_player:
   play_mode_jackpot:

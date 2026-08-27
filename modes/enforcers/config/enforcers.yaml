@@ -209,6 +209,8 @@ show_player:
       loops: -1
 
   enforcers_ox_lit:
+    enforcers_zone_pulse:
+      action: stop
     enforcers_ox_chase:
       loops: -1
 

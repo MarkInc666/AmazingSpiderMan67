@@ -264,6 +264,25 @@ timers:
         action: stop
 
 show_player:
+  electro_vuk_chase_start:
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: "F0F040"
+  electro_vuk_chase_stop:
+    shared_final_vuk_chase:
+      action: stop
+  electro_center_web_chase_start:
+    shared_center_web_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: "FFFFFF"
+  electro_center_web_chase_stop:
+    shared_center_web_chase:
+      action: stop
+
   electro_mode_started:
     electro_mode_start_show:
       loops: 0

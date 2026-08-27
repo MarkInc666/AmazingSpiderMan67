@@ -71,11 +71,13 @@ event_player:
 
 show_player:
   sir_galahad_roof_ready:
-    sir_galahad_roof_ready_show:
+    shared_final_vuk_chase:
       loops: -1
+      priority: 340
+      show_tokens: {color: "A0D0FF"}
 
   sir_galahad_roof_not_ready:
-    sir_galahad_roof_ready_show:
+    shared_final_vuk_chase:
       action: stop
 
   sir_galahad_right_bank_ready:
@@ -99,7 +101,7 @@ show_player:
       action: stop
 
   sir_galahad_clear_all_lights:
-    sir_galahad_roof_ready_show:
+    shared_final_vuk_chase:
       action: stop
     sir_galahad_right_bank_show:
       action: stop
@@ -109,19 +111,6 @@ show_player:
       action: stop
 
 shows:
-  # The roof remains available for all three/four rounds.
-  sir_galahad_roof_ready_show:
-    - duration: 400ms
-      lights:
-        l_upper_left: A0D0FF
-        l_upper_right: A0D0FF
-        l_gi_ramp: 406090
-    - duration: 400ms
-      lights:
-        l_upper_left: 406090
-        l_upper_right: 406090
-        l_gi_ramp: A0D0FF
-
   # Five-bank value tiers: center, adjacent, then outer targets. The physical
   # inserts are green, so brightness/speed rather than incompatible colors
   # communicates value. Both right-bank GI lamps flash throughout the window.

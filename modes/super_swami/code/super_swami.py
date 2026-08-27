@@ -95,7 +95,7 @@ class SuperSwami(CaseFileMixin, Mode):
         self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post("hide_mode_status")
         self.machine.events.post("super_swami_restore_all_lights")
-        self.machine.events.post("final_vuk_chase_stop")
+        self.machine.events.post("super_swami_vuk_chase_stop")
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("clear_saucers")
         self.machine.events.post("drop_target_bank_dt_bank_left_reset")
@@ -175,7 +175,7 @@ class SuperSwami(CaseFileMixin, Mode):
                 self.delay.remove(f"super_swami_flicker_end_{area_name}")
             self.machine.events.post("rooftop_diverter_open")
             self.machine.events.post("super_swami_light_vuk")
-            self.machine.events.post("final_vuk_chase_start")
+            self.machine.events.post("super_swami_vuk_chase_start")
             self.machine.events.post("show_mode_message", message_mode_title="BLACKOUT JACKPOT", message_mode_subtitle="SHOOT THE VUK", reminder=True)
             self._update_status()
         else:
@@ -194,7 +194,7 @@ class SuperSwami(CaseFileMixin, Mode):
             return
 
         self._score(self.MORE_JACKPOTS_VALUE)
-        self.machine.events.post("final_vuk_chase_stop")
+        self.machine.events.post("super_swami_vuk_chase_stop")
         self.machine.events.post("show_mode_message", message_mode_title="BLACKOUT JACKPOT", message_mode_subtitle="500K")
         self.machine.events.post("villain_summary_hold_vuk_until_done")
         self._complete_mode()
@@ -227,7 +227,7 @@ class SuperSwami(CaseFileMixin, Mode):
     def _complete_mode(self, **kwargs):
         if self.mode_done:
             return
-        self.machine.events.post("final_vuk_chase_stop")
+        self.machine.events.post("super_swami_vuk_chase_stop")
         self.machine.events.post("hide_mode_status")
         self.mode_done = True
         self.machine.game.player[f"{self.MODE_KEY}_state"] = 2
@@ -236,7 +236,7 @@ class SuperSwami(CaseFileMixin, Mode):
     def _fail_mode(self, **kwargs):
         if self.mode_done:
             return
-        self.machine.events.post("final_vuk_chase_stop")
+        self.machine.events.post("super_swami_vuk_chase_stop")
         self.machine.events.post("hide_mode_status")
         self.mode_done = True
         self.machine.events.post("show_mode_message", message_mode_title="NEW YORK STAYS DARK", message_mode_subtitle=f"{len(self.restored)} OF 6 RESTORED")

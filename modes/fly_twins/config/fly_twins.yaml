@@ -181,6 +181,19 @@ light_player:
     l_3: white
 
 show_player:
+  fly_twins_upper_access_needed:
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: "A0A0F0"
+  fly_twins_upper_access_complete:
+    shared_final_vuk_chase:
+      action: stop
+  mode_fly_twins_stopping:
+    shared_final_vuk_chase:
+      action: stop
+
   fly_twins_round_started:
     fly_twins_upper_left_available_show:
       action: play

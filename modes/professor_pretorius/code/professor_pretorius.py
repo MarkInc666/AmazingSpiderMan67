@@ -121,7 +121,7 @@ class ProfessorPretorius(CaseFileMixin, Mode):
         self._clear_delays()
         self.machine.events.post("daily_bugle_cancel_vuk_delay_eject")
         self.machine.events.post("professor_pretorius_clear_all")
-        self.machine.events.post("final_vuk_chase_stop")
+        self.machine.events.post("professor_pretorius_vuk_chase_stop")
         self.machine.events.post("clear_saucers_delayed")
         self.machine.events.post("reset_drops")
         self.machine.events.post("enable_daily_bugle_mystery")
@@ -316,7 +316,7 @@ class ProfessorPretorius(CaseFileMixin, Mode):
         self.phase = "super"
         self.machine.events.post("rooftop_diverter_open")
         self.machine.events.post("professor_pretorius_super_ready")
-        self.machine.events.post("final_vuk_chase_start")
+        self.machine.events.post("professor_pretorius_vuk_chase_start")
         self.super_seconds_remaining = self.super_time_ms // 1000
         self.delay.reset(
             name="professor_pretorius_super_tick",
@@ -358,7 +358,7 @@ class ProfessorPretorius(CaseFileMixin, Mode):
             return
 
         self.super_jackpots = 1
-        self.machine.events.post("final_vuk_chase_stop")
+        self.machine.events.post("professor_pretorius_vuk_chase_stop")
         self._score(self.SUPER_VALUE)
         self.machine.events.post("professor_pretorius_super_collected", value=self.SUPER_VALUE)
         self._show_jackpot("REACTOR SUPER", self.SUPER_VALUE)
@@ -380,7 +380,7 @@ class ProfessorPretorius(CaseFileMixin, Mode):
     def _complete_mode(self, **kwargs):
         if self.mode_done:
             return
-        self.machine.events.post("final_vuk_chase_stop")
+        self.machine.events.post("professor_pretorius_vuk_chase_stop")
         self.mode_done = True
         self._clear_delays()
         self.machine.game.player[f"{self.MODE_KEY}_state"] = 2
@@ -390,7 +390,7 @@ class ProfessorPretorius(CaseFileMixin, Mode):
     def _fail_mode(self, **kwargs):
         if self.mode_done:
             return
-        self.machine.events.post("final_vuk_chase_stop")
+        self.machine.events.post("professor_pretorius_vuk_chase_stop")
         self.mode_done = True
         self._clear_delays()
         self.machine.game.player[f"{self.MODE_KEY}_state"] = 2

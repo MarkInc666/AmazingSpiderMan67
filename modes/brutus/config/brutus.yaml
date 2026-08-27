@@ -92,9 +92,6 @@ light_player:
     l_5bank_4: stop
     l_5bank_5: stop
     l_gi_3bank: stop
-    l_1: stop
-    l_2: stop
-    l_3: stop
     l_1_hole_l: stop
     l_1_hole_r: stop
     l_2_hole_l: stop
@@ -142,14 +139,10 @@ shows:
     - duration: 250ms
       lights: {l_gi_3bank: "301000"}
 
-  # Hole lamps are red-lensed; green number inserts reinforce that all three
-  # saucers are valid artwork jackpots.
+  # Physical saucer-hole lamps indicate that all three saucers are valid jackpots.
   brutus_saucers_jackpot:
     - duration: 250ms
       lights:
-        l_1: "00F000"
-        l_2: "00F000"
-        l_3: "00F000"
         l_1_hole_l: F00000
         l_1_hole_r: F00000
         l_2_hole_l: F00000
@@ -158,9 +151,6 @@ shows:
         l_3_hole_r: F00000
     - duration: 250ms
       lights:
-        l_1: "003000"
-        l_2: "003000"
-        l_3: "003000"
         l_1_hole_l: "300000"
         l_1_hole_r: "300000"
         l_2_hole_l: "300000"
@@ -171,9 +161,6 @@ shows:
   brutus_jackpot_flash:
     - duration: 125ms
       lights:
-        l_1: "00F000"
-        l_2: "00F000"
-        l_3: "00F000"
         l_1_hole_l: F00000
         l_1_hole_r: F00000
         l_2_hole_l: F00000
@@ -182,9 +169,6 @@ shows:
         l_3_hole_r: F00000
     - duration: 125ms
       lights:
-        l_1: "000000"
-        l_2: "000000"
-        l_3: "000000"
         l_1_hole_l: "000000"
         l_1_hole_r: "000000"
         l_2_hole_l: "000000"

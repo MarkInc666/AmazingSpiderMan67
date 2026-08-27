@@ -3,11 +3,11 @@
 mode:
   start_events: start_mode_harley_clivendon
   stop_events:
-    - ball_will_end
-    - bonus_start
-    - harley_clivendon_mode_complete
-    - harley_clivendon_mode_completed_summary
-    - ball_ended
+  - ball_will_end
+  - bonus_start
+  - harley_clivendon_mode_complete
+  - harley_clivendon_mode_completed_summary
+  - ball_ended
   code: harley_clivendon.HarleyClivendon
   priority: 500
 
@@ -18,8 +18,8 @@ multiballs:
     shoot_again: (current_player.harley_opening_save_seconds)
     start_events: harley_start_multiball
     stop_events:
-      - harley_clivendon_mode_completed_summary
-      - ball_ended
+    - harley_clivendon_mode_completed_summary
+    - ball_ended
 
 variable_player:
   multiball_harley_multiball_started:
@@ -73,8 +73,8 @@ event_player:
   drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset
 
   mode_harley_clivendon_started:
-    - harley_saucers_available
-    - rooftop_diverter_close
+  - harley_saucers_available
+  - rooftop_diverter_close
 
 light_player:
   mode_harley_clivendon_started:
@@ -102,6 +102,11 @@ show_player:
     harley_saucer_3_held_show: {action: stop}
   harley_vuk_ready:
     harley_vuk_ready_show: {loops: -1}
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: A0A0F0
   harley_vuk_not_ready:
     harley_vuk_ready_show: {action: stop}
   harley_area_build_started:
@@ -184,209 +189,211 @@ show_player:
     harley_left_web_lit_show: {action: stop}
     harley_center_web_available_show: {action: stop}
     harley_center_web_lit_show: {action: stop}
+    shared_final_vuk_chase:
+      action: stop
 
 shows:
   harley_saucers_available_show:
-    - duration: 600ms
-      lights:
-        l_1_hole_l: red
-        l_1_hole_r: red
-        l_2_hole_l: red
-        l_2_hole_r: red
-        l_3_hole_l: red
-        l_3_hole_r: red
-    - duration: 600ms
-      lights:
-        l_1_hole_l: 400000
-        l_1_hole_r: 400000
-        l_2_hole_l: 400000
-        l_2_hole_r: 400000
-        l_3_hole_l: 400000
-        l_3_hole_r: 400000
+  - duration: 600ms
+    lights:
+      l_1_hole_l: red
+      l_1_hole_r: red
+      l_2_hole_l: red
+      l_2_hole_r: red
+      l_3_hole_l: red
+      l_3_hole_r: red
+  - duration: 600ms
+    lights:
+      l_1_hole_l: 400000
+      l_1_hole_r: 400000
+      l_2_hole_l: 400000
+      l_2_hole_r: 400000
+      l_3_hole_l: 400000
+      l_3_hole_r: 400000
   harley_saucer_1_held_show:
-    - duration: -1
-      lights: {l_1_hole_l: red, l_1_hole_r: red}
+  - duration: -1
+    lights: {l_1_hole_l: red, l_1_hole_r: red}
   harley_saucer_2_held_show:
-    - duration: -1
-      lights: {l_2_hole_l: red, l_2_hole_r: red}
+  - duration: -1
+    lights: {l_2_hole_l: red, l_2_hole_r: red}
   harley_saucer_3_held_show:
-    - duration: -1
-      lights: {l_3_hole_l: red, l_3_hole_r: red}
+  - duration: -1
+    lights: {l_3_hole_l: red, l_3_hole_r: red}
   harley_vuk_ready_show:
-    - duration: 300ms
-      lights: {l_spinner: yellow}
-    - duration: 300ms
-      lights: {l_spinner: off}
+  - duration: 300ms
+    lights: {l_spinner: yellow}
+  - duration: 300ms
+    lights: {l_spinner: off}
 
   harley_left_sling_available_show:
-    - duration: 700ms
-      lights:
-        l_gi_left_sling_upper: 808080
-        l_gi_left_sling_lower: 808080
-    - duration: 700ms
-      lights:
-        l_gi_left_sling_upper: off
-        l_gi_left_sling_lower: off
+  - duration: 700ms
+    lights:
+      l_gi_left_sling_upper: 808080
+      l_gi_left_sling_lower: 808080
+  - duration: 700ms
+    lights:
+      l_gi_left_sling_upper: off
+      l_gi_left_sling_lower: off
   harley_left_sling_lit_show:
-    - duration: -1
-      lights:
-        l_gi_left_sling_upper: blue
-        l_gi_left_sling_lower: blue
+  - duration: -1
+    lights:
+      l_gi_left_sling_upper: blue
+      l_gi_left_sling_lower: blue
   harley_right_sling_available_show:
-    - duration: 700ms
-      lights:
-        l_gi_right_sling: 808080
-    - duration: 700ms
-      lights:
-        l_gi_right_sling: off
+  - duration: 700ms
+    lights:
+      l_gi_right_sling: 808080
+  - duration: 700ms
+    lights:
+      l_gi_right_sling: off
   harley_right_sling_lit_show:
-    - duration: -1
-      lights:
-        l_gi_right_sling: blue
+  - duration: -1
+    lights:
+      l_gi_right_sling: blue
   harley_left_pop_available_show:
-    - duration: 700ms
-      lights:
-        l_pop_1_1: 808080
-        l_pop_1_2: 808080
-        l_pop_1_3: 808080
-        l_pop_1_4: 808080
-        l_pop_1_5: 808080
-        l_pop_1_6: 808080
-        l_pop_1_7: 808080
-        l_pop_1_8: 808080
-        l_pop_1_9: 808080
-        l_pop_1_10: 808080
-        l_pop_1_11: 808080
-        l_pop_1_12: 808080
-    - duration: 700ms
-      lights:
-        l_pop_1_1: off
-        l_pop_1_2: off
-        l_pop_1_3: off
-        l_pop_1_4: off
-        l_pop_1_5: off
-        l_pop_1_6: off
-        l_pop_1_7: off
-        l_pop_1_8: off
-        l_pop_1_9: off
-        l_pop_1_10: off
-        l_pop_1_11: off
-        l_pop_1_12: off
+  - duration: 700ms
+    lights:
+      l_pop_1_1: 808080
+      l_pop_1_2: 808080
+      l_pop_1_3: 808080
+      l_pop_1_4: 808080
+      l_pop_1_5: 808080
+      l_pop_1_6: 808080
+      l_pop_1_7: 808080
+      l_pop_1_8: 808080
+      l_pop_1_9: 808080
+      l_pop_1_10: 808080
+      l_pop_1_11: 808080
+      l_pop_1_12: 808080
+  - duration: 700ms
+    lights:
+      l_pop_1_1: off
+      l_pop_1_2: off
+      l_pop_1_3: off
+      l_pop_1_4: off
+      l_pop_1_5: off
+      l_pop_1_6: off
+      l_pop_1_7: off
+      l_pop_1_8: off
+      l_pop_1_9: off
+      l_pop_1_10: off
+      l_pop_1_11: off
+      l_pop_1_12: off
   harley_left_pop_lit_show:
-    - duration: -1
-      lights:
-        l_pop_1_1: blue
-        l_pop_1_2: blue
-        l_pop_1_3: blue
-        l_pop_1_4: blue
-        l_pop_1_5: blue
-        l_pop_1_6: blue
-        l_pop_1_7: blue
-        l_pop_1_8: blue
-        l_pop_1_9: blue
-        l_pop_1_10: blue
-        l_pop_1_11: blue
-        l_pop_1_12: blue
+  - duration: -1
+    lights:
+      l_pop_1_1: blue
+      l_pop_1_2: blue
+      l_pop_1_3: blue
+      l_pop_1_4: blue
+      l_pop_1_5: blue
+      l_pop_1_6: blue
+      l_pop_1_7: blue
+      l_pop_1_8: blue
+      l_pop_1_9: blue
+      l_pop_1_10: blue
+      l_pop_1_11: blue
+      l_pop_1_12: blue
   harley_right_pop_available_show:
-    - duration: 700ms
-      lights:
-        l_pop_2_1: 808080
-        l_pop_2_2: 808080
-        l_pop_2_3: 808080
-        l_pop_2_4: 808080
-        l_pop_2_5: 808080
-        l_pop_2_6: 808080
-        l_pop_2_7: 808080
-        l_pop_2_8: 808080
-        l_pop_2_9: 808080
-        l_pop_2_10: 808080
-        l_pop_2_11: 808080
-        l_pop_2_12: 808080
-    - duration: 700ms
-      lights:
-        l_pop_2_1: off
-        l_pop_2_2: off
-        l_pop_2_3: off
-        l_pop_2_4: off
-        l_pop_2_5: off
-        l_pop_2_6: off
-        l_pop_2_7: off
-        l_pop_2_8: off
-        l_pop_2_9: off
-        l_pop_2_10: off
-        l_pop_2_11: off
-        l_pop_2_12: off
+  - duration: 700ms
+    lights:
+      l_pop_2_1: 808080
+      l_pop_2_2: 808080
+      l_pop_2_3: 808080
+      l_pop_2_4: 808080
+      l_pop_2_5: 808080
+      l_pop_2_6: 808080
+      l_pop_2_7: 808080
+      l_pop_2_8: 808080
+      l_pop_2_9: 808080
+      l_pop_2_10: 808080
+      l_pop_2_11: 808080
+      l_pop_2_12: 808080
+  - duration: 700ms
+    lights:
+      l_pop_2_1: off
+      l_pop_2_2: off
+      l_pop_2_3: off
+      l_pop_2_4: off
+      l_pop_2_5: off
+      l_pop_2_6: off
+      l_pop_2_7: off
+      l_pop_2_8: off
+      l_pop_2_9: off
+      l_pop_2_10: off
+      l_pop_2_11: off
+      l_pop_2_12: off
   harley_right_pop_lit_show:
-    - duration: -1
-      lights:
-        l_pop_2_1: blue
-        l_pop_2_2: blue
-        l_pop_2_3: blue
-        l_pop_2_4: blue
-        l_pop_2_5: blue
-        l_pop_2_6: blue
-        l_pop_2_7: blue
-        l_pop_2_8: blue
-        l_pop_2_9: blue
-        l_pop_2_10: blue
-        l_pop_2_11: blue
-        l_pop_2_12: blue
+  - duration: -1
+    lights:
+      l_pop_2_1: blue
+      l_pop_2_2: blue
+      l_pop_2_3: blue
+      l_pop_2_4: blue
+      l_pop_2_5: blue
+      l_pop_2_6: blue
+      l_pop_2_7: blue
+      l_pop_2_8: blue
+      l_pop_2_9: blue
+      l_pop_2_10: blue
+      l_pop_2_11: blue
+      l_pop_2_12: blue
   harley_left_bank_available_show:
-    - duration: 700ms
-      lights:
-        l_3bankbonus: 808080
-    - duration: 700ms
-      lights:
-        l_3bankbonus: off
+  - duration: 700ms
+    lights:
+      l_3bankbonus: 808080
+  - duration: 700ms
+    lights:
+      l_3bankbonus: off
   harley_left_bank_lit_show:
-    - duration: -1
-      lights:
-        l_3bankbonus: blue
+  - duration: -1
+    lights:
+      l_3bankbonus: blue
   harley_right_bank_available_show:
-    - duration: 700ms
-      lights:
-        l_5bank_1: 808080
-        l_5bank_2: 808080
-        l_5bank_3: 808080
-        l_5bank_4: 808080
-        l_5bank_5: 808080
-    - duration: 700ms
-      lights:
-        l_5bank_1: off
-        l_5bank_2: off
-        l_5bank_3: off
-        l_5bank_4: off
-        l_5bank_5: off
+  - duration: 700ms
+    lights:
+      l_5bank_1: 808080
+      l_5bank_2: 808080
+      l_5bank_3: 808080
+      l_5bank_4: 808080
+      l_5bank_5: 808080
+  - duration: 700ms
+    lights:
+      l_5bank_1: off
+      l_5bank_2: off
+      l_5bank_3: off
+      l_5bank_4: off
+      l_5bank_5: off
   harley_right_bank_lit_show:
-    - duration: -1
-      lights:
-        l_5bank_1: blue
-        l_5bank_2: blue
-        l_5bank_3: blue
-        l_5bank_4: blue
-        l_5bank_5: blue
+  - duration: -1
+    lights:
+      l_5bank_1: blue
+      l_5bank_2: blue
+      l_5bank_3: blue
+      l_5bank_4: blue
+      l_5bank_5: blue
   harley_left_web_available_show:
-    - duration: 700ms
-      lights:
-        l_left_web_target: 808080
-    - duration: 700ms
-      lights:
-        l_left_web_target: off
+  - duration: 700ms
+    lights:
+      l_left_web_target: 808080
+  - duration: 700ms
+    lights:
+      l_left_web_target: off
   harley_left_web_lit_show:
-    - duration: -1
-      lights:
-        l_left_web_target: blue
+  - duration: -1
+    lights:
+      l_left_web_target: blue
   harley_center_web_available_show:
-    - duration: 700ms
-      lights:
-        l_mid_web_target: 808080
-    - duration: 700ms
-      lights:
-        l_mid_web_target: off
+  - duration: 700ms
+    lights:
+      l_mid_web_target: 808080
+  - duration: 700ms
+    lights:
+      l_mid_web_target: off
   harley_center_web_lit_show:
-    - duration: -1
-      lights:
-        l_mid_web_target: blue
+  - duration: -1
+    lights:
+      l_mid_web_target: blue
 
 sound_player:
   play_mode_jackpot:

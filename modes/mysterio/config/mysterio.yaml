@@ -145,6 +145,16 @@ shots:
 
 
 show_player:
+  mysterio_vuk_chase_pulse:
+    shared_final_vuk_chase:
+      loops: 1
+      priority: 340
+      show_tokens:
+        color: "F030F0"
+  mysterio_vuk_chase_stop:
+    shared_final_vuk_chase:
+      action: stop
+
 #  mysterio_startup_complete:
 #    mysterio_start_show:
 #      loops: 0

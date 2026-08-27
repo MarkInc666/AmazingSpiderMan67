@@ -12,7 +12,7 @@ OBJECTIVE
 
 ROUND FLOW
 ----------
-- All three choices begin lit identically.
+- All three available choices flash green identically.
 - Hitting the correct shot immediately collects the current Hypnosis Jackpot and ends the round.
 - The first incorrect shot scores 20K, turns that choice off, and reduces the current Jackpot.
 - The round then continues with the two remaining choices.
@@ -24,9 +24,9 @@ REVEAL
 ------
 - A spinner hit reveals the correct shot for 4 seconds.
 - More Time extends the reveal to 6 seconds.
-- Hidden choices are solid green so the white and green physical lenses display a consistent color.
+- Hidden choices flash green together so all currently available target shots are clearly selectable while preserving a consistent visible color through the white and green physical lenses.
 - During reveal, the correct shot flashes green and the wrong choices turn off.
-- After a first wrong choice, only the two surviving choices relight.
+- After a first wrong choice, the eliminated choice goes dark and only the two surviving choices continue flashing.
 - A correct or wrong choice briefly flashes one GI section green or red, then restores Pardo's normal GI color after 350ms.
 
 SCORING
@@ -46,7 +46,7 @@ Bigger Jackpots values by round:
 - Extra More-Jackpots rounds retain the Round 4 value.
 
 - Every incorrect choice scores 20K.
-- The summary reports correct shots, wrong shots, and total mode points.
+- The summary reports first-guess Jackpots, second-guess Jackpots, and total mode points.
 
 CASE FILES
 ----------

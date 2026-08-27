@@ -156,7 +156,7 @@ class NoahBoddy(CaseFileMixin, Mode):
         self.add_mode_event_handler("noah_boddy_fail_request", self._fail_mode)
 
         self.machine.events.post("rooftop_diverter_open")
-        self.machine.events.post("final_vuk_chase_start")
+        self.machine.events.post("noah_boddy_vuk_chase_start")
         self.machine.events.post("noah_boddy_find_started")
         self.machine.events.post("noah_boddy_get_to_upper")
         self._show_mode_message("FIND THE NOAH BODDY", "GET TO THE ROOF")
@@ -192,7 +192,7 @@ class NoahBoddy(CaseFileMixin, Mode):
 
     def mode_stop(self, **kwargs):
         self.machine.events.post("hide_mode_status")
-        self.machine.events.post("final_vuk_chase_stop")
+        self.machine.events.post("noah_boddy_vuk_chase_stop")
         self.delay.remove("noah_boddy_hurryup_tick")
         self._cancel_drop_rebuild()
         self.clear_active_case_file_helpers()
@@ -235,7 +235,6 @@ class NoahBoddy(CaseFileMixin, Mode):
         if self.phase not in ("get_to_upper", "return_to_upper"):
             return
 
-        self.machine.events.post("final_vuk_chase_stop")
         self._start_search_cycle()
 
     def _start_search_cycle(self):
@@ -446,6 +445,7 @@ class NoahBoddy(CaseFileMixin, Mode):
             self._start_hurryup()
 
     def _start_hurryup(self):
+        self.machine.events.post("noah_boddy_vuk_chase_stop")
         self.phase = "hurryup"
         self.hurryup_active = True
         self.hurryup_seconds_left = self.hurryup_seconds
@@ -526,7 +526,7 @@ class NoahBoddy(CaseFileMixin, Mode):
         )
         self.machine.events.post("noah_boddy_secret_lights_off")
         self.machine.events.post("noah_boddy_return_to_upper")
-        self.machine.events.post("final_vuk_chase_start")
+        self.machine.events.post("noah_boddy_vuk_chase_start")
         self._show_mode_message(
             "SEARCH PAUSED",
             f"{self._remaining_locations()} LEFT - RETURN TO ROOF",
@@ -583,7 +583,7 @@ class NoahBoddy(CaseFileMixin, Mode):
         self.mode_done = True
         self.hurryup_active = False
         self.delay.remove("noah_boddy_hurryup_tick")
-        self.machine.events.post("final_vuk_chase_stop")
+        self.machine.events.post("noah_boddy_vuk_chase_stop")
         player = self.machine.game.player
         player["noah_boddy_state"] = 2
         player["noah_boddy_phase"] = "complete"
@@ -597,7 +597,7 @@ class NoahBoddy(CaseFileMixin, Mode):
         self.mode_done = True
         self.hurryup_active = False
         self.delay.remove("noah_boddy_hurryup_tick")
-        self.machine.events.post("final_vuk_chase_stop")
+        self.machine.events.post("noah_boddy_vuk_chase_stop")
         player = self.machine.game.player
         player["noah_boddy_state"] = 2
         player["noah_boddy_phase"] = "goal_missed"

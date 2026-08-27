@@ -3,10 +3,10 @@
 mode:
   start_events: start_mode_dr_von_schlick
   stop_events:
-    - ball_will_end
-    - bonus_start
-    - dr_von_schlick_mode_complete
-    - ball_ended
+  - ball_will_end
+  - bonus_start
+  - dr_von_schlick_mode_complete
+  - ball_ended
   code: dr_von_schlick.DrVonSchlick
   priority: 300
 
@@ -44,19 +44,19 @@ event_player:
   drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset
 
   mode_dr_von_schlick_started:
-    - disable_daily_bugle_mystery
-    - cancel_vuk_eject_request
-    - rooftop_diverter_close
-    - clear_saucers_delayed
-    - reset_drops
+  - disable_daily_bugle_mystery
+  - cancel_vuk_eject_request
+  - rooftop_diverter_close
+  - clear_saucers_delayed
+  - reset_drops
   mode_dr_von_schlick_stopping:
-    - bonus_lights_restore
-    - dr_von_schlick_gi_restore
-    - rooftop_diverter_close
-    - clear_saucers_delayed
-    - reset_drops
-    - enable_daily_bugle_mystery
-    - daily_bugle_restore_state
+  - bonus_lights_restore
+  - dr_von_schlick_gi_restore
+  - rooftop_diverter_close
+  - clear_saucers_delayed
+  - reset_drops
+  - enable_daily_bugle_mystery
+  - daily_bugle_restore_state
 
 light_player:
   dr_von_schlick_gi_orange:
@@ -188,107 +188,116 @@ show_player:
     dr_von_schlick_center_web_flash: {action: stop}
     dr_von_schlick_right_pop_flash: {action: stop}
     dr_von_schlick_right_drops_flash: {action: stop}
+  dr_von_schlick_vuk_chase_start:
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: A0A0F0
+  dr_von_schlick_vuk_chase_stop:
+    shared_final_vuk_chase:
+      action: stop
 
 shows:
   dr_von_schlick_left_web_flash:
-    - duration: 250ms
-      lights:
-        l_left_web_target: green
-    - duration: 250ms
-      lights:
-        l_left_web_target: off
+  - duration: 250ms
+    lights:
+      l_left_web_target: green
+  - duration: 250ms
+    lights:
+      l_left_web_target: off
 
   dr_von_schlick_left_drops_flash:
-    - duration: 250ms
-      lights:
-        l_3bankbonus: green
-    - duration: 250ms
-      lights:
-        l_3bankbonus: off
+  - duration: 250ms
+    lights:
+      l_3bankbonus: green
+  - duration: 250ms
+    lights:
+      l_3bankbonus: off
 
   dr_von_schlick_left_pop_flash:
-    - duration: 250ms
-      lights:
-        l_pop_1_1: green
-        l_pop_1_2: green
-        l_pop_1_3: green
-        l_pop_1_4: green
-        l_pop_1_5: green
-        l_pop_1_6: green
-        l_pop_1_7: green
-        l_pop_1_8: green
-        l_pop_1_9: green
-        l_pop_1_10: green
-        l_pop_1_11: green
-        l_pop_1_12: green
-    - duration: 250ms
-      lights:
-        l_pop_1_1: off
-        l_pop_1_2: off
-        l_pop_1_3: off
-        l_pop_1_4: off
-        l_pop_1_5: off
-        l_pop_1_6: off
-        l_pop_1_7: off
-        l_pop_1_8: off
-        l_pop_1_9: off
-        l_pop_1_10: off
-        l_pop_1_11: off
-        l_pop_1_12: off
+  - duration: 250ms
+    lights:
+      l_pop_1_1: green
+      l_pop_1_2: green
+      l_pop_1_3: green
+      l_pop_1_4: green
+      l_pop_1_5: green
+      l_pop_1_6: green
+      l_pop_1_7: green
+      l_pop_1_8: green
+      l_pop_1_9: green
+      l_pop_1_10: green
+      l_pop_1_11: green
+      l_pop_1_12: green
+  - duration: 250ms
+    lights:
+      l_pop_1_1: off
+      l_pop_1_2: off
+      l_pop_1_3: off
+      l_pop_1_4: off
+      l_pop_1_5: off
+      l_pop_1_6: off
+      l_pop_1_7: off
+      l_pop_1_8: off
+      l_pop_1_9: off
+      l_pop_1_10: off
+      l_pop_1_11: off
+      l_pop_1_12: off
 
   dr_von_schlick_center_web_flash:
-    - duration: 250ms
-      lights:
-        l_mid_web_target: green
-    - duration: 250ms
-      lights:
-        l_mid_web_target: off
+  - duration: 250ms
+    lights:
+      l_mid_web_target: green
+  - duration: 250ms
+    lights:
+      l_mid_web_target: off
 
   dr_von_schlick_right_pop_flash:
-    - duration: 250ms
-      lights:
-        l_pop_2_1: green
-        l_pop_2_2: green
-        l_pop_2_3: green
-        l_pop_2_4: green
-        l_pop_2_5: green
-        l_pop_2_6: green
-        l_pop_2_7: green
-        l_pop_2_8: green
-        l_pop_2_9: green
-        l_pop_2_10: green
-        l_pop_2_11: green
-        l_pop_2_12: green
-    - duration: 250ms
-      lights:
-        l_pop_2_1: off
-        l_pop_2_2: off
-        l_pop_2_3: off
-        l_pop_2_4: off
-        l_pop_2_5: off
-        l_pop_2_6: off
-        l_pop_2_7: off
-        l_pop_2_8: off
-        l_pop_2_9: off
-        l_pop_2_10: off
-        l_pop_2_11: off
-        l_pop_2_12: off
+  - duration: 250ms
+    lights:
+      l_pop_2_1: green
+      l_pop_2_2: green
+      l_pop_2_3: green
+      l_pop_2_4: green
+      l_pop_2_5: green
+      l_pop_2_6: green
+      l_pop_2_7: green
+      l_pop_2_8: green
+      l_pop_2_9: green
+      l_pop_2_10: green
+      l_pop_2_11: green
+      l_pop_2_12: green
+  - duration: 250ms
+    lights:
+      l_pop_2_1: off
+      l_pop_2_2: off
+      l_pop_2_3: off
+      l_pop_2_4: off
+      l_pop_2_5: off
+      l_pop_2_6: off
+      l_pop_2_7: off
+      l_pop_2_8: off
+      l_pop_2_9: off
+      l_pop_2_10: off
+      l_pop_2_11: off
+      l_pop_2_12: off
 
   dr_von_schlick_right_drops_flash:
-    - duration: 250ms
-      lights:
-        l_5bank_1: green
-        l_5bank_2: green
-        l_5bank_3: green
-        l_5bank_4: green
-        l_5bank_5: green
-    - duration: 250ms
-      lights:
-        l_5bank_1: off
-        l_5bank_2: off
-        l_5bank_3: off
-        l_5bank_4: off
-        l_5bank_5: off
+  - duration: 250ms
+    lights:
+      l_5bank_1: green
+      l_5bank_2: green
+      l_5bank_3: green
+      l_5bank_4: green
+      l_5bank_5: green
+  - duration: 250ms
+    lights:
+      l_5bank_1: off
+      l_5bank_2: off
+      l_5bank_3: off
+      l_5bank_4: off
+      l_5bank_5: off
 
 sound_player:
   play_mode_jackpot:

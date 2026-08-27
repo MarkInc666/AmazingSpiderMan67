@@ -287,7 +287,13 @@ class Goblin(CaseFileMixin, Mode):
                 self.collect_safe_shot(random.choice(candidates), assisted=True)
 
         self._update_mode_status()
-        if not self.active_shots:
+        # Six unique logical Safe shots complete the phase. Use the explicit
+        # collected-shot count as the authoritative release trigger instead
+        # of relying only on active_shots becoming empty; a stale shot-group
+        # entry must never leave the held saucer waiting for the Safe timer.
+        if self.safe_hit_count >= len(self.shots):
+            self.active_shots.clear()
+            self.current_flashing.clear()
             self.end_safe_phase(reason="all_six")
 
     def deactivate_safe_shot(self, shot_name):

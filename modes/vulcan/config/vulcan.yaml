@@ -3,11 +3,11 @@
 mode:
   start_events: start_mode_vulcan
   stop_events:
-    - ball_will_end
-    - bonus_start
-    - vulcan_mode_complete
-    - vulcan_mode_completed_summary
-    - ball_ended
+  - ball_will_end
+  - bonus_start
+  - vulcan_mode_complete
+  - vulcan_mode_completed_summary
+  - ball_ended
   code: vulcan.Vulcan
   priority: 300
 
@@ -39,7 +39,7 @@ multiballs:
     shoot_again: 10s
     start_events: vulcan_start_multiball
     stop_events:
-      - vulcan_stop_multiball
+    - vulcan_stop_multiball
 
   vulcan_add_a_ball:
     ball_count: 1
@@ -56,10 +56,10 @@ ball_saves:
     auto_launch: true
     enable_events: vulcan_enable_safety_net
     disable_events:
-      - vulcan_disable_safety_net
-      - vulcan_mode_complete
-      - mode_vulcan_stopping
-      - ball_ending
+    - vulcan_disable_safety_net
+    - vulcan_mode_complete
+    - mode_vulcan_stopping
+    - ball_ending
 
 widget_player:
   mode_vulcan_started:
@@ -76,69 +76,69 @@ widget_player:
 
 event_player:
   vulcan_setup:
-    - clear_saucers
-    - reset_drops
-    - rooftop_diverter_open|500ms
-    - vulcan_right_bank_reloaded
-    - vulcan_upper_targets_normal
+  - clear_saucers
+  - reset_drops
+  - rooftop_diverter_open|500ms
+  - vulcan_right_bank_reloaded
+  - vulcan_upper_targets_normal
 
   mode_vulcan_stopping:
-    - vulcan_disable_safety_net
-    - rooftop_diverter_close
-    - vulcan_clear_all_lights
+  - vulcan_disable_safety_net
+  - rooftop_diverter_close
+  - vulcan_clear_all_lights
 
   multiball_vulcan_multiball_started{current_player.case_file_safety_net_collected == 1}:
-    - vulcan_enable_safety_net
+  - vulcan_enable_safety_net
 
   multiball_vulcan_multiball_ended:
-    - vulcan_multiball_ended
+  - vulcan_multiball_ended
 
   s_right_drops_1_active:
-    - vulcan_right_drop_1_hit
+  - vulcan_right_drop_1_hit
   s_right_drops_2_active:
-    - vulcan_right_drop_2_hit
+  - vulcan_right_drop_2_hit
   s_right_drops_3_active:
-    - vulcan_right_drop_3_hit
+  - vulcan_right_drop_3_hit
   s_right_drops_4_active:
-    - vulcan_right_drop_4_hit
+  - vulcan_right_drop_4_hit
   s_right_drops_5_active:
-    - vulcan_right_drop_5_hit
+  - vulcan_right_drop_5_hit
 
   s_left_drops_1_active:
-    - vulcan_left_drop_1_hit
+  - vulcan_left_drop_1_hit
   s_left_drops_2_active:
-    - vulcan_left_drop_2_hit
+  - vulcan_left_drop_2_hit
   s_left_drops_3_active:
-    - vulcan_left_drop_3_hit
+  - vulcan_left_drop_3_hit
 
   # A bank remains down until a ball reaches the upper playfield. The Python
   # handler only resets banks with one or more targets currently down.
   s_upper_entrance_opto_active:
-    - vulcan_upper_playfield_entered
+  - vulcan_upper_playfield_entered
 
   s_upper_exit_left_opto_active:
-    - vulcan_upper_left_exit
+  - vulcan_upper_left_exit
 
   # Same early-release pattern used elsewhere for the physical up-post: a
   # both-flipper chord releases the hold immediately.
   s_left_flipper_active{device.switches.s_right_flipper.state == 1}:
-    - vulcan_post_hold_cancel
+  - vulcan_post_hold_cancel
   s_right_flipper_active{device.switches.s_left_flipper.state == 1}:
-    - vulcan_post_hold_cancel
+  - vulcan_post_hold_cancel
 
   s_upper_target_left_active:
-    - vulcan_upper_target_left_hit
+  - vulcan_upper_target_left_hit
   s_upper_target_center_active:
-    - vulcan_upper_target_center_hit
+  - vulcan_upper_target_center_hit
   s_upper_target_right_active:
-    - vulcan_upper_target_right_hit
+  - vulcan_upper_target_right_hit
 
   s_saucer_1_active:
-    - clear_saucers
+  - clear_saucers
   s_saucer_2_active:
-    - clear_saucers
+  - clear_saucers
   s_saucer_3_active:
-    - clear_saucers
+  - clear_saucers
 
 coil_player:
   vulcan_shot_assist_drop_1:
@@ -252,6 +252,14 @@ show_player:
     vulcan_add_a_ball_ready_show:
       action: stop
 
+    shared_final_vuk_chase:
+      action: stop
+  vulcan_setup:
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: FFD040
 light_player:
   vulcan_right_drop_1_collected:
     l_5bank_1: off
@@ -280,88 +288,88 @@ light_player:
 
 shows:
   vulcan_right_drop_1_lit_show:
-    - duration: 250ms
-      lights:
-        l_5bank_1: 10FFA0
-    - duration: 250ms
-      lights:
-        l_5bank_1: off
+  - duration: 250ms
+    lights:
+      l_5bank_1: 10FFA0
+  - duration: 250ms
+    lights:
+      l_5bank_1: off
 
   vulcan_right_drop_2_lit_show:
-    - duration: 250ms
-      lights:
-        l_5bank_2: 10FFA0
-    - duration: 250ms
-      lights:
-        l_5bank_2: off
+  - duration: 250ms
+    lights:
+      l_5bank_2: 10FFA0
+  - duration: 250ms
+    lights:
+      l_5bank_2: off
 
   vulcan_right_drop_3_lit_show:
-    - duration: 250ms
-      lights:
-        l_5bank_3: 10FFA0
-    - duration: 250ms
-      lights:
-        l_5bank_3: off
+  - duration: 250ms
+    lights:
+      l_5bank_3: 10FFA0
+  - duration: 250ms
+    lights:
+      l_5bank_3: off
 
   vulcan_right_drop_4_lit_show:
-    - duration: 250ms
-      lights:
-        l_5bank_4: 10FFA0
-    - duration: 250ms
-      lights:
-        l_5bank_4: off
+  - duration: 250ms
+    lights:
+      l_5bank_4: 10FFA0
+  - duration: 250ms
+    lights:
+      l_5bank_4: off
 
   vulcan_right_drop_5_lit_show:
-    - duration: 250ms
-      lights:
-        l_5bank_5: 10FFA0
-    - duration: 250ms
-      lights:
-        l_5bank_5: off
+  - duration: 250ms
+    lights:
+      l_5bank_5: 10FFA0
+  - duration: 250ms
+    lights:
+      l_5bank_5: off
 
   vulcan_right_bank_gi_pulse_show:
-    - duration: 500ms
-      lights:
-        l_gi_5bank_lower: 10C060
-        l_gi_5bank_upper: 10C060
-    - duration: 500ms
-      lights:
-        l_gi_5bank_lower: 103018
-        l_gi_5bank_upper: 103018
+  - duration: 500ms
+    lights:
+      l_gi_5bank_lower: 10C060
+      l_gi_5bank_upper: 10C060
+  - duration: 500ms
+    lights:
+      l_gi_5bank_lower: 103018
+      l_gi_5bank_upper: 103018
 
   vulcan_left_bank_jackpot_show:
-    - duration: 500ms
-      lights:
-        l_3bankbonus: 10FFA0
-        l_gi_3bank: 10C060
-    - duration: 500ms
-      lights:
-        l_3bankbonus: 103018
-        l_gi_3bank: 103018
+  - duration: 500ms
+    lights:
+      l_3bankbonus: 10FFA0
+      l_gi_3bank: 10C060
+  - duration: 500ms
+    lights:
+      l_3bankbonus: 103018
+      l_gi_3bank: 103018
 
   vulcan_upper_targets_normal_show:
-    - duration: 500ms
-      lights:
-        l_upper_left: 9020C0
-        l_upper_middle: 9020C0
-        l_upper_right: 9020C0
-    - duration: 500ms
-      lights:
-        l_upper_left: 240830
-        l_upper_middle: 240830
-        l_upper_right: 240830
+  - duration: 500ms
+    lights:
+      l_upper_left: 9020C0
+      l_upper_middle: 9020C0
+      l_upper_right: 9020C0
+  - duration: 500ms
+    lights:
+      l_upper_left: 240830
+      l_upper_middle: 240830
+      l_upper_right: 240830
 
   vulcan_add_a_ball_ready_show:
-    - duration: 250ms
-      lights:
-        l_upper_left: 10FF60
-        l_upper_middle: 10FF60
-        l_upper_right: 10FF60
-    - duration: 250ms
-      lights:
-        l_upper_left: off
-        l_upper_middle: off
-        l_upper_right: off
+  - duration: 250ms
+    lights:
+      l_upper_left: 10FF60
+      l_upper_middle: 10FF60
+      l_upper_right: 10FF60
+  - duration: 250ms
+    lights:
+      l_upper_left: off
+      l_upper_middle: off
+      l_upper_right: off
 
 sound_player:
   play_mode_jackpot:

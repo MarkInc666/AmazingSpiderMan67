@@ -80,12 +80,23 @@ event_player:
 
     
 show_player:
+  mode_scorpion_stopping:
+    shared_final_vuk_chase:
+      action: stop
+
   scorpion_build_phase_started:
     scorpion_build_show:
       loops: -1
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: "40FF40"
 
   scorpion_sting_ready:
     scorpion_build_show:
+      action: stop
+    shared_final_vuk_chase:
       action: stop
     scorpion_ready_show:
       loops: -1
@@ -170,6 +181,8 @@ show_player:
 
   scorpion_mode_complete:
     scorpion_build_show:
+      action: stop
+    shared_final_vuk_chase:
       action: stop
     scorpion_ready_show:
       action: stop

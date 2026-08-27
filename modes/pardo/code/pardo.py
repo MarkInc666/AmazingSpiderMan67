@@ -52,6 +52,8 @@ class Pardo(CaseFileMixin, Mode):
         self.rounds_to_play = self.BASE_ROUNDS
         self.correct_shots = 0
         self.incorrect_shots = 0
+        self.first_guess_jps = 0
+        self.second_guess_jps = 0
         self.round_awarding = False
         self.mode_points = 0
         self.current_groups = []
@@ -190,6 +192,10 @@ class Pardo(CaseFileMixin, Mode):
     def _collect_jackpot(self, group):
         self._score(self.jackpot_value)
         self.correct_shots += 1
+        if self.wrong_this_round == 0:
+            self.first_guess_jps += 1
+        else:
+            self.second_guess_jps += 1
         self.machine.events.post(
             "pardo_correct_shot",
             group=group,
@@ -311,8 +317,10 @@ class Pardo(CaseFileMixin, Mode):
     def _update_rooftop_diverter(self):
         if any(group in self.UPPER_GROUPS for group in self.current_groups):
             self.machine.events.post("rooftop_diverter_open")
+            self.machine.events.post("pardo_vuk_chase_start")
         else:
             self.machine.events.post("rooftop_diverter_close")
+            self.machine.events.post("pardo_vuk_chase_stop")
 
     def _complete_mode(self, **kwargs):
         if self.mode_done:
@@ -351,8 +359,8 @@ class Pardo(CaseFileMixin, Mode):
         if not player:
             return
         player["active_mode_points"] = self.mode_points
-        player["active_mode_stat_1"] = self.correct_shots
-        player["active_mode_stat_2"] = self.incorrect_shots
+        player["active_mode_stat_1"] = self.first_guess_jps
+        player["active_mode_stat_2"] = self.second_guess_jps
         self._update_mode_status()
 
     def _update_mode_status(self):

@@ -10,11 +10,11 @@
 mode:
   start_events: start_mode_fifth_avenue_phantom
   stop_events:
-    - ball_will_end
-    - bonus_start
-    - fifth_avenue_phantom_mode_complete
-    - fifth_avenue_phantom_mode_completed_summary
-    - ball_ended
+  - ball_will_end
+  - bonus_start
+  - fifth_avenue_phantom_mode_complete
+  - fifth_avenue_phantom_mode_completed_summary
+  - ball_ended
   code: fifth_avenue_phantom.FifthAvenuePhantom
   priority: 300
 
@@ -35,19 +35,19 @@ widget_player:
 
 event_player:
   mode_fifth_avenue_phantom_started:
-    - clear_saucers
-    - drop_target_bank_dt_bank_right_reset
-    - drop_target_bank_dt_bank_left_reset
+  - clear_saucers
+  - drop_target_bank_dt_bank_right_reset
+  - drop_target_bank_dt_bank_left_reset
 
   mode_fifth_avenue_phantom_stopping:
-    - clear_saucers
-    - drop_target_bank_dt_bank_left_reset
-    - fifth_avenue_phantom_clear_lights
+  - clear_saucers
+  - drop_target_bank_dt_bank_left_reset
+  - fifth_avenue_phantom_clear_lights
 
   fifth_avenue_phantom_mode_complete:
-    - clear_saucers
-    - drop_target_bank_dt_bank_left_reset
-    - fifth_avenue_phantom_clear_lights
+  - clear_saucers
+  - drop_target_bank_dt_bank_left_reset
+  - fifth_avenue_phantom_clear_lights
 
 show_player:
   fifth_avenue_phantom_started:
@@ -72,6 +72,11 @@ show_player:
     fifth_avenue_phantom_upper_targets_show:
       loops: -1
 
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: FFD040
   fifth_avenue_phantom_light_saucers:
     fifth_avenue_phantom_saucers_show:
       loops: -1
@@ -92,6 +97,8 @@ show_player:
     fifth_avenue_phantom_upper_targets_show:
       action: stop
 
+    shared_final_vuk_chase:
+      action: stop
   fifth_avenue_phantom_stop_saucers:
     fifth_avenue_phantom_saucers_show:
       action: stop
@@ -162,6 +169,8 @@ show_player:
     fifth_avenue_phantom_right_5_show:
       action: stop
 
+    shared_final_vuk_chase:
+      action: stop
   fifth_avenue_phantom_clear_reveal_lights:
     fifth_avenue_phantom_left_web_show:
       action: stop
@@ -174,6 +183,8 @@ show_player:
     fifth_avenue_phantom_saucers_show:
       action: stop
 
+    shared_final_vuk_chase:
+      action: stop
   fifth_avenue_phantom_reset_right_drop_lights:
     fifth_avenue_phantom_right_1_show:
       action: stop
@@ -189,116 +200,116 @@ show_player:
 
 shows:
   fifth_avenue_phantom_left_web_show:
-    - duration: 250ms
-      lights:
-        l_left_web_target: purple
-    - duration: 250ms
-      lights:
-        l_left_web_target: off
+  - duration: 250ms
+    lights:
+      l_left_web_target: purple
+  - duration: 250ms
+    lights:
+      l_left_web_target: off
 
   fifth_avenue_phantom_center_web_show:
-    - duration: 250ms
-      lights:
-        l_mid_web_target: purple
-    - duration: 250ms
-      lights:
-        l_mid_web_target: off
+  - duration: 250ms
+    lights:
+      l_mid_web_target: purple
+  - duration: 250ms
+    lights:
+      l_mid_web_target: off
 
   fifth_avenue_phantom_star_show:
-    - duration: 250ms
-      lights:
-        l_star: red
-    - duration: 250ms
-      lights:
-        l_star: off
+  - duration: 250ms
+    lights:
+      l_star: red
+  - duration: 250ms
+    lights:
+      l_star: off
 
   fifth_avenue_phantom_left_drops_show:
-    - duration: 250ms
-      lights:
-        l_gi_3bank: purple
-    - duration: 250ms
-      lights:
-        l_gi_3bank: off
+  - duration: 250ms
+    lights:
+      l_gi_3bank: purple
+  - duration: 250ms
+    lights:
+      l_gi_3bank: off
 
   fifth_avenue_phantom_upper_targets_show:
-    - duration: 250ms
-      lights:
-        l_upper_left: purple
-        l_upper_middle: purple
-        l_upper_right: purple
-    - duration: 250ms
-      lights:
-        l_upper_left: off
-        l_upper_middle: off
-        l_upper_right: off
+  - duration: 250ms
+    lights:
+      l_upper_left: purple
+      l_upper_middle: purple
+      l_upper_right: purple
+  - duration: 250ms
+    lights:
+      l_upper_left: off
+      l_upper_middle: off
+      l_upper_right: off
 
   fifth_avenue_phantom_saucers_show:
-    - duration: 250ms
-      lights:
-        l_1_hole_l: red
-        l_1_hole_r: red
-        l_2_hole_l: red
-        l_2_hole_r: red
-        l_3_hole_l: red
-        l_3_hole_r: red
-    - duration: 250ms
-      lights:
-        l_1_hole_l: off
-        l_1_hole_r: off
-        l_2_hole_l: off
-        l_2_hole_r: off
-        l_3_hole_l: off
-        l_3_hole_r: off
+  - duration: 250ms
+    lights:
+      l_1_hole_l: red
+      l_1_hole_r: red
+      l_2_hole_l: red
+      l_2_hole_r: red
+      l_3_hole_l: red
+      l_3_hole_r: red
+  - duration: 250ms
+    lights:
+      l_1_hole_l: off
+      l_1_hole_r: off
+      l_2_hole_l: off
+      l_2_hole_r: off
+      l_3_hole_l: off
+      l_3_hole_r: off
 
   fifth_avenue_phantom_right_1_show:
-    - duration: 250ms
-      lights:
-        l_5bank_1: green
-    - duration: 250ms
-      lights:
-        l_5bank_1: off
+  - duration: 250ms
+    lights:
+      l_5bank_1: green
+  - duration: 250ms
+    lights:
+      l_5bank_1: off
 
   fifth_avenue_phantom_right_2_show:
-    - duration: 250ms
-      lights:
-        l_5bank_2: green
-    - duration: 250ms
-      lights:
-        l_5bank_2: off
+  - duration: 250ms
+    lights:
+      l_5bank_2: green
+  - duration: 250ms
+    lights:
+      l_5bank_2: off
 
   fifth_avenue_phantom_right_3_show:
-    - duration: 250ms
-      lights:
-        l_5bank_3: green
-    - duration: 250ms
-      lights:
-        l_5bank_3: off
+  - duration: 250ms
+    lights:
+      l_5bank_3: green
+  - duration: 250ms
+    lights:
+      l_5bank_3: off
 
   fifth_avenue_phantom_right_4_show:
-    - duration: 250ms
-      lights:
-        l_5bank_4: green
-    - duration: 250ms
-      lights:
-        l_5bank_4: off
+  - duration: 250ms
+    lights:
+      l_5bank_4: green
+  - duration: 250ms
+    lights:
+      l_5bank_4: off
 
   fifth_avenue_phantom_right_5_show:
-    - duration: 250ms
-      lights:
-        l_5bank_5: green
-    - duration: 250ms
-      lights:
-        l_5bank_5: off
+  - duration: 250ms
+    lights:
+      l_5bank_5: green
+  - duration: 250ms
+    lights:
+      l_5bank_5: off
 
   fifth_avenue_phantom_right_bank_gi_show:
-    - duration: 500ms
-      lights:
-        l_gi_5bank_lower: 6A40A8
-        l_gi_5bank_upper: 6A40A8
-    - duration: 500ms
-      lights:
-        l_gi_5bank_lower: 201030
-        l_gi_5bank_upper: 201030
+  - duration: 500ms
+    lights:
+      l_gi_5bank_lower: 6A40A8
+      l_gi_5bank_upper: 6A40A8
+  - duration: 500ms
+    lights:
+      l_gi_5bank_lower: 201030
+      l_gi_5bank_upper: 201030
 
 light_player:
   # Full-playfield GI theme while this mode is active.

@@ -74,17 +74,18 @@ event_player:
 
 show_player:
   master_vine_gate_open_lighting:
-    master_vine_vuk_chase:
+    shared_final_vuk_chase:
       loops: -1
       priority: 340
+      show_tokens: {color: "FFD040"}
   master_vine_vuk_entered:
-    master_vine_vuk_chase:
+    shared_final_vuk_chase:
       action: stop
     master_vine_upper_spinner_pulse:
       loops: -1
       priority: 320
   master_vine_attempt_started:
-    master_vine_vuk_chase:
+    shared_final_vuk_chase:
       action: stop
     master_vine_upper_spinner_pulse:
       loops: -1
@@ -117,7 +118,7 @@ show_player:
 
   master_vine_all_lights_off:
     <<: *vine_stop_shot_shows
-    master_vine_vuk_chase: {action: stop}
+    shared_final_vuk_chase: {action: stop}
     master_vine_upper_spinner_pulse: {action: stop}
 
   master_vine_left_web_lit:
@@ -355,48 +356,6 @@ light_player:
   master_vine_star_collected: {l_star: "300000"}
 
 shows:
-  master_vine_vuk_chase:
-    - duration: 200ms
-      lights:
-        l_spinner: white
-        l_gi_left_lower: off
-        l_gi_spinner: off
-        l_gi_left_upper: off
-        l_gi_ramp: off
-        l_gi_top_1: off
-    - duration: 200ms
-      lights:
-        l_spinner: off
-        l_gi_left_lower: 60F060
-        l_gi_spinner: 60F060
-        l_gi_left_upper: off
-        l_gi_ramp: off
-        l_gi_top_1: off
-    - duration: 200ms
-      lights:
-        l_spinner: off
-        l_gi_left_lower: off
-        l_gi_spinner: off
-        l_gi_left_upper: 60F060
-        l_gi_ramp: off
-        l_gi_top_1: off
-    - duration: 200ms
-      lights:
-        l_spinner: off
-        l_gi_left_lower: off
-        l_gi_spinner: off
-        l_gi_left_upper: off
-        l_gi_ramp: 60F060
-        l_gi_top_1: off
-    - duration: 200ms
-      lights:
-        l_spinner: off
-        l_gi_left_lower: off
-        l_gi_spinner: off
-        l_gi_left_upper: off
-        l_gi_ramp: off
-        l_gi_top_1: 60F060
-
   master_vine_upper_spinner_pulse:
     - duration: 250ms
       lights: {l_gi_spinner: 60F060}

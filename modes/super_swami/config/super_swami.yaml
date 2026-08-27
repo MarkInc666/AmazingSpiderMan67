@@ -3,11 +3,11 @@
 mode:
   start_events: start_mode_super_swami
   stop_events:
-    - ball_will_end
-    - bonus_start
-    - super_swami_mode_complete
-    - super_swami_mode_failed
-    - ball_ended
+  - ball_will_end
+  - bonus_start
+  - super_swami_mode_complete
+  - super_swami_mode_failed
+  - ball_ended
   code: super_swami.SuperSwami
   priority: 300
 
@@ -27,9 +27,9 @@ event_player:
   s_saucer_2_active: clear_saucers
   s_saucer_3_active: clear_saucers
   mode_super_swami_stopping:
-    - clear_saucers
-    - drop_target_bank_dt_bank_left_reset
-    - drop_target_bank_dt_bank_right_reset
+  - clear_saucers
+  - drop_target_bank_dt_bank_left_reset
+  - drop_target_bank_dt_bank_right_reset
 
 light_player:
   super_swami_dim_city:
@@ -234,3 +234,13 @@ light_player:
     l_advance_multiplier: white
     l_mid_multibonus: white
     l_mid_web_target: white
+show_player:
+  super_swami_vuk_chase_start:
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: FFD040
+  super_swami_vuk_chase_stop:
+    shared_final_vuk_chase:
+      action: stop

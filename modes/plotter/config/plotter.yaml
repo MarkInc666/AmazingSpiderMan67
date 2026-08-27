@@ -3,11 +3,11 @@
 mode:
   start_events: start_mode_plotter
   stop_events:
-    - ball_will_end
-    - bonus_start
-    - plotter_mode_complete
-    - plotter_mode_completed_summary
-    - ball_ended
+  - ball_will_end
+  - bonus_start
+  - plotter_mode_complete
+  - plotter_mode_completed_summary
+  - ball_ended
   code: plotter.Plotter
   priority: 300
 
@@ -40,17 +40,17 @@ event_player:
   s_upper_target_right_active: plotter_back_page_hit
 
   mode_plotter_started:
-    - disable_daily_bugle_mystery
-    - clear_saucers
-    - drop_target_bank_dt_bank_left_reset
-    - drop_target_bank_dt_bank_right_reset
-    - rooftop_diverter_close
+  - disable_daily_bugle_mystery
+  - clear_saucers
+  - drop_target_bank_dt_bank_left_reset
+  - drop_target_bank_dt_bank_right_reset
+  - rooftop_diverter_close
 
   mode_plotter_stopping:
-    - enable_daily_bugle_mystery
-    - daily_bugle_restore_state
-    - rooftop_diverter_close
-    - plotter_clear_lights
+  - enable_daily_bugle_mystery
+  - daily_bugle_restore_state
+  - rooftop_diverter_close
+  - plotter_clear_lights
 
 show_player:
   plotter_clear_guidance_lights:
@@ -130,125 +130,134 @@ show_player:
     plotter_back_page_show:
       action: stop
 
+  plotter_vuk_chase_start:
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: A0A0F0
+  plotter_vuk_chase_stop:
+    shared_final_vuk_chase:
+      action: stop
 shows:
   # Rumor phase: both pop-bumper lamp rings pulse green over the amber base GI.
   plotter_pops_show:
-    - duration: 500ms
-      lights:
-        l_pop_1_1: "00FF00"
-        l_pop_1_2: "00FF00"
-        l_pop_1_3: "00FF00"
-        l_pop_1_4: "00FF00"
-        l_pop_1_5: "00FF00"
-        l_pop_1_6: "00FF00"
-        l_pop_1_7: "00FF00"
-        l_pop_1_8: "00FF00"
-        l_pop_1_9: "00FF00"
-        l_pop_1_10: "00FF00"
-        l_pop_1_11: "00FF00"
-        l_pop_1_12: "00FF00"
-        l_pop_2_1: "00FF00"
-        l_pop_2_2: "00FF00"
-        l_pop_2_3: "00FF00"
-        l_pop_2_4: "00FF00"
-        l_pop_2_5: "00FF00"
-        l_pop_2_6: "00FF00"
-        l_pop_2_7: "00FF00"
-        l_pop_2_8: "00FF00"
-        l_pop_2_9: "00FF00"
-        l_pop_2_10: "00FF00"
-        l_pop_2_11: "00FF00"
-        l_pop_2_12: "00FF00"
-    - duration: 500ms
-      lights:
-        l_pop_1_1: "004000"
-        l_pop_1_2: "004000"
-        l_pop_1_3: "004000"
-        l_pop_1_4: "004000"
-        l_pop_1_5: "004000"
-        l_pop_1_6: "004000"
-        l_pop_1_7: "004000"
-        l_pop_1_8: "004000"
-        l_pop_1_9: "004000"
-        l_pop_1_10: "004000"
-        l_pop_1_11: "004000"
-        l_pop_1_12: "004000"
-        l_pop_2_1: "004000"
-        l_pop_2_2: "004000"
-        l_pop_2_3: "004000"
-        l_pop_2_4: "004000"
-        l_pop_2_5: "004000"
-        l_pop_2_6: "004000"
-        l_pop_2_7: "004000"
-        l_pop_2_8: "004000"
-        l_pop_2_9: "004000"
-        l_pop_2_10: "004000"
-        l_pop_2_11: "004000"
-        l_pop_2_12: "004000"
+  - duration: 500ms
+    lights:
+      l_pop_1_1: "00FF00"
+      l_pop_1_2: "00FF00"
+      l_pop_1_3: "00FF00"
+      l_pop_1_4: "00FF00"
+      l_pop_1_5: "00FF00"
+      l_pop_1_6: "00FF00"
+      l_pop_1_7: "00FF00"
+      l_pop_1_8: "00FF00"
+      l_pop_1_9: "00FF00"
+      l_pop_1_10: "00FF00"
+      l_pop_1_11: "00FF00"
+      l_pop_1_12: "00FF00"
+      l_pop_2_1: "00FF00"
+      l_pop_2_2: "00FF00"
+      l_pop_2_3: "00FF00"
+      l_pop_2_4: "00FF00"
+      l_pop_2_5: "00FF00"
+      l_pop_2_6: "00FF00"
+      l_pop_2_7: "00FF00"
+      l_pop_2_8: "00FF00"
+      l_pop_2_9: "00FF00"
+      l_pop_2_10: "00FF00"
+      l_pop_2_11: "00FF00"
+      l_pop_2_12: "00FF00"
+  - duration: 500ms
+    lights:
+      l_pop_1_1: "004000"
+      l_pop_1_2: "004000"
+      l_pop_1_3: "004000"
+      l_pop_1_4: "004000"
+      l_pop_1_5: "004000"
+      l_pop_1_6: "004000"
+      l_pop_1_7: "004000"
+      l_pop_1_8: "004000"
+      l_pop_1_9: "004000"
+      l_pop_1_10: "004000"
+      l_pop_1_11: "004000"
+      l_pop_1_12: "004000"
+      l_pop_2_1: "004000"
+      l_pop_2_2: "004000"
+      l_pop_2_3: "004000"
+      l_pop_2_4: "004000"
+      l_pop_2_5: "004000"
+      l_pop_2_6: "004000"
+      l_pop_2_7: "004000"
+      l_pop_2_8: "004000"
+      l_pop_2_9: "004000"
+      l_pop_2_10: "004000"
+      l_pop_2_11: "004000"
+      l_pop_2_12: "004000"
 
   # The lower playfield spinner is the only spinner used by this mode.
   plotter_spinner_show:
-    - duration: 400ms
-      lights:
-        l_spinner: FFC000
-    - duration: 400ms
-      lights:
-        l_spinner: "503000"
+  - duration: 400ms
+    lights:
+      l_spinner: FFC000
+  - duration: 400ms
+    lights:
+      l_spinner: "503000"
 
   plotter_saucer_1_show:
-    - duration: 500ms
-      lights:
-        l_1_hole_l: red
-        l_1_hole_r: red
-    - duration: 500ms
-      lights:
-        l_1_hole_l: off
-        l_1_hole_r: off
+  - duration: 500ms
+    lights:
+      l_1_hole_l: red
+      l_1_hole_r: red
+  - duration: 500ms
+    lights:
+      l_1_hole_l: off
+      l_1_hole_r: off
 
   plotter_saucer_2_show:
-    - duration: 500ms
-      lights:
-        l_2_hole_l: red
-        l_2_hole_r: red
-    - duration: 500ms
-      lights:
-        l_2_hole_l: off
-        l_2_hole_r: off
+  - duration: 500ms
+    lights:
+      l_2_hole_l: red
+      l_2_hole_r: red
+  - duration: 500ms
+    lights:
+      l_2_hole_l: off
+      l_2_hole_r: off
 
   plotter_saucer_3_show:
-    - duration: 500ms
-      lights:
-        l_3_hole_l: red
-        l_3_hole_r: red
-    - duration: 500ms
-      lights:
-        l_3_hole_l: off
-        l_3_hole_r: off
+  - duration: 500ms
+    lights:
+      l_3_hole_l: red
+      l_3_hole_r: red
+  - duration: 500ms
+    lights:
+      l_3_hole_l: off
+      l_3_hole_r: off
 
   # VUK phase: the spinner insert and the adjacent upper-left GI pulse yellow.
   plotter_vuk_super_show:
-    - duration: 350ms
-      lights:
-        l_spinner: FFC000
-        l_gi_spinner: FFC000
-    - duration: 350ms
-      lights:
-        l_spinner: "503000"
-        l_gi_spinner: "503000"
+  - duration: 350ms
+    lights:
+      l_spinner: FFC000
+      l_gi_spinner: FFC000
+  - duration: 350ms
+    lights:
+      l_spinner: "503000"
+      l_gi_spinner: "503000"
 
   # More Jackpots: all three white-lensed upper target inserts flash red and
   # any one of the three collects the 500K Back Page Bonus.
   plotter_back_page_show:
-    - duration: 250ms
-      lights:
-        l_upper_left: red
-        l_upper_middle: red
-        l_upper_right: red
-    - duration: 250ms
-      lights:
-        l_upper_left: off
-        l_upper_middle: off
-        l_upper_right: off
+  - duration: 250ms
+    lights:
+      l_upper_left: red
+      l_upper_middle: red
+      l_upper_right: red
+  - duration: 250ms
+    lights:
+      l_upper_left: off
+      l_upper_middle: off
+      l_upper_right: off
 
 light_player:
   # Full-playfield GI theme while this mode is active.

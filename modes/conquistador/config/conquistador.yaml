@@ -3,11 +3,11 @@
 mode:
   start_events: start_mode_conquistador
   stop_events:
-    - ball_will_end
-    - bonus_start
-    - conquistador_mode_complete
-    - conquistador_mode_completed_summary
-    - ball_ended
+  - ball_will_end
+  - bonus_start
+  - conquistador_mode_complete
+  - conquistador_mode_completed_summary
+  - ball_ended
   code: conquistador.Conquistador
   priority: 300
 
@@ -31,10 +31,10 @@ ball_saves:
     auto_launch: true
     enable_events: conquistador_enable_safety_net
     disable_events:
-      - conquistador_disable_safety_net
-      - conquistador_mode_complete
-      - mode_conquistador_stopping
-      - ball_ending
+    - conquistador_disable_safety_net
+    - conquistador_mode_complete
+    - mode_conquistador_stopping
+    - ball_ending
 
 event_player:
   s_left_drops_1_active: conquistador_left_drop_hit
@@ -53,15 +53,15 @@ event_player:
   s_saucer_3_active: clear_saucers_delayed
 
   mode_conquistador_started:
-    - clear_saucers_delayed
-    - drop_target_bank_dt_bank_left_reset
-    - rooftop_diverter_close
-    - conquistador_clear_lights
+  - clear_saucers_delayed
+  - drop_target_bank_dt_bank_left_reset
+  - rooftop_diverter_close
+  - conquistador_clear_lights
 
   mode_conquistador_stopping:
-    - conquistador_clear_lights
-    - conquistador_disable_safety_net
-    - rooftop_diverter_close
+  - conquistador_clear_lights
+  - conquistador_disable_safety_net
+  - rooftop_diverter_close
 
 show_player:
   conquistador_left_bank_phase:
@@ -74,14 +74,33 @@ show_player:
     conquistador_left_bank_flash:
       action: stop
 
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: 4080F0
   conquistador_fountain_ready:
     conquistador_fountain_flash:
       loops: -1
 
+    shared_final_vuk_chase:
+      action: stop
+    shared_center_web_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: FFFFFF
   conquistador_extra_sip_started:
     conquistador_fountain_flash:
       loops: -1
 
+    shared_final_vuk_chase:
+      action: stop
+    shared_center_web_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: FFFFFF
   conquistador_clear_lights:
     conquistador_left_bank_flash:
       action: stop
@@ -90,6 +109,20 @@ show_player:
     conquistador_fountain_flash:
       action: stop
 
+    shared_final_vuk_chase:
+      action: stop
+    shared_center_web_chase:
+      action: stop
+  conquistador_fountain_jackpot:
+    shared_final_vuk_chase:
+      action: stop
+    shared_center_web_chase:
+      action: stop
+  conquistador_second_fountain_jackpot:
+    shared_final_vuk_chase:
+      action: stop
+    shared_center_web_chase:
+      action: stop
 light_player:
   conquistador_left_bank_phase:
     gi: 40D060
@@ -113,34 +146,34 @@ light_player:
 
 shows:
   conquistador_left_bank_flash:
-    - duration: 300ms
-      lights:
-        l_gi_3bank: 40D060
-        l_3bankbonus: 40D060
-    - duration: 300ms
-      lights:
-        l_gi_3bank: off
-        l_3bankbonus: off
+  - duration: 300ms
+    lights:
+      l_gi_3bank: 40D060
+      l_3bankbonus: 40D060
+  - duration: 300ms
+    lights:
+      l_gi_3bank: off
+      l_3bankbonus: off
 
   conquistador_upper_targets_pulse:
-    - duration: 500ms
-      lights:
-        l_upper_left: 3050F0
-        l_upper_middle: 3050F0
-        l_upper_right: 3050F0
-    - duration: 500ms
-      lights:
-        l_upper_left: 101850
-        l_upper_middle: 101850
-        l_upper_right: 101850
+  - duration: 500ms
+    lights:
+      l_upper_left: 3050F0
+      l_upper_middle: 3050F0
+      l_upper_right: 3050F0
+  - duration: 500ms
+    lights:
+      l_upper_left: 101850
+      l_upper_middle: 101850
+      l_upper_right: 101850
 
   conquistador_fountain_flash:
-    - duration: 300ms
-      lights:
-        l_mid_web_target: 40F060
-    - duration: 300ms
-      lights:
-        l_mid_web_target: off
+  - duration: 300ms
+    lights:
+      l_mid_web_target: 40F060
+  - duration: 300ms
+    lights:
+      l_mid_web_target: off
 
 sound_player:
   play_mode_jackpot:

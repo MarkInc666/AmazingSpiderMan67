@@ -116,18 +116,64 @@ show_player:
   lizard_light_serum_location:
     lizard_gi_show:
       loops: -1
-    lizard_serum_star_show:
-      loops: -1
     lizard_left_web_show:
       action: stop
 
   lizard_serum_collected:
-    lizard_serum_star_show:
+    lizard_left_pop_available_show:
+      action: stop
+    lizard_right_pop_available_show:
+      action: stop
+    lizard_left_pop_collected_show:
+      action: stop
+    lizard_right_pop_collected_show:
       action: stop
     lizard_gi_show:
       action: stop
     lizard_gi_hurry_show:
       loops: -1
+
+  lizard_pop_left_available:
+    lizard_left_pop_collected_show:
+      action: stop
+    lizard_left_pop_available_show:
+      loops: -1
+
+  lizard_pop_right_available:
+    lizard_right_pop_collected_show:
+      action: stop
+    lizard_right_pop_available_show:
+      loops: -1
+
+  lizard_pop_left_collected:
+    lizard_left_pop_available_show:
+      action: stop
+    lizard_left_pop_collected_show:
+      loops: -1
+
+  lizard_pop_right_collected:
+    lizard_right_pop_available_show:
+      action: stop
+    lizard_right_pop_collected_show:
+      loops: -1
+
+  lizard_star_10x_available:
+    lizard_star_10x_armed_show:
+      action: stop
+    lizard_star_10x_available_show:
+      loops: -1
+
+  lizard_star_10x_armed:
+    lizard_star_10x_available_show:
+      action: stop
+    lizard_star_10x_armed_show:
+      loops: -1
+
+  lizard_star_10x_stop:
+    lizard_star_10x_available_show:
+      action: stop
+    lizard_star_10x_armed_show:
+      action: stop
 
   lizard_light_left_web:
     lizard_left_web_show:
@@ -135,6 +181,10 @@ show_player:
 
   lizard_serum_delivered:
     lizard_left_web_show:
+      action: stop
+    lizard_star_10x_available_show:
+      action: stop
+    lizard_star_10x_armed_show:
       action: stop
     lizard_gi_show:
       action: stop
@@ -146,6 +196,10 @@ show_player:
   lizard_serum_expired_show:
     lizard_left_web_show:
       action: stop
+    lizard_star_10x_available_show:
+      action: stop
+    lizard_star_10x_armed_show:
+      action: stop
     lizard_gi_show:
       action: stop
     lizard_gi_hurry_show:
@@ -154,7 +208,17 @@ show_player:
       loops: 0
 
   lizard_mode_complete:
-    lizard_serum_star_show:
+    lizard_left_pop_available_show:
+      action: stop
+    lizard_right_pop_available_show:
+      action: stop
+    lizard_left_pop_collected_show:
+      action: stop
+    lizard_right_pop_collected_show:
+      action: stop
+    lizard_star_10x_available_show:
+      action: stop
+    lizard_star_10x_armed_show:
       action: stop
     lizard_left_web_show:
       action: stop
@@ -220,13 +284,110 @@ shows:
       lights:
         gi: F02040
 
-  lizard_serum_star_show:
-    - duration: 500ms
+  lizard_left_pop_available_show:
+    - duration: 400ms
+      lights:
+        l_pop_1_1: green
+        l_pop_1_2: green
+        l_pop_1_3: green
+        l_pop_1_4: green
+        l_pop_1_5: green
+        l_pop_1_6: green
+        l_pop_1_7: green
+        l_pop_1_8: green
+        l_pop_1_9: green
+        l_pop_1_10: green
+        l_pop_1_11: green
+        l_pop_1_12: green
+    - duration: 400ms
+      lights:
+        l_pop_1_1: off
+        l_pop_1_2: off
+        l_pop_1_3: off
+        l_pop_1_4: off
+        l_pop_1_5: off
+        l_pop_1_6: off
+        l_pop_1_7: off
+        l_pop_1_8: off
+        l_pop_1_9: off
+        l_pop_1_10: off
+        l_pop_1_11: off
+        l_pop_1_12: off
+
+  lizard_right_pop_available_show:
+    - duration: 400ms
+      lights:
+        l_pop_2_1: green
+        l_pop_2_2: green
+        l_pop_2_3: green
+        l_pop_2_4: green
+        l_pop_2_5: green
+        l_pop_2_6: green
+        l_pop_2_7: green
+        l_pop_2_8: green
+        l_pop_2_9: green
+        l_pop_2_10: green
+        l_pop_2_11: green
+        l_pop_2_12: green
+    - duration: 400ms
+      lights:
+        l_pop_2_1: off
+        l_pop_2_2: off
+        l_pop_2_3: off
+        l_pop_2_4: off
+        l_pop_2_5: off
+        l_pop_2_6: off
+        l_pop_2_7: off
+        l_pop_2_8: off
+        l_pop_2_9: off
+        l_pop_2_10: off
+        l_pop_2_11: off
+        l_pop_2_12: off
+
+  lizard_left_pop_collected_show:
+    - duration: 1s
+      lights:
+        l_pop_1_1: purple
+        l_pop_1_2: purple
+        l_pop_1_3: purple
+        l_pop_1_4: purple
+        l_pop_1_5: purple
+        l_pop_1_6: purple
+        l_pop_1_7: purple
+        l_pop_1_8: purple
+        l_pop_1_9: purple
+        l_pop_1_10: purple
+        l_pop_1_11: purple
+        l_pop_1_12: purple
+
+  lizard_right_pop_collected_show:
+    - duration: 1s
+      lights:
+        l_pop_2_1: purple
+        l_pop_2_2: purple
+        l_pop_2_3: purple
+        l_pop_2_4: purple
+        l_pop_2_5: purple
+        l_pop_2_6: purple
+        l_pop_2_7: purple
+        l_pop_2_8: purple
+        l_pop_2_9: purple
+        l_pop_2_10: purple
+        l_pop_2_11: purple
+        l_pop_2_12: purple
+
+  lizard_star_10x_available_show:
+    - duration: 250ms
       lights:
         l_star: red
-    - duration: 500ms
+    - duration: 250ms
       lights:
         l_star: off
+
+  lizard_star_10x_armed_show:
+    - duration: 1s
+      lights:
+        l_star: red
 
   lizard_left_web_show:
     - duration: 250ms

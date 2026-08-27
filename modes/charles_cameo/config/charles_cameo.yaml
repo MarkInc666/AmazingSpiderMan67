@@ -7,11 +7,11 @@
 mode:
   start_events: start_mode_charles_cameo
   stop_events:
-    - ball_will_end
-    - bonus_start
-    - charles_cameo_mode_complete
-    - charles_cameo_mode_completed_summary
-    - ball_ended
+  - ball_will_end
+  - bonus_start
+  - charles_cameo_mode_complete
+  - charles_cameo_mode_completed_summary
+  - ball_ended
   code: charles_cameo.CharlesCameo
   priority: 300
 
@@ -25,7 +25,7 @@ widget_player:
 
 event_player:
   charles_cameo_mode_almost_complete:
-    - charles_cameo_mode_complete|2s
+  - charles_cameo_mode_complete|2s
 
   s_upper_target_left_active: charles_cameo_upper_left_hit
   s_upper_target_right_active: charles_cameo_upper_right_hit
@@ -62,9 +62,9 @@ event_player:
   s_saucer_3_active: clear_saucers_delayed
 
   mode_charles_cameo_stopping:
-    - clear_saucers_delayed
-    - charles_cameo_clear_all
-    - rooftop_diverter_close
+  - clear_saucers_delayed
+  - charles_cameo_clear_all
+  - rooftop_diverter_close
 
 sound_player:
   charles_cameo_jackpot_collected:
@@ -82,12 +82,32 @@ show_player:
 
   charles_cameo_upper_left_source:
     charles_cameo_upper_left_pulse: {action: play, loops: -1, speed: 1}
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: FFD040
   charles_cameo_upper_left_mirror:
     charles_cameo_upper_left_pulse: {action: play, loops: -1, speed: 2}
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: FFD040
   charles_cameo_upper_right_source:
     charles_cameo_upper_right_pulse: {action: play, loops: -1, speed: 1}
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: FFD040
   charles_cameo_upper_right_mirror:
     charles_cameo_upper_right_pulse: {action: play, loops: -1, speed: 2}
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: FFD040
 
   charles_cameo_pops_left_source:
     charles_cameo_left_pop_pulse: {action: play, loops: -1, speed: 1}
@@ -122,8 +142,18 @@ show_player:
     charles_cameo_left_web_pulse: {action: play, loops: -1, speed: 2}
   charles_cameo_webs_right_source:
     charles_cameo_right_web_pulse: {action: play, loops: -1, speed: 1}
+    shared_center_web_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: FFFFFF
   charles_cameo_webs_right_mirror:
     charles_cameo_right_web_pulse: {action: play, loops: -1, speed: 2}
+    shared_center_web_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: FFFFFF
 
   charles_cameo_jackpot_collected:
     charles_cameo_jackpot_flash: {action: play, loops: 1}
@@ -141,6 +171,10 @@ show_player:
     charles_cameo_b_pulse: {action: stop}
     charles_cameo_left_web_pulse: {action: stop}
     charles_cameo_right_web_pulse: {action: stop}
+    shared_final_vuk_chase:
+      action: stop
+    shared_center_web_chase:
+      action: stop
 
   charles_cameo_clear_all:
     charles_cameo_mode_gi: {action: stop}
@@ -156,6 +190,10 @@ show_player:
     charles_cameo_right_web_pulse: {action: stop}
     charles_cameo_jackpot_flash: {action: stop}
     charles_cameo_super_flash: {action: stop}
+    shared_final_vuk_chase:
+      action: stop
+    shared_center_web_chase:
+      action: stop
 
 light_player:
   charles_cameo_clear_all:
@@ -174,132 +212,132 @@ light_player:
 
 shows:
   charles_cameo_mode_gi:
-    - duration: 1s
-      lights: {gi: D0D8E8}
+  - duration: 1s
+    lights: {gi: D0D8E8}
 
   charles_cameo_upper_left_pulse:
-    - duration: 500ms
-      lights: {l_upper_left: F0D060}
-    - duration: 500ms
-      lights: {l_upper_left: "302810"}
+  - duration: 500ms
+    lights: {l_upper_left: F0D060}
+  - duration: 500ms
+    lights: {l_upper_left: "302810"}
   charles_cameo_upper_right_pulse:
-    - duration: 500ms
-      lights: {l_upper_right: F0D060}
-    - duration: 500ms
-      lights: {l_upper_right: "302810"}
+  - duration: 500ms
+    lights: {l_upper_right: F0D060}
+  - duration: 500ms
+    lights: {l_upper_right: "302810"}
 
   charles_cameo_left_pop_pulse:
-    - duration: 500ms
-      lights:
-        l_pop_1_1: F0D060
-        l_pop_1_2: F0D060
-        l_pop_1_3: F0D060
-        l_pop_1_4: F0D060
-        l_pop_1_5: F0D060
-        l_pop_1_6: F0D060
-        l_pop_1_7: F0D060
-        l_pop_1_8: F0D060
-        l_pop_1_9: F0D060
-        l_pop_1_10: F0D060
-        l_pop_1_11: F0D060
-        l_pop_1_12: F0D060
-    - duration: 500ms
-      lights:
-        l_pop_1_1: "302810"
-        l_pop_1_2: "302810"
-        l_pop_1_3: "302810"
-        l_pop_1_4: "302810"
-        l_pop_1_5: "302810"
-        l_pop_1_6: "302810"
-        l_pop_1_7: "302810"
-        l_pop_1_8: "302810"
-        l_pop_1_9: "302810"
-        l_pop_1_10: "302810"
-        l_pop_1_11: "302810"
-        l_pop_1_12: "302810"
+  - duration: 500ms
+    lights:
+      l_pop_1_1: F0D060
+      l_pop_1_2: F0D060
+      l_pop_1_3: F0D060
+      l_pop_1_4: F0D060
+      l_pop_1_5: F0D060
+      l_pop_1_6: F0D060
+      l_pop_1_7: F0D060
+      l_pop_1_8: F0D060
+      l_pop_1_9: F0D060
+      l_pop_1_10: F0D060
+      l_pop_1_11: F0D060
+      l_pop_1_12: F0D060
+  - duration: 500ms
+    lights:
+      l_pop_1_1: "302810"
+      l_pop_1_2: "302810"
+      l_pop_1_3: "302810"
+      l_pop_1_4: "302810"
+      l_pop_1_5: "302810"
+      l_pop_1_6: "302810"
+      l_pop_1_7: "302810"
+      l_pop_1_8: "302810"
+      l_pop_1_9: "302810"
+      l_pop_1_10: "302810"
+      l_pop_1_11: "302810"
+      l_pop_1_12: "302810"
 
   charles_cameo_right_pop_pulse:
-    - duration: 500ms
-      lights:
-        l_pop_2_1: F0D060
-        l_pop_2_2: F0D060
-        l_pop_2_3: F0D060
-        l_pop_2_4: F0D060
-        l_pop_2_5: F0D060
-        l_pop_2_6: F0D060
-        l_pop_2_7: F0D060
-        l_pop_2_8: F0D060
-        l_pop_2_9: F0D060
-        l_pop_2_10: F0D060
-        l_pop_2_11: F0D060
-        l_pop_2_12: F0D060
-    - duration: 500ms
-      lights:
-        l_pop_2_1: "302810"
-        l_pop_2_2: "302810"
-        l_pop_2_3: "302810"
-        l_pop_2_4: "302810"
-        l_pop_2_5: "302810"
-        l_pop_2_6: "302810"
-        l_pop_2_7: "302810"
-        l_pop_2_8: "302810"
-        l_pop_2_9: "302810"
-        l_pop_2_10: "302810"
-        l_pop_2_11: "302810"
-        l_pop_2_12: "302810"
+  - duration: 500ms
+    lights:
+      l_pop_2_1: F0D060
+      l_pop_2_2: F0D060
+      l_pop_2_3: F0D060
+      l_pop_2_4: F0D060
+      l_pop_2_5: F0D060
+      l_pop_2_6: F0D060
+      l_pop_2_7: F0D060
+      l_pop_2_8: F0D060
+      l_pop_2_9: F0D060
+      l_pop_2_10: F0D060
+      l_pop_2_11: F0D060
+      l_pop_2_12: F0D060
+  - duration: 500ms
+    lights:
+      l_pop_2_1: "302810"
+      l_pop_2_2: "302810"
+      l_pop_2_3: "302810"
+      l_pop_2_4: "302810"
+      l_pop_2_5: "302810"
+      l_pop_2_6: "302810"
+      l_pop_2_7: "302810"
+      l_pop_2_8: "302810"
+      l_pop_2_9: "302810"
+      l_pop_2_10: "302810"
+      l_pop_2_11: "302810"
+      l_pop_2_12: "302810"
 
   charles_cameo_left_bank_pulse:
-    - duration: 500ms
-      lights: {l_gi_3bank: F0D060}
-    - duration: 500ms
-      lights: {l_gi_3bank: "302810"}
+  - duration: 500ms
+    lights: {l_gi_3bank: F0D060}
+  - duration: 500ms
+    lights: {l_gi_3bank: "302810"}
   charles_cameo_right_bank_pulse:
-    - duration: 500ms
-      lights:
-        l_gi_5bank_lower: F0D060
-        l_gi_5bank_upper: F0D060
-    - duration: 500ms
-      lights:
-        l_gi_5bank_lower: "302810"
-        l_gi_5bank_upper: "302810"
+  - duration: 500ms
+    lights:
+      l_gi_5bank_lower: F0D060
+      l_gi_5bank_upper: F0D060
+  - duration: 500ms
+    lights:
+      l_gi_5bank_lower: "302810"
+      l_gi_5bank_upper: "302810"
 
   charles_cameo_a_pulse:
-    - duration: 500ms
-      lights:
-        l_a_rollover: yellow
-        l_right_a: yellow
-    - duration: 500ms
-      lights:
-        l_a_rollover: "302800"
-        l_right_a: "302800"
+  - duration: 500ms
+    lights:
+      l_a_rollover: yellow
+      l_right_a: yellow
+  - duration: 500ms
+    lights:
+      l_a_rollover: "302800"
+      l_right_a: "302800"
   charles_cameo_b_pulse:
-    - duration: 500ms
-      lights:
-        l_b_rollover: yellow
-        l_left_b: yellow
-    - duration: 500ms
-      lights:
-        l_b_rollover: "302800"
-        l_left_b: "302800"
+  - duration: 500ms
+    lights:
+      l_b_rollover: yellow
+      l_left_b: yellow
+  - duration: 500ms
+    lights:
+      l_b_rollover: "302800"
+      l_left_b: "302800"
 
   charles_cameo_left_web_pulse:
-    - duration: 500ms
-      lights: {l_left_web_target: F0D060}
-    - duration: 500ms
-      lights: {l_left_web_target: "302810"}
+  - duration: 500ms
+    lights: {l_left_web_target: F0D060}
+  - duration: 500ms
+    lights: {l_left_web_target: "302810"}
   charles_cameo_right_web_pulse:
-    - duration: 500ms
-      lights: {l_mid_web_target: F0D060}
-    - duration: 500ms
-      lights: {l_mid_web_target: "302810"}
+  - duration: 500ms
+    lights: {l_mid_web_target: F0D060}
+  - duration: 500ms
+    lights: {l_mid_web_target: "302810"}
 
   charles_cameo_jackpot_flash:
-    - duration: 150ms
-      lights: {gi: FFFFFF}
-    - duration: 150ms
-      lights: {gi: D0D8E8}
+  - duration: 150ms
+    lights: {gi: FFFFFF}
+  - duration: 150ms
+    lights: {gi: D0D8E8}
   charles_cameo_super_flash:
-    - duration: 150ms
-      lights: {gi: FFFFFF}
-    - duration: 150ms
-      lights: {gi: F0D060}
+  - duration: 150ms
+    lights: {gi: FFFFFF}
+  - duration: 150ms
+    lights: {gi: F0D060}

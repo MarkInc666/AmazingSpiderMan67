@@ -96,6 +96,16 @@ event_player:
     - clear_saucers
 
 show_player:
+  fakir_vuk_chase_start:
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: "FFD040"
+  fakir_vuk_chase_stop:
+    shared_final_vuk_chase:
+      action: stop
+
   fakir_saucers_available:
     fakir_saucers_pulse:
       loops: -1
