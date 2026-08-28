@@ -131,7 +131,7 @@ class Vulture(CaseFileMixin, Mode):
                 remaining = self.machine.timers["vulture_mode_timer"].ticks
             except Exception:
                 remaining = ""
-        if int(self.machine.game.player.get("multiball_autoplunge_active", 0) or 0) == 1:
+        if int(self.machine.game.player["multiball_autoplunge_active"] or 0) == 1:
             self.machine.events.post(
                 "update_mode_status",
                 mode_status_title="MB FREE TIME",
