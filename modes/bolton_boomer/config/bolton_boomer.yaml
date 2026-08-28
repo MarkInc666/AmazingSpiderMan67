@@ -70,9 +70,11 @@ event_player:
   drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset
 
   mode_bolton_boomer_started:
+    - bonus_lights_dim
     - reset_drops
     - clear_saucers_delayed
   mode_bolton_boomer_stopping:
+    - bonus_lights_restore
     - clear_saucers_delayed
 
 show_player:

@@ -33,7 +33,10 @@ event_player:
   drop_target_bank_dt_bank_left_down: drop_target_bank_dt_bank_left_reset
   drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset
 
+  mode_clive_blotto_started:
+    - bonus_lights_dim
   mode_clive_blotto_stopping:
+    - bonus_lights_restore
     - clear_saucers
     - drop_target_bank_dt_bank_left_reset
     - drop_target_bank_dt_bank_right_reset

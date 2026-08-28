@@ -609,6 +609,9 @@ player_vars:
   bonus_multiplier:
     initial_value: 1
     value_type: int
+  bonus_lights_dimmed:
+    initial_value: 0
+    value_type: int
   hold_bonus:
     initial_value: 0
     value_type: int

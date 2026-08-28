@@ -43,7 +43,7 @@ class BonusLanes(Mode):
         self.completed = [False, False, False, False]
         self.center_web_lit = False
         self.left_web_lit = False
-        self.bonus_lights_dimmed = False
+        self.machine.game.player["bonus_lights_dimmed"] = 0
 
         self.add_mode_event_handler("bonus_lanes_start", self.blane_start)
         self.add_mode_event_handler("bonus_count_add", self.add_bonus_count)
@@ -198,11 +198,11 @@ class BonusLanes(Mode):
         
 
     def dim_bonus_lights(self, **kwargs):
-        self.bonus_lights_dimmed = True
+        self.machine.game.player["bonus_lights_dimmed"] = 1
         self.update_bonus_lights()
 
     def restore_bonus_lights(self, **kwargs):
-        self.bonus_lights_dimmed = False
+        self.machine.game.player["bonus_lights_dimmed"] = 0
         self.update_bonus_lights()
 
     def update_bonus_lights(self, **kwargs):
@@ -214,7 +214,7 @@ class BonusLanes(Mode):
         # Light additive combo
         for value, light_name in self.BONUS_LIGHTS:
             if remaining >= value:
-                state = "dim" if self.bonus_lights_dimmed else "on"
+                state = "dim" if player["bonus_lights_dimmed"] else "on"
                 self.machine.events.post(f"bonus_light_{light_name}_{state}")
                 remaining -= value
             else:
@@ -224,7 +224,7 @@ class BonusLanes(Mode):
 
         for value, light_name in self.BONUS_X_LIGHTS.items():
             if mx >= value:
-                state = "dim" if self.bonus_lights_dimmed else "on"
+                state = "dim" if player["bonus_lights_dimmed"] else "on"
                 self.machine.events.post(f"bonus_light_{light_name}_{state}")
                 remaining -= value
             else:

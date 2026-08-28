@@ -44,6 +44,7 @@ event_player:
   drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset
 
   mode_dr_von_schlick_started:
+  - bonus_lights_dim
   - disable_daily_bugle_mystery
   - cancel_vuk_eject_request
   - rooftop_diverter_close

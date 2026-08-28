@@ -68,7 +68,10 @@ event_player:
   master_vine_reset_banks:
     - drop_target_bank_dt_bank_left_reset
     - drop_target_bank_dt_bank_right_reset
+  mode_master_vine_started:
+    - bonus_lights_dim
   mode_master_vine_stopping:
+    - bonus_lights_restore
     - clear_saucers_delayed
     - master_vine_all_lights_off
 

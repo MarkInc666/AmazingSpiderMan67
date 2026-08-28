@@ -26,7 +26,11 @@ event_player:
   s_saucer_1_active: clear_saucers
   s_saucer_2_active: clear_saucers
   s_saucer_3_active: clear_saucers
+
+  mode_super_swami_started:
+  - bonus_lights_dim
   mode_super_swami_stopping:
+  - bonus_lights_restore
   - clear_saucers
   - drop_target_bank_dt_bank_left_reset
   - drop_target_bank_dt_bank_right_reset

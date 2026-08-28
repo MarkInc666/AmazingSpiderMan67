@@ -49,12 +49,14 @@ event_player:
   s_saucer_3_active: delayed_kickout_saucer_3
 
   mode_kotep_started:
+  - bonus_lights_dim
   - disable_daily_bugle_mystery
   - rooftop_diverter_close
   - clear_saucers_delayed
   - reset_drops
 
   mode_kotep_stopping:
+  - bonus_lights_restore
   - rooftop_diverter_close
   - clear_saucers_delayed
   - reset_drops

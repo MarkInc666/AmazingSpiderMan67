@@ -42,12 +42,134 @@ show_player:
     wizard_summary_shutdown_show:
       loops: 0
 
+  villain_bookend_summary_wipe_start:
+    villain_summary_wipe_show:
+      loops: 0
+
   villain_bookend_summary_hide:
     wizard_summary_shutdown_show:
+      action: stop
+    villain_summary_wipe_show:
       action: stop
 
 
 shows:
+  # Ordinary-villain summary cleanup. Three one-second Spider-Man sweeps
+  # erase the stopped villain mode lighting: blue bottom-to-top, red
+  # top-to-bottom, then white bottom-to-top. The playfield then settles
+  # to neutral 505050 for the remaining three seconds of the summary.
+  villain_summary_wipe_show:
+    - duration: 125ms
+      lights:
+        band_1: 4080F0
+        insert_band_1: 4080F0
+    - duration: 125ms
+      lights:
+        band_2: 4080F0
+        insert_band_2: 4080F0
+    - duration: 125ms
+      lights:
+        band_3: 4080F0
+        insert_band_3: 4080F0
+    - duration: 125ms
+      lights:
+        band_4: 4080F0
+        insert_band_4: 4080F0
+    - duration: 125ms
+      lights:
+        band_5: 4080F0
+    - duration: 125ms
+      lights:
+        band_6: 4080F0
+        insert_band_6: 4080F0
+    - duration: 125ms
+      lights:
+        band_7: 4080F0
+        insert_band_7: 4080F0
+    - duration: 125ms
+      lights:
+        band_8: 4080F0
+        insert_band_8: 4080F0
+    - duration: 125ms
+      lights:
+        band_8: F04040
+        insert_band_8: F04040
+    - duration: 125ms
+      lights:
+        band_7: F04040
+        insert_band_7: F04040
+    - duration: 125ms
+      lights:
+        band_6: F04040
+        insert_band_6: F04040
+    - duration: 125ms
+      lights:
+        band_5: F04040
+    - duration: 125ms
+      lights:
+        band_4: F04040
+        insert_band_4: F04040
+    - duration: 125ms
+      lights:
+        band_3: F04040
+        insert_band_3: F04040
+    - duration: 125ms
+      lights:
+        band_2: F04040
+        insert_band_2: F04040
+    - duration: 125ms
+      lights:
+        band_1: F04040
+        insert_band_1: F04040
+    - duration: 125ms
+      lights:
+        band_1: F0F0F0
+        insert_band_1: F0F0F0
+    - duration: 125ms
+      lights:
+        band_2: F0F0F0
+        insert_band_2: F0F0F0
+    - duration: 125ms
+      lights:
+        band_3: F0F0F0
+        insert_band_3: F0F0F0
+    - duration: 125ms
+      lights:
+        band_4: F0F0F0
+        insert_band_4: F0F0F0
+    - duration: 125ms
+      lights:
+        band_5: F0F0F0
+    - duration: 125ms
+      lights:
+        band_6: F0F0F0
+        insert_band_6: F0F0F0
+    - duration: 125ms
+      lights:
+        band_7: F0F0F0
+        insert_band_7: F0F0F0
+    - duration: 125ms
+      lights:
+        band_8: F0F0F0
+        insert_band_8: F0F0F0
+    - duration: 3s
+      lights:
+        band_1: "505050"
+        insert_band_1: "505050"
+        band_2: "505050"
+        insert_band_2: "505050"
+        band_3: "505050"
+        insert_band_3: "505050"
+        band_4: "505050"
+        insert_band_4: "505050"
+        band_5: "505050"
+        band_6: "505050"
+        insert_band_6: "505050"
+        band_7: "505050"
+        insert_band_7: "505050"
+        band_8: "505050"
+        insert_band_8: "505050"
+
   # Six-second neutral wizard-summary shutdown. Bands run top (8) to bottom (1)
   # at 125 ms each, pairing GI band_n with insert_band_n. The last step reaches
   # 505050 exactly as the unskippable six-second wizard summary completes.
