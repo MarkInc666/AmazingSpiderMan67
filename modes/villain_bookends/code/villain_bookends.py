@@ -1280,6 +1280,14 @@ class VillainBookends(Mode):
         self.current_villain = villain
         self.current_done_event = start_event
 
+        # Mystery's START NEXT VILLAIN award can start Fiddler while its ball
+        # is still in the Daily Bugle VUK. Cancel Mystery's normal delayed
+        # eject so Fiddler can retain that ball through its WATCH phase.
+        if villain == "fiddler" and self._vuk_is_occupied():
+            self.machine.events.post("disable_daily_bugle_mystery")
+            self.machine.events.post("daily_bugle_cancel_vuk_delay_eject")
+            self.machine.events.post("cancel_vuk_eject_request")
+
         self._set_machine_var("villain_bookend_title", data["title"])
         self._set_machine_var("villain_bookend_line_1", data["intro_1"])
         self._set_machine_var("villain_bookend_line_2", data["intro_2"])
@@ -1453,9 +1461,19 @@ class VillainBookends(Mode):
         done_event = self.current_done_event
         villain = self.current_villain
         stage = self.current_stage
+        starting_saucer = None
+        starting_vuk = False
 
         if stage == "intro":
             data = self.VILLAINS[villain]
+            if villain == "fiddler":
+                starting_vuk = self._vuk_is_occupied()
+                if starting_vuk:
+                    self.machine.events.post("disable_daily_bugle_mystery")
+                    self.machine.events.post("daily_bugle_cancel_vuk_delay_eject")
+                    self.machine.events.post("cancel_vuk_eject_request")
+                else:
+                    starting_saucer = self._occupied_starting_saucer()
             self.machine.events.post(data["song"])
             self.machine.events.post("villain_bookend_intro_hide")
             self.machine.events.post("villain_bookend_intro_done", villain=villain)
@@ -1476,7 +1494,11 @@ class VillainBookends(Mode):
                 )
             self.machine.events.post("villain_summary_release_saucer_holds")
 
-        self.machine.events.post("clear_saucers_delayed")
+        # A lower-saucer-started Fiddler uses that same held ball. A VUK start
+        # still clears unrelated lower saucers; VUK ownership is handled above.
+        # All other villains retain the shared post-intro saucer release.
+        if not (stage == "intro" and villain == "fiddler" and starting_saucer):
+            self.machine.events.post("clear_saucers_delayed")
         self.delay.remove("villain_summary_skip_unlock")
         self.current_stage = None
         self.current_villain = None
@@ -1485,7 +1507,31 @@ class VillainBookends(Mode):
         self.current_summary_skip_unlocked = False
 
         if done_event:
-            self.machine.events.post(done_event, villain=villain)
+            self.machine.events.post(
+                done_event,
+                villain=villain,
+                starting_saucer=starting_saucer,
+                starting_vuk=starting_vuk,
+            )
+
+    def _occupied_starting_saucer(self):
+        """Return the occupied lower saucer number at the end of an intro."""
+        for saucer_number in (1, 2, 3):
+            switch_name = f"s_saucer_{saucer_number}"
+            try:
+                if self.machine.switch_controller.is_active(self.machine.switches[switch_name]):
+                    return saucer_number
+            except (KeyError, TypeError):
+                continue
+        return None
+
+    def _vuk_is_occupied(self):
+        """Return whether the Daily Bugle VUK currently contains a ball."""
+        try:
+            vuk_switch = self.machine.switches["s_vuk_switch"]
+            return bool(self.machine.switch_controller.is_active(vuk_switch))
+        except (KeyError, TypeError):
+            return False
 
     def _restore_daily_bugle_after_vuk_release(self):
         player = self.machine.game.player if self.machine.game else None

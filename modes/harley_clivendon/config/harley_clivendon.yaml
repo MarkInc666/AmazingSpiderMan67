@@ -102,6 +102,7 @@ show_player:
     harley_saucer_3_held_show: {action: stop}
   harley_vuk_ready:
     harley_vuk_ready_show: {loops: -1}
+  harley_vuk_chase_start:
     shared_final_vuk_chase:
       loops: -1
       priority: 340
@@ -109,6 +110,8 @@ show_player:
         color: A0A0F0
   harley_vuk_not_ready:
     harley_vuk_ready_show: {action: stop}
+  harley_vuk_chase_stop:
+    shared_final_vuk_chase: {action: stop}
   harley_area_build_started:
     harley_left_sling_available_show: {loops: -1}
     harley_left_sling_lit_show: {action: stop}

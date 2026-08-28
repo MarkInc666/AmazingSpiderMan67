@@ -86,8 +86,22 @@ show_player:
     enforcers_zone_pulse:
       loops: -1
 
+  # Guide the player to the VUK/roof entrance while rooftop jackpots remain.
+  enforcers_vuk_chase_start:
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: "F0D040"
+
+  enforcers_vuk_chase_stop:
+    shared_final_vuk_chase:
+      action: stop
+
   enforcers_clear_all_lights:
     enforcers_zone_pulse:
+      action: stop
+    shared_final_vuk_chase:
       action: stop
 
   enforcers_clear_upper_shows:
@@ -122,6 +136,8 @@ show_player:
     enforcers_upper_right_flash_5x:
       action: stop
     enforcers_ox_chase:
+      action: stop
+    shared_final_vuk_chase:
       action: stop
 
   enforcers_stop_left_upper_flash:

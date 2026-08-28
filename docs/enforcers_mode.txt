@@ -37,6 +37,14 @@ Each step lasts 300ms and uses color 80F0F0. The other three inserts are off
 during each step. All four chase inserts, including l_special, are explicitly
 turned off during Enforcers light cleanup.
 
+Rooftop route lighting
+----------------------
+When the first rooftop jackpot lights and opens the gate, the shared VUK/roof-entry
+chase runs in F0D040. It remains active while one or more rooftop jackpots still
+need to be collected. Collecting the third rooftop jackpot stops the route chase
+as Ox becomes ready; the separate 80F0F0 center-web Ox chase then takes over.
+The route chase is also explicitly stopped during mode and light cleanup.
+
 Case Files
 ----------
 - More Jackpots: lights a matching saucer bonus jackpot with each rooftop jackpot.
@@ -47,5 +55,5 @@ Case Files
 
 Preserved gameplay
 ------------------
-This lighting patch does not change scoring, shot qualification, multipliers,
+These lighting patches do not change scoring, shot qualification, multipliers,
 spinner value building, Case File behavior, gate behavior, or completion rules.

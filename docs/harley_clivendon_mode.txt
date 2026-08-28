@@ -38,6 +38,8 @@ Jackpot and gate flow
 - Every VUK award also adds its full value to persistent HARLEY JACKPOTS.
 - The gate is closed while seeking the saucer lock.
 - With a held ball and at least four lit areas, the gate opens for the VUK route.
+- Opening the gate starts the `A0A0F0` shared VUK route chase. Closing the gate
+  stops that chase, including upper-entry, fallback, startup, and teardown closes.
 - It stays open through the delayed VUK kick, then closes at the upper-entrance
   opto or the 5-second fallback.
 - The held saucer ball is released exactly once through Harley's explicit

@@ -78,6 +78,7 @@ class HarleyClivendon(CaseFileMixin, Mode):
         # multiball_autoplunge_active flag handling the delayed autofire.
         self.machine.events.post("harley_start_multiball")
         self.machine.events.post("rooftop_diverter_close")
+        self.machine.events.post("harley_vuk_chase_stop")
         self.machine.events.post("harley_area_lights_clear")
         self.machine.events.post("show_mode_message_long", message_mode_title="HYPNOTIC HOLD", message_mode_subtitle="LOCK A BALL - LIGHT 4 AREAS")
         self._sync()
@@ -209,12 +210,14 @@ class HarleyClivendon(CaseFileMixin, Mode):
             return
         self.rooftop_gate_open = True
         self.machine.events.post("rooftop_diverter_open")
+        self.machine.events.post("harley_vuk_chase_start")
 
     def _close_rooftop_gate(self):
         if not self.rooftop_gate_open:
             return
         self.rooftop_gate_open = False
         self.machine.events.post("rooftop_diverter_close")
+        self.machine.events.post("harley_vuk_chase_stop")
 
     def _upper_entrance_reached(self, **kwargs):
         if self.waiting_for_upper_entry:
@@ -270,6 +273,7 @@ class HarleyClivendon(CaseFileMixin, Mode):
         self.waiting_for_upper_entry = False
         self._close_rooftop_gate()
         self.machine.events.post("rooftop_diverter_close")
+        self.machine.events.post("harley_vuk_chase_stop")
         self.machine.events.post("enable_daily_bugle_mystery")
         self.machine.events.post("daily_bugle_restore_state")
         vuk_switch = self.machine.switches.get("s_vuk_switch")

@@ -47,7 +47,7 @@ class Fiddler(CaseFileMixin, Mode):
         "dt_right_1", "dt_right_2", "dt_right_3", "dt_right_4", "dt_right_5",
     )
 
-    def mode_start(self, **kwargs):
+    def mode_start(self, starting_saucer=None, starting_vuk=False, **kwargs):
         super().mode_start(**kwargs)
         self.reset_active_mode_summary(stat_count=3)
         self.case_files = self.get_case_file_bonuses()
@@ -77,6 +77,8 @@ class Fiddler(CaseFileMixin, Mode):
         self.demonstrating = False
         self.feedback_active = False
         self.held_saucer = None
+        self.held_vuk = False
+        self.daily_bugle_claimed = False
         self._watch_notes = []
         self._watch_repeat = 0
         self._watch_note_index = 0
@@ -122,8 +124,22 @@ class Fiddler(CaseFileMixin, Mode):
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("fiddler_all_notes_off")
         self._force_drop_banks_down()
-        self._show_waiting_for_saucer("SHOOT A SAUCER", "WATCH THE PATTERN")
+        starting_saucer = self._normalize_saucer_number(starting_saucer)
+        if starting_vuk:
+            self._start_from_vuk()
+        elif starting_saucer:
+            self._saucer_hit(saucer=starting_saucer)
+        else:
+            self._show_waiting_for_saucer("SHOOT A SAUCER", "WATCH THE PATTERN")
         self._sync_vars()
+
+    @staticmethod
+    def _normalize_saucer_number(saucer):
+        try:
+            number = int(str(saucer).replace("saucer_", ""))
+        except (TypeError, ValueError):
+            return None
+        return number if number in (1, 2, 3) else None
 
     def mode_stop(self, **kwargs):
         self.mode_done = True
@@ -135,6 +151,12 @@ class Fiddler(CaseFileMixin, Mode):
         self.machine.events.post("hide_mode_status")
         if self.machine.game:
             self.machine.game.player["fiddler_saucer_hold"] = 0
+        if self.held_vuk:
+            self.held_vuk = False
+            self.machine.events.post("request_vuk_eject", delay_ms=0)
+        if self.daily_bugle_claimed:
+            self.daily_bugle_claimed = False
+            self.machine.events.post("enable_daily_bugle_mystery")
         self.machine.events.post("clear_saucers_delayed")
         self.machine.events.post("drop_target_bank_dt_bank_left_reset")
         self.machine.events.post("drop_target_bank_dt_bank_right_reset")
@@ -198,6 +220,21 @@ class Fiddler(CaseFileMixin, Mode):
                 else self.REMINDER_PATTERN_REPEATS
             )
         )
+
+    def _start_from_vuk(self):
+        """Claim a Mystery-start ball in the VUK for the first WATCH phase."""
+        if self.mode_done:
+            return
+        self.held_vuk = True
+        self.daily_bugle_claimed = True
+        self.machine.game.player["fiddler_saucer_hold"] = 1
+        self.machine.events.post("disable_daily_bugle_mystery")
+        self.machine.events.post("daily_bugle_cancel_vuk_delay_eject")
+        self.machine.events.post("cancel_vuk_eject_request")
+        self.machine.events.post("fiddler_saucers_not_ready")
+        self._new_pattern()
+        self.waiting_for_saucer = False
+        self._begin_watch_phase(repeats=self.FRESH_PATTERN_REPEATS)
 
     def _begin_watch_phase(self, repeats=None):
         if self.mode_done or not self.sequence:
@@ -265,8 +302,17 @@ class Fiddler(CaseFileMixin, Mode):
             f"NOTE {self.expected_index + 1} OF {len(self.sequence)}",
             reminder=True,
         )
-        self._eject_held_saucer()
+        self._eject_held_ball()
         self._sync_vars()
+
+    def _eject_held_ball(self):
+        if self.held_vuk:
+            self.held_vuk = False
+            self.machine.game.player["fiddler_saucer_hold"] = 0
+            self._last_saucer_eject_time = time.monotonic()
+            self.machine.events.post("request_vuk_eject", delay_ms=0)
+            return
+        self._eject_held_saucer()
 
     def _eject_held_saucer(self):
         if self.held_saucer not in (1, 2, 3):

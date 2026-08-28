@@ -88,22 +88,26 @@ show_player:
 
   dr_zapp_qualification_started:
     dr_zapp_dark_blue_gi: {loops: -1}
-    dr_zapp_left_bank_pulse: {loops: -1}
-    dr_zapp_right_bank_pulse: {loops: -1}
+    dr_zapp_left_bank_pulse: {loops: -1, priority: 10}
+    dr_zapp_right_bank_pulse: {loops: -1, priority: 10}
 
   dr_zapp_left_bank_qualified:
     dr_zapp_left_bank_pulse: {action: stop}
-    dr_zapp_left_bank_solid: {loops: -1}
+    dr_zapp_left_bank_solid: {loops: -1, priority: 10}
     dr_zapp_one_bank_gi: {loops: -1}
 
   dr_zapp_right_bank_qualified:
     dr_zapp_right_bank_pulse: {action: stop}
-    dr_zapp_right_bank_solid: {loops: -1}
+    dr_zapp_right_bank_solid: {loops: -1, priority: 10}
     dr_zapp_one_bank_gi: {loops: -1}
 
   dr_zapp_roof_open:
     dr_zapp_dark_blue_gi: {action: stop}
     dr_zapp_one_bank_gi: {action: stop}
+    dr_zapp_left_bank_pulse: {action: stop}
+    dr_zapp_right_bank_pulse: {action: stop}
+    dr_zapp_left_bank_solid: {action: stop}
+    dr_zapp_right_bank_solid: {action: stop}
     dr_zapp_roof_gi: {loops: -1}
     shared_final_vuk_chase:
       loops: -1

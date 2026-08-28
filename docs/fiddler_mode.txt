@@ -4,7 +4,12 @@ STATUS
 Implemented to the August 25, 2026 reviewed rules. Requires physical-machine playtesting for saucer hold/release timing, note readability, and the failure/retry flow.
 
 CORE GAMEPLAY
-- Fiddler is a saucer-started Simon Says / musical-memory mode.
+- Fiddler is a saucer-started Simon Says / musical-memory mode. The saucer ball
+  that selected and started Fiddler remains held after the intro and immediately
+  begins the first WATCH phase; it is not ejected by the shared villain startup.
+- If Mystery starts Fiddler from the Daily Bugle VUK, Fiddler cancels the normal
+  Mystery eject, holds that VUK ball through the first WATCH playback, then fires
+  the VUK for REPEAT.
 - The four note shots are:
   1. Left Web = violin note 1
   2. Left Bank Rubber = violin note 2

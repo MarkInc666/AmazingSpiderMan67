@@ -5,7 +5,13 @@ Core rules
 - Flippers rotate the four arm assignments across the lane rollovers.
 - Any rollover scores 10K. A free-arm rollover locks that arm; a locked-arm hit keeps it locked.
 - Completing the left bank locks one random free arm when available and always relights the web jackpot.
+- Completing the right bank resets it and opens rooftop access for a full 20 seconds.
+  Another right-bank completion restarts the complete 20-second window. Upper
+  entry does not close the gate.
 - The spinner scores through the normal base game, adds +1X per spin, and relights the web jackpot.
+- With the gate open, spinner shots continue through the VUK to the rooftop,
+  temporarily carrying the ball away from the lower arm-release shots. The VUK
+  immediately ejects the ball toward the upper playfield.
 - After one second without another spin, show the multiplier and then the next web jackpot value.
 - Web Jackpot = base value x (5 - locked arms) x spinner multiplier. Base is 50K.
 - Every collected web jackpot also adds 100K to the persistent BREAKOUT BONUS.
@@ -38,6 +44,11 @@ Lighting
 - The left-bank GI pulses slowly in blue while at least one arm is free because
   completing that bank locks one free arm.
 - The left-bank pulse stops when all four arms are locked.
+- While rooftop access is closed, both right-bank GI lamps use the same slow blue
+  pulse as the left-bank GI. The right-bank pulse stops for the 20-second open
+  window and returns when it expires.
+- A blue shared VUK chaser runs for the complete gate-open window. Timer expiry,
+  mode completion, or mode shutdown closes the gate and clears the chase.
 
 Persistent bonus
 - BREAKOUT BONUS increases by 100K for every collected web jackpot, including

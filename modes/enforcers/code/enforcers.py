@@ -256,6 +256,7 @@ class Enforcers(Mode, CaseFileMixin):
         if self.ox_lit or self.mode_done:
             return
         self.ox_lit = True
+        self.machine.events.post("enforcers_vuk_chase_stop")
         self._open_rooftop_gate()
         if self.has_case_file("more_time"):
             self.machine.events.post("start_case_file_ball_save")
@@ -317,9 +318,11 @@ class Enforcers(Mode, CaseFileMixin):
             return
         self.rooftop_gate_open = True
         self.machine.events.post("rooftop_diverter_open")
+        self.machine.events.post("enforcers_vuk_chase_start")
         self.machine.events.post("enforcers_rooftop_gate_opened")
 
     def _close_rooftop_gate(self):
+        self.machine.events.post("enforcers_vuk_chase_stop")
         if not self.rooftop_gate_open:
             return
         self.rooftop_gate_open = False

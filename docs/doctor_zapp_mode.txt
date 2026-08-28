@@ -33,9 +33,11 @@ DEFEAT / FLIPPER HANDOFF
 
 LIGHTING
 - Start GI dark blue.
-- Both bank GIs pulse blue; a qualified bank turns solid blue.
+- Both bank GIs pulse blue. A qualified bank turns solid blue while the opposite,
+  unqualified bank continues pulsing until its own first hit.
 - One-bank progress uses a blue GI pulse.
-- Both banks qualified changes GI to bright electric blue and opens rooftop access.
+- Both banks qualified clears the bank-specific cues, changes GI to bright electric
+  blue, and opens rooftop access.
 - All upper-target lamps pulse white; collected and Shot Assist-awarded targets turn solid white.
 - First-time upper-target awards give a brief white GI flash.
 - Reaching 25 flashes gives a full white flash.

@@ -33,6 +33,7 @@ event_player:
     - drop_target_bank_dt_bank_left_reset
 
   drop_target_bank_dt_bank_right_down:
+    - doc_ock_right_bank_complete
     - drop_target_bank_dt_bank_right_reset
 
   doc_ock_startup_complete:
@@ -66,6 +67,9 @@ event_player:
 
   s_web_target_mid_active:
     - doc_ock_jackpot_request
+
+  s_vuk_switch_active:
+    - request_vuk_eject
 
   s_saucer_1_active:
     - doc_ock_breakout_1_request
@@ -126,6 +130,31 @@ show_player:
       action: stop
     doc_ock_left_bank_needed_show:
       action: stop
+    doc_ock_right_bank_available_show:
+      action: stop
+    shared_final_vuk_chase:
+      action: stop
+
+  doc_ock_rooftop_gate_open:
+    doc_ock_right_bank_available_show:
+      action: stop
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: "4080F0"
+
+  doc_ock_rooftop_gate_available:
+    shared_final_vuk_chase:
+      action: stop
+    doc_ock_right_bank_available_show:
+      loops: -1
+
+  doc_ock_rooftop_gate_cleanup:
+    shared_final_vuk_chase:
+      action: stop
+    doc_ock_right_bank_available_show:
+      action: stop
 
   doc_ock_arm_1_pulse:
     doc_ock_arm_1_solid:
@@ -181,6 +210,10 @@ show_player:
 
   doc_ock_left_bank_not_needed:
     doc_ock_left_bank_needed_show:
+      action: stop
+    doc_ock_right_bank_available_show:
+      action: stop
+    shared_final_vuk_chase:
       action: stop
 
 
@@ -350,6 +383,16 @@ shows:
     - duration: 500ms
       lights:
         l_gi_3bank: 4080F0
+
+  doc_ock_right_bank_available_show:
+    - duration: 500ms
+      lights:
+        l_gi_5bank_lower: "204080"
+        l_gi_5bank_upper: "204080"
+    - duration: 500ms
+      lights:
+        l_gi_5bank_lower: 4080F0
+        l_gi_5bank_upper: 4080F0
 
   doc_ock_web_jackpot_show:
     - duration: 250ms

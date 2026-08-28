@@ -110,6 +110,10 @@ show_player:
     shared_final_vuk_chase:
       action: stop
 
+  infinata_light_saucers:
+    infinata_saucer_holes_pulse_show:
+      loops: -1
+
   infinata_light_pops:
     infinata_pop_left_flash_show:
       loops: -1
@@ -194,6 +198,8 @@ show_player:
       action: stop
 
   infinata_clear_lights:
+    infinata_saucer_holes_pulse_show:
+      action: stop
     infinata_pop_left_flash_show:
       action: stop
     infinata_pop_right_flash_show:
@@ -210,6 +216,8 @@ show_player:
       action: stop
 
   mode_infinata_stopping:
+    infinata_saucer_holes_pulse_show:
+      action: stop
     shared_final_vuk_chase:
       action: stop
     shared_center_web_chase:
@@ -309,15 +317,9 @@ light_player:
     l_upper_right: off
 
   infinata_light_saucers:
-    l_1: green
-    l_1_hole_l: red
-    l_1_hole_r: red
-    l_2: green
-    l_2_hole_l: red
-    l_2_hole_r: red
-    l_3: green
-    l_3_hole_l: red
-    l_3_hole_r: red
+    l_1: off
+    l_2: off
+    l_3: off
 
   infinata_clear_area_lights:
     l_pop_1_1: 6030A0
@@ -399,6 +401,40 @@ light_player:
     l_3_hole_r: off
 
 shows:
+  infinata_saucer_holes_pulse_show:
+    - duration: 250ms
+      lights:
+        l_1_hole_l: "404040"
+        l_1_hole_r: "404040"
+        l_2_hole_l: "404040"
+        l_2_hole_r: "404040"
+        l_3_hole_l: "404040"
+        l_3_hole_r: "404040"
+    - duration: 250ms
+      lights:
+        l_1_hole_l: "808080"
+        l_1_hole_r: "808080"
+        l_2_hole_l: "808080"
+        l_2_hole_r: "808080"
+        l_3_hole_l: "808080"
+        l_3_hole_r: "808080"
+    - duration: 250ms
+      lights:
+        l_1_hole_l: FFFFFF
+        l_1_hole_r: FFFFFF
+        l_2_hole_l: FFFFFF
+        l_2_hole_r: FFFFFF
+        l_3_hole_l: FFFFFF
+        l_3_hole_r: FFFFFF
+    - duration: 250ms
+      lights:
+        l_1_hole_l: "808080"
+        l_1_hole_r: "808080"
+        l_2_hole_l: "808080"
+        l_2_hole_r: "808080"
+        l_3_hole_l: "808080"
+        l_3_hole_r: "808080"
+
   infinata_pop_left_flash_show:
     - duration: 300ms
       lights:

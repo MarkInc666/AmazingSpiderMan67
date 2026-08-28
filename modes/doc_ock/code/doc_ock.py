@@ -16,6 +16,8 @@ class doc_ock(CaseFileMixin, Mode):
     COMPLETION_HOLD_DELAY_NAME = "doc_ock_completion_hold"
     JACKPOT_COLLECT_GUARD_DELAY_NAME = "doc_ock_jackpot_collect_guard"
     JACKPOT_COLLECT_GUARD_MS = 750
+    ROOFTOP_GATE_WINDOW_MS = 20_000
+    ROOFTOP_GATE_DELAY_NAME = "doc_ock_rooftop_gate_window"
     MAX_BREAKOUT_TARGETS = 6
 
     def mode_start(self, **kwargs):
@@ -50,6 +52,7 @@ class doc_ock(CaseFileMixin, Mode):
         self.doc_ock_max_arms_locked = 2
         self.active_mode_points = 0
         self.safety_net_used = False
+        self.rooftop_gate_open = False
 
         self.publish_case_file_bonus_events("doc_ock")
         self.publish_active_case_file_helpers([
@@ -66,6 +69,7 @@ class doc_ock(CaseFileMixin, Mode):
         self.add_mode_event_handler("doc_ock_rotate_right", self.rotate_right)
         self.add_mode_event_handler("doc_ock_jackpot_request", self.jackpot_request)
         self.add_mode_event_handler("doc_ock_left_bank_complete", self.left_bank_complete)
+        self.add_mode_event_handler("doc_ock_right_bank_complete", self.right_bank_complete)
         self.add_mode_event_handler("doc_ock_start_timed_release", self.start_timed_release)
         self.add_mode_event_handler("doc_ock_stop_timed_release", self.stop_timed_release)
 
@@ -77,7 +81,7 @@ class doc_ock(CaseFileMixin, Mode):
             )
 
         self.update_player_vars()
-        self.machine.events.post("rooftop_diverter_close")
+        self._close_rooftop_gate(restore_available=True)
         self.machine.events.post("doc_ock_startup_complete")
         self.machine.events.post(
             "show_mode_message_long",
@@ -95,10 +99,12 @@ class doc_ock(CaseFileMixin, Mode):
                 self.SPINNER_VALUE_DELAY_NAME,
                 self.COMPLETION_HOLD_DELAY_NAME,
                 self.JACKPOT_COLLECT_GUARD_DELAY_NAME,
+                self.ROOFTOP_GATE_DELAY_NAME,
             ):
                 self.delay.remove(name)
         self.timed_release_running = False
         self.clear_active_case_file_helpers()
+        self._close_rooftop_gate(restore_available=False)
         # Catch-all: no delayed villain/wizard callback may survive into bonus.
         self.delay.clear()
         super().mode_stop(**kwargs)
@@ -199,6 +205,31 @@ class doc_ock(CaseFileMixin, Mode):
         if locked_new_arm:
             self.machine.events.post("doc_ock_arm_locked_score")
             self._post_high_priority_message("ARM LOCKED")
+
+    def right_bank_complete(self, **kwargs):
+        if not self._rules_active():
+            return
+        self.rooftop_gate_open = True
+        self.delay.remove(self.ROOFTOP_GATE_DELAY_NAME)
+        self.delay.add(
+            name=self.ROOFTOP_GATE_DELAY_NAME,
+            ms=self.ROOFTOP_GATE_WINDOW_MS,
+            callback=self._rooftop_gate_window_expired,
+        )
+        self.machine.events.post("rooftop_diverter_open")
+        self.machine.events.post("doc_ock_rooftop_gate_open")
+        self._post_high_priority_message("ROOFTOP ACCESS OPEN", "20 SECONDS")
+
+    def _rooftop_gate_window_expired(self, **kwargs):
+        self._close_rooftop_gate(restore_available=True)
+
+    def _close_rooftop_gate(self, restore_available=False):
+        if hasattr(self, "delay"):
+            self.delay.remove(self.ROOFTOP_GATE_DELAY_NAME)
+        self.rooftop_gate_open = False
+        self.machine.events.post("rooftop_diverter_close")
+        event = "doc_ock_rooftop_gate_available" if restore_available and self._rules_active() else "doc_ock_rooftop_gate_cleanup"
+        self.machine.events.post(event)
 
     def doc_ock_spinner(self, **kwargs):
         if not self._rules_active():
@@ -375,6 +406,7 @@ class doc_ock(CaseFileMixin, Mode):
         if self.mode_finishing:
             return
         self.mode_finishing = True
+        self._close_rooftop_gate(restore_available=False)
         self.stop_timed_release()
         self._cancel_spinner_messages()
         self.machine.events.post("hide_mode_status")
