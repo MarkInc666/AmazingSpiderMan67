@@ -21,8 +21,11 @@ class Fiddler(CaseFileMixin, Mode):
     NOTE_FLASH_ON_MS = 200
     NOTE_FLASH_OFF_MS = 50
     NOTE_FLASH_TOTAL_MS = 1_000
-    NOTE_GAP_MS = 500
-    PATTERN_REPEAT_PAUSE_MS = 2_000
+    WATCH_NOTE_TOTAL_MS = 400
+    WATCH_STROBE_ON_MS = 100
+    WATCH_STROBE_OFF_MS = 50
+    NOTE_GAP_MS = 150
+    PATTERN_REPEAT_PAUSE_MS = 750
     FRESH_PATTERN_REPEATS = 2
     REMINDER_PATTERN_REPEATS = 1
     REMINDER_REENTRY_LOCKOUT_SECONDS = 4.0
@@ -83,6 +86,8 @@ class Fiddler(CaseFileMixin, Mode):
         self._watch_repeat = 0
         self._watch_note_index = 0
         self._watch_repeats_target = self.FRESH_PATTERN_REPEATS
+        self._watch_note_elapsed_ms = 0
+        self._watch_strobe_on = False
         self._last_saucer_eject_time = None
 
         for shot in self.SHOTS:
@@ -273,10 +278,34 @@ class Fiddler(CaseFileMixin, Mode):
 
         shot = self._watch_notes[self._watch_note_index]
         self.machine.events.post(self.NOTE_EVENTS[shot])
-        self._start_note_flash(
-            shot,
-            done_callback=self._watch_note_flash_done,
-            delay_name="fiddler_watch_flash",
+        self._watch_note_elapsed_ms = 0
+        self._watch_strobe_on = False
+        self._watch_strobe_step(shot)
+
+    def _watch_strobe_step(self, shot):
+        if self.mode_done or not self.demonstrating:
+            return
+
+        if self._watch_note_elapsed_ms >= self.WATCH_NOTE_TOTAL_MS:
+            self.machine.events.post(f"fiddler_{shot}_off")
+            self._watch_note_flash_done()
+            return
+
+        self._watch_strobe_on = not self._watch_strobe_on
+        if self._watch_strobe_on:
+            self.machine.events.post(f"fiddler_{shot}_solid")
+            step_ms = self.WATCH_STROBE_ON_MS
+        else:
+            self.machine.events.post(f"fiddler_{shot}_off")
+            step_ms = self.WATCH_STROBE_OFF_MS
+
+        remaining_ms = self.WATCH_NOTE_TOTAL_MS - self._watch_note_elapsed_ms
+        step_ms = min(step_ms, remaining_ms)
+        self._watch_note_elapsed_ms += step_ms
+        self.delay.reset(
+            name="fiddler_watch_flash",
+            ms=step_ms,
+            callback=partial(self._watch_strobe_step, shot),
         )
 
     def _watch_note_flash_done(self):

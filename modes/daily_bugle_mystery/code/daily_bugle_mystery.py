@@ -531,9 +531,13 @@ class DailyBugleMystery(Mode):
 
     def _post_mystery_award(self, award_event):
         """Show a readable mystery award message, then post the award event."""
-        # The Case Files mode chooses the actual missing file, so let it post
-        # the message containing that specific Case File name.
-        if award_event != "mystery_award_random_case_file":
+        # Case Files chooses the actual missing file, and villain progression
+        # chooses the actual villain name. Let those owners publish the final
+        # specific message instead of flashing a generic SEARCHING message first.
+        if award_event not in (
+            "mystery_award_random_case_file",
+            "mystery_award_start_next_villain",
+        ):
             self._post_mystery_award_message(award_event)
         self.machine.events.post(award_event)
 

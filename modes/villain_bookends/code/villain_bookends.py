@@ -1382,6 +1382,11 @@ class VillainBookends(Mode):
 
         self.machine.events.post("villain_bookend_intro_hide")
         self.machine.events.post("villain_bookend_summary_show", villain=villain)
+        # Wizard summaries are six seconds and unskippable. Run the full-playfield
+        # shutdown wipe for that same six-second window; ordinary villain summaries
+        # keep their existing lighting behavior.
+        if villain in self.UNSKIPPABLE_SUMMARY_VILLAINS:
+            self.machine.events.post("wizard_bookend_summary_shutdown_start", villain=villain)
 
         self.delay.remove("villain_bookend_done")
         self.delay.add(

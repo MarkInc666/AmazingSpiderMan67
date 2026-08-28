@@ -75,12 +75,6 @@ show_player:
     doctor_cool_star_flash:
       loops: -1
 
-  doctor_cool_saucer_chase_started:
-    doctor_cool_right_bank_build:
-      action: stop
-    doctor_cool_left_bank_build:
-      action: stop
-
   doctor_cool_saucer_1_lit:
     doctor_cool_saucer_1_lit_show:
       loops: -1
@@ -149,12 +143,9 @@ light_player:
     l_3: off
     l_3_hole_l: off
     l_3_hole_r: off
-    l_5bank_1: off
-    l_5bank_2: off
-    l_5bank_3: off
-    l_5bank_4: off
-    l_5bank_5: off
     l_gi_3bank: off
+    l_gi_5bank_lower: off
+    l_gi_5bank_upper: off
     l_star: off
 
   doctor_cool_clear_saucer_lights:
@@ -172,18 +163,12 @@ shows:
   doctor_cool_right_bank_build:
     - duration: 250ms
       lights:
-        l_5bank_1: white
-        l_5bank_2: white
-        l_5bank_3: white
-        l_5bank_4: white
-        l_5bank_5: white
+        l_gi_5bank_lower: white
+        l_gi_5bank_upper: white
     - duration: 250ms
       lights:
-        l_5bank_1: off
-        l_5bank_2: off
-        l_5bank_3: off
-        l_5bank_4: off
-        l_5bank_5: off
+        l_gi_5bank_lower: off
+        l_gi_5bank_upper: off
 
   doctor_cool_left_bank_build:
     - duration: 250ms

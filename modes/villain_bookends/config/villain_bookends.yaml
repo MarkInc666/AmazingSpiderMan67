@@ -36,3 +36,192 @@ widget_player:
   villain_bookend_summary_hide:
     villain_summary:
       action: remove
+
+show_player:
+  wizard_bookend_summary_shutdown_start:
+    wizard_summary_shutdown_show:
+      loops: 0
+
+  villain_bookend_summary_hide:
+    wizard_summary_shutdown_show:
+      action: stop
+
+
+shows:
+  # Six-second neutral wizard-summary shutdown. Bands run top (8) to bottom (1)
+  # at 125 ms each, pairing GI band_n with insert_band_n. The last step reaches
+  # 505050 exactly as the unskippable six-second wizard summary completes.
+  wizard_summary_shutdown_show:
+    - duration: 1s
+      lights:
+        band_1: F0F0F0
+        insert_band_1: F0F0F0
+        band_2: F0F0F0
+        insert_band_2: F0F0F0
+        band_3: F0F0F0
+        insert_band_3: F0F0F0
+        band_4: F0F0F0
+        insert_band_4: F0F0F0
+        band_5: F0F0F0
+        band_6: F0F0F0
+        insert_band_6: F0F0F0
+        band_7: F0F0F0
+        insert_band_7: F0F0F0
+        band_8: F0F0F0
+        insert_band_8: F0F0F0
+    - duration: 125ms
+      lights:
+        band_8: D0D0D0
+        insert_band_8: D0D0D0
+    - duration: 125ms
+      lights:
+        band_7: D0D0D0
+        insert_band_7: D0D0D0
+    - duration: 125ms
+      lights:
+        band_6: D0D0D0
+        insert_band_6: D0D0D0
+    - duration: 125ms
+      lights:
+        band_5: D0D0D0
+    - duration: 125ms
+      lights:
+        band_4: D0D0D0
+        insert_band_4: D0D0D0
+    - duration: 125ms
+      lights:
+        band_3: D0D0D0
+        insert_band_3: D0D0D0
+    - duration: 125ms
+      lights:
+        band_2: D0D0D0
+        insert_band_2: D0D0D0
+    - duration: 125ms
+      lights:
+        band_1: D0D0D0
+        insert_band_1: D0D0D0
+    - duration: 125ms
+      lights:
+        band_8: B0B0B0
+        insert_band_8: B0B0B0
+    - duration: 125ms
+      lights:
+        band_7: B0B0B0
+        insert_band_7: B0B0B0
+    - duration: 125ms
+      lights:
+        band_6: B0B0B0
+        insert_band_6: B0B0B0
+    - duration: 125ms
+      lights:
+        band_5: B0B0B0
+    - duration: 125ms
+      lights:
+        band_4: B0B0B0
+        insert_band_4: B0B0B0
+    - duration: 125ms
+      lights:
+        band_3: B0B0B0
+        insert_band_3: B0B0B0
+    - duration: 125ms
+      lights:
+        band_2: B0B0B0
+        insert_band_2: B0B0B0
+    - duration: 125ms
+      lights:
+        band_1: B0B0B0
+        insert_band_1: B0B0B0
+    - duration: 125ms
+      lights:
+        band_8: "909090"
+        insert_band_8: "909090"
+    - duration: 125ms
+      lights:
+        band_7: "909090"
+        insert_band_7: "909090"
+    - duration: 125ms
+      lights:
+        band_6: "909090"
+        insert_band_6: "909090"
+    - duration: 125ms
+      lights:
+        band_5: "909090"
+    - duration: 125ms
+      lights:
+        band_4: "909090"
+        insert_band_4: "909090"
+    - duration: 125ms
+      lights:
+        band_3: "909090"
+        insert_band_3: "909090"
+    - duration: 125ms
+      lights:
+        band_2: "909090"
+        insert_band_2: "909090"
+    - duration: 125ms
+      lights:
+        band_1: "909090"
+        insert_band_1: "909090"
+    - duration: 125ms
+      lights:
+        band_8: "707070"
+        insert_band_8: "707070"
+    - duration: 125ms
+      lights:
+        band_7: "707070"
+        insert_band_7: "707070"
+    - duration: 125ms
+      lights:
+        band_6: "707070"
+        insert_band_6: "707070"
+    - duration: 125ms
+      lights:
+        band_5: "707070"
+    - duration: 125ms
+      lights:
+        band_4: "707070"
+        insert_band_4: "707070"
+    - duration: 125ms
+      lights:
+        band_3: "707070"
+        insert_band_3: "707070"
+    - duration: 125ms
+      lights:
+        band_2: "707070"
+        insert_band_2: "707070"
+    - duration: 125ms
+      lights:
+        band_1: "707070"
+        insert_band_1: "707070"
+    - duration: 125ms
+      lights:
+        band_8: "505050"
+        insert_band_8: "505050"
+    - duration: 125ms
+      lights:
+        band_7: "505050"
+        insert_band_7: "505050"
+    - duration: 125ms
+      lights:
+        band_6: "505050"
+        insert_band_6: "505050"
+    - duration: 125ms
+      lights:
+        band_5: "505050"
+    - duration: 125ms
+      lights:
+        band_4: "505050"
+        insert_band_4: "505050"
+    - duration: 125ms
+      lights:
+        band_3: "505050"
+        insert_band_3: "505050"
+    - duration: 125ms
+      lights:
+        band_2: "505050"
+        insert_band_2: "505050"
+    - duration: 125ms
+      lights:
+        band_1: "505050"
+        insert_band_1: "505050"
+

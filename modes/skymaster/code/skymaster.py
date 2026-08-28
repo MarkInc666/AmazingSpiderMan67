@@ -13,8 +13,8 @@ class Skymaster(CaseFileMixin, Mode):
     BIGGER_DROP_SCORE = 150_000
     SUPER_VALUE = 500_000
     BIGGER_SUPER_VALUE = 750_000
-    SUPER_SECONDS = 15
-    MORE_TIME_SUPER_SECONDS = 20
+    SUPER_SECONDS = 20
+    MORE_TIME_SUPER_SECONDS = 25
 
     # Drop-bank reset events have a 100ms device delay in config/devices.yaml.
     # Waiting 300ms here leaves approximately 200ms after the physical reset
@@ -96,7 +96,7 @@ class Skymaster(CaseFileMixin, Mode):
         self.publish_active_case_file_helpers([
             ("more_jackpots", "LEFT WEB ADDS A SECOND SUPER"),
             ("bigger_jackpots", "DROPS 150K - WEB SUPERS 750K"),
-            ("more_time", "WEB SUPER WINDOW EXTENDED TO 20s"),
+            ("more_time", "WEB SUPER WINDOW EXTENDED TO 25s"),
             ("safety_net", "10 SECOND OPENING BALL SAVE"),
             ("shot_assist", "FIRST UPPER SPIN DROPS TWO TARGETS"),
         ])

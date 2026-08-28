@@ -3,12 +3,15 @@
 lights:
   l_20k:
     number: playfield-1-1
+    tags: insert_band_3
     #white
   l_1k:
     number: playfield-1-2
+    tags: insert_band_3
     #white    
   l_2k:
     number: playfield-1-3
+    tags: insert_band_2
     #white    
   l_gi_left_upper_flipper:
     number: playfield-1-4
@@ -17,9 +20,11 @@ lights:
     #white    
   l_left_outlane:
     number: playfield-1-5
+    tags: insert_band_2
     #blue    
   l_left_inlane:
     number: playfield-1-6
+    tags: insert_band_2
     #blue    
   l_gi_left_sling_upper:
     number: playfield-1-7
@@ -33,45 +38,59 @@ lights:
     #white    
   l_3k:
     number: playfield-1-9
+    tags: insert_band_2
     #white    
   l_4k:
     number: playfield-1-10
+    tags: insert_band_1
     #white    
   l_5k:
     number: playfield-1-11
+    tags: insert_band_1
     #white    
   l_shoot_again:
     number: playfield-1-12
+    tags: insert_band_1
     #pink
   l_6k:
     number: playfield-1-13
+    tags: insert_band_1
     #white    
   l_7k:
     number: playfield-1-14
+    tags: insert_band_2
     #white    
   l_2x:
     number: playfield-1-15
+    tags: insert_band_2
     #white    
   l_8k:
     number: playfield-1-16
+    tags: insert_band_2
     #white    
   l_3x:
     number: playfield-1-17
+    tags: insert_band_2
     #white    
   l_4x:
     number: playfield-1-18
+    tags: insert_band_2
     #white    
   l_9k:
     number: playfield-1-19
+    tags: insert_band_2
     #white    
   l_5x:
     number: playfield-1-20
+    tags: insert_band_3
     #white    
   l_10k:
     number: playfield-1-21
+    tags: insert_band_3
     #white    
   l_right_inlane:
     number: playfield-1-22
+    tags: insert_band_3
     #blue    
   l_gi_right_lower_triangle:
     number: playfield-1-23
@@ -80,6 +99,7 @@ lights:
     #white    
   l_right_outlane:
     number: playfield-1-24
+    tags: insert_band_3
     #blue    
   l_gi_right_sling:
     number: playfield-1-25
@@ -193,18 +213,23 @@ lights:
 
   l_extraball:
     number: playfield-3-1
+    tags: insert_band_3
     #pink    
   l_3bankbonus:
     number: playfield-3-2
+    tags: insert_band_3
     #green    
   l_left_special:
     number: playfield-3-3
+    tags: insert_band_3
     #red
   l_left_multibonus:
     number: playfield-3-4
+    tags: insert_band_3
     #white    
   l_left_web_target:
     number: playfield-3-5
+    tags: insert_band_4
     #white    
   l_gi_left_upper:
     number: playfield-3-6
@@ -218,9 +243,11 @@ lights:
     #white    
   l_left_b:
     number: playfield-3-8
+    tags: insert_band_4
     #yellow    
   l_spinner:
     number: playfield-3-9
+    tags: insert_band_4
     #white    
   l_gi_3bank:
     number: playfield-3-10
@@ -229,27 +256,35 @@ lights:
     #white    
   l_5bank_1:
     number: playfield-3-11
+    tags: insert_band_4
     #green    
   l_5bank_2:
     number: playfield-3-12
+    tags: insert_band_4
     #green    
   l_5bank_3:
     number: playfield-3-13
+    tags: insert_band_4
     #green        
   l_right_extraball:
     number: playfield-3-14
+    tags: insert_band_4
     #pink    
   l_5bank_4:
     number: playfield-3-15
+    tags: insert_band_3
     #green    
   l_5bank_5:
     number: playfield-3-16
+    tags: insert_band_3
     #green        
   l_right_multibonus:
     number: playfield-3-17
+    tags: insert_band_3
     #white    
   l_right_a:
     number: playfield-3-18
+    tags: insert_band_3
     #yellow    
   l_gi_5bank_lower:
     number: playfield-3-19
@@ -264,6 +299,7 @@ lights:
 
   l_multibonus:
     number: playfield-4-1
+    tags: insert_band_6
     #white    
   l_gi_upflip:
     number: playfield-4-2
@@ -282,9 +318,11 @@ lights:
     #white    
   l_b_rollover:
     number: playfield-4-5
+    tags: insert_band_7
     #yellow
   l_a_rollover:
     number: playfield-4-6
+    tags: insert_band_7
     #yellow
   l_gi_a:
     number: playfield-4-7
@@ -293,18 +331,23 @@ lights:
     #white    
   l_star:
     number: playfield-4-8
+    tags: insert_band_7
     #red    
   l_special:
     number: playfield-4-9
+    tags: insert_band_6
     #yellow    
   l_advance_multiplier:
     number: playfield-4-11
+    tags: insert_band_6
     #green
   l_mid_multibonus:
     number: playfield-4-10
+    tags: insert_band_6
     #white
   l_mid_web_target:
     number: playfield-4-12
+    tags: insert_band_7
     #white    
   l_gi_mid_spider:
     number: playfield-4-13
@@ -313,39 +356,43 @@ lights:
     #white    
   l_3:
     number: playfield-4-14
+    tags: insert_band_7
     #green    
   l_3_hole_r:
     number: playfield-4-15
-    tags: band_7
+    tags: band_7, insert_band_7
     #red
   l_3_hole_l:
     number: playfield-4-16
-    tags: band_7
+    tags: band_7, insert_band_7
     #red
   l_2_hole_r:
     number: playfield-4-17
-    tags: band_7
+    tags: band_7, insert_band_7
     #red
   l_2:
     number: playfield-4-18
+    tags: insert_band_7
     #green
   l_2_hole_l:
     number: playfield-4-19
-    tags: band_7
+    tags: band_7, insert_band_7
     #red
   l_1_hole_r:
     number: playfield-4-20
-    tags: band_7
+    tags: band_7, insert_band_7
     #red
   l_123_bonus:
     number: playfield-4-21
+    tags: insert_band_6
     #white
   l_1:
     number: playfield-4-22
+    tags: insert_band_7
     #green
   l_1_hole_l:
     number: playfield-4-23
-    tags: band_7
+    tags: band_7, insert_band_7
     #red
   l_gi_ramp:
     number: playfield-4-24
@@ -379,12 +426,15 @@ lights:
     #white
   l_upper_right:
     number: playfield-4-30  
+    tags: insert_band_8
     #white
   l_upper_middle:
     number: playfield-4-31  
+    tags: insert_band_8
     #white
   l_upper_left:
     number: playfield-4-32      
+    tags: insert_band_8
     #white
 
 

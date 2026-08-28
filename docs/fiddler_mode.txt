@@ -16,15 +16,15 @@ CORE GAMEPLAY
   3. Right Pop = violin note 3
   4. Right Bank Rubber = violin note 4
 - Left and right drop targets are forced down during the mode so the bank rubbers remain available.
-- All three saucers pulse while Fiddler is waiting for the player to start/restart a round.
+- All three saucers pulse white (FFFFFF) while Fiddler is waiting for the player to start/restart a round.
+- The four note-shot indicators use 804040 during WATCH and note feedback.
 - Entering any saucer holds the ball during WATCH and ejects that same saucer only when YOUR TURN begins. The first pattern therefore remains physically held in the saucer for the full WATCH presentation.
 
 WATCH PHASE
-- Each note is demonstrated for exactly 1 second as a rapid burst:
-  200ms ON / 50ms OFF, repeated for the full second.
-- The note's proper violin SFX plays when its one-second burst starts.
-- There is a 500ms gap between notes.
-- After the complete pattern there is a 2-second pause, then the exact same pattern is demonstrated a second time.
+- Each note is demonstrated for a 400ms total window using a fast 100ms on / 50ms off strobe.
+- The note's proper violin SFX plays when that illumination starts.
+- There is a 150ms dark gap between notes.
+- After the complete pattern there is a 750ms pause, then the exact same pattern is demonstrated a second time.
 - After the second demonstration, YOUR TURN begins and the held saucer ejects.
 - Note inputs are locked during WATCH.
 

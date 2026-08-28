@@ -59,9 +59,6 @@ random_event_player:
 
 
 event_player:
-  finish_skillshot:
-    - play_chapter_base_music
-
   play_bonus_music:
     - play_song_6
 
@@ -72,7 +69,7 @@ event_player:
     - mode_base_started_delayed|1s
 
   mode_base_started_delayed{current_player.chapter_select_needed != 1}:
-    - play_song_5
+    - play_chapter_base_music
 
   # After a wizard summary, keep the display/audio in a Chapter Select
   # transition state while waiting for the player to press Start.
@@ -83,7 +80,7 @@ event_player:
     - chapter_select_confirmed|2s
 
   chapter_select_confirmed:
-    - play_song_5
+    - play_chapter_base_music
 
   s_plunger_active{current_player.saved_ball_pending_plunger == 1}:
     - saved_ball_arrived_at_plunger
@@ -147,13 +144,13 @@ event_player:
   s_web_spinner_active{mode.super_spinner.active == False}:
     - default_spinner_hit
 
-  player_added{num == 2}:
+  player_added{num == 2 and mode.bonus.active == False}:
     - show_player_2_added
     - play_random_player_added_callout
-  player_added{num == 3}:
+  player_added{num == 3 and mode.bonus.active == False}:
     - show_player_3_added
     - play_random_player_added_callout
-  player_added{num == 4}:
+  player_added{num == 4 and mode.bonus.active == False}:
     - show_player_4_added
     - play_random_player_added_callout
 
@@ -276,6 +273,25 @@ widget_player:
       action: play
       key: villain_chapter_status
 
+  # Villain/wizard presentation owns the display from the shared intro through
+  # gameplay and summary. Regular/final cleanup restores this panel. Completed
+  # mini-wizards transition to Chapter Select, and slide_main_game_active restores
+  # the panel when normal chapter play returns.
+  villain_bookend_intro_show:
+    villain_chapter_status:
+      action: remove
+      key: villain_chapter_status
+
+  villain_mode_started:
+    villain_chapter_status:
+      action: remove
+      key: villain_chapter_status
+
+  villain_summary_cleanup_complete:
+    villain_chapter_status:
+      action: play
+      key: villain_chapter_status
+
   mode_base_started{current_player.chapter_mini_wizard_ready != 1 and current_player.mini_wizard_daily_bugle_ready != 1 and current_player.mini_wizard_vuk_hold_active != 1 and current_player.final_wizard_ready != 1}:
     daily_bugle_ready:
       action: play
@@ -300,11 +316,17 @@ widget_player:
     daily_bugle_ready:
       action: remove
       key: daily_bugle_ready
+    villain_chapter_status:
+      action: remove
+      key: villain_chapter_status
 
   chapter_mini_wizard_started:
     daily_bugle_ready:
       action: remove
       key: daily_bugle_ready
+    villain_chapter_status:
+      action: remove
+      key: villain_chapter_status
 
   final_wizard_ready:
     daily_bugle_ready:

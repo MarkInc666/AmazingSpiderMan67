@@ -89,28 +89,28 @@ light_player:
     gi: E0E0E0
 
   fiddler_left_web_solid:
-    l_left_web_target: white
+    l_left_web_target: 804040
   fiddler_left_web_off:
     l_left_web_target: off
 
   fiddler_left_bank_solid:
-    l_gi_3bank: 60F060
+    l_gi_3bank: 804040
   fiddler_left_bank_off:
     l_gi_3bank: off
 
   fiddler_right_pop_solid:
-    l_pop_2_1: 60F060
-    l_pop_2_2: 60F060
-    l_pop_2_3: 60F060
-    l_pop_2_4: 60F060
-    l_pop_2_5: 60F060
-    l_pop_2_6: 60F060
-    l_pop_2_7: 60F060
-    l_pop_2_8: 60F060
-    l_pop_2_9: 60F060
-    l_pop_2_10: 60F060
-    l_pop_2_11: 60F060
-    l_pop_2_12: 60F060
+    l_pop_2_1: 804040
+    l_pop_2_2: 804040
+    l_pop_2_3: 804040
+    l_pop_2_4: 804040
+    l_pop_2_5: 804040
+    l_pop_2_6: 804040
+    l_pop_2_7: 804040
+    l_pop_2_8: 804040
+    l_pop_2_9: 804040
+    l_pop_2_10: 804040
+    l_pop_2_11: 804040
+    l_pop_2_12: 804040
   fiddler_right_pop_off:
     l_pop_2_1: off
     l_pop_2_2: off
@@ -126,8 +126,8 @@ light_player:
     l_pop_2_12: off
 
   fiddler_right_bank_solid:
-    l_gi_5bank_lower: 60F060
-    l_gi_5bank_upper: 60F060
+    l_gi_5bank_lower: 804040
+    l_gi_5bank_upper: 804040
   fiddler_right_bank_off:
     l_gi_5bank_lower: off
     l_gi_5bank_upper: off
@@ -154,12 +154,12 @@ shows:
   fiddler_saucer_ready_pulse:
     - duration: 500ms
       lights:
-        l_1_hole_l: 60F060
-        l_1_hole_r: 60F060
-        l_2_hole_l: 60F060
-        l_2_hole_r: 60F060
-        l_3_hole_l: 60F060
-        l_3_hole_r: 60F060
+        l_1_hole_l: FFFFFF
+        l_1_hole_r: FFFFFF
+        l_2_hole_l: FFFFFF
+        l_2_hole_r: FFFFFF
+        l_3_hole_l: FFFFFF
+        l_3_hole_r: FFFFFF
     - duration: 500ms
       lights:
         l_1_hole_l: 404040

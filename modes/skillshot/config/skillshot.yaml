@@ -16,6 +16,9 @@ mode:
 
 
 event_player:
+  mode_skillshot_started:
+    - play_chapter_base_music
+
   skillshot_awarded:
     - show_skillshot_result
     - skillshot_success_callout
@@ -52,6 +55,24 @@ widget_player:
 
 
 sound_player:
+  mode_skillshot_started:
+    ticking:
+      action: play
+      bus: effects
+      loops: -1
+
+  skillshot_awarded:
+    ticking:
+      action: stop
+
+  skillshot_missed:
+    ticking:
+      action: stop
+
+  mode_skillshot_stopping:
+    ticking:
+      action: stop
+
   skillshot_success_callout:
     drum_1:
       action: play

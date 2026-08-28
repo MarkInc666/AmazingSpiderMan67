@@ -1365,9 +1365,8 @@ class VillainProgression(Mode):
         )
         self.machine.events.post(
             "show_mode_message",
-            message=f"STARTING NEXT VILLAIN\n{info['name'].upper()}",
-            duration=2,
-            priority=200,
+            message_mode_title="STARTING NEXT VILLAIN",
+            message_mode_subtitle=info["name"].upper(),
         )
         self.delay.remove("mystery_start_next_villain")
         self.delay.add(

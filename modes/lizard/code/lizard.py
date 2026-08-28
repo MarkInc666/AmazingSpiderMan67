@@ -427,6 +427,7 @@ class Lizard(CaseFileMixin, Mode):
         self.machine.events.post("lizard_serum_delivered")
         self.machine.events.post("play_mode_jackpot")
         self._stop_delivery_timers()
+        self.machine.events.post("hide_mode_status")
 
         self._delivery_completes_mode = player["lizard_deliveries"] >= self.delivery_attempts
         self._delivery_success_pending = True
