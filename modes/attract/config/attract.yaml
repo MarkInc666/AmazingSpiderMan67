@@ -32,6 +32,51 @@ timers:
         action: restart    
 
 
+# Physical-hardware test harness backdoor. Attract has no player, so the
+# sequence arms a non-persistent machine variable. Press START normally after
+# the code; the new game will enter TEST MODE SELECT instead of progression.
+sequence_shots:
+  test_mode_harness_code:
+    switch_sequence:
+      - s_left_flipper
+      - s_left_flipper
+      - s_right_flipper
+      - s_right_flipper
+      - s_left_flipper
+      - s_right_flipper
+      - s_left_flipper
+      - s_right_flipper
+    sequence_timeout: 5s
+    allow_multiple_active: false
+
+  test_mode_harness_off_code:
+    switch_sequence:
+      - s_right_flipper
+      - s_right_flipper
+      - s_left_flipper
+      - s_left_flipper
+      - s_right_flipper
+      - s_left_flipper
+      - s_right_flipper
+      - s_left_flipper
+    sequence_timeout: 5s
+    allow_multiple_active: false
+
+variable_player:
+  test_mode_harness_code_hit:
+    test_mode_session_requested:
+      int: 1
+      action: set_machine
+
+  test_mode_harness_off_code_hit:
+    test_mode_session_requested:
+      int: 0
+      action: set_machine
+    chapter_progression_test_unlock_all:
+      int: 0
+      action: set_machine
+
+
 slide_player:
   mode_attract_started: attract
 
@@ -41,6 +86,16 @@ slide_player:
 
 
 sound_player:
+  test_mode_harness_code_hit:
+    zip_out:
+      action: play
+      bus: effects
+
+  test_mode_harness_off_code_hit:
+    hb_bonk_1:
+      action: play
+      bus: effects
+
   mode_attract_started: 
     maintheme:
       action: play

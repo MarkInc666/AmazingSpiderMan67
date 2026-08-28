@@ -27,7 +27,7 @@ player_vars:
   chapter_select_waiting_for_summary:
     initial_value: 0
     value_type: int
-  chapter_unlock_deck_index:
+  chapter_progression_test_unlock_all:
     initial_value: 0
     value_type: int
   chapter_1_unlocked:
@@ -43,55 +43,55 @@ player_vars:
     initial_value: 0
     value_type: int
   chapter_3_unlocked:
-    initial_value: 1
+    initial_value: 0
     value_type: int
   chapter_3_collected:
     initial_value: 0
     value_type: int
   chapter_4_unlocked:
-    initial_value: 1
+    initial_value: 0
     value_type: int
   chapter_4_collected:
     initial_value: 0
     value_type: int
   chapter_5_unlocked:
-    initial_value: 1
+    initial_value: 0
     value_type: int
   chapter_5_collected:
     initial_value: 0
     value_type: int
   chapter_6_unlocked:
-    initial_value: 1
+    initial_value: 0
     value_type: int
   chapter_6_collected:
     initial_value: 0
     value_type: int
   chapter_7_unlocked:
-    initial_value: 1
+    initial_value: 0
     value_type: int
   chapter_7_collected:
     initial_value: 0
     value_type: int
   chapter_8_unlocked:
-    initial_value: 1
+    initial_value: 0
     value_type: int
   chapter_8_collected:
     initial_value: 0
     value_type: int
   chapter_9_unlocked:
-    initial_value: 1
+    initial_value: 0
     value_type: int
   chapter_9_collected:
     initial_value: 0
     value_type: int
   chapter_10_unlocked:
-    initial_value: 1
+    initial_value: 0
     value_type: int
   chapter_10_collected:
     initial_value: 0
     value_type: int
   chapter_11_unlocked:
-    initial_value: 1
+    initial_value: 0
     value_type: int
   chapter_11_collected:
     initial_value: 0
@@ -898,5 +898,59 @@ player_vars:
     initial_value: 0
     value_type: int
   the_web_tightens_state:
+    initial_value: 0
+    value_type: int
+
+  # On-machine 67-mode test harness. These are disposable per-player values
+  # used only when attract mode arms test_mode_session_requested.
+  test_mode_session:
+    initial_value: 0
+    value_type: int
+  test_mode_select_index:
+    initial_value: 0
+    value_type: int
+  test_mode_select_stage:
+    initial_value: "MODE"
+    value_type: str
+  test_mode_select_header:
+    initial_value: "TEST MODE SELECT"
+    value_type: str
+  test_mode_select_name:
+    initial_value: ""
+    value_type: str
+  test_mode_select_detail:
+    initial_value: ""
+    value_type: str
+  test_mode_select_setup_title:
+    initial_value: ""
+    value_type: str
+  test_mode_select_setup_value:
+    initial_value: ""
+    value_type: str
+  test_mode_select_case_summary:
+    initial_value: ""
+    value_type: str
+  test_mode_select_help:
+    initial_value: ""
+    value_type: str
+  test_case_cursor:
+    initial_value: 0
+    value_type: int
+  test_case_more_jackpots:
+    initial_value: 0
+    value_type: int
+  test_case_more_time:
+    initial_value: 0
+    value_type: int
+  test_case_bigger_jackpots:
+    initial_value: 0
+    value_type: int
+  test_case_safety_net:
+    initial_value: 0
+    value_type: int
+  test_case_shot_assist:
+    initial_value: 0
+    value_type: int
+  test_wizard_case_files:
     initial_value: 0
     value_type: int

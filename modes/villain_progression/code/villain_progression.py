@@ -141,10 +141,16 @@ class VillainProgression(Mode):
         },
     ]
 
-    INITIAL_AVAILABLE_CHAPTERS = (1, 2, 3)
-    # Fixed reveal order keeps chapter discovery non-sequential but fair for
-    # multiplayer/tournament games. Chapters 1-3 start available.
-    CHAPTER_UNLOCK_DECK = (7, 4, 9, 5, 11, 8, 10, 6)
+    # Comic campaign progression. Chapters unlock in broad tiers based on the
+    # number of chapter Comics already collected (a Comic is collected once its
+    # mini-wizard attempt ends, whether the wizard was won or lost).
+    CHAPTER_UNLOCK_TIERS = (
+        (0, (1, 2)),
+        (1, (3, 4, 5)),
+        (2, (6, 7, 8)),
+        (3, (9, 10, 11)),
+    )
+    FINAL_WIZARD_COMICS_REQUIRED = 4
 
     VILLAINS = {
         'rhino': {'chapter': 1, 'name': 'Rhino', 'start_event': 'start_mode_rhino_bash'},
@@ -283,6 +289,24 @@ class VillainProgression(Mode):
         self.mini_wizard_gate_open_attempts = 0
         self.summary_held_saucers = set()
 
+        # The attract flipper code can arm a disposable hardware test session.
+        # A real game is still started normally so every tested mode has the
+        # player/ball context it expects. Test sessions bypass campaign recovery
+        # and progression and boot directly into the 67-mode selector.
+        test_requested = self.machine.variables.get_machine_var("test_mode_session_requested")
+        if self._safe_int(test_requested, 0) == 1:
+            self.machine.game.player["test_mode_session"] = 1
+            self._clear_runtime_flow_flags()
+            self._clear_active_case_file_helpers()
+            self._add_handlers()
+            self.add_mode_event_handler("clear_saucers", self._clear_saucers)
+            self.add_mode_event_handler("clear_saucers_delayed", self._clear_saucers_delayed)
+            self.machine.game.player["villain_mode_running"] = 1
+            self.delay.add(name="test_mode_selector_start", ms=250, callback=self._open_test_mode_selector)
+            return
+
+        self.machine.game.player["test_mode_session"] = 0
+
         # Player vars are initialized in config/player_vars.yaml. This mode is
         # a stateless interpreter of those durable vars: it recovers unresolved
         # PLAYING states on ball start, recalculates readiness, then restores
@@ -290,6 +314,17 @@ class VillainProgression(Mode):
         recovered = self._recover_playing_modes_as_completed()
         self._clear_runtime_flow_flags()
         self._clear_active_case_file_helpers()
+
+        # Attract-mode hardware cheat stores its state as a machine variable
+        # because no player exists in attract. Copy it into this player's
+        # progression override when gameplay begins. The machine variable is
+        # intentionally non-persistent, so a power cycle returns to normal.
+        test_unlock_all = self.machine.variables.get_machine_var(
+            "chapter_progression_test_unlock_all"
+        )
+        self.machine.game.player["chapter_progression_test_unlock_all"] = (
+            1 if self._safe_int(test_unlock_all, 0) == 1 else 0
+        )
 
         # If a mode was recovered from PLAYING, it probably died at ball end.
         # Run common cleanup before recalculating readiness, so a newly-ready
@@ -613,6 +648,24 @@ class VillainProgression(Mode):
         )
         player["mini_wizards_completed"] = completed_minis
 
+        final_state = self._normalize_state(player[f"{self.FINAL_WIZARD_KEY}_state"])
+        final_completed = final_state == self.COMPLETED
+        final_playing = final_state == self.PLAYING
+        final_qualified = (
+            completed_minis >= self.FINAL_WIZARD_COMICS_REQUIRED
+            and not final_completed
+        )
+        was_final_ready = self._safe_int(player["final_wizard_ready"], 0) == 1
+        player["final_wizard_ready"] = 1 if final_qualified and not final_playing else 0
+        if final_qualified and not final_playing and final_state != self.NOT_PLAYED:
+            player[f"{self.FINAL_WIZARD_KEY}_state"] = self.NOT_PLAYED
+        if post_events and player["final_wizard_ready"] == 1 and not was_final_ready:
+            self.machine.events.post(
+                "final_wizard_ready",
+                comics_collected=completed_minis,
+                comics_required=self.FINAL_WIZARD_COMICS_REQUIRED,
+            )
+
         selected = self._safe_int(player["selected_chapter"], 1)
         if selected < 1 or selected > len(self.CHAPTERS):
             selected = self._first_available_chapter_number() or 1
@@ -624,16 +677,15 @@ class VillainProgression(Mode):
         if chapter is None:
             player["chapter_mini_wizard_ready"] = 0
             player["mini_wizard_daily_bugle_ready"] = 0
-            final_completed = self._normalize_state(player[f"{self.FINAL_WIZARD_KEY}_state"]) == self.COMPLETED
-            was_ready = self._safe_int(player["final_wizard_ready"], 0) == 1
-            player["final_wizard_ready"] = 0 if final_completed else 1
-            if not final_completed and self._normalize_state(player[f"{self.FINAL_WIZARD_KEY}_state"]) != self.PLAYING:
-                player[f"{self.FINAL_WIZARD_KEY}_state"] = self.NOT_PLAYED
-            if post_events and player["final_wizard_ready"] == 1 and not was_ready:
-                self.machine.events.post("final_wizard_ready")
             return
 
-        player["final_wizard_ready"] = 0
+        # Once four Comics have been collected, normal chapter progression is
+        # suspended. The existing Final Wizard qualification/start flow owns
+        # the game from here.
+        if self._safe_int(player["final_wizard_ready"], 0) == 1:
+            player["chapter_mini_wizard_ready"] = 0
+            player["mini_wizard_daily_bugle_ready"] = 0
+            return
 
         completed_count = 0
         for key in chapter["villains"]:
@@ -846,6 +898,11 @@ class VillainProgression(Mode):
         self.add_mode_event_handler("villain_progression_start_final_wizard", self._start_final_wizard)
         self.add_mode_event_handler("final_showdown_mode_complete", self._final_wizard_gameplay_finished, completed=True)
         self.add_mode_event_handler("villain_progression_restore_state", self._restore_state)
+        # Explicit test backdoor. This exposes all uncollected chapter Comics
+        # without marking any Comic collected or advancing Final Wizard progress.
+        self.add_mode_event_handler("chapter_progression_test_unlock_all", self._test_unlock_all_chapters)
+        self.add_mode_event_handler("chapter_progression_test_unlock_off", self._test_unlock_all_chapters_off)
+        self.add_mode_event_handler("test_mode_launch_requested", self._test_mode_launch_requested)
 
         # Completion / wizard flow.
         for event_name, finish_info in self.COMPLETION_EVENTS.items():
@@ -905,6 +962,112 @@ class VillainProgression(Mode):
         self.add_mode_event_handler("s_left_flipper_inactive", self._try_pending_mini_wizard_gate_open)
         self.add_mode_event_handler("s_right_flipper_inactive", self._try_pending_mini_wizard_gate_open)
         self.add_mode_event_handler("s_right_flipper_upper_inactive", self._try_pending_mini_wizard_gate_open)
+
+    def _open_test_mode_selector(self, **kwargs):
+        if not self.machine.game or self._safe_int(self.machine.game.player["test_mode_session"], 0) != 1:
+            return
+        player = self.machine.game.player
+        player["villain_mode_running"] = 1
+        player["villain_mode_in_summary"] = 0
+        player["villain_current_key"] = ""
+        player["villain_current_name"] = ""
+        player["villain_mode_running_name"] = ""
+        player["mini_wizard_current_key"] = ""
+        self.machine.events.post("start_mode_test_mode_select")
+
+    def _apply_test_case_files(self):
+        player = self.machine.game.player
+        count = 0
+        for key in self.CASE_FILE_KEYS:
+            enabled = 1 if self._safe_int(player[f"test_case_{key}"], 0) == 1 else 0
+            player[f"case_file_{key}_collected"] = enabled
+            count += enabled
+        player["case_files_collected_count"] = count
+        player["current_villain_case_files_collected"] = count
+        self.machine.events.post("case_files_restore_state")
+
+    def _test_mode_launch_requested(self, mode_key=None, mode_kind=None, chapter=0, start_event=None, wizard_case_files=0, **kwargs):
+        if self._safe_int(self.machine.game.player["test_mode_session"], 0) != 1:
+            return
+        player = self.machine.game.player
+        kind = str(mode_kind or "").upper()
+        key = str(mode_key or "")
+        player["test_mode_select_stage"] = "MODE"
+
+        if kind == "VILLAIN" and key in self.VILLAINS:
+            self._apply_test_case_files()
+            self._start_villain(key)
+            self.machine.events.post("test_mode_started", mode_key=key, mode_kind=kind)
+            return
+
+        # Wizards use only the chapter-local 0-25 Case File total; active
+        # villain Case File powers are deliberately cleared.
+        for case_key in self.CASE_FILE_KEYS:
+            player[f"case_file_{case_key}_collected"] = 0
+        player["case_files_collected_count"] = 0
+        player["current_villain_case_files_collected"] = 0
+        total = max(0, min(25, self._safe_int(wizard_case_files, 0)))
+        player["chapter_case_files_collected"] = total
+        self._sync_mini_wizard_case_file_bonus()
+        self.machine.events.post("case_files_clear_lights")
+
+        if kind == "FINAL" and key == self.FINAL_WIZARD_KEY:
+            player[f"{self.FINAL_WIZARD_KEY}_state"] = self.PLAYING
+            player["villain_current_key"] = self.FINAL_WIZARD_KEY
+            player["villain_current_name"] = self.FINAL_WIZARD_KEY
+            player["villain_mode_running"] = 1
+            player["villain_mode_running_name"] = self.FINAL_WIZARD_KEY
+            self.machine.events.post("villain_started_set", villain_key=self.FINAL_WIZARD_KEY, villain=self.FINAL_WIZARD_KEY)
+            self.machine.events.post(
+                "villain_bookend_intro_request",
+                villain=self.FINAL_WIZARD_KEY,
+                start_event=self.FINAL_WIZARD_EVENT,
+            )
+            self.machine.events.post("test_mode_started", mode_key=key, mode_kind=kind, case_files=total)
+            return
+
+        chapter_number, chapter_info = self._chapter_for_mini_wizard(key)
+        if kind != "WIZARD" or not chapter_info:
+            self.machine.events.post("test_mode_launch_invalid", mode_key=key, mode_kind=kind)
+            self._open_test_mode_selector()
+            return
+
+        player["mini_wizard_current_key"] = key
+        player[f"{key}_state"] = self.PLAYING
+        player["villain_mode_running"] = 1
+        player["villain_current_key"] = key
+        player["villain_current_name"] = key
+        player["villain_mode_running_name"] = key
+        self.machine.events.post(
+            "chapter_mini_wizard_starting",
+            chapter=chapter_info["key"],
+            chapter_name=chapter_info["name"],
+            mini_wizard_key=key,
+            mini_wizard_name=chapter_info["mini_wizard_name"],
+            chapter_case_files_collected=total,
+            case_file_bonus=player["mini_wizard_case_file_bonus"],
+            jackpot_value=player["mini_wizard_jackpot_value"],
+        )
+        self.machine.events.post(
+            "villain_bookend_intro_request",
+            villain=key,
+            start_event=chapter_info["mini_wizard_event"],
+        )
+        self.machine.events.post("test_mode_started", mode_key=key, mode_kind=kind, case_files=total)
+
+    def _return_to_test_selector(self, reason="test_mode_complete"):
+        player = self.machine.game.player
+        self._release_summary_saucer_holds()
+        self._clear_runtime_flow_flags()
+        self._clear_active_case_file_helpers()
+        player["villain_mode_running"] = 1
+        player["villain_mode_in_summary"] = 0
+        player["villain_current_key"] = ""
+        player["villain_current_name"] = ""
+        player["villain_mode_running_name"] = ""
+        player["mini_wizard_current_key"] = ""
+        self._post_global_cleanup_events(reason=reason)
+        self.delay.reset(name="test_mode_selector_return", ms=150, callback=self._open_test_mode_selector)
 
     def _request_vuk_eject(self, delay_ms=None, **kwargs):
         """Schedule a VUK release from this persistent progression mode."""
@@ -1221,42 +1384,63 @@ class VillainProgression(Mode):
         self._schedule_case_files_restore(reason="chapter_selected")
 
     def _sync_chapter_collection_state(self):
+        """Derive Comic collection and chapter availability from campaign state.
+
+        Normal progression is deterministic:
+          0 Comics -> Chapters 1-2
+          1 Comic  -> + Chapters 3-5
+          2 Comics -> + Chapters 6-8
+          3 Comics -> + Chapters 9-11
+
+        The test override exposes all uncollected chapters but never changes
+        collection state, so it cannot by itself qualify the Final Wizard.
+        """
         player = self.machine.game.player
 
-        for chapter_number in self.INITIAL_AVAILABLE_CHAPTERS:
-            player[f"chapter_{chapter_number}_unlocked"] = 1
-
-        completed_count = 0
         for chapter_number, chapter in enumerate(self.CHAPTERS, start=1):
             mini_key = chapter["mini_wizard_key"]
             if self._normalize_state(player[f"{mini_key}_state"]) == self.COMPLETED:
                 player[f"chapter_{chapter_number}_collected"] = 1
-                player[f"chapter_{chapter_number}_unlocked"] = 1
-                completed_count += 1
 
-        while self._safe_int(player["chapter_unlock_deck_index"], 0) < completed_count:
-            if not self._unlock_next_chapter_from_deck():
-                break
+        collected_count = sum(
+            1
+            for chapter_number in range(1, len(self.CHAPTERS) + 1)
+            if self._safe_int(player[f"chapter_{chapter_number}_collected"], 0) == 1
+        )
 
-    def _unlock_next_chapter_from_deck(self):
-        player = self.machine.game.player
-        index = self._safe_int(player["chapter_unlock_deck_index"], 0)
+        unlock_all = self._safe_int(player["chapter_progression_test_unlock_all"], 0) == 1
+        unlocked = set(range(1, len(self.CHAPTERS) + 1)) if unlock_all else set()
+        if not unlock_all:
+            for required_comics, chapter_numbers in self.CHAPTER_UNLOCK_TIERS:
+                if collected_count >= required_comics:
+                    unlocked.update(chapter_numbers)
 
-        while index < len(self.CHAPTER_UNLOCK_DECK):
-            chapter_number = self.CHAPTER_UNLOCK_DECK[index]
-            index += 1
-            player["chapter_unlock_deck_index"] = index
-            if self._safe_int(player[f"chapter_{chapter_number}_unlocked"], 0) == 0:
-                player[f"chapter_{chapter_number}_unlocked"] = 1
+        for chapter_number in range(1, len(self.CHAPTERS) + 1):
+            var_name = f"chapter_{chapter_number}_unlocked"
+            old_value = self._safe_int(player[var_name], 0)
+            new_value = 1 if chapter_number in unlocked else 0
+            player[var_name] = new_value
+            if new_value == 1 and old_value == 0:
                 self.machine.events.post(
                     "chapter_comic_unlocked",
                     chapter_number=chapter_number,
                     chapter_name=self.CHAPTERS[chapter_number - 1]["name"],
+                    test_override=1 if unlock_all else 0,
                 )
-                return True
 
-        player["chapter_unlock_deck_index"] = len(self.CHAPTER_UNLOCK_DECK)
-        return False
+    def _test_unlock_all_chapters(self, **kwargs):
+        player = self.machine.game.player
+        player["chapter_progression_test_unlock_all"] = 1
+        self._recalculate_progression_from_states(post_events=True)
+        self._restore_state()
+        self.machine.events.post("chapter_progression_test_unlock_all_active")
+
+    def _test_unlock_all_chapters_off(self, **kwargs):
+        player = self.machine.game.player
+        player["chapter_progression_test_unlock_all"] = 0
+        self._recalculate_progression_from_states(post_events=True)
+        self._restore_state()
+        self.machine.events.post("chapter_progression_test_unlock_all_inactive")
 
     def _chapter_is_available(self, chapter_number):
         if chapter_number < 1 or chapter_number > len(self.CHAPTERS):
@@ -1550,6 +1734,10 @@ class VillainProgression(Mode):
         self.machine.events.post("villain_summary_cleanup_complete", villain_key=villain, villain=villain)
         self.machine.events.post("villain_mode_ended", villain_key=villain, villain=villain)
 
+        if player and self._safe_int(player["test_mode_session"], 0) == 1:
+            self._return_to_test_selector(reason="test_villain_summary_done")
+            return
+
         # If that summary finished the fifth villain in the chapter, make the
         # chapter mini-wizard immediately available at the Daily Bugle VUK.
         #
@@ -1684,10 +1872,16 @@ class VillainProgression(Mode):
 
         self._release_chapter_select_summary_hold(mini_wizard=mini_key)
 
+        if self._safe_int(player["test_mode_session"], 0) == 1:
+            player[f"{mini_key}_state"] = self.NOT_PLAYED
+            self.machine.events.post("chapter_mini_wizard_ended", mini_wizard=mini_key, test_mode=1)
+            self.machine.events.post("villain_mode_ended", villain=mini_key, villain_key=mini_key, test_mode=1)
+            self._return_to_test_selector(reason="test_mini_wizard_summary_done")
+            return
+
         player[f"{mini_key}_state"] = self.COMPLETED
         player[f"chapter_{chapter_number}_collected"] = 1
         player[f"chapter_{chapter_number}_unlocked"] = 1
-        self._unlock_next_chapter_from_deck()
 
         self._clear_runtime_flow_flags()
 
@@ -1700,12 +1894,20 @@ class VillainProgression(Mode):
         player["chapter_select_active"] = 0
 
         self._reset_chapter_case_file_bonus()
-        self._recalculate_progression_from_states(post_events=False)
+        self._recalculate_progression_from_states(post_events=True)
+
+        # Comic #4 hands progression directly to Final Wizard readiness rather
+        # than opening another Chapter Select. Earlier Comics continue into the
+        # normal shooter-lane chapter-selection transition.
+        if self._safe_int(player["final_wizard_ready"], 0) == 1:
+            player["chapter_select_needed"] = 0
+            player["chapter_select_active"] = 0
 
         self._release_summary_saucer_holds()
         self._post_global_cleanup_events(reason="mini_wizard_completed")
         self.machine.events.post("chapter_comic_collected", chapter_number=chapter_number, chapter_name=chapter["name"])
-        self.machine.events.post("chapter_select_transition_ready", chapter_number=chapter_number, chapter_name=chapter["name"])
+        if self._safe_int(player["final_wizard_ready"], 0) != 1:
+            self.machine.events.post("chapter_select_transition_ready", chapter_number=chapter_number, chapter_name=chapter["name"])
         self.machine.events.post("chapter_mini_wizard_ended", mini_wizard=mini_key)
         self.machine.events.post("villain_mode_ended", villain=mini_key, villain_key=mini_key)
 

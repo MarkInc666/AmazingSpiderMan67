@@ -1,0 +1,58 @@
+ASM67 ON-MACHINE TEST MODE HARNESS
+==================================
+
+Purpose
+-------
+A disposable hardware-only test session for the 67 story modes:
+55 villains + 11 chapter wizards + Final Showdown.
+It does not attempt to preserve or rejoin normal campaign progression.
+
+Entering the harness
+--------------------
+While ATTRACT is running, enter this flipper sequence within 5 seconds:
+
+    LEFT LEFT RIGHT RIGHT LEFT RIGHT LEFT RIGHT
+
+Then press START normally. The new game opens TEST MODE SELECT instead of
+normal chapter/villain progression.
+
+To disarm the harness from ATTRACT:
+
+    RIGHT RIGHT LEFT LEFT RIGHT LEFT RIGHT LEFT
+
+The attract flag is a non-persistent machine variable, so a power cycle also
+returns the machine to normal gameplay.
+
+Mode selector controls
+----------------------
+LEFT / RIGHT flipper release  = previous / next mode
+BOTH flippers                 = enter setup
+
+Villain setup
+-------------
+LEFT / RIGHT = choose More Jackpots, More Time, Bigger Jackpots, Safety Net,
+               Shot Assist, or BACK
+BOTH         = toggle the highlighted Case File, or use BACK
+PLUNGE       = start the highlighted villain with exactly those Case Files
+
+The five test Case File choices are retained between test launches during the
+same test game.
+
+Wizard / Final Wizard setup
+---------------------------
+LEFT / RIGHT = adjust chapter Case File total from 0 through 25
+BOTH         = back to the mode list
+PLUNGE       = start the highlighted wizard with that total
+
+The harness writes chapter_case_files_collected and the existing derived
+mini_wizard_case_file_bonus / mini_wizard_jackpot_value values, so wizard
+scoring uses the same Case File bonus path as normal play.
+
+Test-session flow
+-----------------
+Selected modes use their normal villain/wizard intro start event. Normal
+campaign qualification is bypassed. Test summaries are still shown. After a
+summary, the harness routes back toward TEST MODE SELECT rather than collecting
+Comics, opening chapters, or advancing normal progression. A ball that is still
+live when the selector returns is allowed to drain with flippers disabled; the
+next ball starts in the selector with a ball available in the shooter lane.

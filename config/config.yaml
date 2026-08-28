@@ -162,6 +162,7 @@ modes:
   - villain_start
   - case_files
   - villain_progression
+  - test_mode_select
 
 event_player:
   # The physical rooftop gate must begin every game in the closed position.

@@ -1,0 +1,53 @@
+#config_version=6
+
+mode:
+  code: test_mode_select.TestModeSelect
+  start_events: start_mode_test_mode_select
+  stop_events:
+    - stop_mode_test_mode_select
+    - ball_ending
+    - tilt
+    - slam_tilt
+  priority: 2500
+
+event_player:
+  mode_test_mode_select_started:
+    - cmd_flippers_disable
+    - cmd_autofire_coils_disable
+    - clear_villain_saucer_lights
+    - case_files_clear_lights
+    - final_vuk_chase_stop
+
+  stop_mode_test_mode_select:
+    - cmd_flippers_enable
+    - cmd_autofire_coils_enable
+
+sound_player:
+  test_mode_select_move:
+    hb_up_1:
+      action: play
+      bus: effects
+
+  test_mode_case_file_toggled:
+    zip_out:
+      action: play
+      bus: effects
+
+  test_mode_launch_requested:
+    zip_out:
+      action: play
+      bus: effects
+
+widget_player:
+  mode_test_mode_select_started:
+    test_mode_select:
+      action: play
+      priority: 3000
+
+  stop_mode_test_mode_select:
+    test_mode_select:
+      action: remove
+
+  test_mode_select_stopped:
+    test_mode_select:
+      action: remove
