@@ -1,5 +1,8 @@
 #config_version=6
 
+mode:
+  code: attract_harness.AttractHarness
+
 mode_settings:
   selectable_items:
     - title
@@ -33,34 +36,8 @@ timers:
 
 
 # Physical-hardware test harness backdoor. Attract has no player, so the
-# sequence arms a non-persistent machine variable. Press START normally after
-# the code; the new game will enter TEST MODE SELECT instead of progression.
-sequence_shots:
-  test_mode_harness_code:
-    switch_sequence:
-      - s_left_flipper
-      - s_left_flipper
-      - s_right_flipper
-      - s_right_flipper
-      - s_left_flipper
-      - s_right_flipper
-      - s_left_flipper
-      - s_right_flipper
-    sequence_timeout: 5s
-    allow_multiple_active: false
-
-  test_mode_harness_off_code:
-    switch_sequence:
-      - s_right_flipper
-      - s_right_flipper
-      - s_left_flipper
-      - s_left_flipper
-      - s_right_flipper
-      - s_left_flipper
-      - s_right_flipper
-      - s_left_flipper
-    sequence_timeout: 5s
-    allow_multiple_active: false
+# custom attract code listens directly for flipper events and posts the same
+# hit events used below. This avoids sequence_shot overlap on MPF 0.80.0.dev11.
 
 variable_player:
   test_mode_harness_code_hit:
