@@ -5,6 +5,19 @@ class VillainBookends(Mode):
 
     INTRO_MS = 5000
     SUMMARY_MS = 6000
+    COMIC_SUMMARY_VILLAINS = {
+        "sinister_surge": 1,
+        "mastermind_trap": 2,
+        "trubble_unleashed": 3,
+        "crime_wave": 4,
+        "the_web_tightens": 5,
+        "fifth_dimension_curse": 6,
+        "mad_science_meltdown": 7,
+        "nature_strikes_back": 8,
+        "invasion_from_everywhere": 9,
+        "who_is_the_real_villain": 10,
+        "time_tossed_showdown": 11,
+    }
     UNSKIPPABLE_SUMMARY_VILLAINS = {
         "sinister_surge",
         "mastermind_trap",
@@ -1348,6 +1361,15 @@ class VillainBookends(Mode):
         if villain == "spider_slayer":
             stat_2 = f"{self._safe_number(stat_2) / 10:.1f} SEC"
 
+        comic_summary = villain in self.COMIC_SUMMARY_VILLAINS
+        if comic_summary:
+            chapter_number = self.COMIC_SUMMARY_VILLAINS[villain]
+            self._set_machine_var("wizard_summary_comic_key", f"CHAPTER {chapter_number}")
+            self._set_machine_var("wizard_summary_stamp_text", "COLLECTED")
+        else:
+            self._set_machine_var("wizard_summary_comic_key", "")
+            self._set_machine_var("wizard_summary_stamp_text", "")
+
         self.current_stage = "summary"
         self.current_villain = villain
         self.current_done_event = done_event or f"{villain}_summary_done"
@@ -1381,7 +1403,10 @@ class VillainBookends(Mode):
             )
 
         self.machine.events.post("villain_bookend_intro_hide")
-        self.machine.events.post("villain_bookend_summary_show", villain=villain)
+        if comic_summary:
+            self.machine.events.post("wizard_comic_summary_show", villain=villain)
+        else:
+            self.machine.events.post("villain_bookend_summary_show", villain=villain)
         # Own the playfield lighting for the full summary so stopped gameplay-mode
         # shows cannot bleed through. Wizards use the slower six-second shutdown;
         # ordinary villains get a fast top-to-bottom neutral wipe, then hold dim.
@@ -1488,8 +1513,12 @@ class VillainBookends(Mode):
             self.machine.game.player["villain_mode_in_summary"] = False
             self.machine.events.post("reset_villain_locate")
             self.machine.events.post("reset_daily_bugle_state")
+            if villain in self.COMIC_SUMMARY_VILLAINS:
+                self.machine.events.post("wizard_comic_summary_hide")
             self.machine.events.post("villain_bookend_summary_hide")
             self.machine.events.post("villain_bookend_summary_done", villain=villain)
+            self._set_machine_var("wizard_summary_comic_key", "")
+            self._set_machine_var("wizard_summary_stamp_text", "")
             if self.summary_vuk_release_pending:
                 self.summary_vuk_release_pending = False
                 self.delay.remove("villain_summary_enforce_vuk_hold")

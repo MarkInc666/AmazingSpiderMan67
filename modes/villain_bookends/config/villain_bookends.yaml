@@ -37,6 +37,15 @@ widget_player:
     villain_summary:
       action: remove
 
+  wizard_comic_summary_show:
+    wizard_comic_summary:
+      action: play
+
+  wizard_comic_summary_hide:
+    wizard_comic_summary:
+      action: remove
+
+
 show_player:
   shared_drain_echo_start:
     wizard_summary_shutdown_show:
@@ -55,6 +64,12 @@ show_player:
       loops: 0
 
   villain_bookend_summary_hide:
+    wizard_summary_shutdown_show:
+      action: stop
+    villain_summary_wipe_show:
+      action: stop
+
+  wizard_comic_summary_hide:
     wizard_summary_shutdown_show:
       action: stop
     villain_summary_wipe_show:
