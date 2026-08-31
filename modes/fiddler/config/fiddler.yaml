@@ -89,28 +89,45 @@ light_player:
     gi: E0E0E0
 
   fiddler_left_web_solid:
-    l_left_web_target: 804040
+    l_left_web_target: 40FF40
+  fiddler_left_web_dim:
+    l_left_web_target: 208020
   fiddler_left_web_off:
     l_left_web_target: off
 
   fiddler_left_bank_solid:
-    l_gi_3bank: 804040
+    l_gi_3bank: 40FF40
+  fiddler_left_bank_dim:
+    l_gi_3bank: 208020
   fiddler_left_bank_off:
     l_gi_3bank: off
 
   fiddler_right_pop_solid:
-    l_pop_2_1: 804040
-    l_pop_2_2: 804040
-    l_pop_2_3: 804040
-    l_pop_2_4: 804040
-    l_pop_2_5: 804040
-    l_pop_2_6: 804040
-    l_pop_2_7: 804040
-    l_pop_2_8: 804040
-    l_pop_2_9: 804040
-    l_pop_2_10: 804040
-    l_pop_2_11: 804040
-    l_pop_2_12: 804040
+    l_pop_2_1: 40FF40
+    l_pop_2_2: 40FF40
+    l_pop_2_3: 40FF40
+    l_pop_2_4: 40FF40
+    l_pop_2_5: 40FF40
+    l_pop_2_6: 40FF40
+    l_pop_2_7: 40FF40
+    l_pop_2_8: 40FF40
+    l_pop_2_9: 40FF40
+    l_pop_2_10: 40FF40
+    l_pop_2_11: 40FF40
+    l_pop_2_12: 40FF40
+  fiddler_right_pop_dim:
+    l_pop_2_1: 208020
+    l_pop_2_2: 208020
+    l_pop_2_3: 208020
+    l_pop_2_4: 208020
+    l_pop_2_5: 208020
+    l_pop_2_6: 208020
+    l_pop_2_7: 208020
+    l_pop_2_8: 208020
+    l_pop_2_9: 208020
+    l_pop_2_10: 208020
+    l_pop_2_11: 208020
+    l_pop_2_12: 208020
   fiddler_right_pop_off:
     l_pop_2_1: off
     l_pop_2_2: off
@@ -126,8 +143,11 @@ light_player:
     l_pop_2_12: off
 
   fiddler_right_bank_solid:
-    l_gi_5bank_lower: 804040
-    l_gi_5bank_upper: 804040
+    l_gi_5bank_lower: 40FF40
+    l_gi_5bank_upper: 40FF40
+  fiddler_right_bank_dim:
+    l_gi_5bank_lower: 208020
+    l_gi_5bank_upper: 208020
   fiddler_right_bank_off:
     l_gi_5bank_lower: off
     l_gi_5bank_upper: off

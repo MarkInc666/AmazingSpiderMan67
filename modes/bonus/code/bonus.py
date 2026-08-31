@@ -67,6 +67,14 @@ class Bonus(MpfBonus):
         Mode.mode_start(self, **kwargs)
 
         self._player = self.machine.game.player
+
+        # EXIT TO ATTRACT ends the disposable hardware-test game without
+        # showing or awarding the normal end-of-ball bonus first.
+        if int(self._player["test_mode_exit_requested"] or 0) == 1:
+            self._bonus_running = False
+            self.delay.add(name="asm_bonus_skip_test_exit", ms=0, callback=self.stop)
+            return
+
         self._bonus_running = True
 
         # Remove gameplay widgets before the first bonus token update. GMC

@@ -76,8 +76,10 @@ Final five seconds
   GI alternates ocean blue and cool white.
 
 Timeout
-  Upper targets and spinner indications stop. GI falls to dim blue. All flippers
-  stay disabled until the active ball reaches the trough.
+  Upper targets and spinner indications stop. GI falls to dim blue, then the
+  shared drain echo runs three E0E0E0 bands from playfield band 8 down to band
+  1 over a 404040 background. All flippers stay disabled until the active ball
+  reaches the trough; relay cleanup stops the drain echo immediately.
 
 STATE / SUMMARY DATA
 --------------------
@@ -106,6 +108,8 @@ PLAYTEST CHECKLIST
 - Bigger Jackpots applies 150K / 200K / 200K start values.
 - Shot Assist maps saucer 1/2/3 to left/center/right and scores 3X only once.
 - All flippers disable exactly at timeout, even if the ball has left the roof.
+- Timeout starts three top-to-bottom drain-echo cycles and trough arrival stops
+  the show immediately rather than letting it overlap the summary.
 - Trough arrival ends gameplay and re-enables all flippers, but the held saucer
   does not eject until the villain summary finishes or is skipped.
 - Summary completion releases only the held saucer through the shared staggered

@@ -5,7 +5,7 @@ mode:
     # Normal balls get a skill shot immediately.
     # Chapter-select transition balls wait until the player selects a chapter,
     # then the selected/plunged ball gets the normal skill shot.
-    - ball_started{current_player.chapter_select_needed != 1}
+    - ball_started{machine.test_mode_session_requested != 1 and current_player.chapter_select_needed != 1}
     - chapter_select_confirmed
   stop_events:
     - finish_skillshot2

@@ -906,6 +906,12 @@ player_vars:
   test_mode_session:
     initial_value: 0
     value_type: int
+  test_mode_waiting_for_ball_return:
+    initial_value: 0
+    value_type: int
+  test_mode_exit_requested:
+    initial_value: 0
+    value_type: int
   test_mode_select_index:
     initial_value: 0
     value_type: int

@@ -66,6 +66,12 @@ event_player:
   - dr_manta_clear_all
   - dr_manta_disable_second_ball_save
 
+  dr_manta_attack_expired:
+  - shared_drain_echo_start
+
+  dr_manta_clear_all:
+  - shared_drain_echo_stop
+
 show_player:
   dr_manta_phase_vuk:
     dr_manta_vuk_path:

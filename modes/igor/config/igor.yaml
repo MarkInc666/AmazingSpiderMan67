@@ -251,6 +251,11 @@ shows:
       lights: {l_gi_3bank: off}
 
 sound_player:
+  igor_bad_shot_awarded:
+    hb_bonk_1:
+      action: play
+      bus: effects
+
   play_mode_jackpot:
     jackpot_2:
       action: play

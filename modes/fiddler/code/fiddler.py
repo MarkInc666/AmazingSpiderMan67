@@ -21,10 +21,10 @@ class Fiddler(CaseFileMixin, Mode):
     NOTE_FLASH_ON_MS = 200
     NOTE_FLASH_OFF_MS = 50
     NOTE_FLASH_TOTAL_MS = 1_000
-    WATCH_NOTE_TOTAL_MS = 400
-    WATCH_STROBE_ON_MS = 100
-    WATCH_STROBE_OFF_MS = 50
-    NOTE_GAP_MS = 150
+    WATCH_NOTE_TOTAL_MS = 900
+    WATCH_STROBE_ON_MS = 200
+    WATCH_STROBE_OFF_MS = 100
+    NOTE_GAP_MS = 200
     PATTERN_REPEAT_PAUSE_MS = 750
     FRESH_PATTERN_REPEATS = 2
     REMINDER_PATTERN_REPEATS = 1
@@ -211,7 +211,13 @@ class Fiddler(CaseFileMixin, Mode):
             if self._last_saucer_eject_time is not None:
                 elapsed = time.monotonic() - self._last_saucer_eject_time
                 if elapsed < self.REMINDER_REENTRY_LOCKOUT_SECONDS:
-                    self._eject_held_saucer()
+                    # A quick ricochet is not a reminder and must not extend
+                    # the original four-second reminder lockout. Use the
+                    # shared standard saucer-eject delay for this path.
+                    self._eject_held_saucer(
+                        delay_ms=None,
+                        restart_reminder_lockout=False,
+                    )
                     return
 
         # A clean saucer return is a voluntary reminder: replay the same full
@@ -245,6 +251,7 @@ class Fiddler(CaseFileMixin, Mode):
         if self.mode_done or not self.sequence:
             return
         self._clear_watch_delays()
+        self._clear_correct_note_flashes()
         self.demonstrating = True
         self.feedback_active = False
         self.machine.events.post("fiddler_all_notes_off")
@@ -296,7 +303,7 @@ class Fiddler(CaseFileMixin, Mode):
             self.machine.events.post(f"fiddler_{shot}_solid")
             step_ms = self.WATCH_STROBE_ON_MS
         else:
-            self.machine.events.post(f"fiddler_{shot}_off")
+            self.machine.events.post(f"fiddler_{shot}_dim")
             step_ms = self.WATCH_STROBE_OFF_MS
 
         remaining_ms = self.WATCH_NOTE_TOTAL_MS - self._watch_note_elapsed_ms
@@ -343,17 +350,18 @@ class Fiddler(CaseFileMixin, Mode):
             return
         self._eject_held_saucer()
 
-    def _eject_held_saucer(self):
+    def _eject_held_saucer(self, delay_ms=0, restart_reminder_lockout=True):
         if self.held_saucer not in (1, 2, 3):
             return
         saucer = self.held_saucer
         self.held_saucer = None
         self.machine.game.player["fiddler_saucer_hold"] = 0
-        self._last_saucer_eject_time = time.monotonic()
+        if restart_reminder_lockout:
+            self._last_saucer_eject_time = time.monotonic()
         self.machine.events.post(
             "request_saucer_eject",
             saucer_number=saucer,
-            delay_ms=0,
+            delay_ms=delay_ms,
         )
 
     def _shot_hit(self, shot=None, **kwargs):
@@ -415,7 +423,6 @@ class Fiddler(CaseFileMixin, Mode):
         self.machine.events.post(self.NOTE_EVENTS[shot])
         self._score(self.note_value)
         self.notes_hit += 1
-        self.feedback_active = True
         self.machine.events.post(
             "show_mode_jackpot",
             message_mode_title="CORRECT NOTE",
@@ -425,14 +432,10 @@ class Fiddler(CaseFileMixin, Mode):
         self._start_note_flash(
             shot,
             done_callback=self._correct_note_feedback_done,
-            delay_name="fiddler_correct_note_flash",
+            delay_name=f"fiddler_correct_note_flash_{shot}",
         )
-        self._sync_vars()
-
-    def _correct_note_feedback_done(self):
-        if self.mode_done:
-            return
-        self.feedback_active = False
+        # Correct-note feedback is visual only. Advance immediately so an
+        # ordered pattern can be completed as quickly as switches register.
         self.expected_index += 1
         if self.expected_index >= len(self.sequence):
             self._complete_pattern()
@@ -443,6 +446,9 @@ class Fiddler(CaseFileMixin, Mode):
             reminder=True,
         )
         self._sync_vars()
+
+    def _correct_note_feedback_done(self):
+        """Correct-note lighting never gates the next gameplay input."""
 
     def _shot_assist_feedback_done(self):
         if self.mode_done:
@@ -492,7 +498,6 @@ class Fiddler(CaseFileMixin, Mode):
         self.expected_index = 0
         self.round_failed = False
         self.waiting_for_saucer = True
-        self.machine.events.post("fiddler_all_notes_off")
         self.machine.events.post("fiddler_saucers_ready")
         self._show_message(
             "PATTERN COMPLETE",
@@ -605,14 +610,18 @@ class Fiddler(CaseFileMixin, Mode):
     def _clear_delays(self):
         self._clear_watch_delays()
         for name in (
-            "fiddler_correct_note_flash",
             "fiddler_wrong_note_flash",
             "fiddler_shot_assist_flash",
             "fiddler_failed_round_flash",
         ):
             self.delay.remove(name)
+        self._clear_correct_note_flashes()
         for target_name in self.DROP_TARGETS:
             self.delay.remove(f"fiddler_knockdown_{target_name}")
+
+    def _clear_correct_note_flashes(self):
+        for shot in self.SHOTS:
+            self.delay.remove(f"fiddler_correct_note_flash_{shot}")
 
     def _show_message(self, title, subtitle="", jackpot=False, reminder=False):
         self.machine.events.post(

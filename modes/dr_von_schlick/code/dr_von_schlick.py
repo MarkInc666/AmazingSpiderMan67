@@ -94,7 +94,7 @@ class DrVonSchlick(CaseFileMixin, Mode):
 
         self.machine.events.post("daily_bugle_cancel_vuk_delay_eject")
         self.machine.events.post("cancel_vuk_eject_request")
-        self.machine.events.post("dr_von_schlick_gi_orange")
+        self.machine.events.post("dr_von_schlick_gi_pink")
         self.machine.events.post("dr_von_schlick_clear_shot_lights")
         self._light_current_shot()
         self._schedule_move()

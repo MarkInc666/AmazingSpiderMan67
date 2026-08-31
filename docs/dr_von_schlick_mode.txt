@@ -52,7 +52,7 @@ Shot Assist
 
 LIGHTING
 --------
-- Base GI is E0E040.
+- Base GI is D08080 pink, contrasting with the green moving-shot indicators.
 - The current moving shot flashes green at 250ms on / 250ms off.
 - The reactor flood remains the eight-band blue rise.
 

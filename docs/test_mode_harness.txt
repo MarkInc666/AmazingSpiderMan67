@@ -28,6 +28,11 @@ Mode selector controls
 LEFT / RIGHT flipper release  = previous / next mode
 BOTH flippers                 = enter setup
 
+Selection 68 is EXIT TO ATTRACT. Plunge that selection to disarm the test
+harness, skip the normal end-of-ball bonus, end the disposable test game, and
+return to attract mode. The next press of START begins normal gameplay unless
+the attract-mode enable code is entered again.
+
 Villain setup
 -------------
 LEFT / RIGHT = choose More Jackpots, More Time, Bigger Jackpots, Safety Net,
@@ -52,7 +57,15 @@ Test-session flow
 -----------------
 Selected modes use their normal villain/wizard intro start event. Normal
 campaign qualification is bypassed. Test summaries are still shown. After a
-summary, the harness routes back toward TEST MODE SELECT rather than collecting
-Comics, opening chapters, or advancing normal progression. A ball that is still
-live when the selector returns is allowed to drain with flippers disabled; the
-next ball starts in the selector with a ball available in the shooter lane.
+summary, the harness disables the flippers and autofire coils so any live ball
+drains. The test-session ball save protects only the last ball, preventing
+ball_ending and the end-of-ball bonus, then serves that ball back to the
+mechanical shooter lane without auto-plunging. TEST MODE SELECT reopens only
+after the replacement reaches the shooter lane. Multiball drains above one ball
+are not saved, so multiball modes still reduce normally. A last-ball drain
+during an active test resolves that attempt as a failed/ended mode, shows its
+normal summary, and uses the same return loop.
+
+Normal skill shot and the normal plunge ball save are suppressed for the entire
+test session. Mode-specific ball saves remain active so their behavior can still
+be tested.

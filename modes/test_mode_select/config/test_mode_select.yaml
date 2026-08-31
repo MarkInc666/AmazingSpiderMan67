@@ -38,6 +38,11 @@ sound_player:
       action: play
       bus: effects
 
+  test_mode_exit_selected:
+    hb_bonk_1:
+      action: play
+      bus: effects
+
 widget_player:
   mode_test_mode_select_started:
     test_mode_select:

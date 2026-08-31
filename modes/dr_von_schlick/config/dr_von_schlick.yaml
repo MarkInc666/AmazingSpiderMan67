@@ -60,8 +60,8 @@ event_player:
   - daily_bugle_restore_state
 
 light_player:
-  dr_von_schlick_gi_orange:
-    gi: E0E040
+  dr_von_schlick_gi_pink:
+    gi: D08080
 
   dr_von_schlick_gi_restore:
     gi: E0E0E0

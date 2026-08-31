@@ -11,8 +11,15 @@ LAYOUT
 - The status title occupies a centered full-width upper row.
 - The status value occupies a centered full-width lower row.
 - Title size is 30 pixels.
-- Value size is 40 pixels.
-- Existing colors, outlines, variable names, and mode-provided text are unchanged.
+- General status value size is 48 pixels and uses high-contrast 80D0FF light
+  cyan with a seven-pixel black outline.
+- A separate timer variant uses the same lower-screen position with a 76-pixel
+  red value matching the main message timer and a thick black outline.
+- Numeric statuses whose title identifies seconds, time, a timer, or a timed
+  window automatically use the timer variant. Ordinary objectives and progress
+  strings retain the general-status presentation.
+- Any legacy `message_mode_seconds` value is routed into the lower timer rather
+  than displayed in the main message window.
 
 The stacked layout gives longer values, including multi-area shot status, enough
 horizontal room without competing with the title.

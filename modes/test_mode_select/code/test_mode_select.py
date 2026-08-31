@@ -2,7 +2,7 @@ from mpf.core.mode import Mode
 
 
 class TestModeSelect(Mode):
-    """Physical-machine test harness for all 67 story modes.
+    """Physical-machine test harness for all 67 story modes plus Exit.
 
     Attract mode only arms the session. The player presses START normally, then
     this mode owns the selection UI while a real player/ball context exists.
@@ -78,6 +78,7 @@ class TestModeSelect(Mode):
         ('who_is_the_real_villain', 'Who Is the Real Villain?', 'WIZARD', 10, 'start_mode_who_is_the_real_villain'),
         ('time_tossed_showdown', 'Time-Tossed Showdown', 'WIZARD', 11, 'start_mode_time_tossed_showdown'),
         ('final_showdown', 'Kingpin / Final Showdown', 'FINAL', 0, 'start_mode_final_showdown'),
+        ('exit_to_attract', 'Exit to Attract', 'EXIT', 0, ''),
     ]
 
     CASE_FILES = [
@@ -182,6 +183,10 @@ class TestModeSelect(Mode):
         stage = p["test_mode_select_stage"]
         if stage == "MODE":
             _, _, kind, _, _ = self.CATALOG[int(p["test_mode_select_index"])]
+            if kind == "EXIT":
+                self.machine.events.post("test_mode_exit_requires_plunge")
+                self._publish()
+                return
             p["test_mode_select_stage"] = "VILLAIN_SETUP" if kind == "VILLAIN" else "WIZARD_SETUP"
         elif stage == "VILLAIN_SETUP":
             cursor = int(p["test_case_cursor"])
@@ -206,8 +211,22 @@ class TestModeSelect(Mode):
         self.launch_armed = False
         stage = self.machine.game.player["test_mode_select_stage"]
         if stage == "MODE":
+            index = int(self.machine.game.player["test_mode_select_index"])
+            if self.CATALOG[index][2] == "EXIT":
+                self._exit_to_attract()
             return
         self._launch()
+
+    def _exit_to_attract(self):
+        """Disarm the test harness and end this disposable test game."""
+        player = self.machine.game.player
+        player["test_mode_exit_requested"] = 1
+        player["test_mode_waiting_for_ball_return"] = 0
+        self.machine.variables.set_machine_var("test_mode_session_requested", 0)
+        self.machine.variables.set_machine_var("chapter_progression_test_unlock_all", 0)
+        self.machine.events.post("test_mode_ball_loop_disable")
+        self.machine.events.post("test_mode_exit_selected")
+        self.machine.events.post("end_game")
 
     def _launch(self):
         p = self.machine.game.player
@@ -234,10 +253,15 @@ class TestModeSelect(Mode):
 
         stage = p["test_mode_select_stage"]
         if stage == "MODE":
-            p["test_mode_select_setup_title"] = "CHOOSE MODE"
+            if kind == "EXIT":
+                p["test_mode_select_setup_title"] = "END TEST SESSION"
+                p["test_mode_select_detail"] = "RETURN TO ATTRACT"
+                p["test_mode_select_help"] = "PLUNGE = EXIT TO ATTRACT"
+            else:
+                p["test_mode_select_setup_title"] = "CHOOSE MODE"
+                p["test_mode_select_help"] = "LEFT/RIGHT = SCROLL    BOTH FLIPPERS = SETUP"
             p["test_mode_select_setup_value"] = ""
             p["test_mode_select_case_summary"] = ""
-            p["test_mode_select_help"] = "LEFT/RIGHT = SCROLL    BOTH FLIPPERS = SETUP"
         elif stage == "VILLAIN_SETUP":
             cursor = int(p["test_case_cursor"])
             if cursor >= len(self.CASE_FILES):

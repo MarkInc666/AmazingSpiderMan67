@@ -124,6 +124,18 @@ class Base(Mode):
             priority=10000,
             guarded_display_event="base_update_mode_status",
         )
+        self.add_mode_event_handler(
+            "show_mode_timer_status",
+            self._sync_mode_timer_status_vars,
+            priority=10000,
+            guarded_display_event="base_show_mode_timer_status",
+        )
+        self.add_mode_event_handler(
+            "update_mode_timer_status",
+            self._sync_mode_timer_status_vars,
+            priority=10000,
+            guarded_display_event="base_update_mode_timer_status",
+        )
         self.add_mode_event_handler("hide_mode_status", self._hide_mode_status, priority=10000)
         self.add_mode_event_handler("clear_mode_display_context", self._clear_mode_display_context, priority=10000)
         self.add_mode_event_handler("dr_zapp_upper_flipper_lockout", self._start_dr_zapp_upper_flipper_lockout, priority=10000)
@@ -169,9 +181,16 @@ class Base(Mode):
             message_mode_title=message_mode_title,
             message_mode_subtitle=message_mode_subtitle,
             message_mode_value=message_mode_value,
-            message_mode_seconds=message_mode_seconds,
+            message_mode_seconds="",
         )
         self.machine.events.post(guarded_display_event)
+        seconds = self._parse_seconds(message_mode_seconds)
+        if seconds is not None and seconds > 0:
+            self._set_mode_status_vars(
+                mode_status_title="SECONDS LEFT",
+                mode_status_value=seconds,
+            )
+            self.machine.events.post("base_show_mode_timer_status")
         self._post_mode_jackpot_sfx_if_needed(
             guarded_display_event=guarded_display_event,
             message_mode_title=message_mode_title,
@@ -261,7 +280,7 @@ class Base(Mode):
             mode_status_title=self._message_countdown_status_title,
             mode_status_value=status_value,
         )
-        self.machine.events.post("show_mode_status")
+        self.machine.events.post("show_mode_timer_status")
         self._schedule_countdown_tick()
 
     def _set_mode_message_vars(
@@ -290,7 +309,46 @@ class Base(Mode):
             mode_status_title=mode_status_title,
             mode_status_value=mode_status_value,
         )
+        if self._is_numeric_timer_status(mode_status_title, mode_status_value):
+            timer_event = (
+                "base_show_mode_timer_status"
+                if guarded_display_event == "base_show_mode_status"
+                else "base_update_mode_timer_status"
+            )
+            self.machine.events.post(timer_event)
+        else:
+            self.machine.events.post(guarded_display_event)
+
+    def _sync_mode_timer_status_vars(
+        self,
+        mode_status_title="SECONDS LEFT",
+        mode_status_value="",
+        guarded_display_event="base_update_mode_timer_status",
+        **kwargs,
+    ):
+        if getattr(self, "_ball_end_display_lock", False):
+            return
+        self._set_mode_status_vars(
+            mode_status_title=mode_status_title,
+            mode_status_value=mode_status_value,
+        )
         self.machine.events.post(guarded_display_event)
+
+    @classmethod
+    def _is_numeric_timer_status(cls, title, value):
+        """Select the large red lower widget only for a pure time value."""
+        title_text = cls._display_text(title).upper()
+        timer_markers = ("SECOND", "TIME", "TIMER", "WINDOW")
+        if not any(marker in title_text for marker in timer_markers):
+            return False
+        value_text = cls._display_text(value).strip().lower()
+        if value_text.endswith("s"):
+            value_text = value_text[:-1].strip()
+        try:
+            float(value_text)
+        except (TypeError, ValueError):
+            return False
+        return True
 
     def _set_mode_status_vars(
         self,

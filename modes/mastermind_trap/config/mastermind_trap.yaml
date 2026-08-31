@@ -45,11 +45,15 @@ widget_player:
       action: remove
     mode_status:
       action: remove
+    mode_timer_status:
+      action: remove
 
   mode_mastermind_trap_stopping:
     mastermind_trap:
       action: remove
     mode_status:
+      action: remove
+    mode_timer_status:
       action: remove
     mode_message:
       action: remove
@@ -58,6 +62,8 @@ widget_player:
     mastermind_trap:
       action: remove
     mode_status:
+      action: remove
+    mode_timer_status:
       action: remove
     mode_message:
       action: remove

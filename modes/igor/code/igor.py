@@ -243,7 +243,7 @@ class Igor(CaseFileMixin, Mode):
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("hide_mode_status")
         self._sync_vars(update_status=False)
-        self._show_message("IGOR'S DEFENSES WIN", "", seconds="2")
+        self._show_message("IGOR'S DEFENSES WIN")
         self.delay.add(
             name="igor_final_message",
             ms=self.FINAL_MESSAGE_MS,

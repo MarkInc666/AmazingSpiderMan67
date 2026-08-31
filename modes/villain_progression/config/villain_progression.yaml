@@ -5,3 +5,19 @@ mode:
   start_events: ball_started
   stop_events: ball_ending
   priority: 110
+
+# Keep a hardware-test game on the same MPF ball. Only the last live ball is
+# protected, so multiball modes may drain normally down to one ball. A saved
+# ball is served to the mechanical shooter lane and is never auto-plunged.
+ball_saves:
+  test_mode_loop_ball_save:
+    active_time: 0s
+    hurry_up_time: 0s
+    grace_period: 0s
+    balls_to_save: -1
+    only_last_ball: true
+    auto_launch: false
+    enable_events: test_mode_ball_loop_enable
+    disable_events:
+      - test_mode_ball_loop_disable
+      - mode_villain_progression_stopping

@@ -17,13 +17,16 @@ CORE GAMEPLAY
   4. Right Bank Rubber = violin note 4
 - Left and right drop targets are forced down during the mode so the bank rubbers remain available.
 - All three saucers pulse white (FFFFFF) while Fiddler is waiting for the player to start/restart a round.
-- The four note-shot indicators use 804040 during WATCH and note feedback.
+- The four note-shot indicators alternate bright green 40FF40 and dim green
+  208020 during WATCH and note feedback.
 - Entering any saucer holds the ball during WATCH and ejects that same saucer only when YOUR TURN begins. The first pattern therefore remains physically held in the saucer for the full WATCH presentation.
 
 WATCH PHASE
-- Each note is demonstrated for a 400ms total window using a fast 100ms on / 50ms off strobe.
+- Each note alternates 40FF40 for 200ms and 208020 for 100ms, repeated three
+  times for a 900ms illuminated sequence.
 - The note's proper violin SFX plays when that illumination starts.
-- There is a 150ms dark gap between notes.
+- There is a 200ms dark gap between notes, making each note cycle 1.1 seconds
+  so its one-second audio cue finishes before the next note begins.
 - After the complete pattern there is a 750ms pause, then the exact same pattern is demonstrated a second time.
 - After the second demonstration, YOUR TURN begins and the held saucer ejects.
 - Note inputs are locked during WATCH.
@@ -32,12 +35,23 @@ SAUCER REMINDER
 - If the player returns to any saucer while the current attempt is still clean, Fiddler replays the current pattern once as a reminder.
 - Correct-note progress already made in that pattern is preserved.
 - The pattern is not randomized by a clean reminder.
+- The four-second reminder lockout starts when WATCH finishes and the held ball
+  ejects. A saucer re-entry during that window uses the normal short eject delay,
+  does not replay WATCH, and does not restart the timer. A re-entry after four
+  seconds replays the current pattern once and starts a new four-second lockout
+  when the ball is released.
 
 CORRECT NOTES
 - A correct note plays its proper violin SFX and flashes its own shot for 1 second using the same 200ms ON / 50ms OFF burst.
 - Each correct note scores 250,000 points.
 - Bigger Jackpots raises every correct-note award to 300,000.
-- Correct-note feedback locks note inputs for its 1-second burst.
+- Correct-note feedback does not lock gameplay. As soon as WATCH ends, ordered
+  note hits advance immediately and the pattern can be completed as quickly as
+  its switches register. A wrong note immediately ends that round, except for
+  the existing one-time Shot Assist forgiveness.
+- Correct-note SFX and visual feedback may overlap when ordered notes are hit
+  less than one second apart. Different target lights run concurrently; a
+  rapid repeat of the same target restarts that target's feedback burst.
 
 PATTERN PROGRESSION
 - The first pattern contains 1 note.

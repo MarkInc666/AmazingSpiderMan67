@@ -296,12 +296,14 @@ class VillainProgression(Mode):
         test_requested = self.machine.variables.get_machine_var("test_mode_session_requested")
         if self._safe_int(test_requested, 0) == 1:
             self.machine.game.player["test_mode_session"] = 1
+            self.machine.game.player["test_mode_waiting_for_ball_return"] = 0
             self._clear_runtime_flow_flags()
             self._clear_active_case_file_helpers()
             self._add_handlers()
             self.add_mode_event_handler("clear_saucers", self._clear_saucers)
             self.add_mode_event_handler("clear_saucers_delayed", self._clear_saucers_delayed)
             self.machine.game.player["villain_mode_running"] = 1
+            self.machine.events.post("test_mode_ball_loop_enable")
             self.delay.add(name="test_mode_selector_start", ms=250, callback=self._open_test_mode_selector)
             return
 
@@ -903,6 +905,8 @@ class VillainProgression(Mode):
         self.add_mode_event_handler("chapter_progression_test_unlock_all", self._test_unlock_all_chapters)
         self.add_mode_event_handler("chapter_progression_test_unlock_off", self._test_unlock_all_chapters_off)
         self.add_mode_event_handler("test_mode_launch_requested", self._test_mode_launch_requested)
+        self.add_mode_event_handler("ball_save_test_mode_loop_ball_save_saving_ball", self._test_mode_last_ball_saved)
+        self.add_mode_event_handler("s_plunger_active", self._test_mode_ball_returned)
 
         # Completion / wizard flow.
         for event_name, finish_info in self.COMPLETION_EVENTS.items():
@@ -1066,8 +1070,48 @@ class VillainProgression(Mode):
         player["villain_current_name"] = ""
         player["villain_mode_running_name"] = ""
         player["mini_wizard_current_key"] = ""
+        player["test_mode_waiting_for_ball_return"] = 1
         self._post_global_cleanup_events(reason=reason)
-        self.delay.reset(name="test_mode_selector_return", ms=150, callback=self._open_test_mode_selector)
+        self.machine.events.post("cmd_flippers_disable")
+        self.machine.events.post("cmd_autofire_coils_disable")
+
+        # A last-ball save may already have returned the replacement while the
+        # summary was still being shown.
+        plunger = self.machine.switches.get("s_plunger")
+        if plunger and self.machine.switch_controller.is_active(plunger):
+            self.delay.reset(name="test_mode_selector_return", ms=150, callback=self._test_mode_ball_returned)
+
+    def _test_mode_last_ball_saved(self, **kwargs):
+        """Resolve a drained test attempt without allowing the MPF ball to end."""
+        if not self.machine.game:
+            return
+        player = self.machine.game.player
+        if self._safe_int(player["test_mode_session"], 0) != 1:
+            return
+
+        current_key = str(player["villain_current_key"] or "")
+        if not current_key or self._safe_int(player["villain_mode_in_summary"], 0) == 1:
+            return
+
+        if current_key in self.VILLAINS:
+            self._villain_mode_finished(villain_key=current_key, completed=False)
+        elif self._is_mini_wizard_key(current_key):
+            self._mini_wizard_gameplay_finished(mini_wizard=current_key, completed=False)
+        elif current_key == self.FINAL_WIZARD_KEY:
+            self._final_wizard_gameplay_finished(completed=False)
+
+    def _test_mode_ball_returned(self, **kwargs):
+        """Open the selector after the saved ball reaches the shooter lane."""
+        if not self.machine.game:
+            return
+        player = self.machine.game.player
+        if self._safe_int(player["test_mode_session"], 0) != 1:
+            return
+        if self._safe_int(player["test_mode_waiting_for_ball_return"], 0) != 1:
+            return
+
+        player["test_mode_waiting_for_ball_return"] = 0
+        self.delay.reset(name="test_mode_selector_return", ms=100, callback=self._open_test_mode_selector)
 
     def _request_vuk_eject(self, delay_ms=None, **kwargs):
         """Schedule a VUK release from this persistent progression mode."""
