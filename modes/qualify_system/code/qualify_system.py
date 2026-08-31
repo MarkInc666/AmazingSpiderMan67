@@ -291,6 +291,13 @@ class QualifySystem(Mode):
         if not self.qualify_logic_active:
             return
 
+        # Final Showdown readiness owns all three saucer lamps regardless of
+        # their ordinary qualification state: any saucer starts Kingpin.
+        if self._safe_int(self.machine.game.player["final_wizard_ready"], 0) == 1:
+            self.machine.events.post("final_wizard_saucers_ready")
+            return
+
+        self.machine.events.post("final_wizard_saucers_clear")
         for saucer in self.SAUCERS:
             state = int(self.machine.game.player[f"{saucer}_state"])
             self.machine.events.post(

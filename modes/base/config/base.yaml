@@ -244,11 +244,16 @@ widget_player:
       key: chapter_select_transition
       priority: 2100
 
-  chapter_select_summary_complete:
+  chapter_select_summary_complete{current_player.final_wizard_ready != 1}:
     chapter_select_transition:
       action: play
       key: chapter_select_transition
       priority: 2100
+
+  chapter_select_summary_complete{current_player.final_wizard_ready == 1}:
+    chapter_select_transition:
+      action: remove
+      key: chapter_select_transition
 
   mode_chapter_select_started:
     chapter_select_transition:

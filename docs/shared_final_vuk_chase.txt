@@ -23,3 +23,16 @@ saucer rather than the VUK.
 All participating modes post the stop event on collection, timeout/failure, and
 mode cleanup. The chapter mini-wizard path stops it as soon as the VUK starts the
 wizard intro.
+
+Final Showdown qualification handoff (August 31, 2026): after Comic #4 is
+collected at the end of a chapter wizard summary, the existing controlled
+chapter-transition ball save releases the drained ball to the mechanical shooter
+lane instead of opening Chapter Select. The display shows:
+
+  KINGPIN ENCOUNTER
+  SHOOT ANY SAUCER TO START
+
+The reminder repeats while Final Showdown is ready. All three lower saucer
+clusters flash together until any saucer is hit; that saucer starts the normal
+Final Showdown / Kingpin bookend intro. Starting the final wizard clears the
+special saucer show and cancels the reminder.

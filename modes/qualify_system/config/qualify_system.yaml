@@ -42,6 +42,22 @@ show_player:
       action: stop
     saucer_cluster_state_3:
       action: stop
+    saucer_cluster_state_4:
+      action: stop
+    saucer_cluster_state_5:
+      action: stop
+    final_wizard_saucer_ready_show:
+      action: stop
+
+  final_wizard_saucers_ready:
+    final_wizard_saucer_ready_show:
+      action: play
+      key: final_wizard_saucers
+
+  final_wizard_saucers_clear:
+    final_wizard_saucer_ready_show:
+      action: stop
+      key: final_wizard_saucers
 
       
   saucer_1_restore_state_0:
@@ -189,6 +205,33 @@ show_player:
         hole_right: l_3_hole_r
 
 shows:
+  # Final Showdown start: all three lower saucers flash together. The numbered
+  # inserts have green lenses and the hole lamps have red lenses, so white is
+  # used here for maximum physical visibility through the existing lenses.
+  final_wizard_saucer_ready_show:
+    - duration: 200ms
+      lights:
+        l_1: white
+        l_1_hole_l: white
+        l_1_hole_r: white
+        l_2: white
+        l_2_hole_l: white
+        l_2_hole_r: white
+        l_3: white
+        l_3_hole_l: white
+        l_3_hole_r: white
+    - duration: 200ms
+      lights:
+        l_1: off
+        l_1_hole_l: off
+        l_1_hole_r: off
+        l_2: off
+        l_2_hole_l: off
+        l_2_hole_r: off
+        l_3: off
+        l_3_hole_l: off
+        l_3_hole_r: off
+
   saucer_cluster_state_0:
     - duration: -1
       lights:

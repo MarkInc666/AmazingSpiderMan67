@@ -907,6 +907,7 @@ class VillainProgression(Mode):
         self.add_mode_event_handler("test_mode_launch_requested", self._test_mode_launch_requested)
         self.add_mode_event_handler("ball_save_test_mode_loop_ball_save_saving_ball", self._test_mode_last_ball_saved)
         self.add_mode_event_handler("s_plunger_active", self._test_mode_ball_returned)
+        self.add_mode_event_handler("s_plunger_active", self._final_wizard_shooter_lane_prompt)
 
         # Completion / wizard flow.
         for event_name, finish_info in self.COMPLETION_EVENTS.items():
@@ -1112,6 +1113,24 @@ class VillainProgression(Mode):
 
         player["test_mode_waiting_for_ball_return"] = 0
         self.delay.reset(name="test_mode_selector_return", ms=100, callback=self._open_test_mode_selector)
+
+    def _final_wizard_shooter_lane_prompt(self, **kwargs):
+        """Remind the player how to start Kingpin once the saved ball is served."""
+        if not self.machine.game:
+            return
+        player = self.machine.game.player
+        if self._safe_int(player["final_wizard_ready"], 0) != 1:
+            return
+        if self._safe_int(player["villain_mode_running"], 0) == 1:
+            return
+
+        self.machine.events.post(
+            "show_mode_message_long",
+            message_mode_title="KINGPIN ENCOUNTER",
+            message_mode_subtitle="SHOOT ANY SAUCER TO START",
+            reminder=True,
+        )
+        self.machine.events.post("final_wizard_saucers_ready")
 
     def _request_vuk_eject(self, delay_ms=None, **kwargs):
         """Schedule a VUK release from this persistent progression mode."""
@@ -1914,9 +1933,8 @@ class VillainProgression(Mode):
             self.machine.events.post("chapter_mini_wizard_completion_ignored_duplicate", mini_wizard=mini_key)
             return
 
-        self._release_chapter_select_summary_hold(mini_wizard=mini_key)
-
         if self._safe_int(player["test_mode_session"], 0) == 1:
+            self._release_chapter_select_summary_hold(mini_wizard=mini_key)
             player[f"{mini_key}_state"] = self.NOT_PLAYED
             self.machine.events.post("chapter_mini_wizard_ended", mini_wizard=mini_key, test_mode=1)
             self.machine.events.post("villain_mode_ended", villain=mini_key, villain_key=mini_key, test_mode=1)
@@ -1947,10 +1965,23 @@ class VillainProgression(Mode):
             player["chapter_select_needed"] = 0
             player["chapter_select_active"] = 0
 
+        # Release the held trough eject only after Comic #4 has been recognized.
+        # That lets display logic choose Kingpin readiness instead of briefly
+        # presenting the normal Chapter Select transition.
+        self._release_chapter_select_summary_hold(mini_wizard=mini_key)
+
         self._release_summary_saucer_holds()
         self._post_global_cleanup_events(reason="mini_wizard_completed")
         self.machine.events.post("chapter_comic_collected", chapter_number=chapter_number, chapter_name=chapter["name"])
-        if self._safe_int(player["final_wizard_ready"], 0) != 1:
+        if self._safe_int(player["final_wizard_ready"], 0) == 1:
+            self.machine.events.post("final_wizard_saucers_ready")
+            self.machine.events.post(
+                "show_mode_message_long",
+                message_mode_title="KINGPIN ENCOUNTER",
+                message_mode_subtitle="SHOOT ANY SAUCER TO START",
+                reminder=True,
+            )
+        else:
             self.machine.events.post("chapter_select_transition_ready", chapter_number=chapter_number, chapter_name=chapter["name"])
         self.machine.events.post("chapter_mini_wizard_ended", mini_wizard=mini_key)
         self.machine.events.post("villain_mode_ended", villain=mini_key, villain_key=mini_key)
@@ -1976,6 +2007,10 @@ class VillainProgression(Mode):
     def _start_final_wizard(self, **kwargs):
         if self._safe_int(self.machine.game.player["final_wizard_ready"], 0) != 1:
             return
+        self.machine.game.player["final_wizard_ready"] = 0
+        self.machine.events.post("cancel_mode_message_reminder")
+        self.machine.events.post("hide_mode_message")
+        self.machine.events.post("final_wizard_saucers_clear")
         self.machine.events.post("final_vuk_chase_stop")
         self.machine.game.player[f"{self.FINAL_WIZARD_KEY}_state"] = self.PLAYING
         self.machine.game.player["villain_current_key"] = self.FINAL_WIZARD_KEY
