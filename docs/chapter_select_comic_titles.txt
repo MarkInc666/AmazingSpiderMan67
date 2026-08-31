@@ -1,5 +1,5 @@
 ASM67 — CHAPTER SELECT COMIC TITLES
-Updated: August 18, 2026
+Updated: August 31, 2026
 
 Presentation rule
 
@@ -18,7 +18,7 @@ Visible titles
 3. Trubble Unleashed
 4. Crime Wave
 5. The Web Tightens
-6. Fifth Dimension Curse
+6. The 5th Dimension
 7. Mad Science Meltdown
 8. Nature Strikes Back
 9. Invasion from Everywhere
@@ -66,4 +66,17 @@ Chapter 4 artwork
 - Chapter Select conditionally displays the cover in the left, center, or right
   carousel position with its title overlay and suppresses the generic labels
   for Chapters 1–4.
+- AVAILABLE, LOCKED, and COLLECTED remain separate live labels off the cover.
+
+Chapter 6 artwork
+
+- `images/chapter_6_cover.png` is the text-free 630x725 Fifth Dimension cover.
+- Pardo, the Fantastic Fakir, Kotep, Super Swami, and Infinata appear beneath
+  five connected dimensional ruptures over the supplied star field.
+- `images/chapter_6_title_overlay.png` supplies the separate transparent
+  vintage-comic title THE 5TH DIMENSION, with 5TH slightly larger.
+- Chapter Select conditionally displays both layers in the left, center, or
+  right carousel position and suppresses the generic Chapter 6 labels.
+- The internal mini-wizard and progression name remains Fifth Dimension Curse;
+  only the collectible comic-cover masthead is THE 5TH DIMENSION.
 - AVAILABLE, LOCKED, and COLLECTED remain separate live labels off the cover.
