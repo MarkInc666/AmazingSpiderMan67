@@ -9,10 +9,11 @@ class DailyBugleMystery(Mode):
       1. Complete A+B.
       2. Rooftop gate opens.
       3. Shoot VUK to the rooftop.
-      4. One rooftop-spinner photo lights Mystery.
-      5. Left exit can hold the ball on the pop-up post for JJJ instructions.
-      6. Right exit only plays the same instruction/callout, without the post.
-      7. VUK collects Mystery when ready.
+      4. Rooftop-spinner hits add to a persistent picture balance.
+      5. Mystery costs progress 1, 2, 3, 4, then 5 pictures thereafter.
+      6. Left exit can hold the ball on the pop-up post for JJJ instructions.
+      7. Right exit only plays the same instruction/callout, without the post.
+      8. VUK collects Mystery when ready and spends the current picture cost.
 
     Important change from the older version:
       A/B/mystery progress is restored from player vars when the mode starts,
@@ -22,7 +23,7 @@ class DailyBugleMystery(Mode):
     AB_DAILY_POINTS = 10000
     AB_DAILY_POINTS_UNLIT = 2000
 
-    PHOTOS_NEEDED = 1
+    MAX_PICTURE_COST = 5
     LEFT_EXIT_HOLD_MS = 8000
 
     # Daily Bugle should not take over the rooftop gate while one of
@@ -135,8 +136,13 @@ class DailyBugleMystery(Mode):
         self.a_hit = bool(player["daily_bugle_a_hit"])
         self.b_hit = bool(player["daily_bugle_b_hit"])
         self.mystery_ab_ready = bool(player["daily_bugle_ab_ready"])
-        self.mystery_ready = bool(player["daily_bugle_mystery_ready"])
         self.rooftop_photos = self._safe_int(player["daily_bugle_pictures_taken"], 0)
+        # Mystery requires both the current A+B access cycle and the current
+        # escalating picture cost. Derive this instead of trusting a stale flag.
+        self.mystery_ready = bool(
+            self.mystery_ab_ready
+            and self.rooftop_photos >= self._current_picture_cost()
+        )
         self.update_player_vars(post_widget_update=False)
 
     def disable_db(self, **kwargs):
@@ -234,10 +240,15 @@ class DailyBugleMystery(Mode):
             return
 
         self.mystery_ab_ready = True
+        mystery_was_ready = self.mystery_ready
+        self.mystery_ready = self.rooftop_photos >= self._current_picture_cost()
         self.update_player_vars(post_widget_update=False)
 
         self._post_rooftop_gate_open(reason="ab_complete")
         self.machine.events.post("daily_bugle_ab_complete")
+        if self.mystery_ready and not mystery_was_ready:
+            self.machine.events.post("daily_bugle_photos_complete")
+            self.machine.events.post("daily_bugle_mystery_ready")
         self.machine.events.post("daily_bugle_widget_update")
 
     def rooftop_spinner_hit(self, **kwargs):
@@ -247,31 +258,25 @@ class DailyBugleMystery(Mode):
         if not self.mystery_ab_ready:
             return
 
-        if self.mystery_ready:
-            self.update_player_vars()
-            self.machine.events.post("daily_bugle_photo_hit_after_mystery_ready")
-            return
-
-        if self.rooftop_photos < self.PHOTOS_NEEDED:
-            self.rooftop_photos += 1
-            self._update_pictures_taken_text()
-
+        mystery_was_ready = self.mystery_ready
+        self.rooftop_photos += 1
+        picture_cost = self._current_picture_cost()
+        self.mystery_ready = self.rooftop_photos >= picture_cost
         self.update_player_vars(post_widget_update=False)
 
         self.machine.events.post(
             "daily_bugle_photo_collected",
             photos=self.rooftop_photos,
-            photos_needed=self.PHOTOS_NEEDED,
+            photos_needed=picture_cost,
         )
         self.machine.events.post(f"daily_bugle_photo_{self.rooftop_photos}")
 
-        if self.rooftop_photos >= self.PHOTOS_NEEDED:
-            self.mystery_ready = True
-            self.update_player_vars(post_widget_update=False)
+        if self.mystery_ready and not mystery_was_ready:
             self.machine.events.post("daily_bugle_photos_complete")
             self.machine.events.post("daily_bugle_mystery_ready")
-        else:
-            self.update_player_vars(post_widget_update=False)            
+        elif mystery_was_ready:
+            # Continue counting pictures even while an award is already ready.
+            self.machine.events.post("daily_bugle_photo_hit_after_mystery_ready")
 
         # Open gate again so player can shoot back toward VUK/mystery collect,
         # unless a gate-protected villain mode owns upper/VUK access.
@@ -285,10 +290,11 @@ class DailyBugleMystery(Mode):
             return
 
         pictures = self._safe_int(self.rooftop_photos, 0)
-        needed = self._safe_int(player["daily_bugle_pictures_needed"], self.PHOTOS_NEEDED)
-
+        picture_cost = self._current_picture_cost()
         player["daily_bugle_pictures_taken"] = pictures
-        player["daily_bugle_pictures_taken_text"] = f"PICS: {pictures}/{needed}"
+        player["daily_bugle_pictures_taken_text"] = (
+            f"PICTURES TAKEN: {pictures}\nNEXT MYSTERY: {picture_cost}"
+        )
 
         self._post_widget_update()
 
@@ -426,6 +432,11 @@ class DailyBugleMystery(Mode):
 
     def collect_mystery(self):
         player = self.machine.game.player
+
+        # Spend the cost that applies before this collection increments the
+        # Mystery count. Any surplus stays banked for the next A+B access cycle.
+        picture_cost = self._current_picture_cost()
+        self.rooftop_photos = max(0, self.rooftop_photos - picture_cost)
 
         player["daily_bugle_mystery_count"] += 1
         count = player["daily_bugle_mystery_count"]
@@ -631,26 +642,40 @@ class DailyBugleMystery(Mode):
         self._post_mystery_award("mystery_award_award_extra_ball")
 
     def reset_cycle(self, post_restore=True, **kwargs):
+        # End only the current A+B access cycle. The picture balance is a
+        # running player total and must survive awards, balls, and mode resets.
         self.a_hit = False
         self.b_hit = False
         self.mystery_ab_ready = False
         self.mystery_ready = False
-        self.rooftop_photos = 0
         self.update_player_vars()
 
         if post_restore:
             self._restore_lights_and_widgets()
 
+    def _current_picture_cost(self):
+        """Return the next Mystery cost: 1, 2, 3, 4, then 5 thereafter."""
+        if not self.machine.game:
+            return 1
+        collected = self._safe_int(
+            self.machine.game.player["daily_bugle_mystery_count"], 0
+        )
+        return min(collected + 1, self.MAX_PICTURE_COST)
+
     def update_player_vars(self, post_widget_update=True):
         player = self.machine.game.player
+        picture_cost = self._current_picture_cost()
 
         player["daily_bugle_a_hit"] = int(self.a_hit)
         player["daily_bugle_b_hit"] = int(self.b_hit)
         player["daily_bugle_ab_ready"] = int(self.mystery_ab_ready)
         player["daily_bugle_mystery_ready"] = int(self.mystery_ready)
         player["daily_bugle_pictures_taken"] = self._safe_int(self.rooftop_photos, 0)
-        player["daily_bugle_pictures_needed"] = self.PHOTOS_NEEDED
-        player["daily_bugle_pictures_taken_text"] = f"PICS: {player['daily_bugle_pictures_taken']}/{player['daily_bugle_pictures_needed']}"
+        player["daily_bugle_pictures_needed"] = picture_cost
+        player["daily_bugle_pictures_taken_text"] = (
+            f"PICTURES TAKEN: {player['daily_bugle_pictures_taken']}\n"
+            f"NEXT MYSTERY: {picture_cost}"
+        )
 
         if post_widget_update:
             self._post_widget_update()

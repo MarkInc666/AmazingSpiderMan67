@@ -465,3 +465,24 @@ sound_player:
     runaway:
       bus: music
       loops: -1
+
+  # Registered for future assignment. No mode currently posts these events.
+  play_music_song_93:
+    pigmy:
+      bus: music
+      loops: -1
+
+  play_music_song_94:
+    exclusive_blend:
+      bus: music
+      loops: -1
+
+  play_music_song_95:
+    janos_revenge:
+      bus: music
+      loops: -1
+
+  play_music_song_96:
+    up_from_the_south:
+      bus: music
+      loops: -1

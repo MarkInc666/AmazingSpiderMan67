@@ -1,0 +1,14 @@
+DAILY BUGLE MYSTERY — PICTURE BALANCE
+
+- A and B still qualify access and open the rooftop gate.
+- Each qualifying rooftop-spinner hit adds one to the player's running picture total.
+- The status display reads PICTURES TAKEN: X.
+- Mystery costs progress by collection: 1 picture, then 2, 3, 4, and 5.
+  The fifth and every later Mystery continue to cost 5 pictures.
+- If the current cost is already stored, completing A+B opens the gate and makes
+  Mystery available immediately.
+- Collecting Mystery spends the current cost and resets the current A+B cycle.
+  Surplus pictures remain banked for the next qualification.
+- The status display shows both PICTURES TAKEN and NEXT MYSTERY cost.
+- The picture balance persists across balls, villain interruptions, and the normal
+  Daily Bugle cycle reset posted after a villain summary.
