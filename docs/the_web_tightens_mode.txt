@@ -1,0 +1,116 @@
+THE WEB TIGHTENS — CHAPTER 5 WIZARD
+===================================
+Status: APPROVED / CODED 2026-09-01 — NEEDS MACHINE PLAYTEST
+
+CORE LOOP
+---------
+- Starts as 2-ball multiball.
+- Player locks one ball in the Daily Bugle VUK.
+- The VUK ball remains locked while five villain-inspired phases are played.
+- A saucer starts each phase.
+- Saucers park excess balls during a phase, but the mode always preserves at
+  least one loose playable ball. If attrition leaves only held saucer balls and
+  the VUK lock, one saucer ball is released automatically.
+- Metal-Eating Monster and Harley & Clivendon add a ball at phase start.
+- Mode ends when multiball falls to one ball in play.
+
+SCORING / WIZARD PREP
+---------------------
+- Base 1X phase Jackpot: 100,000.
+- Chapter Wizard Prep adds 20,000 per collected chapter Case File to every 1X
+  phase Jackpot (0-25 Case Files = +0 to +500,000).
+- A 2X Jackpot doubles both the 100K base and the Wizard Prep amount.
+- Each successful phase adds 1,000,000 to that cycle's rooftop Super Jackpot.
+- The rooftop Super Jackpot does NOT receive the Wizard Prep bonus.
+- One Super Jackpot may be collected per cycle.
+
+PHASE ORDER
+-----------
+1. FIDDLER
+   - Saucer holds the initiating ball while a two-note sequence is shown.
+   - Uses the same four note shots as Fiddler:
+       Left Web / Left Bank / Right Pop / Right Bank.
+   - Sequence may repeat a shot.
+   - If there are other loose balls, the initiating saucer ball remains parked
+     while the player reproduces the pattern.
+   - If only the VUK ball + saucer ball remain, release the saucer ball after
+     the WATCH presentation so the pattern can be played.
+   - Additional balls entering saucers may also be parked as long as at least
+     one loose playable ball remains.
+   - Correct Note 1: 2X Jackpot.
+   - Correct Note 2: 2X Jackpot and phase SUCCESS.
+   - Wrong note: phase FAIL.
+
+2. METAL-EATING MONSTER
+   - Add-a-ball at phase start.
+   - Uses the established six playfield zones from Fifth Dimension Curse.
+   - First attack begins immediately; new attacks normally begin every 5 sec.
+   - Saving a zone accelerates the next attack to 2 sec.
+   - Each attacked zone has a 12-second destruction timer.
+   - Each saved zone: 1X Jackpot.
+   - Save 4 zones: phase SUCCESS.
+   - Lose 3 zones: phase FAIL.
+
+3. THE CONQUISTADOR
+   - No timer on the setup steps.
+   - Hit one physical left-bank drop: 1X Jackpot.
+   - Make 3 LOWER spinner spins (s_web_spinner): 1X Jackpot per spin.
+   - After spin 3, center web lights for 14 seconds.
+   - Center web: 1X Jackpot and phase SUCCESS.
+   - Center-web timer expiry: phase FAIL.
+
+4. SPIDER-SLAYER
+   - Uses Spider-Slayer's existing shot pool:
+       Left Web, Center Web, Left Sling, Right Sling, Left Pop, Right Pop,
+       Left Bank, Right Bank, Star, Saucers.
+   - Starts with one random lit shot.
+   - Each lit shot has its own 8-second lifetime.
+   - Hitting a lit shot:
+       * awards 1X Jackpot,
+       * leaves that shot lit until its original timer expires,
+       * adds one new random unlit shot while fewer than 7 required hits have
+         been made.
+   - Hit 7 lit shots: phase SUCCESS is locked in and no new shots are added.
+   - Already-lit shots remain active and may still score until they expire.
+   - After success, the phase ends when the final lit shot expires.
+   - If all lit shots expire before 7 hits: phase FAIL.
+
+5. HARLEY & CLIVENDON
+   - Add-a-ball at phase start.
+   - Uses the same established six playfield zones.
+   - Complete 4 unique zones; each completed zone awards 1X Jackpot.
+   - After the fourth unique zone, Star lights for 14 seconds.
+   - A subsequent Star hit awards 2X Jackpot and phase SUCCESS.
+   - The same Star hit that completes zone 4 cannot also collect the newly-lit
+     Star Jackpot.
+   - Star timer expiry: phase FAIL.
+
+ROOFTOP SUPER / REPEAT CYCLE
+----------------------------
+- After all five phases have been played, successful or failed:
+  - release the VUK ball,
+  - open the rooftop,
+  - light the rooftop for one Super Jackpot attempt.
+- Super value = 1,000,000 x successful phases in that cycle (0-5M).
+- Qualifying rooftop switches are the three upper targets, upper spinner, and
+  Star rollover.
+- After the one Super is collected, the rooftop closes and the VUK is relit.
+- If a ball is locked in the VUK before the Super is collected, that Super
+  attempt is forfeited and a new five-phase cycle begins.
+- Locking another ball in the VUK resets the cycle success count and begins at
+  Fiddler again.
+
+PHYSICAL / MACHINE TEST ITEMS
+-----------------------------
+- Verify the VUK holds indefinitely through all five phases with no Daily Bugle
+  delayed-eject interference.
+- Verify VUK release into the rooftop Super window does not immediately relock
+  from switch chatter.
+- Verify saucer parking with 2, 3, and 4 balls: never strand all playable balls.
+- Verify a second/third saucer ball is held only when another loose ball remains.
+- Verify add-a-ball launch timing in Metal and Harley phases.
+- Verify six-zone mapping and lighting are readable during multi-ball play.
+- Verify lower spinner (s_web_spinner) is the Conquistador spinner.
+- Verify all individual Spider-Slayer 8-second timers behave independently.
+- Verify one-ball multiball end routes cleanly into the wizard summary and a
+  VUK-held last ball remains held through summary when applicable.

@@ -1,9 +1,5 @@
 #config_version=6
 
-# The Web Tightens placeholder mini-wizard.
-# The Web Tightens mini-wizard multiball.
-# Temporary flow: intro -> 2-ball multiball -> MB end -> summary -> next chapter.
-
 mode:
   start_events: start_mode_the_web_tightens
   stop_events:
@@ -20,6 +16,10 @@ multiballs:
     ball_count_type: total
     shoot_again: 15s
     start_events: the_web_tightens_start_multiball
+    add_a_ball_events:
+      - the_web_tightens_add_a_ball
+    add_a_ball_shoot_again: 10s
+    add_a_ball_hurry_up_time: 3s
     stop_events:
       - stop_mode_the_web_tightens
 
@@ -28,7 +28,6 @@ variable_player:
     multiball_autoplunge_active:
       action: set
       int: 1
-
   multiball_the_web_tightens_multiball_ended:
     multiball_autoplunge_active:
       action: set
@@ -38,74 +37,483 @@ widget_player:
   mode_the_web_tightens_started:
     the_web_tightens:
       action: play
-
   the_web_tightens_mode_complete:
     the_web_tightens:
       action: remove
-
   mode_the_web_tightens_stopping:
     the_web_tightens:
       action: remove
 
-  stop_mode_the_web_tightens:
-    the_web_tightens:
-      action: remove
-
+# Shared physical cleanup. Gameplay switches are claimed in the Python mode so
+# phase dispatch can safely reuse the Fiddler, Slayer, and six-zone shot maps.
 event_player:
-  s_pop_left_active: the_web_tightens_shot_hit
-  s_pop_right_active: the_web_tightens_shot_hit
-  s_trispinner_opto_active: the_web_tightens_shot_hit
-  s_web_spinner_active: the_web_tightens_shot_hit
-  s_star_rollover_active: the_web_tightens_shot_hit
-  s_upper_target_left_active: the_web_tightens_shot_hit
-  s_upper_target_center_active: the_web_tightens_shot_hit
-  s_upper_target_right_active: the_web_tightens_shot_hit
-  s_left_drops_1_active: the_web_tightens_shot_hit
-  s_left_drops_2_active: the_web_tightens_shot_hit
-  s_left_drops_3_active: the_web_tightens_shot_hit
-  s_right_drops_1_active: the_web_tightens_shot_hit
-  s_right_drops_2_active: the_web_tightens_shot_hit
-  s_right_drops_3_active: the_web_tightens_shot_hit
-  s_right_drops_4_active: the_web_tightens_shot_hit
-  s_right_drops_5_active: the_web_tightens_shot_hit
-  s_saucer_1_active:
-    the_web_tightens_shot_hit:
-    delayed_kickout_saucer_1:
-  s_saucer_2_active:
-    the_web_tightens_shot_hit:
-    delayed_kickout_saucer_2:
-  s_saucer_3_active:
-    the_web_tightens_shot_hit:
-    delayed_kickout_saucer_3:
-  s_vuk_switch_active:
-    - the_web_tightens_shot_hit
-    - request_vuk_eject
-
-  multiball_the_web_tightens_multiball_ended: the_web_tightens_complete_request
-
   mode_the_web_tightens_started:
-    - rooftop_diverter_open|500ms
-    - disable_daily_bugle_mystery
     - clear_saucers_delayed
     - drop_target_bank_dt_bank_left_reset
     - drop_target_bank_dt_bank_right_reset
-
   mode_the_web_tightens_stopping:
-    - enable_daily_bugle_mystery
-    - daily_bugle_restore_state
     - clear_saucers_delayed
-
-  # Keep mini-wizard drop banks playable after they are completed.
+    - drop_target_bank_dt_bank_left_reset
+    - drop_target_bank_dt_bank_right_reset
   drop_target_bank_dt_bank_left_down: drop_target_bank_dt_bank_left_reset
   drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset
 
-light_player:
-  # Full-playfield GI theme while this mode is active.
-  mode_the_web_tightens_started:
-    gi: 8060FF
+show_player:
+  the_web_tightens_vuk_lock_ready:
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 840
+      show_tokens:
+        color: 8060FF
+  the_web_tightens_vuk_locked:
+    shared_final_vuk_chase:
+      action: stop
 
-  mode_the_web_tightens_stopping:
-    gi: E0E0E0
+  the_web_tightens_conquistador_web:
+    shared_center_web_chase:
+      loops: -1
+      priority: 840
+      show_tokens:
+        color: FFFFFF
+  the_web_tightens_clear_phase_lights:
+    shared_center_web_chase:
+      action: stop
+  the_web_tightens_clear_all:
+    shared_final_vuk_chase:
+      action: stop
+    shared_center_web_chase:
+      action: stop
+
+light_player:
+  mode_the_web_tightens_started:
+    gi: 604080
+  the_web_tightens_base_lighting:
+    gi: 604080
+
+  # Fiddler uses the same four note shots as the regular villain mode.
+  the_web_tightens_fiddler_left_web_on:
+    l_left_web_target: 40FF40
+  the_web_tightens_fiddler_left_web_off:
+    l_left_web_target: off
+  the_web_tightens_fiddler_left_bank_on:
+    l_gi_3bank: 40FF40
+  the_web_tightens_fiddler_left_bank_off:
+    l_gi_3bank: 404040
+  the_web_tightens_fiddler_right_pop_on:
+    l_pop_2_1: 40FF40
+    l_pop_2_2: 40FF40
+    l_pop_2_3: 40FF40
+    l_pop_2_4: 40FF40
+    l_pop_2_5: 40FF40
+    l_pop_2_6: 40FF40
+    l_pop_2_7: 40FF40
+    l_pop_2_8: 40FF40
+    l_pop_2_9: 40FF40
+    l_pop_2_10: 40FF40
+    l_pop_2_11: 40FF40
+    l_pop_2_12: 40FF40
+  the_web_tightens_fiddler_right_pop_off:
+    l_pop_2_1: 404040
+    l_pop_2_2: 404040
+    l_pop_2_3: 404040
+    l_pop_2_4: 404040
+    l_pop_2_5: 404040
+    l_pop_2_6: 404040
+    l_pop_2_7: 404040
+    l_pop_2_8: 404040
+    l_pop_2_9: 404040
+    l_pop_2_10: 404040
+    l_pop_2_11: 404040
+    l_pop_2_12: 404040
+  the_web_tightens_fiddler_right_bank_on:
+    l_gi_5bank_lower: 40FF40
+    l_gi_5bank_upper: 40FF40
+  the_web_tightens_fiddler_right_bank_off:
+    l_gi_5bank_lower: 404040
+    l_gi_5bank_upper: 404040
+  the_web_tightens_fiddler_all_off:
+    l_left_web_target: off
+    l_gi_3bank: 404040
+    l_gi_5bank_lower: 404040
+    l_gi_5bank_upper: 404040
+    l_pop_2_1: 404040
+    l_pop_2_2: 404040
+    l_pop_2_3: 404040
+    l_pop_2_4: 404040
+    l_pop_2_5: 404040
+    l_pop_2_6: 404040
+    l_pop_2_7: 404040
+    l_pop_2_8: 404040
+    l_pop_2_9: 404040
+    l_pop_2_10: 404040
+    l_pop_2_11: 404040
+    l_pop_2_12: 404040
+
+  # Conquistador: left bank -> lower spinner x3 -> 14s center web.
+  the_web_tightens_conquistador_bank:
+    l_gi_3bank: 40D060
+    l_spinner: 404040
+    l_mid_web_target: off
+  the_web_tightens_conquistador_spinner:
+    l_gi_3bank: 404040
+    l_spinner: F0D040
+  the_web_tightens_conquistador_web:
+    l_spinner: 404040
+    l_mid_web_target: FFFFFF
+
+  # Spider-Slayer shot pool. Python owns the individual 8-second lifetimes.
+  the_web_tightens_slayer_left_web_on: {l_left_web_target: FF2020}
+  the_web_tightens_slayer_left_web_off: {l_left_web_target: off}
+  the_web_tightens_slayer_center_web_on: {l_mid_web_target: FF2020}
+  the_web_tightens_slayer_center_web_off: {l_mid_web_target: off}
+  the_web_tightens_slayer_left_sling_on:
+    l_gi_left_sling_upper: FF2020
+    l_gi_left_sling_lower: FF2020
+  the_web_tightens_slayer_left_sling_off:
+    l_gi_left_sling_upper: 404040
+    l_gi_left_sling_lower: 404040
+  the_web_tightens_slayer_right_sling_on: {l_gi_right_sling: FF2020}
+  the_web_tightens_slayer_right_sling_off: {l_gi_right_sling: 404040}
+  the_web_tightens_slayer_left_pop_on:
+    l_pop_1_1: FF2020
+    l_pop_1_2: FF2020
+    l_pop_1_3: FF2020
+    l_pop_1_4: FF2020
+    l_pop_1_5: FF2020
+    l_pop_1_6: FF2020
+    l_pop_1_7: FF2020
+    l_pop_1_8: FF2020
+    l_pop_1_9: FF2020
+    l_pop_1_10: FF2020
+    l_pop_1_11: FF2020
+    l_pop_1_12: FF2020
+  the_web_tightens_slayer_left_pop_off:
+    l_pop_1_1: 404040
+    l_pop_1_2: 404040
+    l_pop_1_3: 404040
+    l_pop_1_4: 404040
+    l_pop_1_5: 404040
+    l_pop_1_6: 404040
+    l_pop_1_7: 404040
+    l_pop_1_8: 404040
+    l_pop_1_9: 404040
+    l_pop_1_10: 404040
+    l_pop_1_11: 404040
+    l_pop_1_12: 404040
+  the_web_tightens_slayer_right_pop_on:
+    l_pop_2_1: FF2020
+    l_pop_2_2: FF2020
+    l_pop_2_3: FF2020
+    l_pop_2_4: FF2020
+    l_pop_2_5: FF2020
+    l_pop_2_6: FF2020
+    l_pop_2_7: FF2020
+    l_pop_2_8: FF2020
+    l_pop_2_9: FF2020
+    l_pop_2_10: FF2020
+    l_pop_2_11: FF2020
+    l_pop_2_12: FF2020
+  the_web_tightens_slayer_right_pop_off:
+    l_pop_2_1: 404040
+    l_pop_2_2: 404040
+    l_pop_2_3: 404040
+    l_pop_2_4: 404040
+    l_pop_2_5: 404040
+    l_pop_2_6: 404040
+    l_pop_2_7: 404040
+    l_pop_2_8: 404040
+    l_pop_2_9: 404040
+    l_pop_2_10: 404040
+    l_pop_2_11: 404040
+    l_pop_2_12: 404040
+  the_web_tightens_slayer_left_bank_on: {l_gi_3bank: FF2020}
+  the_web_tightens_slayer_left_bank_off: {l_gi_3bank: 404040}
+  the_web_tightens_slayer_right_bank_on:
+    l_gi_5bank_lower: FF2020
+    l_gi_5bank_upper: FF2020
+  the_web_tightens_slayer_right_bank_off:
+    l_gi_5bank_lower: 404040
+    l_gi_5bank_upper: 404040
+  the_web_tightens_slayer_star_on: {l_star: FF2020}
+  the_web_tightens_slayer_star_off: {l_star: off}
+  the_web_tightens_slayer_saucer_on:
+    l_1_hole_l: FF2020
+    l_1_hole_r: FF2020
+    l_2_hole_l: FF2020
+    l_2_hole_r: FF2020
+    l_3_hole_l: FF2020
+    l_3_hole_r: FF2020
+  the_web_tightens_slayer_saucer_off:
+    l_1_hole_l: 404040
+    l_1_hole_r: 404040
+    l_2_hole_l: 404040
+    l_2_hole_r: 404040
+    l_3_hole_l: 404040
+    l_3_hole_r: 404040
+  the_web_tightens_slayer_clear:
+    l_left_web_target: off
+    l_mid_web_target: off
+    l_gi_left_sling_upper: 404040
+    l_gi_left_sling_lower: 404040
+    l_gi_right_sling: 404040
+    l_gi_3bank: 404040
+    l_gi_5bank_lower: 404040
+    l_gi_5bank_upper: 404040
+    l_star: off
+    l_1_hole_l: 404040
+    l_1_hole_r: 404040
+    l_2_hole_l: 404040
+    l_2_hole_r: 404040
+    l_3_hole_l: 404040
+    l_3_hole_r: 404040
+
+  # Six-zone lighting reused by Metal-Eating Monster and Harley & Clivendon.
+  the_web_tightens_metal_all_safe:
+    gi: 303030
+  the_web_tightens_harley_zones_reset:
+    gi: 303030
+
+  the_web_tightens_zone_upper_left_attack:
+    l_gi_ramp: FF3030
+    l_gi_top_1: FF3030
+    l_gi_top_2: FF3030
+  the_web_tightens_zone_upper_left_saved:
+    l_gi_ramp: 40FF40
+    l_gi_top_1: 40FF40
+    l_gi_top_2: 40FF40
+  the_web_tightens_zone_upper_left_destroyed:
+    l_gi_ramp: 303030
+    l_gi_top_1: 303030
+    l_gi_top_2: 303030
+  the_web_tightens_zone_upper_left_complete:
+    l_gi_ramp: 40FF40
+    l_gi_top_1: 40FF40
+    l_gi_top_2: 40FF40
+
+  the_web_tightens_zone_upper_right_attack:
+    l_gi_a: FF3030
+    l_gi_ab: FF3030
+    l_gi_bright: FF3030
+    l_gi_top_3: FF3030
+    l_gi_top_4: FF3030
+  the_web_tightens_zone_upper_right_saved:
+    l_gi_a: 40FF40
+    l_gi_ab: 40FF40
+    l_gi_bright: 40FF40
+    l_gi_top_3: 40FF40
+    l_gi_top_4: 40FF40
+  the_web_tightens_zone_upper_right_destroyed:
+    l_gi_a: 303030
+    l_gi_ab: 303030
+    l_gi_bright: 303030
+    l_gi_top_3: 303030
+    l_gi_top_4: 303030
+  the_web_tightens_zone_upper_right_complete:
+    l_gi_a: 40FF40
+    l_gi_ab: 40FF40
+    l_gi_bright: 40FF40
+    l_gi_top_3: 40FF40
+    l_gi_top_4: 40FF40
+
+  the_web_tightens_zone_middle_left_attack:
+    l_gi_3bank: FF3030
+    l_gi_left_lower: FF3030
+    l_gi_left_upper: FF3030
+    l_gi_spinner: FF3030
+  the_web_tightens_zone_middle_left_saved:
+    l_gi_3bank: 40FF40
+    l_gi_left_lower: 40FF40
+    l_gi_left_upper: 40FF40
+    l_gi_spinner: 40FF40
+  the_web_tightens_zone_middle_left_destroyed:
+    l_gi_3bank: 303030
+    l_gi_left_lower: 303030
+    l_gi_left_upper: 303030
+    l_gi_spinner: 303030
+  the_web_tightens_zone_middle_left_complete:
+    l_gi_3bank: 40FF40
+    l_gi_left_lower: 40FF40
+    l_gi_left_upper: 40FF40
+    l_gi_spinner: 40FF40
+
+  the_web_tightens_zone_middle_right_attack:
+    l_gi_5bank_lower: FF3030
+    l_gi_5bank_upper: FF3030
+    l_gi_right_lower_triangle: FF3030
+  the_web_tightens_zone_middle_right_saved:
+    l_gi_5bank_lower: 40FF40
+    l_gi_5bank_upper: 40FF40
+    l_gi_right_lower_triangle: 40FF40
+  the_web_tightens_zone_middle_right_destroyed:
+    l_gi_5bank_lower: 303030
+    l_gi_5bank_upper: 303030
+    l_gi_right_lower_triangle: 303030
+  the_web_tightens_zone_middle_right_complete:
+    l_gi_5bank_lower: 40FF40
+    l_gi_5bank_upper: 40FF40
+    l_gi_right_lower_triangle: 40FF40
+
+  the_web_tightens_zone_lower_left_attack:
+    l_gi_left_sling_lower: FF3030
+    l_gi_left_sling_upper: FF3030
+  the_web_tightens_zone_lower_left_saved:
+    l_gi_left_sling_lower: 40FF40
+    l_gi_left_sling_upper: 40FF40
+  the_web_tightens_zone_lower_left_destroyed:
+    l_gi_left_sling_lower: 303030
+    l_gi_left_sling_upper: 303030
+  the_web_tightens_zone_lower_left_complete:
+    l_gi_left_sling_lower: 40FF40
+    l_gi_left_sling_upper: 40FF40
+
+  the_web_tightens_zone_lower_right_attack:
+    l_gi_right_return: FF3030
+    l_gi_right_sling: FF3030
+  the_web_tightens_zone_lower_right_saved:
+    l_gi_right_return: 40FF40
+    l_gi_right_sling: 40FF40
+  the_web_tightens_zone_lower_right_destroyed:
+    l_gi_right_return: 303030
+    l_gi_right_sling: 303030
+  the_web_tightens_zone_lower_right_complete:
+    l_gi_right_return: 40FF40
+    l_gi_right_sling: 40FF40
+
+  the_web_tightens_harley_star_ready:
+    l_star: FFFFFF
+
+  # One rooftop Super Jackpot opportunity per completed five-phase cycle.
+  the_web_tightens_super_ready:
+    l_upper_left: FFFFFF
+    l_upper_middle: FFFFFF
+    l_upper_right: FFFFFF
+    l_star: FFFFFF
+    l_gi_top_1: FFFFFF
+    l_gi_top_2: FFFFFF
+    l_gi_top_3: FFFFFF
+    l_gi_top_4: FFFFFF
+  the_web_tightens_super_collected:
+    l_upper_left: off
+    l_upper_middle: off
+    l_upper_right: off
+    l_star: off
+
+  the_web_tightens_clear_phase_lights:
+    l_left_web_target: stop
+    l_mid_web_target: stop
+    l_spinner: stop
+    l_star: stop
+    l_gi_3bank: stop
+    l_gi_5bank_lower: stop
+    l_gi_5bank_upper: stop
+    l_gi_left_sling_upper: stop
+    l_gi_left_sling_lower: stop
+    l_gi_right_sling: stop
+    l_gi_right_return: stop
+    l_gi_ramp: stop
+    l_gi_top_1: stop
+    l_gi_top_2: stop
+    l_gi_top_3: stop
+    l_gi_top_4: stop
+    l_gi_a: stop
+    l_gi_ab: stop
+    l_gi_bright: stop
+    l_gi_left_lower: stop
+    l_gi_left_upper: stop
+    l_gi_spinner: stop
+    l_gi_right_lower_triangle: stop
+    l_1_hole_l: stop
+    l_1_hole_r: stop
+    l_2_hole_l: stop
+    l_2_hole_r: stop
+    l_3_hole_l: stop
+    l_3_hole_r: stop
+    l_pop_1_1: stop
+    l_pop_1_2: stop
+    l_pop_1_3: stop
+    l_pop_1_4: stop
+    l_pop_1_5: stop
+    l_pop_1_6: stop
+    l_pop_1_7: stop
+    l_pop_1_8: stop
+    l_pop_1_9: stop
+    l_pop_1_10: stop
+    l_pop_1_11: stop
+    l_pop_1_12: stop
+    l_pop_2_1: stop
+    l_pop_2_2: stop
+    l_pop_2_3: stop
+    l_pop_2_4: stop
+    l_pop_2_5: stop
+    l_pop_2_6: stop
+    l_pop_2_7: stop
+    l_pop_2_8: stop
+    l_pop_2_9: stop
+    l_pop_2_10: stop
+    l_pop_2_11: stop
+    l_pop_2_12: stop
+    l_upper_left: stop
+    l_upper_middle: stop
+    l_upper_right: stop
+
+  the_web_tightens_clear_all:
+    gi: stop
+    l_left_web_target: stop
+    l_mid_web_target: stop
+    l_spinner: stop
+    l_star: stop
+    l_gi_3bank: stop
+    l_gi_5bank_lower: stop
+    l_gi_5bank_upper: stop
+    l_gi_left_sling_upper: stop
+    l_gi_left_sling_lower: stop
+    l_gi_right_sling: stop
+    l_gi_right_return: stop
+    l_gi_ramp: stop
+    l_gi_top_1: stop
+    l_gi_top_2: stop
+    l_gi_top_3: stop
+    l_gi_top_4: stop
+    l_gi_a: stop
+    l_gi_ab: stop
+    l_gi_bright: stop
+    l_gi_left_lower: stop
+    l_gi_left_upper: stop
+    l_gi_spinner: stop
+    l_gi_right_lower_triangle: stop
+    l_1_hole_l: stop
+    l_1_hole_r: stop
+    l_2_hole_l: stop
+    l_2_hole_r: stop
+    l_3_hole_l: stop
+    l_3_hole_r: stop
+    l_pop_1_1: stop
+    l_pop_1_2: stop
+    l_pop_1_3: stop
+    l_pop_1_4: stop
+    l_pop_1_5: stop
+    l_pop_1_6: stop
+    l_pop_1_7: stop
+    l_pop_1_8: stop
+    l_pop_1_9: stop
+    l_pop_1_10: stop
+    l_pop_1_11: stop
+    l_pop_1_12: stop
+    l_pop_2_1: stop
+    l_pop_2_2: stop
+    l_pop_2_3: stop
+    l_pop_2_4: stop
+    l_pop_2_5: stop
+    l_pop_2_6: stop
+    l_pop_2_7: stop
+    l_pop_2_8: stop
+    l_pop_2_9: stop
+    l_pop_2_10: stop
+    l_pop_2_11: stop
+    l_pop_2_12: stop
+    l_upper_left: stop
+    l_upper_middle: stop
+    l_upper_right: stop
 
 sound_player:
   play_mode_jackpot:

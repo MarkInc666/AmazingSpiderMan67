@@ -1094,13 +1094,13 @@ class VillainBookends(Mode):
 
         'the_web_tightens': {
             'title': 'THE WEB TIGHTENS',
-            'intro_1': 'Five hidden threats return.',
-            'intro_2': 'Survive The Web Tightens multiball.',
-            'intro_3': 'Every case file boosts jackpots.',
+            'intro_1': 'Two-ball multiball. Lock one at the Daily Bugle.',
+            'intro_2': 'Saucers start five villain phases.',
+            'intro_3': 'Phase wins build a rooftop Super Jackpot.',
             'summary_title_complete': 'THE WEB BROKEN',
             'summary_title_failed': 'THE WEB TIGHTENS',
-            'stat_1_label': 'HITS', 'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'STATE', 'stat_2_var': 'the_web_tightens_state',
+            'stat_1_label': 'PHASES WON', 'stat_1_var': 'active_mode_stat_1',
+            'stat_2_label': 'SUPERS', 'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points', 'state_var': 'the_web_tightens_state', 'song': 'play_song_38',
         },
         'fifth_dimension_curse': {
