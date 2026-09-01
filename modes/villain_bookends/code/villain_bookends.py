@@ -1334,7 +1334,7 @@ class VillainBookends(Mode):
             return f"{int(value):,}"
         return str(value)
 
-    def _summary_request(self, villain=None, done_event=None, allow_skip=None, **kwargs):
+    def _summary_request(self, villain=None, done_event=None, allow_skip=None, chapter_number=None, **kwargs):
         if villain not in self.VILLAINS:
             self.warning_log("Unknown villain summary requested: %s", villain)
             return
@@ -1363,7 +1363,8 @@ class VillainBookends(Mode):
 
         comic_summary = villain in self.COMIC_SUMMARY_VILLAINS
         if comic_summary:
-            chapter_number = self.COMIC_SUMMARY_VILLAINS[villain]
+            if chapter_number is None:
+                chapter_number = self.COMIC_SUMMARY_VILLAINS[villain]
             self._set_machine_var("wizard_summary_comic_key", f"CHAPTER {chapter_number}")
             self._set_machine_var("wizard_summary_stamp_text", "COLLECTED")
         else:

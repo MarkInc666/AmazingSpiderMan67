@@ -1233,9 +1233,11 @@ class VillainProgression(Mode):
         self._restore_state()
 
     def _request_mini_wizard_summary(self, mini_key):
+        chapter_number, _chapter = self._chapter_for_mini_wizard(mini_key)
         self.machine.events.post(
             "villain_bookend_summary_request",
             villain=mini_key,
+            chapter_number=chapter_number,
             done_event=f"{mini_key}_summary_done",
         )
 

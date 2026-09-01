@@ -278,6 +278,11 @@ widget_player:
       action: play
       key: villain_chapter_status
 
+  slide_main_game_active{current_player.villain_mode_running != 1 and current_player.villain_mode_in_summary != 1 and current_player.chapter_mini_wizard_ready != 1 and current_player.mini_wizard_daily_bugle_ready != 1 and current_player.mini_wizard_vuk_hold_active != 1 and current_player.final_wizard_ready != 1 and current_player.chapter_select_needed != 1 and current_player.chapter_select_active != 1}:
+    daily_bugle_ready:
+      action: play
+      key: daily_bugle_ready
+
   # Villain/wizard presentation owns the display from the shared intro through
   # gameplay and summary. Regular/final cleanup restores this panel. Completed
   # mini-wizards transition to Chapter Select, and slide_main_game_active restores
@@ -286,23 +291,44 @@ widget_player:
     villain_chapter_status:
       action: remove
       key: villain_chapter_status
+    daily_bugle_ready:
+      action: remove
+      key: daily_bugle_ready
 
   villain_mode_started:
     villain_chapter_status:
       action: remove
       key: villain_chapter_status
+    daily_bugle_ready:
+      action: remove
+      key: daily_bugle_ready
 
   villain_summary_cleanup_complete:
     villain_chapter_status:
       action: play
       key: villain_chapter_status
 
-  mode_base_started{current_player.chapter_mini_wizard_ready != 1 and current_player.mini_wizard_daily_bugle_ready != 1 and current_player.mini_wizard_vuk_hold_active != 1 and current_player.final_wizard_ready != 1}:
+  villain_summary_cleanup_complete{current_player.villain_mode_running != 1 and current_player.villain_mode_in_summary != 1 and current_player.chapter_mini_wizard_ready != 1 and current_player.mini_wizard_daily_bugle_ready != 1 and current_player.mini_wizard_vuk_hold_active != 1 and current_player.final_wizard_ready != 1 and current_player.chapter_select_needed != 1 and current_player.chapter_select_active != 1}:
     daily_bugle_ready:
       action: play
       key: daily_bugle_ready
 
-  mode_base_started{current_player.chapter_mini_wizard_ready == 1 or current_player.mini_wizard_daily_bugle_ready == 1 or current_player.mini_wizard_vuk_hold_active == 1 or current_player.final_wizard_ready == 1}:
+  villain_chapter_started:
+    villain_chapter_status:
+      action: play
+      key: villain_chapter_status
+
+  villain_chapter_started{current_player.villain_mode_running != 1 and current_player.villain_mode_in_summary != 1 and current_player.chapter_mini_wizard_ready != 1 and current_player.mini_wizard_daily_bugle_ready != 1 and current_player.mini_wizard_vuk_hold_active != 1 and current_player.final_wizard_ready != 1 and current_player.chapter_select_needed != 1 and current_player.chapter_select_active != 1}:
+    daily_bugle_ready:
+      action: play
+      key: daily_bugle_ready
+
+  mode_base_started{current_player.villain_mode_running != 1 and current_player.villain_mode_in_summary != 1 and current_player.chapter_mini_wizard_ready != 1 and current_player.mini_wizard_daily_bugle_ready != 1 and current_player.mini_wizard_vuk_hold_active != 1 and current_player.final_wizard_ready != 1 and current_player.chapter_select_needed != 1 and current_player.chapter_select_active != 1}:
+    daily_bugle_ready:
+      action: play
+      key: daily_bugle_ready
+
+  mode_base_started{current_player.villain_mode_running == 1 or current_player.villain_mode_in_summary == 1 or current_player.chapter_mini_wizard_ready == 1 or current_player.mini_wizard_daily_bugle_ready == 1 or current_player.mini_wizard_vuk_hold_active == 1 or current_player.final_wizard_ready == 1 or current_player.chapter_select_needed == 1 or current_player.chapter_select_active == 1}:
     daily_bugle_ready:
       action: remove
       key: daily_bugle_ready

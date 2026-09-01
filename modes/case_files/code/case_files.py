@@ -419,16 +419,20 @@ class CaseFiles(Mode):
         self.machine.events.post("case_files_cleared")
 
     def _case_files_hidden_for_wizard(self):
-        """Hide the Case Files/Daily Bugle panel for wizard-ready/wizard flow."""
+        """Hide the Case Files/Daily Bugle panel outside normal chapter play."""
         player = self.machine.game.player if self.machine.game else None
         if not player:
             return False
 
         hide_vars = (
+            "villain_mode_running",
+            "villain_mode_in_summary",
             "chapter_mini_wizard_ready",
             "mini_wizard_daily_bugle_ready",
             "mini_wizard_vuk_hold_active",
             "final_wizard_ready",
+            "chapter_select_needed",
+            "chapter_select_active",
         )
 
         for var_name in hide_vars:
