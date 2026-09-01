@@ -1290,6 +1290,11 @@ class VillainProgression(Mode):
         player["mini_wizard_jackpot_value"] = jackpot
         player["wizard_prep_summary"] = f"{collected} / 25 CASE FILES   +{bonus:,}"
         player["wizard_prep_next_award"] = f"MINI-WIZARD JACKPOT {jackpot:,}"
+        # Left chapter panel uses a compact alternating wizard-prep readout.
+        # The displayed JP prep value is the 20K-per-Case-File contribution,
+        # matching the chapter Case File bonus earned for wizard awards.
+        player["chapter_wizard_prep_case_files_text"] = f"{collected} / 25 CASE FILES"
+        player["chapter_wizard_prep_jp_text"] = f"WIZARD JP AT {bonus // 1000}K"
         self.machine.events.post(
             "chapter_case_files_status_changed",
             chapter_case_files_collected=player["chapter_case_files_collected"],
@@ -2079,10 +2084,12 @@ class VillainProgression(Mode):
             self.machine.game.player["chapter_mini_wizard_key"] = self.FINAL_WIZARD_KEY
             self.machine.game.player["chapter_mini_wizard_name"] = self.FINAL_WIZARD_NAME
             self.machine.game.player["chapter_mini_wizard_state"] = self._display_state(self.machine.game.player[f"{self.FINAL_WIZARD_KEY}_state"], ready=self.machine.game.player["final_wizard_ready"] == 1)
+            self.machine.game.player["chapter_wizard_ready_text"] = "FINAL WIZARD READY" if self.machine.game.player["final_wizard_ready"] == 1 else "COLLECT 4 COMICS FOR FINAL WIZARD"
             for index in range(1, 6):
                 self.machine.game.player[f"chapter_villain_{index}_key"] = ""
                 self.machine.game.player[f"chapter_villain_{index}_name"] = ""
                 self.machine.game.player[f"chapter_villain_{index}_state"] = ""
+                self.machine.game.player[f"chapter_villain_{index}_check"] = ""
             return
 
         self.machine.game.player["chapter_current_key"] = chapter["key"]
@@ -2093,11 +2100,18 @@ class VillainProgression(Mode):
             self.machine.game.player[f"{chapter['mini_wizard_key']}_state"],
             ready=self.machine.game.player["chapter_mini_wizard_ready"] == 1,
         )
+        self.machine.game.player["chapter_wizard_ready_text"] = (
+            "WIZARD MODE READY"
+            if self.machine.game.player["chapter_mini_wizard_ready"] == 1
+            else "COMPLETE ALL 5 FOR WIZARD MODE"
+        )
 
         for index, villain_key in enumerate(chapter["villains"], start=1):
+            villain_state = self._villain_state(villain_key)
             self.machine.game.player[f"chapter_villain_{index}_key"] = villain_key
             self.machine.game.player[f"chapter_villain_{index}_name"] = self.VILLAINS[villain_key]["name"]
-            self.machine.game.player[f"chapter_villain_{index}_state"] = self._display_state(self._villain_state(villain_key))
+            self.machine.game.player[f"chapter_villain_{index}_state"] = self._display_state(villain_state)
+            self.machine.game.player[f"chapter_villain_{index}_check"] = "✓" if villain_state == self.COMPLETED else ""
 
     def _villain_state(self, villain_key):
         state = self._normalize_state(self.machine.game.player[f"{villain_key}_state"])

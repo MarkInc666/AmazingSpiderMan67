@@ -255,13 +255,14 @@ class DailyBugleMystery(Mode):
         if not self.daily_bugle_enabled:
             return
 
-        if not self.mystery_ab_ready:
-            return
-
+        # Rooftop pictures are always banked. A+B controls access to the
+        # Daily Bugle Mystery, not whether the spinner can earn pictures.
         mystery_was_ready = self.mystery_ready
         self.rooftop_photos += 1
         picture_cost = self._current_picture_cost()
-        self.mystery_ready = self.rooftop_photos >= picture_cost
+        self.mystery_ready = bool(
+            self.mystery_ab_ready and self.rooftop_photos >= picture_cost
+        )
         self.update_player_vars(post_widget_update=False)
 
         self.machine.events.post(
@@ -278,9 +279,11 @@ class DailyBugleMystery(Mode):
             # Continue counting pictures even while an award is already ready.
             self.machine.events.post("daily_bugle_photo_hit_after_mystery_ready")
 
-        # Open gate again so player can shoot back toward VUK/mystery collect,
-        # unless a gate-protected villain mode owns upper/VUK access.
-        self._post_rooftop_gate_open(reason="photo_collected")
+        # Once A+B has opened the Daily Bugle access cycle, keep the gate
+        # available after a picture so the player can return to the VUK.
+        # Before A+B, pictures still bank but do not open the gate.
+        if self.mystery_ab_ready:
+            self._post_rooftop_gate_open(reason="photo_collected")
         self.machine.events.post("daily_bugle_widget_update")
 
     def _update_pictures_taken_text(self):

@@ -15,6 +15,15 @@ player_vars:
   chapter_mini_wizard_state:
     initial_value: ""
     value_type: str
+  chapter_wizard_ready_text:
+    initial_value: "COMPLETE ALL 5 FOR WIZARD MODE"
+    value_type: str
+  chapter_wizard_prep_case_files_text:
+    initial_value: "0 / 25 CASE FILES"
+    value_type: str
+  chapter_wizard_prep_jp_text:
+    initial_value: "WIZARD JP AT 0K"
+    value_type: str
   selected_chapter:
     initial_value: 1
     value_type: int
@@ -219,11 +228,17 @@ player_vars:
   chapter_villain_1_state:
     initial_value: not_played
     value_type: str
+  chapter_villain_1_check:
+    initial_value: ""
+    value_type: str
   chapter_villain_2_name:
     initial_value: ""
     value_type: str
   chapter_villain_2_state:
     initial_value: not_played
+    value_type: str
+  chapter_villain_2_check:
+    initial_value: ""
     value_type: str
   chapter_villain_3_name:
     initial_value: ""
@@ -231,17 +246,26 @@ player_vars:
   chapter_villain_3_state:
     initial_value: not_played
     value_type: str
+  chapter_villain_3_check:
+    initial_value: ""
+    value_type: str
   chapter_villain_4_name:
     initial_value: ""
     value_type: str
   chapter_villain_4_state:
     initial_value: not_played
     value_type: str
+  chapter_villain_4_check:
+    initial_value: ""
+    value_type: str
   chapter_villain_5_name:
     initial_value: ""
     value_type: str
   chapter_villain_5_state:
     initial_value: not_played
+    value_type: str
+  chapter_villain_5_check:
+    initial_value: ""
     value_type: str
   rhino_state:
     initial_value: 0
