@@ -92,8 +92,11 @@ ROOFTOP SUPER / REPEAT CYCLE
   - open the rooftop,
   - light the rooftop for one Super Jackpot attempt.
 - Super value = 1,000,000 x successful phases in that cycle (0-5M).
-- Qualifying rooftop switches are the three upper targets, upper spinner, and
-  Star rollover.
+- The Super Jackpot is the CLOCK TOWER shot: upper-middle target only.
+- The upper-middle target flashes while the Super is available.
+- When the VUK kicks the locked ball to the roof, display:
+    HIT THE CLOCK TOWER
+    FOR SUPER JACKPOT
 - After the one Super is collected, the rooftop closes and the VUK is relit.
 - If a ball is locked in the VUK before the Super is collected, that Super
   attempt is forfeited and a new five-phase cycle begins.
@@ -114,3 +117,8 @@ PHYSICAL / MACHINE TEST ITEMS
 - Verify all individual Spider-Slayer 8-second timers behave independently.
 - Verify one-ball multiball end routes cleanly into the wizard summary and a
   VUK-held last ball remains held through summary when applicable.
+
+2026-09-02 gate/audio integration
+- The wizard now owns the rooftop gate for its full lifetime. Current and legacy gate-open requests are rejected during VUK lock, saucer transitions, and the five villain phases. The gate is permitted open only during the earned rooftop Super Jackpot window and closes again after the one Super is collected.
+- Fiddler WATCH/playback and correct-note hits use violin_1..4; a wrong note uses violin_bad_note, matching the standalone Fiddler mode.
+- Metal, Conquistador, Spider-Slayer, and Harley/Clivendon qualifying Jackpot awards post the shared jackpot effect. Fiddler notes deliberately use the violin sounds without layering the generic jackpot sound so the two-note pattern stays clear.

@@ -78,10 +78,20 @@ show_player:
   the_web_tightens_clear_phase_lights:
     shared_center_web_chase:
       action: stop
+  the_web_tightens_super_ready:
+    the_web_tightens_clock_tower_super_flash:
+      loops: -1
+      priority: 850
+  the_web_tightens_super_collected:
+    the_web_tightens_clock_tower_super_flash:
+      action: stop
+
   the_web_tightens_clear_all:
     shared_final_vuk_chase:
       action: stop
     shared_center_web_chase:
+      action: stop
+    the_web_tightens_clock_tower_super_flash:
       action: stop
 
 light_player:
@@ -382,12 +392,12 @@ light_player:
   the_web_tightens_harley_star_ready:
     l_star: FFFFFF
 
-  # One rooftop Super Jackpot opportunity per completed five-phase cycle.
+  # One Clock Tower Super Jackpot opportunity per completed five-phase cycle.
+  # The upper-middle target itself is flashed by the dedicated show below.
   the_web_tightens_super_ready:
-    l_upper_left: FFFFFF
-    l_upper_middle: FFFFFF
-    l_upper_right: FFFFFF
-    l_star: FFFFFF
+    l_upper_left: off
+    l_upper_right: off
+    l_star: off
     l_gi_top_1: FFFFFF
     l_gi_top_2: FFFFFF
     l_gi_top_3: FFFFFF
@@ -515,7 +525,29 @@ light_player:
     l_upper_middle: stop
     l_upper_right: stop
 
+shows:
+  the_web_tightens_clock_tower_super_flash:
+    - duration: 250ms
+      lights:
+        l_upper_middle: FFFFFF
+    - duration: 250ms
+      lights:
+        l_upper_middle: off
+
 sound_player:
+  # Reuse the standalone Fiddler violin effects inside this wizard. The
+  # Fiddler mode itself is not running, so these mappings must live here.
+  play_note_1:
+    violin_1: {action: play, bus: effects}
+  play_note_2:
+    violin_2: {action: play, bus: effects}
+  play_note_3:
+    violin_3: {action: play, bus: effects}
+  play_note_4:
+    violin_4: {action: play, bus: effects}
+  play_bad_note:
+    violin_bad_note: {action: play, bus: effects}
+
   play_mode_jackpot:
     jackpot_2:
       action: play

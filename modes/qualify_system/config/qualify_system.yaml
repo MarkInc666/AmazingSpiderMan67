@@ -64,7 +64,6 @@ show_player:
     saucer_cluster_state_0:
       key: saucer_1
       show_tokens:
-        main_light: l_1
         hole_left: l_1_hole_l
         hole_right: l_1_hole_r
 
@@ -72,7 +71,6 @@ show_player:
     saucer_cluster_state_1:
       key: saucer_1
       show_tokens:
-        main_light: l_1
         hole_left: l_1_hole_l
         hole_right: l_1_hole_r
 
@@ -80,7 +78,6 @@ show_player:
     saucer_cluster_state_2:
       key: saucer_1
       show_tokens:
-        main_light: l_1
         hole_left: l_1_hole_l
         hole_right: l_1_hole_r
 
@@ -88,7 +85,6 @@ show_player:
     saucer_cluster_state_3:
       key: saucer_1
       show_tokens:
-        main_light: l_1
         hole_left: l_1_hole_l
         hole_right: l_1_hole_r
 
@@ -96,7 +92,6 @@ show_player:
     saucer_cluster_state_4:
       key: saucer_1
       show_tokens:
-        main_light: l_1
         hole_left: l_1_hole_l
         hole_right: l_1_hole_r
 
@@ -104,7 +99,6 @@ show_player:
     saucer_cluster_state_5:
       key: saucer_1
       show_tokens:
-        main_light: l_1
         hole_left: l_1_hole_l
         hole_right: l_1_hole_r
 
@@ -112,7 +106,6 @@ show_player:
     saucer_cluster_state_0:
       key: saucer_2
       show_tokens:
-        main_light: l_2
         hole_left: l_2_hole_l
         hole_right: l_2_hole_r
 
@@ -120,7 +113,6 @@ show_player:
     saucer_cluster_state_1:
       key: saucer_2
       show_tokens:
-        main_light: l_2
         hole_left: l_2_hole_l
         hole_right: l_2_hole_r
 
@@ -128,7 +120,6 @@ show_player:
     saucer_cluster_state_2:
       key: saucer_2
       show_tokens:
-        main_light: l_2
         hole_left: l_2_hole_l
         hole_right: l_2_hole_r
 
@@ -136,7 +127,6 @@ show_player:
     saucer_cluster_state_3:
       key: saucer_2
       show_tokens:
-        main_light: l_2
         hole_left: l_2_hole_l
         hole_right: l_2_hole_r
 
@@ -144,7 +134,6 @@ show_player:
     saucer_cluster_state_4:
       key: saucer_2
       show_tokens:
-        main_light: l_2
         hole_left: l_2_hole_l
         hole_right: l_2_hole_r
 
@@ -152,7 +141,6 @@ show_player:
     saucer_cluster_state_5:
       key: saucer_2
       show_tokens:
-        main_light: l_2
         hole_left: l_2_hole_l
         hole_right: l_2_hole_r
 
@@ -160,7 +148,6 @@ show_player:
     saucer_cluster_state_0:
       key: saucer_3
       show_tokens:
-        main_light: l_3
         hole_left: l_3_hole_l
         hole_right: l_3_hole_r
 
@@ -168,7 +155,6 @@ show_player:
     saucer_cluster_state_1:
       key: saucer_3
       show_tokens:
-        main_light: l_3
         hole_left: l_3_hole_l
         hole_right: l_3_hole_r
 
@@ -176,7 +162,6 @@ show_player:
     saucer_cluster_state_2:
       key: saucer_3
       show_tokens:
-        main_light: l_3
         hole_left: l_3_hole_l
         hole_right: l_3_hole_r
 
@@ -184,7 +169,6 @@ show_player:
     saucer_cluster_state_3:
       key: saucer_3
       show_tokens:
-        main_light: l_3
         hole_left: l_3_hole_l
         hole_right: l_3_hole_r
 
@@ -192,7 +176,6 @@ show_player:
     saucer_cluster_state_4:
       key: saucer_3
       show_tokens:
-        main_light: l_3
         hole_left: l_3_hole_l
         hole_right: l_3_hole_r
 
@@ -200,7 +183,6 @@ show_player:
     saucer_cluster_state_5:
       key: saucer_3
       show_tokens:
-        main_light: l_3
         hole_left: l_3_hole_l
         hole_right: l_3_hole_r
 
@@ -235,66 +217,91 @@ shows:
   saucer_cluster_state_0:
     - duration: -1
       lights:
-        (main_light): off
         (hole_left): off
         (hole_right): off
 
+  # Villain qualification uses only the two lamps around each saucer hole.
+  # State 1 is a slow white pulse; each additional available villain speeds
+  # the pulse up. The numbered 1/2/3 inserts are intentionally not used.
   saucer_cluster_state_1:
-    - duration: 500ms
+    - duration: 900ms
       lights:
-        (main_light): blue
-        (hole_left): off
-        (hole_right): off
-    - duration: 500ms
+        (hole_left):
+          color: white
+          fade: 900ms
+        (hole_right):
+          color: white
+          fade: 900ms
+    - duration: 900ms
       lights:
-        (main_light): off
-        (hole_left): off
-        (hole_right): off
+        (hole_left):
+          color: off
+          fade: 900ms
+        (hole_right):
+          color: off
+          fade: 900ms
 
   saucer_cluster_state_2:
-    - duration: 350ms
+    - duration: 650ms
       lights:
-        (main_light): blue
-        (hole_left): white
-        (hole_right): white
-    - duration: 350ms
+        (hole_left):
+          color: white
+          fade: 650ms
+        (hole_right):
+          color: white
+          fade: 650ms
+    - duration: 650ms
       lights:
-        (main_light): off
-        (hole_left): off
-        (hole_right): off
+        (hole_left):
+          color: off
+          fade: 650ms
+        (hole_right):
+          color: off
+          fade: 650ms
 
   saucer_cluster_state_3:
-    - duration: 250ms
+    - duration: 450ms
       lights:
-        (main_light): green
-        (hole_left): white
-        (hole_right): white
-    - duration: 250ms
+        (hole_left):
+          color: white
+          fade: 450ms
+        (hole_right):
+          color: white
+          fade: 450ms
+    - duration: 450ms
       lights:
-        (main_light): off
-        (hole_left): off
-        (hole_right): off
+        (hole_left):
+          color: off
+          fade: 450ms
+        (hole_right):
+          color: off
+          fade: 450ms
 
   saucer_cluster_state_4:
+    - duration: 300ms
+      lights:
+        (hole_left):
+          color: white
+          fade: 300ms
+        (hole_right):
+          color: white
+          fade: 300ms
+    - duration: 300ms
+      lights:
+        (hole_left):
+          color: off
+          fade: 300ms
+        (hole_right):
+          color: off
+          fade: 300ms
+
+  saucer_cluster_state_5:
     - duration: 180ms
       lights:
-        (main_light): green
-        (hole_left): red
-        (hole_right): red
+        (hole_left): white
+        (hole_right): white
     - duration: 180ms
       lights:
-        (main_light): off
         (hole_left): off
         (hole_right): off
 
-  saucer_cluster_state_5:
-    - duration: 100ms
-      lights:
-        (main_light): white
-        (hole_left): red
-        (hole_right): red
-    - duration: 100ms
-      lights:
-        (main_light): green
-        (hole_left): off
-        (hole_right): off

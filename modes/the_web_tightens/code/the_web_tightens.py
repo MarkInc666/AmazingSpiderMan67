@@ -141,10 +141,8 @@ class TheWebTightens(Mode):
         "s_saucer_3": "saucer",
     }
 
-    SUPER_SWITCHES = {
-        "s_upper_target_left", "s_upper_target_center", "s_upper_target_right",
-        "s_trispinner_opto", "s_star_rollover",
-    }
+    # The rooftop Super is the Clock Tower shot: upper-middle target only.
+    SUPER_SWITCHES = {"s_upper_target_center"}
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
@@ -219,6 +217,12 @@ class TheWebTightens(Mode):
             self._multiball_ended,
         )
         self.add_mode_event_handler(f"{self.MODE_KEY}_fail_request", self._complete_mode)
+
+        # The Web Tightens owns the rooftop gate. Keep it closed during the
+        # VUK lock and all five villain phases, and allow it open only for the
+        # earned rooftop Super Jackpot window. Reject legacy open requests too.
+        self.add_mode_event_handler("rooftop_diverter_open", self._enforce_gate_state)
+        self.add_mode_event_handler("open_rooftop_gate", self._enforce_gate_state)
 
         self.machine.events.post("chapter_mini_wizard_started", mini_wizard=self.MODE_KEY)
         self.machine.events.post("disable_daily_bugle_mystery")
@@ -311,6 +315,14 @@ class TheWebTightens(Mode):
 
         if self.phase == "super" and switch in self.SUPER_SWITCHES:
             self._super_hit(switch)
+
+    def _enforce_gate_state(self, **kwargs):
+        """Reject outside gate-open requests except during the earned Super window."""
+        if self.mode_done:
+            return
+        if self.phase == "super" and self.super_available and not self.super_collected:
+            return
+        self.machine.events.post("rooftop_diverter_close")
 
     def _vuk_hit(self):
         if self.mode_done:
@@ -717,6 +729,7 @@ class TheWebTightens(Mode):
         self.metal_saved.add(zone)
         value = self._jackpot()
         self._score(value)
+        self.machine.events.post("play_mode_jackpot")
         self.machine.events.post(f"the_web_tightens_zone_{zone}_saved")
         self.machine.events.post(
             "show_mode_jackpot",
@@ -865,6 +878,7 @@ class TheWebTightens(Mode):
             return
         value = self._jackpot()
         self._score(value)
+        self.machine.events.post("play_mode_jackpot")
         self.machine.events.post(
             "show_mode_jackpot",
             message_mode_title="SLAYER JACKPOT",
@@ -959,6 +973,7 @@ class TheWebTightens(Mode):
         self.harley_completed.add(zone)
         value = self._jackpot()
         self._score(value)
+        self.machine.events.post("play_mode_jackpot")
         self.machine.events.post(f"the_web_tightens_zone_{zone}_complete")
         self.machine.events.post(
             "show_mode_jackpot",
@@ -988,6 +1003,7 @@ class TheWebTightens(Mode):
         self.delay.remove("web_harley_star_timeout")
         value = self._jackpot(2)
         self._score(value)
+        self.machine.events.post("play_mode_jackpot")
         self.machine.events.post(
             "show_mode_jackpot",
             message_mode_title="HARLEY 2X JACKPOT",
@@ -1021,15 +1037,25 @@ class TheWebTightens(Mode):
 
         self.machine.events.post("rooftop_diverter_open")
         self.machine.events.post("the_web_tightens_super_ready")
-        value = self.cycle_successes * self.SUPER_PER_SUCCESS
-        self.machine.events.post(
-            "show_mode_message_long",
-            message_mode_title="SUPER JACKPOT READY",
-            message_mode_subtitle="SHOOT THE ROOFTOP - ONE SUPER",
-            message_mode_value=value,
+        # Synchronize the callout with the deliberate 500ms VUK kick to the roof.
+        self.delay.add(
+            name="web_super_ready_message",
+            ms=500,
+            callback=self._show_super_ready_message,
         )
         self._sync_vars()
         self._update_status()
+
+    def _show_super_ready_message(self):
+        if self.mode_done or not self.super_available or self.super_collected:
+            return
+        value = self.cycle_successes * self.SUPER_PER_SUCCESS
+        self.machine.events.post(
+            "show_mode_message_long",
+            message_mode_title="HIT THE CLOCK TOWER",
+            message_mode_subtitle="FOR SUPER JACKPOT",
+            message_mode_value=value,
+        )
 
     def _super_hit(self, switch):
         if not self.super_available or self.super_collected or self.transitioning:
@@ -1076,6 +1102,7 @@ class TheWebTightens(Mode):
     def _score_required_jackpot(self, title, subtitle):
         value = self._jackpot()
         self._score(value)
+        self.machine.events.post("play_mode_jackpot")
         self.machine.events.post(
             "show_mode_jackpot",
             message_mode_title=title,
