@@ -92,9 +92,11 @@ show_player:
   goblin_lite_left_pop:
     goblin_left_pop_flash_show:
       loops: -1
+      priority: 510
   goblin_solid_left_pop:
     goblin_left_pop_solid_show:
       loops: -1
+      priority: 510
   goblin_stop_left_pop:
     goblin_left_pop_flash_show:
       action: stop
@@ -103,9 +105,11 @@ show_player:
   goblin_lite_right_pop:
     goblin_right_pop_flash_show:
       loops: -1
+      priority: 510
   goblin_solid_right_pop:
     goblin_right_pop_solid_show:
       loops: -1
+      priority: 510
   goblin_stop_right_pop:
     goblin_right_pop_flash_show:
       action: stop
@@ -363,14 +367,46 @@ shows:
         l_5bank_5: green
 
   goblin_saucers_lit_show:
-    - duration: -1
+    - duration: 500ms
       lights:
-        l_1_hole_l: red
-        l_1_hole_r: red
-        l_2_hole_l: red
-        l_2_hole_r: red
-        l_3_hole_l: red
-        l_3_hole_r: red
+        l_1_hole_l:
+          color: red
+          fade: 500ms
+        l_1_hole_r:
+          color: red
+          fade: 500ms
+        l_2_hole_l:
+          color: red
+          fade: 500ms
+        l_2_hole_r:
+          color: red
+          fade: 500ms
+        l_3_hole_l:
+          color: red
+          fade: 500ms
+        l_3_hole_r:
+          color: red
+          fade: 500ms
+    - duration: 500ms
+      lights:
+        l_1_hole_l:
+          color: off
+          fade: 500ms
+        l_1_hole_r:
+          color: off
+          fade: 500ms
+        l_2_hole_l:
+          color: off
+          fade: 500ms
+        l_2_hole_r:
+          color: off
+          fade: 500ms
+        l_3_hole_l:
+          color: off
+          fade: 500ms
+        l_3_hole_r:
+          color: off
+          fade: 500ms
   goblin_gi_unsafe_show:
     - duration: -1
       lights:

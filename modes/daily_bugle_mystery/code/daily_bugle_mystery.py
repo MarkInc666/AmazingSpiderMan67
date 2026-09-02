@@ -10,7 +10,7 @@ class DailyBugleMystery(Mode):
       2. Rooftop gate opens.
       3. Shoot VUK to the rooftop.
       4. Rooftop-spinner hits add to a persistent picture balance.
-      5. Mystery costs progress 1, 2, 3, 4, then 5 pictures thereafter.
+      5. Mystery costs progress from 1 through 10 pictures, then remain at 10.
       6. Left exit can hold the ball on the pop-up post for JJJ instructions.
       7. Right exit only plays the same instruction/callout, without the post.
       8. VUK collects Mystery when ready and spends the current picture cost.
@@ -23,7 +23,7 @@ class DailyBugleMystery(Mode):
     AB_DAILY_POINTS = 10000
     AB_DAILY_POINTS_UNLIT = 2000
 
-    MAX_PICTURE_COST = 5
+    MAX_PICTURE_COST = 10
     LEFT_EXIT_HOLD_MS = 8000
 
     # Daily Bugle should not take over the rooftop gate while one of
@@ -657,7 +657,7 @@ class DailyBugleMystery(Mode):
             self._restore_lights_and_widgets()
 
     def _current_picture_cost(self):
-        """Return the next Mystery cost: 1, 2, 3, 4, then 5 thereafter."""
+        """Return the next Mystery cost: 1 through 10, then 10 thereafter."""
         if not self.machine.game:
             return 1
         collected = self._safe_int(

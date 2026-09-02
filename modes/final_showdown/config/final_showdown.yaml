@@ -74,6 +74,8 @@ event_player:
     - final_showdown_clear_all_final_showdown_lights
 
   mode_final_showdown_started:
+    - cmd_flippers_enable
+    - cmd_autofire_coils_enable
     - final_showdown_setup
     - final_showdown_start_multiball|1s
 

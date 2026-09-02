@@ -35,7 +35,7 @@ event_player:
     - daily_bugle_sling_swap_request
 
   # Rooftop spinner adds to the running Daily Bugle picture balance.
-  # Mystery costs progress 1, 2, 3, 4, then 5 pictures for later awards.
+  # Mystery costs progress from 1 through 10 pictures, then remain at 10.
   s_trispinner_opto_active:
     - daily_bugle_rooftop_spinner_hit
 
