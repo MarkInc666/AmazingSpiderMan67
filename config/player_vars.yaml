@@ -213,6 +213,9 @@ player_vars:
   final_wizard_ready:
     initial_value: 0
     value_type: int
+  final_wizard_completed:
+    initial_value: 0
+    value_type: int
   saucer_1_state:
     initial_value: 0
     value_type: int

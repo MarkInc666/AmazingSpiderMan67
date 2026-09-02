@@ -72,6 +72,7 @@ game:
 
 modes:
   - attract
+  - player_retirement
   - base
   - light_feedback
   - music_control

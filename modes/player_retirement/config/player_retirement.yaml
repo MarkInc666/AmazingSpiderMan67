@@ -1,0 +1,9 @@
+#config_version=6
+
+mode:
+  code: player_retirement.PlayerRetirement
+  start_events: game_started
+  stop_events:
+    - game_ending
+    - game_ended
+  priority: 10000
