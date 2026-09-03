@@ -1,305 +1,240 @@
-from mpf.core.mode import Mode
+import random
+
 from mpf.core.delays import DelayManager
+from mpf.core.mode import Mode
 from modes.common.case_file_mixin import CaseFileMixin
-
-"""
-DoctorDumpty - Prediction Panic
-
-Rules:
-- 6-shot timed sequence.
-- One shot is active at a time.
-- Timers start at 12 seconds and drop by 1 second per shot.
-- Spinner adds +1 second to the current shot timer.
-- Lit shot awards the current jackpot and advances to the next shot.
-- Timeout advances to the next shot with no award.
-- Jackpot starts at 100K and increases by 100K per collected jackpot.
-
-Case File helpers:
-- More Jackpots: adds a 7th shot. Either pop hit awards it.
-- Bigger Jackpots: jackpot starts at 150K and increases by 150K per collect.
-- More Time: timers start at 16 seconds instead of 12.
-- Safety Net: starts a 10 second ball save.
-- Shot Assist: first timeout awards the jackpot anyway.
-"""
 
 
 class DoctorDumpty(CaseFileMixin, Mode):
     MODE_KEY = "doctor_dumpty"
-    DISPLAY_NAME = "DoctorDumpty"
+    DISPLAY_NAME = "Doctor Dumpty"
 
-    BASE_SHOT_COUNT = 6
-    BASE_START_TIME = 12
-    MORE_TIME_START_TIME = 16
-    BASE_JACKPOT = 100_000
-    BASE_JACKPOT_STEP = 100_000
-    BIGGER_JACKPOT = 150_000
-    BIGGER_JACKPOT_STEP = 150_000
-    SPINNER_TIME_ADD = 1
+    DROP_VALUE = 75_000
+    BIGGER_DROP_VALUE = 100_000
+    GAS_VALUE = 200_000
+    BIGGER_GAS_VALUE = 250_000
+    UPPER_JP_START = 350_000
+    BIGGER_UPPER_JP_START = 500_000
+    SPINNER_STEP = 50_000
+    ROOF_SECONDS = 16
+    MORE_TIME_ROOF_SECONDS = 20
 
-    BASE_SHOTS = [
-        "left_web",
-        "center_web",
-        "upper_spinner",
-        "upper_target_left",
-        "upper_target_center",
-        "upper_target_right",
-    ]
-
-    CASE_FILE_EXTRA_SHOT = "pops"
-    UPPER_SHOTS = {"upper_spinner", "upper_target_left", "upper_target_center", "upper_target_right"}
+    GAS_AREAS = ("left_sling", "right_sling", "left_pop", "right_pop", "right_bank")
+    DROP_REVEAL_COUNTS = (1, 1, 1)
+    MORE_JP_REVEAL_COUNTS = (1, 2, 2)
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
-        self.reset_active_mode_summary(stat_count=3)
-
+        self.reset_active_mode_summary(stat_count=2)
         self.delay = DelayManager(self.machine)
         self.case_files = self.get_case_file_bonuses()
 
         self.mode_done = False
-        self.current_index = -1
-        self.current_shot = None
-        self.seconds_left = 0
+        self.phase = "gas"
         self.mode_points = 0
-        self.jackpots_collected = 0
-        self.missed_shots = 0
-        self.best_jackpot = 0
+        self.balloons_popped = 0
+        self.revealed_gas = set()
+        self.cleared_gas = set()
+        self.used_left_drops = set()
+        self.shot_assist_available = self.has_case_file("shot_assist")
+        self.more_jackpots = self.has_case_file("more_jackpots")
+        self.bigger_jackpots = self.has_case_file("bigger_jackpots")
+        self.gas_required = 5 if self.more_jackpots else 3
+        self.drop_reveal_counts = self.MORE_JP_REVEAL_COUNTS if self.more_jackpots else self.DROP_REVEAL_COUNTS
+        self.drop_value = self.BIGGER_DROP_VALUE if self.bigger_jackpots else self.DROP_VALUE
+        self.gas_value = self.BIGGER_GAS_VALUE if self.bigger_jackpots else self.GAS_VALUE
+        self.upper_jp = self.BIGGER_UPPER_JP_START if self.bigger_jackpots else self.UPPER_JP_START
+        self.roof_seconds = self.MORE_TIME_ROOF_SECONDS if self.has_case_file("more_time") else self.ROOF_SECONDS
+        self.seconds_left = 0
 
-        self.start_time = self.BASE_START_TIME
-        self.jackpot_base = self.BASE_JACKPOT
-        self.jackpot_step = self.BASE_JACKPOT_STEP
-        self.shot_assist_available = False
-
-        self.shot_sequence = list(self.BASE_SHOTS)
-        self._apply_case_file_bonuses()
+        player = self.machine.game.player if self.machine.game else None
+        if player:
+            player["doctor_dumpty_state"] = 1
         self._sync_vars()
 
         self.publish_case_file_bonus_events(self.MODE_KEY)
         self.publish_active_case_file_helpers([
-            ("more_jackpots", "EXTRA DOCTOR DUMPTY SHOT AVAILABLE"),
-            ("bigger_jackpots", "BIGGER PREDICTION JACKPOTS"),
-            ("more_time", "PREDICTION TIMERS EXTENDED"),
-            ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
-            ("shot_assist", "FIRST TIMEOUT AWARDS JACKPOT"),
+            ("more_jackpots", "REVEAL AND CLEAR ALL 5 GAS AREAS"),
+            ("bigger_jackpots", "BIGGER DROP / GAS / BALLOON JACKPOTS"),
+            ("more_time", "20 SECONDS ON THE ROOF"),
+            ("safety_net", "BALL SAVE ACTIVE"),
+            ("shot_assist", "CLEAR AN EXTRA GAS AREA OR DOUBLE FIRST BALLOON HIT"),
         ])
-
-        self.add_mode_event_handler("doctor_dumpty_left_web_hit", self._shot_hit, shot_name="left_web")
-        self.add_mode_event_handler("doctor_dumpty_center_web_hit", self._shot_hit, shot_name="center_web")
-        self.add_mode_event_handler("doctor_dumpty_upper_spinner_hit", self._shot_hit, shot_name="upper_spinner")
-        self.add_mode_event_handler("doctor_dumpty_upper_target_left_hit", self._shot_hit, shot_name="upper_target_left")
-        self.add_mode_event_handler("doctor_dumpty_upper_target_center_hit", self._shot_hit, shot_name="upper_target_center")
-        self.add_mode_event_handler("doctor_dumpty_upper_target_right_hit", self._shot_hit, shot_name="upper_target_right")
-        self.add_mode_event_handler("doctor_dumpty_pops_hit", self._shot_hit, shot_name="pops")
-        self.add_mode_event_handler("doctor_dumpty_spinner_time_add", self._spinner_time_add)
-        self.add_mode_event_handler("doctor_dumpty_complete_request", self._complete_mode)
-        self.add_mode_event_handler("doctor_dumpty_fail_request", self._complete_mode)
-
-        self.machine.events.post("doctor_dumpty_startup_complete")
-        self.machine.events.post("show_mode_message_long", message_mode_title="PREDICTION PANIC", message_mode_subtitle="HIT EACH LIT SHOT")
-        self._next_shot()
-
-    def mode_stop(self, **kwargs):
-        self.machine.events.post("hide_mode_status")
-        self.delay.remove("doctor_dumpty_timer_tick")
-        self.delay.remove("doctor_dumpty_next_shot_delay")
-        self._stop_current_shot_light()
-        self.machine.events.post("rooftop_diverter_close")
-        self.clear_active_case_file_helpers()
-        super().mode_stop(**kwargs)
-
-    def _apply_case_file_bonuses(self):
-        if self.has_case_file("more_jackpots"):
-            self.shot_sequence.append(self.CASE_FILE_EXTRA_SHOT)
-
-        if self.has_case_file("bigger_jackpots"):
-            self.jackpot_base = self.BIGGER_JACKPOT
-            self.jackpot_step = self.BIGGER_JACKPOT_STEP
-
-        if self.has_case_file("more_time"):
-            self.start_time = self.MORE_TIME_START_TIME
 
         if self.has_case_file("safety_net"):
             self.machine.events.post("start_case_file_ball_save")
 
-        if self.has_case_file("shot_assist"):
-            self.shot_assist_available = True
+        for drop_num in (1, 2, 3):
+            self.add_mode_event_handler(f"doctor_dumpty_left_drop_{drop_num}", self._left_drop_hit, drop_num=drop_num)
+        for area in self.GAS_AREAS:
+            self.add_mode_event_handler(f"doctor_dumpty_gas_{area}", self._gas_hit, area=area)
+        self.add_mode_event_handler("doctor_dumpty_upper_entry", self._upper_entry)
+        self.add_mode_event_handler("doctor_dumpty_upper_target_hit", self._upper_target_hit)
+        self.add_mode_event_handler("doctor_dumpty_upper_spinner_hit", self._upper_spinner_hit)
 
-    def _next_shot(self, **kwargs):
-        if self.mode_done:
+        self.machine.events.post("disable_daily_bugle_mystery")
+        self.machine.events.post("rooftop_diverter_close")
+        self.machine.events.post("doctor_dumpty_startup_complete")
+        self.machine.events.post("doctor_dumpty_gas_phase_started")
+        self.machine.events.post("show_mode_message_long", message_mode_title="CLEAR THE LAUGHING GAS", message_mode_subtitle="HIT LEFT DROPS TO FIND IT")
+        self._update_status()
+
+    def mode_stop(self, **kwargs):
+        self.delay.remove("doctor_dumpty_roof_tick")
+        self.machine.events.post("hide_mode_status")
+        self.machine.events.post("doctor_dumpty_all_lights_off")
+        self.machine.events.post("rooftop_diverter_close")
+        self.machine.events.post("enable_daily_bugle_mystery")
+        self.machine.events.post("daily_bugle_restore_state")
+        self.clear_active_case_file_helpers()
+        super().mode_stop(**kwargs)
+
+    def _left_drop_hit(self, drop_num=None, **kwargs):
+        if self.mode_done or self.phase != "gas" or drop_num in self.used_left_drops:
             return
+        self.used_left_drops.add(drop_num)
+        self._score(self.drop_value)
 
-        self.delay.remove("doctor_dumpty_timer_tick")
-        self._stop_current_shot_light()
+        reveal_count = self.drop_reveal_counts[drop_num - 1]
+        choices = [area for area in self.GAS_AREAS if area not in self.revealed_gas]
+        for area in random.sample(choices, min(reveal_count, len(choices))):
+            self.revealed_gas.add(area)
+            self.machine.events.post(f"doctor_dumpty_light_gas_{area}")
 
-        self.current_index += 1
-
-        if self.current_index >= len(self.shot_sequence):
-            self._complete_mode()
-            return
-
-        self.current_shot = self.shot_sequence[self.current_index]
-        self._update_rooftop_diverter()
-        self.seconds_left = max(1, self.start_time - self.current_index)
+        self.machine.events.post("show_mode_message", message_mode_title="GAS FOUND", message_mode_subtitle=f"{len(self.revealed_gas)} OF {self.gas_required}")
         self._sync_vars()
+        self._update_status()
 
-        self.machine.events.post("doctor_dumpty_shot_started", shot=self.current_shot, shot_number=self.current_index + 1, total_shots=len(self.shot_sequence), seconds=self.seconds_left, jackpot=self._current_jackpot_value())
-        self.machine.events.post("show_mode_countdown", message_mode_title="DOCTOR DUMPTY PREDICTS", message_mode_subtitle=self.current_shot.replace("_", " ").upper(), message_mode_value=self._current_jackpot_value(), message_mode_seconds=self.seconds_left)
-        self.machine.events.post(f"doctor_dumpty_lite_{self.current_shot}")
-        self._schedule_tick()
-
-    def _schedule_tick(self):
-        self.delay.remove("doctor_dumpty_timer_tick")
-        self.delay.add(
-            name="doctor_dumpty_timer_tick",
-            ms=1000,
-            callback=self._timer_tick,
-        )
-
-    def _timer_tick(self, **kwargs):
-        if self.mode_done or not self.current_shot:
+    def _gas_hit(self, area=None, **kwargs):
+        if self.mode_done or self.phase != "gas" or area not in self.revealed_gas or area in self.cleared_gas:
             return
 
-        self.seconds_left -= 1
-        self._sync_vars()
-        self.machine.events.post("doctor_dumpty_timer_changed", seconds=self.seconds_left)
-        self.machine.events.post("update_mode_status", mode_status_title="SECONDS LEFT", mode_status_value=max(0, self.seconds_left))
+        self._clear_gas_area(area, award=True)
 
-        if self.seconds_left <= 0:
-            self._timeout_current_shot()
-            return
-
-        self._schedule_tick()
-
-    def _spinner_time_add(self, **kwargs):
-        if self.mode_done or not self.current_shot:
-            return
-
-        self.seconds_left += self.SPINNER_TIME_ADD
-        self._sync_vars()
-        self.machine.events.post("doctor_dumpty_time_added", seconds=self.seconds_left)
-        self.machine.events.post("show_mode_message", message_mode_title="TIME ADDED", message_mode_subtitle="SPINNER HIT", message_mode_seconds=self.seconds_left)
-
-    def _shot_hit(self, shot_name=None, **kwargs):
-        if self.mode_done or self._in_summary():
-            return
-
-        if not shot_name or shot_name != self.current_shot:
-            return
-
-        self._award_current_jackpot(shot_assist=False)
-
-    def _timeout_current_shot(self):
-        if self.mode_done:
-            return
-
+        # Do not consume Shot Assist unless there is a second lit gas area to clear.
         if self.shot_assist_available:
+            other_lit = [candidate for candidate in self.revealed_gas if candidate not in self.cleared_gas]
+            if other_lit:
+                assisted_area = random.choice(other_lit)
+                self._clear_gas_area(assisted_area, award=True)
+                self.shot_assist_available = False
+                self.machine.events.post("doctor_dumpty_shot_assist_used")
+
+        if len(self.cleared_gas) >= self.gas_required:
+            self._gas_complete()
+        else:
+            self._sync_vars()
+            self._update_status()
+
+    def _clear_gas_area(self, area, award=True):
+        if area in self.cleared_gas:
+            return
+        self.cleared_gas.add(area)
+        if award:
+            self._score(self.gas_value)
+        self.machine.events.post(f"doctor_dumpty_stop_gas_{area}")
+        self.machine.events.post("doctor_dumpty_gas_cleared", area=area, value=self.gas_value)
+
+    def _gas_complete(self):
+        self.phase = "get_to_roof"
+        self.machine.events.post("doctor_dumpty_gas_phase_complete")
+        self.machine.events.post("rooftop_diverter_open")
+        self.machine.events.post("show_mode_message_long", message_mode_title="GAS CLEARED", message_mode_subtitle="GET TO THE ROOFTOP")
+        self._sync_vars()
+        self._update_status()
+
+    def _upper_entry(self, **kwargs):
+        if self.mode_done or self.phase != "get_to_roof":
+            return
+        self.phase = "roof"
+        self.seconds_left = self.roof_seconds
+        self.machine.events.post("doctor_dumpty_roof_phase_started")
+        self.machine.events.post("show_mode_countdown", message_mode_title="POP THE BALLOONS", message_mode_subtitle="HIT UPPER TARGETS", message_mode_value=self.upper_jp, message_mode_seconds=self.seconds_left)
+        self._sync_vars()
+        self._update_status()
+        self._schedule_roof_tick()
+
+    def _schedule_roof_tick(self):
+        self.delay.remove("doctor_dumpty_roof_tick")
+        self.delay.add(name="doctor_dumpty_roof_tick", ms=1000, callback=self._roof_tick)
+
+    def _roof_tick(self, **kwargs):
+        if self.mode_done or self.phase != "roof":
+            return
+        self.seconds_left = max(0, self.seconds_left - 1)
+        self._sync_vars()
+        self._update_status()
+        if self.seconds_left <= 0:
+            self._complete_mode()
+        else:
+            self._schedule_roof_tick()
+
+    def _upper_target_hit(self, **kwargs):
+        if self.mode_done or self.phase != "roof":
+            return
+
+        hit_count = 1
+        if self.shot_assist_available:
+            hit_count = 2
             self.shot_assist_available = False
             self.machine.events.post("doctor_dumpty_shot_assist_used")
-            self.machine.events.post("show_mode_message", message_mode_title="SHOT ASSIST", message_mode_subtitle="TIMEOUT AWARDS JACKPOT")
-            self._award_current_jackpot(shot_assist=True)
-            return
 
-        self.missed_shots += 1
+        award = self.upper_jp * hit_count
+        self.balloons_popped += hit_count
+        self._score(award)
+        # One physical hit = one popping SFX even when Shot Assist counts it twice.
+        self.machine.events.post("doctor_dumpty_balloon_popped", value=award, hit_count=hit_count)
+        self.machine.events.post("show_mode_jackpot", message_mode_title="BALLOON POPPED", message_mode_subtitle=f"{self.balloons_popped} POPPED", message_mode_value=award)
         self._sync_vars()
-        self.machine.events.post("doctor_dumpty_shot_missed", shot=self.current_shot)
-        self.machine.events.post("show_mode_message", message_mode_title="MISSED SHOT", message_mode_subtitle=self.current_shot.replace("_", " ").upper())
-        self._advance_after_delay()
+        self._update_status()
 
-    def _award_current_jackpot(self, shot_assist=False):
-        if self.mode_done or not self.current_shot:
+    def _upper_spinner_hit(self, **kwargs):
+        if self.mode_done or self.phase != "roof":
             return
+        self.upper_jp += self.SPINNER_STEP
+        self.machine.events.post("doctor_dumpty_upper_jp_changed", value=self.upper_jp)
+        self._sync_vars()
+        self._update_status()
 
-        awarded_shot = self.current_shot
-        self.current_shot = None
-        jackpot_value = self._current_jackpot_value()
+    def _score(self, value):
         player = self.machine.game.player if self.machine.game else None
-
         if player:
-            player["score"] += jackpot_value
-
-        self.mode_points += jackpot_value
-        self.jackpots_collected += 1
-        self.best_jackpot = max(self.best_jackpot, jackpot_value)
-        self._sync_vars()
-
-        self.machine.events.post("doctor_dumpty_jackpot_collected", shot=awarded_shot, value=jackpot_value, shot_assist=shot_assist)
-        self.machine.events.post("play_mode_jackpot")
-        self.machine.events.post("show_mode_jackpot", message_mode_title="PREDICTION HIT", message_mode_subtitle=awarded_shot.replace("_", " ").upper(), message_mode_value=jackpot_value)
-        self._advance_after_delay()
-
-    def _advance_after_delay(self):
-        self.delay.remove("doctor_dumpty_timer_tick")
-        self._stop_current_shot_light()
-        self.delay.remove("doctor_dumpty_next_shot_delay")
-        self.delay.add(
-            name="doctor_dumpty_next_shot_delay",
-            ms=500,
-            callback=self._next_shot,
-        )
-
-    def _current_jackpot_value(self):
-        return self.jackpot_base + (self.jackpot_step * self.jackpots_collected)
-
-    def _update_rooftop_diverter(self):
-        if self.current_shot in self.UPPER_SHOTS:
-            self.machine.events.post("rooftop_diverter_open")
-        else:
-            self.machine.events.post("rooftop_diverter_close")
-
-    def _stop_current_shot_light(self):
-        if self.current_shot:
-            self.machine.events.post(f"doctor_dumpty_stop_{self.current_shot}")
+            player["score"] += int(value)
+        self.mode_points += int(value)
 
     def _complete_mode(self, **kwargs):
         if self.mode_done:
             return
         self.mode_done = True
-        self.delay.remove("doctor_dumpty_timer_tick")
-        self.delay.remove("doctor_dumpty_next_shot_delay")
-        self._stop_current_shot_light()
+        self.delay.remove("doctor_dumpty_roof_tick")
+        self.machine.events.post("doctor_dumpty_all_lights_off")
         self.machine.events.post("rooftop_diverter_close")
         player = self.machine.game.player if self.machine.game else None
         if player:
             player["doctor_dumpty_state"] = 2
         self._sync_vars()
-        self.machine.events.post("show_mode_message_long", message_mode_title="DOCTOR DUMPTY BEATEN", message_mode_subtitle="SEQUENCE COMPLETE")
-        self.machine.events.post("doctor_dumpty_mode_complete")
-
-    def _fail_mode(self, **kwargs):
-        if self.mode_done:
-            return
-        self.mode_done = True
-        self.delay.remove("doctor_dumpty_timer_tick")
-        self.delay.remove("doctor_dumpty_next_shot_delay")
-        self._stop_current_shot_light()
-        self.machine.events.post("rooftop_diverter_close")
-        player = self.machine.game.player if self.machine.game else None
-        if player:
-            player["doctor_dumpty_state"] = 2
-        self._sync_vars()
-        self.machine.events.post("show_mode_message_long", message_mode_title="DOCTOR DUMPTY ESCAPES", message_mode_subtitle="OUT OF TIME")
+        self.machine.events.post("show_mode_message_long", message_mode_title="DOCTOR DUMPTY DEFEATED", message_mode_subtitle=f"{self.balloons_popped} BALLOONS POPPED")
         self.machine.events.post("doctor_dumpty_mode_complete")
 
     def _sync_vars(self):
         player = self.machine.game.player if self.machine.game else None
         if not player:
             return
-
         player["active_mode_points"] = self.mode_points
-        player["active_mode_stat_1"] = self.jackpots_collected
-        player["active_mode_stat_2"] = self.missed_shots
-        player["doctor_dumpty_best_jackpot"] = self.best_jackpot
-        player["doctor_dumpty_current_shot"] = self.current_shot or ""
-        player["doctor_dumpty_current_shot_number"] = self.current_index + 1 if self.current_index >= 0 else 0
-        player["doctor_dumpty_total_shots"] = len(self.shot_sequence)
+        player["active_mode_stat_1"] = self.balloons_popped
         player["doctor_dumpty_timer_seconds"] = self.seconds_left
-        player["doctor_dumpty_next_jackpot"] = self._current_jackpot_value()
+        player["doctor_dumpty_next_jackpot"] = self.upper_jp
 
-    def _in_summary(self):
-        player = self.machine.game.player if self.machine.game else None
-        if not player:
-            return False
-
-        try:
-            return bool(player["villain_mode_in_summary"])
-        except KeyError:
-            return False
+    def _update_status(self):
+        if self.phase == "gas":
+            title = "GAS CLEARED"
+            value = f"{len(self.cleared_gas)} / {self.gas_required}"
+        elif self.phase == "get_to_roof":
+            title = "GET TO THE ROOF"
+            value = "GATE OPEN"
+        elif self.phase == "roof":
+            title = f"{self.seconds_left}s - BALLOON JP"
+            value = self.upper_jp
+        else:
+            return
+        self.machine.events.post("update_mode_status", mode_status_title=title, mode_status_value=value)

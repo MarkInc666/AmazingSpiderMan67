@@ -592,20 +592,16 @@ class VillainBookends(Mode):
             'state_var': 'professor_pretorius_state',
             'song': 'play_song_28',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Doctor Dumpty has a fragile plan.
-        #   intro_2: Build value without cracking the sequence.
-        #   intro_3: Wrong shots break the egg.
         'doctor_dumpty': {
             'title': 'DOCTOR DUMPTY',
-            'intro_1': 'Build without cracks.',
-            'intro_2': 'Wrong shots break it.',
-            'intro_3': 'Cash before it falls.',
+            'intro_1': 'Laughing gas is spreading!',
+            'intro_2': 'Find and clear the gas.',
+            'intro_3': 'Then chase Dumpty to the roof.',
             'summary_title_complete': 'DOCTOR DUMPTY DEFEATED',
             'summary_title_failed': 'DOCTOR DUMPTY ESCAPED',
-            'stat_1_label': 'JACKPOTS',
+            'stat_1_label': 'BALLOONS POPPED',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'MISSES',
+            'stat_2_label': '',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'doctor_dumpty_state',
