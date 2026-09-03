@@ -21,3 +21,10 @@ event_player:
 
   mini_wizard_start_ready_at_daily_bugle:
     - light_daily_bugle_vuk_for_mini_wizard
+
+light_player:
+  clear_villain_ab_lights:
+    l_right_a: off
+    l_left_b: off
+    l_a_rollover: off
+    l_b_rollover: off

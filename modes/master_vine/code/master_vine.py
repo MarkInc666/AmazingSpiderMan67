@@ -260,6 +260,14 @@ class MasterVine(CaseFileMixin, Mode):
             else:
                 self._award_jackpot(shot, assisted=True, duplicate=True)
 
+        # If every shot that has been programmed for this wave has now been
+        # collected, finish the wave immediately instead of waiting for the
+        # countdown to expire.  Do not treat an empty programmed set as a
+        # completed wave; the player must first spin to spread at least one vine.
+        if self.programmed_shots and not (self.programmed_shots - self.collected_shots):
+            self._expire_attempt()
+            return
+
         self._update_status()
         self._sync_vars()
 

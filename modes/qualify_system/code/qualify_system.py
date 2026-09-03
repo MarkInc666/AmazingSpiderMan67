@@ -63,6 +63,8 @@ class QualifySystem(Mode):
             return True
         if player["final_wizard_ready"] == 1:
             return True
+        if self._safe_int(player["final_wizard_completed"], 0) == 1:
+            return True
         return False
 
 
@@ -151,6 +153,10 @@ class QualifySystem(Mode):
             return
 
         player = self.machine.game.player
+
+        if self._safe_int(player["final_wizard_completed"], 0) == 1:
+            self.machine.events.post("villain_drop_ignored_player_game_complete", saucer=saucer)
+            return
 
         if player["villain_mode_running"] == 1:
             self.machine.events.post("villain_drop_ignored_mode_running", saucer=saucer)
@@ -289,6 +295,14 @@ class QualifySystem(Mode):
 
     def _restore_state(self, **kwargs):
         if not self.qualify_logic_active:
+            return
+
+        # A player who completed the Final Wizard is waiting only for the
+        # remaining ball to drain into bonus. Never restore villain qualifying
+        # or saucer readiness during that interval.
+        if self._safe_int(self.machine.game.player["final_wizard_completed"], 0) == 1:
+            self.machine.events.post("final_wizard_saucers_clear")
+            self.machine.events.post("clear_villain_saucer_lights")
             return
 
         # Final Showdown readiness owns all three saucer lamps regardless of

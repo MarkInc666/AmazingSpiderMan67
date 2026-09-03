@@ -1647,6 +1647,22 @@ class VillainProgression(Mode):
         if villain_key not in self._get_available_villains():
             self.machine.events.post("mystery_start_next_villain_rejected", reason="villain_no_longer_available")
             return
+
+        # START NEXT VILLAIN is awarded while the Mystery ball is physically
+        # sitting in the Daily Bugle VUK. If it is still there when the villain
+        # launch executes, make that ball a summary-owned hold: suppress both
+        # Daily Bugle's delayed eject and the shared VUK eject path now, then let
+        # VillainBookends release it at the exact end of the villain summary.
+        vuk_switch = self.machine.switches.get("s_vuk_switch")
+        if vuk_switch and self.machine.switch_controller.is_active(vuk_switch):
+            self.machine.events.post("daily_bugle_cancel_vuk_delay_eject")
+            self.machine.events.post("cancel_vuk_eject_request")
+            self.machine.events.post("villain_summary_hold_vuk_until_done")
+            self.machine.events.post(
+                "mystery_started_villain_vuk_held",
+                villain_key=villain_key,
+            )
+
         self._start_villain(villain_key)
 
     def _start_selected_villain(self, villain_key=None, item=None, **kwargs):

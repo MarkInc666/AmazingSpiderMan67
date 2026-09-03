@@ -332,7 +332,13 @@ class FinalShowdown(Mode):
             mode_status_value=f"{self._get('final_showdown_areas_cleared')} / {len(self.AREAS)}",
         )
 
+    def _ignore_gameplay_input(self):
+        """Stop final-wizard gameplay events once the mode has entered its exit/summary path."""
+        return bool(self.mode_exiting)
+
     def _daily_bugle_hit(self, **kwargs):
+        if self._ignore_gameplay_input():
+            return
         self.machine.events.post("request_vuk_eject", delay_ms=2_000)
 
         if self.victory_laps:
@@ -420,10 +426,14 @@ class FinalShowdown(Mode):
         )
 
     def _a_hit(self, **kwargs):
+        if self._ignore_gameplay_input():
+            return
         self._set("final_showdown_a_hit", 1)
         self._check_ab()
 
     def _b_hit(self, **kwargs):
+        if self._ignore_gameplay_input():
+            return
         self._set("final_showdown_b_hit", 1)
         self._check_ab()
 
@@ -450,21 +460,33 @@ class FinalShowdown(Mode):
         self.machine.events.post("final_showdown_ab_clear_show")
 
     def _pop_hit(self, **kwargs):
+        if self._ignore_gameplay_input():
+            return
         self._area_hit("pops")
 
     def _spinner_hit(self, **kwargs):
+        if self._ignore_gameplay_input():
+            return
         self._area_hit("spinner")
 
     def _star_hit(self, **kwargs):
+        if self._ignore_gameplay_input():
+            return
         self._area_hit("star")
 
     def _upper_target_left_hit(self, **kwargs):
+        if self._ignore_gameplay_input():
+            return
         self._upper_target_hit("left")
 
     def _upper_target_center_hit(self, **kwargs):
+        if self._ignore_gameplay_input():
+            return
         self._upper_target_hit("center")
 
     def _upper_target_right_hit(self, **kwargs):
+        if self._ignore_gameplay_input():
+            return
         self._upper_target_hit("right")
 
     def _upper_target_hit(self, target):
@@ -488,10 +510,14 @@ class FinalShowdown(Mode):
         self._area_hit("upper_targets")
 
     def _left_drops_complete(self, **kwargs):
+        if self._ignore_gameplay_input():
+            return
         self.left_bank_complete = True
         self._drops_progress()
 
     def _right_drops_complete(self, **kwargs):
+        if self._ignore_gameplay_input():
+            return
         self.right_bank_complete = True
         self._drops_progress()
 
@@ -516,12 +542,18 @@ class FinalShowdown(Mode):
           self._area_complete()
 
     def _saucer_1_hit(self, **kwargs):
+        if self._ignore_gameplay_input():
+            return
         self._handle_saucer_hit("saucer_1")
 
     def _saucer_2_hit(self, **kwargs):
+        if self._ignore_gameplay_input():
+            return
         self._handle_saucer_hit("saucer_2")
 
     def _saucer_3_hit(self, **kwargs):
+        if self._ignore_gameplay_input():
+            return
         self._handle_saucer_hit("saucer_3")
 
     def _handle_saucer_hit(self, saucer_name): 
@@ -570,6 +602,13 @@ class FinalShowdown(Mode):
     def _multiball_ended(self, **kwargs):
         self.mode_exiting = True
         self.info_log("FinalShowdown multiball ended.")
+
+        # The mode remains loaded while the villain summary runs.  Stop the
+        # base-mode reminder immediately so timed Final Showdown prompts cannot
+        # bleed into the summary, bonus, or the next player.
+        self.machine.events.post("cancel_mode_message_reminder")
+        self.machine.events.post("hide_mode_message")
+        self.machine.events.post("hide_mode_status")
 
         self._release_all_held_saucers()
 

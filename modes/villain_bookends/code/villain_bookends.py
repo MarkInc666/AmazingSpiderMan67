@@ -592,16 +592,20 @@ class VillainBookends(Mode):
             'state_var': 'professor_pretorius_state',
             'song': 'play_song_28',
         },
+        # ORIGINAL DISPLAY TEXT:
+        #   intro_1: Doctor Dumpty has a fragile plan.
+        #   intro_2: Build value without cracking the sequence.
+        #   intro_3: Wrong shots break the egg.
         'doctor_dumpty': {
             'title': 'DOCTOR DUMPTY',
-            'intro_1': 'Laughing gas is spreading!',
-            'intro_2': 'Find and clear the gas.',
-            'intro_3': 'Then chase Dumpty to the roof.',
+            'intro_1': 'Build without cracks.',
+            'intro_2': 'Wrong shots break it.',
+            'intro_3': 'Cash before it falls.',
             'summary_title_complete': 'DOCTOR DUMPTY DEFEATED',
             'summary_title_failed': 'DOCTOR DUMPTY ESCAPED',
-            'stat_1_label': 'BALLOONS POPPED',
+            'stat_1_label': 'JACKPOTS',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': '',
+            'stat_2_label': 'MISSES',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'doctor_dumpty_state',
@@ -1401,7 +1405,19 @@ class VillainBookends(Mode):
 
         self.machine.events.post("villain_bookend_intro_hide")
         if comic_summary:
-            self.machine.events.post("wizard_comic_summary_show", villain=villain)
+            # The comic cover is selected in Godot from wizard_summary_comic_key.
+            # Give the BCP machine-variable update one beat to reach GMC before
+            # instantiating the conditional cover controls; otherwise the widget
+            # can evaluate the previous wizard's chapter key and show the wrong
+            # collected Comic.
+            self.delay.remove("wizard_comic_summary_show_sync")
+            self.delay.add(
+                name="wizard_comic_summary_show_sync",
+                ms=100,
+                callback=lambda: self.machine.events.post(
+                    "wizard_comic_summary_show", villain=villain
+                ),
+            )
         else:
             self.machine.events.post("villain_bookend_summary_show", villain=villain)
         # Own the playfield lighting for the full summary so stopped gameplay-mode

@@ -241,11 +241,10 @@ class DrVonSchlick(CaseFileMixin, Mode):
             self.machine.events.post("request_vuk_eject")
             return
 
-        # The winning ball must remain in the VUK throughout the four-second
-        # flood sequence and the villain summary. Take ownership immediately,
-        # before any queued shared eject or retry can release it.
+        # The winning ball remains in the VUK only for the four-second flood
+        # animation. Take ownership immediately so no queued Daily Bugle/shared
+        # eject can release it before the final flood band has played.
         self.machine.events.post("cancel_vuk_eject_request")
-        self.machine.events.post("villain_summary_hold_vuk_until_done")
         self.machine.events.post("dr_von_schlick_vuk_chase_stop")
         self.phase = "flood"
         self.machine.events.post("bonus_lights_dim")
@@ -273,6 +272,10 @@ class DrVonSchlick(CaseFileMixin, Mode):
                 message_mode_subtitle="SUPER JACKPOT",
                 message_mode_value=self.SUPER_VALUE,
             )
+            # Flood animation is complete. Release the held VUK ball now; the
+            # villain summary does not retain it. The persistent progression
+            # mode owns the occupancy check and kick/retry path.
+            self.machine.events.post("request_vuk_eject", delay_ms=0)
             self._complete_mode()
 
     def _complete_mode(self, **kwargs):

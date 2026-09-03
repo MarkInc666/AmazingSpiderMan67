@@ -2,12 +2,13 @@ from mpf.core.mode import Mode
 
 
 class PlayerRetirement(Mode):
-    """Skip players whose ASM67 game ended by defeating Kingpin.
+    """Retire only the player who completes ASM67's Final Wizard.
 
-    MPF's stock game loop assumes every player remains in rotation through
-    balls_per_game. ASM67 allows a player to finish early by completing the
-    Final Wizard, so this game-long controller skips those players before MPF
-    increments/serves their next ball while leaving the other players intact.
+    Final Showdown completion marks the player retired. The victory summary is
+    still shown, then flippers are disabled so the remaining ball drains and
+    MPF runs its normal ball-ending / bonus flow. After bonus, this controller
+    adjusts only the turn rotation needed to keep retired players out while
+    preserving MPF's normal game-ending and high-score path.
     """
 
     RETIRED_VAR = "final_wizard_completed"
@@ -22,11 +23,6 @@ class PlayerRetirement(Mode):
         )
         self.add_mode_event_handler(
             "final_showdown_mode_completed_summary",
-            self._final_summary_finished,
-            priority=10000,
-        )
-        self.add_mode_event_handler(
-            "final_showdown_mode_done",
             self._final_summary_finished,
             priority=10000,
         )
@@ -66,11 +62,11 @@ class PlayerRetirement(Mode):
             return
 
         player = game.player
-        if self._is_retired(player):
-            return
+        if not self._is_retired(player):
+            player[self.RETIRED_VAR] = 1
 
-        player[self.RETIRED_VAR] = 1
-        # A completed ASM67 game cannot be extended by queued extra balls.
+        # Final Wizard completion ends this player's game. Extra balls must not
+        # run after the normal end-of-ball bonus.
         player["extra_balls"] = 0
         self.machine.events.post(
             "player_game_completed_final_wizard",
@@ -83,12 +79,15 @@ class PlayerRetirement(Mode):
         if not game or not game.player or not self._is_retired(game.player):
             return
 
-        # The final summary is the end of this player's playable game. Leave
-        # the physical ball to drain normally so MPF's normal ball/bonus flow
-        # remains authoritative and no extra ball is artificially served.
+        # Do not jump directly to game_ending here. The remaining physical ball
+        # must drain so MPF executes the existing ball_ending -> bonus flow.
+        # Qualification is separately blocked for retired players.
         self.machine.events.post("cmd_flippers_disable")
         self.machine.events.post("cmd_autofire_coils_disable")
         self.machine.events.post("timer_timer_up_post_hold_complete")
+        self.machine.events.post("clear_villain_saucer_lights")
+        self.machine.events.post("case_files_clear_lights")
+        self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post(
             "player_game_completed_waiting_for_drain",
             player=game.player.number,
@@ -121,17 +120,16 @@ class PlayerRetirement(Mode):
                 )
                 return
 
-        # Defensive fallback. The previous player's player_turn_will_end
-        # handler normally makes the stock game loop end before this state can
-        # be reached.
+        # Normally unreachable because _prepare_stock_game_end makes MPF end
+        # once no non-retired player has another turn.
         self.warning_log("All players are retired but MPF requested another turn.")
-
 
     def _restore_player_count_for_game_end(self, **kwargs):
         del kwargs
         game = self.machine.game
         if not game or self._original_num_players is None:
             return
+        # Restore the real count before high-score / game-ended processing.
         game.num_players = self._original_num_players
 
     def _prepare_stock_game_end(self, player=None, number=None, **kwargs):
@@ -145,28 +143,44 @@ class PlayerRetirement(Mode):
         if balls_per_game <= 0:
             return
 
-        # Is there any non-retired player who should receive another normal
-        # turn after the current turn finishes?
-        future_player_exists = False
-        for candidate in game.player_list:
-            if self._is_retired(candidate):
-                continue
-            if candidate is current:
-                if self._safe_int(candidate["ball"], 0) < balls_per_game:
-                    future_player_exists = True
-                    break
-            elif self._safe_int(candidate["ball"], 0) < balls_per_game:
-                future_player_exists = True
-                break
+        # Retired players never receive an extra ball after their Final Wizard.
+        if self._is_retired(current):
+            current["extra_balls"] = 0
+
+        # Look only for another non-retired player who still has a normal ball
+        # remaining. The retired current player never counts as future work.
+        future_player_exists = any(
+            candidate is not current
+            and not self._is_retired(candidate)
+            and self._safe_int(candidate["ball"], 0) < balls_per_game
+            for candidate in game.player_list
+        )
+
+        # A non-retired current player can itself have another future ball.
+        if (
+            not self._is_retired(current)
+            and self._safe_int(current["ball"], 0) < balls_per_game
+        ):
+            future_player_exists = True
 
         if future_player_exists:
+            # MPF normally ends immediately when the terminal-numbered player
+            # finishes balls_per_game. If that player retired on their nominal
+            # last ball while earlier players still have turns, keep this value
+            # just below the terminal threshold. The player is still skipped by
+            # _skip_retired_player, so no additional ball is ever served to them.
+            if (
+                self._is_retired(current)
+                and current.number == game.num_players
+                and self._safe_int(current["ball"], 0) >= balls_per_game
+            ):
+                current["ball"] = max(0, balls_per_game - 1)
             return
 
-        # MPF ends a game when the current player is on the last configured
-        # ball and current_player.number == game.num_players. If higher-numbered
-        # players retired early, temporarily make this player the terminal
-        # player so MPF's normal end-game path runs without serving a fake ball.
-        if self._is_retired(current) and self._safe_int(current["ball"], 0) < balls_per_game:
+        # No active player has another turn. Arrange the values MPF's stock game
+        # loop checks after player_turn_will_end so it follows _end_game(), which
+        # preserves game_will_end -> high score -> game_ended -> attract.
+        if self._is_retired(current):
             current["ball"] = balls_per_game
 
         game.num_players = current.number

@@ -242,7 +242,7 @@ light_player:
     l_pop_2_12: off
 
   master_vine_attempt_expired:
-    l_gi_spinner: off
+    l_gi_a: off
 
   master_vine_vuk_route_cleared: &vine_vuk_route_off
     l_spinner: off
@@ -303,6 +303,7 @@ light_player:
   master_vine_all_lights_off:
     <<: *vine_all_objectives_off
     l_spinner: off
+    l_gi_a: off
     l_gi_spinner: off
     l_gi_left_lower: off
     l_gi_left_upper: off
@@ -361,9 +362,9 @@ light_player:
 shows:
   master_vine_upper_spinner_pulse:
     - duration: 250ms
-      lights: {l_gi_spinner: 60F060}
+      lights: {l_gi_a: 60F060}
     - duration: 250ms
-      lights: {l_gi_spinner: "103010"}
+      lights: {l_gi_a: "103010"}
   master_vine_left_web_pulse:
     - duration: 500ms
       lights: {l_left_web_target: white}

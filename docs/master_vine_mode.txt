@@ -10,10 +10,13 @@ Core rules
   three saucers, all eight drops, A, B, middle A, middle B, and STAR.
 - A programmed objective pulses. Collecting it scores 50K and leaves its lamp
   solid at reduced brightness. Each objective scores once per wave.
-- When waves 1 and 2 expire, the gate opens. Existing lower shot states remain
-  available until the player returns upstairs; that return clears the states
-  and begins the next wave.
-- The third timer expiry ends the mode immediately.
+- A wave also ends immediately once every currently programmed lower shot has
+  been collected. The player must have programmed at least one shot first; an
+  empty wave does not auto-complete.
+- When waves 1 and 2 end (timer expiry or all programmed shots collected), the
+  gate opens. Existing lower shot states remain available until the player
+  returns upstairs; that return clears the states and begins the next wave.
+- The third wave ending completes the mode immediately.
 
 Case Files
 - More Jackpots: the first spinner pulse of each wave lights three random
@@ -32,8 +35,9 @@ Hardware notes
   GI; and the top GI beside the VUK. The chase clears as soon as the VUK
   captures the ball. Cleanup explicitly turns off every chase output, including
   the spinner GI, so no green GI state is left behind by the stopped chase.
-- During an active rooftop wave, the GI directly below the upper spinner
-  flashes to identify the spinner shot. This flash begins on VUK capture.
+- During an active rooftop wave, l_gi_a flashes green to identify the upper
+  spinner shot. This matches the upper-spinner convention used elsewhere in
+  the project; l_gi_spinner remains part of the lower/VUK-route lighting.
 - The three left drops share l_3bankbonus, so the display names the selected
   left target while the shared bank insert pulses whenever any left drop is lit.
 - Drop targets already knocked down during a wave are excluded from later
