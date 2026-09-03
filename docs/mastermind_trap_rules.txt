@@ -1,0 +1,33 @@
+MASTERMIND Trap - Chapter 2 mini-wizard
+
+Start: 2-ball multiball. Maximum 4 balls. The mode cycles through three phases and a Super until multiball ends.
+
+PHASE 1 - PARAFINO + SCORPION
+- Park a ball in any saucer. Saucer 1 represents Left Bank; Saucer 2 represents Pops; Saucer 3 represents Right Bank.
+- Parking a ball opens the rooftop gate. Another live ball enters the roof.
+- Left roof exit stages Right Bank; right roof exit stages Left Bank; no left/right exit before the 6-second roof timer is treated as the center/drop-out choice and stages Pops.
+- If the staged area corresponds to any currently parked saucer, the staged Jackpot is 3X.
+- Base staged Jackpot: 300,000. Matching Jackpot: 900,000.
+- Collect three staged Jackpots to finish the phase.
+- Completing all three upper targets adds a ball when below the 4-ball cap; the upper targets reset for another possible Add-a-Ball.
+
+PHASE 2 - LIZARD + MYSTERIO
+- Two pop hits make serum (25,000 each).
+- Four possible delivery locations flash as Mysterio illusions: Left Web, Left Bank, Right Bank, Upper Targets.
+- One is the real delivery. A wrong choice scores 50,000, disappears, and gives LEFT / RIGHT / UPPER Spidey-Sense guidance.
+- Correct serum delivery scores a 500,000 Jackpot.
+- Make three successful deliveries to finish the phase.
+
+PHASE 3 - DOCTOR OCTOPUS
+- Main spinner scores 50,000 per spin.
+- Six danger shots are the three upper targets, Star, upper A, and upper B.
+- One red danger position rotates through the six shots. Hitting an unlit danger shot scores 50,000 and makes that shot permanently red for the rest of the phase.
+- Hitting any currently red danger shot scores 1,000 and counts as a strike. The third red hit ends the phase.
+- Either lower inlane starts/resets a 6-second 3X Spinner window. Spinner is worth 150,000 per spin during 3X.
+
+SUPER
+- After Doc Ock ends, both web targets flash for Super Jackpot.
+- Super starts at 2,000,000 and falls linearly to 100,000 over 8 seconds.
+- It remains at 100,000 for 2 more seconds.
+- Hit either web target to collect the current value. If not collected after the 2-second hold, the Super expires.
+- After collect or expiry, restart at Parafino + Scorpion and continue until multiball ends.

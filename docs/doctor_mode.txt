@@ -55,3 +55,7 @@ Persistent bonus
   the first two protected jackpots supplied by More Jackpots.
 - BREAKOUT BONUS carries across balls and is awarded on the end-of-ball Mode
   Bonus page.
+
+## Lighting clarification
+
+- Free arm inserts keep their existing blue pulse. Locked arm inserts use a dim solid blue (`204080`) so completed arms do not overpower the still-active pulsing arms.

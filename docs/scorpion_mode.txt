@@ -30,6 +30,7 @@ Left and right routes use the same awards. Their challenge comes from the physic
 
 ## Lighting and display
 
+- On rooftop entry, the upper-left exit GI and upper-left target flash together, alternating with the upper-right exit GI and upper-right target. Both exit indicators stop immediately when either exit is taken.
 - The staged target insert flashes using the existing Scorpion shows.
 - The corresponding left- or right-bank GI lights during the staged attempt.
 - Before rooftop entry, status prompts `ENTER ROOFTOP` and shows the pending jackpot.

@@ -74,9 +74,9 @@ class Electro(CaseFileMixin, Mode):
 
         self.shots = [
             Shot("left_web", 10, 70, "electro_left_web_hit", group="left"),
-            Shot("spinner", 20, 50, "electro_spinner_hit", group="center"),
+            Shot("left_pop", 20, 50, "electro_left_pop_hit", group="left"),
             Shot("left_drops", 40, 60, "electro_left_drops_hit", group="left"),
-            Shot("saucers", 50, 30, "electro_saucers_hit", group="left"),
+            Shot("right_pop", 50, 30, "electro_right_pop_hit", group="right"),
             Shot("right_web", 80, 30, "electro_right_web_hit", group="right"),
             Shot("upper_spinner", 90, 30, "electro_upper_spinner_hit", group="upper"),
             Shot("upper_targets", 95, 20, "electro_upper_target_hit", group="upper"),
@@ -132,9 +132,9 @@ class Electro(CaseFileMixin, Mode):
     def _shot_label(self, shot):
         labels = {
             "left_web": "LEFT WEB",
-            "spinner": "SPINNER",
+            "left_pop": "LEFT POP",
             "left_drops": "LEFT DROPS",
-            "saucers": "SAUCERS",
+            "right_pop": "RIGHT POP",
             "right_web": "CENTER WEB",
             "upper_spinner": "UPPER SPINNER",
             "upper_targets": "UPPER TARGETS",
@@ -305,11 +305,7 @@ class Electro(CaseFileMixin, Mode):
         if not shot:
             return
 
-        is_saucer_shot = shot.name == "saucers"
-
         if shot.disabled:
-            if is_saucer_shot:
-                self._release_saucers()
             return
 
         if self.super_active:
@@ -317,23 +313,14 @@ class Electro(CaseFileMixin, Mode):
                 self.machine.events.post("electro_super_timer_stop")
                 self.machine.events.post("electro_upper_super_timer_stop")
                 self.collect_super()
-            elif is_saucer_shot:
-                self._release_saucers()
             return
 
         # Unlit shots do not pause or stop the active spark's value decay.
         if shot != self.current_shot:
-            if is_saucer_shot:
-                self._release_saucers()
             return
 
         self.machine.events.post("electro_value_timer_stop")
         self.collect_normal_jackpot(shot)
-        if is_saucer_shot:
-            self._release_saucers()
-
-    def _release_saucers(self):
-        self.machine.events.post("clear_saucers_delayed")
 
     def collect_normal_jackpot(self, shot):
         if self.mode_done:
@@ -424,8 +411,6 @@ class Electro(CaseFileMixin, Mode):
         self.current_shot.is_lit = False
         self.current_shot.is_jackpot = False
 
-        if self.current_shot.name == "saucers":
-            self.machine.events.post("villain_summary_hold_saucer_until_done")
         self._show_message("ELECTRO SUPER", "SUPER JACKPOT", value=self.electro_super_jackpot, event="show_mode_jackpot")
         self.machine.events.post("electro_super_collected")
         self.machine.events.post("electro_super_timer_stop")

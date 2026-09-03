@@ -3,7 +3,7 @@ Mode: “Power Surge”
 
 Core flow
 - A spark travels randomly among eight shot groups:
-  left web, main spinner, left drops, saucers, center web,
+  left web, left pop, left drops, right pop, center web,
   upper spinner, upper targets, and right drops.
 - Lower-playfield spark windows last 5 seconds; upper spinner and upper
   target spark windows last 10 seconds.
@@ -30,6 +30,7 @@ Presentation and devices
 - The Super uses a 10-second lower or 15-second upper countdown and
   persistent SUPER SPARK status showing the required shot.
 - The rooftop gate opens only for upper-playfield spark shots.
-- Ordinary and unlit saucer hits use delayed clearing. If the saucers
-  collect the final Super, the ball remains held through the villain
-  summary and is kicked out when the summary finishes.
+- Saucers are not Electro spark shots; ordinary saucer hits eject with the
+  standard delayed clearing behavior.
+- Left and right pop bumpers are single-hit spark groups and use dedicated
+  Electro normal/Super lighting.

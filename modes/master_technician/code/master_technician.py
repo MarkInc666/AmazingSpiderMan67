@@ -319,9 +319,9 @@ class MasterTechnician(CaseFileMixin, Mode):
 
     def _update_mode_status(self):
         self.machine.events.post(
-            "update_mode_status",
-            mode_status_title=f"{max(0, self.seconds_left)}s  {self.total_drops_down()}/8 DOWN",
-            mode_status_value=f"SPINNER {self.spinner_value():,}",
+            "update_mode_timer_status",
+            mode_status_title=f"{self.total_drops_down()}/8 DOWN - SPINNER {self.spinner_value():,}",
+            mode_status_value=max(0, self.seconds_left),
         )
 
     def _finish_mode(self):

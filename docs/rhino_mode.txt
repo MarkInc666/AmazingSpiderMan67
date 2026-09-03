@@ -2,24 +2,25 @@
 
 ## Core loop
 
-- Pops advance Rhino through five Rage levels.
+- The mode begins at Rage 0. Each pop hit advances exactly one Rage level, so five pops reach Berserk.
 - Every other configured Rhino Smash switch adds the current Rage amount to the pending jackpot.
-- All four always-flashing A/B rollovers collect the current jackpot: upper A,
-  upper B, right A, and left B.
-- Each collected jackpot resets Rage to level 1 and starts the next jackpot at its new base value.
+- A/B rollover lamps are revealed cumulatively as Rage rises: upper A at Rage 2, upper B at Rage 3, middle A at Rage 4, and middle B at Rage 5.
+- All four A/B rollover switches remain configured as jackpot collect switches.
+- Each collected jackpot resets to the Build Rage state (Rage 0) and starts the next jackpot at its new base value.
 - Five jackpots complete the mode; More Jackpots adds a sixth cycle.
 
 ## Rage progression
 
-| Rage | Pops required | Add per Smash |
+| State | Pops required | Add per Smash |
 |---|---:|---:|
-| 1 | 1 | 25K |
-| 2 | 2 | 50K |
-| 3 | 3 | 75K |
-| 4 | 4 | 100K |
-| 5 / Berserk | 5 | 150K |
+| Build Rage | 0 | — |
+| Rage 1 | 1 | 25K |
+| Rage 2 | 2 | 50K |
+| Rage 3 | 3 | 75K |
+| Rage 4 | 4 | 100K |
+| Rage 5 / Berserk | 5 | 150K |
 
-The pop requirements are cumulative within each jackpot cycle. Pops score normally but do not also add the Rage amount to the jackpot.
+The pop requirements are cumulative within each jackpot cycle: every pop produces a visible Rage advance and the fifth pop starts Berserk. Pops score normally but do not also add the Rage amount to the jackpot. Before the first pop, Smash switches score normally but do not add to the pending jackpot.
 
 ## Jackpot bases
 
@@ -31,6 +32,14 @@ The pop requirements are cumulative within each jackpot cycle. Pops score normal
 - Jackpot 6 with More Jackpots: 700K
 
 Bigger Jackpots adds 200K to every base value.
+
+## Player messaging
+
+- At the start of each cycle: **HIT POPS - BUILD RAGE** with the current jackpot shown.
+- Rage 1-4: the status shows the current Rage level, the amount each Smash adds, and the current jackpot value.
+- Each Rage advance announces the new level and reminds the player to keep hitting pops for more Rage.
+- Rage 5 changes to **RHINO BERSERK! / ESCAPE THROUGH ANY A/B** and uses the large countdown timer.
+- After a jackpot collect, the next cycle announces **BUILD RAGE AGAIN / HIT POPS**.
 
 ## Berserk
 
@@ -44,7 +53,8 @@ Bigger Jackpots adds 200K to every base value.
 
 - GI steps from yellow through orange to red as Rage rises.
 - Berserk uses rapidly flashing red GI.
-- All four A/B rollover lamps flash throughout the mode.
+- A/B rollover lighting builds cumulatively with Rage: Rage 1 none; Rage 2 upper A; Rage 3 adds upper B; Rage 4 adds middle A; Rage 5 adds middle B.
+- Earned A/B inserts pulse from black to a brighter white ceiling as Rage rises, and the pulse speeds up with each level: Rage 2 909090, Rage 3 B0B0B0, Rage 4 D0D0D0, Rage 5 FFFFFF. Rage 1 reserves a 707070 ceiling, but no A/B insert is active at that level.
 - Rooftop gate remains under normal Daily Bugle control.
 
 ## Case Files

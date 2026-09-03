@@ -28,10 +28,13 @@ class SinisterSurge(Mode):
     Start 2-ball multiball with 20s ball save.
 
     One random unfinished Chapter 1 villain stage is active at a time:
-    - Rhino: 6 pop hits
+    - Rhino: 5 pop hits build Rage. At Berserk, any A/B safely locks 1x
+      and stops the timer, then the VUK awards another 1x. Shooting the
+      VUK directly during Berserk awards 3x, but risks a timeout/reset.
     - Sandman: hit the special right-bank drop; it moves every 4s
     - Vulture: 1 upper-target hit + 3 upper-spinner spins, any order
-    - Electro: hit the lit web, then the other web within 20s
+    - Electro: chase a roaming lower-playfield Spark for 3 successful hits
+      across the 2 webs, 2 pops, and 2 drop banks
     - Green Goblin: park a ball in any saucer for 4s and hit 2 of 4
       flashing-green areas (left web, center web, left bank, right bank)
 
@@ -42,7 +45,7 @@ class SinisterSurge(Mode):
     Jackpot = 100K × (balls in play + cleared areas)
 
     Complete A+B before collecting Jackpot to add-a-ball on Jackpot collect.
-    Max 5 balls in play.
+    Max 4 balls in play.
     10 second ball save when ball added.
     A+B resets after each Jackpot.
 
@@ -71,15 +74,16 @@ class SinisterSurge(Mode):
     SUPER_JACKPOT_BASE = 1_000_000
     SAUCER_HOLD_MS = 20_000
     GOBLIN_HOLD_MS = 4_000
-    ELECTRO_SECOND_SHOT_MS = 20_000
+    ELECTRO_MOVE_MS = 4_000
+    RHINO_BERSERK_MS = 10_000
     SANDMAN_MOVE_MS = 4_000
     SANDMAN_RESET_SETTLE_MS = 500
-    MAX_BALLS = 5
+    MAX_BALLS = 4
 
     AREAS = {
         "rhino": {
             "display": "RHINO",
-            "required": 6,
+            "required": 5,
         },
         "sandman": {
             "display": "SANDMAN",
@@ -91,7 +95,7 @@ class SinisterSurge(Mode):
         },
         "electro": {
             "display": "ELECTRO",
-            "required": 2,
+            "required": 3,
         },
         "goblin": {
             "display": "GREEN GOBLIN",
@@ -100,7 +104,9 @@ class SinisterSurge(Mode):
     }
 
     SANDMAN_TARGETS = (1, 2, 3, 4, 5)
-    ELECTRO_WEBS = ("left", "center")
+    ELECTRO_SHOTS = (
+        "left_web", "center_web", "left_pop", "right_pop", "left_bank", "right_bank"
+    )
     GOBLIN_AREAS = ("left_web", "center_web", "left_bank", "right_bank")
 
     SAUCER_EJECT_EVENTS = {
@@ -134,8 +140,12 @@ class SinisterSurge(Mode):
         self.sandman_down_targets = set()
         self.vulture_target_hit = False
         self.vulture_spinner_hits = 0
-        self.electro_first_web = None
-        self.electro_target_web = None
+        self.electro_target_shot = None
+        self.electro_hits = 0
+        self.rhino_rage = 0
+        self.rhino_berserk = False
+        self.rhino_safe_locked = False
+        self.rhino_berserk_seconds = 0
         self.goblin_attempt_active = False
         self.goblin_qualified_areas = set()
 
@@ -172,8 +182,8 @@ class SinisterSurge(Mode):
         self.add_mode_event_handler("sinister_surge_vuk_hit", self._daily_bugle_hit)
 
         # Chapter 1 callback shots.
-        self.add_mode_event_handler("s_pop_left_active", self._pop_hit)
-        self.add_mode_event_handler("s_pop_right_active", self._pop_hit)
+        self.add_mode_event_handler("s_pop_left_active", self._pop_hit, pop="left_pop")
+        self.add_mode_event_handler("s_pop_right_active", self._pop_hit, pop="right_pop")
 
         self.add_mode_event_handler("s_trispinner_opto_active", self._upper_spinner_hit)
         self.add_mode_event_handler("s_web_spinner_active", self._non_stage_hit)
@@ -280,13 +290,19 @@ class SinisterSurge(Mode):
         self.sandman_down_targets.clear()
         self.vulture_target_hit = False
         self.vulture_spinner_hits = 0
-        self.electro_first_web = None
-        self.electro_target_web = None
+        self.electro_target_shot = None
+        self.electro_hits = 0
+        self.rhino_rage = 0
+        self.rhino_berserk = False
+        self.rhino_safe_locked = False
+        self.rhino_berserk_seconds = 0
         self.goblin_attempt_active = False
         self.goblin_qualified_areas.clear()
 
     def _start_area_mechanic(self):
-        if self.current_area == "sandman":
+        if self.current_area == "rhino":
+            self._reset_rhino_stage(show_message=False)
+        elif self.current_area == "sandman":
             self.machine.events.post("drop_target_bank_dt_bank_right_reset")
             self.delay.add(
                 name="sinister_surge_sandman_reset_settle",
@@ -303,10 +319,10 @@ class SinisterSurge(Mode):
 
     def _area_instruction(self):
         instructions = {
-            "rhino": "HIT POPS 6 TIMES",
+            "rhino": "HIT POPS - BUILD RAGE",
             "sandman": "HIT THE FLASHING DROP",
             "vulture": "1 UPPER TARGET + 3 SPINS",
-            "electro": "HIT THE LIT WEB",
+            "electro": "CHASE THE SPARK - 3 HITS",
             "goblin": "HIT A SAUCER",
         }
         return instructions.get(self.current_area, "COMPLETE STAGE")
@@ -396,6 +412,10 @@ class SinisterSurge(Mode):
             self._collect_super_jackpot()
             return
 
+        if self.current_area == "rhino" and self.rhino_berserk and not self.jackpot_ready:
+            self._collect_rhino_direct_vuk()
+            return
+
         if not self.jackpot_ready:
             self._score(self.INACTIVE_AREA_SCORE)
             return
@@ -441,14 +461,29 @@ class SinisterSurge(Mode):
         self.machine.events.post("sinister_surge_victory_laps_show")
         self.machine.events.post(
             "show_mode_message",
-            message_mode_title="VICTORY LAPS",
-            message_mode_subtitle="COMPLETE A + B",
-            reminder=True,
+            message_mode_title="ALL VILLAINS DEFEATED!",
+            message_mode_subtitle="VICTORY LAPS",
+            reminder=False,
+        )
+        self.delay.add(
+            name="sinister_surge_victory_laps_announce",
+            ms=2_000,
+            callback=self._show_victory_lap_instruction,
         )
         self.machine.events.post(
             "show_mode_status",
             mode_status_title="SUPER JACKPOTS",
             mode_status_value=self._get("sinister_surge_super_jackpots"),
+        )
+
+    def _show_victory_lap_instruction(self):
+        if not self.victory_laps or self.mode_exiting:
+            return
+        self.machine.events.post(
+            "show_mode_message",
+            message_mode_title="VICTORY LAPS",
+            message_mode_subtitle="COMPLETE A + B",
+            reminder=True,
         )
 
     def _victory_lap_hit(self):
@@ -478,10 +513,16 @@ class SinisterSurge(Mode):
 
     def _a_hit(self, **kwargs):
         self._set("sinister_surge_a_hit", 1)
+        if self.current_area == "rhino" and self.rhino_berserk and not self.jackpot_ready:
+            self._secure_rhino_jackpot()
+            return
         self._check_ab()
 
     def _b_hit(self, **kwargs):
         self._set("sinister_surge_b_hit", 1)
+        if self.current_area == "rhino" and self.rhino_berserk and not self.jackpot_ready:
+            self._secure_rhino_jackpot()
+            return
         self._check_ab()
 
     def _check_ab(self):
@@ -506,11 +547,172 @@ class SinisterSurge(Mode):
         self.machine.events.post("sinister_surge_ab_reset")
         self.machine.events.post("sinister_surge_ab_clear_show")
 
-    def _pop_hit(self, **kwargs):
+    def _pop_hit(self, pop, **kwargs):
         if self.current_area == "rhino" and not self.jackpot_ready:
-            self._area_hit("rhino")
+            if self.rhino_berserk:
+                self._score(self.INACTIVE_AREA_SCORE)
+                return
+            self._rhino_pop_hit()
             return
+
+        if self.current_area == "electro" and not self.jackpot_ready:
+            self._electro_shot_hit(pop)
+            return
+
         self._non_stage_hit()
+
+    def _rhino_pop_hit(self):
+        self._score(self.ACTIVE_AREA_SCORE)
+        self.rhino_rage = min(5, self.rhino_rage + 1)
+        self._set("sinister_surge_area_progress", self.rhino_rage)
+        self._set("sinister_surge_hits_still_needed", max(0, 5 - self.rhino_rage))
+        self.machine.events.post("sinister_surge_rhino_rage_changed", rage=self.rhino_rage)
+        self.machine.events.post("sinister_surge_rhino_lights_clear")
+        self.machine.events.post(f"sinister_surge_rhino_rage_{self.rhino_rage}")
+
+        if self.rhino_rage >= 5:
+            self._start_rhino_berserk()
+            return
+
+        self.machine.events.post(
+            "show_mode_message",
+            message_mode_title=f"RHINO RAGE {self.rhino_rage}",
+            message_mode_subtitle=f"{5 - self.rhino_rage} POPS TO BERSERK",
+            reminder=True,
+        )
+        self._update_area_status()
+
+    def _reset_rhino_stage(self, show_message=True):
+        self.delay.remove("sinister_surge_rhino_berserk")
+        self.delay.remove("sinister_surge_rhino_berserk_tick")
+        self.rhino_rage = 0
+        self.rhino_berserk = False
+        self.rhino_safe_locked = False
+        self._set("sinister_surge_area_progress", 0)
+        self._set("sinister_surge_hits_still_needed", 5)
+        self.machine.events.post("sinister_surge_rhino_lights_clear")
+        self.machine.events.post("sinister_surge_rhino_rage_0")
+        self._update_gate()
+        if show_message:
+            self.machine.events.post(
+                "show_mode_message",
+                message_mode_title="RHINO",
+                message_mode_subtitle="HIT POPS - BUILD RAGE",
+                reminder=True,
+            )
+        self._update_area_status()
+
+    def _start_rhino_berserk(self):
+        self.rhino_berserk = True
+        self._update_gate()
+        self.machine.events.post("sinister_surge_rhino_berserk_started")
+        self.machine.events.post(
+            "show_mode_message",
+            message_mode_title="RHINO BERSERK!",
+            message_mode_subtitle="A/B = LOCK JP   VUK = 3X",
+            reminder=True,
+        )
+        self.rhino_berserk_seconds = 10
+        self._show_rhino_berserk_timer()
+        self.delay.add(
+            name="sinister_surge_rhino_berserk",
+            ms=self.RHINO_BERSERK_MS,
+            callback=self._rhino_berserk_timeout,
+        )
+        self.delay.add(
+            name="sinister_surge_rhino_berserk_tick",
+            ms=1_000,
+            callback=self._rhino_berserk_tick,
+        )
+
+    def _show_rhino_berserk_timer(self):
+        self.machine.events.post(
+            "show_mode_status",
+            mode_status_title="SECONDS LEFT",
+            mode_status_value=str(max(0, self.rhino_berserk_seconds)),
+        )
+
+    def _rhino_berserk_tick(self):
+        if self.current_area != "rhino" or not self.rhino_berserk or self.jackpot_ready:
+            return
+        self.rhino_berserk_seconds = max(0, self.rhino_berserk_seconds - 1)
+        self._show_rhino_berserk_timer()
+        if self.rhino_berserk_seconds > 0:
+            self.delay.add(
+                name="sinister_surge_rhino_berserk_tick",
+                ms=1_000,
+                callback=self._rhino_berserk_tick,
+            )
+
+    def _rhino_berserk_timeout(self):
+        if self.current_area != "rhino" or not self.rhino_berserk or self.jackpot_ready:
+            return
+        self.machine.events.post("sinister_surge_rhino_berserk_timeout")
+        self.machine.events.post(
+            "show_mode_message",
+            message_mode_title="BERSERK LOST",
+            message_mode_subtitle="BUILD RAGE AGAIN",
+            reminder=True,
+        )
+        self._reset_rhino_stage(show_message=False)
+
+    def _rhino_jackpot_value(self):
+        # Match the shared Jackpot value Rhino would receive after being marked clear.
+        return (
+            self.JACKPOT_BASE
+            * (max(1, self._balls_in_play()) + self._get("sinister_surge_areas_cleared") + 1)
+        ) + self.case_file_bonus
+
+    def _secure_rhino_jackpot(self):
+        if not self.rhino_berserk or self.current_area != "rhino":
+            return
+        self.delay.remove("sinister_surge_rhino_berserk")
+        self.delay.remove("sinister_surge_rhino_berserk_tick")
+        self.rhino_berserk = False
+        self.rhino_safe_locked = True
+        value = self._rhino_jackpot_value()
+        self._score(value)
+        self.machine.events.post("sinister_surge_rhino_jackpot_locked", value=value)
+        self.machine.events.post("sinister_surge_rhino_lights_clear")
+        self.machine.events.post(
+            "show_mode_jackpot",
+            message_mode_title="RHINO JACKPOT LOCKED",
+            message_mode_subtitle="SHOOT VUK FOR ANOTHER",
+            message_mode_value=value,
+        )
+        self._area_complete()
+
+    def _collect_rhino_direct_vuk(self):
+        self.delay.remove("sinister_surge_rhino_berserk")
+        self.delay.remove("sinister_surge_rhino_berserk_tick")
+        self.rhino_berserk = False
+        base_value = self._rhino_jackpot_value()
+        value = base_value * 3
+        self._score(value)
+        self._add("sinister_surge_jackpots", 1)
+
+        self._set_area_cleared("rhino")
+        self._add("sinister_surge_areas_cleared", 1)
+        self._set("sinister_surge_area_progress", 5)
+        self._set("sinister_surge_hits_still_needed", 0)
+        self.machine.events.post("sinister_surge_rhino_lights_clear")
+
+        if self._get("sinister_surge_ab_ready") == 1 and self._balls_in_play() < self.MAX_BALLS:
+            self.machine.events.post("sinister_surge_add_a_ball")
+
+        self._reset_ab()
+        self.jackpot_ready = False
+        self._set("sinister_surge_jackpot_ready", 0)
+        self.machine.events.post("sinister_surge_area_complete", area="rhino")
+        self.machine.events.post("sinister_surge_jackpot_collected", value=value)
+        self.machine.events.post(
+            "show_mode_jackpot",
+            message_mode_title="RHINO 3X JACKPOT",
+            message_mode_subtitle="DIRECT VUK!",
+            message_mode_value=value,
+        )
+        self._update_gate()
+        self._choose_next_area()
 
     def _non_stage_hit(self, **kwargs):
         if self.victory_laps:
@@ -625,6 +827,10 @@ class SinisterSurge(Mode):
             self._victory_lap_hit()
             return
 
+        if self.current_area == "electro" and not self.jackpot_ready:
+            self._electro_shot_hit("right_bank")
+            return
+
         if self.current_area == "goblin" and not self.jackpot_ready:
             self._goblin_area_hit("right_bank")
             return
@@ -690,7 +896,7 @@ class SinisterSurge(Mode):
             return
 
         if self.current_area == "electro" and not self.jackpot_ready:
-            self._electro_web_hit(web)
+            self._electro_shot_hit(f"{web}_web")
             return
 
         if self.current_area == "goblin" and not self.jackpot_ready:
@@ -703,65 +909,61 @@ class SinisterSurge(Mode):
     def _start_electro_attempt(self):
         if self.current_area != "electro" or self.jackpot_ready:
             return
-        self.delay.remove("sinister_surge_electro_second_shot")
-        self.electro_first_web = None
-        self.electro_target_web = choice(self.ELECTRO_WEBS)
+
+        self.delay.remove("sinister_surge_electro_move")
+        self.electro_hits = 0
         self._set("sinister_surge_area_progress", 0)
-        self._set("sinister_surge_hits_still_needed", 2)
-        self._light_electro_web()
+        self._set("sinister_surge_hits_still_needed", 3)
+        self._move_electro_spark()
         self._update_area_status()
 
-    def _electro_web_hit(self, web):
-        if web != self.electro_target_web:
+    def _move_electro_spark(self):
+        if self.current_area != "electro" or self.jackpot_ready or self.victory_laps:
+            return
+
+        choices = [shot for shot in self.ELECTRO_SHOTS if shot != self.electro_target_shot]
+        self.electro_target_shot = choice(choices or self.ELECTRO_SHOTS)
+        self._light_electro_shot()
+        self.delay.remove("sinister_surge_electro_move")
+        self.delay.add(
+            name="sinister_surge_electro_move",
+            ms=self.ELECTRO_MOVE_MS,
+            callback=self._move_electro_spark,
+        )
+        self.machine.events.post("reset_mode_message_reminder")
+
+    def _electro_shot_hit(self, shot):
+        if shot != self.electro_target_shot:
             self._score(self.INACTIVE_AREA_SCORE)
             return
 
         self._score(self.ACTIVE_AREA_SCORE)
+        self.electro_hits += 1
+        self._set("sinister_surge_area_progress", self.electro_hits)
+        self._set("sinister_surge_hits_still_needed", max(0, 3 - self.electro_hits))
+        self.machine.events.post("sinister_surge_electro_spark_collected", shot=shot)
 
-        if self.electro_first_web is None:
-            self.electro_first_web = web
-            self.electro_target_web = "center" if web == "left" else "left"
-            self._set("sinister_surge_area_progress", 1)
-            self._set("sinister_surge_hits_still_needed", 1)
-            self._light_electro_web()
-            self.delay.add(
-                name="sinister_surge_electro_second_shot",
-                ms=self.ELECTRO_SECOND_SHOT_MS,
-                callback=self._electro_timeout,
-            )
-            self.machine.events.post(
-                "show_mode_message",
-                message_mode_title="ELECTRO",
-                message_mode_subtitle="HIT THE OTHER WEB - 20 SECONDS",
-                reminder=True,
-            )
-            self._update_area_status()
+        if self.electro_hits >= 3:
+            self.delay.remove("sinister_surge_electro_move")
+            self.machine.events.post("sinister_surge_electro_clear")
+            self._area_complete()
             return
 
-        self.delay.remove("sinister_surge_electro_second_shot")
-        self._set("sinister_surge_area_progress", 2)
-        self._set("sinister_surge_hits_still_needed", 0)
-        self._area_complete()
+        self._move_electro_spark()
+        self._update_area_status()
 
-    def _electro_timeout(self):
-        if self.current_area != "electro" or self.jackpot_ready:
-            return
-        self.machine.events.post(
-            "show_mode_message",
-            message_mode_title="ELECTRO RESET",
-            message_mode_subtitle="HIT THE LIT WEB",
-            reminder=True,
-        )
-        self._start_electro_attempt()
-
-    def _light_electro_web(self):
+    def _light_electro_shot(self):
         self.machine.events.post("sinister_surge_electro_clear")
-        if self.electro_target_web:
-            self.machine.events.post(f"sinister_surge_electro_{self.electro_target_web}_lit")
+        if self.electro_target_shot:
+            self.machine.events.post(f"sinister_surge_electro_{self.electro_target_shot}_lit")
 
     def _left_drop_hit(self, target, **kwargs):
         if self.victory_laps:
             self._victory_lap_hit()
+            return
+
+        if self.current_area == "electro" and not self.jackpot_ready:
+            self._electro_shot_hit("left_bank")
             return
 
         if self.current_area == "goblin" and not self.jackpot_ready:
@@ -894,8 +1096,11 @@ class SinisterSurge(Mode):
         for name in (
             "sinister_surge_sandman_shift",
             "sinister_surge_sandman_reset_settle",
-            "sinister_surge_electro_second_shot",
+            "sinister_surge_electro_move",
+            "sinister_surge_rhino_berserk",
+            "sinister_surge_rhino_berserk_tick",
             "sinister_surge_goblin_attempt",
+            "sinister_surge_victory_laps_announce",
         ):
             self.delay.remove(name)
 
@@ -936,6 +1141,10 @@ class SinisterSurge(Mode):
             return
 
         if self.current_area == "vulture":
+            self.machine.events.post("sinister_surge_open_upper_gate")
+            return
+
+        if self.current_area == "rhino" and self.rhino_berserk:
             self.machine.events.post("sinister_surge_open_upper_gate")
             return
 

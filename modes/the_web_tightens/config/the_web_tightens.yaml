@@ -69,6 +69,14 @@ show_player:
     shared_final_vuk_chase:
       action: stop
 
+  the_web_tightens_saucers_ready:
+    the_web_tightens_saucer_pulse:
+      loops: -1
+      priority: 845
+  the_web_tightens_saucers_not_ready:
+    the_web_tightens_saucer_pulse:
+      action: stop
+
   the_web_tightens_conquistador_web:
     shared_center_web_chase:
       loops: -1
@@ -85,6 +93,8 @@ show_player:
   the_web_tightens_super_collected:
     the_web_tightens_clock_tower_super_flash:
       action: stop
+    the_web_tightens_saucer_pulse:
+      action: stop
 
   the_web_tightens_clear_all:
     shared_final_vuk_chase:
@@ -92,6 +102,8 @@ show_player:
     shared_center_web_chase:
       action: stop
     the_web_tightens_clock_tower_super_flash:
+      action: stop
+    the_web_tightens_saucer_pulse:
       action: stop
 
 light_player:
@@ -529,10 +541,32 @@ shows:
   the_web_tightens_clock_tower_super_flash:
     - duration: 250ms
       lights:
+        l_upper_left: FFFFFF
         l_upper_middle: FFFFFF
+        l_upper_right: FFFFFF
     - duration: 250ms
       lights:
+        l_upper_left: off
         l_upper_middle: off
+        l_upper_right: off
+
+  the_web_tightens_saucer_pulse:
+    - duration: 500ms
+      lights:
+        l_1_hole_l: FFFFFF
+        l_1_hole_r: FFFFFF
+        l_2_hole_l: FFFFFF
+        l_2_hole_r: FFFFFF
+        l_3_hole_l: FFFFFF
+        l_3_hole_r: FFFFFF
+    - duration: 500ms
+      lights:
+        l_1_hole_l: 404040
+        l_1_hole_r: 404040
+        l_2_hole_l: 404040
+        l_2_hole_r: 404040
+        l_3_hole_l: 404040
+        l_3_hole_r: 404040
 
 sound_player:
   # Reuse the standalone Fiddler violin effects inside this wizard. The

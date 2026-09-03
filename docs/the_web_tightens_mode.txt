@@ -7,7 +7,9 @@ CORE LOOP
 - Starts as 2-ball multiball.
 - Player locks one ball in the Daily Bugle VUK.
 - The VUK ball remains locked while five villain-inspired phases are played.
-- A saucer starts each phase.
+- A saucer starts each phase. The phase name is announced for 2 seconds before
+  that phase gameplay begins.
+- While a phase is waiting to be started, all three saucer hole lamps pulse white.
 - Saucers park excess balls during a phase, but the mode always preserves at
   least one loose playable ball. If attrition leaves only held saucer balls and
   the VUK lock, one saucer ball is released automatically.
@@ -88,14 +90,18 @@ PHASE ORDER
 ROOFTOP SUPER / REPEAT CYCLE
 ----------------------------
 - After all five phases have been played, successful or failed:
-  - release the VUK ball,
   - open the rooftop,
-  - light the rooftop for one Super Jackpot attempt.
+  - release the VUK ball to the roof,
+  - keep any parked saucer balls held for 6 seconds after the VUK kick,
+  - then release the first parked saucer ball, staggering any additional held
+    saucer balls by 2 seconds,
+  - light all three upper targets for one grouped Super Jackpot attempt.
 - Super value = 1,000,000 x successful phases in that cycle (0-5M).
-- The Super Jackpot is the CLOCK TOWER shot: upper-middle target only.
-- The upper-middle target flashes while the Super is available.
+- The Super Jackpot is one grouped rooftop shot: left, center, or right upper
+  target all collect the same Super Jackpot.
+- All three upper targets flash together while the Super is available.
 - When the VUK kicks the locked ball to the roof, display:
-    HIT THE CLOCK TOWER
+    HIT ANY UPPER TARGET
     FOR SUPER JACKPOT
 - After the one Super is collected, the rooftop closes and the VUK is relit.
 - If a ball is locked in the VUK before the Super is collected, that Super
@@ -122,3 +128,10 @@ PHYSICAL / MACHINE TEST ITEMS
 - The wizard now owns the rooftop gate for its full lifetime. Current and legacy gate-open requests are rejected during VUK lock, saucer transitions, and the five villain phases. The gate is permitted open only during the earned rooftop Super Jackpot window and closes again after the one Super is collected.
 - Fiddler WATCH/playback and correct-note hits use violin_1..4; a wrong note uses violin_bad_note, matching the standalone Fiddler mode.
 - Metal, Conquistador, Spider-Slayer, and Harley/Clivendon qualifying Jackpot awards post the shared jackpot effect. Fiddler notes deliberately use the violin sounds without layering the generic jackpot sound so the two-note pattern stays clear.
+
+2026-09-03 machine-test fixes
+- Phase starts now use a 2-second announcement delay before phase logic begins.
+- Shared countdown/status widgets are explicitly cleared when a phase resolves so expired phase timers cannot remain on-screen during the transition.
+- The final-phase transition holds saucer balls until after the VUK roof feed; first saucer release is 6 seconds after the VUK kick and additional releases are staggered by 2 seconds.
+- The rooftop Super is a grouped three-target shot and all three upper inserts flash together.
+- The Super transition retries the high-level rooftop gate-open request once before the VUK kick; the global diverter switch guard prevents an unnecessary second physical pulse if the gate already opened.

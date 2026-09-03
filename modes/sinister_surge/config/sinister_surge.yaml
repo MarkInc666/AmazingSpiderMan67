@@ -141,46 +141,51 @@ widget_player:
 
 light_player:
   sinister_surge_saucer_hold_started{saucer=="saucer_1"}:
-    l_1: green
-    l_1_hole_l: red
-    l_1_hole_r: red
+    l_1_hole_l: white
+    l_1_hole_r: white
   sinister_surge_saucer_released{saucer=="saucer_1"}:
-    l_1: off
     l_1_hole_l: off
     l_1_hole_r: off
 
   sinister_surge_saucer_hold_started{saucer=="saucer_2"}:
-    l_2: green
-    l_2_hole_l: red
-    l_2_hole_r: red
+    l_2_hole_l: white
+    l_2_hole_r: white
   sinister_surge_saucer_released{saucer=="saucer_2"}:
-    l_2: off
     l_2_hole_l: off
     l_2_hole_r: off
 
   sinister_surge_saucer_hold_started{saucer=="saucer_3"}:
-    l_3: green
-    l_3_hole_l: red
-    l_3_hole_r: red
+    l_3_hole_l: white
+    l_3_hole_r: white
   sinister_surge_saucer_released{saucer=="saucer_3"}:
-    l_3: off
     l_3_hole_l: off
     l_3_hole_r: off
 
   mode_sinister_surge_stopping:
-    l_1: off
     l_1_hole_l: off
     l_1_hole_r: off
-    l_2: off
     l_2_hole_l: off
     l_2_hole_r: off
-    l_3: off
     l_3_hole_l: off
     l_3_hole_r: off
 
 show_player:
 
   sinister_surge_clear_area_lights:
+    sinister_surge_sandman_bank_gi_show:
+      action: stop
+    sinister_surge_rhino_rage_0_show:
+      action: stop
+    sinister_surge_rhino_rage_1_show:
+      action: stop
+    sinister_surge_rhino_rage_2_show:
+      action: stop
+    sinister_surge_rhino_rage_3_show:
+      action: stop
+    sinister_surge_rhino_rage_4_show:
+      action: stop
+    sinister_surge_rhino_rage_5_show:
+      action: stop
     sinister_surge_pops_lit_show:
       action: stop
     sinister_surge_spinner_lit_show:
@@ -205,9 +210,17 @@ show_player:
       action: stop
     sinister_surge_sandman_target_5_show:
       action: stop
-    sinister_surge_electro_left_show:
+    sinister_surge_electro_left_web_show:
       action: stop
-    sinister_surge_electro_center_show:
+    sinister_surge_electro_center_web_show:
+      action: stop
+    sinister_surge_electro_left_pop_show:
+      action: stop
+    sinister_surge_electro_right_pop_show:
+      action: stop
+    sinister_surge_electro_left_bank_show:
+      action: stop
+    sinister_surge_electro_right_bank_show:
       action: stop
     sinister_surge_goblin_saucers_show:
       action: stop
@@ -220,11 +233,42 @@ show_player:
     sinister_surge_goblin_right_bank_show:
       action: stop
 
-  sinister_surge_area_rhino_lit:
-    sinister_surge_pops_lit_show:
-      action: play
+  sinister_surge_rhino_lights_clear:
+    sinister_surge_rhino_rage_0_show:
+      action: stop
+    sinister_surge_rhino_rage_1_show:
+      action: stop
+    sinister_surge_rhino_rage_2_show:
+      action: stop
+    sinister_surge_rhino_rage_3_show:
+      action: stop
+    sinister_surge_rhino_rage_4_show:
+      action: stop
+    sinister_surge_rhino_rage_5_show:
+      action: stop
+
+  sinister_surge_rhino_rage_0:
+    sinister_surge_rhino_rage_0_show:
       loops: -1
-      speed: 2
+  sinister_surge_rhino_rage_1:
+    sinister_surge_rhino_rage_1_show:
+      loops: -1
+  sinister_surge_rhino_rage_2:
+    sinister_surge_rhino_rage_2_show:
+      loops: -1
+  sinister_surge_rhino_rage_3:
+    sinister_surge_rhino_rage_3_show:
+      loops: -1
+  sinister_surge_rhino_rage_4:
+    sinister_surge_rhino_rage_4_show:
+      loops: -1
+  sinister_surge_rhino_rage_5:
+    sinister_surge_rhino_rage_5_show:
+      loops: -1
+
+  sinister_surge_area_sandman_lit:
+    sinister_surge_sandman_bank_gi_show:
+      loops: -1
 
   sinister_surge_area_vulture_lit:
     sinister_surge_vulture_targets_show:
@@ -272,16 +316,36 @@ show_player:
     sinister_surge_sandman_target_5_show:
       action: stop
 
-  sinister_surge_electro_left_lit:
-    sinister_surge_electro_left_show:
+  sinister_surge_electro_left_web_lit:
+    sinister_surge_electro_left_web_show:
       loops: -1
-  sinister_surge_electro_center_lit:
-    sinister_surge_electro_center_show:
+  sinister_surge_electro_center_web_lit:
+    sinister_surge_electro_center_web_show:
+      loops: -1
+  sinister_surge_electro_left_pop_lit:
+    sinister_surge_electro_left_pop_show:
+      loops: -1
+  sinister_surge_electro_right_pop_lit:
+    sinister_surge_electro_right_pop_show:
+      loops: -1
+  sinister_surge_electro_left_bank_lit:
+    sinister_surge_electro_left_bank_show:
+      loops: -1
+  sinister_surge_electro_right_bank_lit:
+    sinister_surge_electro_right_bank_show:
       loops: -1
   sinister_surge_electro_clear:
-    sinister_surge_electro_left_show:
+    sinister_surge_electro_left_web_show:
       action: stop
-    sinister_surge_electro_center_show:
+    sinister_surge_electro_center_web_show:
+      action: stop
+    sinister_surge_electro_left_pop_show:
+      action: stop
+    sinister_surge_electro_right_pop_show:
+      action: stop
+    sinister_surge_electro_left_bank_show:
+      action: stop
+    sinister_surge_electro_right_bank_show:
       action: stop
 
   sinister_surge_area_goblin_lit:
@@ -345,7 +409,6 @@ show_player:
     sinister_surge_victory_laps_show:
       action: play
       loops: -1
-      speed: 5
 
   sinister_surge_super_jackpot_lit_show:
     sinister_surge_super_jackpot_show:
@@ -354,6 +417,20 @@ show_player:
       speed: 6
 
   sinister_surge_clear_all_sinister_surge_lights:
+    sinister_surge_sandman_bank_gi_show:
+      action: stop
+    sinister_surge_rhino_rage_0_show:
+      action: stop
+    sinister_surge_rhino_rage_1_show:
+      action: stop
+    sinister_surge_rhino_rage_2_show:
+      action: stop
+    sinister_surge_rhino_rage_3_show:
+      action: stop
+    sinister_surge_rhino_rage_4_show:
+      action: stop
+    sinister_surge_rhino_rage_5_show:
+      action: stop
     sinister_surge_pops_lit_show:
       action: stop
     sinister_surge_spinner_lit_show:
@@ -378,9 +455,17 @@ show_player:
       action: stop
     sinister_surge_sandman_target_5_show:
       action: stop
-    sinister_surge_electro_left_show:
+    sinister_surge_electro_left_web_show:
       action: stop
-    sinister_surge_electro_center_show:
+    sinister_surge_electro_center_web_show:
+      action: stop
+    sinister_surge_electro_left_pop_show:
+      action: stop
+    sinister_surge_electro_right_pop_show:
+      action: stop
+    sinister_surge_electro_left_bank_show:
+      action: stop
+    sinister_surge_electro_right_bank_show:
       action: stop
     sinister_surge_goblin_saucers_show:
       action: stop
@@ -508,6 +593,360 @@ shows:
   # Chapter 1 callback indicators. Colors below respect the physical insert
   # lenses in config/lights.yaml: both drop-bank inserts are green, while the
   # web/upper indicators are white or RGB-capable.
+  sinister_surge_sandman_bank_gi_show:
+    - duration: 800ms
+      lights:
+        l_gi_5bank_lower: {color: F0B020, fade: 800ms}
+        l_gi_5bank_upper: {color: F0B020, fade: 800ms}
+    - duration: 800ms
+      lights:
+        l_gi_5bank_lower: {color: white, fade: 800ms}
+        l_gi_5bank_upper: {color: white, fade: 800ms}
+
+  sinister_surge_rhino_rage_0_show:
+    - duration: 900ms
+      lights:
+        l_pop_1_1: yellow
+        l_pop_1_2: yellow
+        l_pop_1_3: yellow
+        l_pop_1_4: yellow
+        l_pop_1_5: yellow
+        l_pop_1_6: yellow
+        l_pop_1_7: yellow
+        l_pop_1_8: yellow
+        l_pop_1_9: yellow
+        l_pop_1_10: yellow
+        l_pop_1_11: yellow
+        l_pop_1_12: yellow
+        l_pop_2_1: yellow
+        l_pop_2_2: yellow
+        l_pop_2_3: yellow
+        l_pop_2_4: yellow
+        l_pop_2_5: yellow
+        l_pop_2_6: yellow
+        l_pop_2_7: yellow
+        l_pop_2_8: yellow
+        l_pop_2_9: yellow
+        l_pop_2_10: yellow
+        l_pop_2_11: yellow
+        l_pop_2_12: yellow
+    - duration: 900ms
+      lights:
+        l_pop_1_1: off
+        l_pop_1_2: off
+        l_pop_1_3: off
+        l_pop_1_4: off
+        l_pop_1_5: off
+        l_pop_1_6: off
+        l_pop_1_7: off
+        l_pop_1_8: off
+        l_pop_1_9: off
+        l_pop_1_10: off
+        l_pop_1_11: off
+        l_pop_1_12: off
+        l_pop_2_1: off
+        l_pop_2_2: off
+        l_pop_2_3: off
+        l_pop_2_4: off
+        l_pop_2_5: off
+        l_pop_2_6: off
+        l_pop_2_7: off
+        l_pop_2_8: off
+        l_pop_2_9: off
+        l_pop_2_10: off
+        l_pop_2_11: off
+        l_pop_2_12: off
+
+  sinister_surge_rhino_rage_1_show:
+    - duration: 800ms
+      lights:
+        l_pop_1_1: orange
+        l_pop_1_2: orange
+        l_pop_1_3: orange
+        l_pop_1_4: orange
+        l_pop_1_5: orange
+        l_pop_1_6: orange
+        l_pop_1_7: orange
+        l_pop_1_8: orange
+        l_pop_1_9: orange
+        l_pop_1_10: orange
+        l_pop_1_11: orange
+        l_pop_1_12: orange
+        l_pop_2_1: orange
+        l_pop_2_2: orange
+        l_pop_2_3: orange
+        l_pop_2_4: orange
+        l_pop_2_5: orange
+        l_pop_2_6: orange
+        l_pop_2_7: orange
+        l_pop_2_8: orange
+        l_pop_2_9: orange
+        l_pop_2_10: orange
+        l_pop_2_11: orange
+        l_pop_2_12: orange
+    - duration: 800ms
+      lights:
+        l_pop_1_1: off
+        l_pop_1_2: off
+        l_pop_1_3: off
+        l_pop_1_4: off
+        l_pop_1_5: off
+        l_pop_1_6: off
+        l_pop_1_7: off
+        l_pop_1_8: off
+        l_pop_1_9: off
+        l_pop_1_10: off
+        l_pop_1_11: off
+        l_pop_1_12: off
+        l_pop_2_1: off
+        l_pop_2_2: off
+        l_pop_2_3: off
+        l_pop_2_4: off
+        l_pop_2_5: off
+        l_pop_2_6: off
+        l_pop_2_7: off
+        l_pop_2_8: off
+        l_pop_2_9: off
+        l_pop_2_10: off
+        l_pop_2_11: off
+        l_pop_2_12: off
+
+  sinister_surge_rhino_rage_2_show:
+    - duration: 650ms
+      lights:
+        l_pop_1_1: F07020
+        l_pop_1_2: F07020
+        l_pop_1_3: F07020
+        l_pop_1_4: F07020
+        l_pop_1_5: F07020
+        l_pop_1_6: F07020
+        l_pop_1_7: F07020
+        l_pop_1_8: F07020
+        l_pop_1_9: F07020
+        l_pop_1_10: F07020
+        l_pop_1_11: F07020
+        l_pop_1_12: F07020
+        l_pop_2_1: F07020
+        l_pop_2_2: F07020
+        l_pop_2_3: F07020
+        l_pop_2_4: F07020
+        l_pop_2_5: F07020
+        l_pop_2_6: F07020
+        l_pop_2_7: F07020
+        l_pop_2_8: F07020
+        l_pop_2_9: F07020
+        l_pop_2_10: F07020
+        l_pop_2_11: F07020
+        l_pop_2_12: F07020
+        l_a_rollover: 909090
+    - duration: 650ms
+      lights:
+        l_pop_1_1: off
+        l_pop_1_2: off
+        l_pop_1_3: off
+        l_pop_1_4: off
+        l_pop_1_5: off
+        l_pop_1_6: off
+        l_pop_1_7: off
+        l_pop_1_8: off
+        l_pop_1_9: off
+        l_pop_1_10: off
+        l_pop_1_11: off
+        l_pop_1_12: off
+        l_pop_2_1: off
+        l_pop_2_2: off
+        l_pop_2_3: off
+        l_pop_2_4: off
+        l_pop_2_5: off
+        l_pop_2_6: off
+        l_pop_2_7: off
+        l_pop_2_8: off
+        l_pop_2_9: off
+        l_pop_2_10: off
+        l_pop_2_11: off
+        l_pop_2_12: off
+        l_a_rollover: off
+
+  sinister_surge_rhino_rage_3_show:
+    - duration: 500ms
+      lights:
+        l_pop_1_1: F05020
+        l_pop_1_2: F05020
+        l_pop_1_3: F05020
+        l_pop_1_4: F05020
+        l_pop_1_5: F05020
+        l_pop_1_6: F05020
+        l_pop_1_7: F05020
+        l_pop_1_8: F05020
+        l_pop_1_9: F05020
+        l_pop_1_10: F05020
+        l_pop_1_11: F05020
+        l_pop_1_12: F05020
+        l_pop_2_1: F05020
+        l_pop_2_2: F05020
+        l_pop_2_3: F05020
+        l_pop_2_4: F05020
+        l_pop_2_5: F05020
+        l_pop_2_6: F05020
+        l_pop_2_7: F05020
+        l_pop_2_8: F05020
+        l_pop_2_9: F05020
+        l_pop_2_10: F05020
+        l_pop_2_11: F05020
+        l_pop_2_12: F05020
+        l_a_rollover: B0B0B0
+        l_b_rollover: B0B0B0
+    - duration: 500ms
+      lights:
+        l_pop_1_1: off
+        l_pop_1_2: off
+        l_pop_1_3: off
+        l_pop_1_4: off
+        l_pop_1_5: off
+        l_pop_1_6: off
+        l_pop_1_7: off
+        l_pop_1_8: off
+        l_pop_1_9: off
+        l_pop_1_10: off
+        l_pop_1_11: off
+        l_pop_1_12: off
+        l_pop_2_1: off
+        l_pop_2_2: off
+        l_pop_2_3: off
+        l_pop_2_4: off
+        l_pop_2_5: off
+        l_pop_2_6: off
+        l_pop_2_7: off
+        l_pop_2_8: off
+        l_pop_2_9: off
+        l_pop_2_10: off
+        l_pop_2_11: off
+        l_pop_2_12: off
+        l_a_rollover: off
+        l_b_rollover: off
+
+  sinister_surge_rhino_rage_4_show:
+    - duration: 350ms
+      lights:
+        l_pop_1_1: F03010
+        l_pop_1_2: F03010
+        l_pop_1_3: F03010
+        l_pop_1_4: F03010
+        l_pop_1_5: F03010
+        l_pop_1_6: F03010
+        l_pop_1_7: F03010
+        l_pop_1_8: F03010
+        l_pop_1_9: F03010
+        l_pop_1_10: F03010
+        l_pop_1_11: F03010
+        l_pop_1_12: F03010
+        l_pop_2_1: F03010
+        l_pop_2_2: F03010
+        l_pop_2_3: F03010
+        l_pop_2_4: F03010
+        l_pop_2_5: F03010
+        l_pop_2_6: F03010
+        l_pop_2_7: F03010
+        l_pop_2_8: F03010
+        l_pop_2_9: F03010
+        l_pop_2_10: F03010
+        l_pop_2_11: F03010
+        l_pop_2_12: F03010
+        l_a_rollover: D0D0D0
+        l_b_rollover: D0D0D0
+        l_right_a: D0D0D0
+    - duration: 350ms
+      lights:
+        l_pop_1_1: off
+        l_pop_1_2: off
+        l_pop_1_3: off
+        l_pop_1_4: off
+        l_pop_1_5: off
+        l_pop_1_6: off
+        l_pop_1_7: off
+        l_pop_1_8: off
+        l_pop_1_9: off
+        l_pop_1_10: off
+        l_pop_1_11: off
+        l_pop_1_12: off
+        l_pop_2_1: off
+        l_pop_2_2: off
+        l_pop_2_3: off
+        l_pop_2_4: off
+        l_pop_2_5: off
+        l_pop_2_6: off
+        l_pop_2_7: off
+        l_pop_2_8: off
+        l_pop_2_9: off
+        l_pop_2_10: off
+        l_pop_2_11: off
+        l_pop_2_12: off
+        l_a_rollover: off
+        l_b_rollover: off
+        l_right_a: off
+
+  sinister_surge_rhino_rage_5_show:
+    - duration: 180ms
+      lights:
+        l_pop_1_1: red
+        l_pop_1_2: red
+        l_pop_1_3: red
+        l_pop_1_4: red
+        l_pop_1_5: red
+        l_pop_1_6: red
+        l_pop_1_7: red
+        l_pop_1_8: red
+        l_pop_1_9: red
+        l_pop_1_10: red
+        l_pop_1_11: red
+        l_pop_1_12: red
+        l_pop_2_1: red
+        l_pop_2_2: red
+        l_pop_2_3: red
+        l_pop_2_4: red
+        l_pop_2_5: red
+        l_pop_2_6: red
+        l_pop_2_7: red
+        l_pop_2_8: red
+        l_pop_2_9: red
+        l_pop_2_10: red
+        l_pop_2_11: red
+        l_pop_2_12: red
+        l_a_rollover: FFFFFF
+        l_b_rollover: FFFFFF
+        l_right_a: FFFFFF
+        l_left_b: FFFFFF
+    - duration: 180ms
+      lights:
+        l_pop_1_1: off
+        l_pop_1_2: off
+        l_pop_1_3: off
+        l_pop_1_4: off
+        l_pop_1_5: off
+        l_pop_1_6: off
+        l_pop_1_7: off
+        l_pop_1_8: off
+        l_pop_1_9: off
+        l_pop_1_10: off
+        l_pop_1_11: off
+        l_pop_1_12: off
+        l_pop_2_1: off
+        l_pop_2_2: off
+        l_pop_2_3: off
+        l_pop_2_4: off
+        l_pop_2_5: off
+        l_pop_2_6: off
+        l_pop_2_7: off
+        l_pop_2_8: off
+        l_pop_2_9: off
+        l_pop_2_10: off
+        l_pop_2_11: off
+        l_pop_2_12: off
+        l_a_rollover: off
+        l_b_rollover: off
+        l_right_a: off
+        l_left_b: off
+
   sinister_surge_vulture_targets_show:
     - duration: 250ms
       lights:
@@ -568,33 +1007,123 @@ shows:
       lights:
         l_5bank_5: off
 
-  sinister_surge_electro_left_show:
-    - duration: 150ms
+  sinister_surge_electro_left_web_show:
+    - duration: 300ms
       lights:
         l_left_web_target: yellow
-    - duration: 150ms
+    - duration: 300ms
       lights:
         l_left_web_target: off
 
-  sinister_surge_electro_center_show:
-    - duration: 150ms
+  sinister_surge_electro_center_web_show:
+    - duration: 300ms
       lights:
         l_mid_web_target: yellow
-    - duration: 150ms
+    - duration: 300ms
       lights:
         l_mid_web_target: off
 
+  sinister_surge_electro_left_pop_show:
+    - duration: 300ms
+      lights:
+        l_pop_1_1: yellow
+        l_pop_1_2: yellow
+        l_pop_1_3: yellow
+        l_pop_1_4: yellow
+        l_pop_1_5: yellow
+        l_pop_1_6: yellow
+        l_pop_1_7: yellow
+        l_pop_1_8: yellow
+        l_pop_1_9: yellow
+        l_pop_1_10: yellow
+        l_pop_1_11: yellow
+        l_pop_1_12: yellow
+    - duration: 300ms
+      lights:
+        l_pop_1_1: off
+        l_pop_1_2: off
+        l_pop_1_3: off
+        l_pop_1_4: off
+        l_pop_1_5: off
+        l_pop_1_6: off
+        l_pop_1_7: off
+        l_pop_1_8: off
+        l_pop_1_9: off
+        l_pop_1_10: off
+        l_pop_1_11: off
+        l_pop_1_12: off
+
+  sinister_surge_electro_right_pop_show:
+    - duration: 300ms
+      lights:
+        l_pop_2_1: yellow
+        l_pop_2_2: yellow
+        l_pop_2_3: yellow
+        l_pop_2_4: yellow
+        l_pop_2_5: yellow
+        l_pop_2_6: yellow
+        l_pop_2_7: yellow
+        l_pop_2_8: yellow
+        l_pop_2_9: yellow
+        l_pop_2_10: yellow
+        l_pop_2_11: yellow
+        l_pop_2_12: yellow
+    - duration: 300ms
+      lights:
+        l_pop_2_1: off
+        l_pop_2_2: off
+        l_pop_2_3: off
+        l_pop_2_4: off
+        l_pop_2_5: off
+        l_pop_2_6: off
+        l_pop_2_7: off
+        l_pop_2_8: off
+        l_pop_2_9: off
+        l_pop_2_10: off
+        l_pop_2_11: off
+        l_pop_2_12: off
+
+  sinister_surge_electro_left_bank_show:
+    - duration: 300ms
+      lights:
+        l_3bankbonus: green
+    - duration: 300ms
+      lights:
+        l_3bankbonus: off
+
+  sinister_surge_electro_right_bank_show:
+    - duration: 300ms
+      lights:
+        l_5bank_1: green
+        l_5bank_2: green
+        l_5bank_3: green
+        l_5bank_4: green
+        l_5bank_5: green
+    - duration: 300ms
+      lights:
+        l_5bank_1: off
+        l_5bank_2: off
+        l_5bank_3: off
+        l_5bank_4: off
+        l_5bank_5: off
+
   sinister_surge_goblin_saucers_show:
-    - duration: 200ms
+    - duration: 600ms
       lights:
-        l_1: green
-        l_2: green
-        l_3: green
-    - duration: 200ms
+        l_1_hole_l: {color: white, fade: 600ms}
+        l_1_hole_r: {color: white, fade: 600ms}
+        l_2_hole_l: {color: white, fade: 600ms}
+        l_2_hole_r: {color: white, fade: 600ms}
+        l_3_hole_l: {color: white, fade: 600ms}
+        l_3_hole_r: {color: white, fade: 600ms}
+    - duration: 600ms
       lights:
-        l_1: off
-        l_2: off
-        l_3: off
+        l_1_hole_l: {color: off, fade: 600ms}
+        l_1_hole_r: {color: off, fade: 600ms}
+        l_2_hole_l: {color: off, fade: 600ms}
+        l_2_hole_r: {color: off, fade: 600ms}
+        l_3_hole_l: {color: off, fade: 600ms}
+        l_3_hole_r: {color: off, fade: 600ms}
 
   sinister_surge_goblin_left_web_show:
     - duration: 120ms
@@ -659,12 +1188,21 @@ shows:
         l_left_b: off
 
   sinister_surge_victory_laps_show:
-    - duration: 150ms
+    - duration: 700ms
       lights:
-        gi: white
-    - duration: 150ms
+        gi: {color: white, fade: 700ms}
+    - duration: 700ms
       lights:
-        gi: off
+        gi: {color: red, fade: 700ms}
+    - duration: 700ms
+      lights:
+        gi: {color: white, fade: 700ms}
+    - duration: 700ms
+      lights:
+        gi: {color: blue, fade: 700ms}
+    - duration: 700ms
+      lights:
+        gi: {color: white, fade: 700ms}
 
   sinister_surge_super_jackpot_show:
     - duration: 100ms

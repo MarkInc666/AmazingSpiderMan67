@@ -94,9 +94,12 @@ event_player:
   # Real switches / shot groups -> Electro Python events
   # -------------------------------
   s_web_target_left_active: electro_left_web_hit
-  s_web_spinner_active: electro_spinner_hit
+  s_pop_left_active: electro_left_pop_hit
   elect_left_drops_hit: electro_left_drops_hit
-  elect_saucers_hit: electro_saucers_hit
+  s_pop_right_active: electro_right_pop_hit
+  s_saucer_1_active: clear_saucers_delayed
+  s_saucer_2_active: clear_saucers_delayed
+  s_saucer_3_active: clear_saucers_delayed
   s_web_target_mid_active: electro_right_web_hit
   s_trispinner_opto_active: electro_upper_spinner_hit
   elect_upper_targets_hit: electro_upper_target_hit
@@ -123,19 +126,7 @@ shot_groups:
   elect_upper_targets:
     shots: electro_upper_target_left, electro_upper_target_center, electro_upper_target_right
 
-  elect_saucers:
-    shots: electro_saucer_1, electro_saucer_2, electro_saucer_3
-
 shots:
-
-  electro_saucer_1:
-    switch: s_saucer_1
-
-  electro_saucer_2:
-    switch: s_saucer_2
-
-  electro_saucer_3:
-    switch: s_saucer_3
 
   electro_upper_target_left:
     switch: s_upper_target_left
@@ -294,169 +285,44 @@ show_player:
     electro_left_web_lit_show:
       loops: -1
 
-  electro_lite_spinner:
-    electro_spinner_lit_show:
+  electro_lite_left_pop:
+    electro_left_pop_lit_show:
       loops: -1
 
   electro_lite_left_drops:
     electro_left_drops_lit_show:
       loops: -1
 
-  electro_lite_saucers:
-    electro_saucers_lit_show:
-      loops: -1
-
-  electro_lite_right_web:
-    electro_right_web_lit_show:
-      loops: -1
-
-  electro_lite_upper_spinner:
-    electro_upper_spinner_lit_show:
-      loops: -1
-
-  electro_lite_upper_targets:
-    electro_upper_targets_lit_show:
-      loops: -1
-
-  electro_lite_right_drops:
-    electro_right_drops_lit_show:
-      loops: -1
-
-  # -------------------------------
-  # Stop normal lit shots
-  # -------------------------------
-  electro_stop_left_web:
-    electro_left_web_lit_show:
-      action: stop
-
-  electro_stop_spinner:
-    electro_spinner_lit_show:
-      action: stop
-
-  electro_stop_left_drops:
-    electro_left_drops_lit_show:
-      action: stop
-
-  electro_stop_saucers:
-    electro_saucers_lit_show:
-      action: stop
-
-  electro_stop_right_web:
-    electro_right_web_lit_show:
-      action: stop
-
-  electro_stop_upper_spinner:
-    electro_upper_spinner_lit_show:
-      action: stop
-
-  electro_stop_upper_targets:
-    electro_upper_targets_lit_show:
-      action: stop
-
-  electro_stop_right_drops:
-    electro_right_drops_lit_show:
-      action: stop
-
-  # -------------------------------
-  # Super jackpot lit shots
-  # -------------------------------
-  electro_super_lite_left_web:
-    electro_left_web_super_show:
-      loops: -1
-
-  electro_super_lite_spinner:
-    electro_spinner_super_show:
-      loops: -1
-
-  electro_super_lite_left_drops:
-    electro_left_drops_super_show:
-      loops: -1
-
-  electro_super_lite_saucers:
-    electro_saucers_super_show:
-      loops: -1
-
-  electro_super_lite_right_web:
-    electro_right_web_super_show:
-      loops: -1
-
-  electro_super_lite_upper_spinner:
-    electro_upper_spinner_super_show:
-      loops: -1
-
-  electro_super_lite_upper_targets:
-    electro_upper_targets_super_show:
-      loops: -1
-
-  electro_super_lite_right_drops:
-    electro_right_drops_super_show:
-      loops: -1
-
-  electro_super_collected:
-    electro_super_collected_show:
-      loops: 0
-
-  electro_mode_complete:
-    electro_mode_complete_show:
-      loops: 0
-
-shows:
-  electro_mode_start_show:
-    - duration: 200ms
-      lights:
-        l_20k: yellow
-    - duration: 200ms
-      lights:
-        l_20k: off
-
-  # -------------------------------
-  # Normal lit shot shows
-  # Replace lights with your actual shot indicator lights.
-  # -------------------------------
-  electro_left_web_lit_show:
+  electro_lite_right_pop:
+    electro_right_pop_lit_show:
     - duration: 150ms
       lights:
-        l_left_web_target: yellow      
+        l_pop_2_1: yellow
+        l_pop_2_2: yellow
+        l_pop_2_3: yellow
+        l_pop_2_4: yellow
+        l_pop_2_5: yellow
+        l_pop_2_6: yellow
+        l_pop_2_7: yellow
+        l_pop_2_8: yellow
+        l_pop_2_9: yellow
+        l_pop_2_10: yellow
+        l_pop_2_11: yellow
+        l_pop_2_12: yellow
     - duration: 150ms
       lights:
-        l_left_web_target: off
-
-  electro_spinner_lit_show:
-    - duration: 150ms
-      lights:
-        l_spinner: yellow
-    - duration: 150ms
-      lights:
-        l_spinner: off
-
-  electro_left_drops_lit_show:
-    - duration: 120ms
-      lights:
-        l_3bankbonus: yellow
-        l_gi_3bank: yellow
-    - duration: 120ms
-      lights:
-        l_3bankbonus: blue
-        l_gi_3bank: blue
-
-  electro_saucers_lit_show:
-    - duration: 150ms
-      lights:
-        l_1_hole_l: red
-        l_1_hole_r: red        
-        l_2_hole_l: red
-        l_2_hole_r: red        
-        l_3_hole_l: red
-        l_3_hole_r: red        
-    - duration: 150ms
-      lights:
-        l_1_hole_l: off
-        l_1_hole_r: off        
-        l_2_hole_l: off
-        l_2_hole_r: off        
-        l_3_hole_l: off
-        l_3_hole_r: off        
-
+        l_pop_2_1: off
+        l_pop_2_2: off
+        l_pop_2_3: off
+        l_pop_2_4: off
+        l_pop_2_5: off
+        l_pop_2_6: off
+        l_pop_2_7: off
+        l_pop_2_8: off
+        l_pop_2_9: off
+        l_pop_2_10: off
+        l_pop_2_11: off
+        l_pop_2_12: off
   electro_right_web_lit_show:
     - duration: 150ms
       lights:
@@ -516,13 +382,35 @@ shows:
       lights:
         l_left_web_target: off
 
-  electro_spinner_super_show:
+  electro_left_pop_super_show:
     - duration: 150ms
       lights:
-        l_spinner: white
+        l_pop_1_1: white
+        l_pop_1_2: white
+        l_pop_1_3: white
+        l_pop_1_4: white
+        l_pop_1_5: white
+        l_pop_1_6: white
+        l_pop_1_7: white
+        l_pop_1_8: white
+        l_pop_1_9: white
+        l_pop_1_10: white
+        l_pop_1_11: white
+        l_pop_1_12: white
     - duration: 150ms
       lights:
-        l_spinner: off
+        l_pop_1_1: off
+        l_pop_1_2: off
+        l_pop_1_3: off
+        l_pop_1_4: off
+        l_pop_1_5: off
+        l_pop_1_6: off
+        l_pop_1_7: off
+        l_pop_1_8: off
+        l_pop_1_9: off
+        l_pop_1_10: off
+        l_pop_1_11: off
+        l_pop_1_12: off
 
   electro_left_drops_super_show:
     - duration: 120ms
@@ -534,24 +422,35 @@ shows:
         l_3bankbonus: off
         l_gi_3bank: off
 
-  electro_saucers_super_show:
+  electro_right_pop_super_show:
     - duration: 150ms
       lights:
-        l_1_hole_l: white
-        l_1_hole_r: white        
-        l_2_hole_l: white
-        l_2_hole_r: white        
-        l_3_hole_l: white
-        l_3_hole_r: white        
+        l_pop_2_1: white
+        l_pop_2_2: white
+        l_pop_2_3: white
+        l_pop_2_4: white
+        l_pop_2_5: white
+        l_pop_2_6: white
+        l_pop_2_7: white
+        l_pop_2_8: white
+        l_pop_2_9: white
+        l_pop_2_10: white
+        l_pop_2_11: white
+        l_pop_2_12: white
     - duration: 150ms
       lights:
-        l_1_hole_l: off
-        l_1_hole_r: off        
-        l_2_hole_l: off
-        l_2_hole_r: off        
-        l_3_hole_l: off
-        l_3_hole_r: off        
-
+        l_pop_2_1: off
+        l_pop_2_2: off
+        l_pop_2_3: off
+        l_pop_2_4: off
+        l_pop_2_5: off
+        l_pop_2_6: off
+        l_pop_2_7: off
+        l_pop_2_8: off
+        l_pop_2_9: off
+        l_pop_2_10: off
+        l_pop_2_11: off
+        l_pop_2_12: off
   electro_right_web_super_show:
     - duration: 150ms
       lights:

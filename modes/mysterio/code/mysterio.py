@@ -55,14 +55,13 @@ class Mysterio(CaseFileMixin, Mode):
         if self.has_case_file("safety_net"):
             self.machine.events.post("start_case_file_ball_save")
 
-        # Eight distinct shot groups: five clues, two false shots, one hidden Super.
+        # Seven distinct shot groups: five clues, one false shot, one hidden Super.
         # Neither playfield spinner participates in Mysterio.
         self.shots = [
             Shot("left_web", 10, 70, "mysterio_left_web_hit", group="left"),
             Shot("left_pop", 25, 45, "mysterio_left_pop_hit", group="left"),
             Shot("left_drops", 40, 60, "mysterio_left_drops_hit", group="left"),
             Shot("saucers", 50, 30, "mysterio_saucers_hit", group="left"),
-            Shot("center_web", 60, 30, "mysterio_center_web_hit", group="center"),
             Shot("right_pop", 75, 45, "mysterio_right_pop_hit", group="right"),
             Shot("upper_targets", 95, 20, "mysterio_upper_targets_hit", group="upper"),
             Shot("right_drops", 100, 80, "mysterio_right_drops_hit", group="right"),
@@ -164,8 +163,6 @@ class Mysterio(CaseFileMixin, Mode):
     def build_hint(jackpot_shot):
         if jackpot_shot.group == "upper":
             return "upper"
-        if jackpot_shot.group == "center":
-            return "center"
         if jackpot_shot.x < 60:
             return "left"
         return "right"
@@ -224,7 +221,7 @@ class Mysterio(CaseFileMixin, Mode):
         replacement = random.choice(candidates)
 
         # Swap the replacement's clue/false role onto the attempted shot so the
-        # mode retains five directional clues, two false shots, and one Super.
+        # mode retains five directional clues, one false shot, and one Super.
         first_shot.is_jackpot = False
         first_shot.is_clue = replacement.is_clue
         replacement.is_jackpot = True
@@ -330,8 +327,7 @@ class Mysterio(CaseFileMixin, Mode):
             self.machine.events.post("mysterio_spidey_sense_right")
         elif hint == "upper":
             self.machine.events.post("mysterio_spidey_sense_upper")
-        else:
-            self.machine.events.post("mysterio_spidey_sense_center")
+        # All clue directions are left, right, or upper.
 
     def _disable_shot(self, shot):
         shot.disabled = True

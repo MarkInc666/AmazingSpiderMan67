@@ -2,7 +2,7 @@ SINISTER SURGE
 Chapter 1 Mini-Wizard
 
 STATUS
-- Coded from the approved callback-stage design.
+- Coded from the reviewed Chapter 1 callback-stage design.
 - Needs on-machine playtest and timing/lighting verification.
 
 START / END
@@ -11,14 +11,25 @@ START / END
 - Mode ends when multiball ends (one ball remains).
 - Daily Bugle mystery is disabled while Sinister Surge owns the VUK.
 - Setup kicks a ball already sitting at the VUK.
+- Maximum balls in play: 4.
 
 STAGE FLOW
 - One random unfinished Chapter 1 villain stage is active at a time.
-- Completing a stage lights the Daily Bugle/VUK Jackpot.
+- Except for Rhino's special Berserk/VUK resolution, completing a stage lights the
+  Daily Bugle/VUK Jackpot.
 - Collect the Jackpot before another unfinished stage is chosen.
 
 RHINO
-- 6 pop hits light Jackpot.
+- Five pop hits build Rage 1-5; every pop advances one level.
+- Pop rings pulse faster and become progressively redder as Rage builds.
+- A/B inserts build cumulatively like the main Rhino mode:
+  Rage 2 upper A, Rage 3 upper B, Rage 4 middle A, Rage 5 middle B.
+- At Rage 5 Rhino goes BERSERK for 10 seconds and the rooftop gate opens.
+- Safe route: hit any A/B during Berserk to lock 1x Rhino Jackpot and stop the
+  Berserk timer; the VUK then remains lit for another 1x Jackpot (2x total).
+- Risk route: shoot the VUK directly during Berserk for 3x Rhino Jackpot and
+  immediately finish the Rhino stage.
+- If Berserk times out, the Rhino stage resets to Rage 0 and must be built again.
 
 SANDMAN
 - Uses the right 5-bank.
@@ -27,21 +38,26 @@ SANDMAN
 - Hit the currently flashing target to light Jackpot.
 - If all five targets are down without collecting the lit target, reset the bank
   and continue the Sandman attempt.
+- The upper/lower right-bank GI pulses softly yellow/white throughout the stage.
 
 VULTURE
 - Hit any one upper target once.
 - Make 3 upper-spinner spins.
 - Target and spinner requirements may be completed in either order.
 - Completing both requirements lights Jackpot.
+- Gate is open during the Vulture stage.
 
 ELECTRO
-- Left web and center web are the two shots.
-- One starts lit.
-- Hit the lit web; the other web becomes lit and a 20-second timer starts.
-- Hit the second lit web before timeout to light Jackpot.
-- Timeout resets the Electro attempt and allows an immediate restart.
+- A single Spark roams among six lower-playfield shot groups:
+  left web, center web, left pop, right pop, left bank, right bank.
+- The active Spark stays at each location for about 4 seconds, then moves.
+- Hitting the active Spark scores one successful chase hit and immediately moves it.
+- Three successful Spark hits complete Electro and light Jackpot.
+- Missing the active location does not reset progress; the Spark simply continues roaming.
 
 GREEN GOBLIN
+- All three saucer hole-lamp pairs pulse white while waiting for the capture shot.
+- Number inserts l_1/l_2/l_3 are not used for the Goblin saucer indication.
 - Any saucer starts the attempt and holds that ball for 4 seconds.
 - Four areas flash green: left web, center web, left drop bank, right drop bank.
 - Any individual drop hit qualifies its bank; each of the four areas counts once.
@@ -57,19 +73,25 @@ SAUCER REST
 - Green Goblin replaces the rest with its specific 4-second attempt hold.
 
 JACKPOTS / ADD-A-BALL
-- Stage Jackpot = 100K x (balls in play + stages cleared) + Case File bonus.
-- Complete A+B before collecting a stage Jackpot to add a ball on that Jackpot.
-- Maximum balls in play: 5.
+- Standard stage Jackpot = 100K x (balls in play + stages cleared) + Case File bonus.
+- Complete A+B before collecting a standard stage Jackpot to add a ball on that Jackpot.
+- Maximum balls in play: 4.
 - Added-ball save: 10 seconds.
-- A+B resets after each stage Jackpot.
+- A+B resets after each standard stage Jackpot.
+- Rhino's direct Berserk VUK awards 3x the Rhino stage Jackpot and resolves the stage
+  without creating an additional standard VUK Jackpot afterward.
 
 VICTORY LAPS
-- Begin after all five villain stages have been completed and their Jackpots collected.
-- A+B lights the Daily Bugle/VUK Super Jackpot.
+- Begin after all five villain stages have been completed and resolved.
+- Transition message: ALL VILLAINS DEFEATED!, then after 2 seconds VICTORY LAPS / COMPLETE A + B.
+- GI continuously fades white -> red -> white -> blue -> white and repeats.
+- Registered playfield hits score 50K.
+- Complete A+B to light the Daily Bugle/VUK Super Jackpot and open the gate.
 - Super Jackpot = 1M x balls in play + Case File bonus.
+- A+B resets after each Super and the cycle repeats.
 
 CASE FILE VALUE BONUS
-- Each accumulated chapter Case File contributes 20K to every stage Jackpot and
+- Each accumulated chapter Case File contributes 20K to every standard stage Jackpot and
   Super Jackpot through mini_wizard_case_file_bonus.
 - Shared chapter cap: 25 Case Files / +500K.
 
@@ -80,13 +102,13 @@ SCORING
 - Victory Lap registered hits: 50K.
 
 LIGHTING
-- Rhino: pop lighting.
-- Sandman: only the current special right-bank target flashes; green-lens inserts
-  use green/off.
+- Rhino: pop rings become faster/redder as Rage rises; A/Bs build cumulatively and
+  reach full white at Berserk.
+- Sandman: current right-bank target flashes while right-bank GI pulses yellow/white.
 - Vulture: upper-target and upper-spinner indicators flash independently and stop
   when their requirement is completed.
-- Electro: only the currently required web flashes.
-- Goblin: saucers flash while ready; during a 4-second attempt, the four qualifying
-  areas flash green and each collected area turns off.
-- Saucer main inserts use green and the red hole inserts use red, matching the
-  physical lenses in config/lights.yaml.
+- Electro: only the current roaming Spark location flashes; bank inserts respect
+  their physical green lenses while webs/pops use yellow.
+- Goblin: saucer hole lamps pulse white while ready; during the 4-second attempt,
+  the four qualifying areas flash green and each collected area turns off.
+- Victory Laps: full GI fade white -> red -> white -> blue -> white, repeating.

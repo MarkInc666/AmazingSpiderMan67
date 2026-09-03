@@ -142,8 +142,19 @@ class TheWebTightens(Mode):
         "s_saucer_3": "saucer",
     }
 
-    # The rooftop Super is the Clock Tower shot: upper-middle target only.
-    SUPER_SWITCHES = {"s_upper_target_center"}
+    # The rooftop Super is a grouped shot: any of the three upper targets
+    # collects the same Super Jackpot.
+    SUPER_SWITCHES = {
+        "s_upper_target_left",
+        "s_upper_target_center",
+        "s_upper_target_right",
+    }
+
+    PHASE_ANNOUNCE_MS = 2_000
+    SUPER_GATE_RETRY_MS = 250
+    SUPER_VUK_EJECT_DELAY_MS = 750
+    SUPER_SAUCER_FIRST_RELEASE_AFTER_VUK_MS = 6_000
+    SUPER_SAUCER_STAGGER_MS = 2_000
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
@@ -158,6 +169,7 @@ class TheWebTightens(Mode):
         self.summary_holds_vuk = False
         self.waiting_for_vuk = True
         self.waiting_for_saucer = False
+        self.phase_announcing = False
         self.transitioning = False
         self.phase = None
         self.phase_index = 0
@@ -376,6 +388,7 @@ class TheWebTightens(Mode):
         self.machine.events.post("the_web_tightens_clear_all")
         self.machine.events.post("the_web_tightens_base_lighting")
         self.machine.events.post("the_web_tightens_vuk_locked")
+        self.machine.events.post("the_web_tightens_saucers_ready")
         self.machine.events.post(
             "show_mode_message_long",
             message_mode_title="BALL LOCKED",
@@ -404,7 +417,7 @@ class TheWebTightens(Mode):
         if self.waiting_for_saucer and not self.transitioning:
             self.held_saucers.add(saucer)
             self.waiting_for_saucer = False
-            self._start_phase(self.phase_index)
+            self._announce_phase(self.phase_index)
             return
 
         if self.transitioning or self.phase is None:
@@ -451,13 +464,15 @@ class TheWebTightens(Mode):
         self._eject_saucer(saucer, 0)
         return True
 
-    def _release_all_saucers(self, delay_step_ms=200):
+    def _release_all_saucers(self, delay_step_ms=200, initial_delay_ms=0):
         held = sorted(self.held_saucers)
         self.held_saucers.clear()
         for index, saucer in enumerate(held):
-            self._eject_saucer(saucer, index * delay_step_ms)
+            delay_ms = initial_delay_ms + (index * delay_step_ms)
+            self._eject_saucer(saucer, delay_ms)
         if held:
-            self.saucer_lockout_until = time.monotonic() + 1.5
+            last_delay_ms = initial_delay_ms + ((len(held) - 1) * delay_step_ms)
+            self.saucer_lockout_until = time.monotonic() + (last_delay_ms / 1000.0) + 1.5
 
     def _schedule_ball_guard(self):
         if self.mode_done:
@@ -498,10 +513,46 @@ class TheWebTightens(Mode):
     # Phase control
     # ------------------------------------------------------------------
 
+    def _announce_phase(self, index):
+        if self.mode_done or index < 0 or index >= len(self.PHASES):
+            return
+        self.phase_announcing = True
+        self.transitioning = True
+        self.machine.events.post("the_web_tightens_saucers_not_ready")
+        phase_name = self.PHASES[index].replace("_", " ").upper()
+        if phase_name == "METAL":
+            phase_name = "METAL-EATING MONSTER"
+        elif phase_name == "SPIDER SLAYER":
+            phase_name = "SPIDER-SLAYER"
+        elif phase_name == "HARLEY":
+            phase_name = "HARLEY & CLIVENDON"
+        self.machine.events.post("hide_mode_message")
+        self.machine.events.post(
+            "show_mode_message",
+            message_mode_title=phase_name,
+            message_mode_subtitle="GET READY",
+        )
+        self.delay.reset(
+            name="web_phase_announce",
+            ms=self.PHASE_ANNOUNCE_MS,
+            callback=self._start_announced_phase,
+            index=index,
+        )
+        self._update_status()
+
+    def _start_announced_phase(self, index=None):
+        if self.mode_done or index is None:
+            return
+        self.phase_announcing = False
+        self.transitioning = False
+        self._start_phase(index)
+
     def _start_phase(self, index):
         if self.mode_done or index < 0 or index >= len(self.PHASES):
             return
         self._clear_phase_delays()
+        self.machine.events.post("hide_mode_message")
+        self.machine.events.post("the_web_tightens_saucers_not_ready")
         self.machine.events.post("the_web_tightens_clear_phase_lights")
         self.machine.events.post("the_web_tightens_base_lighting")
         self.phase = self.PHASES[index]
@@ -526,6 +577,8 @@ class TheWebTightens(Mode):
         resolved_phase = self.phase
         self.transitioning = True
         self._clear_phase_delays()
+        self.machine.events.post("hide_mode_message")
+        self.machine.events.post("hide_mode_status")
         self.machine.events.post("the_web_tightens_clear_phase_lights")
         self.machine.events.post("the_web_tightens_base_lighting")
         if success:
@@ -553,7 +606,8 @@ class TheWebTightens(Mode):
         self.phase = None
         self.phase_index += 1
         self._sync_vars()
-        self._release_all_saucers(delay_step_ms=200)
+        if self.phase_index < len(self.PHASES):
+            self._release_all_saucers(delay_step_ms=200)
         self.delay.reset(
             name="the_web_tightens_phase_transition",
             ms=1_200,
@@ -582,7 +636,8 @@ class TheWebTightens(Mode):
         for name in (
             "web_fiddler_flash", "web_fiddler_gap", "web_fiddler_repeat",
             "web_metal_next_attack", "web_conquistador_web_timeout",
-            "web_harley_star_timeout", "web_add_ball_guard",
+            "web_harley_star_timeout", "web_add_ball_guard", "web_phase_announce",
+            "web_super_gate_retry",
         ):
             self.delay.remove(name)
         for zone in self.ZONE_SWITCHES:
@@ -937,6 +992,8 @@ class TheWebTightens(Mode):
         resolved_phase = self.phase
         self.transitioning = True
         self._clear_phase_delays()
+        self.machine.events.post("hide_mode_message")
+        self.machine.events.post("hide_mode_status")
         self.machine.events.post("the_web_tightens_clear_phase_lights")
         self.machine.events.post("the_web_tightens_base_lighting")
         self.machine.events.post(
@@ -953,7 +1010,8 @@ class TheWebTightens(Mode):
         self.phase = None
         self.phase_index += 1
         self._sync_vars()
-        self._release_all_saucers(delay_step_ms=200)
+        if self.phase_index < len(self.PHASES):
+            self._release_all_saucers(delay_step_ms=200)
         self.delay.reset(
             name="the_web_tightens_phase_transition",
             ms=1_200,
@@ -1040,22 +1098,49 @@ class TheWebTightens(Mode):
         self.super_collected = False
         self.super_available = True
 
+        self.machine.events.post("the_web_tightens_saucers_not_ready")
+        self.machine.events.post("rooftop_diverter_open")
+        self.delay.reset(
+            name="web_super_gate_retry",
+            ms=self.SUPER_GATE_RETRY_MS,
+            callback=self._retry_super_gate_open,
+        )
+
         if self.vuk_locked:
             self.vuk_locked = False
             self.machine.game.player["mini_wizard_vuk_hold_active"] = 0
             self.vuk_relock_lockout_until = time.monotonic() + 2.0
-            self.machine.events.post("request_vuk_eject", delay_ms=500)
+            self.machine.events.post(
+                "request_vuk_eject",
+                delay_ms=self.SUPER_VUK_EJECT_DELAY_MS,
+            )
 
-        self.machine.events.post("rooftop_diverter_open")
+        # Keep parked balls out of the way while the gate opens and the VUK ball
+        # is delivered to the roof. Release the first saucer ball six seconds
+        # after the VUK kick, then stagger any additional balls by two seconds.
+        self._release_all_saucers(
+            delay_step_ms=self.SUPER_SAUCER_STAGGER_MS,
+            initial_delay_ms=(
+                self.SUPER_VUK_EJECT_DELAY_MS
+                + self.SUPER_SAUCER_FIRST_RELEASE_AFTER_VUK_MS
+            ),
+        )
+
         self.machine.events.post("the_web_tightens_super_ready")
-        # Synchronize the callout with the deliberate 500ms VUK kick to the roof.
         self.delay.add(
             name="web_super_ready_message",
-            ms=500,
+            ms=self.SUPER_VUK_EJECT_DELAY_MS,
             callback=self._show_super_ready_message,
         )
         self._sync_vars()
         self._update_status()
+
+    def _retry_super_gate_open(self):
+        if self.mode_done or self.phase != "super" or not self.super_available:
+            return
+        # Use the same high-level gate event. The global switch guard prevents
+        # an unnecessary second coil pulse if the first open request succeeded.
+        self.machine.events.post("rooftop_diverter_open")
 
     def _show_super_ready_message(self):
         if self.mode_done or not self.super_available or self.super_collected:
@@ -1063,7 +1148,7 @@ class TheWebTightens(Mode):
         value = self.cycle_successes * self.SUPER_PER_SUCCESS
         self.machine.events.post(
             "show_mode_message_long",
-            message_mode_title="HIT THE CLOCK TOWER",
+            message_mode_title="HIT ANY UPPER TARGET",
             message_mode_subtitle="FOR SUPER JACKPOT",
             message_mode_value=value,
         )
@@ -1140,6 +1225,10 @@ class TheWebTightens(Mode):
             next_cycle = 1 if self.cycle_number == 0 else self.cycle_number + 1
             title = f"CYCLE {next_cycle}"
             value = "LOCK BALL AT DAILY BUGLE"
+        elif self.phase_announcing:
+            next_phase = self.PHASES[self.phase_index].replace("_", " ").upper()
+            title = next_phase
+            value = "GET READY"
         elif self.waiting_for_saucer:
             next_phase = self.PHASES[self.phase_index].replace("_", " ").upper()
             title = f"SUPER BUILD {self.cycle_successes}M"

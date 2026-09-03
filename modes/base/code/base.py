@@ -1,3 +1,4 @@
+import re
 from mpf.core.mode import Mode
 
 
@@ -305,19 +306,27 @@ class Base(Mode):
     ):
         if getattr(self, "_ball_end_display_lock", False):
             return
-        self._set_mode_status_vars(
-            mode_status_title=mode_status_title,
-            mode_status_value=mode_status_value,
-        )
-        if self._is_numeric_timer_status(mode_status_title, mode_status_value):
+
+        timer_parts = self._timer_status_parts(mode_status_title, mode_status_value)
+        if timer_parts is not None:
+            timer_title, timer_value = timer_parts
+            self._set_mode_status_vars(
+                mode_status_title=timer_title,
+                mode_status_value=timer_value,
+            )
             timer_event = (
                 "base_show_mode_timer_status"
                 if guarded_display_event == "base_show_mode_status"
                 else "base_update_mode_timer_status"
             )
             self.machine.events.post(timer_event)
-        else:
-            self.machine.events.post(guarded_display_event)
+            return
+
+        self._set_mode_status_vars(
+            mode_status_title=mode_status_title,
+            mode_status_value=mode_status_value,
+        )
+        self.machine.events.post(guarded_display_event)
 
     def _sync_mode_timer_status_vars(
         self,
@@ -335,20 +344,53 @@ class Base(Mode):
         self.machine.events.post(guarded_display_event)
 
     @classmethod
-    def _is_numeric_timer_status(cls, title, value):
-        """Select the large red lower widget only for a pure time value."""
-        title_text = cls._display_text(title).upper()
+    def _timer_status_parts(cls, title, value):
+        """Normalize live countdown statuses onto the large red timer widget.
+
+        Modes historically posted timers in several display-only forms, such as
+        ``SECONDS LEFT / 10``, ``SAFE JACKPOTS / TIME: 10``,
+        ``CITY TIME / 40s 3/6 RESTORED`` and ``HUNT / MIRROR LEFT 10s``.
+        Keep the timer as the dominant large red value while folding any
+        accompanying objective text into the smaller title line.
+        """
+        title_text = cls._display_text(title).strip()
+        value_text = cls._display_text(value).strip()
+        title_upper = title_text.upper()
+        value_upper = value_text.upper()
         timer_markers = ("SECOND", "TIME", "TIMER", "WINDOW")
-        if not any(marker in title_text for marker in timer_markers):
-            return False
-        value_text = cls._display_text(value).strip().lower()
-        if value_text.endswith("s"):
-            value_text = value_text[:-1].strip()
-        try:
-            float(value_text)
-        except (TypeError, ValueError):
-            return False
-        return True
+
+        # Explicit TIME prefix in the value: ``TIME: 10`` / ``TIME 10``.
+        match = re.fullmatch(r"TIME\s*:?\s*(\d+(?:\.\d+)?)\s*S?", value_upper)
+        if match:
+            return title_text or "SECONDS LEFT", match.group(1)
+
+        # Numeric value with a timer-labelled title: the canonical form.
+        numeric = re.fullmatch(r"(\d+(?:\.\d+)?)\s*S?", value_upper)
+        if numeric and any(marker in title_upper for marker in timer_markers):
+            return title_text or "SECONDS LEFT", numeric.group(1)
+
+        # Timer-first compound value: ``40s 3/6 RESTORED``.
+        match = re.fullmatch(r"(\d+(?:\.\d+)?)\s*S(?:ECONDS?)?\s+(.+)", value_upper)
+        if match and any(marker in title_upper for marker in timer_markers):
+            context = match.group(2).strip(" -:/")
+            timer_title = f"{title_text} - {context}" if context else title_text
+            return timer_title or "SECONDS LEFT", match.group(1)
+
+        # Context-first countdown: ``MIRROR LEFT 10s`` / ``16 SECONDS``.
+        match = re.fullmatch(r"(?:(.*?)\s+)?(\d+(?:\.\d+)?)\s*(S|SECONDS?)", value_upper)
+        if match:
+            context = (match.group(1) or "").strip(" -:/")
+            timer_title = title_text
+            if context and context not in ("TIME", "TIMER"):
+                timer_title = f"{title_text} - {context}" if title_text else context
+            return timer_title or "SECONDS LEFT", match.group(2)
+
+        return None
+
+    @classmethod
+    def _is_numeric_timer_status(cls, title, value):
+        """Compatibility helper retained for callers/tests using the old name."""
+        return cls._timer_status_parts(title, value) is not None
 
     def _set_mode_status_vars(
         self,

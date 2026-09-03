@@ -586,9 +586,9 @@ class Diana(CaseFileMixin, Mode):
 
         if self.hunt_active:
             self.machine.events.post(
-                "update_mode_status",
-                mode_status_title="ARROWS / TIME",
-                mode_status_value=f"{max(0, self.arrows_remaining)} / {max(0, self.hunt_seconds_left)}",
+                "update_mode_timer_status",
+                mode_status_title=f"{max(0, self.arrows_remaining)} ARROWS LEFT",
+                mode_status_value=max(0, self.hunt_seconds_left),
             )
         elif self.phase == "waiting_hit":
             self.machine.events.post(

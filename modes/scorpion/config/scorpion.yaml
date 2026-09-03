@@ -215,18 +215,21 @@ shows:
         l_upper_middle: yellow
 
   scorpion_ready_show:
+    # Rooftop choice: left exit GI + left upper target, then right pair.
     - duration: 300ms
       lights:
         l_spinner: green
-        l_upper_left: yellow
-        l_upper_right: green
-        l_gi_a: yellow
+        l_gi_left_upper: green
+        l_upper_left: green
+        l_gi_a: off
+        l_upper_right: off
     - duration: 300ms
       lights:
         l_spinner: yellow
-        l_upper_left: green
-        l_upper_right: yellow
+        l_gi_left_upper: off
+        l_upper_left: off
         l_gi_a: green
+        l_upper_right: green
 
   scorpion_safe_sting_show:
     - duration: 250ms

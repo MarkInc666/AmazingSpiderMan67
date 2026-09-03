@@ -67,7 +67,6 @@ event_player:
     - drop_target_bank_dt_bank_right_reset
 
   s_web_target_left_active: mysterio_left_web_hit
-  s_web_target_mid_active: mysterio_center_web_hit
   s_pop_left_active: mysterio_left_pop_hit
   s_pop_right_active: mysterio_right_pop_hit
   left_drops_hit: mysterio_left_drops_hit
@@ -77,7 +76,6 @@ event_player:
 
   mysterio_all_shots_lit:
     - mysterio_lite_left_web
-    - mysterio_lite_center_web
     - mysterio_lite_left_pop
     - mysterio_lite_right_pop
     - mysterio_lite_left_drops
@@ -179,10 +177,6 @@ show_player:
     mysterio_lite_left_web_show:
       loops: -1
 
-  mysterio_lite_center_web:
-    mysterio_lite_center_web_show:
-      loops: -1
-
   mysterio_lite_left_pop:
     mysterio_lite_left_pop_show:
       loops: -1
@@ -209,10 +203,6 @@ show_player:
 
   mysterio_stop_left_web:
     mysterio_lite_left_web_show:
-      action: stop
-
-  mysterio_stop_center_web:
-    mysterio_lite_center_web_show:
       action: stop
 
   mysterio_stop_left_pop:
@@ -250,13 +240,6 @@ shows:
       lights:
         l_left_web_target: blue
 
-  mysterio_lite_center_web_show:
-    - duration: 120ms
-      lights:
-        l_mid_web_target: yellow
-    - duration: 120ms
-      lights:
-        l_mid_web_target: blue
 
   mysterio_lite_left_pop_show:
     - duration: 120ms
@@ -343,28 +326,22 @@ shows:
         l_5bank_5: blue
 
   mysterio_lite_saucers_show:
-    - duration: 120ms
+    - duration: 180ms
       lights:
-        l_1_hole_l: yellow
-        l_1: yellow
-        l_1_hole_r: yellow
-        l_2_hole_l: yellow
-        l_2: yellow
-        l_2_hole_r: yellow
-        l_3_hole_l: yellow
-        l_3: yellow
-        l_3_hole_r: yellow
-    - duration: 120ms
+        l_1_hole_l: white
+        l_1_hole_r: white
+        l_2_hole_l: white
+        l_2_hole_r: white
+        l_3_hole_l: white
+        l_3_hole_r: white
+    - duration: 180ms
       lights:
-        l_1_hole_l: blue
-        l_1: blue
-        l_1_hole_r: blue
-        l_2_hole_l: blue
-        l_2: blue
-        l_2_hole_r: blue
-        l_3_hole_l: blue
-        l_3: blue
-        l_3_hole_r: blue
+        l_1_hole_l: off
+        l_1_hole_r: off
+        l_2_hole_l: off
+        l_2_hole_r: off
+        l_3_hole_l: off
+        l_3_hole_r: off
 
   mysterio_lite_upper_targets_show:
     - duration: 120ms

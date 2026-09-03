@@ -234,9 +234,12 @@ class Desperado(Mode, CaseFileMixin):
 
     def _show_status(self):
         self.machine.events.post(
-            "update_mode_status",
-            mode_status_title=f"ROUND {self.round_number}  {max(0, self.remaining_seconds)}s",
-            mode_status_value=f"{self._completed_count()}/5  {self.round_hits}/{self._hits_allowed()}",
+            "update_mode_timer_status",
+            mode_status_title=(
+                f"R{self.round_number}  {self._completed_count()}/5 OUTLAWS  "
+                f"{self.round_hits}/{self._hits_allowed()} HITS"
+            ),
+            mode_status_value=max(0, self.remaining_seconds),
         )
 
     def _show_timer_status(self):

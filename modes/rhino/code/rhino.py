@@ -10,9 +10,10 @@ class RhinoBash(CaseFileMixin, Mode):
     BIGGER_JACKPOT_ADD = 200000
     BERSERK_TIME_MS = 10000
 
-    # Cumulative pop totals required to reach each stage in every cycle.
+    # One pop advances one Rage level.  The cycle begins at Rage 0, so the
+    # five pop hits map directly to Rage 1-5.
     STAGE_POPS = {
-        1: 0,
+        1: 1,
         2: 2,
         3: 3,
         4: 4,
@@ -34,8 +35,8 @@ class RhinoBash(CaseFileMixin, Mode):
         super().mode_start(**kwargs)
         self.reset_active_mode_summary(stat_count=3)
 
-        self.rage_stage = 1
-        self.rhino_best_rage_stage = 1
+        self.rage_stage = 0
+        self.rhino_best_rage_stage = 0
         self.rhino_best_jackpot_value = 0
         self.active_mode_points = 0
 
@@ -47,7 +48,7 @@ class RhinoBash(CaseFileMixin, Mode):
         self.bigger_jackpots = False
         self.jackpot_base = 0
         self.jackpot_value = 0
-        self.add_value = self.STAGE_ADD_VALUES[1]
+        self.add_value = 0
         self.berserk_running = False
         self.mode_done = False
 
@@ -69,7 +70,7 @@ class RhinoBash(CaseFileMixin, Mode):
         self.add_mode_event_handler("rhino_jackpot_collect_request", self.collect_jackpot)
 
         self.update_player_vars()
-        self._show_message("RHINO BASH", "POPS BUILD RAGE", value=self.jackpot_value, reminder=True)
+        self._show_message("RHINO BASH", "HIT POPS - BUILD RHINO'S RAGE", value=self.jackpot_value, reminder=True)
         self.machine.events.post("rhino_startup_complete")
 
     def mode_stop(self, **kwargs):
@@ -92,10 +93,18 @@ class RhinoBash(CaseFileMixin, Mode):
     def _update_status(self):
         if self.mode_done or self.berserk_running:
             return
+
+        if self.rage_stage == 0:
+            title = "HIT POPS - BUILD RAGE"
+            value = f"JACKPOT {self.jackpot_value:,}"
+        else:
+            title = f"RAGE {self.rage_stage} - +{self.add_value:,} PER HIT"
+            value = f"JACKPOT {self.jackpot_value:,}"
+
         self.machine.events.post(
             "show_mode_status",
-            mode_status_title="RAGE / JACKPOTS",
-            mode_status_value=f"{self.rage_stage} / {self.jackpots} OF {self.max_jackpots}",
+            mode_status_title=title,
+            mode_status_value=value,
         )
 
     def _apply_case_file_bonuses(self):
@@ -173,7 +182,7 @@ class RhinoBash(CaseFileMixin, Mode):
         self.update_player_vars()
 
     def check_rage_stage(self):
-        for stage in (5, 4, 3, 2):
+        for stage in (5, 4, 3, 2, 1):
             if self.pops >= self.STAGE_POPS[stage] and self.rage_stage < stage:
                 self.set_rage_stage(stage)
                 if stage == 4:
@@ -189,7 +198,13 @@ class RhinoBash(CaseFileMixin, Mode):
         self.rage_stage = stage
         self.add_value = self.STAGE_ADD_VALUES[stage]
         self.rhino_best_rage_stage = max(self.rhino_best_rage_stage, stage)
-        self._show_message("RAGE LEVEL UP", f"RAGE {stage}  +{self.add_value:,} PER HIT")
+
+        if stage < 5:
+            self._show_message(
+                f"RAGE {stage}",
+                f"SMASHES ADD +{self.add_value:,} - HIT POPS FOR MORE RAGE",
+                value=self.jackpot_value,
+            )
         self.post_rage_show()
         self.update_player_vars()
 
@@ -201,8 +216,8 @@ class RhinoBash(CaseFileMixin, Mode):
             return
         self.berserk_running = True
         self._show_message(
-            "BERSERK!",
-            "COLLECT AT ANY A/B ROLLOVER",
+            "RHINO BERSERK!",
+            "ESCAPE THROUGH ANY A/B",
             value=self.jackpot_value,
             seconds=int(self.berserk_time_ms() / 1000),
             event="show_mode_countdown",
@@ -240,10 +255,15 @@ class RhinoBash(CaseFileMixin, Mode):
         self.fail_mode()
 
     def reset_rage_cycle(self):
-        self.rage_stage = 1
+        self.rage_stage = 0
         self.pops = 0
-        self.add_value = self.STAGE_ADD_VALUES[1]
+        self.add_value = 0
         self.post_rage_show()
+        self._show_message(
+            "BUILD RAGE AGAIN",
+            "HIT POPS",
+            value=self.jackpot_value,
+        )
 
     def complete_mode(self):
         if self.mode_done:

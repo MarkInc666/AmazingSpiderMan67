@@ -1,11 +1,11 @@
 🎭 MYSTERIO — ILLUSION TRIAL
 
 Mode flow
-- Eight shot groups are lit: left web, center web, left pop, right pop,
+- Seven shot groups are lit: left web, left pop, right pop,
   left drops, right drops, saucers, and upper targets.
 - One random shot is the hidden Mysterio Super Jackpot.
 - Five random non-Super shots provide the existing directional Spidey-Sense clues.
-- Two random non-Super shots provide no useful clue and call out “He must be here somewhere.”
+- One random non-Super shot provides no useful clue and calls out “He must be here somewhere.”
 - The first attempted shot can never collect the Super. If it was the initially
   selected location, the hidden Super moves to another active shot before the
   attempt is resolved.
@@ -17,7 +17,7 @@ Scoring
 - Every incorrect shot scores 50,000 and lowers the Super by 100,000.
 - Clue shots use the same score and penalty as other incorrect shots, then provide their directional clue.
 - Every incorrect shot counts as a Clue Shot in the villain summary, including
-  the two non-directional “He must be here somewhere” locations.
+  the one non-directional “He must be here somewhere” location.
 - Collecting the hidden shot awards the current Super value and completes Mysterio.
 
 Case Files
@@ -25,7 +25,7 @@ Case Files
 - Bigger Jackpots: Super starts at 1,500,000.
 - More Time: incorrect-shot penalties are reduced to 50,000.
 - Safety Net: starts a one-time 10-second ball save with the mode.
-- Shot Assist: removes one of the two false, non-clue shots at mode start.
+- Shot Assist: removes the one false, non-clue shot at mode start.
 
 Presentation and completion
 - Keep the existing Mysterio shot-lighting style.
@@ -36,3 +36,9 @@ Presentation and completion
 - Ordinary, incorrect, and disabled saucer hits use delayed clearing. If the
   saucers are the hidden Super, the ball remains held through the villain
   summary and is kicked out when that summary finishes.
+
+## Lighting clarification
+
+- Mysterio has seven possible mystery locations; center web is not one of them.
+- Saucer mystery lighting uses only the six saucer hole lamps. They flash white; the 1/2/3 number inserts are not used.
+- Directional clues are LEFT, RIGHT, or UPPER only.

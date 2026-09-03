@@ -35,7 +35,6 @@ event_player:
 
   rhino_startup_complete:
     - rhino_start
-    - rhino_light_jackpot_collect
     - clear_saucers
     - drop_target_bank_dt_bank_left_reset|100ms
     - drop_target_bank_dt_bank_right_reset|200ms  
@@ -113,15 +112,17 @@ event_player:
 
 show_player:
 
-  rhino_light_jackpot_collect:
-    rhino_left_b_lit:
-      loops: -1
-
   rhino_jackpot_collected:
     rhino_jackpot_collect_show:
       loops: 1
 
+  rhino_show_rage_0:
+    rhino_rage_0:
+      loops: -1
+
   rhino_show_rage_1:
+    rhino_rage_0:
+      action: stop
     rhino_rage_1:
       loops: -1
 
@@ -166,6 +167,8 @@ show_player:
   rhino_bash_complete:
     rhino_berserk_gi:
       action: stop
+    rhino_rage_0:
+      action: stop
     rhino_rage_1:
       action: stop
     rhino_rage_2:
@@ -176,31 +179,92 @@ show_player:
       action: stop
     rhino_rage_5:
       action: stop
-    rhino_left_b_lit:
-      action: stop
     rhino_bash_complete_show:
       loops: 1
 
 shows:
 
-  rhino_left_b_lit:
-    - duration: 300ms
-      lights:
-        l_a_rollover: white
-        l_b_rollover: white
-        l_right_a: white
-        l_left_b: white
-    - duration: 300ms
-      lights:
-        l_a_rollover: off
-        l_b_rollover: off
-        l_right_a: off
-        l_left_b: off
-
-  rhino_rage_1:
-    - duration: 1s
+  # Pre-rage state: make the pops the obvious first objective.
+  rhino_rage_0:
+    - duration: 500ms
       lights:
         gi: FFD000
+        l_a_rollover: '000000'
+        l_b_rollover: '000000'
+        l_right_a: '000000'
+        l_left_b: '000000'
+        l_pop_1_1: yellow
+        l_pop_1_2: yellow
+        l_pop_1_3: yellow
+        l_pop_1_4: yellow
+        l_pop_1_5: yellow
+        l_pop_1_6: yellow
+        l_pop_1_7: yellow
+        l_pop_1_8: yellow
+        l_pop_1_9: yellow
+        l_pop_1_10: yellow
+        l_pop_1_11: yellow
+        l_pop_1_12: yellow
+        l_pop_2_1: yellow
+        l_pop_2_2: yellow
+        l_pop_2_3: yellow
+        l_pop_2_4: yellow
+        l_pop_2_5: yellow
+        l_pop_2_6: yellow
+        l_pop_2_7: yellow
+        l_pop_2_8: yellow
+        l_pop_2_9: yellow
+        l_pop_2_10: yellow
+        l_pop_2_11: yellow
+        l_pop_2_12: yellow
+    - duration: 500ms
+      lights:
+        gi: FFD000
+        l_a_rollover: '000000'
+        l_b_rollover: '000000'
+        l_right_a: '000000'
+        l_left_b: '000000'
+        l_pop_1_1: '404000'
+        l_pop_1_2: '404000'
+        l_pop_1_3: '404000'
+        l_pop_1_4: '404000'
+        l_pop_1_5: '404000'
+        l_pop_1_6: '404000'
+        l_pop_1_7: '404000'
+        l_pop_1_8: '404000'
+        l_pop_1_9: '404000'
+        l_pop_1_10: '404000'
+        l_pop_1_11: '404000'
+        l_pop_1_12: '404000'
+        l_pop_2_1: '404000'
+        l_pop_2_2: '404000'
+        l_pop_2_3: '404000'
+        l_pop_2_4: '404000'
+        l_pop_2_5: '404000'
+        l_pop_2_6: '404000'
+        l_pop_2_7: '404000'
+        l_pop_2_8: '404000'
+        l_pop_2_9: '404000'
+        l_pop_2_10: '404000'
+        l_pop_2_11: '404000'
+        l_pop_2_12: '404000'
+
+  # Rage A/B progression:
+  #   Rage 1: none earned
+  #   Rage 2: upper A
+  #   Rage 3: upper A + upper B
+  #   Rage 4: upper A + upper B + middle A
+  #   Rage 5: all four A/Bs
+  # Active A/B inserts pulse from black to the rage-level white ceiling and
+  # accelerate as Rhino gets angrier.
+  rhino_rage_1:
+    - duration: 1000ms
+      lights:
+        gi: FFD000
+        l_a_rollover: '000000'
+        l_b_rollover: '000000'
+        l_right_a: '000000'
+        l_left_b: '000000'
         l_pop_1_1: yellow
         l_pop_1_2: off
         l_pop_1_3: yellow
@@ -227,9 +291,48 @@ shows:
         l_pop_2_12: off
 
   rhino_rage_2:
-    - duration: 1s
+    - duration: 800ms
       lights:
         gi: FF9A00
+        l_a_rollover:
+          color: '000000'
+          fade: 800ms
+        l_b_rollover: '000000'
+        l_right_a: '000000'
+        l_left_b: '000000'
+        l_pop_1_1: yellow
+        l_pop_1_2: yellow
+        l_pop_1_3: yellow
+        l_pop_1_4: yellow
+        l_pop_1_5: yellow
+        l_pop_1_6: yellow
+        l_pop_1_7: yellow
+        l_pop_1_8: yellow
+        l_pop_1_9: yellow
+        l_pop_1_10: yellow
+        l_pop_1_11: yellow
+        l_pop_1_12: yellow
+        l_pop_2_1: yellow
+        l_pop_2_2: yellow
+        l_pop_2_3: yellow
+        l_pop_2_4: yellow
+        l_pop_2_5: yellow
+        l_pop_2_6: yellow
+        l_pop_2_7: yellow
+        l_pop_2_8: yellow
+        l_pop_2_9: yellow
+        l_pop_2_10: yellow
+        l_pop_2_11: yellow
+        l_pop_2_12: yellow
+    - duration: 800ms
+      lights:
+        gi: FF9A00
+        l_a_rollover:
+          color: '909090'
+          fade: 800ms
+        l_b_rollover: '000000'
+        l_right_a: '000000'
+        l_left_b: '000000'
         l_pop_1_1: yellow
         l_pop_1_2: yellow
         l_pop_1_3: yellow
@@ -256,9 +359,52 @@ shows:
         l_pop_2_12: yellow
 
   rhino_rage_3:
-    - duration: 1s
+    - duration: 600ms
       lights:
         gi: FF6500
+        l_a_rollover:
+          color: '000000'
+          fade: 600ms
+        l_b_rollover:
+          color: '000000'
+          fade: 600ms
+        l_right_a: '000000'
+        l_left_b: '000000'
+        l_pop_1_1: orange
+        l_pop_1_2: orange
+        l_pop_1_3: orange
+        l_pop_1_4: orange
+        l_pop_1_5: orange
+        l_pop_1_6: orange
+        l_pop_1_7: orange
+        l_pop_1_8: orange
+        l_pop_1_9: orange
+        l_pop_1_10: orange
+        l_pop_1_11: orange
+        l_pop_1_12: orange
+        l_pop_2_1: orange
+        l_pop_2_2: orange
+        l_pop_2_3: orange
+        l_pop_2_4: orange
+        l_pop_2_5: orange
+        l_pop_2_6: orange
+        l_pop_2_7: orange
+        l_pop_2_8: orange
+        l_pop_2_9: orange
+        l_pop_2_10: orange
+        l_pop_2_11: orange
+        l_pop_2_12: orange
+    - duration: 600ms
+      lights:
+        gi: FF6500
+        l_a_rollover:
+          color: 'B0B0B0'
+          fade: 600ms
+        l_b_rollover:
+          color: 'B0B0B0'
+          fade: 600ms
+        l_right_a: '000000'
+        l_left_b: '000000'
         l_pop_1_1: orange
         l_pop_1_2: orange
         l_pop_1_3: orange
@@ -285,9 +431,19 @@ shows:
         l_pop_2_12: orange
 
   rhino_rage_4:
-    - duration: 500ms
+    - duration: 400ms
       lights:
         gi: FF3000
+        l_a_rollover:
+          color: '000000'
+          fade: 400ms
+        l_b_rollover:
+          color: '000000'
+          fade: 400ms
+        l_right_a:
+          color: '000000'
+          fade: 400ms
+        l_left_b: '000000'
         l_pop_1_1: orange
         l_pop_1_2: orange
         l_pop_1_3: orange
@@ -312,9 +468,19 @@ shows:
         l_pop_2_10: orange
         l_pop_2_11: orange
         l_pop_2_12: orange
-    - duration: 500ms
+    - duration: 400ms
       lights:
         gi: FF1800
+        l_a_rollover:
+          color: 'D0D0D0'
+          fade: 400ms
+        l_b_rollover:
+          color: 'D0D0D0'
+          fade: 400ms
+        l_right_a:
+          color: 'D0D0D0'
+          fade: 400ms
+        l_left_b: '000000'
         l_pop_1_1: F09010
         l_pop_1_2: F09010
         l_pop_1_3: F09010
@@ -341,9 +507,21 @@ shows:
         l_pop_2_12: F09010
 
   rhino_rage_5:
-    - duration: 150ms
+    - duration: 200ms
       lights:
         gi: red
+        l_a_rollover:
+          color: '000000'
+          fade: 200ms
+        l_b_rollover:
+          color: '000000'
+          fade: 200ms
+        l_right_a:
+          color: '000000'
+          fade: 200ms
+        l_left_b:
+          color: '000000'
+          fade: 200ms
         l_pop_1_1: red
         l_pop_1_2: red
         l_pop_1_3: red
@@ -368,32 +546,45 @@ shows:
         l_pop_2_10: red
         l_pop_2_11: red
         l_pop_2_12: red
-    - duration: 150ms
+    - duration: 200ms
       lights:
-        l_pop_1_1: off
-        l_pop_1_2: off
-        l_pop_1_3: off
-        l_pop_1_4: off
-        l_pop_1_5: off
-        l_pop_1_6: off
-        l_pop_1_7: off
-        l_pop_1_8: off
-        l_pop_1_9: off
-        l_pop_1_10: off
-        l_pop_1_11: off
-        l_pop_1_12: off
-        l_pop_2_1: off
-        l_pop_2_2: off
-        l_pop_2_3: off
-        l_pop_2_4: off
-        l_pop_2_5: off
-        l_pop_2_6: off
-        l_pop_2_7: off
-        l_pop_2_8: off
-        l_pop_2_9: off
-        l_pop_2_10: off
-        l_pop_2_11: off
-        l_pop_2_12: off
+        gi: FF2000
+        l_a_rollover:
+          color: 'FFFFFF'
+          fade: 200ms
+        l_b_rollover:
+          color: 'FFFFFF'
+          fade: 200ms
+        l_right_a:
+          color: 'FFFFFF'
+          fade: 200ms
+        l_left_b:
+          color: 'FFFFFF'
+          fade: 200ms
+        l_pop_1_1: FF3000
+        l_pop_1_2: FF3000
+        l_pop_1_3: FF3000
+        l_pop_1_4: FF3000
+        l_pop_1_5: FF3000
+        l_pop_1_6: FF3000
+        l_pop_1_7: FF3000
+        l_pop_1_8: FF3000
+        l_pop_1_9: FF3000
+        l_pop_1_10: FF3000
+        l_pop_1_11: FF3000
+        l_pop_1_12: FF3000
+        l_pop_2_1: FF3000
+        l_pop_2_2: FF3000
+        l_pop_2_3: FF3000
+        l_pop_2_4: FF3000
+        l_pop_2_5: FF3000
+        l_pop_2_6: FF3000
+        l_pop_2_7: FF3000
+        l_pop_2_8: FF3000
+        l_pop_2_9: FF3000
+        l_pop_2_10: FF3000
+        l_pop_2_11: FF3000
+        l_pop_2_12: FF3000
 
   rhino_berserk_gi:
     - duration: 250ms
