@@ -386,6 +386,29 @@ show_player:
       loops: 4
       key: daily_bugle_collect
 
+  daily_bugle_ab_force_off:
+    daily_bugle_a_hit_flash_then_solid:
+      action: stop
+      key: daily_bugle_a
+    daily_bugle_b_hit_flash_then_solid:
+      action: stop
+      key: daily_bugle_b
+    daily_bugle_a_solid:
+      action: stop
+      key: daily_bugle_a
+    daily_bugle_b_solid:
+      action: stop
+      key: daily_bugle_b
+    daily_bugle_ab_ready_show:
+      action: stop
+      key: daily_bugle_ab
+    daily_bugle_ab_ready_solid:
+      action: stop
+      key: daily_bugle_ab
+    daily_bugle_ab_off_show:
+      loops: -1
+      key: daily_bugle_ab
+
   daily_bugle_mystery_stop_all:
     daily_bugle_a_hit_flash_then_solid:
       action: stop

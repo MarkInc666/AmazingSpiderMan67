@@ -40,6 +40,11 @@ class VillainStart(Mode):
         self.machine.game.player["villain_current_name"] = key
         self.machine.game.player["villain_mode_running_name"] = key
         self.machine.events.post("clear_villain_saucer_lights")
+        # Daily Bugle owns persistent keyed A/B shows at a higher mode priority.
+        # Clear that owner first, then force its paused visual state off.
+        self.machine.events.post("daily_bugle_mystery_stop_all")
+        self.machine.events.post("daily_bugle_ab_force_off")
+        self.machine.events.post("skillshot_clear_lit_shot")
         self.machine.events.post("clear_villain_ab_lights")
 
     def _villain_mode_ended(self, **kwargs):

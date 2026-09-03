@@ -110,7 +110,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'lizard_state',
-            'song': 'play_song_4',
+            'song': 'play_song_89',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Follow the moving spark.
@@ -302,7 +302,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'cyclops_state',
-            'song': 'play_song_3',
+            'song': 'play_song_55',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Drop targets build the Centaur Jackpot.
@@ -421,19 +421,19 @@ class VillainBookends(Mode):
             'title': 'SPIDER-SLAYER', 'intro_1': 'The Slayer is tracking you.', 'intro_2': 'Hit lit shots to expose it.', 'intro_3': 'Destroy it at the Daily Bugle.',
             'summary_title_complete': 'SLAYER DESTROYED', 'summary_title_failed': 'SLAYER ESCAPED',
             'stat_1_label': 'SLAYER JP', 'stat_1_var': 'active_mode_stat_1', 'stat_2_label': 'HUNT TIME', 'stat_2_var': 'active_mode_stat_2',
-            'points_var': 'active_mode_points', 'state_var': 'spider_slayer_state', 'song': 'play_song_55',
+            'points_var': 'active_mode_points', 'state_var': 'spider_slayer_state', 'song': 'play_song_84',
         },
         'metal_eating_robot': {
             'title': 'METAL MONSTER', 'intro_1': 'Eight city zones are in danger.', 'intro_2': 'A new attack begins every five seconds.', 'intro_3': 'Save four before three are destroyed.',
             'summary_title_complete': 'CITY SAVED', 'summary_title_failed': 'CITY DESTROYED',
             'stat_1_label': 'ZONES SAVED', 'stat_1_var': 'active_mode_stat_1', 'stat_2_label': 'DESTROYED', 'stat_2_var': 'active_mode_stat_2',
-            'points_var': 'active_mode_points', 'state_var': 'metal_eating_robot_state', 'song': 'play_song_58',
+            'points_var': 'active_mode_points', 'state_var': 'metal_eating_robot_state', 'song': 'play_song_88',
         },
         'fiddler': {
             'title': 'FIDDLER', 'intro_1': 'Shoot a saucer and watch the pattern.', 'intro_2': 'Repeat the notes in order.', 'intro_3': 'Three failed rounds and Fiddler escapes.',
             'summary_title_complete': 'FIDDLER SILENCED', 'summary_title_failed': 'FIDDLER ESCAPED',
             'stat_1_label': 'PATTERNS', 'stat_1_var': 'active_mode_stat_1', 'stat_2_label': 'NOTES HIT', 'stat_2_var': 'active_mode_stat_2',
-            'points_var': 'active_mode_points', 'state_var': 'fiddler_state', 'completion_var': 'active_mode_completed', 'song': 'play_song_50',
+            'points_var': 'active_mode_points', 'state_var': 'fiddler_state', 'completion_var': 'active_mode_completed', 'song': 'play_song_25',
         },
         'pardo': {
             'title': 'PARDO',
@@ -690,7 +690,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'bolton_boomer_state',
-            'song': 'play_song_58',
+            'song': 'play_song_94',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: The Snowman is freezing the city.
@@ -730,7 +730,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'plutonians_state',
-            'song': 'play_song_42',
+            'song': 'play_song_47',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Dr. Manta traps the city beneath the waves.
@@ -800,7 +800,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'devargas_state',
-            'song': 'play_song_52',
+            'song': 'play_song_46',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Molemen strike from the ice.
@@ -906,7 +906,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'conners_reptiles_state',
-            'song': 'play_song_44',
+            'song': 'play_song_87',
         },
         # ORIGINAL DISPLAY TEXT:
         #   title: PHANTOM FROM THE DEPTHS OF TIME
@@ -929,7 +929,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'sir_galahad_state',
-            'song': 'play_song_57',
+            'song': 'play_song_90',
         },
         'master_vine': {
             'title': 'MASTER VINE',
@@ -944,7 +944,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'master_vine_state',
-            'song': 'play_song_53',
+            'song': 'play_song_91',
         },
         'master_technician': {
             'title': 'MASTER TECHNICIAN',
@@ -994,7 +994,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'von_rantenraven_state',
-            'song': 'play_song_46',
+            'song': 'play_song_52',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Chapter 1 mini-wizard multiball.
@@ -1013,7 +1013,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'sinister_surge_state',
             'points_var': 'active_mode_points',
             'state_var': 'sinister_surge_state',
-            'song': 'play_song_50',
+            'song': 'play_song_71',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Chapter 2 mini-wizard multiball.
@@ -1032,7 +1032,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'mastermind_trap_state',
             'points_var': 'active_mode_points',
             'state_var': 'mastermind_trap_state',
-            'song': 'play_song_47',
+            'song': 'play_song_58',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Miss Trubble has unleashed her creations.
@@ -1051,7 +1051,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'trubble_unleashed_staged_hits',
             'points_var': 'active_mode_points',
             'state_var': 'trubble_unleashed_state',
-            'song': 'play_song_47',
+            'song': 'play_song_92',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Decode the Plotter’s scheme.
@@ -1085,7 +1085,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'crime_wave_state',
-            'song': 'play_song_43',
+            'song': 'play_song_68',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Chapter 7 mini-wizard multiball.
@@ -1101,7 +1101,7 @@ class VillainBookends(Mode):
             'summary_title_failed': 'THE WEB TIGHTENS',
             'stat_1_label': 'PHASES WON', 'stat_1_var': 'active_mode_stat_1',
             'stat_2_label': 'SUPERS', 'stat_2_var': 'active_mode_stat_2',
-            'points_var': 'active_mode_points', 'state_var': 'the_web_tightens_state', 'song': 'play_song_38',
+            'points_var': 'active_mode_points', 'state_var': 'the_web_tightens_state', 'song': 'play_song_85',
         },
         'fifth_dimension_curse': {
             'title': 'FIFTH DIMENSION CURSE',
@@ -1135,7 +1135,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'mad_science_meltdown_state',
             'points_var': 'active_mode_points',
             'state_var': 'mad_science_meltdown_state',
-            'song': 'play_song_67',
+            'song': 'play_song_3',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: Chapter 7 mini-wizard multiball.
@@ -1174,7 +1174,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'invasion_from_everywhere_state',
             'points_var': 'active_mode_points',
             'state_var': 'invasion_from_everywhere_state',
-            'song': 'play_song_55',
+            'song': 'play_song_96',
         },
         # ORIGINAL DISPLAY TEXT:
         #   title: WHO IS THE REAL VILLAIN?
@@ -1214,7 +1214,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'time_tossed_showdown_state',
             'points_var': 'active_mode_points',
             'state_var': 'time_tossed_showdown_state',
-            'song': 'play_song_23',
+            'song': 'play_song_50',
         },
         # ORIGINAL DISPLAY TEXT:
         #   intro_1: The citywide battle reaches its peak.
@@ -1234,7 +1234,7 @@ class VillainBookends(Mode):
             'stat_2_var': 'final_showdown_jackpots',
             'points_var': 'active_mode_points',
             'state_var': 'final_showdown_state',
-            'song': 'play_song_3',
+            'song': 'play_song_67',
         },
     }
 

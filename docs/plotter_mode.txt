@@ -12,6 +12,8 @@ CORE LOOP
 - The lower spinner consumes two Rumors, scores 50,000, and lights one random
   saucer.
 - The upper spinner is not used by this mode.
+- Drop targets are not Plotter scoring/objective shots; completing either lower
+  drop bank immediately resets that bank so the drops remain available.
 - A lit saucer scores a 250,000 Scheme Jackpot. Stop three schemes to expose
   The Plotter.
 - After the third scheme, surplus lit saucers are cleared, the rooftop gate

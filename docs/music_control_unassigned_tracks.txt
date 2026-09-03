@@ -1,9 +1,10 @@
-MUSIC CONTROL — UNASSIGNED TRACKS
+MUSIC CONTROL — HIGH-NUMBER TRACK STATUS
 
-Song 93: pigmy.wav
-Song 94: exclusive_blend.wav
-Song 95: janos_revenge.wav
-Song 96: up_from_the_south.wav
+Song 93: pigmy.wav — Chapter 4 / Crime Wave base
+Song 94: exclusive_blend.wav — Bolton Boomer
+Song 95: janos_revenge.wav — Chapter 6 / Fifth Dimension Curse base
+Song 96: up_from_the_south.wav — Invasion from Everywhere wizard
+Song 97: walk_and_talk.wav — Chapter 3 / Trubble Unleashed base
 
-These tracks are registered in Music Control but are not assigned to a chapter
-base, villain, wizard, or other gameplay mode.
+Gameplay music audit (villains + chapter wizards + chapter bases + Final Showdown):
+78 assignments / 78 unique songs / no duplicates.

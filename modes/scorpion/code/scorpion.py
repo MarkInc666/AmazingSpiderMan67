@@ -87,6 +87,7 @@ class Scorpion(CaseFileMixin, Mode):
             "scorpion_prepare_right_bank_after_reset",
             "scorpion_enable_rubber",
             "scorpion_sting_tick",
+            "scorpion_jackpot_display_hold",
             "scorpion_complete_hold",
         ):
             self.delay.remove(name)
@@ -346,6 +347,21 @@ class Scorpion(CaseFileMixin, Mode):
         self.seconds_left = 0
         self.rubber_awarded = False
 
+        if result == "target":
+            # Preserve the jackpot popup for a full 2 seconds before any
+            # next-attempt or defeat message can replace it.
+            self.delay.reset(
+                name="scorpion_jackpot_display_hold",
+                ms=2000,
+                callback=self._continue_after_attempt,
+            )
+            return
+
+        self._continue_after_attempt()
+
+    def _continue_after_attempt(self):
+        if self.mode_done:
+            return
         if self.attempts_used >= self.max_attempts:
             self._begin_completion_hold()
             return

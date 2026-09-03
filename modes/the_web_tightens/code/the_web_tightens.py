@@ -41,6 +41,7 @@ class TheWebTightens(Mode):
     FIDDLER_FLASH_MS = 700
     FIDDLER_GAP_MS = 180
     FIDDLER_REPEATS = 2
+    FIDDLER_INPUT_DEBOUNCE_SECONDS = 0.750
 
     METAL_ATTACK_INTERVAL_MS = 5_000
     METAL_RETALIATION_INTERVAL_MS = 2_000
@@ -173,6 +174,7 @@ class TheWebTightens(Mode):
         self.fiddler_demonstrating = False
         self.fiddler_demo_repeat = 0
         self.fiddler_demo_index = 0
+        self._fiddler_last_switch_hit_time = {}
 
         self.metal_saved = set()
         self.metal_destroyed = set()
@@ -283,6 +285,15 @@ class TheWebTightens(Mode):
         if self.phase == "fiddler":
             shot = self.FIDDLER_SWITCH_TO_SHOT.get(switch)
             if shot:
+                # Debounce the physical switch, not the logical note shot.
+                # This means two different drops in the same bank may still
+                # register back-to-back, while a bounce/re-hit from one switch
+                # within 750ms is ignored.
+                now = time.monotonic()
+                last = self._fiddler_last_switch_hit_time.get(switch)
+                if last is not None and (now - last) < self.FIDDLER_INPUT_DEBOUNCE_SECONDS:
+                    return
+                self._fiddler_last_switch_hit_time[switch] = now
                 self._fiddler_shot_hit(shot)
             return
 

@@ -486,3 +486,8 @@ sound_player:
     up_from_the_south:
       bus: music
       loops: -1
+
+  play_music_song_97:
+    walk_and_talk:
+      bus: music
+      loops: -1

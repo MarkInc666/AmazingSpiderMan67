@@ -7,15 +7,15 @@ class MusicControl(Mode):
     CHAPTER_BASE_SONGS = {
         1: 1,
         2: 74,
-        3: 71,
-        4: 79,
-        5: 68,
-        6: 25,
-        7: 56,
+        3: 97,
+        4: 93,
+        5: 86,
+        6: 95,
+        7: 82,
         8: 44,
         9: 65,
         10: 78,
-        11: 81,
+        11: 83,
     }
 
     def mode_start(self, **kwargs):

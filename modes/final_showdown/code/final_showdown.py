@@ -618,11 +618,6 @@ class FinalShowdown(Mode):
             self._set("final_showdown_state", 2)
             self.machine.events.post("final_showdown_mode_complete")
 
-        self.machine.events.post(
-            "villain_bookend_summary_request",
-            villain="final_showdown",
-            done_event="final_showdown_mode_done"
-        )
 
     def _update_area_status(self):
         if not self.current_area or self.current_area == "victory_laps":

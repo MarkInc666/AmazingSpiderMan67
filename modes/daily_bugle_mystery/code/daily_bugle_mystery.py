@@ -703,6 +703,15 @@ class DailyBugleMystery(Mode):
 
         self.machine.events.post("daily_bugle_mystery_stop_all")
 
+        # Villain gameplay owns the A/B inserts. Preserve the player's earned
+        # Daily Bugle A/B state, but never restore those lamps while a villain
+        # is running. They will be restored from the saved state after the
+        # villain ends.
+        if self._villain_ab_progress_paused():
+            self.machine.events.post("daily_bugle_ab_force_off")
+            self._post_widget_update()
+            return
+
         if self.mystery_ready:
             self.machine.events.post("daily_bugle_restore_mystery_ready")
         elif self.mystery_ab_ready:

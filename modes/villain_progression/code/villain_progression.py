@@ -288,6 +288,8 @@ class VillainProgression(Mode):
         self.mini_wizard_gate_open_cycle_active = False
         self.mini_wizard_gate_open_attempts = 0
         self.summary_held_saucers = set()
+        self.mystery_vuk_hold_until_intro_done = False
+        self.mystery_vuk_hold_villain = ""
 
         # The attract flipper code can arm a disposable hardware test session.
         # A real game is still started normally so every tested mode has the
@@ -497,6 +499,8 @@ class VillainProgression(Mode):
         self.mini_wizard_gate_open_cycle_active = False
         self.delay.remove("mini_wizard_ready_gate_open")
         self.delay.remove("mini_wizard_ready_gate_verify")
+        self.mystery_vuk_hold_until_intro_done = False
+        self.mystery_vuk_hold_villain = ""
         super().mode_stop(**kwargs)
 
     def _recover_playing_modes_as_completed(self):
@@ -1650,16 +1654,18 @@ class VillainProgression(Mode):
 
         # START NEXT VILLAIN is awarded while the Mystery ball is physically
         # sitting in the Daily Bugle VUK. If it is still there when the villain
-        # launch executes, make that ball a summary-owned hold: suppress both
-        # Daily Bugle's delayed eject and the shared VUK eject path now, then let
-        # VillainBookends release it at the exact end of the villain summary.
+        # launch executes, hold it only through that villain's intro. Suppress
+        # Daily Bugle's delayed eject and the shared VUK eject path now; the
+        # villain_bookend_intro_done handler below releases it immediately when
+        # the intro finishes (or is skipped).
         vuk_switch = self.machine.switches.get("s_vuk_switch")
         if vuk_switch and self.machine.switch_controller.is_active(vuk_switch):
             self.machine.events.post("daily_bugle_cancel_vuk_delay_eject")
             self.machine.events.post("cancel_vuk_eject_request")
-            self.machine.events.post("villain_summary_hold_vuk_until_done")
+            self.mystery_vuk_hold_until_intro_done = True
+            self.mystery_vuk_hold_villain = villain_key
             self.machine.events.post(
-                "mystery_started_villain_vuk_held",
+                "mystery_started_villain_vuk_held_for_intro",
                 villain_key=villain_key,
             )
 
@@ -1919,15 +1925,33 @@ class VillainProgression(Mode):
         self._restore_state()
 
     def _mini_wizard_intro_done(self, villain=None, **kwargs):
-        """Release the VUK only after a mini-wizard intro is finished or skipped."""
-        player = self.machine.game.player
+        """Release VUK holds that intentionally last through a bookend intro."""
+        # Mystery START NEXT VILLAIN holds the physical VUK ball through the
+        # regular villain intro, then releases it at the exact intro-done event.
+        if (
+            self.mystery_vuk_hold_until_intro_done
+            and villain == self.mystery_vuk_hold_villain
+        ):
+            held_villain = self.mystery_vuk_hold_villain
+            self.mystery_vuk_hold_until_intro_done = False
+            self.mystery_vuk_hold_villain = ""
+            self.machine.events.post(
+                "mystery_vuk_intro_done_release",
+                villain_key=held_villain,
+            )
+            self.machine.events.post("up_kick")
+            return
 
+        # Chapter mini-wizards use the same intro-done event, but retain their
+        # existing player-scoped hold flag.
+        player = self.machine.game.player
         if player["mini_wizard_vuk_hold_active"] != 1:
             return
 
         mini_key = player["mini_wizard_current_key"]
         if not mini_key or villain != mini_key:
             return
+
 
         player["mini_wizard_vuk_hold_active"] = 0
         self.machine.events.post("mini_wizard_vuk_intro_done_release", mini_wizard=mini_key)

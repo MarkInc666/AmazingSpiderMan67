@@ -30,6 +30,7 @@ class Fiddler(CaseFileMixin, Mode):
     REMINDER_PATTERN_REPEATS = 1
     REMINDER_REENTRY_LOCKOUT_SECONDS = 4.0
     FEEDBACK_FLASH_MS = 1_000
+    NOTE_INPUT_DEBOUNCE_SECONDS = 0.750
 
     SHOTS = ("left_web", "left_bank", "right_pop", "right_bank")
     SHOT_LABELS = {
@@ -89,6 +90,7 @@ class Fiddler(CaseFileMixin, Mode):
         self._watch_note_elapsed_ms = 0
         self._watch_strobe_on = False
         self._last_saucer_eject_time = None
+        self._last_note_hit_time = {}
 
         for shot in self.SHOTS:
             self.add_mode_event_handler(
@@ -369,6 +371,16 @@ class Fiddler(CaseFileMixin, Mode):
             return
         if self.demonstrating or self.feedback_active:
             return
+
+        # Suppress accidental double-taps from the same physical note input.
+        # Each standalone Fiddler shot maps to one physical switch, so a
+        # per-shot timestamp is also a per-switch debounce here. Different
+        # note targets remain immediately playable.
+        now = time.monotonic()
+        last = self._last_note_hit_time.get(shot)
+        if last is not None and (now - last) < self.NOTE_INPUT_DEBOUNCE_SECONDS:
+            return
+        self._last_note_hit_time[shot] = now
 
         # Once a round has failed, note shots are deliberately "dead wrong"
         # until the player returns to a saucer. They provide feedback but do

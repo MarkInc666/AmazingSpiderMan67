@@ -39,6 +39,11 @@ event_player:
   s_upper_target_center_active: plotter_back_page_hit
   s_upper_target_right_active: plotter_back_page_hit
 
+  # Plotter does not use the drop banks as objectives. Keep them available by
+  # resetting either bank whenever it is completed during the mode.
+  drop_target_bank_dt_bank_left_down: drop_target_bank_dt_bank_left_reset
+  drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset
+
   mode_plotter_started:
   - disable_daily_bugle_mystery
   - clear_saucers
