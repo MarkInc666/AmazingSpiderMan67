@@ -221,32 +221,9 @@ class Base(Mode):
         message_mode_title="",
         message_mode_subtitle="",
     ):
-        """Post a generic JP/Super SFX hook for actual jackpot awards.
+        """Jackpot audio is owned by each gameplay mode, not the base display layer."""
+        return
 
-        `show_mode_jackpot` is also used for large non-jackpot callouts, so only
-        titles/subtitles containing the singular word JACKPOT qualify.  Ready/
-        lit/build messages are explicitly excluded.  Individual modes can post
-        play_mode_jackpot/play_mode_super_jackpot directly for themed awards
-        whose display text intentionally does not contain the word JACKPOT.
-        """
-        if guarded_display_event != "base_show_mode_jackpot":
-            return
-
-        title = str(message_mode_title or "").upper()
-        subtitle = str(message_mode_subtitle or "").upper()
-        combined = f"{title} {subtitle}".replace("-", " ")
-        words = combined.split()
-        if "JACKPOT" not in words:
-            return
-
-        non_award_markers = ("BUILDS", "LIT", "READY", "NEXT")
-        if any(marker in title.split() for marker in non_award_markers):
-            return
-
-        if "SUPER" in words:
-            self.machine.events.post("play_mode_super_jackpot")
-        else:
-            self.machine.events.post("play_mode_jackpot")
 
     def _sync_mode_countdown_vars(
         self,

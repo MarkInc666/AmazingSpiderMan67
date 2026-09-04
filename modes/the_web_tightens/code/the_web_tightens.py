@@ -157,6 +157,28 @@ class TheWebTightens(Mode):
     SUPER_SAUCER_FIRST_RELEASE_AFTER_VUK_MS = 6_000
     SUPER_SAUCER_STAGGER_MS = 2_000
 
+    def _post_mode_jackpot_sfx_if_needed(
+        self,
+        guarded_display_event="",
+        message_mode_title="",
+        message_mode_subtitle="",
+    ):
+        """Mode-local jackpot SFX hook; replace these events per mode as desired."""
+        if guarded_display_event != "base_show_mode_jackpot":
+            return
+        title = str(message_mode_title or "").upper()
+        subtitle = str(message_mode_subtitle or "").upper()
+        combined = f"{title} {subtitle}".replace("-", " ")
+        words = combined.split()
+        if "JACKPOT" not in words:
+            return
+        if any(marker in title.split() for marker in ("BUILDS", "LIT", "READY", "NEXT")):
+            return
+        if "SUPER" in words:
+            self.machine.events.post("play_mode_super_jackpot")
+        else:
+            self.machine.events.post("play_mode_jackpot")
+
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
 
@@ -208,7 +230,6 @@ class TheWebTightens(Mode):
         self.case_file_bonus = int(player["mini_wizard_case_file_bonus"] or 0)
         self.jackpot_value = self.BASE_JACKPOT + self.case_file_bonus
         player["mini_wizard_current_key"] = self.MODE_KEY
-        player["mini_wizard_vuk_hold_active"] = 0
         player[f"{self.MODE_KEY}_state"] = 1
         player["active_mode_points"] = 0
         player["active_mode_hits"] = 0
@@ -243,16 +264,29 @@ class TheWebTightens(Mode):
         self.machine.events.post("chapter_mini_wizard_started", mini_wizard=self.MODE_KEY)
         self.machine.events.post("disable_daily_bugle_mystery")
         self.machine.events.post("daily_bugle_cancel_vuk_delay_eject")
-        self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("the_web_tightens_clear_all")
         self.machine.events.post("the_web_tightens_base_lighting")
-        self.machine.events.post("the_web_tightens_vuk_lock_ready")
-        self.machine.events.post(
-            "show_mode_message_long",
-            message_mode_title=self.DISPLAY_NAME,
-            message_mode_subtitle="LOCK A BALL AT DAILY BUGLE",
-            message_mode_value=self.jackpot_value,
+
+        # Gate follows VUK occupancy: open while waiting for a lock, closed
+        # while a ball is physically locked. If the wizard was started by a
+        # ball already sitting in the VUK, claim that ball immediately instead
+        # of waiting for a second VUK entry.
+        vuk_active = self.machine.switch_controller.is_active(
+            self.machine.switches["s_vuk_switch"]
         )
+        if vuk_active:
+            self._lock_vuk_for_cycle()
+        else:
+            player["mini_wizard_vuk_hold_active"] = 0
+            self.waiting_for_vuk = True
+            self.machine.events.post("rooftop_diverter_open")
+            self.machine.events.post("the_web_tightens_vuk_lock_ready")
+            self.machine.events.post(
+                "show_mode_message_long",
+                message_mode_title=self.DISPLAY_NAME,
+                message_mode_subtitle="LOCK A BALL AT DAILY BUGLE",
+                message_mode_value=self.jackpot_value,
+            )
         self.machine.events.post("the_web_tightens_start_multiball")
         self._update_status()
         self._schedule_ball_guard()
@@ -342,8 +376,10 @@ class TheWebTightens(Mode):
             self._super_hit(switch)
 
     def _enforce_gate_state(self, **kwargs):
-        """Reject outside gate-open requests except during the earned Super window."""
+        """Keep gate open while waiting for VUK or during Super; closed when locked."""
         if self.mode_done:
+            return
+        if self.waiting_for_vuk:
             return
         if self.phase == "super" and self.super_available and not self.super_collected:
             return
@@ -1202,9 +1238,9 @@ class TheWebTightens(Mode):
             message_mode_value=value,
         )
         self.machine.events.post("the_web_tightens_super_collected")
-        self.machine.events.post("rooftop_diverter_close")
-        self.machine.events.post("the_web_tightens_vuk_lock_ready")
         self.waiting_for_vuk = True
+        self.machine.events.post("rooftop_diverter_open")
+        self.machine.events.post("the_web_tightens_vuk_lock_ready")
         self._sync_vars()
         self._update_status()
 

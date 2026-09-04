@@ -130,6 +130,7 @@ class VillainBookends(Mode):
             'stat_1_var': 'active_mode_stat_1',
             'stat_2_label': 'SUPER JP',
             'stat_2_var': 'active_mode_stat_2',
+            'stat_2_hide_zero': True,
             'points_var': 'active_mode_points',
             'state_var': 'electro_state',
             'song': 'play_song_23',
@@ -1430,7 +1431,8 @@ class VillainBookends(Mode):
         else:
             self._set_machine_var("villain_bookend_line_1", "")
         stat_2_label = data.get('stat_2_label', '')
-        if stat_count >= 3 and stat_2_label:
+        hide_stat_2 = bool(data.get('stat_2_hide_zero')) and self._safe_number(stat_2) == 0
+        if stat_count >= 3 and stat_2_label and not hide_stat_2:
             self._set_machine_var("villain_bookend_line_2", f"{stat_2_label}: {self._format_summary_value(stat_2)}")
         else:
             self._set_machine_var("villain_bookend_line_2", "")

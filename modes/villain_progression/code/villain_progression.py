@@ -1979,6 +1979,14 @@ class VillainProgression(Mode):
         if not mini_key or villain != mini_key:
             return
 
+        # The Web Tightens uses the VUK ball that started the wizard as its
+        # first lock. Transfer ownership at intro end instead of kicking it.
+        if mini_key == "the_web_tightens":
+            self.machine.events.post(
+                "mini_wizard_vuk_intro_hold_transferred",
+                mini_wizard=mini_key,
+            )
+            return
 
         player["mini_wizard_vuk_hold_active"] = 0
         self.machine.events.post("mini_wizard_vuk_intro_done_release", mini_wizard=mini_key)

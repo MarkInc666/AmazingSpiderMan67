@@ -150,6 +150,12 @@ show_player:
     rhino_rage_5:
       loops: -1
 
+
+  rhino_ab_relight_after_jackpot:
+    rhino_ab_relight_show:
+      loops: -1
+      priority: 20
+
   rhino_berserk_started:
     rhino_berserk_gi:
       loops: -1
@@ -165,6 +171,8 @@ show_player:
       loops: 1
 
   rhino_bash_complete:
+    rhino_ab_relight_show:
+      action: stop
     rhino_berserk_gi:
       action: stop
     rhino_rage_0:
@@ -183,6 +191,21 @@ show_player:
       loops: 1
 
 shows:
+
+
+  rhino_ab_relight_show:
+    - duration: 350ms
+      lights:
+        l_a_rollover: white
+        l_b_rollover: white
+        l_right_a: white
+        l_left_b: white
+    - duration: 350ms
+      lights:
+        l_a_rollover: '404040'
+        l_b_rollover: '404040'
+        l_right_a: '404040'
+        l_left_b: '404040'
 
   # Pre-rage state: make the pops the obvious first objective.
   rhino_rage_0:

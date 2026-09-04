@@ -413,11 +413,9 @@ shows:
   electro_left_drops_lit_show:
     - duration: 120ms
       lights:
-        l_3bankbonus: yellow
         l_gi_3bank: yellow
     - duration: 120ms
       lights:
-        l_3bankbonus: blue
         l_gi_3bank: blue
 
   electro_right_pop_lit_show:
@@ -481,20 +479,10 @@ shows:
   electro_right_drops_lit_show:
     - duration: 120ms
       lights:
-        l_5bank_1: yellow
-        l_5bank_2: yellow
-        l_5bank_3: yellow
-        l_5bank_4: yellow
-        l_5bank_5: yellow
         l_gi_5bank_upper: yellow
         l_gi_5bank_lower: yellow
     - duration: 120ms
       lights:
-        l_5bank_1: blue
-        l_5bank_2: blue
-        l_5bank_3: blue
-        l_5bank_4: blue
-        l_5bank_5: blue
         l_gi_5bank_upper: blue
         l_gi_5bank_lower: blue
 
@@ -539,11 +527,9 @@ shows:
   electro_left_drops_super_show:
     - duration: 120ms
       lights:
-        l_3bankbonus: white
         l_gi_3bank: white
     - duration: 120ms
       lights:
-        l_3bankbonus: off
         l_gi_3bank: off
 
   electro_right_pop_super_show:
@@ -607,20 +593,10 @@ shows:
   electro_right_drops_super_show:
     - duration: 120ms
       lights:
-        l_5bank_1: white
-        l_5bank_2: white
-        l_5bank_3: white
-        l_5bank_4: white
-        l_5bank_5: white
         l_gi_5bank_upper: white
         l_gi_5bank_lower: white
     - duration: 120ms
       lights:
-        l_5bank_1: off
-        l_5bank_2: off
-        l_5bank_3: off
-        l_5bank_4: off
-        l_5bank_5: off
         l_gi_5bank_upper: off
         l_gi_5bank_lower: off
 

@@ -31,6 +31,28 @@ class RhinoBash(CaseFileMixin, Mode):
     POP_SCORE = 10000
     SMASH_SCORE = 25000
 
+    def _post_mode_jackpot_sfx_if_needed(
+        self,
+        guarded_display_event="",
+        message_mode_title="",
+        message_mode_subtitle="",
+    ):
+        """Mode-local jackpot SFX hook; replace these events per mode as desired."""
+        if guarded_display_event != "base_show_mode_jackpot":
+            return
+        title = str(message_mode_title or "").upper()
+        subtitle = str(message_mode_subtitle or "").upper()
+        combined = f"{title} {subtitle}".replace("-", " ")
+        words = combined.split()
+        if "JACKPOT" not in words:
+            return
+        if any(marker in title.split() for marker in ("BUILDS", "LIT", "READY", "NEXT")):
+            return
+        if "SUPER" in words:
+            self.machine.events.post("play_mode_super_jackpot")
+        else:
+            self.machine.events.post("play_mode_jackpot")
+
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
         self.reset_active_mode_summary(stat_count=3)
@@ -179,6 +201,7 @@ class RhinoBash(CaseFileMixin, Mode):
 
         self._set_jackpot_for_cycle()
         self.reset_rage_cycle()
+        self.machine.events.post("rhino_ab_relight_after_jackpot")
         self.update_player_vars()
 
     def check_rage_stage(self):

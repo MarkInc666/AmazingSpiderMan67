@@ -61,6 +61,28 @@ class Diana(CaseFileMixin, Mode):
 
     ALL_RIGHT_DROPS = (1, 2, 3, 4, 5)
 
+    def _post_mode_jackpot_sfx_if_needed(
+        self,
+        guarded_display_event="",
+        message_mode_title="",
+        message_mode_subtitle="",
+    ):
+        """Mode-local jackpot SFX hook; replace these events per mode as desired."""
+        if guarded_display_event != "base_show_mode_jackpot":
+            return
+        title = str(message_mode_title or "").upper()
+        subtitle = str(message_mode_subtitle or "").upper()
+        combined = f"{title} {subtitle}".replace("-", " ")
+        words = combined.split()
+        if "JACKPOT" not in words:
+            return
+        if any(marker in title.split() for marker in ("BUILDS", "LIT", "READY", "NEXT")):
+            return
+        if "SUPER" in words:
+            self.machine.events.post("play_mode_super_jackpot")
+        else:
+            self.machine.events.post("play_mode_jackpot")
+
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
         self.reset_active_mode_summary(stat_count=3)
@@ -297,7 +319,9 @@ class Diana(CaseFileMixin, Mode):
         self.standing_targets = set(self.HUNTS[hunt_number]["targets"])
         self.hit_targets = set()
         self.bank_stage_started = False
-        self.machine.events.post("rooftop_diverter_close")
+        # Keep the roof gate open while Diana is active. If the ball leaves the
+        # upper playfield without taking a staged exit, the player must be able
+        # to make another roof trip without having to reopen the diverter.
         self.machine.events.post("diana_hunt_mode_on", hunt=hunt_number)
         self.machine.events.post("diana_hunt_prepare", hunt=hunt_number)
         self._show_mode_message(f"HUNT {hunt_number}", "FIND YOUR TARGETS")

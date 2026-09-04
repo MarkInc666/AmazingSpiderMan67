@@ -125,6 +125,28 @@ class SinisterSurge(Mode):
         "mini_wizard_case_file_bonus",
     }
 
+    def _post_mode_jackpot_sfx_if_needed(
+        self,
+        guarded_display_event="",
+        message_mode_title="",
+        message_mode_subtitle="",
+    ):
+        """Mode-local jackpot SFX hook; replace these events per mode as desired."""
+        if guarded_display_event != "base_show_mode_jackpot":
+            return
+        title = str(message_mode_title or "").upper()
+        subtitle = str(message_mode_subtitle or "").upper()
+        combined = f"{title} {subtitle}".replace("-", " ")
+        words = combined.split()
+        if "JACKPOT" not in words:
+            return
+        if any(marker in title.split() for marker in ("BUILDS", "LIT", "READY", "NEXT")):
+            return
+        if "SUPER" in words:
+            self.machine.events.post("play_mode_super_jackpot")
+        else:
+            self.machine.events.post("play_mode_jackpot")
+
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
 
@@ -923,6 +945,7 @@ class SinisterSurge(Mode):
 
         choices = [shot for shot in self.ELECTRO_SHOTS if shot != self.electro_target_shot]
         self.electro_target_shot = choice(choices or self.ELECTRO_SHOTS)
+        self.machine.events.post("sinister_surge_electro_spark_moved", shot=self.electro_target_shot)
         self._light_electro_shot()
         self.delay.remove("sinister_surge_electro_move")
         self.delay.add(
@@ -987,6 +1010,7 @@ class SinisterSurge(Mode):
         self._set("sinister_surge_area_progress", progress)
         self._set("sinister_surge_hits_still_needed", max(0, 2 - progress))
         self.machine.events.post(f"sinister_surge_goblin_{area}_collected")
+        self.machine.events.post("sinister_surge_goblin_flashing_shot_score", shot=area)
         self._update_area_status()
 
         if progress >= 2:
@@ -1003,6 +1027,7 @@ class SinisterSurge(Mode):
         self._set("sinister_surge_area_progress", 0)
         self._set("sinister_surge_hits_still_needed", 2)
         self.machine.events.post("sinister_surge_saucer_hold_started", saucer=saucer_name)
+        self.machine.events.post("sinister_surge_goblin_hold_started", saucer=saucer_name)
         self.machine.events.post("sinister_surge_goblin_attempt_started")
         self.machine.events.post(
             "show_mode_message",

@@ -102,6 +102,17 @@ event_player:
   sinister_surge_clear_stage_lights: sinister_surge_clear_area_lights
 
 
+random_event_player:
+  # Match the standalone Electro spark movement/collect SFX.
+  sinister_surge_electro_spark_moved:
+    - sinister_surge_electro_spark_moved_1
+    - sinister_surge_electro_spark_moved_2
+    - sinister_surge_electro_spark_moved_3
+  sinister_surge_electro_spark_collected:
+    - sinister_surge_electro_spark_collected_1
+    - sinister_surge_electro_spark_collected_2
+    - sinister_surge_electro_spark_collected_3
+
 widget_player:
   mode_sinister_surge_started:
     sinister_surge:
@@ -232,6 +243,10 @@ show_player:
       action: stop
     sinister_surge_goblin_right_bank_show:
       action: stop
+    sinister_surge_goblin_gi_unsafe_show:
+      action: stop
+    sinister_surge_goblin_gi_safe_show:
+      action: stop
 
   sinister_surge_rhino_lights_clear:
     sinister_surge_rhino_rage_0_show:
@@ -351,12 +366,24 @@ show_player:
   sinister_surge_area_goblin_lit:
     sinister_surge_goblin_saucers_show:
       loops: -1
+    sinister_surge_goblin_gi_safe_show:
+      action: stop
+    sinister_surge_goblin_gi_unsafe_show:
+      loops: -1
   sinister_surge_goblin_ready:
     sinister_surge_goblin_saucers_show:
+      loops: -1
+    sinister_surge_goblin_gi_safe_show:
+      action: stop
+    sinister_surge_goblin_gi_unsafe_show:
       loops: -1
   sinister_surge_goblin_attempt_started:
     sinister_surge_goblin_saucers_show:
       action: stop
+    sinister_surge_goblin_gi_unsafe_show:
+      action: stop
+    sinister_surge_goblin_gi_safe_show:
+      loops: -1
     sinister_surge_goblin_left_web_show:
       loops: -1
     sinister_surge_goblin_center_web_show:
@@ -379,6 +406,10 @@ show_player:
       action: stop
   sinister_surge_goblin_clear:
     sinister_surge_goblin_saucers_show:
+      action: stop
+    sinister_surge_goblin_gi_unsafe_show:
+      action: stop
+    sinister_surge_goblin_gi_safe_show:
       action: stop
     sinister_surge_goblin_left_web_show:
       action: stop
@@ -476,6 +507,10 @@ show_player:
     sinister_surge_goblin_left_bank_show:
       action: stop
     sinister_surge_goblin_right_bank_show:
+      action: stop
+    sinister_surge_goblin_gi_unsafe_show:
+      action: stop
+    sinister_surge_goblin_gi_safe_show:
       action: stop
     sinister_surge_daily_bugle_jackpot_show:
       action: stop
@@ -1008,23 +1043,23 @@ shows:
         l_5bank_5: off
 
   sinister_surge_electro_left_web_show:
-    - duration: 300ms
+    - duration: 150ms
       lights:
         l_left_web_target: yellow
-    - duration: 300ms
+    - duration: 150ms
       lights:
         l_left_web_target: off
 
   sinister_surge_electro_center_web_show:
-    - duration: 300ms
+    - duration: 150ms
       lights:
         l_mid_web_target: yellow
-    - duration: 300ms
+    - duration: 150ms
       lights:
         l_mid_web_target: off
 
   sinister_surge_electro_left_pop_show:
-    - duration: 300ms
+    - duration: 150ms
       lights:
         l_pop_1_1: yellow
         l_pop_1_2: yellow
@@ -1038,7 +1073,7 @@ shows:
         l_pop_1_10: yellow
         l_pop_1_11: yellow
         l_pop_1_12: yellow
-    - duration: 300ms
+    - duration: 150ms
       lights:
         l_pop_1_1: off
         l_pop_1_2: off
@@ -1054,7 +1089,7 @@ shows:
         l_pop_1_12: off
 
   sinister_surge_electro_right_pop_show:
-    - duration: 300ms
+    - duration: 150ms
       lights:
         l_pop_2_1: yellow
         l_pop_2_2: yellow
@@ -1068,7 +1103,7 @@ shows:
         l_pop_2_10: yellow
         l_pop_2_11: yellow
         l_pop_2_12: yellow
-    - duration: 300ms
+    - duration: 150ms
       lights:
         l_pop_2_1: off
         l_pop_2_2: off
@@ -1084,46 +1119,62 @@ shows:
         l_pop_2_12: off
 
   sinister_surge_electro_left_bank_show:
-    - duration: 300ms
+    - duration: 120ms
       lights:
-        l_3bankbonus: green
-    - duration: 300ms
+        l_3bankbonus: yellow
+        l_gi_3bank: yellow
+    - duration: 120ms
       lights:
-        l_3bankbonus: off
+        l_3bankbonus: blue
+        l_gi_3bank: blue
 
   sinister_surge_electro_right_bank_show:
-    - duration: 300ms
+    - duration: 120ms
       lights:
-        l_5bank_1: green
-        l_5bank_2: green
-        l_5bank_3: green
-        l_5bank_4: green
-        l_5bank_5: green
-    - duration: 300ms
+        l_5bank_1: yellow
+        l_5bank_2: yellow
+        l_5bank_3: yellow
+        l_5bank_4: yellow
+        l_5bank_5: yellow
+        l_gi_5bank_upper: yellow
+        l_gi_5bank_lower: yellow
+    - duration: 120ms
       lights:
-        l_5bank_1: off
-        l_5bank_2: off
-        l_5bank_3: off
-        l_5bank_4: off
-        l_5bank_5: off
+        l_5bank_1: blue
+        l_5bank_2: blue
+        l_5bank_3: blue
+        l_5bank_4: blue
+        l_5bank_5: blue
+        l_gi_5bank_upper: blue
+        l_gi_5bank_lower: blue
 
   sinister_surge_goblin_saucers_show:
-    - duration: 600ms
+    - duration: 500ms
       lights:
-        l_1_hole_l: {color: white, fade: 600ms}
-        l_1_hole_r: {color: white, fade: 600ms}
-        l_2_hole_l: {color: white, fade: 600ms}
-        l_2_hole_r: {color: white, fade: 600ms}
-        l_3_hole_l: {color: white, fade: 600ms}
-        l_3_hole_r: {color: white, fade: 600ms}
-    - duration: 600ms
+        l_1_hole_l: {color: red, fade: 500ms}
+        l_1_hole_r: {color: red, fade: 500ms}
+        l_2_hole_l: {color: red, fade: 500ms}
+        l_2_hole_r: {color: red, fade: 500ms}
+        l_3_hole_l: {color: red, fade: 500ms}
+        l_3_hole_r: {color: red, fade: 500ms}
+    - duration: 500ms
       lights:
-        l_1_hole_l: {color: off, fade: 600ms}
-        l_1_hole_r: {color: off, fade: 600ms}
-        l_2_hole_l: {color: off, fade: 600ms}
-        l_2_hole_r: {color: off, fade: 600ms}
-        l_3_hole_l: {color: off, fade: 600ms}
-        l_3_hole_r: {color: off, fade: 600ms}
+        l_1_hole_l: {color: off, fade: 500ms}
+        l_1_hole_r: {color: off, fade: 500ms}
+        l_2_hole_l: {color: off, fade: 500ms}
+        l_2_hole_r: {color: off, fade: 500ms}
+        l_3_hole_l: {color: off, fade: 500ms}
+        l_3_hole_r: {color: off, fade: 500ms}
+
+  sinister_surge_goblin_gi_unsafe_show:
+    - duration: -1
+      lights:
+        gi: red
+
+  sinister_surge_goblin_gi_safe_show:
+    - duration: -1
+      lights:
+        gi: "40F080"
 
   sinister_surge_goblin_left_web_show:
     - duration: 120ms
@@ -1215,6 +1266,42 @@ shows:
         gi: white      
 
 sound_player:
+  # Green Goblin callback: same saucer-hold and flashing-safe-shot SFX.
+  sinister_surge_goblin_hold_started:
+    phew2:
+      action: play
+      bus: voice
+  sinister_surge_goblin_flashing_shot_score:
+    flockaway:
+      action: play
+      bus: effects
+
+  # Electro callback: same roaming spark and collect SFX set.
+  sinister_surge_electro_spark_moved_1:
+    spark_1:
+      action: play
+      bus: effects
+  sinister_surge_electro_spark_moved_2:
+    spark_2:
+      action: play
+      bus: effects
+  sinister_surge_electro_spark_moved_3:
+    electro_zap:
+      action: play
+      bus: effects
+  sinister_surge_electro_spark_collected_1:
+    light_smash_1:
+      action: play
+      bus: effects
+  sinister_surge_electro_spark_collected_2:
+    light_smash_2:
+      action: play
+      bus: effects
+  sinister_surge_electro_spark_collected_3:
+    light_smash_3:
+      action: play
+      bus: effects
+
   play_mode_jackpot:
     jackpot_2:
       action: play

@@ -1,0 +1,7 @@
+THE WEB TIGHTENS — GATE / VUK STATE
+
+- Waiting for a VUK ball: rooftop gate OPEN.
+- Ball locked in VUK: rooftop gate CLOSED.
+- If wizard starts from a ball already in the VUK, that same ball becomes the first VUK lock; do not eject it at intro end.
+- Super phase begins: rooftop gate OPEN; once gate opening is confirmed, eject the locked VUK ball to the roof.
+- After Super is collected: remain in waiting-for-VUK state with rooftop gate OPEN.
