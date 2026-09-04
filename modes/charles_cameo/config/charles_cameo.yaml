@@ -67,6 +67,15 @@ event_player:
   - rooftop_diverter_close
 
 sound_player:
+  play_mode_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
+  play_mode_super_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
+
   charles_cameo_jackpot_collected:
     jackpot:
       action: play

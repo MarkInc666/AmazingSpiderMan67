@@ -39,6 +39,15 @@ random_event_player:
 
 
 sound_player:
+  play_mode_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
+  play_mode_super_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
+
   electro_jackpot_moved_1:
     spark_1:
       action: play

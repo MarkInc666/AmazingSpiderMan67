@@ -1409,11 +1409,11 @@ class VillainBookends(Mode):
             if chapter_number is None:
                 chapter_number = self.COMIC_SUMMARY_VILLAINS[villain]
             self.current_comic_chapter = int(chapter_number)
-            self._set_machine_var("wizard_summary_comic_key", int(chapter_number))
+            self._set_player_comic_key(int(chapter_number))
             self._set_machine_var("wizard_summary_stamp_text", "COLLECTED")
         else:
             self.current_comic_chapter = None
-            self._set_machine_var("wizard_summary_comic_key", 0)
+            self._set_player_comic_key(0)
             self._set_machine_var("wizard_summary_stamp_text", "")
 
         self.current_stage = "summary"
@@ -1541,6 +1541,16 @@ class VillainBookends(Mode):
 
         return True
 
+    def _set_player_comic_key(self, value):
+        """Set the Comic Collected selector on the current player."""
+        if not self.machine.game or not self.machine.game.player:
+            return
+        self.machine.game.player["wizard_summary_comic_key"] = int(value)
+
+    def _reassert_player_comic_key(self, chapter_number):
+        """Reassert after the widget exists so GMC conditionals see a change."""
+        self._set_player_comic_key(chapter_number)
+
     def _finish_current_bookend(self):
         if not self.current_stage:
             return
@@ -1557,14 +1567,21 @@ class VillainBookends(Mode):
         if stage == "summary" and villain in self.COMIC_SUMMARY_VILLAINS:
             chapter_number = self.current_comic_chapter or self.COMIC_SUMMARY_VILLAINS[villain]
             self.machine.events.post("villain_bookend_summary_hide")
-            # One Comic Collected widget owns all 11 chapter covers.
-            # Re-assert the key immediately before playback so the conditional
-            # nodes cannot render from stale state left by an earlier chapter.
-            self._set_machine_var("wizard_summary_comic_key", int(chapter_number))
+            # One Comic Collected widget owns all 11 chapter covers. The
+            # selector is player-scoped. Clear it before creating the widget,
+            # then reassert the chapter after the scene exists so GMC receives
+            # a current-player variable change after instantiation.
+            self._set_player_comic_key(0)
             self.machine.events.post(
                 "wizard_comic_summary_show",
                 villain=villain,
                 chapter_number=chapter_number,
+            )
+            self.delay.reset(
+                name="wizard_comic_summary_reassert_key",
+                ms=25,
+                callback=self._reassert_player_comic_key,
+                chapter_number=int(chapter_number),
             )
             self.current_stage = "comic_summary"
             self.delay.remove("villain_bookend_done")
@@ -1596,7 +1613,8 @@ class VillainBookends(Mode):
                 self.machine.events.post("wizard_comic_summary_hide")
             self.machine.events.post("villain_bookend_summary_hide")
             self.machine.events.post("villain_bookend_summary_done", villain=villain)
-            self._set_machine_var("wizard_summary_comic_key", 0)
+            self.delay.remove("wizard_comic_summary_reassert_key")
+            self._set_player_comic_key(0)
             self._set_machine_var("wizard_summary_stamp_text", "")
             if self.summary_vuk_release_pending:
                 self.summary_vuk_release_pending = False

@@ -1,0 +1,10 @@
+COMIC COLLECTED — PLAYER-SCOPED SELECTOR
+
+The single widgets/wizard_comic_summary.tscn scene contains 11 MPFConditional cover nodes.
+
+wizard_summary_comic_key is a current-player integer variable (0 = none, 1..11 = comic/chapter).
+The cover conditionals use the current-player variable source.
+
+At chapter-wizard completion, villain_bookends clears the current player selector to 0, shows the widget, then reasserts that player's chapter number after 25 ms. This guarantees the conditional scene receives a player-variable change after instantiation.
+
+The selector is cleared when the Comic Collected bookend finishes.

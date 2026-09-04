@@ -24,6 +24,16 @@ widget_player:
     centaur:
       action: remove
 
+sound_player:
+  play_mode_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
+  play_mode_super_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
+
 event_player:
   s_left_drops_1_active: centaur_drop_left_1_hit
   s_left_drops_2_active: centaur_drop_left_2_hit

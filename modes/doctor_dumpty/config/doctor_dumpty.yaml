@@ -58,6 +58,15 @@ event_player:
     - drop_target_bank_dt_bank_right_reset
 
 sound_player:
+  play_mode_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
+  play_mode_super_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
+
   doctor_dumpty_balloon_popped:
     popping:
       action: play
