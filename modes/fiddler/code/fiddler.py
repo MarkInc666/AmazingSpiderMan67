@@ -31,6 +31,7 @@ class Fiddler(CaseFileMixin, Mode):
     REMINDER_REENTRY_LOCKOUT_SECONDS = 4.0
     FEEDBACK_FLASH_MS = 1_000
     NOTE_INPUT_DEBOUNCE_SECONDS = 0.750
+    PRE_WATCH_SETTLE_MS = 2_000
 
     SHOTS = ("left_web", "left_bank", "right_pop", "right_bank")
     SHOT_LABELS = {
@@ -226,7 +227,7 @@ class Fiddler(CaseFileMixin, Mode):
         # pattern once and preserve progress already made. Fresh attempts get
         # the normal two-play WATCH presentation.
         self.waiting_for_saucer = False
-        self._begin_watch_phase(
+        self._schedule_watch_after_settle(
             repeats=(
                 self.FRESH_PATTERN_REPEATS
                 if fresh_pattern
@@ -247,7 +248,16 @@ class Fiddler(CaseFileMixin, Mode):
         self.machine.events.post("fiddler_saucers_not_ready")
         self._new_pattern()
         self.waiting_for_saucer = False
-        self._begin_watch_phase(repeats=self.FRESH_PATTERN_REPEATS)
+        self._schedule_watch_after_settle(repeats=self.FRESH_PATTERN_REPEATS)
+
+    def _schedule_watch_after_settle(self, repeats=None):
+        if self.mode_done:
+            return
+        self.delay.reset(
+            name="fiddler_pre_watch_settle",
+            ms=self.PRE_WATCH_SETTLE_MS,
+            callback=partial(self._begin_watch_phase, repeats=repeats),
+        )
 
     def _begin_watch_phase(self, repeats=None):
         if self.mode_done or not self.sequence:
@@ -622,6 +632,7 @@ class Fiddler(CaseFileMixin, Mode):
     def _clear_delays(self):
         self._clear_watch_delays()
         for name in (
+            "fiddler_pre_watch_settle",
             "fiddler_wrong_note_flash",
             "fiddler_shot_assist_flash",
             "fiddler_failed_round_flash",

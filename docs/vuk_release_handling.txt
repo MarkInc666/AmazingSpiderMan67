@@ -51,3 +51,16 @@ Mode ownership rules
   remains held until the villain summary ends.
 - Clive and Blotto and Plutonians leave Daily Bugle enabled intentionally; the
   VUK can count for their area rules while Daily Bugle owns the release.
+
+Terminal-device award presentation
+----------------------------------
+
+- A villain that ends on a VUK or lower-saucer collect posts the existing
+  villain_summary_hold_vuk_until_done or villain_summary_hold_saucer_until_done
+  event before requesting its summary.
+- Villain Bookends records that terminal collect and guarantees a minimum
+  2-second window before the summary begins so the final Jackpot/Super message
+  remains visible. If the mode already has part of that delay, only the
+  remaining time is added.
+- This presentation delay does not change device ownership: VUK/saucer balls
+  remain held and are released by the existing post-summary paths.

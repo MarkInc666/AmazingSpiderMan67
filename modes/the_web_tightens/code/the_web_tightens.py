@@ -151,7 +151,8 @@ class TheWebTightens(Mode):
     }
 
     PHASE_ANNOUNCE_MS = 2_000
-    SUPER_GATE_RETRY_MS = 250
+    SUPER_GATE_VERIFY_MS = 1000
+    SUPER_GATE_MAX_ATTEMPTS = 2
     SUPER_VUK_EJECT_DELAY_MS = 750
     SUPER_SAUCER_FIRST_RELEASE_AFTER_VUK_MS = 6_000
     SUPER_SAUCER_STAGGER_MS = 2_000
@@ -177,6 +178,7 @@ class TheWebTightens(Mode):
         self.cycle_successes = 0
         self.super_available = False
         self.super_collected = False
+        self.super_gate_open_attempts = 0
         self.vuk_relock_lockout_until = 0.0
         self.held_saucers = set()
         self.saucer_lockout_until = 0.0
@@ -637,7 +639,7 @@ class TheWebTightens(Mode):
             "web_fiddler_flash", "web_fiddler_gap", "web_fiddler_repeat",
             "web_metal_next_attack", "web_conquistador_web_timeout",
             "web_harley_star_timeout", "web_add_ball_guard", "web_phase_announce",
-            "web_super_gate_retry",
+            "web_super_gate_verify",
         ):
             self.delay.remove(name)
         for zone in self.ZONE_SWITCHES:
@@ -1099,12 +1101,51 @@ class TheWebTightens(Mode):
         self.super_available = True
 
         self.machine.events.post("the_web_tightens_saucers_not_ready")
+        self.super_gate_open_attempts = 0
+        self._request_super_gate_open()
+        self._sync_vars()
+        self._update_status()
+
+    def _request_super_gate_open(self):
+        if self.mode_done or self.phase != "super" or not self.super_available:
+            return
+        self.super_gate_open_attempts += 1
         self.machine.events.post("rooftop_diverter_open")
         self.delay.reset(
-            name="web_super_gate_retry",
-            ms=self.SUPER_GATE_RETRY_MS,
-            callback=self._retry_super_gate_open,
+            name="web_super_gate_verify",
+            ms=self.SUPER_GATE_VERIFY_MS,
+            callback=self._verify_super_gate_open,
         )
+
+    def _verify_super_gate_open(self):
+        if self.mode_done or self.phase != "super" or not self.super_available:
+            return
+
+        # Match the established gate-switch convention in config/config.yaml:
+        # active means the requested opening has not completed yet.
+        gate_still_closed = self.machine.switch_controller.is_active(
+            self.machine.switches["s_diverter_open"]
+        )
+        if not gate_still_closed:
+            self._release_vuk_for_super()
+            return
+
+        if self.super_gate_open_attempts < self.SUPER_GATE_MAX_ATTEMPTS:
+            self._request_super_gate_open()
+            return
+
+        # Final fallback: do not feed the VUK ball into a closed gate. Keep the
+        # Super available and try again on the next verification interval.
+        self.super_gate_open_attempts = 0
+        self.delay.reset(
+            name="web_super_gate_verify",
+            ms=self.SUPER_GATE_VERIFY_MS,
+            callback=self._request_super_gate_open,
+        )
+
+    def _release_vuk_for_super(self):
+        if self.mode_done or self.phase != "super" or not self.super_available:
+            return
 
         if self.vuk_locked:
             self.vuk_locked = False
@@ -1115,8 +1156,8 @@ class TheWebTightens(Mode):
                 delay_ms=self.SUPER_VUK_EJECT_DELAY_MS,
             )
 
-        # Keep parked balls out of the way while the gate opens and the VUK ball
-        # is delivered to the roof. Release the first saucer ball six seconds
+        # Keep parked balls out of the way while the verified-open gate feeds
+        # the VUK ball to the roof. Release the first saucer ball six seconds
         # after the VUK kick, then stagger any additional balls by two seconds.
         self._release_all_saucers(
             delay_step_ms=self.SUPER_SAUCER_STAGGER_MS,
@@ -1132,15 +1173,6 @@ class TheWebTightens(Mode):
             ms=self.SUPER_VUK_EJECT_DELAY_MS,
             callback=self._show_super_ready_message,
         )
-        self._sync_vars()
-        self._update_status()
-
-    def _retry_super_gate_open(self):
-        if self.mode_done or self.phase != "super" or not self.super_available:
-            return
-        # Use the same high-level gate event. The global switch guard prevents
-        # an unnecessary second coil pulse if the first open request succeeded.
-        self.machine.events.post("rooftop_diverter_open")
 
     def _show_super_ready_message(self):
         if self.mode_done or not self.super_available or self.super_collected:

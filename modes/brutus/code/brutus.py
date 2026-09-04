@@ -320,8 +320,12 @@ class Brutus(CaseFileMixin, Mode):
         if self.mode_done:
             return
         if self.phase == "open":
-            title = f"ARTWORK {self.jackpots}/{self.required_jackpots}"
-            value = f"SHOOT SAUCER  {self.seconds_left}s"
+            self.machine.events.post(
+                "update_mode_timer_status",
+                mode_status_title=f"ARTWORK {self.jackpots}/{self.required_jackpots} - SHOOT SAUCER",
+                mode_status_value=max(0, self.seconds_left),
+            )
+            return
         else:
             title = f"ARTWORK {self.jackpots}/{self.required_jackpots}"
             value = "HIT ANY RIGHT DROP"

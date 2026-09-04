@@ -1,3 +1,5 @@
+import time
+
 from mpf.core.mode import Mode
 
 
@@ -5,6 +7,7 @@ class VillainBookends(Mode):
 
     INTRO_MS = 5000
     SUMMARY_MS = 6000
+    COMIC_SUMMARY_MS = 3000
     COMIC_SUMMARY_VILLAINS = {
         "sinister_surge": 1,
         "mastermind_trap": 2,
@@ -1246,7 +1249,13 @@ class VillainBookends(Mode):
         self.current_villain = None
         self.current_summary_can_skip = False
         self.current_summary_skip_unlocked = False
+        self.current_comic_chapter = None
         self.summary_vuk_release_pending = False
+        # A terminal VUK/saucer collect can post its jackpot immediately before
+        # the mode-complete event requests the summary.  Keep that final award
+        # visible for a full two seconds before the bookend replaces it.
+        self.device_award_summary_deadline = 0.0
+        self.pending_device_summary_request = None
 
         self.add_mode_event_handler("villain_bookend_intro_request", self._intro_request)
         self.add_mode_event_handler("villain_bookend_summary_request", self._summary_request)
@@ -1254,7 +1263,18 @@ class VillainBookends(Mode):
         self.add_mode_event_handler("villain_bookend_intro_hold_request", self._intro_hold_request)
         self.add_mode_event_handler("villain_bookend_intro_hold_release", self._intro_hold_release)
         self.add_mode_event_handler("villain_summary_hold_vuk_until_done", self._hold_vuk_until_summary_done)
+        self.add_mode_event_handler("villain_summary_hold_saucer_until_done", self._mark_terminal_device_award)
 
+
+    def _mark_terminal_device_award(self, **kwargs):
+        """Guarantee two seconds of final VUK/saucer award presentation.
+
+        Terminal device shots already post one of the shared hold events before
+        requesting their summary.  Record a deadline here instead of adding a
+        fixed per-mode delay, so modes that already wait part of the two seconds
+        only wait the remainder.
+        """
+        self.device_award_summary_deadline = time.monotonic() + 2.0
 
     def _hold_vuk_until_summary_done(self, **kwargs):
         """Hold a mode-ending VUK ball until the villain summary finishes.
@@ -1262,6 +1282,7 @@ class VillainBookends(Mode):
         The winning mode owns the collect, but VillainBookends owns the exact
         end of the summary for both timeout and flipper speedup paths.
         """
+        self._mark_terminal_device_award()
         self.summary_vuk_release_pending = True
         # The scoring mode may re-enable Daily Bugle as it stops. Keep Daily
         # Bugle disabled for the full summary so a VUK switch chatter cannot
@@ -1339,6 +1360,28 @@ class VillainBookends(Mode):
             self.warning_log("Unknown villain summary requested: %s", villain)
             return
 
+        # If the winning shot was a VUK/saucer collect, leave its jackpot popup
+        # on screen for a minimum of two seconds before the summary starts.
+        remaining = self.device_award_summary_deadline - time.monotonic()
+        if remaining > 0:
+            self.pending_device_summary_request = {
+                "villain": villain,
+                "done_event": done_event,
+                "allow_skip": allow_skip,
+                "chapter_number": chapter_number,
+                **kwargs,
+            }
+            self.delay.reset(
+                name="villain_terminal_device_summary_delay",
+                ms=max(1, int(remaining * 1000 + 0.5)),
+                callback=self._run_delayed_device_summary,
+            )
+            return
+
+        self.device_award_summary_deadline = 0.0
+        self.pending_device_summary_request = None
+        self.delay.remove("villain_terminal_device_summary_delay")
+
         self.machine.events.post("play_song_21")
         self.machine.game.player["villain_mode_in_summary"] = True
 
@@ -1365,9 +1408,11 @@ class VillainBookends(Mode):
         if comic_summary:
             if chapter_number is None:
                 chapter_number = self.COMIC_SUMMARY_VILLAINS[villain]
+            self.current_comic_chapter = int(chapter_number)
             self._set_machine_var("wizard_summary_comic_key", f"CHAPTER {chapter_number}")
             self._set_machine_var("wizard_summary_stamp_text", "COLLECTED")
         else:
+            self.current_comic_chapter = None
             self._set_machine_var("wizard_summary_comic_key", "")
             self._set_machine_var("wizard_summary_stamp_text", "")
 
@@ -1404,22 +1449,10 @@ class VillainBookends(Mode):
             )
 
         self.machine.events.post("villain_bookend_intro_hide")
-        if comic_summary:
-            # The comic cover is selected in Godot from wizard_summary_comic_key.
-            # Give the BCP machine-variable update one beat to reach GMC before
-            # instantiating the conditional cover controls; otherwise the widget
-            # can evaluate the previous wizard's chapter key and show the wrong
-            # collected Comic.
-            self.delay.remove("wizard_comic_summary_show_sync")
-            self.delay.add(
-                name="wizard_comic_summary_show_sync",
-                ms=100,
-                callback=lambda: self.machine.events.post(
-                    "wizard_comic_summary_show", villain=villain
-                ),
-            )
-        else:
-            self.machine.events.post("villain_bookend_summary_show", villain=villain)
+        # Chapter wizards use two distinct bookends: first the normal mode
+        # summary with score/stats, then a dedicated Comic COLLECTED screen.
+        # Do not substitute the Comic widget for the summary.
+        self.machine.events.post("villain_bookend_summary_show", villain=villain)
         # Own the playfield lighting for the full summary so stopped gameplay-mode
         # shows cannot bleed through. Wizards use the slower six-second shutdown;
         # ordinary villains get a fast top-to-bottom neutral wipe, then hold dim.
@@ -1434,6 +1467,15 @@ class VillainBookends(Mode):
             ms=self.SUMMARY_MS,
             callback=self._finish_current_bookend
         )
+
+
+    def _run_delayed_device_summary(self):
+        request = self.pending_device_summary_request
+        self.pending_device_summary_request = None
+        self.device_award_summary_deadline = 0.0
+        if not request:
+            return
+        self._summary_request(**request)
 
     def _intro_hold_request(self, **kwargs):
         if self.current_stage in ("intro", "summary"):
@@ -1509,6 +1551,26 @@ class VillainBookends(Mode):
         starting_saucer = None
         starting_vuk = False
 
+        # A chapter wizard gets a full six-second score/stat summary followed
+        # by a three-second fixed-cover Comic COLLECTED screen. Progression and
+        # the caller's done_event are held until both bookends have completed.
+        if stage == "summary" and villain in self.COMIC_SUMMARY_VILLAINS:
+            chapter_number = self.current_comic_chapter or self.COMIC_SUMMARY_VILLAINS[villain]
+            self.machine.events.post("villain_bookend_summary_hide")
+            self.machine.events.post(
+                f"wizard_comic_summary_chapter_{chapter_number}_show",
+                villain=villain,
+                chapter_number=chapter_number,
+            )
+            self.current_stage = "comic_summary"
+            self.delay.remove("villain_bookend_done")
+            self.delay.add(
+                name="villain_bookend_done",
+                ms=self.COMIC_SUMMARY_MS,
+                callback=self._finish_current_bookend,
+            )
+            return
+
         if stage == "intro":
             data = self.VILLAINS[villain]
             if villain == "fiddler":
@@ -1522,11 +1584,11 @@ class VillainBookends(Mode):
             self.machine.events.post(data["song"])
             self.machine.events.post("villain_bookend_intro_hide")
             self.machine.events.post("villain_bookend_intro_done", villain=villain)
-        elif stage == "summary":
+        elif stage in ("summary", "comic_summary"):
             self.machine.game.player["villain_mode_in_summary"] = False
             self.machine.events.post("reset_villain_locate")
             self.machine.events.post("reset_daily_bugle_state")
-            if villain in self.COMIC_SUMMARY_VILLAINS:
+            if stage == "comic_summary":
                 self.machine.events.post("wizard_comic_summary_hide")
             self.machine.events.post("villain_bookend_summary_hide")
             self.machine.events.post("villain_bookend_summary_done", villain=villain)
@@ -1554,6 +1616,7 @@ class VillainBookends(Mode):
         self.current_done_event = None
         self.current_summary_can_skip = False
         self.current_summary_skip_unlocked = False
+        self.current_comic_chapter = None
 
         if done_event:
             self.machine.events.post(

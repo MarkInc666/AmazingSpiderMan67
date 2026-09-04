@@ -88,3 +88,6 @@ SUMMARY
 - Mode score = all correct-note awards.
 - PATTERNS = successful patterns completed.
 - NOTES HIT = total correct notes scored.
+WATCH SETTLE DELAY
+- When Fiddler captures/holds the ball for WATCH (saucer or Mystery/VUK start), wait 2 seconds before the WATCH/demo sequence begins. The ball remains held during this settle delay.
+

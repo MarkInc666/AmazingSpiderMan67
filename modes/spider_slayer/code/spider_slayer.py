@@ -223,8 +223,12 @@ class SpiderSlayer(CaseFileMixin, Mode):
             title = f"HUNT {self.hits}/{self.REQUIRED_HITS}"
             value = "HIT THE LIT SHOT"
         elif self.phase == "jackpot":
-            title = f"DAILY BUGLE {self.jackpot_seconds_left}S"
-            value = f"SLAYER JP {self.slayers_jackpot:,}"
+            self.machine.events.post(
+                "update_mode_timer_status",
+                mode_status_title=f"DAILY BUGLE - SLAYER JP {self.slayers_jackpot:,}",
+                mode_status_value=max(0, self.jackpot_seconds_left),
+            )
+            return
         else:
             title = "SLAYER JACKPOT EXPIRED"
             value = "LIT SHOTS STILL SCORE"

@@ -287,7 +287,13 @@ class BoltonBoomer(CaseFileMixin, Mode):
             if self.super_number == 1:
                 value = f"SUPER {self.current_super_value:,}"
             else:
-                value = f"SUPER IN {self.timer_seconds_remaining}"
+                self.machine.events.post(
+                    "update_mode_timer_status",
+                    mode_status_title=f"SHOOT THE VUK - SUPER {self.current_super_value:,}",
+                    mode_status_value=max(0, self.timer_seconds_remaining),
+                )
+                self._sync_vars()
+                return
         else:
             title = "RELEASING BALLS"
             value = "GET READY"

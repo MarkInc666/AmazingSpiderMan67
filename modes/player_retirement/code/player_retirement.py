@@ -66,8 +66,14 @@ class PlayerRetirement(Mode):
             player[self.RETIRED_VAR] = 1
 
         # Final Wizard completion ends this player's game. Extra balls must not
-        # run after the normal end-of-ball bonus.
+        # run after the normal end-of-ball bonus. Mark this player at the normal
+        # terminal ball immediately; the stock loop will still run this ball's
+        # bonus, and _prepare_stock_game_end temporarily backs off a terminal
+        # last-numbered player only when earlier active players still have turns.
         player["extra_balls"] = 0
+        balls_per_game = self._safe_int(game.balls_per_game, 0)
+        if balls_per_game > 0:
+            player["ball"] = max(self._safe_int(player["ball"], 0), balls_per_game)
         self.machine.events.post(
             "player_game_completed_final_wizard",
             player=player.number,
@@ -81,7 +87,12 @@ class PlayerRetirement(Mode):
 
         # Do not jump directly to game_ending here. The remaining physical ball
         # must drain so MPF executes the existing ball_ending -> bonus flow.
-        # Qualification is separately blocked for retired players.
+        # Qualification is separately blocked for retired players. Reassert the
+        # terminal ball number here in case any mode bookkeeping touched it while
+        # the Final Showdown summary was on screen.
+        balls_per_game = self._safe_int(game.balls_per_game, 0)
+        if balls_per_game > 0:
+            game.player["ball"] = max(self._safe_int(game.player["ball"], 0), balls_per_game)
         self.machine.events.post("cmd_flippers_disable")
         self.machine.events.post("cmd_autofire_coils_disable")
         self.machine.events.post("timer_timer_up_post_hold_complete")
@@ -108,9 +119,13 @@ class PlayerRetirement(Mode):
         except ValueError:
             return
 
+        balls_per_game = self._safe_int(game.balls_per_game, 0)
         for offset in range(1, len(players) + 1):
             candidate = players[(current_index + offset) % len(players)]
-            if not self._is_retired(candidate):
+            if (
+                not self._is_retired(candidate)
+                and (balls_per_game <= 0 or self._safe_int(candidate["ball"], 0) < balls_per_game)
+            ):
                 skipped_number = game.player.number
                 game.player = candidate
                 self.machine.events.post(
@@ -121,8 +136,9 @@ class PlayerRetirement(Mode):
                 return
 
         # Normally unreachable because _prepare_stock_game_end makes MPF end
-        # once no non-retired player has another turn.
-        self.warning_log("All players are retired but MPF requested another turn.")
+        # once no eligible player has another turn. If this fires, do not choose
+        # a player who has already exhausted their normal balls.
+        self.warning_log("No eligible player remains but MPF requested another turn.")
 
     def _restore_player_count_for_game_end(self, **kwargs):
         del kwargs

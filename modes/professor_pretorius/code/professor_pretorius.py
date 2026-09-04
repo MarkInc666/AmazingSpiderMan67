@@ -414,13 +414,13 @@ class ProfessorPretorius(CaseFileMixin, Mode):
         if self.mode_done:
             return
         if self.phase == "super":
-            value = f"VUK {self.super_seconds_remaining}s / TEMP {self.temperature}"
+            title = f"REACTOR SUPER READY - TEMP {self.temperature}"
             if self.grace_active and self.overheat_seconds_remaining > 0:
-                value += f" / OVERHEAT {self.overheat_seconds_remaining}s"
+                title += f" - OVERHEAT {self.overheat_seconds_remaining}s"
             self.machine.events.post(
-                "show_mode_status",
-                mode_status_title="REACTOR SUPER READY",
-                mode_status_value=value,
+                "update_mode_timer_status",
+                mode_status_title=title,
+                mode_status_value=max(0, self.super_seconds_remaining),
             )
             return
         value = (

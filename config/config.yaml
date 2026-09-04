@@ -287,14 +287,14 @@ coil_player:
     c_saucer_3:
       action: pulse
 
-  up_kick{current_player.dr_manta_vuk_hold_active != 1}:
+  up_kick{current_player.dr_manta_vuk_hold_active != 1 and current_player.mystery_vuk_intro_hold_active != 1}:
     c_vuk_to_upper:
       action: pulse
 
   # One switch-confirmed recovery pulse may be requested by the persistent
   # villain-progression VUK release service when the first up_kick does not
   # clear the VUK switch.
-  up_kick_retry{current_player.dr_manta_vuk_hold_active != 1}:
+  up_kick_retry{current_player.dr_manta_vuk_hold_active != 1 and current_player.mystery_vuk_intro_hold_active != 1}:
     c_vuk_to_upper:
       action: pulse
     
@@ -322,7 +322,7 @@ coil_player:
       
 
 sound_player:
-  up_kick:
+  up_kick{current_player.mystery_vuk_intro_hold_active != 1}:
     hb_spring_1:
       action: play
       bus: effects

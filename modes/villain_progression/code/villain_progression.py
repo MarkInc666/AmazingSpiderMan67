@@ -1138,6 +1138,10 @@ class VillainProgression(Mode):
 
     def _request_vuk_eject(self, delay_ms=None, **kwargs):
         """Schedule a VUK release from this persistent progression mode."""
+        player = self.machine.game.player
+        if player and self._safe_int(player["mystery_vuk_intro_hold_active"], 0) == 1:
+            self.machine.events.post("vuk_eject_suppressed_mystery_intro_hold")
+            return
         try:
             release_delay = int(delay_ms)
         except (TypeError, ValueError):
@@ -1150,6 +1154,10 @@ class VillainProgression(Mode):
         )
 
     def _eject_vuk_if_occupied(self):
+        player = self.machine.game.player
+        if player and self._safe_int(player["mystery_vuk_intro_hold_active"], 0) == 1:
+            self.machine.events.post("vuk_eject_suppressed_mystery_intro_hold")
+            return
         vuk_switch = self.machine.switches.get("s_vuk_switch")
         if vuk_switch and self.machine.switch_controller.is_active(vuk_switch):
             self.machine.events.post("up_kick")
@@ -1664,6 +1672,7 @@ class VillainProgression(Mode):
             self.machine.events.post("cancel_vuk_eject_request")
             self.mystery_vuk_hold_until_intro_done = True
             self.mystery_vuk_hold_villain = villain_key
+            player["mystery_vuk_intro_hold_active"] = 1
             self.machine.events.post(
                 "mystery_started_villain_vuk_held_for_intro",
                 villain_key=villain_key,
@@ -1933,8 +1942,26 @@ class VillainProgression(Mode):
             and villain == self.mystery_vuk_hold_villain
         ):
             held_villain = self.mystery_vuk_hold_villain
+
+            # Fiddler deliberately owns a Mystery-start VUK ball longer than
+            # an ordinary villain.  villain_bookends snapshots VUK occupancy
+            # before this event and passes starting_vuk=True into Fiddler's
+            # start event immediately afterward.  Transfer the hold to Fiddler
+            # here and let WATCH-complete perform the actual release.
+            if held_villain == "fiddler":
+                self.mystery_vuk_hold_until_intro_done = False
+                self.mystery_vuk_hold_villain = ""
+                self.machine.events.post(
+                    "mystery_vuk_intro_hold_transferred_to_fiddler",
+                    villain_key=held_villain,
+                )
+                return
+
             self.mystery_vuk_hold_until_intro_done = False
             self.mystery_vuk_hold_villain = ""
+            player = self.machine.game.player
+            if player:
+                player["mystery_vuk_intro_hold_active"] = 0
             self.machine.events.post(
                 "mystery_vuk_intro_done_release",
                 villain_key=held_villain,

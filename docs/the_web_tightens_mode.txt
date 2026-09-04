@@ -134,4 +134,4 @@ PHYSICAL / MACHINE TEST ITEMS
 - Shared countdown/status widgets are explicitly cleared when a phase resolves so expired phase timers cannot remain on-screen during the transition.
 - The final-phase transition holds saucer balls until after the VUK roof feed; first saucer release is 6 seconds after the VUK kick and additional releases are staggered by 2 seconds.
 - The rooftop Super is a grouped three-target shot and all three upper inserts flash together.
-- The Super transition retries the high-level rooftop gate-open request once before the VUK kick; the global diverter switch guard prevents an unnecessary second physical pulse if the gate already opened.
+- The Super transition now verifies the physical rooftop gate-open switch before the VUK kick. If the gate has not opened, the mode retries the high-level open request and keeps the VUK ball held until the gate is confirmed open; only then does the roof feed begin.

@@ -314,15 +314,13 @@ class Plutonians(CaseFileMixin, Mode):
         if self.mode_done:
             return
         if self.ray_blocked:
-            title = "HIT AREAS TO THAW"
-            value = f"FREEZE BLOCKED {self.ray_seconds}"
+            title = "HIT AREAS TO THAW - FREEZE BLOCKED"
         else:
-            title = "HIT TARGETS TO BLOCK RAY"
-            value = f"FREEZE IN {self.ray_seconds}"
+            title = "HIT TARGETS TO BLOCK RAY - FREEZE IN"
         self.machine.events.post(
-            "show_mode_status",
+            "update_mode_timer_status",
             mode_status_title=title,
-            mode_status_value=value,
+            mode_status_value=max(0, self.ray_seconds),
         )
 
     def _check_completion(self):

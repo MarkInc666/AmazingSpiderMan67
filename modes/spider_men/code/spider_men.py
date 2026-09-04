@@ -406,11 +406,19 @@ class SpiderMen(CaseFileMixin, Mode):
 
     def _update_status(self):
         if self.phase == "super":
-            title = "SUPER JACKPOT"
-            value = f"CENTER WEB {max(0, self.seconds_left)}"
+            self.machine.events.post(
+                "update_mode_timer_status",
+                mode_status_title="SUPER JACKPOT - CENTER WEB",
+                mode_status_value=max(0, self.seconds_left),
+            )
+            return
         elif self.seconds_left > 0:
-            title = f"PROTON TEST {self.seconds_left}"
-            value = f"{self.jackpots} / {len(self.SHOTS)} ALIGNED"
+            self.machine.events.post(
+                "update_mode_timer_status",
+                mode_status_title=f"PROTON TEST - {self.jackpots} / {len(self.SHOTS)} ALIGNED",
+                mode_status_value=max(0, self.seconds_left),
+            )
+            return
         else:
             title = "HOMEWORLD RAY"
             value = f"{self.jackpots} / {len(self.SHOTS)} ALIGNED"

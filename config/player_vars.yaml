@@ -189,6 +189,10 @@ player_vars:
   mini_wizard_current_key:
     initial_value: ""
     value_type: str
+  mystery_vuk_intro_hold_active:
+    initial_value: 0
+    value_type: int
+
   mini_wizard_vuk_hold_active:
     initial_value: 0
     value_type: int

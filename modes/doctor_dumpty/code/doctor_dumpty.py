@@ -233,8 +233,12 @@ class DoctorDumpty(CaseFileMixin, Mode):
             title = "GET TO THE ROOF"
             value = "GATE OPEN"
         elif self.phase == "roof":
-            title = f"{self.seconds_left}s - BALLOON JP"
-            value = self.upper_jp
+            self.machine.events.post(
+                "update_mode_timer_status",
+                mode_status_title=f"BALLOON JP {self.upper_jp:,}",
+                mode_status_value=max(0, self.seconds_left),
+            )
+            return
         else:
             return
         self.machine.events.post("update_mode_status", mode_status_title=title, mode_status_value=value)

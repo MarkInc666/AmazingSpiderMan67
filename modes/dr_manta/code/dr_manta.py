@@ -375,8 +375,14 @@ class DrManta(CaseFileMixin, Mode):
             title = "LOCK BALL TWO"
             value = f"ANY SAUCER - {self._format_score(self.saucer_value)}"
         elif self.phase == "attack":
-            title = f"MOUNTAIN MONSTER - {self.attack_seconds_remaining}"
-            value = f"JP {self._format_score(self.current_jackpot)}  HITS {self.jackpot_hits}"
+            title = f"MOUNTAIN MONSTER - JP {self._format_score(self.current_jackpot)} - HITS {self.jackpot_hits}"
+            self.machine.events.post(
+                "update_mode_timer_status",
+                mode_status_title=title,
+                mode_status_value=max(0, self.attack_seconds_remaining),
+            )
+            self._sync_vars()
+            return
         else:
             title = "TIME EXPIRED"
             value = "WAIT FOR BALL TO DRAIN"

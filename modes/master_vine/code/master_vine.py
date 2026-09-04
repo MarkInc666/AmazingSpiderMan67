@@ -389,8 +389,12 @@ class MasterVine(CaseFileMixin, Mode):
             value = "GATE OPEN - GET TO ROOF"
         elif self.phase == "attempt_active":
             lit = len(self.programmed_shots - self.collected_shots)
-            title = f"VINE WAVE {self.attempt} - {self.seconds_left}s"
-            value = f"{lit} LIT / {len(self.collected_shots)} CLEARED"
+            self.machine.events.post(
+                "update_mode_timer_status",
+                mode_status_title=f"VINE WAVE {self.attempt} - {lit} LIT / {len(self.collected_shots)} CLEARED",
+                mode_status_value=max(0, self.seconds_left),
+            )
+            return
         else:
             title = f"WAVE {self.attempt} COMPLETE"
             value = "GATE OPEN - RETURN TO ROOF"
