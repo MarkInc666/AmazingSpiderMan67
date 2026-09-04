@@ -138,24 +138,28 @@ show_player:
       action: stop
     lizard_left_pop_available_show:
       loops: -1
+      priority: 340
 
   lizard_pop_right_available:
     lizard_right_pop_collected_show:
       action: stop
     lizard_right_pop_available_show:
       loops: -1
+      priority: 340
 
   lizard_pop_left_collected:
     lizard_left_pop_available_show:
       action: stop
     lizard_left_pop_collected_show:
       loops: -1
+      priority: 340
 
   lizard_pop_right_collected:
     lizard_right_pop_available_show:
       action: stop
     lizard_right_pop_collected_show:
       loops: -1
+      priority: 340
 
   lizard_star_10x_available:
     lizard_star_10x_armed_show:
@@ -287,18 +291,18 @@ shows:
   lizard_left_pop_available_show:
     - duration: 400ms
       lights:
-        l_pop_1_1: green
-        l_pop_1_2: green
-        l_pop_1_3: green
-        l_pop_1_4: green
-        l_pop_1_5: green
-        l_pop_1_6: green
-        l_pop_1_7: green
-        l_pop_1_8: green
-        l_pop_1_9: green
-        l_pop_1_10: green
-        l_pop_1_11: green
-        l_pop_1_12: green
+        l_pop_1_1: purple
+        l_pop_1_2: purple
+        l_pop_1_3: purple
+        l_pop_1_4: purple
+        l_pop_1_5: purple
+        l_pop_1_6: purple
+        l_pop_1_7: purple
+        l_pop_1_8: purple
+        l_pop_1_9: purple
+        l_pop_1_10: purple
+        l_pop_1_11: purple
+        l_pop_1_12: purple
     - duration: 400ms
       lights:
         l_pop_1_1: off
@@ -317,18 +321,18 @@ shows:
   lizard_right_pop_available_show:
     - duration: 400ms
       lights:
-        l_pop_2_1: green
-        l_pop_2_2: green
-        l_pop_2_3: green
-        l_pop_2_4: green
-        l_pop_2_5: green
-        l_pop_2_6: green
-        l_pop_2_7: green
-        l_pop_2_8: green
-        l_pop_2_9: green
-        l_pop_2_10: green
-        l_pop_2_11: green
-        l_pop_2_12: green
+        l_pop_2_1: purple
+        l_pop_2_2: purple
+        l_pop_2_3: purple
+        l_pop_2_4: purple
+        l_pop_2_5: purple
+        l_pop_2_6: purple
+        l_pop_2_7: purple
+        l_pop_2_8: purple
+        l_pop_2_9: purple
+        l_pop_2_10: purple
+        l_pop_2_11: purple
+        l_pop_2_12: purple
     - duration: 400ms
       lights:
         l_pop_2_1: off

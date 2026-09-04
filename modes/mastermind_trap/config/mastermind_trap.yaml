@@ -99,6 +99,7 @@ show_player:
     mastermind_lizard_pops:
       action: play
       loops: -1
+      priority: 840
   mastermind_trap_delivery_all_on:
     mastermind_lizard_pops: {action: stop}
     mastermind_delivery_left_web: {action: play, loops: -1}
@@ -271,26 +272,58 @@ shows:
         l_pop_2_7: off
         l_pop_2_10: off
   mastermind_lizard_pops:
-    - duration: 500ms
+    - duration: 400ms
       lights:
-        l_pop_1_1: green
-        l_pop_1_4: green
-        l_pop_1_7: green
-        l_pop_1_10: green
-        l_pop_2_1: green
-        l_pop_2_4: green
-        l_pop_2_7: green
-        l_pop_2_10: green
-    - duration: 500ms
+        l_pop_1_1: purple
+        l_pop_1_2: purple
+        l_pop_1_3: purple
+        l_pop_1_4: purple
+        l_pop_1_5: purple
+        l_pop_1_6: purple
+        l_pop_1_7: purple
+        l_pop_1_8: purple
+        l_pop_1_9: purple
+        l_pop_1_10: purple
+        l_pop_1_11: purple
+        l_pop_1_12: purple
+        l_pop_2_1: purple
+        l_pop_2_2: purple
+        l_pop_2_3: purple
+        l_pop_2_4: purple
+        l_pop_2_5: purple
+        l_pop_2_6: purple
+        l_pop_2_7: purple
+        l_pop_2_8: purple
+        l_pop_2_9: purple
+        l_pop_2_10: purple
+        l_pop_2_11: purple
+        l_pop_2_12: purple
+    - duration: 400ms
       lights:
         l_pop_1_1: off
+        l_pop_1_2: off
+        l_pop_1_3: off
         l_pop_1_4: off
+        l_pop_1_5: off
+        l_pop_1_6: off
         l_pop_1_7: off
+        l_pop_1_8: off
+        l_pop_1_9: off
         l_pop_1_10: off
+        l_pop_1_11: off
+        l_pop_1_12: off
         l_pop_2_1: off
+        l_pop_2_2: off
+        l_pop_2_3: off
         l_pop_2_4: off
+        l_pop_2_5: off
+        l_pop_2_6: off
         l_pop_2_7: off
+        l_pop_2_8: off
+        l_pop_2_9: off
         l_pop_2_10: off
+        l_pop_2_11: off
+        l_pop_2_12: off
   mastermind_delivery_left_web:
     - duration: 300ms
       lights: {l_left_web_target: yellow}
