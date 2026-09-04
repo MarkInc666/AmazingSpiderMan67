@@ -13,9 +13,10 @@ class MastermindTrap(Mode):
          saucer to the chosen exit makes the jackpot 3X. Three roof attempts.
       2. Lizard + Mysterio: two pop hits make serum, then find the real
          delivery among Mysterio illusions. Three successful deliveries.
-      3. Doctor Octopus: spinner scores while six red danger shots rotate and
-         accumulate. Inlanes light 3X spinner for six seconds. Three red hits
-         end the phase.
+      3. Doctor Octopus: spinner scores while six danger shots (three saucers,
+         Star, A, B) accumulate into a red pattern. Flippers rotate the red
+         pattern. Inlanes light 3X spinner for six seconds. Three red hits end
+         the phase.
       4. Super: either web target collects a value falling from 2M to 100K in
          eight seconds, then holding at 100K for two seconds.
     """
@@ -39,7 +40,6 @@ class MastermindTrap(Mode):
     DOC_UNLIT_VALUE = 50_000
     DOC_RED_VALUE = 1_000
     DOC_STRIKES_TO_END = 3
-    DOC_ROTATE_MS = 1_000
     DOC_3X_MS = 6_000
 
     SUPER_START = 2_000_000
@@ -66,7 +66,7 @@ class MastermindTrap(Mode):
         "upper": "UPPER",
     }
 
-    DOC_SHOTS = ("upper_left", "upper_center", "upper_right", "star", "upper_a", "upper_b")
+    DOC_SHOTS = ("saucer_1", "saucer_2", "saucer_3", "star", "upper_a", "upper_b")
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
@@ -86,9 +86,7 @@ class MastermindTrap(Mode):
         self.delivery_candidates = set()
         self.delivery_correct = None
 
-        self.doc_permanent_red = set()
-        self.doc_rotating_red = None
-        self.doc_rotation_index = -1
+        self.doc_red_pattern = [False] * len(self.DOC_SHOTS)
         self.doc_strikes = 0
         self.doc_spins = 0
         self.doc_3x_active = False
@@ -115,6 +113,7 @@ class MastermindTrap(Mode):
         player = self.machine.game.player
         if player["mini_wizard_current_key"] == self.MODE_KEY:
             player["mini_wizard_current_key"] = ""
+        self._clear_doc_danger_lights()
         self.machine.events.post(f"{self.MODE_KEY}_clear_lights")
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("hide_mode_status")
@@ -148,6 +147,8 @@ class MastermindTrap(Mode):
         self.add_mode_event_handler("s_star_rollover_active", self._doc_danger_hit, shot="star")
         self.add_mode_event_handler("s_inlane_a_active", self._doc_danger_hit, shot="upper_a")
         self.add_mode_event_handler("s_inlane_b_active", self._doc_danger_hit, shot="upper_b")
+        self.add_mode_event_handler("s_left_flipper_active", self._doc_rotate_left)
+        self.add_mode_event_handler("s_right_flipper_active", self._doc_rotate_right)
 
         self.add_mode_event_handler("s_vuk_switch_active", self._vuk_hit)
 
@@ -170,6 +171,10 @@ class MastermindTrap(Mode):
 
     def _saucer_hit(self, saucer, **kwargs):
         if self.mode_done:
+            return
+        if self.phase == "doc_ock":
+            self._doc_danger_hit(shot=f"saucer_{saucer}")
+            self.machine.events.post(f"delayed_kickout_saucer_{saucer}")
             return
         if self.phase != "para_scorpion":
             self.machine.events.post(f"delayed_kickout_saucer_{saucer}")
@@ -267,9 +272,6 @@ class MastermindTrap(Mode):
         if self.phase == "lizard_mysterio":
             self._delivery_shot("upper")
             return
-        if self.phase == "doc_ock":
-            mapping = {"left": "upper_left", "center": "upper_center", "right": "upper_right"}
-            self._doc_danger_hit(shot=mapping[target])
 
     # ------------------------------------------------------------------
     # Phase 2: Lizard + Mysterio
@@ -371,36 +373,43 @@ class MastermindTrap(Mode):
         if self.mode_done:
             return
         self.phase = "doc_ock"
-        self.doc_permanent_red.clear()
-        self.doc_rotating_red = None
-        self.doc_rotation_index = -1
+        self.doc_red_pattern = [False] * len(self.DOC_SHOTS)
         self.doc_strikes = 0
         self.doc_spins = 0
         self.doc_3x_active = False
         self.doc_3x_remaining = 0
         self.machine.events.post(f"{self.MODE_KEY}_delivery_clear")
         self.machine.events.post(f"{self.MODE_KEY}_phase_doc")
-        self._rotate_doc_danger()
-        self._sync_status("DOC OCK", "SPIN - AVOID RED")
+        self._refresh_doc_lights()
+        self._sync_status("DOC OCK", "LIGHT SHOTS - AVOID RED")
 
-    def _rotate_doc_danger(self):
+    def _doc_rotate_left(self, **kwargs):
         if self.phase != "doc_ock" or self.mode_done:
             return
-        self.doc_rotation_index = (self.doc_rotation_index + 1) % len(self.DOC_SHOTS)
-        self.doc_rotating_red = self.DOC_SHOTS[self.doc_rotation_index]
+        self.doc_red_pattern = self.doc_red_pattern[1:] + self.doc_red_pattern[:1]
         self._refresh_doc_lights()
-        self.delay.reset(name="mastermind_doc_rotate", ms=self.DOC_ROTATE_MS, callback=self._rotate_doc_danger)
+
+    def _doc_rotate_right(self, **kwargs):
+        if self.phase != "doc_ock" or self.mode_done:
+            return
+        self.doc_red_pattern = self.doc_red_pattern[-1:] + self.doc_red_pattern[:-1]
+        self._refresh_doc_lights()
 
     def _refresh_doc_lights(self):
+        for index, shot in enumerate(self.DOC_SHOTS):
+            self.machine.events.post(
+                f"{self.MODE_KEY}_doc_{shot}_{'red' if self.doc_red_pattern[index] else 'off'}"
+            )
+
+    def _clear_doc_danger_lights(self):
         for shot in self.DOC_SHOTS:
-            is_red = shot in self.doc_permanent_red or shot == self.doc_rotating_red
-            self.machine.events.post(f"{self.MODE_KEY}_doc_{shot}_{'red' if is_red else 'off'}")
+            self.machine.events.post(f"{self.MODE_KEY}_doc_{shot}_off")
 
     def _doc_danger_hit(self, shot=None, **kwargs):
         if self.phase != "doc_ock" or shot not in self.DOC_SHOTS:
             return
-        is_red = shot in self.doc_permanent_red or shot == self.doc_rotating_red
-        if is_red:
+        index = self.DOC_SHOTS.index(shot)
+        if self.doc_red_pattern[index]:
             self._score(self.DOC_RED_VALUE)
             self.doc_strikes += 1
             self._set(f"{self.MODE_KEY}_doc_strikes", self.doc_strikes)
@@ -412,7 +421,7 @@ class MastermindTrap(Mode):
             return
 
         self._score(self.DOC_UNLIT_VALUE)
-        self.doc_permanent_red.add(shot)
+        self.doc_red_pattern[index] = True
         self._refresh_doc_lights()
         self._sync_status("DOC OCK", f"SPINS {self.doc_spins} - STRIKES {self.doc_strikes}/3")
 
@@ -460,10 +469,10 @@ class MastermindTrap(Mode):
         if self.mode_done:
             return
         self.phase = "super"
-        self.delay.remove("mastermind_doc_rotate")
         self.delay.remove("mastermind_doc_3x_tick")
         self.delay.remove("mastermind_doc_3x_end")
         self.doc_3x_active = False
+        self._clear_doc_danger_lights()
         self.machine.events.post(f"{self.MODE_KEY}_doc_clear")
         self.machine.events.post(f"{self.MODE_KEY}_super_on")
         self.super_elapsed_ms = 0
@@ -601,7 +610,7 @@ class MastermindTrap(Mode):
     def _clear_delays(self):
         for name in (
             "mastermind_roof_center", "mastermind_next_phase", "mastermind_next_attempt",
-            "mastermind_next_serum", "mastermind_doc_rotate", "mastermind_doc_3x_end",
+            "mastermind_next_serum", "mastermind_doc_3x_end",
             "mastermind_doc_3x_tick", "mastermind_super_start", "mastermind_super_tick",
             "mastermind_cycle_restart",
         ):

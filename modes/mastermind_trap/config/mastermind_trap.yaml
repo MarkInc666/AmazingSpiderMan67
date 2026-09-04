@@ -99,7 +99,6 @@ show_player:
     mastermind_lizard_pops:
       action: play
       loops: -1
-      priority: 840
   mastermind_trap_delivery_all_on:
     mastermind_lizard_pops: {action: stop}
     mastermind_delivery_left_web: {action: play, loops: -1}
@@ -272,58 +271,26 @@ shows:
         l_pop_2_7: off
         l_pop_2_10: off
   mastermind_lizard_pops:
-    - duration: 400ms
+    - duration: 500ms
       lights:
-        l_pop_1_1: purple
-        l_pop_1_2: purple
-        l_pop_1_3: purple
-        l_pop_1_4: purple
-        l_pop_1_5: purple
-        l_pop_1_6: purple
-        l_pop_1_7: purple
-        l_pop_1_8: purple
-        l_pop_1_9: purple
-        l_pop_1_10: purple
-        l_pop_1_11: purple
-        l_pop_1_12: purple
-        l_pop_2_1: purple
-        l_pop_2_2: purple
-        l_pop_2_3: purple
-        l_pop_2_4: purple
-        l_pop_2_5: purple
-        l_pop_2_6: purple
-        l_pop_2_7: purple
-        l_pop_2_8: purple
-        l_pop_2_9: purple
-        l_pop_2_10: purple
-        l_pop_2_11: purple
-        l_pop_2_12: purple
-    - duration: 400ms
+        l_pop_1_1: green
+        l_pop_1_4: green
+        l_pop_1_7: green
+        l_pop_1_10: green
+        l_pop_2_1: green
+        l_pop_2_4: green
+        l_pop_2_7: green
+        l_pop_2_10: green
+    - duration: 500ms
       lights:
         l_pop_1_1: off
-        l_pop_1_2: off
-        l_pop_1_3: off
         l_pop_1_4: off
-        l_pop_1_5: off
-        l_pop_1_6: off
         l_pop_1_7: off
-        l_pop_1_8: off
-        l_pop_1_9: off
         l_pop_1_10: off
-        l_pop_1_11: off
-        l_pop_1_12: off
         l_pop_2_1: off
-        l_pop_2_2: off
-        l_pop_2_3: off
         l_pop_2_4: off
-        l_pop_2_5: off
-        l_pop_2_6: off
         l_pop_2_7: off
-        l_pop_2_8: off
-        l_pop_2_9: off
         l_pop_2_10: off
-        l_pop_2_11: off
-        l_pop_2_12: off
   mastermind_delivery_left_web:
     - duration: 300ms
       lights: {l_left_web_target: yellow}
@@ -400,12 +367,30 @@ light_player:
     l_3_hole_l: off
     l_3_hole_r: off
 
-  mastermind_trap_doc_upper_left_red: {l_upper_left: red}
-  mastermind_trap_doc_upper_left_off: {l_upper_left: off}
-  mastermind_trap_doc_upper_center_red: {l_upper_middle: red}
-  mastermind_trap_doc_upper_center_off: {l_upper_middle: off}
-  mastermind_trap_doc_upper_right_red: {l_upper_right: red}
-  mastermind_trap_doc_upper_right_off: {l_upper_right: off}
+  mastermind_trap_doc_saucer_1_red:
+    l_1_hole_l: red
+    l_1_hole_r: red
+    l_1: red
+  mastermind_trap_doc_saucer_1_off:
+    l_1_hole_l: off
+    l_1_hole_r: off
+    l_1: off
+  mastermind_trap_doc_saucer_2_red:
+    l_2_hole_l: red
+    l_2_hole_r: red
+    l_2: red
+  mastermind_trap_doc_saucer_2_off:
+    l_2_hole_l: off
+    l_2_hole_r: off
+    l_2: off
+  mastermind_trap_doc_saucer_3_red:
+    l_3_hole_l: red
+    l_3_hole_r: red
+    l_3: red
+  mastermind_trap_doc_saucer_3_off:
+    l_3_hole_l: off
+    l_3_hole_r: off
+    l_3: off
   mastermind_trap_doc_star_red: {l_star: red}
   mastermind_trap_doc_star_off: {l_star: off}
   mastermind_trap_doc_upper_a_red: {l_a_rollover: red}

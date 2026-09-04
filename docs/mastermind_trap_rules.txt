@@ -20,9 +20,11 @@ PHASE 2 - LIZARD + MYSTERIO
 
 PHASE 3 - DOCTOR OCTOPUS
 - Main spinner scores 50,000 per spin.
-- Six danger shots are the three upper targets, Star, upper A, and upper B.
-- One red danger position rotates through the six shots. Hitting an unlit danger shot scores 50,000 and makes that shot permanently red for the rest of the phase.
-- Hitting any currently red danger shot scores 1,000 and counts as a strike. The third red hit ends the phase.
+- Six danger shots are Saucer 1, Saucer 2, Saucer 3, Star, A, and B.
+- All six start unlit. Hitting an unlit danger shot scores 50,000 and lights that position red.
+- Left/right flipper buttons rotate the entire red pattern left/right across the six danger positions, using the same rotating-pattern idea as the standalone Doctor Octopus mode.
+- Hitting any currently red danger shot scores 1,000 and counts as a strike. The third strike ends the phase.
+- Saucer danger hits are scored immediately and the saucer is returned to play; they are not parked during this phase.
 - Either lower inlane starts/resets a 6-second 3X Spinner window. Spinner is worth 150,000 per spin during 3X.
 
 SUPER
