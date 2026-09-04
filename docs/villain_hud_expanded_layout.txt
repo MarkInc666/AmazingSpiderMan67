@@ -1,0 +1,19 @@
+VILLAIN HUD EXPANDED LAYOUT
+
+During ordinary villain modes, Chapter and Case Files panels are hidden, so villain presentation reclaims that space.
+
+Media
+- Media occupies the full vertical band between the player-score rows: Y=190..880 (690 px).
+- Common 4:3 villain media uses a 920x690 box centered horizontally: X=500..1420.
+- Video and portrait media preserve aspect ratio; no intentional cropping or distortion.
+
+Title
+- Villain title begins beneath Player 1 at X=30, Y=190.
+- It overlays the media rather than reducing media height.
+- Existing title color/size is retained; a dark outline is added for readability over moving video.
+
+Unified timer/status
+- During villain modes (villain_mode_running=1), the shared mode timer/status presentation moves to the former Case Files area on the right: X=1380..1890, Y=220..850.
+- Timer value is enlarged substantially and remains red.
+- Generic status uses the same right-side panel with a large blue value.
+- Outside villain modes, the existing centered-bottom timer/status layout is preserved.
