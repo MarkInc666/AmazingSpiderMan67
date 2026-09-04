@@ -130,7 +130,6 @@ class VillainBookends(Mode):
             'stat_1_var': 'active_mode_stat_1',
             'stat_2_label': 'SUPER JP',
             'stat_2_var': 'active_mode_stat_2',
-            'stat_2_hide_zero': True,
             'points_var': 'active_mode_points',
             'state_var': 'electro_state',
             'song': 'play_song_23',
@@ -1431,8 +1430,7 @@ class VillainBookends(Mode):
         else:
             self._set_machine_var("villain_bookend_line_1", "")
         stat_2_label = data.get('stat_2_label', '')
-        hide_stat_2 = bool(data.get('stat_2_hide_zero')) and self._safe_number(stat_2) == 0
-        if stat_count >= 3 and stat_2_label and not hide_stat_2:
+        if stat_count >= 3 and stat_2_label:
             self._set_machine_var("villain_bookend_line_2", f"{stat_2_label}: {self._format_summary_value(stat_2)}")
         else:
             self._set_machine_var("villain_bookend_line_2", "")
@@ -1559,8 +1557,12 @@ class VillainBookends(Mode):
         if stage == "summary" and villain in self.COMIC_SUMMARY_VILLAINS:
             chapter_number = self.current_comic_chapter or self.COMIC_SUMMARY_VILLAINS[villain]
             self.machine.events.post("villain_bookend_summary_hide")
+            # One Comic Collected widget owns all 11 chapter covers.
+            # Re-assert the key immediately before playback so the conditional
+            # nodes cannot render from stale state left by an earlier chapter.
+            self._set_machine_var("wizard_summary_comic_key", f"CHAPTER {chapter_number}")
             self.machine.events.post(
-                f"wizard_comic_summary_chapter_{chapter_number}_show",
+                "wizard_comic_summary_show",
                 villain=villain,
                 chapter_number=chapter_number,
             )

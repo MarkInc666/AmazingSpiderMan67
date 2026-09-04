@@ -37,73 +37,14 @@ widget_player:
     villain_summary:
       action: remove
 
-  wizard_comic_summary_chapter_1_show:
-    wizard_comic_summary_chapter_1:
-      action: play
-
-  wizard_comic_summary_chapter_2_show:
-    wizard_comic_summary_chapter_2:
-      action: play
-
-  wizard_comic_summary_chapter_3_show:
-    wizard_comic_summary_chapter_3:
-      action: play
-
-  wizard_comic_summary_chapter_4_show:
-    wizard_comic_summary_chapter_4:
-      action: play
-
-  wizard_comic_summary_chapter_5_show:
-    wizard_comic_summary_chapter_5:
-      action: play
-
-  wizard_comic_summary_chapter_6_show:
-    wizard_comic_summary_chapter_6:
-      action: play
-
-  wizard_comic_summary_chapter_7_show:
-    wizard_comic_summary_chapter_7:
-      action: play
-
-  wizard_comic_summary_chapter_8_show:
-    wizard_comic_summary_chapter_8:
-      action: play
-
-  wizard_comic_summary_chapter_9_show:
-    wizard_comic_summary_chapter_9:
-      action: play
-
-  wizard_comic_summary_chapter_10_show:
-    wizard_comic_summary_chapter_10:
-      action: play
-
-  wizard_comic_summary_chapter_11_show:
-    wizard_comic_summary_chapter_11:
+  wizard_comic_summary_show:
+    wizard_comic_summary:
       action: play
 
   wizard_comic_summary_hide:
-    wizard_comic_summary_chapter_1:
+    wizard_comic_summary:
       action: remove
-    wizard_comic_summary_chapter_2:
-      action: remove
-    wizard_comic_summary_chapter_3:
-      action: remove
-    wizard_comic_summary_chapter_4:
-      action: remove
-    wizard_comic_summary_chapter_5:
-      action: remove
-    wizard_comic_summary_chapter_6:
-      action: remove
-    wizard_comic_summary_chapter_7:
-      action: remove
-    wizard_comic_summary_chapter_8:
-      action: remove
-    wizard_comic_summary_chapter_9:
-      action: remove
-    wizard_comic_summary_chapter_10:
-      action: remove
-    wizard_comic_summary_chapter_11:
-      action: remove
+
 
 
 show_player:
