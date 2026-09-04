@@ -379,7 +379,7 @@ show_player:
       loops: -1
   sinister_surge_goblin_attempt_started:
     sinister_surge_goblin_saucers_show:
-      action: stop
+      loops: -1
     sinister_surge_goblin_gi_unsafe_show:
       action: stop
     sinister_surge_goblin_gi_safe_show:

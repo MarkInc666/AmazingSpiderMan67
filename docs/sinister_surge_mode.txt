@@ -61,7 +61,7 @@ GREEN GOBLIN
 - Any saucer starts the attempt and holds that ball for 4 seconds.
 - Four areas flash green: left web, center web, left drop bank, right drop bank.
 - Any individual drop hit qualifies its bank; each of the four areas counts once.
-- Hit 2 of the 4 areas before the 4-second hold ends to light Jackpot.
+- Hit 2 of the 4 areas before the 10-second safe-time hold ends to light Jackpot.
 - Success releases the held ball immediately.
 - Failure releases the held ball at 4 seconds and allows another saucer restart.
 
@@ -70,7 +70,7 @@ SAUCER REST
 - Only one saucer ball may be resting at a time.
 - A ball entering another saucer while one is already held ejects normally.
 - The rest does not pause the current stage or its timers.
-- Green Goblin replaces the rest with its specific 4-second attempt hold.
+- Green Goblin replaces the rest with its specific 10-second safe-time hold.
 
 JACKPOTS / ADD-A-BALL
 - Standard stage Jackpot = 100K x (balls in play + stages cleared) + Case File bonus.
@@ -109,6 +109,6 @@ LIGHTING
   when their requirement is completed.
 - Electro: only the current roaming Spark location flashes; bank inserts respect
   their physical green lenses while webs/pops use yellow.
-- Goblin: saucer hole lamps pulse white while ready; during the 4-second attempt,
+- Goblin: saucer hole lamps pulse white while ready; during the 10-second safe-time attempt,
   the four qualifying areas flash green and each collected area turns off.
 - Victory Laps: full GI fade white -> red -> white -> blue -> white, repeating.

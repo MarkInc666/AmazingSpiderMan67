@@ -35,7 +35,7 @@ class SinisterSurge(Mode):
     - Vulture: 1 upper-target hit + 3 upper-spinner spins, any order
     - Electro: chase a roaming lower-playfield Spark for 3 successful hits
       across the 2 webs, 2 pops, and 2 drop banks
-    - Green Goblin: park a ball in any saucer for 4s and hit 2 of 4
+    - Green Goblin: park a ball in any saucer for 10s and hit 2 of 4
       flashing-green areas (left web, center web, left bank, right bank)
 
     Active area hits score 50K.
@@ -52,7 +52,7 @@ class SinisterSurge(Mode):
     Saucers score 50K.
     If more than 1 ball is active, one saucer may hold one ball for 20s.
     Any additional saucer ejects normally while a ball is already parked.
-    Green Goblin overrides the normal rest with its 4s attempt hold.
+    Green Goblin overrides the normal rest with its 10s safe-time hold.
     If only 1 ball remains, saucers eject immediately.
 
     Upper gate opens when the Daily Bugle Jackpot is ready, when the Vulture
@@ -73,7 +73,7 @@ class SinisterSurge(Mode):
     JACKPOT_BASE = 100_000
     SUPER_JACKPOT_BASE = 1_000_000
     SAUCER_HOLD_MS = 20_000
-    GOBLIN_HOLD_MS = 4_000
+    GOBLIN_HOLD_MS = 10_000
     ELECTRO_MOVE_MS = 4_000
     RHINO_BERSERK_MS = 10_000
     SANDMAN_MOVE_MS = 4_000
@@ -334,7 +334,7 @@ class SinisterSurge(Mode):
         elif self.current_area == "electro":
             self._start_electro_attempt()
         elif self.current_area == "goblin" and self.held_saucer is not None:
-            # Goblin's 4-second capture replaces the normal 20-second rest.
+            # Goblin's 10-second safe-time capture replaces the normal 20-second rest.
             # Release a ball parked by the previous stage so the player can
             # make a fresh saucer shot to begin the Goblin attempt.
             self._release_held_saucer()
@@ -1032,7 +1032,7 @@ class SinisterSurge(Mode):
         self.machine.events.post(
             "show_mode_message",
             message_mode_title="GREEN GOBLIN",
-            message_mode_subtitle="HIT 2 OF 4 - 4 SECONDS",
+            message_mode_subtitle="HIT 2 OF 4 - 10 SECONDS",
             reminder=True,
         )
         self._update_area_status()

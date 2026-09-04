@@ -1,0 +1,14 @@
+WIZARD COMIC COLLECTED DISPLAY
+
+The Comic Collected presentation uses one widget scene:
+  widgets/wizard_comic_summary.tscn
+
+The scene contains 11 conditional chapter cover nodes. Each node is selected by
+machine variable wizard_summary_comic_key with integer values 1 through 11.
+Each chapter node contains the matching cover and title-overlay artwork.
+
+Flow:
+  chapter wizard summary -> set/re-assert numeric wizard_summary_comic_key ->
+  wizard_comic_summary_show -> 3-second Comic Collected presentation -> hide.
+
+There are no chapter-specific Comic Collected widget_player events.

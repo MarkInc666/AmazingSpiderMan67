@@ -1409,11 +1409,11 @@ class VillainBookends(Mode):
             if chapter_number is None:
                 chapter_number = self.COMIC_SUMMARY_VILLAINS[villain]
             self.current_comic_chapter = int(chapter_number)
-            self._set_machine_var("wizard_summary_comic_key", f"CHAPTER {chapter_number}")
+            self._set_machine_var("wizard_summary_comic_key", int(chapter_number))
             self._set_machine_var("wizard_summary_stamp_text", "COLLECTED")
         else:
             self.current_comic_chapter = None
-            self._set_machine_var("wizard_summary_comic_key", "")
+            self._set_machine_var("wizard_summary_comic_key", 0)
             self._set_machine_var("wizard_summary_stamp_text", "")
 
         self.current_stage = "summary"
@@ -1560,7 +1560,7 @@ class VillainBookends(Mode):
             # One Comic Collected widget owns all 11 chapter covers.
             # Re-assert the key immediately before playback so the conditional
             # nodes cannot render from stale state left by an earlier chapter.
-            self._set_machine_var("wizard_summary_comic_key", f"CHAPTER {chapter_number}")
+            self._set_machine_var("wizard_summary_comic_key", int(chapter_number))
             self.machine.events.post(
                 "wizard_comic_summary_show",
                 villain=villain,
@@ -1596,7 +1596,7 @@ class VillainBookends(Mode):
                 self.machine.events.post("wizard_comic_summary_hide")
             self.machine.events.post("villain_bookend_summary_hide")
             self.machine.events.post("villain_bookend_summary_done", villain=villain)
-            self._set_machine_var("wizard_summary_comic_key", "")
+            self._set_machine_var("wizard_summary_comic_key", 0)
             self._set_machine_var("wizard_summary_stamp_text", "")
             if self.summary_vuk_release_pending:
                 self.summary_vuk_release_pending = False
