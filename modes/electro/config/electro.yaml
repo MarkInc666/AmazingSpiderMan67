@@ -278,23 +278,149 @@ show_player:
     electro_mode_start_show:
       loops: 0
 
-  # -------------------------------
   # Normal lit shots
-  # -------------------------------
   electro_lite_left_web:
     electro_left_web_lit_show:
       loops: -1
-
   electro_lite_left_pop:
     electro_left_pop_lit_show:
       loops: -1
-
   electro_lite_left_drops:
     electro_left_drops_lit_show:
       loops: -1
-
   electro_lite_right_pop:
     electro_right_pop_lit_show:
+      loops: -1
+  electro_lite_right_web:
+    electro_right_web_lit_show:
+      loops: -1
+  electro_lite_upper_spinner:
+    electro_upper_spinner_lit_show:
+      loops: -1
+  electro_lite_upper_targets:
+    electro_upper_targets_lit_show:
+      loops: -1
+  electro_lite_right_drops:
+    electro_right_drops_lit_show:
+      loops: -1
+
+  # Stop normal lit shots
+  electro_stop_left_web:
+    electro_left_web_lit_show:
+      action: stop
+  electro_stop_left_pop:
+    electro_left_pop_lit_show:
+      action: stop
+  electro_stop_left_drops:
+    electro_left_drops_lit_show:
+      action: stop
+  electro_stop_right_pop:
+    electro_right_pop_lit_show:
+      action: stop
+  electro_stop_right_web:
+    electro_right_web_lit_show:
+      action: stop
+  electro_stop_upper_spinner:
+    electro_upper_spinner_lit_show:
+      action: stop
+  electro_stop_upper_targets:
+    electro_upper_targets_lit_show:
+      action: stop
+  electro_stop_right_drops:
+    electro_right_drops_lit_show:
+      action: stop
+
+  # Super jackpot lit shots
+  electro_super_lite_left_web:
+    electro_left_web_super_show:
+      loops: -1
+  electro_super_lite_left_pop:
+    electro_left_pop_super_show:
+      loops: -1
+  electro_super_lite_left_drops:
+    electro_left_drops_super_show:
+      loops: -1
+  electro_super_lite_right_pop:
+    electro_right_pop_super_show:
+      loops: -1
+  electro_super_lite_right_web:
+    electro_right_web_super_show:
+      loops: -1
+  electro_super_lite_upper_spinner:
+    electro_upper_spinner_super_show:
+      loops: -1
+  electro_super_lite_upper_targets:
+    electro_upper_targets_super_show:
+      loops: -1
+  electro_super_lite_right_drops:
+    electro_right_drops_super_show:
+      loops: -1
+
+  electro_super_collected:
+    electro_super_collected_show:
+      loops: 0
+  electro_mode_complete:
+    electro_mode_complete_show:
+      loops: 0
+
+shows:
+  electro_mode_start_show:
+    - duration: 200ms
+      lights:
+        l_20k: yellow
+    - duration: 200ms
+      lights:
+        l_20k: off
+
+  electro_left_web_lit_show:
+    - duration: 150ms
+      lights:
+        l_left_web_target: yellow
+    - duration: 150ms
+      lights:
+        l_left_web_target: off
+
+  electro_left_pop_lit_show:
+    - duration: 150ms
+      lights:
+        l_pop_1_1: yellow
+        l_pop_1_2: yellow
+        l_pop_1_3: yellow
+        l_pop_1_4: yellow
+        l_pop_1_5: yellow
+        l_pop_1_6: yellow
+        l_pop_1_7: yellow
+        l_pop_1_8: yellow
+        l_pop_1_9: yellow
+        l_pop_1_10: yellow
+        l_pop_1_11: yellow
+        l_pop_1_12: yellow
+    - duration: 150ms
+      lights:
+        l_pop_1_1: off
+        l_pop_1_2: off
+        l_pop_1_3: off
+        l_pop_1_4: off
+        l_pop_1_5: off
+        l_pop_1_6: off
+        l_pop_1_7: off
+        l_pop_1_8: off
+        l_pop_1_9: off
+        l_pop_1_10: off
+        l_pop_1_11: off
+        l_pop_1_12: off
+
+  electro_left_drops_lit_show:
+    - duration: 120ms
+      lights:
+        l_3bankbonus: yellow
+        l_gi_3bank: yellow
+    - duration: 120ms
+      lights:
+        l_3bankbonus: blue
+        l_gi_3bank: blue
+
+  electro_right_pop_lit_show:
     - duration: 150ms
       lights:
         l_pop_2_1: yellow
@@ -323,6 +449,7 @@ show_player:
         l_pop_2_10: off
         l_pop_2_11: off
         l_pop_2_12: off
+
   electro_right_web_lit_show:
     - duration: 150ms
       lights:
@@ -371,13 +498,10 @@ show_player:
         l_gi_5bank_upper: blue
         l_gi_5bank_lower: blue
 
-  # -------------------------------
-  # Super shows
-  # -------------------------------
   electro_left_web_super_show:
     - duration: 150ms
       lights:
-        l_left_web_target: white      
+        l_left_web_target: white
     - duration: 150ms
       lights:
         l_left_web_target: off
@@ -451,6 +575,7 @@ show_player:
         l_pop_2_10: off
         l_pop_2_11: off
         l_pop_2_12: off
+
   electro_right_web_super_show:
     - duration: 150ms
       lights:
@@ -517,4 +642,3 @@ show_player:
     - duration: 500ms
       lights:
         gi: green
-
