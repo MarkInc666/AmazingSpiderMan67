@@ -208,6 +208,7 @@ class Igor(CaseFileMixin, Mode):
             message_mode_value=award,
             message_mode_seconds="",
         )
+        self.machine.events.post("play_mode_jackpot")
 
     def _collect_bad_shot(self, group):
         self._score(self.BAD_SHOT_SCORE)

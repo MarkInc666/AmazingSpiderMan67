@@ -463,6 +463,7 @@ class SinisterSurge(Mode):
             message_mode_subtitle=f"{self._get('sinister_surge_areas_cleared')} STAGES CLEARED",
             message_mode_value=jackpot_value,
         )
+        self.machine.events.post("play_mode_jackpot")
 
         self._choose_next_area()
 
@@ -532,6 +533,7 @@ class SinisterSurge(Mode):
             message_mode_title="SUPER JACKPOT",
             message_mode_value=value,
         )
+        self.machine.events.post("play_mode_super_jackpot")
 
     def _a_hit(self, **kwargs):
         self._set("sinister_surge_a_hit", 1)
@@ -702,6 +704,7 @@ class SinisterSurge(Mode):
             message_mode_subtitle="SHOOT VUK FOR ANOTHER",
             message_mode_value=value,
         )
+        self.machine.events.post("play_mode_jackpot")
         self._area_complete()
 
     def _collect_rhino_direct_vuk(self):
@@ -733,6 +736,7 @@ class SinisterSurge(Mode):
             message_mode_subtitle="DIRECT VUK!",
             message_mode_value=value,
         )
+        self.machine.events.post("play_mode_jackpot")
         self._update_gate()
         self._choose_next_area()
 

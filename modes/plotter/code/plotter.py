@@ -270,6 +270,7 @@ class Plotter(CaseFileMixin, Mode):
                 message_mode_subtitle=f"BACK PAGE LIT - {self.seconds_left}s",
                 message_mode_value=self.SUPER_VALUE,
             )
+            self.machine.events.post("play_mode_super_jackpot")
             self._update_status()
             self.machine.events.post("request_vuk_eject")
             return
@@ -280,6 +281,7 @@ class Plotter(CaseFileMixin, Mode):
             message_mode_subtitle="THE PLOTTER DEFEATED",
             message_mode_value=self.SUPER_VALUE,
         )
+        self.machine.events.post("play_mode_super_jackpot")
         self.machine.events.post("villain_summary_hold_vuk_until_done")
         self._complete_mode()
 

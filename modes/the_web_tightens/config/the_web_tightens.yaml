@@ -86,6 +86,12 @@ show_player:
   the_web_tightens_clear_phase_lights:
     shared_center_web_chase:
       action: stop
+    the_web_tightens_harley_star_flash:
+      action: stop
+  the_web_tightens_harley_star_ready:
+    the_web_tightens_harley_star_flash:
+      loops: -1
+      priority: 850
   the_web_tightens_super_ready:
     the_web_tightens_clock_tower_super_flash:
       loops: -1
@@ -101,6 +107,8 @@ show_player:
       action: stop
     shared_center_web_chase:
       action: stop
+    the_web_tightens_harley_star_flash:
+      action: stop
     the_web_tightens_clock_tower_super_flash:
       action: stop
     the_web_tightens_saucer_pulse:
@@ -112,16 +120,22 @@ light_player:
   the_web_tightens_base_lighting:
     gi: 604080
 
-  # Fiddler uses the same four note shots as the regular villain mode.
-  the_web_tightens_fiddler_left_web_on:
+  # Fiddler phase mirrors standalone Fiddler lighting exactly.
+  the_web_tightens_fiddler_base:
+    gi: 60F060
+  the_web_tightens_fiddler_left_web_solid:
     l_left_web_target: 40FF40
+  the_web_tightens_fiddler_left_web_dim:
+    l_left_web_target: 208020
   the_web_tightens_fiddler_left_web_off:
     l_left_web_target: off
-  the_web_tightens_fiddler_left_bank_on:
+  the_web_tightens_fiddler_left_bank_solid:
     l_gi_3bank: 40FF40
+  the_web_tightens_fiddler_left_bank_dim:
+    l_gi_3bank: 208020
   the_web_tightens_fiddler_left_bank_off:
-    l_gi_3bank: 404040
-  the_web_tightens_fiddler_right_pop_on:
+    l_gi_3bank: off
+  the_web_tightens_fiddler_right_pop_solid:
     l_pop_2_1: 40FF40
     l_pop_2_2: 40FF40
     l_pop_2_3: 40FF40
@@ -134,42 +148,58 @@ light_player:
     l_pop_2_10: 40FF40
     l_pop_2_11: 40FF40
     l_pop_2_12: 40FF40
+  the_web_tightens_fiddler_right_pop_dim:
+    l_pop_2_1: 208020
+    l_pop_2_2: 208020
+    l_pop_2_3: 208020
+    l_pop_2_4: 208020
+    l_pop_2_5: 208020
+    l_pop_2_6: 208020
+    l_pop_2_7: 208020
+    l_pop_2_8: 208020
+    l_pop_2_9: 208020
+    l_pop_2_10: 208020
+    l_pop_2_11: 208020
+    l_pop_2_12: 208020
   the_web_tightens_fiddler_right_pop_off:
-    l_pop_2_1: 404040
-    l_pop_2_2: 404040
-    l_pop_2_3: 404040
-    l_pop_2_4: 404040
-    l_pop_2_5: 404040
-    l_pop_2_6: 404040
-    l_pop_2_7: 404040
-    l_pop_2_8: 404040
-    l_pop_2_9: 404040
-    l_pop_2_10: 404040
-    l_pop_2_11: 404040
-    l_pop_2_12: 404040
-  the_web_tightens_fiddler_right_bank_on:
+    l_pop_2_1: off
+    l_pop_2_2: off
+    l_pop_2_3: off
+    l_pop_2_4: off
+    l_pop_2_5: off
+    l_pop_2_6: off
+    l_pop_2_7: off
+    l_pop_2_8: off
+    l_pop_2_9: off
+    l_pop_2_10: off
+    l_pop_2_11: off
+    l_pop_2_12: off
+  the_web_tightens_fiddler_right_bank_solid:
     l_gi_5bank_lower: 40FF40
     l_gi_5bank_upper: 40FF40
+  the_web_tightens_fiddler_right_bank_dim:
+    l_gi_5bank_lower: 208020
+    l_gi_5bank_upper: 208020
   the_web_tightens_fiddler_right_bank_off:
-    l_gi_5bank_lower: 404040
-    l_gi_5bank_upper: 404040
+    l_gi_5bank_lower: off
+    l_gi_5bank_upper: off
   the_web_tightens_fiddler_all_off:
     l_left_web_target: off
-    l_gi_3bank: 404040
-    l_gi_5bank_lower: 404040
-    l_gi_5bank_upper: 404040
-    l_pop_2_1: 404040
-    l_pop_2_2: 404040
-    l_pop_2_3: 404040
-    l_pop_2_4: 404040
-    l_pop_2_5: 404040
-    l_pop_2_6: 404040
-    l_pop_2_7: 404040
-    l_pop_2_8: 404040
-    l_pop_2_9: 404040
-    l_pop_2_10: 404040
-    l_pop_2_11: 404040
-    l_pop_2_12: 404040
+    l_gi_3bank: off
+    l_gi_5bank_lower: off
+    l_gi_5bank_upper: off
+    l_pop_2_1: off
+    l_pop_2_2: off
+    l_pop_2_3: off
+    l_pop_2_4: off
+    l_pop_2_5: off
+    l_pop_2_6: off
+    l_pop_2_7: off
+    l_pop_2_8: off
+    l_pop_2_9: off
+    l_pop_2_10: off
+    l_pop_2_11: off
+    l_pop_2_12: off
 
   # Conquistador: left bank -> lower spinner x3 -> 14s center web.
   the_web_tightens_conquistador_bank:
@@ -401,9 +431,6 @@ light_player:
     l_gi_right_return: 40FF40
     l_gi_right_sling: 40FF40
 
-  the_web_tightens_harley_star_ready:
-    l_star: FFFFFF
-
   # One Clock Tower Super Jackpot opportunity per completed five-phase cycle.
   # The upper-middle target itself is flashed by the dedicated show below.
   the_web_tightens_super_ready:
@@ -538,6 +565,14 @@ light_player:
     l_upper_right: stop
 
 shows:
+  the_web_tightens_harley_star_flash:
+    - duration: 300ms
+      lights:
+        l_star: FFFFFF
+    - duration: 300ms
+      lights:
+        l_star: off
+
   the_web_tightens_clock_tower_super_flash:
     - duration: 250ms
       lights:

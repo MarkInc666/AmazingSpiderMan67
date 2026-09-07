@@ -290,6 +290,7 @@ class Fakir(CaseFileMixin, Mode):
 
         self.machine.events.post("fakir_ruby_jackpot_collected", value=award, rubies=self.rubies_collected)
         self.machine.events.post("show_mode_jackpot", message_mode_title="RUBY JACKPOT", message_mode_subtitle=f"RUBY {self.total_rubies_collected}", message_mode_value=award)
+        self.machine.events.post("play_mode_jackpot")
         self._sync_player_vars("RUBY JACKPOT", f"{award:,}")
 
     def _collect_super(self, award):
@@ -299,6 +300,7 @@ class Fakir(CaseFileMixin, Mode):
         self.super_jackpots_collected += 1
         self.machine.events.post("fakir_super_jackpot_collected", value=award)
         self.machine.events.post("show_mode_jackpot", message_mode_title="SUPER RUBY JACKPOT", message_mode_subtitle="THE REAL RUBY", message_mode_value=award)
+        self.machine.events.post("play_mode_super_jackpot")
         self._sync_player_vars("SUPER JACKPOT", f"{award:,}")
 
     def _ruby_timer_expired(self, **kwargs):

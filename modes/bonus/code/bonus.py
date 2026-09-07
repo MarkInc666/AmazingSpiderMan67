@@ -333,13 +333,55 @@ class Bonus(MpfBonus):
         self._player["hold_bonus"] = 0
         self._reset_regular_bonus_state()
 
-        self.machine.events.post("asm_bonus_total_awarded", total=self._final_total)
-
+        # A player who finishes Final Showdown cashes out every future ball at
+        # 10M each. Show this after Hold Bonus so the retirement cash-out is not
+        # itself duplicated by Hold Bonus.
         self.delay.add(
-            name="asm_bonus_show_final_total",
+            name="asm_bonus_remaining_balls",
             ms=self.HELD_BONUS_DISPLAY_MS if held_entry_was_shown else 0,
-            callback=self._show_final_total,
+            callback=self._award_final_wizard_remaining_balls,
         )
+
+    def _award_final_wizard_remaining_balls(self):
+        if not self._sequence_available():
+            return
+
+        try:
+            remaining_balls = max(0, int(self._player["final_wizard_remaining_balls"]))
+            value = max(0, int(self._player["final_wizard_remaining_ball_bonus"]))
+        except (KeyError, TypeError, ValueError):
+            remaining_balls = 0
+            value = 0
+
+        if value > 0 and remaining_balls > 0:
+            self._player["score"] += value
+            self._final_total += value
+            self._show_bonus_entry("remaining_balls", "BALLS REMAINING", value)
+            self.machine.events.post(
+                "asm_bonus_remaining_balls_awarded",
+                balls=remaining_balls,
+                value=value,
+                total=self._final_total,
+            )
+            self._player["final_wizard_remaining_balls"] = 0
+            self._player["final_wizard_remaining_ball_bonus"] = 0
+            self.delay.add(
+                name="asm_bonus_after_remaining_balls",
+                ms=self.MODE_STEP_MS,
+                callback=self._finalize_bonus_total,
+            )
+            return
+
+        # Always consume stale zero/partial retirement values.
+        self._player["final_wizard_remaining_balls"] = 0
+        self._player["final_wizard_remaining_ball_bonus"] = 0
+        self._finalize_bonus_total()
+
+    def _finalize_bonus_total(self):
+        if not self._sequence_available():
+            return
+        self.machine.events.post("asm_bonus_total_awarded", total=self._final_total)
+        self._show_final_total()
 
     def _show_final_total(self):
         if not self._sequence_available():
@@ -396,6 +438,8 @@ class Bonus(MpfBonus):
 
     def _is_last_ball(self):
         try:
+            if int(self._player["final_wizard_completed"] or 0) == 1:
+                return True
             return int(self._player["ball"]) >= int(self.machine.config["game"]["balls_per_game"])
         except (KeyError, TypeError, ValueError):
             return False

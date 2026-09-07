@@ -372,6 +372,10 @@ class MasterTechnician(CaseFileMixin, Mode):
             message_mode_subtitle="MASTER TECHNICIAN",
             message_mode_value=value,
         )
+        if "SUPER" in str(title).upper():
+            self.machine.events.post("play_mode_super_jackpot")
+        else:
+            self.machine.events.post("play_mode_jackpot")
 
     def _award_score(self, value):
         player = self.machine.game.player

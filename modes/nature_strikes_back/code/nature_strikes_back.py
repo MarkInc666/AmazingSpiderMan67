@@ -95,6 +95,7 @@ class NatureStrikesBack(Mode):
             message_mode_subtitle=f"{self.hits} SHOTS HIT",
             message_mode_value=self.jackpot_value,
         )
+        self.machine.events.post("play_mode_jackpot")
         self._update_status()
         self.machine.events.post("reset_mode_message_reminder")
 

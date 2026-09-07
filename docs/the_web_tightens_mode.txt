@@ -135,3 +135,8 @@ PHYSICAL / MACHINE TEST ITEMS
 - The final-phase transition holds saucer balls until after the VUK roof feed; first saucer release is 6 seconds after the VUK kick and additional releases are staggered by 2 seconds.
 - The rooftop Super is a grouped three-target shot and all three upper inserts flash together.
 - The Super transition now verifies the physical rooftop gate-open switch before the VUK kick. If the gate has not opened, the mode retries the high-level open request and keeps the VUK ball held until the gate is confirmed open; only then does the roof feed begin.
+
+2026-09-06 presentation/ball-hold update:
+- During every villain phase, balls entering saucers may remain parked as long as at least one loose ball remains playable. Parked saucer balls may remain held across phase transitions; the ball guard releases one only if play would otherwise stall.
+- Harley & Clivendon: the Star flashes while the timed Star collect is ready.
+- Fiddler phase uses the same violin note/bad-note SFX and the same bright/dim green WATCH strobe timing and shot lighting as standalone Fiddler.

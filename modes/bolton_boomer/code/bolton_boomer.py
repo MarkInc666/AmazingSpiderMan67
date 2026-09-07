@@ -223,6 +223,7 @@ class BoltonBoomer(CaseFileMixin, Mode):
             message_mode_subtitle=f"SUPER {self.super_jackpots}",
             message_mode_value=value,
         )
+        self.machine.events.post("play_mode_super_jackpot")
 
         held = self.held_saucer
         self.held_saucer = None

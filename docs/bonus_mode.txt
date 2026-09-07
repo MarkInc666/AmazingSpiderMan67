@@ -19,3 +19,21 @@ the next ball but is not added a second time to the current final total.
 
 The final total remains on screen for the existing 2.5-second hold.
 Machine testing remains required.
+
+
+FINAL SHOWDOWN RETIREMENT CASH-OUT
+----------------------------------
+When a player completes Final Showdown, the current physical ball still drains and
+the normal end-of-ball Bonus sequence runs. Before TOTAL BONUS, the retiring player
+receives BALLS REMAINING at 10,000,000 points for each future ball that is being
+forfeited: unused normal balls plus all earned extra balls still queued.
+
+The Final Showdown completion ball itself is not counted. If Hold Bonus was earned,
+the Final Wizard completion is treated as the player's effective last ball so the
+held value is awarded now rather than banked for a turn that will never occur. The
+remaining-ball cash-out is added after Hold Bonus so it is not doubled by Hold Bonus.
+
+After Bonus, all queued extra balls for the retired player are consumed. If another
+non-retired player still has a normal ball remaining, play rotates to that player.
+If no eligible player remains, player_retirement calls MPF's explicit game.end_game()
+so the normal game_will_end -> game_ending -> game_ended / high-score path runs.

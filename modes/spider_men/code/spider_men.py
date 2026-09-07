@@ -323,6 +323,7 @@ class SpiderMen(CaseFileMixin, Mode):
             message_mode_value=self.SUPER_VALUE,
             message_mode_seconds="",
         )
+        self.machine.events.post("play_mode_super_jackpot")
         self._begin_success(show_final_message=False)
 
     def _super_tick(self):

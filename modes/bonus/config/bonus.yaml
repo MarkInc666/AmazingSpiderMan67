@@ -134,6 +134,11 @@ sound_player:
       action: play
       bus: effects
 
+  asm_bonus_remaining_balls_awarded:
+    bump_sfx_2:
+      action: play
+      bus: effects
+
   asm_bonus_held:
     sm_ill_keep_these:
       action: play

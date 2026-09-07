@@ -1,0 +1,16 @@
+FINAL WIZARD END FLOW
+=====================
+
+1. Final Showdown multiball ends.
+2. final_showdown_mode_complete is posted and the current player is marked retired.
+3. At that moment, snapshot future balls:
+   unused normal balls + queued earned extra balls.
+4. Kingpin / Final Showdown summary runs.
+5. After the summary, flippers/autofire are disabled and the remaining physical ball drains naturally.
+6. Normal ball_ending Bonus runs.
+7. Hold Bonus is resolved as an effective last-ball award.
+8. BALLS REMAINING awards 10,000,000 per snapshotted future ball.
+9. TOTAL BONUS is shown and Bonus finishes.
+10. Queued extra balls for the retired player are consumed.
+11. If another non-retired player has a normal ball remaining, MPF rotates and player_retirement skips retired players.
+12. If nobody remains eligible, player_retirement calls game.end_game(), preserving MPF's normal game_will_end, game_ending, high-score, game_ended, and attract flow.

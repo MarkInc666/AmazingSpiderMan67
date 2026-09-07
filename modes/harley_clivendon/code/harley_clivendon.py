@@ -169,6 +169,7 @@ class HarleyClivendon(CaseFileMixin, Mode):
             total=self.machine.game.player["harley_bonus"],
         )
         self.machine.events.post("show_mode_jackpot", message_mode_title="HARLEY JACKPOT", message_mode_subtitle=f"{len(self.lit_areas)} AREAS", message_mode_value=value)
+        self.machine.events.post("play_mode_jackpot")
 
         # Keep the gate open through the delayed VUK kick. Close it only after
         # the ball reaches the upper entrance, with a fallback for a missed opto.

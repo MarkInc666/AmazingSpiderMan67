@@ -171,6 +171,7 @@ class FifthDimensionCurse(Mode):
             message_mode_subtitle=f"{zones} ZONES ACTIVE",
             message_mode_value=value,
         )
+        self.machine.events.post("play_mode_jackpot")
         self.machine.events.post(
             "request_vuk_eject",
             delay_ms=self.VUK_EJECT_DELAY_MS,

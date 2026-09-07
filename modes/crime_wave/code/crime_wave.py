@@ -171,6 +171,7 @@ class CrimeWave(Mode):
             message_mode_subtitle=f"{len(self.lit_areas)} AREAS LIT",
             message_mode_value=value,
         )
+        self.machine.events.post("play_mode_jackpot")
         self._update_status()
 
     def _update_gate(self):

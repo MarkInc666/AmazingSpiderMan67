@@ -274,6 +274,7 @@ class Plutonians(CaseFileMixin, Mode):
                 message_mode_subtitle="UPPER TARGET",
                 message_mode_value=self.upper_jackpot_value,
             )
+            self.machine.events.post("play_mode_jackpot")
         else:
             self.machine.events.post(
                 "show_mode_message",

@@ -196,6 +196,7 @@ class DoctorAtlantean(CaseFileMixin, Mode):
                 message_mode_value=self.target_score,
                 message_mode_seconds="",
             )
+            self.machine.events.post("play_mode_jackpot")
             self._set_water_level(self.water_level - 1)
             if self.mode_done:
                 return
@@ -242,6 +243,7 @@ class DoctorAtlantean(CaseFileMixin, Mode):
                 message_mode_value=value,
                 message_mode_seconds="",
             )
+            self.machine.events.post("play_mode_jackpot")
         else:
             value = self.SPINNER_SCORE
             self._score(value)

@@ -227,6 +227,7 @@ class Pardo(CaseFileMixin, Mode):
         self.machine.events.post(f"pardo_correct_{group}")
         self._schedule_result_gi_restore()
         self.machine.events.post("show_mode_jackpot", message_mode_title="HYPNOSIS JACKPOT", message_mode_subtitle=group.replace("_", " ").upper(), message_mode_value=self.jackpot_value)
+        self.machine.events.post("play_mode_jackpot")
         self._sync_player_vars()
         if self.correct_shots >= self.CORRECT_SHOTS_TO_WIN:
             self._complete_mode()

@@ -210,6 +210,7 @@ class MetalEatingRobot(CaseFileMixin, Mode):
                 message_mode_subtitle=self.ZONE_LABELS[zone],
                 message_mode_value=self.repeat_value,
             )
+            self.machine.events.post("play_mode_jackpot")
             self._sync_vars()
 
     def _save_zone(self, zone, assisted=False, saucer_number=None):
@@ -233,6 +234,7 @@ class MetalEatingRobot(CaseFileMixin, Mode):
             message_mode_subtitle=self.ZONE_LABELS[zone],
             message_mode_value=self.save_value,
         )
+        self.machine.events.post("play_mode_jackpot")
 
         if len(self.saved_zones) >= self.SAVES_TO_WIN:
             self.delay.remove("metal_next_attack")

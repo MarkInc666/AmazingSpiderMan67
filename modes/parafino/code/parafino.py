@@ -397,6 +397,7 @@ class Parafino(CaseFileMixin, Mode):
         )
         self._update_mode_status()
         self.machine.events.post("show_mode_jackpot", message_mode_title="WAX JACKPOT", message_mode_subtitle="", message_mode_value=value)
+        self.machine.events.post("play_mode_jackpot")
 
         if self.case_file_extra_collects and player[data["extra_collect_used_var"]] == 0:
             player[data["extra_collect_used_var"]] = 1

@@ -385,6 +385,7 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
             message_mode_subtitle=f"ROUND {self.rounds_started} / {self.total_rounds}",
             message_mode_value=jackpot,
         )
+        self.machine.events.post("play_mode_jackpot")
         if source == "saucers" and self.rounds_started >= self.total_rounds:
             self.machine.events.post("villain_summary_hold_saucer_until_done")
         self._sync_vars()

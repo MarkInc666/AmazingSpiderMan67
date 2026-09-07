@@ -457,3 +457,7 @@ class Kotep(CaseFileMixin, Mode):
             message_mode_value=value,
             message_mode_seconds="",
         )
+        if "SUPER" in str(title).upper():
+            self.machine.events.post("play_mode_super_jackpot")
+        else:
+            self.machine.events.post("play_mode_jackpot")

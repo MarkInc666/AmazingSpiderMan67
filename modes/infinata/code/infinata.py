@@ -298,3 +298,7 @@ class Infinata(CaseFileMixin, Mode):
 
     def _show_jackpot(self, title, value, subtitle=""):
         self.machine.events.post("show_mode_jackpot", message_mode_title=title, message_mode_subtitle=subtitle, message_mode_value=value, message_mode_seconds="")
+        if "SUPER" in str(title).upper():
+            self.machine.events.post("play_mode_super_jackpot")
+        else:
+            self.machine.events.post("play_mode_jackpot")

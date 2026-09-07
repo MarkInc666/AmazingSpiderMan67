@@ -628,6 +628,7 @@ class TheWebTightens(Mode):
                 message_mode_subtitle=subtitle or "PHASE COMPLETE",
                 message_mode_value=self.cycle_successes * self.SUPER_PER_SUCCESS,
             )
+            self.machine.events.post("play_mode_jackpot")
         else:
             self.machine.events.post(
                 "show_mode_message",
@@ -767,6 +768,7 @@ class TheWebTightens(Mode):
             message_mode_subtitle=self.FIDDLER_LABELS[shot],
             message_mode_value=value,
         )
+        self.machine.events.post("play_mode_jackpot")
         self.fiddler_expected_index += 1
         if self.fiddler_expected_index >= 2:
             self._resolve_phase(True, "FIDDLER COMPLETE", "TWO NOTES PLAYED")
@@ -841,6 +843,7 @@ class TheWebTightens(Mode):
             message_mode_subtitle=self.ZONE_LABELS[zone],
             message_mode_value=value,
         )
+        self.machine.events.post("play_mode_jackpot")
         if len(self.metal_saved) >= self.METAL_SAVES_TO_WIN:
             self._resolve_phase(True, "METAL MONSTER STOPPED", "FOUR ZONES SAVED")
             return
@@ -989,6 +992,7 @@ class TheWebTightens(Mode):
             message_mode_subtitle=f"{min(self.slayer_hits + 1, self.SLAYER_REQUIRED_HITS)} OF {self.SLAYER_REQUIRED_HITS}",
             message_mode_value=value,
         )
+        self.machine.events.post("play_mode_jackpot")
 
         if not self.slayer_success_locked:
             self.slayer_hits += 1
@@ -1088,6 +1092,7 @@ class TheWebTightens(Mode):
             message_mode_subtitle=f"{len(self.harley_completed)} OF {self.HARLEY_ZONES_REQUIRED} ZONES",
             message_mode_value=value,
         )
+        self.machine.events.post("play_mode_jackpot")
         if len(self.harley_completed) >= self.HARLEY_ZONES_REQUIRED:
             self.harley_star_ready = True
             self.machine.events.post("the_web_tightens_harley_star_ready")
@@ -1117,6 +1122,7 @@ class TheWebTightens(Mode):
             message_mode_subtitle="STAR",
             message_mode_value=value,
         )
+        self.machine.events.post("play_mode_jackpot")
         self._resolve_phase(True, "HARLEY & CLIVENDON COMPLETE", "STAR COLLECTED")
 
     def _harley_star_failed(self):
@@ -1237,6 +1243,7 @@ class TheWebTightens(Mode):
             message_mode_subtitle=f"{self.cycle_successes} OF 5 PHASES",
             message_mode_value=value,
         )
+        self.machine.events.post("play_mode_super_jackpot")
         self.machine.events.post("the_web_tightens_super_collected")
         self.waiting_for_vuk = True
         self.machine.events.post("rooftop_diverter_open")
@@ -1273,6 +1280,7 @@ class TheWebTightens(Mode):
             message_mode_subtitle=subtitle,
             message_mode_value=value,
         )
+        self.machine.events.post("play_mode_jackpot")
 
     def _score(self, points):
         points = int(points)

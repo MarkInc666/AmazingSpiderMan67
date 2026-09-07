@@ -305,6 +305,7 @@ class CliveBlotto(CaseFileMixin, Mode):
                 message_mode_subtitle=self.AREA_LABELS[area],
                 message_mode_value=f"{self.extra_jackpot:,}",
             )
+            self.machine.events.post("play_mode_jackpot")
 
         self._publish_status()
 

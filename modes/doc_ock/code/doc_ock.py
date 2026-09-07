@@ -336,6 +336,7 @@ class doc_ock(CaseFileMixin, Mode):
             message_mode_title="WEB JACKPOT",
             message_mode_value=collected_value,
         )
+        self.machine.events.post("play_mode_jackpot")
 
         self.doc_ock_jackpot_spinner_multi = self.jackpots_collected + 1
 

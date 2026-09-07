@@ -392,6 +392,7 @@ class FinalShowdown(Mode):
             message_mode_subtitle=f"{self._get('final_showdown_areas_cleared')} AREAS CLEARED",
             message_mode_value=jackpot_value,
         )
+        self.machine.events.post("play_mode_jackpot")
 
         self._choose_next_area()
 
@@ -446,6 +447,7 @@ class FinalShowdown(Mode):
             message_mode_title="SUPER JACKPOT",
             message_mode_value=value,
         )
+        self.machine.events.post("play_mode_super_jackpot")
 
     def _a_hit(self, **kwargs):
         if self._ignore_gameplay_input():

@@ -226,6 +226,7 @@ class Molemen(CaseFileMixin, Mode):
             message_mode_subtitle=data["display"],
             message_mode_value=value,
         )
+        self.machine.events.post("play_mode_jackpot")
         self.machine.events.post("molemen_jackpot_collected", saucer=saucer, area=area, value=value)
         self._reset_area(area)
         self._eject_saucer(saucer)

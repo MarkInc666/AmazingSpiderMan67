@@ -226,6 +226,7 @@ class Enforcers(Mode, CaseFileMixin):
             collected=self.upper_jackpots_collected,
         )
         self.machine.events.post("show_mode_jackpot", message_mode_title="ENFORCER JACKPOT", message_mode_subtitle=self.ZONE_NAMES[zone], message_mode_value=award)
+        self.machine.events.post("play_mode_jackpot")
 
         if self.upper_jackpots_collected >= 3:
             self._light_ox()
@@ -301,6 +302,7 @@ class Enforcers(Mode, CaseFileMixin):
             value_str=self._format_score(award),
         )
         self.machine.events.post("show_mode_jackpot", message_mode_title="OX SUPER JACKPOT", message_mode_subtitle="CENTER WEB", message_mode_value=award)
+        self.machine.events.post("play_mode_super_jackpot")
         self._complete_mode()
 
     def _complete_mode(self, **kwargs):

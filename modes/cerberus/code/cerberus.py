@@ -284,6 +284,7 @@ class Cerberus(CaseFileMixin, Mode):
             jackpots=self.jackpots_collected,
         )
         self.machine.events.post("show_mode_jackpot", message_mode_title="CERBERUS JACKPOT", message_mode_subtitle=f"SAUCER {collect_saucer} - {multiplier}X", message_mode_value=award)
+        self.machine.events.post("play_mode_jackpot")
 
         if self.jackpots_collected == 3:
             # Presentation only: show_mode_message expires after 2 seconds in
