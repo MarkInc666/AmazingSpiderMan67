@@ -62,6 +62,10 @@ event_player:
   s_web_spinner_active:
     - doc_ock_spinner_hit
 
+  # Both spinners build the same Doc Ock jackpot multiplier.
+  s_trispinner_opto_active:
+    - doc_ock_spinner_hit
+
   s_web_target_left_active:
     - doc_ock_jackpot_request
 

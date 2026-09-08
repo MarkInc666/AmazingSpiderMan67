@@ -231,7 +231,8 @@ This is your **low-to-mid ceiling mode**, by design.
 
 ## Jackpot multiplier system
 
-* 1x to 4x JP scaling
+* Lower web spinner and upper spinner both increase the same jackpot multiplier by +1x per spin
+* Multiplier resets/advances according to the existing Doc Ock jackpot cycle
 
 ## Expected payout
 

@@ -52,18 +52,16 @@ class MastermindTrap(Mode):
     EXIT_TO_AREA = {"left": "right_bank", "center": "pops", "right": "left_bank"}
     AREA_LABELS = {"left_bank": "LEFT BANK", "pops": "POPS", "right_bank": "RIGHT BANK"}
 
-    LIZARD_CANDIDATES = ("left_web", "left_bank", "right_bank", "upper")
+    LIZARD_CANDIDATES = ("left_web", "left_bank", "right_bank")
     LIZARD_LABELS = {
         "left_web": "LEFT WEB",
         "left_bank": "LEFT BANK",
         "right_bank": "RIGHT BANK",
-        "upper": "UPPER TARGETS",
     }
     LIZARD_DIRECTIONS = {
         "left_web": "LEFT",
         "left_bank": "LEFT",
         "right_bank": "RIGHT",
-        "upper": "UPPER",
     }
 
     DOC_SHOTS = ("saucer_1", "saucer_2", "saucer_3", "star", "upper_a", "upper_b")
@@ -268,9 +266,6 @@ class MastermindTrap(Mode):
                     self._post_message("ADD-A-BALL", "UPPER TARGETS COMPLETE", "")
                 else:
                     self._post_message("4 BALLS MAX", "UPPER TARGETS COMPLETE", "")
-            return
-        if self.phase == "lizard_mysterio":
-            self._delivery_shot("upper")
             return
 
     # ------------------------------------------------------------------

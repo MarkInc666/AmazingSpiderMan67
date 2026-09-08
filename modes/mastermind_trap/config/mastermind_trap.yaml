@@ -104,25 +104,20 @@ show_player:
     mastermind_delivery_left_web: {action: play, loops: -1}
     mastermind_delivery_left_bank: {action: play, loops: -1}
     mastermind_delivery_right_bank: {action: play, loops: -1}
-    mastermind_delivery_upper: {action: play, loops: -1}
   mastermind_trap_delivery_left_web_off:
     mastermind_delivery_left_web: {action: stop}
   mastermind_trap_delivery_left_bank_off:
     mastermind_delivery_left_bank: {action: stop}
   mastermind_trap_delivery_right_bank_off:
     mastermind_delivery_right_bank: {action: stop}
-  mastermind_trap_delivery_upper_off:
-    mastermind_delivery_upper: {action: stop}
   mastermind_trap_delivery_clear:
     mastermind_delivery_left_web: {action: stop}
     mastermind_delivery_left_bank: {action: stop}
     mastermind_delivery_right_bank: {action: stop}
-    mastermind_delivery_upper: {action: stop}
   mastermind_trap_phase_doc:
     mastermind_delivery_left_web: {action: stop}
     mastermind_delivery_left_bank: {action: stop}
     mastermind_delivery_right_bank: {action: stop}
-    mastermind_delivery_upper: {action: stop}
     mastermind_doc_spinner:
       action: play
       loops: -1
@@ -160,7 +155,6 @@ show_player:
     mastermind_delivery_left_web: {action: stop}
     mastermind_delivery_left_bank: {action: stop}
     mastermind_delivery_right_bank: {action: stop}
-    mastermind_delivery_upper: {action: stop}
     mastermind_doc_spinner: {action: stop}
     mastermind_doc_spinner_3x: {action: stop}
     mastermind_doc_inlanes: {action: stop}
@@ -316,11 +310,6 @@ shows:
         l_5bank_3: blue
         l_5bank_4: blue
         l_5bank_5: blue
-  mastermind_delivery_upper:
-    - duration: 300ms
-      lights: {l_upper_left: yellow, l_upper_middle: yellow, l_upper_right: yellow}
-    - duration: 300ms
-      lights: {l_upper_left: blue, l_upper_middle: blue, l_upper_right: blue}
   mastermind_doc_spinner:
     - duration: 400ms
       lights: {l_spinner: white}

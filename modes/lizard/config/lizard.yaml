@@ -277,16 +277,20 @@ shows:
     - duration: 1.5s
       lights:
         gi:
-          color: F02040
+          color: green
           fade: 1.5s
 
   lizard_gi_hurry_show:
-    - duration: 1.25s
+    - duration: 500ms
       lights:
-        gi: "406060"
-    - duration: 250ms
+        gi:
+          color: F0F040
+          fade: 500ms
+    - duration: 500ms
       lights:
-        gi: F02040
+        gi:
+          color: F02040
+          fade: 500ms
 
   lizard_left_pop_available_show:
     - duration: 400ms

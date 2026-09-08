@@ -1,0 +1,84 @@
+TRUBBLE UNLEASHED — CHAPTER 3 WIZARD
+=====================================
+
+Core
+----
+- 2-ball multiball.
+- No victory condition. Scoring loops until the main multiball ends.
+- Active Case Files do not run in the wizard. Chapter Case Files add 20K each
+  through mini_wizard_case_file_bonus.
+- Normal drop hits score 25K when they are not a jackpot shot.
+
+Gate / VUK
+----------
+- Any left 3-bank drop hit opens the rooftop gate.
+- Gate open: left-bank GI is solid in the background GI color and the shared VUK
+  chase runs.
+- VUK entry closes the gate, stops the chase, and makes the left-bank GI pulse.
+- At VUK entry: all 3 left drops down selects Centaur; otherwise Diana.
+- The left bank resets after the VUK makes that selection.
+
+Diana
+-----
+- Diana starts with SPIN VALUE 1 shown to the player.
+- Every upper-spinner spin advances 1 -> 2 -> 3 -> 4 -> 5 -> 1.
+- Left upper exit locks the current spin value and starts 5 flips.
+- The spin value stages these right-bank drops:
+    5 = 1,2,3,4,5
+    4 = 1,2,4,5
+    3 = 1,3,5
+    2 = 2,4
+    1 = 3
+- FLIPS REMAINING is shown only after the left exit is hit.
+- Hitting any staged drop scores the Diana Jackpot and drops the remaining staged
+  targets. Missing all 5 flips ends that Diana attempt.
+- Diana Jackpot = 1,000,000 + (Case Files x 20,000).
+- Right-bank GI pulses while Diana is active. Any standing Diana drop has its
+  insert lit green.
+
+Centaur
+-------
+- Centaur Jackpot starts at 500,000 + (Case Files x 20,000).
+- Each upper-spinner spin adds 100,000.
+- Right-bank GI pulses while Centaur is active; inserts 2,3,4 are lit green.
+- Left upper exit raises the pop-up post.
+- When the pop-up post drops, a large 5-second countdown starts.
+- Hit the right-bank rubber before time expires to collect the Centaur Jackpot.
+
+Cerberus
+--------
+- Upper-left target lights Saucer 1.
+- Upper-center target lights Saucer 2.
+- Upper-right target lights Saucer 3.
+- Cerberus Jackpot = 1,000,000 + (Case Files x 20,000).
+- A collected Cerberus ball remains parked in its saucer whenever at least one
+  loose ball remains playable. A guard releases a parked saucer if play would
+  otherwise deadlock.
+
+Vulcan Add-a-Ball
+-----------------
+- All three upper targets begin pulsing.
+- Hit target -> its light becomes solid.
+- Once all three have been hit, right upper exit is lit/qualified for Add-a-Ball.
+- Right upper exit adds a ball whenever fewer than 4 balls are in play.
+- Maximum 4 balls on the playfield.
+- At 4 balls the Add-a-Ball remains qualified for a later right-exit attempt.
+- After Add-a-Ball is awarded, the three upper targets reset to pulsing.
+- Upper-target hits always light their corresponding Cerberus saucer, including
+  repeated hits before the Vulcan set resets.
+
+Cyclops
+-------
+- Any Diana, Centaur, or Cerberus Jackpot lights Cyclops at the center web.
+- Cyclops is worth 1,000,000 and remains lit for 10 seconds.
+- A new qualifying jackpot while Cyclops is already lit restarts the 10-second
+  window.
+
+Lighting
+--------
+- Background GI: pink (FF70C0).
+- Gate closed: left-bank GI pulses; VUK chase off.
+- Gate open: left-bank GI solid background color; VUK chase on.
+- Diana/Centaur active: right-bank GI pulses.
+- Upper targets: pulse while available, solid when hit.
+- Lit Cerberus saucers pulse purple.

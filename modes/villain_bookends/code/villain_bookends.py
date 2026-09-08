@@ -1037,21 +1037,20 @@ class VillainBookends(Mode):
             'state_var': 'mastermind_trap_state',
             'song': 'play_song_58',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Miss Trubble has unleashed her creations.
-        #   intro_2: Use roof targets, saucers, and staged drops.
-        #   intro_3: Survive multiball as long as you can.
+        # Trubble Unleashed is a looping scoring multiball. Left drops open the
+        # roof; VUK entry selects Diana/Centaur while Cerberus/Vulcan/Cyclops
+        # remain available throughout. The wizard ends only when multiball ends.
         'trubble_unleashed': {
             'title': 'TRUBBLE UNLEASHED',
-            'intro_1': 'Trubble unleashed!',
-            'intro_2': 'Hit targets/saucers.',
-            'intro_3': 'Stage drops for value.',
-            'summary_title_complete': 'TRUBBLE CONTAINED',
-            'summary_title_failed': 'TRUBBLE RUNS WILD',
+            'intro_1': 'Left drops open the roof.',
+            'intro_2': 'Targets light saucers.',
+            'intro_3': 'Keep scoring until MB ends.',
+            'summary_title_complete': 'TRUBBLE UNLEASHED',
+            'summary_title_failed': 'TRUBBLE UNLEASHED',
             'stat_1_label': 'JACKPOTS',
-            'stat_1_var': 'trubble_unleashed_jackpots_collected',
-            'stat_2_label': 'STAGED HITS',
-            'stat_2_var': 'trubble_unleashed_staged_hits',
+            'stat_1_var': 'active_mode_hits',
+            'stat_2_label': 'ADD-A-BALLS',
+            'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'trubble_unleashed_state',
             'song': 'play_song_92',

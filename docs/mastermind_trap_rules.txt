@@ -13,8 +13,8 @@ PHASE 1 - PARAFINO + SCORPION
 
 PHASE 2 - LIZARD + MYSTERIO
 - Two pop hits make serum (25,000 each).
-- Four possible delivery locations flash as Mysterio illusions: Left Web, Left Bank, Right Bank, Upper Targets.
-- One is the real delivery. A wrong choice scores 50,000, disappears, and gives LEFT / RIGHT / UPPER Spidey-Sense guidance.
+- Three possible delivery locations flash as Mysterio illusions: Left Web, Left Bank, Right Bank.
+- One is the real delivery. A wrong choice scores 50,000, disappears, and gives LEFT / RIGHT Spidey-Sense guidance.
 - Correct serum delivery scores a 500,000 Jackpot.
 - Make three successful deliveries to finish the phase.
 

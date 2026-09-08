@@ -1,8 +1,5 @@
 #config_version=6
 
-# Trubble Unleashed - Chapter 3 wizard
-# No active case-file powers. Chapter case files only scale values.
-
 mode:
   start_events: start_mode_trubble_unleashed
   stop_events:
@@ -17,24 +14,13 @@ mode:
 
 variable_player:
   multiball_trubble_unleashed_multiball_started:
-    multiball_autoplunge_active:
-      action: set
-      int: 1
-
+    multiball_autoplunge_active: {action: set, int: 1}
   multiball_trubble_unleashed_multiball_ended:
-    multiball_autoplunge_active:
-      action: set
-      int: 0
-
+    multiball_autoplunge_active: {action: set, int: 0}
   multiball_trubble_unleashed_add_a_ball_started:
-    multiball_autoplunge_active:
-      action: set
-      int: 1
-
+    multiball_autoplunge_active: {action: set, int: 1}
   multiball_trubble_unleashed_add_a_ball_ended:
-    multiball_autoplunge_active:
-      action: set
-      int: 0
+    multiball_autoplunge_active: {action: set, int: 0}
 
 multiballs:
   trubble_unleashed_multiball:
@@ -42,9 +28,6 @@ multiballs:
     ball_count_type: total
     shoot_again: 20s
     start_events: trubble_unleashed_start_multiball
-    stop_events:
-      - trubble_unleashed_stop_multiball
-
   trubble_unleashed_add_a_ball:
     ball_count: 1
     ball_count_type: add
@@ -53,329 +36,238 @@ multiballs:
 
 widget_player:
   mode_trubble_unleashed_started:
-    trubble_unleashed:
-      action: play
-
+    trubble_unleashed: {action: play}
   trubble_unleashed_mode_complete:
-    trubble_unleashed:
-      action: remove
-
+    trubble_unleashed: {action: remove}
   mode_trubble_unleashed_stopping:
-    trubble_unleashed:
-      action: remove
+    trubble_unleashed: {action: remove}
 
 event_player:
   mode_trubble_unleashed_started:
     - trubble_unleashed_setup
-
   mode_trubble_unleashed_stopping:
     - enable_daily_bugle_mystery
     - daily_bugle_restore_state
-    - trubble_unleashed_close_gate
+    - rooftop_diverter_close
     - trubble_unleashed_clear_all_lights
-
+    - trubble_unleashed_vuk_chase_stop
   trubble_unleashed_setup:
     - disable_daily_bugle_mystery
     - clear_saucers
     - reset_drops
-    - trubble_unleashed_close_gate
+    - rooftop_diverter_close
     - trubble_unleashed_clear_all_lights
-
   multiball_trubble_unleashed_multiball_ended:
     - trubble_unleashed_multiball_ended
 
-  s_upper_target_left_active:
-    - trubble_unleashed_upper_target_left_hit
-  s_upper_target_center_active:
-    - trubble_unleashed_upper_target_center_hit
-  s_upper_target_right_active:
-    - trubble_unleashed_upper_target_right_hit
+  s_left_drops_1_active: trubble_unleashed_left_drop_1_hit
+  s_left_drops_2_active: trubble_unleashed_left_drop_2_hit
+  s_left_drops_3_active: trubble_unleashed_left_drop_3_hit
+  drop_target_bank_dt_bank_left_down: trubble_unleashed_left_bank_complete
 
-  s_upper_exit_left_opto_active:
-    - trubble_unleashed_upper_exit_left
-  s_upper_exit_right_opto_active:
-    - trubble_unleashed_upper_exit_right
+  s_right_drops_1_active: trubble_unleashed_right_drop_1_hit
+  s_right_drops_2_active: trubble_unleashed_right_drop_2_hit
+  s_right_drops_3_active: trubble_unleashed_right_drop_3_hit
+  s_right_drops_4_active: trubble_unleashed_right_drop_4_hit
+  s_right_drops_5_active: trubble_unleashed_right_drop_5_hit
+  drop_target_bank_dt_bank_right_down: trubble_unleashed_right_bank_complete
 
-  s_left_drops_1_active:
-    - trubble_unleashed_left_drop_hit
-  s_left_drops_2_active:
-    - trubble_unleashed_left_drop_hit
-  s_left_drops_3_active:
-    - trubble_unleashed_left_drop_hit
+  s_upper_target_left_active: trubble_unleashed_upper_target_left_hit
+  s_upper_target_center_active: trubble_unleashed_upper_target_center_hit
+  s_upper_target_right_active: trubble_unleashed_upper_target_right_hit
+  s_trispinner_opto_active: trubble_unleashed_upper_spinner_hit
+  s_upper_exit_left_opto_active: trubble_unleashed_upper_exit_left
+  s_upper_exit_right_opto_active: trubble_unleashed_upper_exit_right
 
-  s_right_drops_1_active:
-    - trubble_unleashed_right_drop_1_hit
-  s_right_drops_2_active:
-    - trubble_unleashed_right_drop_2_hit
-  s_right_drops_3_active:
-    - trubble_unleashed_right_drop_3_hit
-  s_right_drops_4_active:
-    - trubble_unleashed_right_drop_4_hit
-  s_right_drops_5_active:
-    - trubble_unleashed_right_drop_5_hit
+  s_saucer_1_active: trubble_unleashed_saucer_1_hit
+  s_saucer_2_active: trubble_unleashed_saucer_2_hit
+  s_saucer_3_active: trubble_unleashed_saucer_3_hit
+  s_vuk_switch_active: trubble_unleashed_vuk_hit
 
-  s_saucer_1_active:
-    - trubble_unleashed_saucer_1_hit
-  s_saucer_2_active:
-    - trubble_unleashed_saucer_2_hit
-  s_saucer_3_active:
-    - trubble_unleashed_saucer_3_hit
-
-  # Daily Bugle is disabled during the wizard, so Trubble owns VUK eject/add-a-ball.
-  s_vuk_switch_active:
-    - trubble_unleashed_vuk_hit
-
-  # Flipper-cancel the post hold. The timed staged shot starts only after the post drops.
-  s_left_flipper_active{device.switches.s_right_flipper.state == 1}:
-    - trubble_unleashed_post_hold_cancel
-  s_right_flipper_active{device.switches.s_left_flipper.state == 1}:
-    - trubble_unleashed_post_hold_cancel
-
-  drop_target_bank_dt_bank_left_down:
-    - trubble_unleashed_left_bank_complete
-  drop_target_bank_dt_bank_right_down:
-    - trubble_unleashed_right_bank_complete
-
-  trubble_unleashed_open_gate: rooftop_diverter_open
-  trubble_unleashed_close_gate: rooftop_diverter_close
+  s_right_drops_rubber_active: trubble_unleashed_centaur_rubber_hit
+  s_web_target_mid_active: trubble_unleashed_cyclops_hit
+  s_left_flipper_active: trubble_unleashed_flipper
+  s_right_flipper_active: trubble_unleashed_flipper
 
 coil_player:
   trubble_unleashed_drop_right_target_1:
-    c_right_bank_drop_1:
-      action: pulse
+    c_right_bank_drop_1: {action: pulse}
   trubble_unleashed_drop_right_target_2:
-    c_right_bank_drop_2:
-      action: pulse
+    c_right_bank_drop_2: {action: pulse}
   trubble_unleashed_drop_right_target_3:
-    c_right_bank_drop_3:
-      action: pulse
+    c_right_bank_drop_3: {action: pulse}
   trubble_unleashed_drop_right_target_4:
-    c_right_bank_drop_4:
-      action: pulse
+    c_right_bank_drop_4: {action: pulse}
   trubble_unleashed_drop_right_target_5:
-    c_right_bank_drop_5:
-      action: pulse
+    c_right_bank_drop_5: {action: pulse}
 
 show_player:
+  trubble_unleashed_vuk_chase_start:
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 840
+      show_tokens: {color: FFD040}
+  trubble_unleashed_vuk_chase_stop:
+    shared_final_vuk_chase: {action: stop}
+
+  trubble_unleashed_gate_closed_state:
+    trubble_unleashed_left_bank_closed_pulse: {loops: -1, priority: 830}
+  trubble_unleashed_gate_open_state:
+    trubble_unleashed_left_bank_closed_pulse: {action: stop}
+
+  trubble_unleashed_right_bank_phase_start:
+    trubble_unleashed_right_bank_pulse: {loops: -1, priority: 830}
+  trubble_unleashed_right_bank_phase_stop:
+    trubble_unleashed_right_bank_pulse: {action: stop}
+
+  trubble_unleashed_upper_left_pulse:
+    trubble_unleashed_upper_left_pulse_show: {loops: -1, priority: 840}
+  trubble_unleashed_upper_center_pulse:
+    trubble_unleashed_upper_center_pulse_show: {loops: -1, priority: 840}
+  trubble_unleashed_upper_right_pulse:
+    trubble_unleashed_upper_right_pulse_show: {loops: -1, priority: 840}
+  trubble_unleashed_upper_targets_clear:
+    trubble_unleashed_upper_left_pulse_show: {action: stop}
+    trubble_unleashed_upper_center_pulse_show: {action: stop}
+    trubble_unleashed_upper_right_pulse_show: {action: stop}
+
   trubble_unleashed_saucer_1_lit:
-    trubble_unleashed_saucer_1_lit_show:
-      loops: -1
+    trubble_unleashed_saucer_1_lit_show: {loops: -1, priority: 840}
   trubble_unleashed_saucer_2_lit:
-    trubble_unleashed_saucer_2_lit_show:
-      loops: -1
+    trubble_unleashed_saucer_2_lit_show: {loops: -1, priority: 840}
   trubble_unleashed_saucer_3_lit:
-    trubble_unleashed_saucer_3_lit_show:
-      loops: -1
-
+    trubble_unleashed_saucer_3_lit_show: {loops: -1, priority: 840}
   trubble_unleashed_clear_saucer_lights:
-    trubble_unleashed_saucer_1_lit_show:
-      action: stop
-    trubble_unleashed_saucer_2_lit_show:
-      action: stop
-    trubble_unleashed_saucer_3_lit_show:
-      action: stop
+    trubble_unleashed_saucer_1_lit_show: {action: stop}
+    trubble_unleashed_saucer_2_lit_show: {action: stop}
+    trubble_unleashed_saucer_3_lit_show: {action: stop}
 
-  trubble_unleashed_right_drop_1_staged:
-    trubble_unleashed_right_drop_1_staged_show:
-      loops: -1
-  trubble_unleashed_right_drop_2_staged:
-    trubble_unleashed_right_drop_2_staged_show:
-      loops: -1
-  trubble_unleashed_right_drop_3_staged:
-    trubble_unleashed_right_drop_3_staged_show:
-      loops: -1
-  trubble_unleashed_right_drop_4_staged:
-    trubble_unleashed_right_drop_4_staged_show:
-      loops: -1
-  trubble_unleashed_right_drop_5_staged:
-    trubble_unleashed_right_drop_5_staged_show:
-      loops: -1
-
-  trubble_unleashed_clear_staged_lights:
-    trubble_unleashed_right_drop_1_staged_show:
-      action: stop
-    trubble_unleashed_right_drop_2_staged_show:
-      action: stop
-    trubble_unleashed_right_drop_3_staged_show:
-      action: stop
-    trubble_unleashed_right_drop_4_staged_show:
-      action: stop
-    trubble_unleashed_right_drop_5_staged_show:
-      action: stop
-
-  trubble_unleashed_add_a_ball_lit:
-    trubble_unleashed_vuk_add_a_ball_show:
-      loops: -1
-  trubble_unleashed_add_a_ball_unlit:
-    trubble_unleashed_vuk_add_a_ball_show:
-      action: stop
-
-  trubble_unleashed_staged_drop_collected:
-    trubble_unleashed_staged_success_show:
-      loops: 2
-  trubble_unleashed_saucer_jackpot_collected:
-    trubble_unleashed_saucer_jackpot_show:
-      loops: 2
-  trubble_unleashed_left_bank_complete_show:
-    trubble_unleashed_left_bank_complete_flash:
-      loops: 2
+  trubble_unleashed_cyclops_lit:
+    trubble_unleashed_cyclops_pulse: {loops: -1, priority: 845}
+  trubble_unleashed_cyclops_unlit:
+    trubble_unleashed_cyclops_pulse: {action: stop}
 
   trubble_unleashed_clear_all_lights:
-    trubble_unleashed_saucer_1_lit_show:
-      action: stop
-    trubble_unleashed_saucer_2_lit_show:
-      action: stop
-    trubble_unleashed_saucer_3_lit_show:
-      action: stop
-    trubble_unleashed_right_drop_1_staged_show:
-      action: stop
-    trubble_unleashed_right_drop_2_staged_show:
-      action: stop
-    trubble_unleashed_right_drop_3_staged_show:
-      action: stop
-    trubble_unleashed_right_drop_4_staged_show:
-      action: stop
-    trubble_unleashed_right_drop_5_staged_show:
-      action: stop
-    trubble_unleashed_vuk_add_a_ball_show:
-      action: stop
+    shared_final_vuk_chase: {action: stop}
+    trubble_unleashed_left_bank_closed_pulse: {action: stop}
+    trubble_unleashed_right_bank_pulse: {action: stop}
+    trubble_unleashed_upper_left_pulse_show: {action: stop}
+    trubble_unleashed_upper_center_pulse_show: {action: stop}
+    trubble_unleashed_upper_right_pulse_show: {action: stop}
+    trubble_unleashed_saucer_1_lit_show: {action: stop}
+    trubble_unleashed_saucer_2_lit_show: {action: stop}
+    trubble_unleashed_saucer_3_lit_show: {action: stop}
+    trubble_unleashed_cyclops_pulse: {action: stop}
 
 shows:
+  trubble_unleashed_left_bank_closed_pulse:
+    - duration: 350ms
+      lights: {l_gi_3bank: FF70C0}
+    - duration: 350ms
+      lights: {l_gi_3bank: 401830}
+
+  trubble_unleashed_right_bank_pulse:
+    - duration: 300ms
+      lights:
+        l_gi_5bank_lower: 40FF40
+        l_gi_5bank_upper: 40FF40
+    - duration: 300ms
+      lights:
+        l_gi_5bank_lower: 205020
+        l_gi_5bank_upper: 205020
+
+  trubble_unleashed_upper_left_pulse_show:
+    - duration: 250ms
+      lights: {l_upper_left: FF40FF}
+    - duration: 250ms
+      lights: {l_upper_left: 401040}
+  trubble_unleashed_upper_center_pulse_show:
+    - duration: 250ms
+      lights: {l_upper_middle: FF40FF}
+    - duration: 250ms
+      lights: {l_upper_middle: 401040}
+  trubble_unleashed_upper_right_pulse_show:
+    - duration: 250ms
+      lights: {l_upper_right: FF40FF}
+    - duration: 250ms
+      lights: {l_upper_right: 401040}
+
   trubble_unleashed_saucer_1_lit_show:
     - duration: 200ms
-      lights:
-        l_1: purple
-        l_1_hole_l: purple
-        l_1_hole_r: purple
+      lights: {l_1: purple, l_1_hole_l: purple, l_1_hole_r: purple}
     - duration: 200ms
-      lights:
-        l_1: off
-        l_1_hole_l: off
-        l_1_hole_r: off
-
+      lights: {l_1: off, l_1_hole_l: off, l_1_hole_r: off}
   trubble_unleashed_saucer_2_lit_show:
     - duration: 200ms
-      lights:
-        l_2: purple
-        l_2_hole_l: purple
-        l_2_hole_r: purple
+      lights: {l_2: purple, l_2_hole_l: purple, l_2_hole_r: purple}
     - duration: 200ms
-      lights:
-        l_2: off
-        l_2_hole_l: off
-        l_2_hole_r: off
-
+      lights: {l_2: off, l_2_hole_l: off, l_2_hole_r: off}
   trubble_unleashed_saucer_3_lit_show:
     - duration: 200ms
-      lights:
-        l_3: purple
-        l_3_hole_l: purple
-        l_3_hole_r: purple
+      lights: {l_3: purple, l_3_hole_l: purple, l_3_hole_r: purple}
     - duration: 200ms
-      lights:
-        l_3: off
-        l_3_hole_l: off
-        l_3_hole_r: off
+      lights: {l_3: off, l_3_hole_l: off, l_3_hole_r: off}
 
-  trubble_unleashed_right_drop_1_staged_show:
-    - duration: 150ms
-      lights:
-        l_5bank_1: green
-    - duration: 150ms
-      lights:
-        l_5bank_1: off
-  trubble_unleashed_right_drop_2_staged_show:
-    - duration: 150ms
-      lights:
-        l_5bank_2: green
-    - duration: 150ms
-      lights:
-        l_5bank_2: off
-  trubble_unleashed_right_drop_3_staged_show:
-    - duration: 150ms
-      lights:
-        l_5bank_3: green
-    - duration: 150ms
-      lights:
-        l_5bank_3: off
-  trubble_unleashed_right_drop_4_staged_show:
-    - duration: 150ms
-      lights:
-        l_5bank_4: green
-    - duration: 150ms
-      lights:
-        l_5bank_4: off
-  trubble_unleashed_right_drop_5_staged_show:
-    - duration: 150ms
-      lights:
-        l_5bank_5: green
-    - duration: 150ms
-      lights:
-        l_5bank_5: off
-
-  trubble_unleashed_vuk_add_a_ball_show:
+  trubble_unleashed_cyclops_pulse:
     - duration: 200ms
-      lights:
-        l_gi_a: cyan
-        l_gi_ramp: cyan
+      lights: {l_mid_web_target: white}
     - duration: 200ms
-      lights:
-        l_gi_a: off
-        l_gi_ramp: off
-
-  trubble_unleashed_staged_success_show:
-    - duration: 100ms
-      lights:
-        l_gi_5bank_lower: blue
-        l_gi_5bank_upper: blue
-    - duration: 100ms
-      lights:
-        l_gi_5bank_lower: off
-        l_gi_5bank_upper: off
-
-  trubble_unleashed_saucer_jackpot_show:
-    - duration: 100ms
-      lights:
-        l_1: white
-        l_1_hole_l: white
-        l_1_hole_r: white
-        l_2: white
-        l_2_hole_l: white
-        l_2_hole_r: white
-        l_3: white
-        l_3_hole_l: white
-        l_3_hole_r: white
-    - duration: 100ms
-      lights:
-        l_1: off
-        l_1_hole_l: off
-        l_1_hole_r: off
-        l_2: off
-        l_2_hole_l: off
-        l_2_hole_r: off
-        l_3: off
-        l_3_hole_l: off
-        l_3_hole_r: off
-
-  trubble_unleashed_left_bank_complete_flash:
-    - duration: 100ms
-      lights:
-        l_gi_3bank: white
-    - duration: 100ms
-      lights:
-        l_gi_3bank: off
+      lights: {l_mid_web_target: off}
 
 light_player:
-  # Full-playfield GI theme while this mode is active.
   mode_trubble_unleashed_started:
     gi: FF70C0
-
   mode_trubble_unleashed_stopping:
     gi: E0E0E0
 
+  trubble_unleashed_gate_open_state:
+    l_gi_3bank: FF70C0
+  trubble_unleashed_gate_closed_state:
+    l_gi_3bank: off
+
+  trubble_unleashed_upper_targets_clear:
+    l_upper_left: off
+    l_upper_middle: off
+    l_upper_right: off
+  trubble_unleashed_upper_left_solid:
+    l_upper_left: FF40FF
+  trubble_unleashed_upper_center_solid:
+    l_upper_middle: FF40FF
+  trubble_unleashed_upper_right_solid:
+    l_upper_right: FF40FF
+
+  trubble_unleashed_diana_stage_clear:
+    l_5bank_1: off
+    l_5bank_2: off
+    l_5bank_3: off
+    l_5bank_4: off
+    l_5bank_5: off
+  trubble_unleashed_diana_all_up:
+    l_5bank_1: green
+    l_5bank_2: green
+    l_5bank_3: green
+    l_5bank_4: green
+    l_5bank_5: green
+  trubble_unleashed_diana_drop_1_on: {l_5bank_1: green}
+  trubble_unleashed_diana_drop_2_on: {l_5bank_2: green}
+  trubble_unleashed_diana_drop_3_on: {l_5bank_3: green}
+  trubble_unleashed_diana_drop_4_on: {l_5bank_4: green}
+  trubble_unleashed_diana_drop_5_on: {l_5bank_5: green}
+
+  trubble_unleashed_centaur_targets:
+    l_5bank_1: off
+    l_5bank_2: green
+    l_5bank_3: green
+    l_5bank_4: green
+    l_5bank_5: off
+  trubble_unleashed_centaur_targets_clear:
+    l_5bank_1: off
+    l_5bank_2: off
+    l_5bank_3: off
+    l_5bank_4: off
+    l_5bank_5: off
+
   trubble_unleashed_clear_all_lights:
-    l_gi_a: off
-    l_gi_ramp: off
     l_gi_3bank: off
     l_gi_5bank_lower: off
     l_gi_5bank_upper: off
@@ -396,23 +288,10 @@ light_player:
     l_5bank_3: off
     l_5bank_4: off
     l_5bank_5: off
-
-  trubble_unleashed_setup:
-    l_gi_3bank: blue
-
-  trubble_unleashed_upper_target_left_hit:
-    l_upper_left: purple
-  trubble_unleashed_upper_target_center_hit:
-    l_upper_middle: purple
-  trubble_unleashed_upper_target_right_hit:
-    l_upper_right: purple
+    l_mid_web_target: off
 
 sound_player:
   play_mode_jackpot:
-    jackpot_2:
-      action: play
-      bus: effects
+    jackpot_2: {action: play, bus: effects}
   play_mode_super_jackpot:
-    jackpot_2:
-      action: play
-      bus: effects
+    jackpot_2: {action: play, bus: effects}

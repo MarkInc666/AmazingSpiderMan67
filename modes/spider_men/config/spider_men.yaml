@@ -163,25 +163,26 @@ light_player:
 
 
 shows:
-  # Full-playfield horizontal band chase. All bands stay blue while one red
-  # band travels from the bottom (band_1) to the top (band_8) every 250ms.
+  # Full-playfield horizontal band chase. All bands stay soft blue while a
+  # three-band pink/red/pink wave travels from the bottom (band_1) to the top
+  # (band_8) every 250ms, wrapping around at the ends.
   spider_men_band_chase_show:
     - duration: 250ms
-      lights: {band_1: red, band_2: blue, band_3: blue, band_4: blue, band_5: blue, band_6: blue, band_7: blue, band_8: blue}
+      lights: {band_1: "F080F0", band_2: "F08080", band_3: "F080F0", band_4: "8080F0", band_5: "8080F0", band_6: "8080F0", band_7: "8080F0", band_8: "8080F0"}
     - duration: 250ms
-      lights: {band_1: blue, band_2: red, band_3: blue, band_4: blue, band_5: blue, band_6: blue, band_7: blue, band_8: blue}
+      lights: {band_1: "8080F0", band_2: "F080F0", band_3: "F08080", band_4: "F080F0", band_5: "8080F0", band_6: "8080F0", band_7: "8080F0", band_8: "8080F0"}
     - duration: 250ms
-      lights: {band_1: blue, band_2: blue, band_3: red, band_4: blue, band_5: blue, band_6: blue, band_7: blue, band_8: blue}
+      lights: {band_1: "8080F0", band_2: "8080F0", band_3: "F080F0", band_4: "F08080", band_5: "F080F0", band_6: "8080F0", band_7: "8080F0", band_8: "8080F0"}
     - duration: 250ms
-      lights: {band_1: blue, band_2: blue, band_3: blue, band_4: red, band_5: blue, band_6: blue, band_7: blue, band_8: blue}
+      lights: {band_1: "8080F0", band_2: "8080F0", band_3: "8080F0", band_4: "F080F0", band_5: "F08080", band_6: "F080F0", band_7: "8080F0", band_8: "8080F0"}
     - duration: 250ms
-      lights: {band_1: blue, band_2: blue, band_3: blue, band_4: blue, band_5: red, band_6: blue, band_7: blue, band_8: blue}
+      lights: {band_1: "8080F0", band_2: "8080F0", band_3: "8080F0", band_4: "8080F0", band_5: "F080F0", band_6: "F08080", band_7: "F080F0", band_8: "8080F0"}
     - duration: 250ms
-      lights: {band_1: blue, band_2: blue, band_3: blue, band_4: blue, band_5: blue, band_6: red, band_7: blue, band_8: blue}
+      lights: {band_1: "8080F0", band_2: "8080F0", band_3: "8080F0", band_4: "8080F0", band_5: "8080F0", band_6: "F080F0", band_7: "F08080", band_8: "F080F0"}
     - duration: 250ms
-      lights: {band_1: blue, band_2: blue, band_3: blue, band_4: blue, band_5: blue, band_6: blue, band_7: red, band_8: blue}
+      lights: {band_1: "F080F0", band_2: "8080F0", band_3: "8080F0", band_4: "8080F0", band_5: "8080F0", band_6: "8080F0", band_7: "F080F0", band_8: "F08080"}
     - duration: 250ms
-      lights: {band_1: blue, band_2: blue, band_3: blue, band_4: blue, band_5: blue, band_6: blue, band_7: blue, band_8: red}
+      lights: {band_1: "F08080", band_2: "F080F0", band_3: "8080F0", band_4: "8080F0", band_5: "8080F0", band_6: "8080F0", band_7: "8080F0", band_8: "F080F0"}
 
   # Unaligned positions pulse between full and low red. Completed positions
   # are set solid red by light_player and rotate with the same state array.
