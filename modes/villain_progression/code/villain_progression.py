@@ -1158,11 +1158,17 @@ class VillainProgression(Mode):
         if player and self._safe_int(player["mystery_vuk_intro_hold_active"], 0) == 1:
             self.machine.events.post("vuk_eject_suppressed_mystery_intro_hold")
             return
-        vuk_switch = self.machine.switches.get("s_vuk_switch")
-        if vuk_switch and self.machine.switch_controller.is_active(vuk_switch):
+        if self._vuk_is_occupied():
             self.machine.events.post("up_kick")
         else:
             self.machine.events.post("vuk_eject_skipped_empty")
+
+    def _vuk_is_occupied(self):
+        vuk_switch = self.machine.switches.get("s_vuk_switch")
+        return bool(
+            vuk_switch
+            and self.machine.switch_controller.is_active(vuk_switch)
+        )
 
     def _cancel_vuk_eject_request(self, **kwargs):
         self.delay.remove("shared_vuk_eject_request")
@@ -1841,6 +1847,9 @@ class VillainProgression(Mode):
 
         # If that summary finished the fifth villain in the chapter, make the
         # chapter mini-wizard immediately available at the Daily Bugle VUK.
+        # When the completing shot itself was the VUK, transfer that same held
+        # ball into the wizard intro instead of ejecting it and asking the
+        # player to shoot the VUK again.
         #
         # Important: _villain_mode_finished() recalculates with post_events=False
         # before the summary so the status widget can show the updated chapter
@@ -1855,12 +1864,62 @@ class VillainProgression(Mode):
             and self._safe_int(player["chapter_select_needed"], 0) == 0
             and self._safe_int(player["chapter_select_active"], 0) == 0
         ):
-            self._mini_wizard_ready_at_daily_bugle(
-                post_restore=False,
-                reason="villain_summary_done",
-            )
+            summary_vuk_held = self._safe_int(kwargs.get("summary_vuk_held"), 0) == 1
+            if summary_vuk_held and self._vuk_is_occupied():
+                # VillainBookends is still inside its summary teardown here.
+                # Claim the physical ball now, then defer the intro request so
+                # the finished summary cannot clear the new intro's state.
+                self.machine.events.post(
+                    "villain_summary_transfer_vuk_to_mini_wizard",
+                    villain=villain,
+                )
+                self.delay.reset(
+                    name="mini_wizard_start_from_summary_vuk",
+                    ms=50,
+                    callback=self._start_mini_wizard_from_summary_vuk,
+                    villain=villain,
+                )
+            else:
+                self._mini_wizard_ready_at_daily_bugle(
+                    post_restore=False,
+                    reason="villain_summary_done",
+                )
         self._restore_state()
         self._schedule_case_files_restore(reason="villain_summary_done")
+
+    def _start_mini_wizard_from_summary_vuk(self, villain=None, **kwargs):
+        """Start a newly-qualified chapter wizard with the held winning ball."""
+        if not self.machine.game:
+            return
+
+        player = self.machine.game.player
+        ready = (
+            self._safe_int(player["chapter_mini_wizard_ready"], 0) == 1
+            and self._safe_int(player["chapter_select_needed"], 0) == 0
+            and self._safe_int(player["chapter_select_active"], 0) == 0
+            and self._safe_int(player["villain_mode_running"], 0) == 0
+        )
+        if ready and self._vuk_is_occupied():
+            self.machine.events.post(
+                "chapter_mini_wizard_auto_start_from_summary_vuk",
+                villain=villain,
+            )
+            self._daily_bugle_hit()
+            return
+
+        # The transfer was requested from a real summary hold, but retain a
+        # safe recovery if the switch clears before the deferred start runs.
+        self.machine.events.post(
+            "chapter_mini_wizard_summary_vuk_auto_start_cancelled",
+            villain=villain,
+        )
+        self.machine.events.post("enable_daily_bugle_mystery")
+        self.machine.events.post("daily_bugle_restore_state")
+        if ready:
+            self._mini_wizard_ready_at_daily_bugle(
+                post_restore=True,
+                reason="summary_vuk_auto_start_fallback",
+            )
 
     def _villain_completed(self, villain_key=None, **kwargs):
         # Compatibility hook for anything that still posts villain_played.

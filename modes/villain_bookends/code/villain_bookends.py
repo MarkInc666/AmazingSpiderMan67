@@ -1262,6 +1262,10 @@ class VillainBookends(Mode):
         self.add_mode_event_handler("villain_bookend_intro_hold_request", self._intro_hold_request)
         self.add_mode_event_handler("villain_bookend_intro_hold_release", self._intro_hold_release)
         self.add_mode_event_handler("villain_summary_hold_vuk_until_done", self._hold_vuk_until_summary_done)
+        self.add_mode_event_handler(
+            "villain_summary_transfer_vuk_to_mini_wizard",
+            self._transfer_vuk_hold_to_mini_wizard,
+        )
         self.add_mode_event_handler("villain_summary_hold_saucer_until_done", self._mark_terminal_award)
         self.add_mode_event_handler("villain_summary_delay_for_final_award", self._mark_terminal_award)
 
@@ -1300,6 +1304,15 @@ class VillainBookends(Mode):
             return
         self.machine.events.post("disable_daily_bugle_mystery")
         self.machine.events.post("daily_bugle_cancel_vuk_delay_eject")
+
+    def _transfer_vuk_hold_to_mini_wizard(self, **kwargs):
+        """Keep a fifth-villain VUK ball held for the chapter-wizard intro."""
+        if not self.summary_vuk_release_pending:
+            return
+        self.summary_vuk_release_pending = False
+        self.delay.remove("villain_summary_enforce_vuk_hold")
+        self.delay.remove("villain_summary_restore_daily_bugle")
+        self.machine.events.post("villain_summary_vuk_hold_transferred_to_mini_wizard")
 
     def _intro_request(self, villain=None, start_event=None, **kwargs):
         if villain not in self.VILLAINS:
@@ -1612,7 +1625,16 @@ class VillainBookends(Mode):
             if stage == "comic_summary":
                 self.machine.events.post("wizard_comic_summary_hide")
             self.machine.events.post("villain_bookend_summary_hide")
-            self.machine.events.post("villain_bookend_summary_done", villain=villain)
+            # Snapshot this before posting summary-done. Progression may
+            # synchronously transfer the held VUK ball to a newly-qualified
+            # chapter wizard, which clears summary_vuk_release_pending so the
+            # normal up-kick below is intentionally skipped.
+            summary_vuk_was_held = self.summary_vuk_release_pending
+            self.machine.events.post(
+                "villain_bookend_summary_done",
+                villain=villain,
+                summary_vuk_held=summary_vuk_was_held,
+            )
             self.delay.remove("wizard_comic_summary_reassert_key")
             self._set_player_comic_key(0)
             self._set_machine_var("wizard_summary_stamp_text", "")

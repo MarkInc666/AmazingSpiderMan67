@@ -31,6 +31,9 @@ Core rules
 - A VUK capture during the ordered-drop phase uses the shared eject path to
   feed the ball through the open rooftop gate.
 - Each correct target scores 100,000 points.
+- The objective reminder updates after every correct target, so its ordered-drop
+  counter always shows current progress (for example, 7 / 8) instead of
+  returning to the startup 0 / 8 message.
 
 Super round
 -----------

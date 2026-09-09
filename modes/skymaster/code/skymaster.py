@@ -260,6 +260,7 @@ class Skymaster(CaseFileMixin, Mode):
             "TARGET IN ORDER",
             f"NEXT: {self.TARGET_LABELS[self._expected_target()]}",
             value=f"{self.progress} / {len(self.TARGETS)}",
+            reminder=True,
         )
         self._light_expected_target()
 
