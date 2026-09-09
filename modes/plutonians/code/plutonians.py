@@ -359,7 +359,7 @@ class Plutonians(CaseFileMixin, Mode):
         self.machine.events.post("hide_mode_status")
         self.machine.events.post("plutonians_control_repaired")
         self.machine.events.post(
-            "show_mode_jackpot",
+            "show_mode_message",
             message_mode_title="SPACE WARP CONTROL",
             message_mode_subtitle="REPAIRED",
             message_mode_value=self.completion_value,

@@ -493,7 +493,6 @@ class Diana(CaseFileMixin, Mode):
             value=value,
         )
         self._show_mode_jackpot("BULLSEYE", value, f"HUNT {self.current_hunt}")
-        self.machine.events.post("play_mode_jackpot")
         self._use_shot_assist_if_available(source="drop", hit_target=target)
         self._sync_vars()
         self._check_hunt_complete()
@@ -578,7 +577,11 @@ class Diana(CaseFileMixin, Mode):
                 arrows_remaining=self.arrows_remaining,
                 value=self.end_bonus,
             )
-            self._show_mode_jackpot("ARROW BONUS", self.end_bonus, f"{self.arrows_remaining} ARROWS")
+            self._show_mode_message(
+                "ARROW BONUS",
+                f"{self.arrows_remaining} ARROWS",
+                value=self.end_bonus,
+            )
         self._sync_vars()
 
     def _score(self, points):

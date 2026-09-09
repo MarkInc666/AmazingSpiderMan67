@@ -134,7 +134,7 @@ class Desperado(Mode, CaseFileMixin):
     def _timer_expired(self, **kwargs):
         if self.mode_done:
             return
-        self._show_message("TIME UP", "DESPERADO ESCAPES", event="show_mode_jackpot")
+        self._show_message("TIME UP", "DESPERADO ESCAPES")
         self._finish_mode(defeated=False)
 
     def _left_bank_complete(self, **kwargs):
@@ -179,7 +179,7 @@ class Desperado(Mode, CaseFileMixin):
         self.machine.game.player["active_mode_stat_2"] = self.outlaws
         self.machine.events.post(f"desperado_target_{target}_complete")
         self.machine.events.post("desperado_new_target_complete", target=target, value=value)
-        self._show_message("OUTLAW SPOTTED", f"DROP {target}", value=self._format_score(value), event="show_mode_jackpot")
+        self._show_message("OUTLAW SPOTTED", f"DROP {target}", value=self._format_score(value))
 
     def _should_use_shot_assist(self):
         return (
@@ -195,7 +195,7 @@ class Desperado(Mode, CaseFileMixin):
                 self.shot_assist_used = True
                 self._complete_target(target, self.new_target_value)
                 self._pulse_drop(target)
-                self._show_message("SHOT ASSIST", f"DROP {target} SPOTTED", event="show_mode_jackpot")
+                self._show_message("SHOT ASSIST", f"DROP {target} SPOTTED")
                 return
 
     def _all_targets_lit(self):
@@ -205,7 +205,7 @@ class Desperado(Mode, CaseFileMixin):
             self.extra_round_active = True
             self.bank_sweeping = True
             self.machine.events.post("desperado_extra_round_started")
-            self._show_message("FINAL SHOWDOWN", "HIT ANY RIGHT DROP", value=self._format_score(self.EXTRA_JACKPOT_VALUE), event="show_mode_jackpot")
+            self._show_message("FINAL SHOWDOWN", "HIT ANY RIGHT DROP", value=self._format_score(self.EXTRA_JACKPOT_VALUE))
             self._drop_targets(excluding=None)
             self.delay.add(name="desperado_reset_right_bank", ms=self.BANK_RESET_DELAY_MS, callback=self._reset_for_extra_round)
             return
@@ -311,7 +311,7 @@ class Desperado(Mode, CaseFileMixin):
         self.delay.remove("desperado_reset_right_bank")
         self.machine.game.player["desperado_state"] = 2 if defeated else 1
         if defeated:
-            self._show_message("DESPERADO CAPTURED", "MODE COMPLETE", event="show_mode_jackpot")
+            self._show_message("DESPERADO CAPTURED", "MODE COMPLETE")
             self.machine.events.post("villain_summary_delay_for_final_award")
         self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post("desperado_mode_complete")

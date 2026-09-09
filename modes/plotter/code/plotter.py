@@ -195,7 +195,7 @@ class Plotter(CaseFileMixin, Mode):
             self._start_vuk_timer()
         else:
             self.machine.events.post(
-                "show_mode_jackpot",
+                "show_mode_message",
                 message_mode_title="SHOT ASSIST" if assisted else "SCHEME STOPPED",
                 message_mode_subtitle=(
                     f"SAUCER {collected_saucer} COLLECTED — {self.schemes} OF 3"
@@ -221,7 +221,7 @@ class Plotter(CaseFileMixin, Mode):
         self.seconds_left = self.vuk_seconds
         self.machine.events.post("rooftop_diverter_open")
         self.machine.events.post(
-            "show_mode_jackpot",
+            "show_mode_message",
             message_mode_title="THE PLOTTER EXPOSED",
             message_mode_subtitle=f"SHOOT DAILY BUGLE VUK - {self.seconds_left}s",
             message_mode_value=self.SUPER_VALUE,
@@ -291,7 +291,7 @@ class Plotter(CaseFileMixin, Mode):
         self._score(self.BACK_PAGE_VALUE)
         self.machine.events.post("plotter_back_page_collected")
         self.machine.events.post(
-            "show_mode_jackpot",
+            "show_mode_message",
             message_mode_title="BACK PAGE BONUS",
             message_mode_subtitle="THE PLOTTER DEFEATED",
             message_mode_value=self.BACK_PAGE_VALUE,

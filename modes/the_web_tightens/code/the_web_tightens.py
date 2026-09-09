@@ -623,12 +623,11 @@ class TheWebTightens(Mode):
             self.cycle_successes += 1
             self.total_phase_successes += 1
             self.machine.events.post(
-                "show_mode_jackpot",
+                "show_mode_message",
                 message_mode_title=title,
                 message_mode_subtitle=subtitle or "PHASE COMPLETE",
                 message_mode_value=self.cycle_successes * self.SUPER_PER_SUCCESS,
             )
-            self.machine.events.post("play_mode_jackpot")
         else:
             self.machine.events.post(
                 "show_mode_message",
@@ -838,7 +837,6 @@ class TheWebTightens(Mode):
         self.metal_saved.add(zone)
         value = self._jackpot()
         self._score(value)
-        self.machine.events.post("play_mode_jackpot")
         self.machine.events.post(f"the_web_tightens_zone_{zone}_saved")
         self.machine.events.post(
             "show_mode_jackpot",
@@ -990,7 +988,6 @@ class TheWebTightens(Mode):
             return
         value = self._jackpot()
         self._score(value)
-        self.machine.events.post("play_mode_jackpot")
         self.machine.events.post(
             "show_mode_jackpot",
             message_mode_title="SLAYER JACKPOT",
@@ -1007,7 +1004,7 @@ class TheWebTightens(Mode):
                 self.total_phase_successes += 1
                 self._sync_vars()
                 self.machine.events.post(
-                    "show_mode_jackpot",
+                    "show_mode_message",
                     message_mode_title="SPIDER-SLAYER COMPLETE",
                     message_mode_subtitle="LIT SHOTS WILL EXPIRE",
                     message_mode_value=self.cycle_successes * self.SUPER_PER_SUCCESS,
@@ -1089,7 +1086,6 @@ class TheWebTightens(Mode):
         self.harley_completed.add(zone)
         value = self._jackpot()
         self._score(value)
-        self.machine.events.post("play_mode_jackpot")
         self.machine.events.post(f"the_web_tightens_zone_{zone}_complete")
         self.machine.events.post(
             "show_mode_jackpot",
@@ -1122,7 +1118,6 @@ class TheWebTightens(Mode):
         self.delay.remove("web_harley_star_timeout")
         value = self._jackpot(2)
         self._score(value)
-        self.machine.events.post("play_mode_jackpot")
         self.machine.events.post(
             "show_mode_jackpot",
             message_mode_title="HARLEY 2X JACKPOT",
@@ -1243,7 +1238,6 @@ class TheWebTightens(Mode):
         if value > 0:
             self.supers_collected += 1
             self._score(value)
-        self.machine.events.post("play_mode_super_jackpot")
         self.machine.events.post(
             "show_mode_jackpot",
             message_mode_title="SUPER JACKPOT",
@@ -1280,7 +1274,6 @@ class TheWebTightens(Mode):
     def _score_required_jackpot(self, title, subtitle):
         value = self._jackpot()
         self._score(value)
-        self.machine.events.post("play_mode_jackpot")
         self.machine.events.post(
             "show_mode_jackpot",
             message_mode_title=title,

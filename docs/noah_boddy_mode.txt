@@ -15,6 +15,9 @@ CORE GAMEPLAY
   locations. The shared route chase restarts until the player returns upstairs.
 - The upper spinner adds 25,000 per hit to the uncapped Secret Jackpot and banks
   the effective increase into persistent INVISIBLE FORTUNE.
+- Spinner build updates use the ordinary mode-message presentation and do not
+  play Jackpot audio. Only collecting the secret target uses the Jackpot
+  presentation and Jackpot SFX.
 - When only the secret drop remains, a 16-second hurry-up begins. Hit that drop
   to collect the Secret Jackpot. Expiry displays NOAH BODDY ESCAPED.
 

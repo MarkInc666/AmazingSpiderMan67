@@ -468,7 +468,7 @@ class Fiddler(CaseFileMixin, Mode):
         self._score(self.note_value)
         self.notes_hit += 1
         self.machine.events.post(
-            "show_mode_jackpot",
+            "show_mode_message",
             message_mode_title="CORRECT NOTE",
             message_mode_subtitle=self.SHOT_LABELS[shot],
             message_mode_value=self.note_value,

@@ -327,7 +327,7 @@ class VonRantenraven(CaseFileMixin, Mode):
         self.machine.game.player[f"{self.MODE_KEY}_state"] = 2
         self.machine.events.post("von_rantenraven_targets_off")
         self.machine.events.post("von_rantenraven_saucers_off")
-        self._show_message("SKY HARBOR", "MODE COMPLETE", value=self.mode_points, event="show_mode_jackpot")
+        self._show_message("SKY HARBOR", "MODE COMPLETE", value=self.mode_points)
         self.machine.events.post("villain_summary_delay_for_final_award")
         self.machine.events.post("von_rantenraven_mode_complete")
 

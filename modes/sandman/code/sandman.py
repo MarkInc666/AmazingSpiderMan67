@@ -317,14 +317,14 @@ class Sandman(CaseFileMixin, Mode):
         self.direction = 1 - self.direction
 
         self.banks_completed += 1
-        self._show_message("BANK CLEARED", f"{self.banks_completed} OF {self.max_banks}", event="show_mode_jackpot")
+        self._show_message("BANK CLEARED", f"{self.banks_completed} OF {self.max_banks}")
         self.machine.events.post("sandman_bank_complete")
 
         self.update_player_vars()
 
         if self.banks_completed >= self.max_banks:
             self.mode_done = True
-            self._show_message("SANDMAN DEFEATED", "MODE COMPLETE", event="show_mode_jackpot")
+            self._show_message("SANDMAN DEFEATED", "MODE COMPLETE")
             self.machine.events.post("villain_summary_delay_for_final_award")
             self.machine.events.post("sandman_mode_complete")
             self.machine.game.player["sandman_state"] = 2

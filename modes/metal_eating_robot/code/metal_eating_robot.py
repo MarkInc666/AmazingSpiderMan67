@@ -229,13 +229,11 @@ class MetalEatingRobot(CaseFileMixin, Mode):
 
         title = "SPIDER-MAN SAVES THE ZONE!" if assisted else "ZONE SAVED"
         self.machine.events.post(
-            "show_mode_jackpot",
+            "show_mode_message",
             message_mode_title=title,
             message_mode_subtitle=self.ZONE_LABELS[zone],
             message_mode_value=self.save_value,
         )
-        self.machine.events.post("play_mode_jackpot")
-
         if len(self.saved_zones) >= self.SAVES_TO_WIN:
             self.delay.remove("metal_next_attack")
         else:

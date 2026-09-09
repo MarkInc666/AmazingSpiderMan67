@@ -212,10 +212,10 @@ class Centaur(CaseFileMixin, Mode):
             drops_down=len(self.drops_down),
             jackpot=self._current_jackpot_value(),
         )
-        self._show_mode_jackpot(
+        self._show_mode_message(
             "JACKPOT BUILDS",
-            self._current_jackpot_value(),
             f"{len(self.drops_down)} DROPS DOWN",
+            value=self._current_jackpot_value(),
         )
 
         if not self.gate_open and len(self.drops_down) >= self.DROPS_TO_OPEN_GATE:
@@ -462,7 +462,7 @@ class Centaur(CaseFileMixin, Mode):
         self.consolation_awarded = 1
         self._score(self.CONSOLATION_SCORE)
         self.machine.events.post("centaur_consolation_awarded", value=self.CONSOLATION_SCORE, source=source)
-        self._show_mode_jackpot("CONSOLATION", self.CONSOLATION_SCORE)
+        self._show_mode_message("CONSOLATION", value=self.CONSOLATION_SCORE)
         self._sync_vars()
         self._resolve_final_attempt(delay_second_chance=True)
 

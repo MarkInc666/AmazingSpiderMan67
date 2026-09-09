@@ -176,7 +176,13 @@ class Infinata(CaseFileMixin, Mode):
             subtitle = "BONUS AREA CLEARED"
         if assisted:
             subtitle = f"SHOT ASSIST - {subtitle}"
-        self._show_jackpot("AREA CLEARED", value, subtitle)
+        self.machine.events.post(
+            "show_mode_message",
+            message_mode_title="AREA CLEARED",
+            message_mode_subtitle=subtitle,
+            message_mode_value=value,
+            message_mode_seconds="",
+        )
         self.active_area = None
         self.area_progress = set()
         self._sync_vars()

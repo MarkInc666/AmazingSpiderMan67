@@ -506,14 +506,17 @@ class TrubbleUnleashed(Mode):
             self._show_jackpot("CERBERUS JACKPOT", value, f"SAUCER {saucer}")
             self._light_cyclops()
             self._update_saucer_lights()
-            if self._can_park_current_saucer():
-                self.parked_saucers.add(saucer)
-                self.machine.events.post("trubble_unleashed_saucer_parked", saucer=saucer)
-            else:
-                self._kick_saucer(saucer)
         else:
             self._score(self.UNLIT_SAUCER_SCORE)
             self.machine.events.post("trubble_unleashed_unlit_saucer", saucer=saucer)
+
+        # Parking is independent of Cerberus qualification. Any empty saucer
+        # may hold the entering ball as long as at least one other ball remains
+        # loose and playable; otherwise eject it to prevent a deadlock.
+        if self._can_park_current_saucer():
+            self.parked_saucers.add(saucer)
+            self.machine.events.post("trubble_unleashed_saucer_parked", saucer=saucer)
+        else:
             self._kick_saucer(saucer)
         self._sync_vars()
 

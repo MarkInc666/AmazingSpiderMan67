@@ -1,0 +1,25 @@
+ASM67 JACKPOT PRESENTATION AND AUDIO POLICY
+
+- show_mode_jackpot is reserved for an award that scores a Jackpot or Super
+  Jackpot immediately.
+- play_mode_jackpot and play_mode_super_jackpot are posted locally by the mode
+  beside the matching scored award.
+- Building or displaying a future Jackpot value uses show_mode_message.
+- Jackpot lit, ready, qualification, Add-a-Ball, completion, consolation,
+  ordinary bonus, and ordinary objective-hit messages do not use the Jackpot
+  presentation or Jackpot audio unless that same action also collects a scored
+  Jackpot.
+- One collected award posts its matching Jackpot sound exactly once.
+
+2026-09-09 AUDIT
+
+- Corrected non-Jackpot presentation in Noah Boddy, Centaur, Vulture,
+  Desperado, Dr. Manta, Rhino, Sandman, Lizard, Plotter, Diana, Fiddler,
+  Infinata, Metal-Eating Monster, Enforcers, Clive & Blotto, Plutonians,
+  Baron Von Rantenraven, and The Web Tightens.
+- Removed duplicate Jackpot/Super audio posts from Diana, Dr. Magneto,
+  Professor Pretorius, Skymaster, Fly Twins, Spider-Men, and
+  The Web Tightens.
+- Removed Noah Boddy's unused _post_mode_jackpot_sfx_if_needed method. Noah's
+  collected Secret Jackpot continues to post its audio directly through the
+  mode's active _show_mode_jackpot helper.

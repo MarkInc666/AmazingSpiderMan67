@@ -293,7 +293,7 @@ class RhinoBash(CaseFileMixin, Mode):
             return
         self.mode_done = True
         self.stop_berserk()
-        self._show_message("RHINO DEFEATED", "MODE COMPLETE", event="show_mode_jackpot")
+        self._show_message("RHINO DEFEATED", "MODE COMPLETE")
         self.machine.game.player["rhino_state"] = 2
         self.machine.events.post("rhino_bash_complete")
 

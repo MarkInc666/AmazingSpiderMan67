@@ -366,7 +366,6 @@ class Skymaster(CaseFileMixin, Mode):
             f"skymaster_{web}_super_collected", web=web, value=self.super_value
         )
         self._show_jackpot("SKYMASTER SUPER", self.super_value, f"{web.upper()} WEB")
-        self.machine.events.post("play_mode_super_jackpot")
         self._sync_vars()
 
         required = {"center"}

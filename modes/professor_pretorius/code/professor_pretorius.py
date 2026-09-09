@@ -384,7 +384,6 @@ class ProfessorPretorius(CaseFileMixin, Mode):
         self._score(self.SUPER_VALUE)
         self.machine.events.post("professor_pretorius_super_collected", value=self.SUPER_VALUE)
         self._show_jackpot("REACTOR SUPER", self.SUPER_VALUE)
-        self.machine.events.post("play_mode_super_jackpot")
         self.machine.events.post("villain_summary_hold_vuk_until_done")
         self._complete_mode()
 

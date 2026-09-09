@@ -315,7 +315,6 @@ class SpiderMen(CaseFileMixin, Mode):
         self.machine.events.post(
             "spider_men_super_collected", value=self.SUPER_VALUE
         )
-        self.machine.events.post("play_mode_super_jackpot")
         self.machine.events.post(
             "show_mode_jackpot",
             message_mode_title="HOMEWORLD SUPER",

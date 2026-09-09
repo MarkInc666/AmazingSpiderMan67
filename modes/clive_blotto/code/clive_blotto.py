@@ -318,7 +318,7 @@ class CliveBlotto(CaseFileMixin, Mode):
         self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post("clive_blotto_completion_lights")
         self.machine.events.post(
-            "show_mode_jackpot",
+            "show_mode_message",
             message_mode_title="SPIRIT-SCOPE RESTORED",
             message_mode_subtitle="BLOTTO CONTAINED",
             message_mode_value=f"{self.completion_score:,}",

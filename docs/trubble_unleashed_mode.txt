@@ -57,9 +57,10 @@ Cerberus
 - Upper-center target lights Saucer 2.
 - Upper-right target lights Saucer 3.
 - Cerberus Jackpot = 1,000,000 + (Case Files x 20,000).
-- A collected Cerberus ball remains parked in its saucer whenever at least one
-  loose ball remains playable. A guard releases a parked saucer if play would
-  otherwise deadlock.
+- A ball entering any saucer may remain parked whether or not that saucer is
+  lit for Cerberus, provided at least one other loose ball remains playable.
+  Lit saucers still award the Cerberus Jackpot; unlit saucers still award 25K.
+  A guard releases a parked saucer if play would otherwise deadlock.
 - Collecting Cyclops immediately releases one parked Cerberus ball.
 
 Vulcan Add-a-Ball

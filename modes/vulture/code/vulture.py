@@ -190,7 +190,7 @@ class Vulture(CaseFileMixin, Mode):
         if all_red_before_hit:
             self.award_add_a_ball()
         elif all(stage == 2 for stage in self.stages.values()):
-            self._show_message("ADD-A-BALL READY", "HIT ANY UPPER TARGET", event="show_mode_jackpot")
+            self._show_message("ADD-A-BALL READY", "HIT ANY UPPER TARGET")
             self.machine.events.post("vulture_add_a_ball_ready")
         self.update_player_vars()
 
@@ -198,7 +198,7 @@ class Vulture(CaseFileMixin, Mode):
         if self.add_a_ball_awarded:
             return
 
-        self._show_message("ADD-A-BALL!", "ALL TARGETS RED", event="show_mode_jackpot")
+        self._show_message("ADD-A-BALL!", "ALL TARGETS RED")
         self.machine.events.post("start_vulture_add_a_ball")
         self.machine.events.post("vulture_add_a_ball")
         self.add_a_ball_awarded = True
@@ -231,7 +231,6 @@ class Vulture(CaseFileMixin, Mode):
             "VULTURE SPINNER",
             "TOTAL COLLECTED",
             value=self.vulture_banked_bonus,
-            event="show_mode_jackpot",
         )
 
     def bank_bonus(self, value):

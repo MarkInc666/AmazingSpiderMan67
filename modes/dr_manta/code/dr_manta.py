@@ -321,7 +321,7 @@ class DrManta(CaseFileMixin, Mode):
     def _finish_relay(self):
         if self.mode_done:
             return
-        self._show_message("ATTACK COMPLETE", f"{self.jackpot_hits} JACKPOTS", value=self.mode_points, event="show_mode_jackpot")
+        self._show_message("ATTACK COMPLETE", f"{self.jackpot_hits} JACKPOTS", value=self.mode_points)
         self._complete_mode(release_saucer=True, enable_flippers=True)
 
     def _complete_mode(self, release_saucer=True, enable_flippers=True):

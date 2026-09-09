@@ -493,7 +493,7 @@ class Lizard(CaseFileMixin, Mode):
         self._stop_delivery_timers()
         self.machine.events.post("lizard_star_10x_stop")
         self.machine.events.post(
-            "show_mode_jackpot",
+            "show_mode_message",
             message_mode_title="LIZARD CURED",
             message_mode_subtitle="MODE COMPLETE",
         )

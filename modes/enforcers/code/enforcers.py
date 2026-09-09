@@ -256,7 +256,7 @@ class Enforcers(Mode, CaseFileMixin):
             value=award,
             value_str=self._format_score(award),
         )
-        self.machine.events.post("show_mode_jackpot", message_mode_title="SAUCER BONUS", message_mode_subtitle=self.ZONE_NAMES[zone], message_mode_value=award)
+        self.machine.events.post("show_mode_message", message_mode_title="SAUCER BONUS", message_mode_subtitle=self.ZONE_NAMES[zone], message_mode_value=award)
         self._sync_vars()
 
     def _upper_spinner_hit(self, **kwargs):
