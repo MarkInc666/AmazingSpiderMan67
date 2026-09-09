@@ -2,7 +2,9 @@ ASM67 END-OF-BALL BONUS
 
 The upper score panel continues to show the current player's overall score
 throughout the bonus count. Its title uses the current player number and reads
-PLAYER 1 SCORE, PLAYER 2 SCORE, PLAYER 3 SCORE, or PLAYER 4 SCORE.
+PLAYER 1 SCORE, PLAYER 2 SCORE, PLAYER 3 SCORE, or PLAYER 4 SCORE. The player
+number comes from the same delayed Bonus entry update as the count, avoiding a
+stale Player 1 label during later players' bonuses.
 
 The lower bonus panel counts regular bonus buckets, mode bonuses, Held Bonus,
 and Hold Bonus messages. At the end of the sequence, the lower panel displays:

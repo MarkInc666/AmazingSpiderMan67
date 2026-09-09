@@ -2122,15 +2122,22 @@ class VillainProgression(Mode):
                 message_mode_subtitle="SHOOT ANY SAUCER TO START",
                 reminder=True,
             )
+            # The comic-wizard completion flow disabled controls while its
+            # final live ball drained into the transition ball save. Comic #4
+            # bypasses Chapter Select, so there is no selection event to turn
+            # them back on. Restore play here so the served ball can shoot a
+            # saucer and start Final Showdown.
+            self.machine.events.post("cmd_flippers_enable")
+            self.machine.events.post("cmd_autofire_coils_enable")
         else:
             self.machine.events.post("chapter_select_transition_ready", chapter_number=chapter_number, chapter_name=chapter["name"])
+            # Earlier Comics still use the controlled drain into Chapter
+            # Select, where selecting the next comic restores the controls.
+            self.machine.events.post("cmd_flippers_disable")
+            self.machine.events.post("cmd_autofire_coils_disable")
         self.machine.events.post("chapter_mini_wizard_ended", mini_wizard=mini_key)
         self.machine.events.post("villain_mode_ended", villain=mini_key, villain_key=mini_key)
 
-        # Let the completed wizard/chapter transition drain safely. Chapter
-        # Select will appear at the next ball start/shooter-lane state.
-        self.machine.events.post("cmd_flippers_disable")
-        self.machine.events.post("cmd_autofire_coils_disable")
         self.machine.events.post("timer_timer_up_post_hold_complete")
 
         self._restore_state()

@@ -435,6 +435,7 @@ class Bonus(MpfBonus):
             entry=entry,
             text=text,
             score=score,
+            player_number=self._player.number,
         )
 
     def _is_last_ball(self):

@@ -35,4 +35,6 @@ lane instead of opening Chapter Select. The display shows:
 The reminder repeats while Final Showdown is ready. All three lower saucer
 clusters flash together until any saucer is hit; that saucer starts the normal
 Final Showdown / Kingpin bookend intro. Starting the final wizard clears the
-special saucer show and cancels the reminder.
+special saucer show and cancels the reminder. Because Comic #4 bypasses Chapter
+Select, its summary-complete handoff explicitly restores flippers and autofire
+for the saved ball; the Comic 1-3 controlled-drain behavior remains unchanged.
