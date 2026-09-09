@@ -312,6 +312,7 @@ class Desperado(Mode, CaseFileMixin):
         self.machine.game.player["desperado_state"] = 2 if defeated else 1
         if defeated:
             self._show_message("DESPERADO CAPTURED", "MODE COMPLETE", event="show_mode_jackpot")
+            self.machine.events.post("villain_summary_delay_for_final_award")
         self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post("desperado_mode_complete")
 

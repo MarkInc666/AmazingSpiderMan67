@@ -325,6 +325,7 @@ class Sandman(CaseFileMixin, Mode):
         if self.banks_completed >= self.max_banks:
             self.mode_done = True
             self._show_message("SANDMAN DEFEATED", "MODE COMPLETE", event="show_mode_jackpot")
+            self.machine.events.post("villain_summary_delay_for_final_award")
             self.machine.events.post("sandman_mode_complete")
             self.machine.game.player["sandman_state"] = 2
             self.machine.events.post("reset_5bank_delayed")
@@ -345,4 +346,3 @@ class Sandman(CaseFileMixin, Mode):
         player["active_mode_stat_2"] = self.sandman_best_run
         self._update_status()
     
-

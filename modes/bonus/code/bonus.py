@@ -61,6 +61,7 @@ class Bonus(MpfBonus):
     MODE_STEP_MS = 850
     HELD_BONUS_DISPLAY_MS = 1100
     FINAL_SCORE_HOLD_MS = 2500
+    FINAL_WIZARD_END_HOLD_MS = 5000
 
     def mode_start(self, **kwargs):
         # Do not call MpfBonus.mode_start(); that would run stock bonus math.
@@ -447,6 +448,33 @@ class Bonus(MpfBonus):
     def _finish_bonus(self):
         if not self._sequence_available():
             return
+
+        try:
+            final_wizard_completed = int(self._player["final_wizard_completed"] or 0) == 1
+        except (KeyError, TypeError, ValueError):
+            final_wizard_completed = False
+
+        if final_wizard_completed:
+            # This is still part of the queued Bonus lifecycle. Hold the ending
+            # screen before releasing the ball-ending queue so MPF cannot rotate
+            # players or enter attract underneath it.
+            self.machine.events.post("final_wizard_end_screen_show")
+            self.delay.add(
+                name="asm_bonus_final_wizard_end_hold",
+                ms=self.FINAL_WIZARD_END_HOLD_MS,
+                callback=self._finish_final_wizard_end_screen,
+            )
+            return
+
+        self._stop_bonus()
+
+    def _finish_final_wizard_end_screen(self):
+        if not self._sequence_available():
+            return
+        self.machine.events.post("final_wizard_end_screen_hide")
+        self._stop_bonus()
+
+    def _stop_bonus(self):
         self._bonus_running = False
         # Let MPF's mode wait queue be cleared by the mode lifecycle.
         # Clearing it manually here can double-clear and raise "Not locked".

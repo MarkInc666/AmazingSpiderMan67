@@ -303,6 +303,7 @@ class Enforcers(Mode, CaseFileMixin):
         )
         self.machine.events.post("show_mode_jackpot", message_mode_title="OX SUPER JACKPOT", message_mode_subtitle="CENTER WEB", message_mode_value=award)
         self.machine.events.post("play_mode_super_jackpot")
+        self.machine.events.post("villain_summary_delay_for_final_award")
         self._complete_mode()
 
     def _complete_mode(self, **kwargs):

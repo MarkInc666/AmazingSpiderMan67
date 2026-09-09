@@ -372,6 +372,7 @@ class Skymaster(CaseFileMixin, Mode):
         if self.has_case_file("more_jackpots"):
             required.add("left")
         if required.issubset(self.web_jackpots_collected):
+            self.machine.events.post("villain_summary_delay_for_final_award")
             self._complete_mode()
         else:
             self._show_super_status()

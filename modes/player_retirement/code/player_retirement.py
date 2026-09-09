@@ -4,18 +4,17 @@ from mpf.core.mode import Mode
 class PlayerRetirement(Mode):
     """Retire only the player who completes ASM67's Final Wizard.
 
-    Final Showdown completion marks the player retired. The victory summary is
-    still shown, then flippers are disabled so the remaining ball drains and
-    MPF runs its normal ball-ending / bonus flow. After bonus, this controller
-    adjusts only the turn rotation needed to keep retired players out while
-    preserving MPF's normal game-ending and high-score path.
+    Final Showdown completion marks the player retired and immediately disables
+    the flippers so the remaining ball drains into MPF's normal ball-ending /
+    bonus flow. After bonus, this controller adjusts only the turn rotation
+    needed to keep retired players out while preserving MPF's normal
+    game-ending and high-score path.
     """
 
     RETIRED_VAR = "final_wizard_completed"
 
     def mode_start(self, **kwargs):
         del kwargs
-        self._original_num_players = self.machine.game.num_players if self.machine.game else None
         self.add_mode_event_handler(
             "final_showdown_mode_complete",
             self._retire_current_player,
@@ -90,16 +89,12 @@ class PlayerRetirement(Mode):
             remaining_ball_bonus=remaining_balls * 10000000,
         )
 
-    def _final_summary_finished(self, **kwargs):
-        del kwargs
-        game = self.machine.game
-        if not game or not game.player or not self._is_retired(game.player):
-            return
+        # Multiball ending at one ball is the terminal gameplay moment. Do not
+        # wait for the summary before allowing the last physical ball to drain
+        # into MPF's normal ball-ending / Bonus queue.
+        self._disable_retired_player_controls(player)
 
-        # Do not jump directly to game ending here. The remaining physical ball
-        # must drain so MPF executes the existing ball_ending -> bonus flow.
-        # The retiring player's future normal/extra balls were snapshotted when
-        # Final Showdown completed and are paid during Bonus.
+    def _disable_retired_player_controls(self, player):
         self.machine.events.post("cmd_flippers_disable")
         self.machine.events.post("cmd_autofire_coils_disable")
         self.machine.events.post("timer_timer_up_post_hold_complete")
@@ -108,8 +103,18 @@ class PlayerRetirement(Mode):
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post(
             "player_game_completed_waiting_for_drain",
-            player=game.player.number,
+            player=player.number,
         )
+
+    def _final_summary_finished(self, **kwargs):
+        del kwargs
+        game = self.machine.game
+        if not game or not game.player or not self._is_retired(game.player):
+            return
+
+        # Reassert the terminal state in case a summary/bookend event restored
+        # anything while the ball was still on the playfield.
+        self._disable_retired_player_controls(game.player)
 
     def _skip_retired_player(self, player=None, number=None, **kwargs):
         del player, number, kwargs
@@ -150,9 +155,11 @@ class PlayerRetirement(Mode):
     def _restore_player_count_for_game_end(self, **kwargs):
         del kwargs
         game = self.machine.game
-        if not game or self._original_num_players is None:
+        if not game:
             return
-        game.num_players = self._original_num_players
+        # Players 2-4 may be added after game_started. The player list is the
+        # authoritative roster at game end.
+        game.num_players = len(game.player_list)
 
     def _consume_retired_player_extra_balls(self, **kwargs):
         """Consume queued extra balls only after the retiring player's bonus ran."""
@@ -182,24 +189,33 @@ class PlayerRetirement(Mode):
             return
 
         current = game.player
-        if not self._is_retired(current):
+        # Do not interfere with MPF's stock turn handling until retirement has
+        # actually occurred in this game.
+        if not any(self._is_retired(candidate) for candidate in game.player_list):
             return
 
-        # Bonus has completed by the time MPF reaches player_turn_will_end.
-        # Never allow a queued extra ball to be served after Final Showdown.
-        current["extra_balls"] = 0
+        if self._is_retired(current):
+            # Bonus has completed by the time MPF reaches
+            # player_turn_will_end. Never serve an extra ball to this player.
+            current["extra_balls"] = 0
 
         future_players = self._eligible_future_players(current)
-        if future_players:
+        balls_per_game = self._safe_int(game.balls_per_game, 0)
+        current_has_future_ball = (
+            not self._is_retired(current)
+            and (balls_per_game <= 0 or self._safe_int(current["ball"], 0) < balls_per_game)
+        )
+
+        if future_players or current_has_future_ball:
             # MPF's stock loop normally ends the game when the last-numbered
             # player finishes their nominal last ball. If that player retired
             # while an earlier active player still has future balls, keep the
             # retired player's ball just below the terminal threshold so MPF
             # rotates instead. _skip_retired_player then selects the next
             # actually eligible player before a new ball starts.
-            balls_per_game = self._safe_int(game.balls_per_game, 0)
             if (
-                balls_per_game > 0
+                self._is_retired(current)
+                and balls_per_game > 0
                 and current.number == game.num_players
                 and self._safe_int(current["ball"], 0) >= balls_per_game
             ):
@@ -207,7 +223,7 @@ class PlayerRetirement(Mode):
             self.machine.events.post(
                 "retired_player_has_next_active_player",
                 retired_player=current.number,
-                next_player=future_players[0].number,
+                next_player=(future_players[0].number if future_players else current.number),
             )
             return
 

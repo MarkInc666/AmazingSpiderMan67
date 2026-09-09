@@ -624,6 +624,9 @@ class FinalShowdown(Mode):
         self.held_saucers.clear()
 
     def _multiball_ended(self, **kwargs):
+        if self.mode_exiting:
+            return
+
         self.mode_exiting = True
         self.info_log("FinalShowdown multiball ended.")
 
@@ -636,11 +639,11 @@ class FinalShowdown(Mode):
 
         self._release_all_held_saucers()
 
-        if self.victory_laps:
-            self.machine.events.post("final_showdown_mode_complete")
-        else:
-            self._set("final_showdown_state", 2)
-            self.machine.events.post("final_showdown_mode_complete")
+        # Reaching one ball in play ends this player's Final Showdown attempt.
+        # PlayerRetirement snapshots future balls and disables controls from
+        # this event; the remaining physical ball then drains into Bonus.
+        self._set("final_showdown_state", 2)
+        self.machine.events.post("final_showdown_mode_complete")
 
 
     def _update_area_status(self):

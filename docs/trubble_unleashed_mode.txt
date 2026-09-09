@@ -22,7 +22,8 @@ Diana
 -----
 - Diana starts with SPIN VALUE 1 shown to the player.
 - Every upper-spinner spin advances 1 -> 2 -> 3 -> 4 -> 5 -> 1.
-- Left upper exit locks the current spin value and starts 5 flips.
+- Left upper exit locks the current spin value, raises the pop-up post, and
+  starts 5 flips. Pressing both flippers drops the post early.
 - The spin value stages these right-bank drops:
     5 = 1,2,3,4,5
     4 = 1,2,4,5
@@ -31,7 +32,8 @@ Diana
     1 = 3
 - FLIPS REMAINING is shown only after the left exit is hit.
 - Hitting any staged drop scores the Diana Jackpot and drops the remaining staged
-  targets. Missing all 5 flips ends that Diana attempt.
+  targets. The completed bank stays down until the next upper-playfield entry.
+  Missing all 5 flips ends that Diana attempt.
 - Diana Jackpot = 1,000,000 + (Case Files x 20,000).
 - Right-bank GI pulses while Diana is active. Any standing Diana drop has its
   insert lit green.
@@ -40,10 +42,14 @@ Centaur
 -------
 - Centaur Jackpot starts at 500,000 + (Case Files x 20,000).
 - Each upper-spinner spin adds 100,000.
-- Right-bank GI pulses while Centaur is active; inserts 2,3,4 are lit green.
-- Left upper exit raises the pop-up post.
+- Right-bank GI pulses while Centaur is active. Targets 2,3,4 are dropped,
+  targets 1 and 5 remain standing, and inserts 2,3,4 stay green to frame the
+  rubber shot between the two standing targets.
+- Left upper exit raises the pop-up post. Pressing both flippers drops it early.
 - When the pop-up post drops, a large 5-second countdown starts.
-- Hit the right-bank rubber before time expires to collect the Centaur Jackpot.
+- Hit the right-bank rubber before time expires to collect the Centaur Jackpot
+  and drop the remaining right-bank targets. The bank stays down until the next
+  upper-playfield entry.
 
 Cerberus
 --------
@@ -54,13 +60,15 @@ Cerberus
 - A collected Cerberus ball remains parked in its saucer whenever at least one
   loose ball remains playable. A guard releases a parked saucer if play would
   otherwise deadlock.
+- Collecting Cyclops immediately releases one parked Cerberus ball.
 
 Vulcan Add-a-Ball
 -----------------
 - All three upper targets begin pulsing.
 - Hit target -> its light becomes solid.
 - Once all three have been hit, right upper exit is lit/qualified for Add-a-Ball.
-- Right upper exit adds a ball whenever fewer than 4 balls are in play.
+- Right upper exit uses the active Trubble multiball's repeatable Add-a-Ball
+  event whenever fewer than 4 balls are in play.
 - Maximum 4 balls on the playfield.
 - At 4 balls the Add-a-Ball remains qualified for a later right-exit attempt.
 - After Add-a-Ball is awarded, the three upper targets reset to pulsing.
@@ -73,6 +81,8 @@ Cyclops
 - Cyclops is worth 1,000,000 and remains lit for 10 seconds.
 - A new qualifying jackpot while Cyclops is already lit restarts the 10-second
   window.
+- Diana, Centaur, and Cyclops countdown/status timers are cleared when their
+  Jackpots are collected.
 
 Lighting
 --------

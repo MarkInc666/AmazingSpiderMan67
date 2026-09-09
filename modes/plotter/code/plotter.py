@@ -296,6 +296,7 @@ class Plotter(CaseFileMixin, Mode):
             message_mode_subtitle="THE PLOTTER DEFEATED",
             message_mode_value=self.BACK_PAGE_VALUE,
         )
+        self.machine.events.post("villain_summary_delay_for_final_award")
         self._complete_mode()
 
     def _complete_mode(self, **kwargs):

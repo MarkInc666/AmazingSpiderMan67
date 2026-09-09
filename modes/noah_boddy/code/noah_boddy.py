@@ -599,6 +599,7 @@ class NoahBoddy(CaseFileMixin, Mode):
             jackpot=jackpot,
         )
         self._show_mode_jackpot("NOAH BODDY JACKPOT", jackpot, self.TARGET_LABELS[self.secret_target])
+        self.machine.events.post("villain_summary_delay_for_final_award")
         self._sync_vars()
         self._complete_mode()
 

@@ -52,8 +52,8 @@ Mode ownership rules
 - Clive and Blotto and Plutonians leave Daily Bugle enabled intentionally; the
   VUK can count for their area rules while Daily Bugle owns the release.
 
-Terminal-device award presentation
-----------------------------------
+Terminal award presentation
+----------------------------
 
 - A villain that ends on a VUK or lower-saucer collect posts the existing
   villain_summary_hold_vuk_until_done or villain_summary_hold_saucer_until_done
@@ -64,3 +64,10 @@ Terminal-device award presentation
   remaining time is added.
 - This presentation delay does not change device ownership: VUK/saucer balls
   remain held and are released by the existing post-summary paths.
+- Non-device terminal awards explicitly post
+  villain_summary_delay_for_final_award. This uses the same two-second deadline
+  without changing ball-device ownership.
+- September 9, 2026 audit added the explicit non-device delay to Skymaster,
+  Sandman, Dr. Magneto, Enforcers, Pardo, Lizard, Von Rantenraven, Desperado,
+  Dr. Von Schlick, Noah Boddy, and Plotter's Back Page ending. Modes that already
+  had a local two-second hold or terminal VUK/saucer hold were left unchanged.

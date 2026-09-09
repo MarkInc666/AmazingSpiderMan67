@@ -17,22 +17,16 @@ variable_player:
     multiball_autoplunge_active: {action: set, int: 1}
   multiball_trubble_unleashed_multiball_ended:
     multiball_autoplunge_active: {action: set, int: 0}
-  multiball_trubble_unleashed_add_a_ball_started:
-    multiball_autoplunge_active: {action: set, int: 1}
-  multiball_trubble_unleashed_add_a_ball_ended:
-    multiball_autoplunge_active: {action: set, int: 0}
-
 multiballs:
   trubble_unleashed_multiball:
     ball_count: 2
     ball_count_type: total
     shoot_again: 20s
     start_events: trubble_unleashed_start_multiball
-  trubble_unleashed_add_a_ball:
-    ball_count: 1
-    ball_count_type: add
-    shoot_again: 10s
-    start_events: trubble_unleashed_add_a_ball
+    add_a_ball_events:
+      - trubble_unleashed_add_a_ball
+    add_a_ball_shoot_again: 10s
+    add_a_ball_hurry_up_time: 3s
 
 widget_player:
   mode_trubble_unleashed_started:
@@ -76,6 +70,7 @@ event_player:
   s_upper_target_center_active: trubble_unleashed_upper_target_center_hit
   s_upper_target_right_active: trubble_unleashed_upper_target_right_hit
   s_trispinner_opto_active: trubble_unleashed_upper_spinner_hit
+  s_upper_entrance_opto_active: trubble_unleashed_upper_playfield_entered
   s_upper_exit_left_opto_active: trubble_unleashed_upper_exit_left
   s_upper_exit_right_opto_active: trubble_unleashed_upper_exit_right
 
@@ -88,6 +83,10 @@ event_player:
   s_web_target_mid_active: trubble_unleashed_cyclops_hit
   s_left_flipper_active: trubble_unleashed_flipper
   s_right_flipper_active: trubble_unleashed_flipper
+  s_left_flipper_active{device.switches.s_right_flipper.state == 1}:
+    - trubble_unleashed_post_hold_cancel
+  s_right_flipper_active{device.switches.s_left_flipper.state == 1}:
+    - trubble_unleashed_post_hold_cancel
 
 coil_player:
   trubble_unleashed_drop_right_target_1:

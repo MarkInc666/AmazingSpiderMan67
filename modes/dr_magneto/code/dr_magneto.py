@@ -347,6 +347,7 @@ class DrMagneto(CaseFileMixin, Mode):
         self.machine.events.post("dr_magneto_super_collected", value=value)
         self._show_jackpot("MAGNETO SUPER", value)
         self.machine.events.post("play_mode_super_jackpot")
+        self.machine.events.post("villain_summary_delay_for_final_award")
         self._complete_mode()
 
     def _light_star(self):

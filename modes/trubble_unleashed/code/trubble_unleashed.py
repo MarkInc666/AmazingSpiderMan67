@@ -47,6 +47,7 @@ class TrubbleUnleashed(Mode):
         self.left_down = set()
         self.right_down = set()
         self.ignored_auto_right = set()
+        self.preserve_right_bank_down = False
         self.parked_saucers = set()
 
         self.gate_open = False
@@ -63,7 +64,8 @@ class TrubbleUnleashed(Mode):
         self.diana_targets = set()
 
         self.centaur_spinner_spins = 0
-        self.centaur_post_active = False
+        self.upper_post_active = False
+        self.centaur_staged = False
         self.centaur_timer_active = False
         self.centaur_seconds_left = 0
 
@@ -104,6 +106,8 @@ class TrubbleUnleashed(Mode):
         self.add_mode_event_handler("trubble_unleashed_centaur_rubber_hit", self._centaur_rubber_hit)
         self.add_mode_event_handler("trubble_unleashed_cyclops_hit", self._cyclops_hit)
         self.add_mode_event_handler("trubble_unleashed_flipper", self._flipper_hit)
+        self.add_mode_event_handler("trubble_unleashed_post_hold_cancel", self._cancel_upper_post)
+        self.add_mode_event_handler("trubble_unleashed_upper_playfield_entered", self._upper_playfield_entered)
         self.add_mode_event_handler("timer_timer_up_post_hold_complete", self._post_dropped)
         self.add_mode_event_handler("trubble_unleashed_multiball_ended", self._multiball_ended)
 
@@ -118,7 +122,8 @@ class TrubbleUnleashed(Mode):
     def mode_stop(self, **kwargs):
         self.mode_exiting = True
         self.delay.clear()
-        if self.centaur_post_active:
+        if self.upper_post_active:
+            self.machine.events.post("drop_the_up_post")
             self.machine.events.post("timer_timer_up_post_hold_complete")
         self.machine.events.post("hide_mode_status")
         self.machine.events.post("trubble_unleashed_clear_all_lights")
@@ -188,6 +193,7 @@ class TrubbleUnleashed(Mode):
         self.diana_flips_left = 0
         self.diana_staged = False
         self.diana_targets.clear()
+        self.preserve_right_bank_down = False
         self.right_down.clear()
         self.machine.events.post("drop_target_bank_dt_bank_right_reset")
         self.machine.events.post("trubble_unleashed_right_bank_phase_start")
@@ -233,16 +239,18 @@ class TrubbleUnleashed(Mode):
             self._finish_diana_miss()
 
     def _collect_diana(self, target):
+        self.machine.events.post("hide_mode_status")
         value = self.DIANA_BASE_JACKPOT + self.case_file_bonus
         self.diana_jackpots += 1
         self._score(value)
         self.machine.events.post("trubble_unleashed_diana_jackpot", target=target, value=value)
         self._show_jackpot("DIANA JACKPOT", value, f"DROP {target}")
         self._light_cyclops()
+        self.preserve_right_bank_down = True
         for remaining in sorted(self.diana_targets):
             if remaining != target and remaining not in self.right_down:
                 self._auto_drop_right_target(remaining)
-        self._finish_phase(reset_right_bank=True)
+        self._finish_phase(reset_right_bank=False)
 
     def _finish_diana_miss(self):
         for target in sorted(self.diana_targets):
@@ -259,13 +267,14 @@ class TrubbleUnleashed(Mode):
         self._end_phase_visuals()
         self.phase = "centaur"
         self.centaur_spinner_spins = 0
-        self.centaur_post_active = False
+        self.upper_post_active = False
+        self.centaur_staged = False
         self.centaur_timer_active = False
         self.centaur_seconds_left = 0
-        self.right_down.clear()
-        self.machine.events.post("drop_target_bank_dt_bank_right_reset")
+        self.preserve_right_bank_down = False
         self.machine.events.post("trubble_unleashed_right_bank_phase_start")
         self.machine.events.post("trubble_unleashed_centaur_targets")
+        self._stage_centaur_drops()
         self._show_status("CENTAUR JACKPOT", self._centaur_value())
         self._sync_vars()
 
@@ -292,17 +301,20 @@ class TrubbleUnleashed(Mode):
         )
 
     def _start_centaur_post(self):
-        if self.phase != "centaur" or self.centaur_post_active or self.centaur_timer_active:
+        if self.phase != "centaur" or self.upper_post_active or self.centaur_timer_active:
             return
-        self.centaur_post_active = True
+        self.upper_post_active = True
         self.machine.events.post("enable_up_post_event")
         self._show_message("CENTAUR", "POST UP - READY THE RUBBER")
         self._sync_vars()
 
     def _post_dropped(self, **kwargs):
-        if self._inactive() or self.phase != "centaur" or not self.centaur_post_active:
+        if self._inactive() or not self.upper_post_active:
             return
-        self.centaur_post_active = False
+        self.upper_post_active = False
+        if self.phase != "centaur":
+            self._sync_vars()
+            return
         self.centaur_timer_active = True
         self.centaur_seconds_left = self.CENTAUR_SECONDS
         self.machine.events.post(
@@ -314,6 +326,33 @@ class TrubbleUnleashed(Mode):
         )
         self._schedule_centaur_tick()
         self._sync_vars()
+
+    def _cancel_upper_post(self, **kwargs):
+        if self._inactive() or not self.upper_post_active:
+            return
+        self.machine.events.post("drop_the_up_post")
+        self.machine.events.post("timer_timer_up_post_hold_complete")
+
+    def _stage_centaur_drops(self):
+        if self._inactive() or self.phase != "centaur":
+            return
+        self.centaur_staged = True
+        self.ignored_auto_right.clear()
+        self.right_down.clear()
+        self.machine.events.post("drop_target_bank_dt_bank_right_reset")
+        self.delay.reset(
+            name="trubble_centaur_stage",
+            ms=self.RIGHT_BANK_STAGE_DELAY_MS,
+            callback=self._drop_centaur_non_targets,
+        )
+
+    def _drop_centaur_non_targets(self):
+        if self._inactive() or self.phase != "centaur" or not self.centaur_staged:
+            return
+        # Leave the two outside targets standing to frame the Centaur rubber.
+        # The three center inserts remain lit to identify the rubber shot.
+        for target in (2, 3, 4):
+            self._auto_drop_right_target(target)
 
     def _schedule_centaur_tick(self):
         if self.centaur_timer_active:
@@ -341,13 +380,18 @@ class TrubbleUnleashed(Mode):
             return
         self.centaur_timer_active = False
         self.delay.remove("trubble_centaur_tick")
+        self.machine.events.post("hide_mode_status")
         value = self._centaur_value()
         self.centaur_jackpots += 1
         self._score(value)
         self.machine.events.post("trubble_unleashed_centaur_jackpot", value=value)
         self._show_jackpot("CENTAUR JACKPOT", value, "RIGHT RUBBER")
         self._light_cyclops()
-        self._finish_phase(reset_right_bank=True)
+        self.preserve_right_bank_down = True
+        for target in self.ALL_RIGHT_DROPS:
+            if target not in self.right_down:
+                self._auto_drop_right_target(target)
+        self._finish_phase(reset_right_bank=False)
 
     # ------------------------------------------------------------------
     # Shared right-bank / upper-exit handling
@@ -376,7 +420,9 @@ class TrubbleUnleashed(Mode):
     def _right_bank_complete(self, **kwargs):
         if self._inactive():
             return
-        if self.phase == "diana" and self.diana_staged:
+        if self.preserve_right_bank_down:
+            return
+        if (self.phase == "diana" and self.diana_staged) or self.phase == "centaur":
             return
         self.right_down.clear()
         self.machine.events.post("drop_target_bank_dt_bank_right_reset")
@@ -388,8 +434,25 @@ class TrubbleUnleashed(Mode):
             return
         if self.phase == "diana":
             self._stage_diana()
+            if not self.upper_post_active:
+                self.upper_post_active = True
+                self.machine.events.post("enable_up_post_event")
         elif self.phase == "centaur":
             self._start_centaur_post()
+
+    def _upper_playfield_entered(self, **kwargs):
+        if self._inactive():
+            return
+        self.preserve_right_bank_down = False
+        self.ignored_auto_right.clear()
+        if self.phase == "centaur":
+            self.centaur_staged = False
+            self._stage_centaur_drops()
+            return
+        self.right_down.clear()
+        self.machine.events.post("drop_target_bank_dt_bank_right_reset")
+        if self.phase == "diana":
+            self.machine.events.post("trubble_unleashed_diana_all_up")
 
     def _upper_exit_right(self, **kwargs):
         if self._inactive() or not self.add_a_ball_qualified:
@@ -499,11 +562,13 @@ class TrubbleUnleashed(Mode):
             return
         self.cyclops_lit = False
         self.delay.remove("trubble_cyclops_tick")
+        self.machine.events.post("hide_mode_status")
         self.cyclops_jackpots += 1
         self._score(self.CYCLOPS_JACKPOT)
         self.machine.events.post("trubble_unleashed_cyclops_collected", value=self.CYCLOPS_JACKPOT)
         self._show_jackpot("CYCLOPS JACKPOT", self.CYCLOPS_JACKPOT, "CENTER WEB")
         self.machine.events.post("trubble_unleashed_cyclops_unlit")
+        self._release_one_parked_saucer()
         self._sync_vars()
 
     # ------------------------------------------------------------------
@@ -529,6 +594,13 @@ class TrubbleUnleashed(Mode):
 
     def _playable_loose_balls(self):
         return max(0, self._balls_in_play() - len(self.parked_saucers))
+
+    def _release_one_parked_saucer(self):
+        if not self.parked_saucers:
+            return
+        saucer = sorted(self.parked_saucers)[0]
+        self._kick_saucer(saucer, delay_ms=0)
+        self.machine.events.post("trubble_unleashed_cyclops_released_saucer", saucer=saucer)
 
     def _kick_saucer(self, saucer, delay_ms=None):
         self.parked_saucers.discard(int(saucer))
@@ -568,13 +640,18 @@ class TrubbleUnleashed(Mode):
     # ------------------------------------------------------------------
 
     def _finish_phase(self, reset_right_bank=False):
+        if self.upper_post_active:
+            self.upper_post_active = False
+            self.machine.events.post("drop_the_up_post")
+            self.machine.events.post("timer_timer_up_post_hold_complete")
         self.phase = None
         self.diana_staged = False
         self.diana_flips_left = 0
         self.diana_targets.clear()
-        self.centaur_post_active = False
+        self.centaur_staged = False
         self.centaur_timer_active = False
         self.delay.remove("trubble_centaur_tick")
+        self.delay.remove("trubble_centaur_stage")
         self.delay.remove("trubble_diana_stage")
         self._end_phase_visuals()
         if reset_right_bank:
@@ -593,12 +670,15 @@ class TrubbleUnleashed(Mode):
         self.machine.events.post("trubble_unleashed_centaur_targets_clear")
 
     def _reset_right_bank(self):
+        self.preserve_right_bank_down = False
         self.right_down.clear()
         self.machine.events.post("drop_target_bank_dt_bank_right_reset")
 
     def _auto_drop_right_target(self, target):
-        self.ignored_auto_right.add(int(target))
-        self.machine.events.post(f"trubble_unleashed_drop_right_target_{int(target)}")
+        target = int(target)
+        self.ignored_auto_right.add(target)
+        self.right_down.add(target)
+        self.machine.events.post(f"trubble_unleashed_drop_right_target_{target}")
 
     def _update_diana_pre_stage_lights(self):
         if self.phase != "diana" or self.diana_staged:

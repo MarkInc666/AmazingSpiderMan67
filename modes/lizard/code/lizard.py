@@ -497,6 +497,7 @@ class Lizard(CaseFileMixin, Mode):
             message_mode_title="LIZARD CURED",
             message_mode_subtitle="MODE COMPLETE",
         )
+        self.machine.events.post("villain_summary_delay_for_final_award")
         self.machine.events.post("lizard_mode_complete")
 
     def light_next_target(self, **kwargs):

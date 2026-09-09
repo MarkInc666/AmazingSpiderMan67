@@ -230,6 +230,7 @@ class Pardo(CaseFileMixin, Mode):
         self.machine.events.post("play_mode_jackpot")
         self._sync_player_vars()
         if self.correct_shots >= self.CORRECT_SHOTS_TO_WIN:
+            self.machine.events.post("villain_summary_delay_for_final_award")
             self._complete_mode()
 
     def _collect_first_bad_shot(self, group):

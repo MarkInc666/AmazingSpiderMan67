@@ -37,3 +37,13 @@ After Bonus, all queued extra balls for the retired player are consumed. If anot
 non-retired player still has a normal ball remaining, play rotates to that player.
 If no eligible player remains, player_retirement calls MPF's explicit game.end_game()
 so the normal game_will_end -> game_ending -> game_ended / high-score path runs.
+
+September 9, 2026 correction: player_retirement now survives every ball and
+disables flippers/autofire as soon as Final Showdown multiball ends at one ball
+in play. The last physical ball drains into the normal Bonus sequence, where
+BALLS REMAINING awards 10,000,000 per unused normal or earned extra ball.
+
+After TOTAL BONUS, the retiring player receives a five-second full-screen ending:
+YOU'VE REACHED THE END / KINGPIN DEFEATED / FINAL SCORE. Bonus keeps its wait
+queue until this screen completes, so another player or attract cannot start
+underneath it.

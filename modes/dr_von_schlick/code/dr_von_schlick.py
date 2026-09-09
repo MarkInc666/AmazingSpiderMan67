@@ -294,6 +294,7 @@ class DrVonSchlick(CaseFileMixin, Mode):
                 message_mode_subtitle="SUPER JACKPOT",
                 message_mode_value=self.SUPER_VALUE,
             )
+            self.machine.events.post("villain_summary_delay_for_final_award")
             # Flood animation is complete. Release the held VUK ball now; the
             # villain summary does not retain it. The persistent progression
             # mode owns the occupancy check and kick/retry path.

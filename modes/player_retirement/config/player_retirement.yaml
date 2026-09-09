@@ -3,6 +3,9 @@
 mode:
   code: player_retirement.PlayerRetirement
   start_events: game_started
+  # This controller owns retirement for the whole game, not one ball.
+  game_mode: false
+  stop_on_ball_end: false
   stop_events:
     - game_ending
     - game_ended
