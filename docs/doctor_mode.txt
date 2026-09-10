@@ -3,7 +3,9 @@ Doctor Octopus - Tentacle Lockdown
 Core rules
 - Start with two random arms locked and the web jackpot lit.
 - Flippers rotate the four arm assignments across the lane rollovers.
-- Any rollover scores 10K. A free-arm rollover locks that arm; a locked-arm hit keeps it locked.
+- Any rollover scores 10K. A pulsing/free-arm rollover locks that arm and changes
+  its insert to solid blue; a solid/locked-arm hit keeps it locked. Outlane arm
+  locks are handled directly before any simultaneous ball-save or drain handling.
 - Completing the left bank locks one random free arm when available and always relights the web jackpot.
 - Completing the right bank resets it and opens rooftop access for a full 20 seconds.
   Another right-bank completion restarts the complete 20-second window. Upper

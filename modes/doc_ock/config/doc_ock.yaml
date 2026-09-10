@@ -47,17 +47,11 @@ event_player:
   s_right_flipper_active:
     - doc_ock_rotate_right
 
-  s_outlane_l_active:
-    - doc_ock_arm_1_hit
-
   s_inlane_l_active:
     - doc_ock_arm_2_hit
 
   s_inlane_r_active:
     - doc_ock_arm_3_hit
-
-  s_outlane_r_active:
-    - doc_ock_arm_4_hit
 
   s_web_spinner_active:
     - doc_ock_spinner_hit

@@ -25,6 +25,10 @@ widget_player:
       action: remove
 
 event_player:
+  # Once the ball reaches the rooftop, replace the route prompt with the two
+  # available exit choices and pulse both upper-exit GI lamps.
+  s_upper_entrance_opto_active: sir_galahad_upper_entered
+
   # Rooftop exits select the opposite lower drop bank.
   s_upper_exit_left_opto_active: sir_galahad_upper_left_exit
   s_upper_exit_right_opto_active: sir_galahad_upper_right_exit
@@ -75,9 +79,17 @@ show_player:
       loops: -1
       priority: 340
       show_tokens: {color: "A0D0FF"}
+    sir_galahad_rooftop_exit_choice_show:
+      action: stop
+
+  sir_galahad_rooftop_choice_ready:
+    sir_galahad_rooftop_exit_choice_show:
+      loops: -1
 
   sir_galahad_roof_not_ready:
     shared_final_vuk_chase:
+      action: stop
+    sir_galahad_rooftop_exit_choice_show:
       action: stop
 
   sir_galahad_right_bank_ready:
@@ -103,6 +115,8 @@ show_player:
   sir_galahad_clear_all_lights:
     shared_final_vuk_chase:
       action: stop
+    sir_galahad_rooftop_exit_choice_show:
+      action: stop
     sir_galahad_right_bank_show:
       action: stop
     sir_galahad_left_bank_show:
@@ -111,6 +125,16 @@ show_player:
       action: stop
 
 shows:
+  sir_galahad_rooftop_exit_choice_show:
+    - duration: 300ms
+      lights:
+        l_gi_left_upper: A0D0FF
+        l_gi_a: A0D0FF
+    - duration: 300ms
+      lights:
+        l_gi_left_upper: 305080
+        l_gi_a: 305080
+
   # Five-bank value tiers: center, adjacent, then outer targets. The physical
   # inserts are green, so brightness/speed rather than incompatible colors
   # communicates value. Both right-bank GI lamps flash throughout the window.

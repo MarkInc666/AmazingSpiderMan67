@@ -95,6 +95,12 @@ class doc_ock(CaseFileMixin, Mode):
         self.add_mode_event_handler("doc_ock_start_timed_release", self.start_timed_release)
         self.add_mode_event_handler("doc_ock_stop_timed_release", self.stop_timed_release)
 
+        # Outlanes can immediately lead into ball-save or ball-ending handling.
+        # Lock their mapped arms directly at high priority instead of relying on
+        # the normal-priority YAML relay used by the safely returned inlanes.
+        self.add_mode_event_handler("s_outlane_l_active", self.arm_hit, priority=1000, arm=1)
+        self.add_mode_event_handler("s_outlane_r_active", self.arm_hit, priority=1000, arm=4)
+
         for arm in range(1, 5):
             self.add_mode_event_handler(f"doc_ock_arm_{arm}_hit", self.arm_hit, arm=arm)
         for breakout in range(1, 7):

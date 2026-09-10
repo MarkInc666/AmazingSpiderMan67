@@ -86,6 +86,7 @@ class SirGalahad(CaseFileMixin, Mode):
 
         self.mode_done = False
         self.phase = "roof_ready"
+        self.roof_entered = False
         self.round_number = 0
         self.rounds_resolved = 0
         self.active_bank = None
@@ -113,6 +114,7 @@ class SirGalahad(CaseFileMixin, Mode):
 
         self.add_mode_event_handler("sir_galahad_upper_left_exit", self._upper_left_exit)
         self.add_mode_event_handler("sir_galahad_upper_right_exit", self._upper_right_exit)
+        self.add_mode_event_handler("sir_galahad_upper_entered", self._upper_entered)
         self.add_mode_event_handler("sir_galahad_right_inlane_hit", self._right_inlane_hit)
         self.add_mode_event_handler(
             "timer_timer_up_post_hold_complete", self._post_hold_dropped
@@ -176,10 +178,19 @@ class SirGalahad(CaseFileMixin, Mode):
     def _upper_right_exit(self, **kwargs):
         self._begin_round(bank="left", exit_name="RIGHT")
 
+    def _upper_entered(self, **kwargs):
+        if self.mode_done or self.phase != "roof_ready":
+            return
+        self.roof_entered = True
+        self.machine.events.post("sir_galahad_rooftop_choice_ready")
+        self._show_message("EXIT LEFT OR RIGHT", "CHOOSE YOUR JOUST", reminder=True)
+        self._update_status()
+
     def _begin_round(self, bank, exit_name):
         if self.mode_done or self.phase != "roof_ready":
             return
 
+        self.roof_entered = False
         self.round_number += 1
         self.active_bank = bank
         self.seconds_left = 0
@@ -414,6 +425,7 @@ class SirGalahad(CaseFileMixin, Mode):
             return
 
         self.phase = "roof_ready"
+        self.roof_entered = False
         self.machine.events.post("sir_galahad_roof_ready")
         remaining = self.max_rounds - self.rounds_resolved
         self._show_message(
@@ -478,8 +490,13 @@ class SirGalahad(CaseFileMixin, Mode):
         if self.mode_done:
             return
         if self.phase == "roof_ready":
-            title = "JOUSTS LEFT"
-            value = self.max_rounds - self.rounds_resolved
+            remaining = self.max_rounds - self.rounds_resolved
+            if self.roof_entered:
+                title = "EXIT LEFT OR RIGHT"
+                value = f"{remaining} JOUSTS LEFT"
+            else:
+                title = "JOUSTS LEFT"
+                value = remaining
         elif self.phase == "waiting_post":
             title = f"ROUND {self.round_number} OF {self.max_rounds}"
             value = "RIGHT BANK — WAIT FOR POST"

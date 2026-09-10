@@ -9,6 +9,10 @@ CORE RULES
   threshold; the objective is to collect as many points as possible.
 - More Jackpots adds a fourth round.
 - The rooftop gate opens when the mode starts and remains open for the mode.
+- Before rooftop entry, the display prompts ENTER THE ROOFTOP. Once the upper
+  entrance switch is made, the stored reminder and status change to EXIT LEFT
+  OR RIGHT / CHOOSE YOUR JOUST. Both upper-exit GI lamps pulse blue until an
+  exit is selected.
 - Every upper exit scores 100,000 and stages the opposite drop bank:
   - Left upper exit stages the right five-bank. The up-post holds the ball, and
     the target window begins when the post drops.
@@ -66,6 +70,8 @@ LIGHTING AND PROMPTS
 - The left bank has one green insert and one GI lamp; both flash while staged.
   The display supplies AIM FOR CENTER guidance.
 - Start: KNIGHT MUST FALL / ENTER THE ROOFTOP.
+- Upper entry: EXIT LEFT OR RIGHT / CHOOSE YOUR JOUST. The left and right
+  upper-exit GI lamps pulse together until either exit is made.
 - Exit: show the 100K award and prompt the opposite bank's center.
 - Active window: show the bank, AIM FOR CENTER, and remaining time.
 - Target hit: JOUST JACKPOT plus the collected value.
