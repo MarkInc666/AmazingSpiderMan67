@@ -205,6 +205,11 @@ event_player:
   s_plunger_active{current_player.multiball_autoplunge_active == 1}:
     - plunger_auto_fire|2s
 
+  # Outlane saves use their own arrival event so they never borrow or clear
+  # the multiball autoplunge flag.
+  outlane_add_a_ball_arrived_at_plunger:
+    - plunger_auto_fire|2s
+
   ball_started{current_player.multiball_autoplunge_active == 1}:
     - disable_outlane_autoplunge
 

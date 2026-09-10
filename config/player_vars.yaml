@@ -613,6 +613,33 @@ player_vars:
   mad_science_meltdown_case_file_bonus:
     initial_value: 0
     value_type: int
+  mad_science_meltdown_jackpot_value:
+    initial_value: 500000
+    value_type: int
+  mad_science_meltdown_gas_jackpots:
+    initial_value: 0
+    value_type: int
+  mad_science_meltdown_noah_jackpots:
+    initial_value: 0
+    value_type: int
+  mad_science_meltdown_active_gas_zones:
+    initial_value: 0
+    value_type: int
+  mad_science_meltdown_gas_red:
+    initial_value: 0
+    value_type: int
+  mad_science_meltdown_gas_yellow:
+    initial_value: 0
+    value_type: int
+  mad_science_meltdown_gas_green:
+    initial_value: 0
+    value_type: int
+  mad_science_meltdown_parked_balls:
+    initial_value: 0
+    value_type: int
+  mad_science_meltdown_magneto_seconds:
+    initial_value: 0
+    value_type: int
   night_of_the_robots_case_file_bonus:
     initial_value: 0
     value_type: int

@@ -12,3 +12,26 @@ DAILY BUGLE MYSTERY — PICTURE BALANCE
 - The status display shows both PICTURES TAKEN and NEXT MYSTERY cost.
 - The picture balance persists across balls, villain interruptions, and the normal
   Daily Bugle cycle reset posted after a villain summary.
+
+Audio routing
+-------------
+- The rooftop-spinner photo click, upper-target bells, and sling-swap callouts
+  remain as designed.
+- VUK impact does not play an electronic effect on switch closure. The shared
+  `hb_spring_1` effect plays only when `up_kick` or its switch-confirmed retry
+  actually fires the VUK coil.
+- A+B completion is the sole voice-pool trigger. After A+B opens the gate, the
+  already-updated picture count selects exactly one pool.
+- Too few stored pictures selects the gate-open/more-photos pool. Its current
+  line is `sm_i_better_take_some_photos`.
+- Enough stored pictures selects the Mystery-ready pool; it does not also play
+  the more-photos instruction.
+- Reaching the required photo total later through rooftop-spinner progress posts
+  `daily_bugle_photos_complete` as a separate future audio trigger. It currently
+  updates the Mystery-ready state, widget and lighting without playing a voice.
+- Completing A+B with an already-sufficient stored photo balance does not post
+  `daily_bugle_photos_complete`, because no new photo threshold was crossed.
+- The current Mystery-ready pool contains `sm_i_hope_mr_jameson_likes`,
+  `sm_i_wonder_what_mr_jameson`, `sm_lets_get_to_the_daily_bugle`,
+  `sm_these_photos_will_make_front_page`, `jj_wheres_that_parker_kid`, and
+  `sm_i_better_collect_my_reward`.

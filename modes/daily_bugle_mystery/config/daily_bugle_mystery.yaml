@@ -131,9 +131,19 @@ variable_player:
 
 
 random_event_player:
-  daily_bugle_mystery_ready:
-    - daily_bugle_rooftop_right_exit_1
-    - daily_bugle_rooftop_right_exit_2
+  # A+B completion is the sole callout trigger. The updated player variable
+  # chooses one pool after A+B opens the gate. Becoming Mystery-ready later
+  # from rooftop-spinner progress updates state/lights without another voice.
+  daily_bugle_ab_complete{current_player.daily_bugle_mystery_ready == 0}:
+    - daily_bugle_gate_open_more_photos_1
+
+  daily_bugle_ab_complete{current_player.daily_bugle_mystery_ready == 1}:
+    - daily_bugle_mystery_ready_callout_1
+    - daily_bugle_mystery_ready_callout_2
+    - daily_bugle_mystery_ready_callout_3
+    - daily_bugle_mystery_ready_callout_4
+    - daily_bugle_mystery_ready_callout_5
+    - daily_bugle_mystery_ready_callout_6
 
   daily_bugle_ab_sling_swapped_to_a{current_player.villain_mode_running != 1}:
     - daily_bugle_ab_callout_1
@@ -171,11 +181,6 @@ sound_player:
       action: play
       bus: voice
 
-  s_vuk_switch_active:
-    bump_sfx_2:
-      action: play
-      bus: effects
-
   daily_bugle_a_complete{current_player.daily_bugle_b_hit == 0}:
     hub_create_gem:
       action: play
@@ -191,7 +196,7 @@ sound_player:
       action: play
       bus: effects
 
-  daily_bugle_ab_complete:
+  daily_bugle_gate_open_more_photos_1:
     sm_i_better_take_some_photos:
       action: play
       bus: voice
@@ -216,13 +221,33 @@ sound_player:
       action: play
       bus: effects
 
-  daily_bugle_rooftop_right_exit_1:
+  daily_bugle_mystery_ready_callout_1:
     sm_i_hope_mr_jameson_likes:
       action: play
       bus: voice
 
-  daily_bugle_rooftop_right_exit_2:
+  daily_bugle_mystery_ready_callout_2:
     sm_i_wonder_what_mr_jameson:
+      action: play
+      bus: voice
+
+  daily_bugle_mystery_ready_callout_3:
+    sm_lets_get_to_the_daily_bugle:
+      action: play
+      bus: voice
+
+  daily_bugle_mystery_ready_callout_4:
+    sm_these_photos_will_make_front_page:
+      action: play
+      bus: voice
+
+  daily_bugle_mystery_ready_callout_5:
+    jj_wheres_that_parker_kid:
+      action: play
+      bus: voice
+
+  daily_bugle_mystery_ready_callout_6:
+    sm_i_better_collect_my_reward:
       action: play
       bus: voice
 

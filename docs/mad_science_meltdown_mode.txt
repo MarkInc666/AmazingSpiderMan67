@@ -1,0 +1,132 @@
+MAD SCIENCE MELTDOWN - CHAPTER 7 WIZARD
+========================================
+
+Status
+------
+Substantive implementation. The mode is a repeating scoring multiball and has
+no final objective. It completes when the main multiball ends.
+
+Start and ending
+----------------
+- Starts a 3-ball multiball.
+- Opening ball save: 20 seconds.
+- Add-a-Balls receive a 10-second save.
+- The mode supports up to 4 balls in play.
+- The mode ends when multiball ends (fewer than 2 balls remain in play).
+- Mode score and Jackpot counts feed the standard chapter-wizard summary.
+
+Chapter Case File bonus
+-----------------------
+- No normal Case File helper effects are used in this wizard.
+- Every Chapter 7 Case File adds 20,000 to every Gas and Noah Jackpot.
+- The shared mini_wizard_case_file_bonus player value supplies this amount.
+
+Gas system - Doctor Dumpty and Professor Pretorius
+---------------------------------------------------
+Gas zones:
+- Left web
+- Center web
+- Left pop
+- Right pop
+- Left sling
+- Right sling
+
+Each newly knocked-down left-bank target releases gas into one randomly chosen
+inactive zone. The new zone begins red. Gas zones progress independently, so
+red, yellow and green zones may exist at the same time.
+
+Every lower-spinner spin cools every active zone by one step:
+- Red -> yellow
+- Yellow -> green
+- Green remains green until collected
+
+Gas scoring:
+- Hit a red zone: 25,000; it remains red.
+- Hit a yellow zone: 50,000; it remains yellow.
+- Hit a green zone: Gas Jackpot of 500,000 plus 20,000 per Chapter Case File;
+  the zone is cleared.
+
+Completing the left 3-bank closes the rooftop gate and immediately resets the
+bank. The reset bank can begin releasing additional gas. When all active gas
+zones have been collected, the rooftop gate reopens unless Noah is revealed.
+If all six gas zones are active, another left-drop hit cannot release a seventh.
+
+Noah Boddy search and Jackpot
+-----------------------------
+- The right 5-bank starts standing.
+- Noah is not preselected. The last standing target becomes Noah.
+- Each upper-target hit physically drops one random standing false location.
+- A direct lower-playfield hit on a standing right target also eliminates it as
+  a false location.
+- When only one target remains standing, Noah is revealed and the gate closes.
+- Hit the final standing right target to collect the Noah Boddy Jackpot.
+- The right bank resets and the search repeats.
+
+Noah Jackpot before containment multiplication:
+  500,000 + Chapter Case File bonus + 100,000 per upper-spinner spin
+
+The upper-spinner build resets after each Noah Jackpot. Jackpot-build messages
+use the ordinary mode-message presentation; only the collected Jackpot uses
+the Jackpot presentation and audio.
+
+Saucer containment - Dr. Von Schlick
+------------------------------------
+- Any saucer may park its entering ball while at least one other ball remains
+  loose and playable.
+- No more than two balls may be parked.
+- Noah multiplier by parked-ball count:
+  - 0 parked: 1X
+  - 1 parked: 2X
+  - 2 parked: 3X
+- The Case File bonus and upper-spinner build are included before multiplication.
+- Collecting Noah releases all parked balls.
+- A repeating deadlock guard releases a parked ball if no loose ball remains.
+- All saucers are released when the mode stops.
+
+Magneto Add-a-Ball
+------------------
+- Complete Dr. Magneto's middle A and B rollovers.
+- Center web lights for 10 seconds.
+- Center web with fewer than 4 balls in play: Add-a-Ball with a 10-second save.
+- Center web with 4 balls already in play: award 1,000,000 instead.
+- Parked balls count toward the 4-ball limit.
+- After collection or timeout, A and B reset and may be qualified again.
+- If center web is also an active gas zone, the same switch processes both the
+  gas award and the Magneto award.
+
+Gate and VUK safety
+-------------------
+- The gate starts open.
+- Left-bank completion closes it.
+- Clearing all active gas can reopen it.
+- Revealing Noah closes it.
+- Collecting Noah reopens it only when no gas remains active.
+- Gate movement uses rooftop_diverter_open / rooftop_diverter_close only.
+- A VUK ball is ejected through the shared request_vuk_eject path.
+
+Lighting
+--------
+- Left-bank GI pulses red to identify the gas-release bank.
+- Lower spinner and its GI pulse white/blue for cooling.
+- Active gas areas pulse red, yellow or green; green pulses faster to indicate
+  a collectible Jackpot.
+- Standing right-bank inserts pulse dim green. The final Noah target pulses
+  bright green at double speed.
+- Upper-target inserts pulse amber while false locations remain.
+- The open-gate VUK route uses a visible blue chase.
+- Middle A and B use their yellow-lens inserts. Center web uses the shared white
+  approach chase during its 10-second award window.
+- Parked saucers light their matching green 1/2/3 inserts.
+
+Summary variables
+-----------------
+- active_mode_points: total wizard score
+- active_mode_hits: Gas Jackpots plus Noah Jackpots
+- active_mode_major_hits: Noah Jackpots
+- mad_science_meltdown_gas_jackpots
+- mad_science_meltdown_noah_jackpots
+- mad_science_meltdown_active_gas_zones
+- mad_science_meltdown_gas_red / gas_yellow / gas_green
+- mad_science_meltdown_parked_balls
+- mad_science_meltdown_jackpot_value
+- mad_science_meltdown_magneto_seconds

@@ -247,7 +247,8 @@ class DailyBugleMystery(Mode):
         self._post_rooftop_gate_open(reason="ab_complete")
         self.machine.events.post("daily_bugle_ab_complete")
         if self.mystery_ready and not mystery_was_ready:
-            self.machine.events.post("daily_bugle_photos_complete")
+            # The pictures were already banked before A+B completed. This is
+            # a Mystery-ready transition, not a new photo-threshold crossing.
             self.machine.events.post("daily_bugle_mystery_ready")
         self.machine.events.post("daily_bugle_widget_update")
 

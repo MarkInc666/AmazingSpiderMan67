@@ -96,13 +96,15 @@ event_player:
 
   s_plunger_inactive{current_player.outlane_add_a_ball_in_plunger == 1}:
     - clear_outlane_add_a_ball_in_plunger
-    - disable_outlane_autoplunge
 
-  s_outlane_r_active{current_player.outlane_add_a_ball_available == 1 and current_player.ball_save_count == 0}:
+  # Keep the outlane save banked during multiball. Multiball shoot-again is not
+  # included in ball_save_count, and starting this separate save during
+  # multiball can interfere with replacement-ball autolaunching.
+  s_outlane_r_active{current_player.outlane_add_a_ball_available == 1 and current_player.ball_save_count == 0 and current_player.multiball_autoplunge_active == 0}:
     - consume_outlane_add_a_ball
     - start_outlane_add_a_ball
 
-  s_outlane_l_active{current_player.outlane_add_a_ball_available == 1 and current_player.ball_save_count == 0}:
+  s_outlane_l_active{current_player.outlane_add_a_ball_available == 1 and current_player.ball_save_count == 0 and current_player.multiball_autoplunge_active == 0}:
     - consume_outlane_add_a_ball
     - start_outlane_add_a_ball
 

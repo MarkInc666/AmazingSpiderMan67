@@ -229,6 +229,23 @@ variable_player:
 
 show_player:
 
+  # Priority 95 places the banked-save pulse above the priority-80 bonus-lane
+  # indications, while villain/wizard lighting and priority-900 hit feedback
+  # can temporarily take ownership of the same inserts.
+  mode_extra_ball_started{current_player.outlane_add_a_ball_available > 0}:
+    outlane_add_a_ball_available_show:
+      loops: -1
+      priority: 95
+
+  increase_outlane_add_a_ball:
+    outlane_add_a_ball_available_show:
+      loops: -1
+      priority: 95
+
+  consume_outlane_add_a_ball:
+    outlane_add_a_ball_available_show:
+      action: stop
+
   mystery_extra_ball_lit:
     extra_ball_lit_show:
       loops: -1
@@ -299,6 +316,16 @@ show_player:
 
 
 shows:
+  outlane_add_a_ball_available_show:
+    - duration: 500ms
+      lights:
+        l_left_outlane: white
+        l_right_outlane: white
+    - duration: 500ms
+      lights:
+        l_left_outlane: 2060C0
+        l_right_outlane: 2060C0
+
   shoot_again_fast_flash:
     - duration: 250ms
       lights:
