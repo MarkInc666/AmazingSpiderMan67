@@ -1,5 +1,6 @@
 import random
 import time
+from functools import partial
 
 from mpf.core.mode import Mode
 
@@ -38,10 +39,21 @@ class TheWebTightens(Mode):
         "right_pop": "play_note_3",
         "right_bank": "play_note_4",
     }
-    FIDDLER_FLASH_MS = 700
-    FIDDLER_GAP_MS = 180
+    FIDDLER_WATCH_NOTE_TOTAL_MS = 900
+    FIDDLER_WATCH_STROBE_ON_MS = 200
+    FIDDLER_WATCH_STROBE_OFF_MS = 100
+    FIDDLER_NOTE_GAP_MS = 200
+    FIDDLER_PATTERN_REPEAT_PAUSE_MS = 750
+    FIDDLER_FEEDBACK_FLASH_ON_MS = 200
+    FIDDLER_FEEDBACK_FLASH_OFF_MS = 50
+    FIDDLER_FEEDBACK_FLASH_TOTAL_MS = 1_000
     FIDDLER_REPEATS = 2
     FIDDLER_INPUT_DEBOUNCE_SECONDS = 0.750
+
+    DROP_TARGETS = (
+        "dt_left_1", "dt_left_2", "dt_left_3",
+        "dt_right_1", "dt_right_2", "dt_right_3", "dt_right_4", "dt_right_5",
+    )
 
     METAL_ATTACK_INTERVAL_MS = 5_000
     METAL_RETALIATION_INTERVAL_MS = 2_000
@@ -100,20 +112,9 @@ class TheWebTightens(Mode):
 
     FIDDLER_SWITCH_TO_SHOT = {
         "s_web_target_left": "left_web",
-        "s_left_drops_1": "left_bank",
-        "s_left_drops_2": "left_bank",
-        "s_left_drops_3": "left_bank",
         "s_left_drops_rubber": "left_bank",
-        "s_left_drops_top_left_rubber": "left_bank",
-        "s_left_drops_top_right_rubber": "left_bank",
         "s_pop_right": "right_pop",
-        "s_right_drops_1": "right_bank",
-        "s_right_drops_2": "right_bank",
-        "s_right_drops_3": "right_bank",
-        "s_right_drops_4": "right_bank",
-        "s_right_drops_5": "right_bank",
         "s_right_drops_rubber": "right_bank",
-        "s_right_drops_top_rubber": "right_bank",
     }
 
     SLAYER_SWITCH_TO_SHOT = {
@@ -166,6 +167,8 @@ class TheWebTightens(Mode):
         """Mode-local jackpot SFX hook; replace these events per mode as desired."""
         if guarded_display_event != "base_show_mode_jackpot":
             return
+        if getattr(self, "phase", None) == "fiddler":
+            return
         title = str(message_mode_title or "").upper()
         subtitle = str(message_mode_subtitle or "").upper()
         combined = f"{title} {subtitle}".replace("-", " ")
@@ -210,6 +213,10 @@ class TheWebTightens(Mode):
         self.fiddler_demonstrating = False
         self.fiddler_demo_repeat = 0
         self.fiddler_demo_index = 0
+        self.fiddler_drop_setup_active = False
+        self.fiddler_feedback_active = False
+        self._fiddler_watch_note_elapsed_ms = 0
+        self._fiddler_watch_strobe_on = False
         self._fiddler_last_switch_hit_time = {}
 
         self.metal_saved = set()
@@ -244,6 +251,17 @@ class TheWebTightens(Mode):
             all_switches.update(switches)
         for switch in sorted(all_switches):
             self.add_mode_event_handler(f"{switch}_active", self._switch_hit, switch=switch)
+
+        self.add_mode_event_handler(
+            "drop_target_bank_dt_bank_left_down",
+            self._drop_bank_completed,
+            bank="left",
+        )
+        self.add_mode_event_handler(
+            "drop_target_bank_dt_bank_right_down",
+            self._drop_bank_completed,
+            bank="right",
+        )
 
         self.add_mode_event_handler(
             "multiball_the_web_tightens_multiball_started",
@@ -317,6 +335,13 @@ class TheWebTightens(Mode):
     # Shared switch / ball routing
     # ------------------------------------------------------------------
 
+    def _drop_bank_completed(self, bank=None, **kwargs):
+        if bank not in ("left", "right"):
+            return
+        if self.fiddler_drop_setup_active or self.phase == "fiddler":
+            return
+        self.machine.events.post(f"drop_target_bank_dt_bank_{bank}_reset")
+
     def _switch_hit(self, switch=None, **kwargs):
         if self.mode_done or not switch:
             return
@@ -333,10 +358,8 @@ class TheWebTightens(Mode):
         if self.phase == "fiddler":
             shot = self.FIDDLER_SWITCH_TO_SHOT.get(switch)
             if shot:
-                # Debounce the physical switch, not the logical note shot.
-                # This means two different drops in the same bank may still
-                # register back-to-back, while a bounce/re-hit from one switch
-                # within 750ms is ignored.
+                # Match standalone Fiddler: each note has one physical input,
+                # including the rubber behind each lowered drop bank.
                 now = time.monotonic()
                 last = self._fiddler_last_switch_hit_time.get(switch)
                 if last is not None and (now - last) < self.FIDDLER_INPUT_DEBOUNCE_SECONDS:
@@ -556,6 +579,9 @@ class TheWebTightens(Mode):
             return
         self.phase_announcing = True
         self.transitioning = True
+        if self.PHASES[index] == "fiddler":
+            self.fiddler_drop_setup_active = True
+            self._force_fiddler_drop_banks_down()
         self.machine.events.post("the_web_tightens_saucers_not_ready")
         phase_name = self.PHASES[index].replace("_", " ").upper()
         if phase_name == "METAL":
@@ -615,6 +641,11 @@ class TheWebTightens(Mode):
         resolved_phase = self.phase
         self.transitioning = True
         self._clear_phase_delays()
+        if resolved_phase == "fiddler":
+            self.fiddler_drop_setup_active = False
+            self.fiddler_feedback_active = False
+            self.machine.events.post("drop_target_bank_dt_bank_left_reset")
+            self.machine.events.post("drop_target_bank_dt_bank_right_reset")
         self.machine.events.post("hide_mode_message")
         self.machine.events.post("hide_mode_status")
         self.machine.events.post("the_web_tightens_clear_phase_lights")
@@ -623,11 +654,12 @@ class TheWebTightens(Mode):
             self.cycle_successes += 1
             self.total_phase_successes += 1
             self.machine.events.post(
-                "show_mode_message",
+                "show_mode_jackpot",
                 message_mode_title=title,
                 message_mode_subtitle=subtitle or "PHASE COMPLETE",
                 message_mode_value=self.cycle_successes * self.SUPER_PER_SUCCESS,
             )
+            self.machine.events.post("play_mode_jackpot")
         else:
             self.machine.events.post(
                 "show_mode_message",
@@ -682,12 +714,38 @@ class TheWebTightens(Mode):
             self.delay.remove(f"web_metal_{zone}_expire")
         for shot in self.SLAYER_SHOTS:
             self.delay.remove(f"web_slayer_{shot}_expire")
+        for shot in self.FIDDLER_SHOTS:
+            self.delay.remove(f"web_fiddler_feedback_{shot}")
+        for target_name in self.DROP_TARGETS:
+            self.delay.remove(f"web_fiddler_knockdown_{target_name}")
 
     # ------------------------------------------------------------------
     # Fiddler phase
     # ------------------------------------------------------------------
 
+    def _force_fiddler_drop_banks_down(self):
+        for index, target_name in enumerate(self.DROP_TARGETS):
+            self.delay.add(
+                name=f"web_fiddler_knockdown_{target_name}",
+                ms=100 + (index * 100),
+                callback=partial(
+                    self._knockdown_fiddler_target,
+                    target_name=target_name,
+                ),
+            )
+
+    def _knockdown_fiddler_target(self, target_name=None):
+        if self.mode_done or not self.fiddler_drop_setup_active or not target_name:
+            return
+        try:
+            target = self.machine.drop_targets[target_name]
+        except (KeyError, TypeError):
+            return
+        target.knockdown()
+
     def _start_fiddler(self):
+        self.fiddler_drop_setup_active = False
+        self.fiddler_feedback_active = False
         self.fiddler_sequence = [random.choice(self.FIDDLER_SHOTS) for _ in range(2)]
         self.fiddler_expected_index = 0
         self.fiddler_demonstrating = True
@@ -711,28 +769,57 @@ class TheWebTightens(Mode):
                 self._finish_fiddler_demo()
                 return
             self.fiddler_demo_index = 0
+            self.machine.events.post("the_web_tightens_fiddler_all_off")
             self.delay.reset(
-                name="web_fiddler_repeat", ms=500, callback=self._fiddler_demo_next
+                name="web_fiddler_repeat",
+                ms=self.FIDDLER_PATTERN_REPEAT_PAUSE_MS,
+                callback=self._fiddler_demo_next,
             )
             return
 
         shot = self.fiddler_sequence[self.fiddler_demo_index]
         self.machine.events.post(self.FIDDLER_NOTES[shot])
-        self.machine.events.post(f"the_web_tightens_fiddler_{shot}_solid")
+        self._fiddler_watch_note_elapsed_ms = 0
+        self._fiddler_watch_strobe_on = False
+        self._fiddler_watch_strobe_step(shot)
+
+    def _fiddler_watch_strobe_step(self, shot):
+        if self.mode_done or self.phase != "fiddler" or not self.fiddler_demonstrating:
+            return
+        if self._fiddler_watch_note_elapsed_ms >= self.FIDDLER_WATCH_NOTE_TOTAL_MS:
+            self.machine.events.post(f"the_web_tightens_fiddler_{shot}_off")
+            self._fiddler_demo_note_done()
+            return
+
+        self._fiddler_watch_strobe_on = not self._fiddler_watch_strobe_on
+        if self._fiddler_watch_strobe_on:
+            self.machine.events.post(f"the_web_tightens_fiddler_{shot}_solid")
+            step_ms = self.FIDDLER_WATCH_STROBE_ON_MS
+        else:
+            self.machine.events.post(f"the_web_tightens_fiddler_{shot}_dim")
+            step_ms = self.FIDDLER_WATCH_STROBE_OFF_MS
+
+        remaining_ms = (
+            self.FIDDLER_WATCH_NOTE_TOTAL_MS - self._fiddler_watch_note_elapsed_ms
+        )
+        step_ms = min(step_ms, remaining_ms)
+        self._fiddler_watch_note_elapsed_ms += step_ms
         self.delay.reset(
             name="web_fiddler_flash",
-            ms=self.FIDDLER_FLASH_MS,
-            callback=self._fiddler_demo_note_off,
-            shot=shot,
+            ms=step_ms,
+            callback=partial(self._fiddler_watch_strobe_step, shot),
         )
 
-    def _fiddler_demo_note_off(self, shot=None):
-        if shot:
-            self.machine.events.post(f"the_web_tightens_fiddler_{shot}_off")
+    def _fiddler_demo_note_done(self):
+        if self.mode_done or self.phase != "fiddler" or not self.fiddler_demonstrating:
+            return
         self.fiddler_demo_index += 1
+        if self.fiddler_demo_index >= len(self.fiddler_sequence):
+            self._fiddler_demo_next()
+            return
         self.delay.reset(
             name="web_fiddler_gap",
-            ms=self.FIDDLER_GAP_MS,
+            ms=self.FIDDLER_NOTE_GAP_MS,
             callback=self._fiddler_demo_next,
         )
 
@@ -749,14 +836,19 @@ class TheWebTightens(Mode):
         self._update_status()
 
     def _fiddler_shot_hit(self, shot):
-        if self.fiddler_demonstrating or self.transitioning:
+        if self.fiddler_demonstrating or self.transitioning or self.fiddler_feedback_active:
             return
         if self.fiddler_expected_index >= len(self.fiddler_sequence):
             return
         expected = self.fiddler_sequence[self.fiddler_expected_index]
         if shot != expected:
             self.machine.events.post("play_bad_note")
-            self._resolve_phase(False, "FIDDLER FAILED", f"WANTED {self.FIDDLER_LABELS[expected]}")
+            self.fiddler_feedback_active = True
+            self._start_fiddler_note_flash(
+                expected,
+                done_callback=partial(self._finish_fiddler_failure, expected),
+                delay_name=f"web_fiddler_feedback_{expected}",
+            )
             return
 
         value = self._jackpot(2)
@@ -768,17 +860,105 @@ class TheWebTightens(Mode):
             message_mode_subtitle=self.FIDDLER_LABELS[shot],
             message_mode_value=value,
         )
-        self.machine.events.post("play_mode_jackpot")
         self.fiddler_expected_index += 1
         if self.fiddler_expected_index >= 2:
-            self._resolve_phase(True, "FIDDLER COMPLETE", "TWO NOTES PLAYED")
+            self.fiddler_feedback_active = True
+            feedback_done = self._finish_fiddler_success
         else:
+            feedback_done = self._fiddler_correct_note_feedback_done
             self.machine.events.post(
                 "show_mode_message_long",
                 message_mode_title="FIDDLER - YOUR TURN",
                 message_mode_subtitle="NOTE 2 OF 2",
             )
             self._update_status()
+        self._start_fiddler_note_flash(
+            shot,
+            done_callback=feedback_done,
+            delay_name=f"web_fiddler_feedback_{shot}",
+        )
+
+    def _start_fiddler_note_flash(self, shot, done_callback, delay_name):
+        self.machine.events.post(f"the_web_tightens_fiddler_{shot}_solid")
+        self._fiddler_note_flash_tick(
+            shot=shot,
+            elapsed_ms=0,
+            light_on=True,
+            done_callback=done_callback,
+            delay_name=delay_name,
+        )
+
+    def _fiddler_note_flash_tick(
+        self, shot, elapsed_ms, light_on, done_callback, delay_name
+    ):
+        if self.mode_done or self.phase != "fiddler":
+            return
+        interval = (
+            self.FIDDLER_FEEDBACK_FLASH_ON_MS
+            if light_on
+            else self.FIDDLER_FEEDBACK_FLASH_OFF_MS
+        )
+        next_elapsed = elapsed_ms + interval
+        if next_elapsed >= self.FIDDLER_FEEDBACK_FLASH_TOTAL_MS:
+            remaining = self.FIDDLER_FEEDBACK_FLASH_TOTAL_MS - elapsed_ms
+            self.delay.reset(
+                name=delay_name,
+                ms=max(1, remaining),
+                callback=partial(self._fiddler_note_flash_done, shot, done_callback),
+            )
+            return
+        self.delay.reset(
+            name=delay_name,
+            ms=interval,
+            callback=partial(
+                self._fiddler_note_flash_toggle,
+                shot,
+                next_elapsed,
+                not light_on,
+                done_callback,
+                delay_name,
+            ),
+        )
+
+    def _fiddler_note_flash_toggle(
+        self, shot, elapsed_ms, light_on, done_callback, delay_name
+    ):
+        if self.mode_done or self.phase != "fiddler":
+            return
+        state = "solid" if light_on else "off"
+        self.machine.events.post(f"the_web_tightens_fiddler_{shot}_{state}")
+        self._fiddler_note_flash_tick(
+            shot=shot,
+            elapsed_ms=elapsed_ms,
+            light_on=light_on,
+            done_callback=done_callback,
+            delay_name=delay_name,
+        )
+
+    def _fiddler_note_flash_done(self, shot, done_callback):
+        if self.mode_done or self.phase != "fiddler":
+            return
+        self.machine.events.post(f"the_web_tightens_fiddler_{shot}_off")
+        done_callback()
+
+    def _fiddler_correct_note_feedback_done(self):
+        """Correct-note feedback does not gate the next note input."""
+
+    def _finish_fiddler_success(self):
+        if self.mode_done or self.phase != "fiddler":
+            return
+        self.fiddler_feedback_active = False
+        self._resolve_phase(True, "FIDDLER COMPLETE", "TWO NOTES PLAYED")
+
+    def _finish_fiddler_failure(self, expected):
+        if self.mode_done or self.phase != "fiddler":
+            return
+        self.fiddler_feedback_active = False
+        self._resolve_phase(
+            False,
+            "FIDDLER FAILED",
+            f"WANTED {self.FIDDLER_LABELS[expected]}",
+        )
 
     # ------------------------------------------------------------------
     # Metal-Eating Monster phase
@@ -837,6 +1017,7 @@ class TheWebTightens(Mode):
         self.metal_saved.add(zone)
         value = self._jackpot()
         self._score(value)
+        self.machine.events.post("play_mode_jackpot")
         self.machine.events.post(f"the_web_tightens_zone_{zone}_saved")
         self.machine.events.post(
             "show_mode_jackpot",
@@ -988,6 +1169,7 @@ class TheWebTightens(Mode):
             return
         value = self._jackpot()
         self._score(value)
+        self.machine.events.post("play_mode_jackpot")
         self.machine.events.post(
             "show_mode_jackpot",
             message_mode_title="SLAYER JACKPOT",
@@ -1004,7 +1186,7 @@ class TheWebTightens(Mode):
                 self.total_phase_successes += 1
                 self._sync_vars()
                 self.machine.events.post(
-                    "show_mode_message",
+                    "show_mode_jackpot",
                     message_mode_title="SPIDER-SLAYER COMPLETE",
                     message_mode_subtitle="LIT SHOTS WILL EXPIRE",
                     message_mode_value=self.cycle_successes * self.SUPER_PER_SUCCESS,
@@ -1086,6 +1268,7 @@ class TheWebTightens(Mode):
         self.harley_completed.add(zone)
         value = self._jackpot()
         self._score(value)
+        self.machine.events.post("play_mode_jackpot")
         self.machine.events.post(f"the_web_tightens_zone_{zone}_complete")
         self.machine.events.post(
             "show_mode_jackpot",
@@ -1118,6 +1301,7 @@ class TheWebTightens(Mode):
         self.delay.remove("web_harley_star_timeout")
         value = self._jackpot(2)
         self._score(value)
+        self.machine.events.post("play_mode_jackpot")
         self.machine.events.post(
             "show_mode_jackpot",
             message_mode_title="HARLEY 2X JACKPOT",
@@ -1238,6 +1422,7 @@ class TheWebTightens(Mode):
         if value > 0:
             self.supers_collected += 1
             self._score(value)
+        self.machine.events.post("play_mode_super_jackpot")
         self.machine.events.post(
             "show_mode_jackpot",
             message_mode_title="SUPER JACKPOT",
@@ -1274,6 +1459,7 @@ class TheWebTightens(Mode):
     def _score_required_jackpot(self, title, subtitle):
         value = self._jackpot()
         self._score(value)
+        self.machine.events.post("play_mode_jackpot")
         self.machine.events.post(
             "show_mode_jackpot",
             message_mode_title=title,

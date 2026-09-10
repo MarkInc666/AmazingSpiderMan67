@@ -30,9 +30,16 @@ PHASE ORDER
 -----------
 1. FIDDLER
    - Saucer holds the initiating ball while a two-note sequence is shown.
+   - During the 2-second GET READY announcement, both drop banks are knocked
+     down in a 100 ms stagger so the bank rubbers are exposed before WATCH.
    - Uses the same four note shots as Fiddler:
-       Left Web / Left Bank / Right Pop / Right Bank.
+       Left Web / Left 3-bank rubber / Right Pop / Right 5-bank rubber.
+   - Individual drop-target switches are not note inputs; the two exposed bank
+     rubber switches are the bank notes, matching standalone Fiddler.
    - Sequence may repeat a shot.
+   - Each WATCH note strobes bright/dim for 900 ms (200 ms bright / 100 ms dim),
+     with a 200 ms gap between notes and a 750 ms pause before the repeat.
+     The full two-note sequence is shown twice.
    - If there are other loose balls, the initiating saucer ball remains parked
      while the player reproduces the pattern.
    - If only the VUK ball + saucer ball remain, release the saucer ball after
@@ -41,7 +48,10 @@ PHASE ORDER
      one loose playable ball remains.
    - Correct Note 1: 2X Jackpot.
    - Correct Note 2: 2X Jackpot and phase SUCCESS.
-   - Wrong note: phase FAIL.
+   - A correct note rapidly flashes its shot for 1 second (200 ms on / 50 ms
+     off). A wrong note plays the bad note, flashes the expected shot with the
+     same timing, then fails the phase.
+   - Both drop banks reset when the Fiddler phase resolves.
 
 2. METAL-EATING MONSTER
    - Add-a-ball at phase start.
