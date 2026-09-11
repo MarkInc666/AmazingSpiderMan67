@@ -69,9 +69,6 @@ event_player:
     - drop_target_bank_dt_bank_right_reset
   drop_target_bank_dt_bank_left_down: drop_target_bank_dt_bank_left_reset
   drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset
-  s_saucer_1_active: delayed_kickout_saucer_1
-  s_saucer_2_active: delayed_kickout_saucer_2
-  s_saucer_3_active: delayed_kickout_saucer_3
   multiball_fifth_dimension_curse_multiball_ended: fifth_dimension_curse_multiball_ended
 
 light_player:
@@ -283,8 +280,51 @@ light_player:
     l_upper_left: off
     l_upper_middle: off
     l_upper_right: off
+  fifth_dimension_curse_add_a_ball_target_clear:
+    l_star: off
+    l_a_rollover: off
+    l_b_rollover: off
+  fifth_dimension_curse_saucer_lights_clear:
+    l_1: off
+    l_2: off
+    l_3: off
+  fifth_dimension_curse_saucer_1_parked:
+    l_1: green
+  fifth_dimension_curse_saucer_2_parked:
+    l_2: green
+  fifth_dimension_curse_saucer_3_parked:
+    l_3: green
+  fifth_dimension_curse_ruby_lights_clear:
+    l_upper_left: off
+    l_upper_middle: off
+    l_upper_right: off
+  fifth_dimension_curse_ruby_left_lit:
+    l_upper_left: FF4444
+  fifth_dimension_curse_ruby_center_lit:
+    l_upper_middle: FF4444
+  fifth_dimension_curse_ruby_right_lit:
+    l_upper_right: FF4444
 
 show_player:
+  fifth_dimension_curse_add_a_ball_star_lit:
+    fifth_dimension_curse_add_a_ball_star_pulse:
+      action: play
+      loops: -1
+  fifth_dimension_curse_add_a_ball_upper_a_lit:
+    fifth_dimension_curse_add_a_ball_upper_a_pulse:
+      action: play
+      loops: -1
+  fifth_dimension_curse_add_a_ball_upper_b_lit:
+    fifth_dimension_curse_add_a_ball_upper_b_pulse:
+      action: play
+      loops: -1
+  fifth_dimension_curse_add_a_ball_target_clear:
+    fifth_dimension_curse_add_a_ball_star_pulse:
+      action: stop
+    fifth_dimension_curse_add_a_ball_upper_a_pulse:
+      action: stop
+    fifth_dimension_curse_add_a_ball_upper_b_pulse:
+      action: stop
   fifth_dimension_curse_zone_upper_left_bright:
     fifth_dimension_curse_upper_left_flicker:
       action: stop
@@ -382,6 +422,12 @@ show_player:
       action: stop
 
   mode_fifth_dimension_curse_stopping:
+    fifth_dimension_curse_add_a_ball_star_pulse:
+      action: stop
+    fifth_dimension_curse_add_a_ball_upper_a_pulse:
+      action: stop
+    fifth_dimension_curse_add_a_ball_upper_b_pulse:
+      action: stop
     fifth_dimension_curse_upper_left_flicker:
       action: stop
     fifth_dimension_curse_upper_right_flicker:
@@ -402,6 +448,21 @@ show_player:
       action: stop
 
 shows:
+  fifth_dimension_curse_add_a_ball_star_pulse:
+    - duration: 500ms
+      lights: {l_star: white}
+    - duration: 500ms
+      lights: {l_star: off}
+  fifth_dimension_curse_add_a_ball_upper_a_pulse:
+    - duration: 500ms
+      lights: {l_a_rollover: white}
+    - duration: 500ms
+      lights: {l_a_rollover: off}
+  fifth_dimension_curse_add_a_ball_upper_b_pulse:
+    - duration: 500ms
+      lights: {l_b_rollover: white}
+    - duration: 500ms
+      lights: {l_b_rollover: off}
   fifth_dimension_curse_upper_left_flicker:
     - duration: 250ms
       lights:

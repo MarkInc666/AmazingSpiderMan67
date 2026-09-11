@@ -3,6 +3,17 @@ FIFTH DIMENSION CURSE MINI-WIZARD
 STATUS
 Implemented. The VUK timing correction requires physical-machine playtesting.
 
+WIZARD INTRO
+1. CITY ZONE MULTIBALL
+2. KEEP ZONES BRIGHT - DAILY BUGLE JACKPOTS
+3. PARK FOR RUBIES - SPINNER LIGHTS ADD-A-BALL
+
+WIZARD SUMMARY
+- FIFTH DIMENSION COMPLETE
+- JACKPOTS (VUK Zone Jackpots plus Ruby Super Jackpots)
+- ADD-A-BALLS
+- POINTS
+
 VUK RELEASE BEHAVIOR
 - During active gameplay, every Daily Bugle VUK visit uses the shared delayed-release service.
 - Both an unlit VUK visit and a Curse Jackpot wait 1.5 seconds before the up-kicker fires.
@@ -16,6 +27,15 @@ GAMEPLAY SUMMARY
 - Zones remain bright for 5 seconds, flicker, and return to dim after 8 seconds.
 - Entering the VUK with active zones collects a Curse Jackpot based on the number of active zones plus the chapter Case File bonus.
 - Entering the VUK with no active zones scores no Curse Jackpot and uses the same 1.5-second release.
-- A VUK Jackpot with at least three active zones qualifies add-a-ball.
-- Completing all three upper targets collects a qualified add-a-ball, up to three times.
+- Any saucer may park its ball while at least one other ball remains loose. With four balls in play, all three saucers may be occupied.
+- Saucer 1 maps to the left upper target, Saucer 2 to center, and Saucer 3 to right.
+- After a VUK Zone Jackpot, every occupied saucer lights its matching upper target for a Ruby Super Jackpot.
+- Each Ruby Super Jackpot scores 1,000,000 plus the chapter Case File bonus.
+- Collecting a Ruby Super turns off that target, holds the parked ball for 2 seconds, then ejects its matching saucer.
+- A deadlock guard immediately releases a parked ball if no loose ball remains playable.
+- When fewer than four balls are in play, a main-spinner hit randomly lights STAR, upper A, or upper B for add-a-ball.
+- Only one add-a-ball target may be active at a time. The main spinner is ignored during its 10-second window.
+- Hitting the lit target stops the timer and adds a ball. If the target expires, no ball is added.
+- After collection or expiry, the next eligible main-spinner hit may light another random target.
+- Add-a-ball remains available throughout the mode, with a maximum of four balls in play.
 - The mini-wizard ends when multiball ends.

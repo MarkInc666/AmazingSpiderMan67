@@ -1,12 +1,18 @@
+import random
+
 from mpf.core.mode import Mode
 
 
 class FifthDimensionCurse(Mode):
-    """Fifth Dimension Curse mini-wizard: keep six city zones alive for VUK jackpots."""
+    """City-zone multiball with Ruby parking and repeatable Add-a-Balls."""
 
     MODE_KEY = "fifth_dimension_curse"
     DISPLAY_NAME = "Fifth Dimension Curse"
     VUK_EJECT_DELAY_MS = 1_500
+    RUBY_SAUCER_EJECT_DELAY_MS = 2_000
+    RUBY_SUPER_BASE_VALUE = 1_000_000
+    ADD_A_BALL_WINDOW_MS = 10_000
+    MAX_BALLS = 4
 
     ZONE_SWITCHES = {
         "upper_left": [
@@ -32,10 +38,16 @@ class FifthDimensionCurse(Mode):
         "lower_right": ["s_inlane_r", "s_outlane_r", "s_sling_r"],
     }
 
-    UPPER_TARGETS = {
-        "left": "s_upper_target_left",
-        "center": "s_upper_target_center",
-        "right": "s_upper_target_right",
+    ADD_A_BALL_TARGETS = {
+        "star": "s_star_rollover",
+        "upper_a": "s_inlane_a",
+        "upper_b": "s_inlane_b",
+    }
+
+    RUBY_TARGETS = {
+        "left": ("s_upper_target_left", 1),
+        "center": ("s_upper_target_center", 2),
+        "right": ("s_upper_target_right", 3),
     }
 
     def _post_mode_jackpot_sfx_if_needed(
@@ -66,11 +78,12 @@ class FifthDimensionCurse(Mode):
         self.mode_points = 0
         self.active_zones = set()
         self.zone_states = {zone: "dim" for zone in self.ZONE_SWITCHES}
-        self.upper_targets_hit = set()
-        self.upper_completion_active = False
+        self.add_a_ball_target = None
         self.add_a_balls_awarded = 0
-        self.add_a_ball_qualified = False
         self.jackpots_collected = 0
+        self.parked_saucers = set()
+        self.ruby_lit_saucers = set()
+        self.ruby_release_pending = set()
 
         player = self.machine.game.player
         self.case_file_bonus = player["mini_wizard_case_file_bonus"]
@@ -84,8 +97,26 @@ class FifthDimensionCurse(Mode):
             for switch in switches:
                 self.add_mode_event_handler(f"{switch}_active", self._zone_hit, zone=zone)
 
-        for target, switch in self.UPPER_TARGETS.items():
-            self.add_mode_event_handler(f"{switch}_active", self._upper_target_hit, target=target)
+        self.add_mode_event_handler("s_web_spinner_active", self._spinner_hit)
+        for target, switch in self.ADD_A_BALL_TARGETS.items():
+            self.add_mode_event_handler(
+                f"{switch}_active",
+                self._add_a_ball_target_hit,
+                target=target,
+            )
+        for target, (switch, saucer) in self.RUBY_TARGETS.items():
+            self.add_mode_event_handler(
+                f"{switch}_active",
+                self._ruby_target_hit,
+                target=target,
+                saucer=saucer,
+            )
+        for saucer in (1, 2, 3):
+            self.add_mode_event_handler(
+                f"s_saucer_{saucer}_active",
+                self._saucer_hit,
+                saucer=saucer,
+            )
 
         self.add_mode_event_handler("s_vuk_switch_active", self._vuk_hit)
         self.add_mode_event_handler("fifth_dimension_curse_multiball_ended", self._multiball_ended)
@@ -93,7 +124,9 @@ class FifthDimensionCurse(Mode):
 
         self.machine.events.post("chapter_mini_wizard_started", mini_wizard=self.MODE_KEY)
         self.machine.events.post("fifth_dimension_curse_dim_all_zones")
-        self.machine.events.post("fifth_dimension_curse_upper_targets_reset")
+        self.machine.events.post("fifth_dimension_curse_add_a_ball_target_clear")
+        self.machine.events.post("fifth_dimension_curse_saucer_lights_clear")
+        self.machine.events.post("fifth_dimension_curse_ruby_lights_clear")
         self.machine.events.post("fifth_dimension_curse_start_multiball")
         self.machine.events.post(
             "show_mode_message",
@@ -101,17 +134,24 @@ class FifthDimensionCurse(Mode):
             message_mode_subtitle="LIGHT ZONES - COLLECT VUK JACKPOTS",
             reminder=True,
         )
+        self._schedule_ball_guard()
         self._update_gate_and_status()
 
     def mode_stop(self, **kwargs):
         for zone in self.ZONE_SWITCHES:
             self.delay.remove(f"fdc_{zone}_flicker")
             self.delay.remove(f"fdc_{zone}_dim")
-        self.delay.remove("fdc_upper_reset")
+        self.delay.remove("fdc_add_a_ball_window")
+        self.delay.remove("fdc_ball_guard")
+        for saucer in (1, 2, 3):
+            self.delay.remove(f"fdc_ruby_eject_{saucer}")
         self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post("hide_mode_status")
         self.machine.events.post("fifth_dimension_curse_restore_all_lights")
         self.machine.events.post("fifth_dimension_curse_upper_targets_off")
+        self.machine.events.post("fifth_dimension_curse_add_a_ball_target_clear")
+        self.machine.events.post("fifth_dimension_curse_saucer_lights_clear")
+        self.machine.events.post("fifth_dimension_curse_ruby_lights_clear")
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("clear_saucers_delayed")
         player = self.machine.game.player
@@ -162,7 +202,6 @@ class FifthDimensionCurse(Mode):
         value = 500_000 + (zones - 1) * 250_000 + self.case_file_bonus
         self._score(value)
         self.jackpots_collected += 1
-        self.add_a_ball_qualified = zones >= 3 and self.add_a_balls_awarded < 3
         player = self.machine.game.player
         player["active_mode_hits"] = self.jackpots_collected
         self.machine.events.post(
@@ -172,6 +211,8 @@ class FifthDimensionCurse(Mode):
             message_mode_value=value,
         )
         self.machine.events.post("play_mode_jackpot")
+        self.ruby_lit_saucers.update(self.parked_saucers)
+        self._refresh_ruby_lights()
         self.machine.events.post(
             "request_vuk_eject",
             delay_ms=self.VUK_EJECT_DELAY_MS,
@@ -179,45 +220,160 @@ class FifthDimensionCurse(Mode):
         self.machine.events.post("reset_mode_message_reminder")
         self._update_gate_and_status()
 
-    def _upper_target_hit(self, target=None, **kwargs):
-        if self.mode_done or not target or self.upper_completion_active:
+    def _saucer_hit(self, saucer=None, **kwargs):
+        if self.mode_done or saucer is None:
             return
-        zones = len(self.active_zones)
-        value = 100_000 + 25_000 * zones
-        self._score(value)
+        saucer = int(saucer)
+        if saucer in self.parked_saucers:
+            return
 
-        if target not in self.upper_targets_hit:
-            self.upper_targets_hit.add(target)
-            self.machine.events.post(f"fifth_dimension_curse_upper_{target}_solid")
-
-        self.machine.events.post(
-            "show_mode_message",
-            message_mode_title="MYSTIC TARGET",
-            message_mode_subtitle=f"{zones} ZONES - {value // 1000}K",
-        )
-
-        if len(self.upper_targets_hit) == 3:
-            self._complete_upper_targets()
-
-    def _complete_upper_targets(self):
-        self.upper_completion_active = True
-        self.machine.events.post("fifth_dimension_curse_upper_targets_complete")
-        if self.add_a_ball_qualified and self.add_a_balls_awarded < 3:
-            self.add_a_balls_awarded += 1
-            self.add_a_ball_qualified = False
-            self.machine.game.player["active_mode_major_hits"] = self.add_a_balls_awarded
-            self.machine.events.post("fifth_dimension_curse_add_a_ball")
+        if self._can_park_current_saucer():
+            self.parked_saucers.add(saucer)
             self.machine.events.post(
                 "show_mode_message",
-                message_mode_title="ADD-A-BALL",
-                message_mode_subtitle=f"{self.add_a_balls_awarded} OF 3",
+                message_mode_title="RUBY PARKED",
+                message_mode_subtitle=f"SAUCER {saucer}",
             )
-        self.delay.add(name="fdc_upper_reset", ms=1500, callback=self._reset_upper_targets)
+            self._refresh_saucer_lights()
+            return
+        self._kick_saucer(saucer)
 
-    def _reset_upper_targets(self, **kwargs):
-        self.upper_completion_active = False
-        self.upper_targets_hit.clear()
-        self.machine.events.post("fifth_dimension_curse_upper_targets_reset")
+    def _ruby_target_hit(self, target=None, saucer=None, **kwargs):
+        if self.mode_done or saucer is None:
+            return
+        saucer = int(saucer)
+        if saucer not in self.ruby_lit_saucers:
+            return
+
+        self.ruby_lit_saucers.discard(saucer)
+        self.ruby_release_pending.add(saucer)
+        self._refresh_ruby_lights()
+
+        value = self.RUBY_SUPER_BASE_VALUE + self.case_file_bonus
+        self._score(value)
+        self.jackpots_collected += 1
+        self.machine.game.player["active_mode_hits"] = self.jackpots_collected
+        self.machine.events.post(
+            "show_mode_jackpot",
+            message_mode_title="RUBY SUPER JACKPOT",
+            message_mode_subtitle=f"SAUCER {saucer}",
+            message_mode_value=value,
+        )
+        self.machine.events.post("play_mode_super_jackpot")
+        self.delay.add(
+            name=f"fdc_ruby_eject_{saucer}",
+            ms=self.RUBY_SAUCER_EJECT_DELAY_MS,
+            callback=self._eject_ruby_saucer,
+            saucer=saucer,
+        )
+
+    def _eject_ruby_saucer(self, saucer=None, **kwargs):
+        if saucer is None:
+            return
+        self._kick_saucer(int(saucer))
+
+    def _can_park_current_saucer(self):
+        # The entering ball is physically in the saucer but is not yet counted
+        # in parked_saucers. Keep at least one other ball loose and playable.
+        return (self._balls_in_play() - len(self.parked_saucers) - 1) >= 1
+
+    def _schedule_ball_guard(self):
+        if not self.mode_done:
+            self.delay.reset(
+                name="fdc_ball_guard",
+                ms=250,
+                callback=self._ball_guard,
+            )
+
+    def _ball_guard(self, **kwargs):
+        if self.mode_done:
+            return
+        if self.parked_saucers and self._playable_loose_balls() <= 0:
+            available = sorted(self.parked_saucers - self.ruby_release_pending)
+            saucer = available[0] if available else sorted(self.parked_saucers)[0]
+            self._kick_saucer(saucer)
+        self._schedule_ball_guard()
+
+    def _kick_saucer(self, saucer):
+        saucer = int(saucer)
+        self.delay.remove(f"fdc_ruby_eject_{saucer}")
+        self.parked_saucers.discard(saucer)
+        self.ruby_lit_saucers.discard(saucer)
+        self.ruby_release_pending.discard(saucer)
+        self.machine.events.post(
+            "request_saucer_eject",
+            saucer_number=saucer,
+            delay_ms=0,
+        )
+        self._refresh_saucer_lights()
+        self._refresh_ruby_lights()
+
+    def _playable_loose_balls(self):
+        return max(0, self._balls_in_play() - len(self.parked_saucers))
+
+    def _refresh_saucer_lights(self):
+        self.machine.events.post("fifth_dimension_curse_saucer_lights_clear")
+        for saucer in sorted(self.parked_saucers):
+            self.machine.events.post(f"fifth_dimension_curse_saucer_{saucer}_parked")
+
+    def _refresh_ruby_lights(self):
+        self.machine.events.post("fifth_dimension_curse_ruby_lights_clear")
+        for saucer in sorted(self.ruby_lit_saucers):
+            target = {1: "left", 2: "center", 3: "right"}[saucer]
+            self.machine.events.post(f"fifth_dimension_curse_ruby_{target}_lit")
+
+    def _spinner_hit(self, **kwargs):
+        """Light one repeatable ten-second Add-a-Ball target."""
+        if self.mode_done or self.add_a_ball_target is not None:
+            return
+        if self._balls_in_play() >= self.MAX_BALLS:
+            return
+
+        self.add_a_ball_target = random.choice(tuple(self.ADD_A_BALL_TARGETS))
+        self.machine.events.post(
+            f"fifth_dimension_curse_add_a_ball_{self.add_a_ball_target}_lit"
+        )
+        display_name = {
+            "star": "STAR",
+            "upper_a": "UPPER A",
+            "upper_b": "UPPER B",
+        }[self.add_a_ball_target]
+        self.machine.events.post(
+            "show_mode_message",
+            message_mode_title="ADD-A-BALL LIT",
+            message_mode_subtitle=f"{display_name} - 10 SECONDS",
+        )
+        self.delay.add(
+            name="fdc_add_a_ball_window",
+            ms=self.ADD_A_BALL_WINDOW_MS,
+            callback=self._expire_add_a_ball_target,
+        )
+
+    def _add_a_ball_target_hit(self, target=None, **kwargs):
+        if self.mode_done or not target or target != self.add_a_ball_target:
+            return
+        self.delay.remove("fdc_add_a_ball_window")
+        self._clear_add_a_ball_target()
+
+        if self._balls_in_play() >= self.MAX_BALLS:
+            return
+        self.add_a_balls_awarded += 1
+        self.machine.game.player["active_mode_major_hits"] = self.add_a_balls_awarded
+        self.machine.events.post("fifth_dimension_curse_add_a_ball")
+        self.machine.events.post(
+            "show_mode_message",
+            message_mode_title="ADD-A-BALL",
+            message_mode_subtitle=f"{self.add_a_balls_awarded} COLLECTED",
+        )
+
+    def _expire_add_a_ball_target(self, **kwargs):
+        if self.mode_done or self.add_a_ball_target is None:
+            return
+        self._clear_add_a_ball_target()
+
+    def _clear_add_a_ball_target(self):
+        self.add_a_ball_target = None
+        self.machine.events.post("fifth_dimension_curse_add_a_ball_target_clear")
 
     def _multiball_ended(self, **kwargs):
         self._complete_mode()
@@ -248,3 +404,11 @@ class FifthDimensionCurse(Mode):
         player["score"] += points
         self.mode_points += points
         player["active_mode_points"] = self.mode_points
+
+    def _balls_in_play(self):
+        if not self.machine.game:
+            return 0
+        try:
+            return int(self.machine.game.balls_in_play or 0)
+        except (TypeError, ValueError, AttributeError):
+            return 0
