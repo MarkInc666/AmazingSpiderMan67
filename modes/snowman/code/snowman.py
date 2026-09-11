@@ -37,7 +37,7 @@ class Snowman(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
-        self.reset_active_mode_summary(stat_count=1)
+        self.reset_active_mode_summary(stat_count=3)
         self.delay = DelayManager(self.machine)
         self.case_files = self.get_case_file_bonuses()
 
@@ -242,6 +242,8 @@ class Snowman(CaseFileMixin, Mode):
         player["active_mode_points"] = self.mode_points
         player["snowman_bonus_spins"] = self.bonus_spins
         player["snowman_biggest_spin"] = self.biggest_spin
+        player["active_mode_stat_1"] = self.bonus_spins
+        player["active_mode_stat_2"] = self.biggest_spin
         player["snowman_seconds_left"] = self.seconds_left
         player["snowman_phase"] = self.phase
 

@@ -56,7 +56,7 @@ class BoltonBoomer(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
-        self.reset_active_mode_summary(stat_count=1)
+        self.reset_active_mode_summary(stat_count=3)
         self.case_files = self.get_case_file_bonuses()
         self.mode_done = False
         self.phase = "target"
@@ -295,6 +295,8 @@ class BoltonBoomer(CaseFileMixin, Mode):
         player["active_mode_points"] = self.mode_points
         player["bolton_boomer_super_jackpots"] = self.super_jackpots
         player["bolton_boomer_biggest_super"] = self.biggest_super
+        player["active_mode_stat_1"] = self.super_jackpots
+        player["active_mode_stat_2"] = self.biggest_super
         player["bolton_boomer_super_seconds"] = self.timer_seconds_remaining
         player["bolton_boomer_super_value"] = self.current_super_value
 

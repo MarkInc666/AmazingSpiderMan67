@@ -43,6 +43,7 @@ class CrimeWave(Mode):
         super().mode_start(**kwargs)
         self.mode_done = False
         self.lit_areas = set()
+        self.max_areas_lit = 0
         self.gate_open = False
         self.held_saucers = set()
         self.jackpots = 0
@@ -98,6 +99,7 @@ class CrimeWave(Mode):
             return
         newly_lit = area not in self.lit_areas
         self.lit_areas.add(area)
+        self.max_areas_lit = max(self.max_areas_lit, len(self.lit_areas))
         self.delay.remove(f"crime_wave_area_{area}")
         self.delay.add(
             name=f"crime_wave_area_{area}",
@@ -200,7 +202,7 @@ class CrimeWave(Mode):
         player["active_mode_points"] = self.mode_points
 
     def _update_status(self):
-        self.machine.game.player["active_mode_hits"] = len(self.lit_areas)
+        self.machine.game.player["active_mode_hits"] = self.max_areas_lit
         self.machine.events.post(
             "show_mode_status",
             mode_status_title="AREAS / JACKPOTS",

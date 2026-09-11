@@ -569,7 +569,7 @@ class TrubbleUnleashed(Mode):
         self.cyclops_jackpots += 1
         self._score(self.CYCLOPS_JACKPOT)
         self.machine.events.post("trubble_unleashed_cyclops_collected", value=self.CYCLOPS_JACKPOT)
-        self._show_jackpot("CYCLOPS JACKPOT", self.CYCLOPS_JACKPOT, "CENTER WEB")
+        self._show_jackpot("CYCLOPS SUPER JACKPOT", self.CYCLOPS_JACKPOT, "CENTER WEB")
         self.machine.events.post("trubble_unleashed_cyclops_unlit")
         self._release_one_parked_saucer()
         self._sync_vars()
@@ -751,7 +751,7 @@ class TrubbleUnleashed(Mode):
         jackpots = self.diana_jackpots + self.centaur_jackpots + self.cerberus_jackpots + self.cyclops_jackpots
         self._set("active_mode_points", self.mode_points)
         self._set("active_mode_hits", jackpots)
-        self._set("active_mode_major_hits", self.add_a_balls_awarded)
+        self._set("active_mode_major_hits", self.cyclops_jackpots)
         self._set("trubble_unleashed_saucer_jackpots", self.cerberus_jackpots)
 
     def _inactive(self):

@@ -332,6 +332,7 @@ class VonRantenraven(CaseFileMixin, Mode):
         self.machine.events.post("von_rantenraven_mode_complete")
 
     def _update_mode_status(self):
+        self.machine.game.player["active_mode_stat_2"] = self.flips_remaining
         if self.roof_attempt_active:
             title = "ROOF TARGETS / FLIPS"
             value = f"{len(self.targets_hit)}/3 / {self.flips_remaining}"

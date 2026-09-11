@@ -23,7 +23,7 @@ class DrZapp(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
-        self.reset_active_mode_summary(stat_count=1)
+        self.reset_active_mode_summary(stat_count=3)
         self.delay = DelayManager(self.machine)
         self.case_files = self.get_case_file_bonuses()
 
@@ -260,6 +260,8 @@ class DrZapp(CaseFileMixin, Mode):
         player["dr_zapp_upper_targets"] = len(self.collected_upper_targets)
         player["dr_zapp_seconds_left"] = self.seconds_left
         player["dr_zapp_phase"] = self.phase
+        player["active_mode_stat_1"] = self.camera_flashes
+        player["active_mode_stat_2"] = self.spinner_spins
 
     def _show_status(self, title, value=""):
         self.machine.events.post(

@@ -387,7 +387,7 @@ class DrManta(CaseFileMixin, Mode):
         player = self.machine.game.player
         player["active_mode_points"] = self.mode_points
         player["active_mode_stat_1"] = self.jackpot_hits
-        player["active_mode_stat_2"] = self.jackpot_hits
+        player["active_mode_stat_2"] = self.biggest_jackpot
 
     def _update_status(self):
         if self.phase == "shoot_vuk":
