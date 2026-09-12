@@ -18,24 +18,16 @@ multiballs:
     ball_count: 3
     ball_count_type: total
     shoot_again: 20s
+    add_a_ball_events: mad_science_meltdown_add_a_ball
+    add_a_ball_shoot_again: 10s
     start_events: mad_science_meltdown_start_multiball
     stop_events:
       - stop_mode_mad_science_meltdown
-
-  mad_science_meltdown_add_a_ball:
-    ball_count: 1
-    ball_count_type: add
-    shoot_again: 10s
-    start_events: mad_science_meltdown_add_a_ball
 
 variable_player:
   multiball_mad_science_meltdown_multiball_started:
     multiball_autoplunge_active: {action: set, int: 1}
   multiball_mad_science_meltdown_multiball_ended:
-    multiball_autoplunge_active: {action: set, int: 0}
-  multiball_mad_science_meltdown_add_a_ball_started:
-    multiball_autoplunge_active: {action: set, int: 1}
-  multiball_mad_science_meltdown_add_a_ball_ended:
     multiball_autoplunge_active: {action: set, int: 0}
 
 widget_player:

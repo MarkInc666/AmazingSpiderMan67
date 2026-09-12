@@ -349,6 +349,12 @@ class VillainProgression(Mode):
 
         self._restore_state()
 
+        # Final Wizard readiness survives a normal drain. Reassert its prompt
+        # on the next ball because the original final_wizard_ready edge event
+        # occurred before bonus and will not be posted a second time.
+        if self._safe_int(self.machine.game.player["final_wizard_ready"], 0) == 1:
+            self._final_wizard_shooter_lane_prompt(reason="ball_start_restore")
+
         if recovered:
             self._schedule_case_files_restore(reason="startup_recovery")
 
@@ -1905,6 +1911,9 @@ class VillainProgression(Mode):
                 villain=villain,
             )
             self._daily_bugle_hit()
+            # Mini-wizard ownership is now active, so the summary interlock
+            # can be removed without exposing the coil between owners.
+            player["villain_summary_vuk_hold_active"] = 0
             return
 
         # The transfer was requested from a real summary hold, but retain a
@@ -1913,6 +1922,7 @@ class VillainProgression(Mode):
             "chapter_mini_wizard_summary_vuk_auto_start_cancelled",
             villain=villain,
         )
+        player["villain_summary_vuk_hold_active"] = 0
         self.machine.events.post("enable_daily_bugle_mystery")
         self.machine.events.post("daily_bugle_restore_state")
         if ready:

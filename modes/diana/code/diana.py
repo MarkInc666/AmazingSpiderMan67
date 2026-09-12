@@ -34,6 +34,7 @@ class Diana(CaseFileMixin, Mode):
     MORE_JACKPOTS_RUBBER_SCORE = 100_000
     POST_HOLD_MS = 6000
     STAGE_BANK_DELAY_MS = 500
+    STAGE_DROP_SETTLE_MS = 750
 
     HUNTS = {
         1: {
@@ -110,6 +111,7 @@ class Diana(CaseFileMixin, Mode):
         self.standing_targets = set()
         self.hit_targets = set()
         self.bank_stage_started = False
+        self.bank_scoring_guard_active = False
 
         player = self.machine.game.player
         player["diana_state"] = 1
@@ -166,6 +168,7 @@ class Diana(CaseFileMixin, Mode):
     def _clear_delays(self):
         self.delay.remove("diana_post_hold_release")
         self.delay.remove("diana_stage_right_bank")
+        self.delay.remove("diana_stage_drop_settled")
         self.delay.remove("diana_hunt_timer_tick")
         self.delay.remove("diana_post_flipper_left")
         self.delay.remove("diana_post_flipper_right")
@@ -344,6 +347,8 @@ class Diana(CaseFileMixin, Mode):
         self._sync_vars()
 
     def _stage_right_bank_for_hunt(self, hunt_number):
+        self.bank_scoring_guard_active = True
+        self.delay.remove("diana_stage_drop_settled")
         self.machine.events.post("drop_target_bank_dt_bank_right_reset")
         self.delay.add(
             name="diana_stage_right_bank",
@@ -361,6 +366,15 @@ class Diana(CaseFileMixin, Mode):
 
         self.machine.events.post(f"diana_hunt_{self.current_hunt}_staged")
         self.machine.events.post("diana_hunt_targets_staged", hunt=self.current_hunt)
+        self.delay.reset(
+            name="diana_stage_drop_settled",
+            ms=self.STAGE_DROP_SETTLE_MS,
+            callback=self._stage_drop_settled,
+        )
+
+    def _stage_drop_settled(self):
+        self.bank_scoring_guard_active = False
+        self.machine.events.post("diana_staged_bank_scoring_enabled", hunt=self.current_hunt)
 
     def _post_hold_cancel(self, **kwargs):
         if not self.post_hold_active:
@@ -445,8 +459,10 @@ class Diana(CaseFileMixin, Mode):
         self.hunt_active = False
         self.post_hold_active = False
         self.pending_post_flippers.clear()
+        self.bank_scoring_guard_active = False
         self.delay.remove("diana_hunt_timer_tick")
         self.delay.remove("diana_post_hold_release")
+        self.delay.remove("diana_stage_drop_settled")
         self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post("diana_hunt_mode_off", hunt=hunt, reason=reason)
         self.machine.events.post("diana_hunt_finished", hunt=hunt, reason=reason)
@@ -468,6 +484,14 @@ class Diana(CaseFileMixin, Mode):
 
     def _right_drop_hit(self, target=None, **kwargs):
         if self._done_or_summary():
+            return
+
+        if self.bank_scoring_guard_active:
+            self.machine.events.post(
+                "diana_staged_drop_ignored",
+                hunt=self.current_hunt,
+                target=target,
+            )
             return
 
         # Only a currently staged target may start the Hunt timer.  Programmatic
@@ -499,6 +523,13 @@ class Diana(CaseFileMixin, Mode):
 
     def _right_rubber_hit(self, **kwargs):
         if self._done_or_summary():
+            return
+
+        if self.bank_scoring_guard_active:
+            self.machine.events.post(
+                "diana_staged_rubber_ignored",
+                hunt=self.current_hunt,
+            )
             return
 
         if self.phase == "waiting_hit":

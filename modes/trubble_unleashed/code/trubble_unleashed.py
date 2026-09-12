@@ -1,3 +1,6 @@
+import random
+from functools import partial
+
 from mpf.core.delays import DelayManager
 from mpf.core.mode import Mode
 
@@ -22,6 +25,7 @@ class TrubbleUnleashed(Mode):
     CENTAUR_SECONDS = 5
     CYCLOPS_SECONDS = 10
     MAX_BALLS = 4
+    MAX_SAUCER_PARK_MS = 12_000
     SAUCER_EJECT_MS = 750
     RIGHT_BANK_STAGE_DELAY_MS = 500
 
@@ -265,6 +269,7 @@ class TrubbleUnleashed(Mode):
 
     def _start_centaur(self):
         self._end_phase_visuals()
+        self.delay.remove("trubble_reset_right_bank")
         self.phase = "centaur"
         self.centaur_spinner_spins = 0
         self.upper_post_active = False
@@ -274,7 +279,6 @@ class TrubbleUnleashed(Mode):
         self.preserve_right_bank_down = False
         self.machine.events.post("trubble_unleashed_right_bank_phase_start")
         self.machine.events.post("trubble_unleashed_centaur_targets")
-        self._stage_centaur_drops()
         self._show_status("CENTAUR JACKPOT", self._centaur_value())
         self._sync_vars()
 
@@ -458,7 +462,6 @@ class TrubbleUnleashed(Mode):
         if self._inactive() or not self.add_a_ball_qualified:
             return
         if self._balls_in_play() >= self.MAX_BALLS:
-            self._show_message("ADD-A-BALL READY", "MAX 4 BALLS IN PLAY")
             return
         self.add_a_ball_qualified = False
         self.add_a_balls_awarded += 1
@@ -481,10 +484,11 @@ class TrubbleUnleashed(Mode):
         self.lit_saucers.add(saucer)
         self._score(self.UPPER_TARGET_SCORE)
         self.machine.events.post("trubble_unleashed_saucer_lit", saucer=saucer, value=self._cerberus_value())
-        if len(self.upper_targets_hit) == 3:
+        if len(self.upper_targets_hit) == 3 and not self.add_a_ball_qualified:
             self.add_a_ball_qualified = True
             self.machine.events.post("trubble_unleashed_add_a_ball_qualified")
-            self._show_message("VULCAN ADD-A-BALL", "SHOOT RIGHT UPPER EXIT")
+            if self._balls_in_play() < self.MAX_BALLS:
+                self._show_message("VULCAN ADD-A-BALL", "SHOOT RIGHT UPPER EXIT")
         self._update_upper_target_lights()
         self._update_saucer_lights()
         self._sync_vars()
@@ -515,6 +519,11 @@ class TrubbleUnleashed(Mode):
         # loose and playable; otherwise eject it to prevent a deadlock.
         if self._can_park_current_saucer():
             self.parked_saucers.add(saucer)
+            self.delay.reset(
+                name=f"trubble_saucer_{saucer}_max_park",
+                ms=self.MAX_SAUCER_PARK_MS,
+                callback=partial(self._parked_saucer_timeout, saucer),
+            )
             self.machine.events.post("trubble_unleashed_saucer_parked", saucer=saucer)
         else:
             self._kick_saucer(saucer)
@@ -601,17 +610,26 @@ class TrubbleUnleashed(Mode):
     def _release_one_parked_saucer(self):
         if not self.parked_saucers:
             return
-        saucer = sorted(self.parked_saucers)[0]
+        saucer = random.choice(sorted(self.parked_saucers))
         self._kick_saucer(saucer, delay_ms=0)
         self.machine.events.post("trubble_unleashed_cyclops_released_saucer", saucer=saucer)
 
+    def _parked_saucer_timeout(self, saucer):
+        saucer = int(saucer)
+        if self.mode_done or saucer not in self.parked_saucers:
+            return
+        self._kick_saucer(saucer, delay_ms=0)
+        self.machine.events.post("trubble_unleashed_saucer_park_timeout", saucer=saucer)
+
     def _kick_saucer(self, saucer, delay_ms=None):
-        self.parked_saucers.discard(int(saucer))
+        saucer = int(saucer)
+        self.delay.remove(f"trubble_saucer_{saucer}_max_park")
+        self.parked_saucers.discard(saucer)
         event = {
             1: "delayed_kickout_saucer_1",
             2: "delayed_kickout_saucer_2",
             3: "delayed_kickout_saucer_3",
-        }.get(int(saucer))
+        }.get(saucer)
         if not event:
             return
         if delay_ms is None:

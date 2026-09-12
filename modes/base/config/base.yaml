@@ -275,9 +275,14 @@ widget_player:
   # main_game the active slide.  Playing it on mode_base_started races the
   # main_game slide_player entry and can attach the widget to the outgoing
   # slide instead, leaving the left panel missing.
-  slide_main_game_active:
+  slide_main_game_active{current_player.final_wizard_ready != 1}:
     villain_chapter_status:
       action: play
+      key: villain_chapter_status
+
+  slide_main_game_active{current_player.final_wizard_ready == 1}:
+    villain_chapter_status:
+      action: remove
       key: villain_chapter_status
 
   slide_main_game_active{current_player.villain_mode_running != 1 and current_player.villain_mode_in_summary != 1 and current_player.chapter_mini_wizard_ready != 1 and current_player.mini_wizard_daily_bugle_ready != 1 and current_player.mini_wizard_vuk_hold_active != 1 and current_player.final_wizard_ready != 1 and current_player.chapter_select_needed != 1 and current_player.chapter_select_active != 1}:
@@ -305,7 +310,7 @@ widget_player:
       action: remove
       key: daily_bugle_ready
 
-  villain_summary_cleanup_complete:
+  villain_summary_cleanup_complete{current_player.final_wizard_ready != 1}:
     villain_chapter_status:
       action: play
       key: villain_chapter_status
@@ -315,7 +320,7 @@ widget_player:
       action: play
       key: daily_bugle_ready
 
-  villain_chapter_started:
+  villain_chapter_started{current_player.final_wizard_ready != 1}:
     villain_chapter_status:
       action: play
       key: villain_chapter_status
@@ -365,11 +370,17 @@ widget_player:
     daily_bugle_ready:
       action: remove
       key: daily_bugle_ready
+    villain_chapter_status:
+      action: remove
+      key: villain_chapter_status
 
   villain_progression_start_final_wizard:
     daily_bugle_ready:
       action: remove
       key: daily_bugle_ready
+    villain_chapter_status:
+      action: remove
+      key: villain_chapter_status
 
   case_files_hidden_for_wizard:
     daily_bugle_ready:

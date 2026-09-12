@@ -1,4 +1,5 @@
 import re
+import time
 from mpf.core.mode import Mode
 
 
@@ -20,6 +21,13 @@ class Base(Mode):
     COUNTDOWN_DELAY_NAME = "mode_message_countdown_tick"
     REMINDER_DELAY_NAME = "mode_message_reminder"
     REMINDER_INTERVAL_MS = 9000
+    TERMINAL_AWARD_MESSAGE_SECONDS = 2.0
+
+    TERMINAL_AWARD_EVENTS = (
+        "villain_summary_delay_for_final_award",
+        "villain_summary_hold_vuk_until_done",
+        "villain_summary_hold_saucer_until_done",
+    )
 
     MODE_DISPLAY_CLEAR_EVENTS = (
         "mode_molemen_stopping",
@@ -97,6 +105,7 @@ class Base(Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self._terminal_award_message_deadline = 0.0
         for event in self.MESSAGE_EVENTS:
             self.add_mode_event_handler(
                 event,
@@ -140,6 +149,9 @@ class Base(Mode):
         self.add_mode_event_handler("hide_mode_status", self._hide_mode_status, priority=10000)
         self.add_mode_event_handler("clear_mode_display_context", self._clear_mode_display_context, priority=10000)
         self.add_mode_event_handler("dr_zapp_upper_flipper_lockout", self._start_dr_zapp_upper_flipper_lockout, priority=10000)
+
+        for event in self.TERMINAL_AWARD_EVENTS:
+            self.add_mode_event_handler(event, self._preserve_terminal_award_message, priority=10000)
 
         for stop_event in self.MODE_DISPLAY_CLEAR_EVENTS:
             self.add_mode_event_handler(stop_event, self._clear_mode_display_context, priority=10000)
@@ -417,6 +429,7 @@ class Base(Mode):
     def _lock_and_clear_mode_display_context(self, **kwargs):
         """Block new gameplay messages as soon as ball teardown begins."""
         self._ball_end_display_lock = True
+        self._terminal_award_message_deadline = 0.0
         self._clear_mode_display_context(**kwargs)
 
     def _unlock_mode_display_context(self, **kwargs):
@@ -433,14 +446,28 @@ class Base(Mode):
         widget. Clearing the context here keeps stopped modes from updating the
         shared message/status widgets.
         """
+        preserve_terminal_award = (
+            not getattr(self, "_ball_end_display_lock", False)
+            and time.monotonic() < getattr(self, "_terminal_award_message_deadline", 0.0)
+        )
         self._bump_display_generation()
         self._cancel_countdown()
         self.delay.remove(self.REMINDER_DELAY_NAME)
         self._reminder_payload = None
         self._reminder_generation = None
-        self._clear_mode_message_vars()
+        if not preserve_terminal_award:
+            self._terminal_award_message_deadline = 0.0
+            self._clear_mode_message_vars()
         self._clear_mode_status_vars()
         self.machine.events.post("mode_display_context_cleared")
+
+    def _preserve_terminal_award_message(self, **kwargs):
+        """Keep a final Jackpot/Super visible while its summary is deferred."""
+        deadline = time.monotonic() + self.TERMINAL_AWARD_MESSAGE_SECONDS
+        self._terminal_award_message_deadline = max(
+            getattr(self, "_terminal_award_message_deadline", 0.0),
+            deadline,
+        )
 
     def _hide_mode_message(self, **kwargs):
         self._cancel_countdown()

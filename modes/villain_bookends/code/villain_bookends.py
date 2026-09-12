@@ -1250,6 +1250,7 @@ class VillainBookends(Mode):
         self.current_summary_skip_unlocked = False
         self.current_comic_chapter = None
         self.summary_vuk_release_pending = False
+        self.machine.game.player["villain_summary_vuk_hold_active"] = 0
         # A terminal Jackpot/Super can post immediately before the mode-complete
         # event requests the summary. Keep that final award visible for a full
         # two seconds before the bookend replaces it.
@@ -1262,6 +1263,7 @@ class VillainBookends(Mode):
         self.add_mode_event_handler("villain_bookend_intro_hold_request", self._intro_hold_request)
         self.add_mode_event_handler("villain_bookend_intro_hold_release", self._intro_hold_release)
         self.add_mode_event_handler("villain_summary_hold_vuk_until_done", self._hold_vuk_until_summary_done)
+        self.add_mode_event_handler("villain_vuk_hold_start", self._start_vuk_hold)
         self.add_mode_event_handler(
             "villain_summary_transfer_vuk_to_mini_wizard",
             self._transfer_vuk_hold_to_mini_wizard,
@@ -1287,7 +1289,12 @@ class VillainBookends(Mode):
         end of the summary for both timeout and flipper speedup paths.
         """
         self._mark_terminal_award()
+        self._start_vuk_hold()
+
+    def _start_vuk_hold(self, **kwargs):
+        """Interlock the physical VUK coil until the summary releases it."""
         self.summary_vuk_release_pending = True
+        self.machine.game.player["villain_summary_vuk_hold_active"] = 1
         # The scoring mode may re-enable Daily Bugle as it stops. Keep Daily
         # Bugle disabled for the full summary so a VUK switch chatter cannot
         # schedule its normal 500 ms eject and defeat this hold.
@@ -1641,6 +1648,7 @@ class VillainBookends(Mode):
             if self.summary_vuk_release_pending:
                 self.summary_vuk_release_pending = False
                 self.delay.remove("villain_summary_enforce_vuk_hold")
+                self.machine.game.player["villain_summary_vuk_hold_active"] = 0
                 self.machine.events.post("up_kick")
                 self.delay.reset(
                     name="villain_summary_restore_daily_bugle",
