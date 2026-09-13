@@ -507,6 +507,8 @@ class VillainProgression(Mode):
         self.delay.remove("mini_wizard_ready_gate_verify")
         self.mystery_vuk_hold_until_intro_done = False
         self.mystery_vuk_hold_villain = ""
+        if self.machine.game:
+            self.machine.game.player["mystery_vuk_intro_hold_active"] = 0
         super().mode_stop(**kwargs)
 
     def _recover_playing_modes_as_completed(self):
@@ -1145,7 +1147,10 @@ class VillainProgression(Mode):
     def _request_vuk_eject(self, delay_ms=None, **kwargs):
         """Schedule a VUK release from this persistent progression mode."""
         player = self.machine.game.player
-        if player and self._safe_int(player["mystery_vuk_intro_hold_active"], 0) == 1:
+        if player and (
+            self._safe_int(player["daily_bugle_vuk_hold_active"], 0) == 1
+            or self._safe_int(player["mystery_vuk_intro_hold_active"], 0) == 1
+        ):
             self.machine.events.post("vuk_eject_suppressed_mystery_intro_hold")
             return
         try:
@@ -1161,7 +1166,10 @@ class VillainProgression(Mode):
 
     def _eject_vuk_if_occupied(self):
         player = self.machine.game.player
-        if player and self._safe_int(player["mystery_vuk_intro_hold_active"], 0) == 1:
+        if player and (
+            self._safe_int(player["daily_bugle_vuk_hold_active"], 0) == 1
+            or self._safe_int(player["mystery_vuk_intro_hold_active"], 0) == 1
+        ):
             self.machine.events.post("vuk_eject_suppressed_mystery_intro_hold")
             return
         if self._vuk_is_occupied():
@@ -1636,6 +1644,7 @@ class VillainProgression(Mode):
 
         villain_key = available[0]
         info = self.VILLAINS[villain_key]
+        self._hold_mystery_vuk_for_intro(villain_key)
         self.machine.events.post(
             "mystery_next_villain_started",
             villain_key=villain_key,
@@ -1666,31 +1675,63 @@ class VillainProgression(Mode):
             "chapter_select_active",
         )
         if any(self._safe_int(player[name], 0) == 1 for name in blocked_flags):
+            self._release_cancelled_mystery_vuk_hold(villain_key, reason="start_flow_changed")
             self.machine.events.post("mystery_start_next_villain_rejected", reason="start_flow_changed")
             return
         if villain_key not in self._get_available_villains():
+            self._release_cancelled_mystery_vuk_hold(villain_key, reason="villain_no_longer_available")
             self.machine.events.post("mystery_start_next_villain_rejected", reason="villain_no_longer_available")
             return
 
         # START NEXT VILLAIN is awarded while the Mystery ball is physically
-        # sitting in the Daily Bugle VUK. If it is still there when the villain
-        # launch executes, hold it only through that villain's intro. Suppress
-        # Daily Bugle's delayed eject and the shared VUK eject path now; the
-        # villain_bookend_intro_done handler below releases it immediately when
-        # the intro finishes (or is skipped).
-        vuk_switch = self.machine.switches.get("s_vuk_switch")
-        if vuk_switch and self.machine.switch_controller.is_active(vuk_switch):
-            self.machine.events.post("daily_bugle_cancel_vuk_delay_eject")
-            self.machine.events.post("cancel_vuk_eject_request")
-            self.mystery_vuk_hold_until_intro_done = True
-            self.mystery_vuk_hold_villain = villain_key
-            player["mystery_vuk_intro_hold_active"] = 1
+        # sitting in the Daily Bugle VUK. The hold is armed when the award is
+        # selected, before Daily Bugle can schedule its normal eject. Reassert
+        # both cancellations here in case another request appeared during the
+        # two-second award message.
+        self._hold_mystery_vuk_for_intro(villain_key)
+
+        self._start_villain(villain_key)
+
+    def _hold_mystery_vuk_for_intro(self, villain_key):
+        """Transfer a Mystery VUK ball to the selected villain's intro."""
+        self.machine.events.post("daily_bugle_cancel_vuk_delay_eject")
+        self.machine.events.post("cancel_vuk_eject_request")
+
+        if not self._vuk_is_occupied():
+            return False
+
+        already_held = (
+            self.mystery_vuk_hold_until_intro_done
+            and self.mystery_vuk_hold_villain == villain_key
+        )
+        self.mystery_vuk_hold_until_intro_done = True
+        self.mystery_vuk_hold_villain = villain_key
+        self.machine.game.player["mystery_vuk_intro_hold_active"] = 1
+        if not already_held:
             self.machine.events.post(
                 "mystery_started_villain_vuk_held_for_intro",
                 villain_key=villain_key,
             )
+        return True
 
-        self._start_villain(villain_key)
+    def _release_cancelled_mystery_vuk_hold(self, villain_key, reason):
+        """Release an early Mystery hold if its delayed villain start aborts."""
+        if not (
+            self.mystery_vuk_hold_until_intro_done
+            and self.mystery_vuk_hold_villain == villain_key
+        ):
+            return
+
+        self.mystery_vuk_hold_until_intro_done = False
+        self.mystery_vuk_hold_villain = ""
+        self.machine.game.player["mystery_vuk_intro_hold_active"] = 0
+        self.machine.events.post(
+            "mystery_vuk_intro_hold_cancelled",
+            villain_key=villain_key,
+            reason=reason,
+        )
+        if self._vuk_is_occupied():
+            self.machine.events.post("up_kick")
 
     def _start_selected_villain(self, villain_key=None, item=None, **kwargs):
         villain_key = villain_key or item

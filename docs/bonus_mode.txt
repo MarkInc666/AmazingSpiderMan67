@@ -6,18 +6,36 @@ PLAYER 1 SCORE, PLAYER 2 SCORE, PLAYER 3 SCORE, or PLAYER 4 SCORE. The player
 number comes from the same delayed Bonus entry update as the count, avoiding a
 stale Player 1 label during later players' bonuses.
 
-The lower bonus panel counts regular bonus buckets, mode bonuses, Held Bonus,
-and Hold Bonus messages. At the end of the sequence, the lower panel displays:
+The Bonus slide uses the same purple spiderweb background as Attract. The center
+panel shows the current count item. A persistent lower panel displays the
+current-ball running total:
+
+BONUS TOTAL
+<current regular and mode bonus>
+
+Regular bonus lamps count once from low to high. If a multiplier is active, the
+2X through earned-X lamps then count once each. Every multiplier step adds one
+copy of the base regular-bonus subtotal without replaying the regular lamps.
+
+Mode bonuses follow and add to the same running total. At the end of the
+current-ball sequence, the center panel displays:
 
 TOTAL BONUS
-<total awarded during this bonus count>
+<current regular and mode bonus>
 
-The final total includes regular bonus after its multiplier, all mode-bonus
-entries awarded on this ball, a carried Held Bonus collected on this ball, and
-the duplicated bonus awarded when Hold Bonus is earned on the last ball.
+A carried Held Bonus is deliberately excluded from BONUS TOTAL and TOTAL BONUS.
+It is presented afterward as a separate HELD BONUS and added directly to the
+player's score. This keeps a previous held value separate if the current bonus
+is held again.
 
 When Hold Bonus is earned before the last ball, the current total is banked for
-the next ball but is not added a second time to the current final total.
+the next ball, the lower running-total panel changes to BONUS HELD, and a carried
+Held Bonus is still paid separately. Only the current running total is banked.
+
+On the last ball, a newly earned Hold Bonus cannot be banked. It is paid as a
+separate HELD BONUS without changing the displayed current-ball running total.
+If a carried Held Bonus also exists, the carried and newly earned values are
+shown and paid as separate HELD BONUS entries.
 
 The final total remains on screen for the existing 2.5-second hold.
 Machine testing remains required.

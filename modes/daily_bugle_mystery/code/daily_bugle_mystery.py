@@ -78,6 +78,19 @@ class DailyBugleMystery(Mode):
         "mystery_award_award_extra_ball": ("EXTRA BALL", "AWARDED"),
     }
 
+    # Match VUK ownership to the actual award presentation. Most awards use
+    # the shared two-second mode message; the exceptions below have longer
+    # dedicated presentations. START NEXT VILLAIN has no timed release because
+    # ownership transfers to villain progression through the complete intro.
+    DEFAULT_AWARD_VUK_HOLD_MS = 2000
+    AWARD_VUK_HOLD_MS = {
+        "mystery_award_collect_bonus": 4000,
+        "mystery_award_light_extra_ball": 3000,
+        "mystery_award_light_right_extra_ball": 3000,
+        "mystery_award_award_extra_ball": 7000,
+        "mystery_award_start_next_villain": None,
+    }
+
     # Lightweight copy of the current chapter villain order. VillainProgression
     # remains the source of truth for actually starting modes; this is only used
     # to avoid selecting mystery awards that cannot do anything right now.
@@ -100,6 +113,8 @@ class DailyBugleMystery(Mode):
 
         self.daily_bugle_enabled = True
         self.left_exit_hold_active = False
+        self.current_mystery_award_event = ""
+        self.machine.game.player["daily_bugle_vuk_hold_active"] = 0
 
         self._restore_runtime_state_from_player()
         self._add_handlers()
@@ -107,6 +122,8 @@ class DailyBugleMystery(Mode):
 
     def mode_stop(self, **kwargs):
         self.daily_bugle_enabled = False
+        if self.machine.game:
+            self.machine.game.player["daily_bugle_vuk_hold_active"] = 0
         self.delay.remove("daily_bugle_widget_update_deferred")
         self.machine.events.post("daily_bugle_widget_remove")
         self._cancel_vuk_delay_eject()
@@ -436,6 +453,11 @@ class DailyBugleMystery(Mode):
 
     def collect_mystery(self):
         player = self.machine.game.player
+        # Mystery owns the VUK ball throughout every award presentation. This
+        # blocks unrelated/shared up-kicks until Mystery deliberately releases
+        # the ball or transfers it to a villain intro.
+        player["daily_bugle_vuk_hold_active"] = 1
+        self.machine.events.post("daily_bugle_vuk_award_hold_started")
 
         # Spend the cost that applies before this collection increments the
         # Mystery count. Any surplus stays banked for the next A+B access cycle.
@@ -444,6 +466,7 @@ class DailyBugleMystery(Mode):
 
         player["daily_bugle_mystery_count"] += 1
         count = player["daily_bugle_mystery_count"]
+        self.current_mystery_award_event = ""
 
         self.machine.events.post("daily_bugle_mystery_collected")
 
@@ -459,11 +482,33 @@ class DailyBugleMystery(Mode):
         self.reset_cycle(post_restore=False)
         self.update_player_vars()
 
-        self.delay.add(
-            name="daily_bugle_vuk_delay_eject",
-            ms=5000,
-            callback=self.fire_vuk,
-        )
+        # START NEXT VILLAIN transfers ownership of the Mystery ball to
+        # villain progression as soon as that award is chosen. Do not arm the
+        # normal five-second Mystery eject underneath the villain intro hold.
+        if self._safe_int(player["mystery_vuk_intro_hold_active"], 0) != 1:
+            hold_ms = self.AWARD_VUK_HOLD_MS.get(
+                self.current_mystery_award_event,
+                self.DEFAULT_AWARD_VUK_HOLD_MS,
+            )
+            # If a START NEXT VILLAIN handler ever rejects or fails to claim
+            # the ball, release it after the normal award message instead of
+            # leaving an indefinite Mystery hold.
+            if hold_ms is None:
+                hold_ms = self.DEFAULT_AWARD_VUK_HOLD_MS
+            self.delay.add(
+                name="daily_bugle_vuk_delay_eject",
+                ms=hold_ms,
+                callback=self.fire_vuk,
+            )
+            self.machine.events.post(
+                "daily_bugle_vuk_award_release_scheduled",
+                award_event=self.current_mystery_award_event,
+                hold_ms=hold_ms,
+            )
+        else:
+            self._cancel_vuk_delay_eject()
+            player["daily_bugle_vuk_hold_active"] = 0
+            self.machine.events.post("daily_bugle_vuk_eject_transferred_to_villain_intro")
         self._post_rooftop_gate_close(reason="mystery_collected")
 
     def _gate_control_blocked_by_villain(self):
@@ -546,6 +591,7 @@ class DailyBugleMystery(Mode):
 
     def _post_mystery_award(self, award_event):
         """Show a readable mystery award message, then post the award event."""
+        self.current_mystery_award_event = award_event
         # Case Files chooses the actual missing file, and villain progression
         # chooses the actual villain name. Let those owners publish the final
         # specific message instead of flashing a generic SEARCHING message first.
@@ -634,6 +680,9 @@ class DailyBugleMystery(Mode):
         self.delay.remove("daily_bugle_vuk_delay_eject")
 
     def fire_vuk(self):
+        if self.machine.game:
+            self.machine.game.player["daily_bugle_vuk_hold_active"] = 0
+        self.machine.events.post("daily_bugle_vuk_award_hold_released")
         self.machine.events.post("up_kick")
 
     def light_extra_ball(self):

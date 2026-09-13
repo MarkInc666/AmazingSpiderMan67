@@ -459,7 +459,14 @@ class Base(Mode):
             self._terminal_award_message_deadline = 0.0
             self._clear_mode_message_vars()
         self._clear_mode_status_vars()
-        self.machine.events.post("mode_display_context_cleared")
+        if preserve_terminal_award:
+            # The terminal Jackpot/Super widget owns its two-second expiry.
+            # Clear only the stopped mode's status/timer here; posting the full
+            # context-cleared event would remove the jackpot widget immediately
+            # and leave a blank pause before the delayed villain summary.
+            self.machine.events.post("hide_mode_status")
+        else:
+            self.machine.events.post("mode_display_context_cleared")
 
     def _preserve_terminal_award_message(self, **kwargs):
         """Keep a final Jackpot/Super visible while its summary is deferred."""

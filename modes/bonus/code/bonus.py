@@ -7,11 +7,13 @@ class Bonus(MpfBonus):
 
     Presentation rules:
       * Bonus slide appears first with player score visible in the upper panel.
-      * Regular bonus buckets count from low to high once per multiplier cycle.
+      * Regular bonus buckets count from low to high once.
       * Each shown bucket is added to score immediately.
-      * Multiplier lamps 2X-5X go out after their cycle is counted.
+      * Earned multiplier lamps then add one base subtotal each, through the
+        player's final multiplier, without recounting the bucket lamps.
       * Mode/chapter bonuses are shown after a longer pause and scored as shown.
-      * The lower final panel holds on the total bonus awarded for this count.
+      * A lower panel shows the running current-ball bonus total throughout.
+      * Carried Held Bonus is paid separately and never joins that running total.
     """
 
     BONUS_BUCKETS_DESC = [
@@ -40,9 +42,6 @@ class Bonus(MpfBonus):
         ("devargas_bonus", "DEVARGAS GOLD", False),
         ("swamp_bonus", "SWAMP BONUS", False),
         ("technician_bonus", "TECHNICIAN TRAP", False),
-        # A carried bonus is always the final counted bonus entry before the
-        # player-score hold. It is consumed only after being awarded.
-        ("held_bonus", "HELD BONUS", True),
     ]
 
     MULTIPLIER_LIGHTS = {
@@ -56,7 +55,7 @@ class Bonus(MpfBonus):
 
     INTRO_DELAY_MS = 700
     BUCKET_STEP_MS = 160
-    NEXT_CYCLE_DELAY_MS = 260
+    MULTIPLIER_STEP_MS = 650
     MODE_PAGE_DELAY_MS = 1100
     MODE_STEP_MS = 850
     HELD_BONUS_DISPLAY_MS = 1100
@@ -113,12 +112,17 @@ class Bonus(MpfBonus):
         self._lit_buckets = self._build_lit_bucket_list()
         self._regular_total = 0
         self._final_total = 0
+        self._regular_subtotal = 0
+        self._next_multiplier = 2
         self._mode_entries = []
         self._mode_index = 0
         self._bucket_index = 0
-        self._current_pass = 1
         self._bonus_multiplier = max(1, min(5, int(self._player["bonus_multiplier"])))
         self._hold_bonus_earned = bool(self._player["hold_bonus"])
+        self._carried_held_bonus = max(0, int(self._player["held_bonus"] or 0))
+        self._held_bonus_awards = []
+        self._held_bonus_index = 0
+        self._running_total_held = False
 
         # Bonus mode owns these lamps during the end-of-ball count. Do not use
         # the bonus_lanes show events here; their "off" events only stop shows
@@ -160,15 +164,7 @@ class Bonus(MpfBonus):
             return
         self._bucket_index = 0
         self._relight_lit_bonus_buckets()
-
-        if self._current_pass > 1:
-            self._show_bonus_entry(
-                "bonus_title",
-                "{}X BONUS".format(self._current_pass),
-                "",
-            )
-        else:
-            self._show_bonus_entry("bonus_title", "BONUS", "")
+        self._show_bonus_entry("bonus_title", "BONUS", "")
 
         self.delay.add(
             name="asm_bonus_first_bucket",
@@ -187,6 +183,7 @@ class Bonus(MpfBonus):
 
         self._player["score"] += bucket_value
         self._regular_total += bucket_value
+        self._regular_subtotal += bucket_value
         self._final_total += bucket_value
 
         self._show_bonus_entry("regular_bucket", bucket_text, bucket_value)
@@ -208,26 +205,68 @@ class Bonus(MpfBonus):
     def _finish_regular_pass(self):
         if not self._sequence_available():
             return
-        self._turn_off_multiplier_light_for_pass(self._current_pass)
-        self._current_pass += 1
-
-        if self._current_pass <= self._bonus_multiplier:
+        self._turn_off_all_bonus_bucket_lights()
+        self._next_multiplier = 2
+        if self._bonus_multiplier >= 2 and self._regular_subtotal > 0:
             self.delay.add(
-                name="asm_bonus_next_regular_pass",
-                ms=self.NEXT_CYCLE_DELAY_MS,
-                callback=self._start_regular_pass,
+                name="asm_bonus_first_multiplier",
+                ms=self.MULTIPLIER_STEP_MS,
+                callback=self._count_next_multiplier,
             )
-        else:
+            return
+        self.delay.add(
+            name="asm_bonus_finish_regular",
+            ms=self.MODE_PAGE_DELAY_MS,
+            callback=self._finish_regular_bonus,
+        )
+
+    def _count_next_multiplier(self):
+        if not self._sequence_available():
+            return
+        if self._next_multiplier > self._bonus_multiplier:
             self.delay.add(
                 name="asm_bonus_finish_regular",
                 ms=self.MODE_PAGE_DELAY_MS,
                 callback=self._finish_regular_bonus,
             )
+            return
+
+        added_value = self._regular_subtotal
+        self._player["score"] += added_value
+        self._regular_total += added_value
+        self._final_total += added_value
+
+        multiplier = self._next_multiplier
+        self._show_bonus_entry(
+            "multiplier",
+            "{}X BONUS".format(multiplier),
+            added_value,
+        )
+        self.machine.events.post(
+            "asm_bonus_multiplier_counted",
+            multiplier=multiplier,
+            value=added_value,
+            total=self._regular_total,
+        )
+        self._set_bonus_light(self.MULTIPLIER_LIGHTS[multiplier], False)
+        self._next_multiplier += 1
+        if self._next_multiplier > self._bonus_multiplier:
+            self.delay.add(
+                name="asm_bonus_finish_regular",
+                ms=self.MODE_PAGE_DELAY_MS,
+                callback=self._finish_regular_bonus,
+            )
+            return
+        self.delay.add(
+            name="asm_bonus_next_multiplier",
+            ms=self.MULTIPLIER_STEP_MS,
+            callback=self._count_next_multiplier,
+        )
 
     def _finish_regular_bonus(self):
         if not self._sequence_available():
             return
-        self._turn_off_all_bonus_bucket_lights()
+        self._turn_off_all_bonus_lights()
         self.delay.add(
             name="asm_bonus_start_mode_page",
             ms=0,
@@ -305,42 +344,63 @@ class Bonus(MpfBonus):
         if not self._sequence_available():
             return
 
-        held_entry_was_shown = False
+        self._held_bonus_awards = []
+        self._held_bonus_index = 0
+        if self._carried_held_bonus > 0:
+            self._held_bonus_awards.append(("carried", self._carried_held_bonus))
 
+        current_bonus_was_held = False
         if self._hold_bonus_earned:
             if self._is_last_ball():
-                # There is no future ball on which to collect the held value.
-                # Award the entire current bonus a second time now and present
-                # it as the final HELD BONUS entry. Include that duplicate in
-                # the total-bonus value shown after the callout.
-                held_value = self._final_total
-                self._player["score"] += held_value
-                self._final_total += held_value
+                # There is no next ball on which to collect this newly earned
+                # hold. Pay it later as a separate HELD BONUS without merging
+                # it into the current running bonus total.
+                if self._final_total > 0:
+                    self._held_bonus_awards.append(("last_ball", self._final_total))
                 self._player["held_bonus"] = 0
-                self._show_bonus_entry("held_bonus", "HELD BONUS", held_value)
-                self.machine.events.post("asm_hold_bonus_awarded", total=held_value)
             else:
-                # Bank the current total for the next ball. Do not award it
-                # again now and do not show an amount until it is collected.
+                # Bank only this ball's current bonus. A carried Held Bonus is
+                # paid separately below and can never compound into this value.
                 self._player["held_bonus"] = self._final_total
+                self._running_total_held = True
                 self._show_bonus_entry("hold_bonus", "HOLD BONUS", "")
                 self.machine.events.post("asm_bonus_held", total=self._final_total)
-            held_entry_was_shown = True
+                current_bonus_was_held = True
         else:
-            # A carried held bonus, when present, was already consumed by the
-            # final mode-bonus entry during this count.
+            # The carried amount was snapshotted before counting and will be
+            # paid separately. Clear its stored copy now so it is consumed.
             self._player["held_bonus"] = 0
 
         self._player["hold_bonus"] = 0
         self._reset_regular_bonus_state()
 
-        # A player who finishes Final Showdown cashes out every future ball at
-        # 10M each. Show this after Hold Bonus so the retirement cash-out is not
-        # itself duplicated by Hold Bonus.
         self.delay.add(
-            name="asm_bonus_remaining_balls",
-            ms=self.HELD_BONUS_DISPLAY_MS if held_entry_was_shown else 0,
-            callback=self._award_final_wizard_remaining_balls,
+            name="asm_bonus_start_held_awards",
+            ms=self.HELD_BONUS_DISPLAY_MS if current_bonus_was_held else 0,
+            callback=self._count_next_held_bonus,
+        )
+
+    def _count_next_held_bonus(self):
+        """Pay held values separately without changing the running total."""
+        if not self._sequence_available():
+            return
+        if self._held_bonus_index >= len(self._held_bonus_awards):
+            self._award_final_wizard_remaining_balls()
+            return
+
+        source, value = self._held_bonus_awards[self._held_bonus_index]
+        self._player["score"] += value
+        self._show_bonus_entry("held_bonus", "HELD BONUS", value)
+        self.machine.events.post(
+            "asm_hold_bonus_awarded",
+            total=value,
+            source=source,
+        )
+        self._held_bonus_index += 1
+        self.delay.add(
+            name="asm_bonus_next_held_award",
+            ms=self.HELD_BONUS_DISPLAY_MS,
+            callback=self._count_next_held_bonus,
         )
 
     def _award_final_wizard_remaining_balls(self):
@@ -419,14 +479,6 @@ class Bonus(MpfBonus):
         state = "on" if enabled else "off"
         self.machine.events.post("asm_bonus_count_light_{}_{}".format(light_name, state))
 
-    def _turn_off_multiplier_light_for_pass(self, bonus_pass):
-        # Count multiplier lamps down from the earned multiplier. For example,
-        # a 5X bonus turns off 5X, then 4X, then 3X, then 2X as the count runs.
-        multiplier_to_clear = self._bonus_multiplier - bonus_pass + 1
-        light_name = self.MULTIPLIER_LIGHTS.get(multiplier_to_clear)
-        if light_name:
-            self._set_bonus_light(light_name, False)
-
     def _show_bonus_entry(self, entry, text, score):
         if not self._sequence_available():
             return
@@ -435,6 +487,8 @@ class Bonus(MpfBonus):
             entry=entry,
             text=text,
             score=score,
+            running_total=self._final_total,
+            total_state="held" if self._running_total_held else "normal",
             player_number=self._player.number,
         )
 

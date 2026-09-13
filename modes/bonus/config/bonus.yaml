@@ -134,6 +134,11 @@ sound_player:
       action: play
       bus: effects
 
+  asm_bonus_multiplier_counted:
+    hb_pot_1:
+      action: play
+      bus: effects
+
   asm_bonus_mode_counted:
     bump_sfx_2:
       action: play
