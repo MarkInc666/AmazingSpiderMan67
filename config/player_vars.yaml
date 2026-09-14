@@ -757,6 +757,9 @@ player_vars:
   daily_bugle_pictures_taken_text:
     initial_value: "PICTURES TAKEN: 0\nNEXT MYSTERY: 1"
     value_type: str
+  daily_bugle_award_text:
+    initial_value: ""
+    value_type: str
   chapter_select_confirm_number:
     initial_value: ""
     value_type: str

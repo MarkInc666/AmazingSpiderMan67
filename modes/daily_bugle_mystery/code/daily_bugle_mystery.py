@@ -78,6 +78,27 @@ class DailyBugleMystery(Mode):
         "mystery_award_award_extra_ball": ("EXTRA BALL", "AWARDED"),
     }
 
+    # Single-line copy used on the newspaper photo in db_award.tscn. The two
+    # awards whose exact result is chosen by another mode are replaced by the
+    # specific Case File or villain name before the three-second reveal.
+    AWARD_DISPLAY_TEXT = {
+        "mystery_award_ball_save": "BALL SAVE",
+        "mystery_award_start_super_spinner": "SUPER SPINNER",
+        "mystery_award_advance_bonus_multiplier": "BONUS X",
+        "mystery_award_collect_bonus": "COLLECT BONUS",
+        "mystery_award_hold_bonus": "HOLD BONUS",
+        "mystery_award_start_super_pops": "SUPER POPS",
+        "mystery_award_million_points": "1,000,000",
+        "mystery_award_villain_start_ready": "VILLAIN READY",
+        "mystery_award_start_next_villain": "NEXT VILLAIN",
+        "mystery_award_random_case_file": "CASE FILE",
+        "mystery_award_light_extra_ball": "EXTRA BALL LIT",
+        "mystery_award_light_right_extra_ball": "EXTRA BALL LIT",
+        "mystery_award_award_extra_ball": "EXTRA BALL",
+    }
+
+    AWARD_TEXT_REVEAL_MS = 3000
+
     # Match VUK ownership to the actual award presentation. Most awards use
     # the shared two-second mode message; the exceptions below have longer
     # dedicated presentations. START NEXT VILLAIN has no timed release because
@@ -114,7 +135,9 @@ class DailyBugleMystery(Mode):
         self.daily_bugle_enabled = True
         self.left_exit_hold_active = False
         self.current_mystery_award_event = ""
+        self._pending_mystery_award_text = ""
         self.machine.game.player["daily_bugle_vuk_hold_active"] = 0
+        self.machine.game.player["daily_bugle_award_text"] = ""
 
         self._restore_runtime_state_from_player()
         self._add_handlers()
@@ -125,6 +148,8 @@ class DailyBugleMystery(Mode):
         if self.machine.game:
             self.machine.game.player["daily_bugle_vuk_hold_active"] = 0
         self.delay.remove("daily_bugle_widget_update_deferred")
+        self.delay.remove("daily_bugle_award_text_reveal")
+        self.machine.events.post("daily_bugle_award_widget_remove")
         self.machine.events.post("daily_bugle_widget_remove")
         self._cancel_vuk_delay_eject()
         self._release_left_exit_hold(cancel_delay=True, reason="mode_stop")
@@ -146,6 +171,12 @@ class DailyBugleMystery(Mode):
         self.add_mode_event_handler("enable_daily_bugle_mystery", self.enable_db)
         self.add_mode_event_handler("reset_daily_bugle_state", self.reset_cycle)
         self.add_mode_event_handler("daily_bugle_restore_state", self._restore_lights_and_widgets)
+        self.add_mode_event_handler(
+            "mystery_case_file_awarded", self._set_case_file_award_text
+        )
+        self.add_mode_event_handler(
+            "mystery_next_villain_started", self._set_next_villain_award_text
+        )
 
     def _restore_runtime_state_from_player(self):
         player = self.machine.game.player
@@ -590,17 +621,47 @@ class DailyBugleMystery(Mode):
         self._post_mystery_award("mystery_award_million_points")
 
     def _post_mystery_award(self, award_event):
-        """Show a readable mystery award message, then post the award event."""
+        """Start the Daily Bugle presentation, then apply the award."""
         self.current_mystery_award_event = award_event
-        # Case Files chooses the actual missing file, and villain progression
-        # chooses the actual villain name. Let those owners publish the final
-        # specific message instead of flashing a generic SEARCHING message first.
-        if award_event not in (
-            "mystery_award_random_case_file",
-            "mystery_award_start_next_villain",
-        ):
-            self._post_mystery_award_message(award_event)
+        self._start_mystery_award_widget(award_event)
         self.machine.events.post(award_event)
+
+    def _start_mystery_award_widget(self, award_event):
+        """Play the award video with a blank photo, revealing text at 3s."""
+        player = self.machine.game.player
+        self._pending_mystery_award_text = self.AWARD_DISPLAY_TEXT.get(
+            award_event, "MYSTERY AWARD"
+        )
+
+        # The variable must be blank before GMC creates the widget or its
+        # MPFVariable label would briefly expose the result at frame zero.
+        player["daily_bugle_award_text"] = ""
+        self.delay.remove("daily_bugle_award_text_reveal")
+        self.machine.events.post("daily_bugle_award_widget_remove")
+        self.machine.events.post("daily_bugle_award_widget_show")
+        self.delay.add(
+            name="daily_bugle_award_text_reveal",
+            ms=self.AWARD_TEXT_REVEAL_MS,
+            callback=self._reveal_mystery_award_text,
+        )
+
+    def _set_case_file_award_text(self, label="", **kwargs):
+        """Use the Case Files mode's selected reward on the newspaper photo."""
+        if label:
+            self._pending_mystery_award_text = str(label).upper()
+
+    def _set_next_villain_award_text(self, villain_name="", **kwargs):
+        """Use the progression mode's selected villain on the newspaper photo."""
+        if villain_name:
+            self._pending_mystery_award_text = str(villain_name).upper()
+
+    def _reveal_mystery_award_text(self):
+        if not self.daily_bugle_enabled or not self.machine.game:
+            return
+        self.machine.game.player["daily_bugle_award_text"] = (
+            self._pending_mystery_award_text
+        )
+        self.machine.events.post("daily_bugle_award_text_reveal")
 
     def _post_mystery_award_message(self, award_event):
         title, subtitle = self.AWARD_MESSAGES.get(award_event, ("MYSTERY AWARD", ""))

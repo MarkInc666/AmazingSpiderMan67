@@ -13,6 +13,19 @@ DAILY BUGLE MYSTERY — PICTURE BALANCE
 - The picture balance persists across balls, villain interruptions, and the normal
   Daily Bugle cycle reset posted after a villain summary.
 
+Award presentation
+------------------
+- Every collected Daily Bugle Mystery starts the `db_award` widget immediately.
+- The newspaper video begins with its award label blank.
+- The selected award is applied immediately; display timing does not delay the
+  gameplay effect.
+- At exactly 3 seconds, `daily_bugle_award_text` is filled and the newspaper
+  label updates.
+- Random Case File awards use the selected Case File name. START NEXT VILLAIN
+  awards use the selected villain name.
+- The widget expires after 7 seconds. VUK release timing remains determined by
+  the existing per-award hold table and is not extended by this widget.
+
 Audio routing
 -------------
 - The rooftop-spinner photo click, upper-target bells, and sling-swap callouts

@@ -60,6 +60,21 @@ event_player:
 
 
 widget_player:
+  # Full-screen newspaper presentation for every Daily Bugle Mystery award.
+  # The video starts with a blank photo; Python publishes the selected award
+  # to the MPFVariable label exactly three seconds later.
+  daily_bugle_award_widget_show:
+    db_award:
+      action: play
+      key: daily_bugle_award
+      expire: 7s
+      priority: 4000
+
+  daily_bugle_award_widget_remove:
+    db_award:
+      action: remove
+      key: daily_bugle_award
+
   # Brief center-panel visual when a sling moves the active A/B letter.
   # The supplied 800x600 JPGs are used directly and scaled to the
   # 640x480 center video panel.
