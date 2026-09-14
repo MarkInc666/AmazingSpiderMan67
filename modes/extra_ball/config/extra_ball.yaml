@@ -88,7 +88,7 @@ event_player:
     show_ball_saved_widget:
       save_type: default
       title: BALL SAVED
-      subtitle: DEFAULT SAVE
+      subtitle: KEEP SWINGING
 
   ball_save_mystery_ball_save_saving_ball:
     saved_ball_pending_plunger:
