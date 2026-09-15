@@ -84,15 +84,15 @@ class DailyBugleMystery(Mode):
     }
 
     AWARD_TRIGGER_MS = 3000
-    AWARD_WIDGET_MS = 7000
+    AWARD_PRESENTATION_MS = 7000
     AWARD_RESULT_SETTLE_MS = 1
     AWARD_APPLY_DELAY_NAME = "daily_bugle_award_apply"
     AWARD_FINALIZE_DELAY_NAME = "daily_bugle_award_finalize"
 
-    # These holds begin after the award fires at three seconds. Never release
-    # the VUK before the seven-second newspaper presentation has completed.
+    # These holds begin after the award fires at three seconds. The VUK must
+    # remain held until the seven-second newspaper presentation has finished.
     # START NEXT VILLAIN transfers VUK ownership to progression through the
-    # complete intro instead of using a timed release here.
+    # complete intro.
     DEFAULT_AWARD_VUK_HOLD_MS = 2000
     AWARD_VUK_HOLD_MS = {
         "mystery_award_collect_bonus": 4000,
@@ -461,6 +461,15 @@ class DailyBugleMystery(Mode):
             # mini-wizard bookend intro finishes or the player skips it.
             return
 
+        # The physical VUK switch can chatter/re-close while the same ball is
+        # still parked on it. Once Mystery has claimed the ball, ignore any
+        # subsequent activations until Mystery deliberately releases it.
+        # Otherwise the reset mystery_ready state would take the 500ms
+        # not-ready eject path and kick the held ball out early.
+        if self._safe_int(player["daily_bugle_vuk_hold_active"], 0) == 1:
+            self.machine.events.post("daily_bugle_vuk_duplicate_hit_ignored")
+            return
+
         if not self.mystery_ready:
             # VUK was hit but mystery is not ready. Kick up quickly for other uses.
             self.delay.add(
@@ -475,6 +484,9 @@ class DailyBugleMystery(Mode):
 
     def collect_mystery(self):
         player = self.machine.game.player
+        # A prior non-ready VUK hit may have queued the shared 500ms eject.
+        # Mystery is taking ownership now, so remove it before asserting hold.
+        self._cancel_vuk_delay_eject()
         # Mystery owns the VUK ball throughout every award presentation. This
         # blocks unrelated/shared up-kicks until Mystery deliberately releases
         # the ball or transfers it to a villain intro.
@@ -659,13 +671,14 @@ class DailyBugleMystery(Mode):
         if hold_ms is None:
             hold_ms = self.DEFAULT_AWARD_VUK_HOLD_MS
 
-        # The award is not applied until AWARD_TRIGGER_MS into the newspaper
-        # video. Preserve any award-specific longer hold, but never let the
-        # physical VUK eject while that seven-second presentation is still up.
-        widget_remaining_ms = max(
-            0, self.AWARD_WIDGET_MS - self.AWARD_TRIGGER_MS
+        # The award is applied/revealed at AWARD_TRIGGER_MS, but the newspaper
+        # widget remains on-screen until AWARD_PRESENTATION_MS. Never eject the
+        # VUK while that presentation is still playing. Award-specific holds
+        # may extend beyond the presentation, but may not shorten it.
+        presentation_hold_ms = max(
+            0, self.AWARD_PRESENTATION_MS - self.AWARD_TRIGGER_MS
         )
-        hold_ms = max(hold_ms, widget_remaining_ms)
+        hold_ms = max(hold_ms, presentation_hold_ms)
 
         self.delay.reset(
             name="daily_bugle_vuk_delay_eject",
