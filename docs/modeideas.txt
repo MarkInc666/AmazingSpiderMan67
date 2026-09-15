@@ -198,8 +198,8 @@ Flip count is uncapped.
 Eye Jackpot:
 
 * Center web target is the Eye.
-* Normal value = 100K x remaining flips, capped at 2M.
-* Bigger Jackpots = 150K x remaining flips, still capped at 2M.
+* Normal value = 100K x remaining flips, capped at 4M.
+* Bigger Jackpots = 150K x remaining flips, still capped at 4M.
 * Without More Jackpots, collecting the Eye ends the mode after a 2s Jackpot-message hold.
 * More Jackpots adds Eye #2. After Eye #1, hold its Jackpot message for 2s, then start a 20s second-Eye window with the existing flip count.
 * Drops (+3) and rubbers (+1) continue rebuilding flips during Eye #2.
@@ -217,7 +217,7 @@ Case files:
 
 ```text
 Case File 1 (More Jackpots): Add the timed second Eye Jackpot.
-Case File 2 (Bigger Jackpots): 150K x flips instead of 100K x flips; cap stays 2M.
+Case File 2 (Bigger Jackpots): 150K x flips instead of 100K x flips; cap stays 4M.
 Case File 3 (More Time): Start with 30 flips instead of 20.
 Case File 4 (Safety Net): 10-second ball save.
 Case File 5 (Shot Assist): First drop hit knocks down two additional right-bank drops; each awards +3 flips.

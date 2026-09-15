@@ -240,6 +240,7 @@ class SpiderMen(CaseFileMixin, Mode):
             message_mode_value=value,
             message_mode_seconds="",
         )
+        self.machine.events.post("play_mode_jackpot")
         return value
 
     def _start_proton_timer(self):
@@ -277,7 +278,6 @@ class SpiderMen(CaseFileMixin, Mode):
         self.delay.remove("spider_men_proton_tick")
         self.seconds_left = 0
         self.machine.events.post("spider_men_homeworld_ray_aligned")
-        self.machine.events.post("play_mode_jackpot")
 
         if self.has_case_file("more_jackpots"):
             self.phase = "super"

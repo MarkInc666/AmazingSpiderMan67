@@ -282,11 +282,11 @@ class DoctorCool(Mode, CaseFileMixin):
         if self.mode_done or not self.saucer_chase_active:
             return
 
-        self.saucer_chase_active = False
-        self.star_freeze_active = False
-        self.lit_saucers.clear()
-        self.delay.remove("doctor_cool_star_freeze")
-        self.machine.events.post("doctor_cool_clear_saucer_lights")
+        # Collect only the saucer that was actually hit. Any other saucers in
+        # the current moving/frozen window remain lit and can still collect a
+        # shipment jackpot.
+        self.lit_saucers.discard(saucer)
+        self.machine.events.post(f"doctor_cool_saucer_{saucer}_off")
 
         award = self.jackpot_value
         self._score(award)
@@ -300,25 +300,46 @@ class DoctorCool(Mode, CaseFileMixin):
             required_jackpots=self.required_jackpots,
         )
         self.machine.events.post(
+            f"doctor_cool_saucer_{saucer}_jackpot_collected",
+            saucer=saucer,
+            jackpot=award,
+        )
+        self.machine.events.post(
             "show_mode_message_long",
             message_mode_title="DIAMOND JACKPOT",
             message_mode_subtitle=f"{self.jackpots_collected}/{self.required_jackpots} SHIPMENTS",
             message_mode_value=award,
         )
+        self.machine.events.post("play_mode_jackpot")
         terminal_saucer = self.jackpots_collected >= self.required_jackpots
         if terminal_saucer:
             self.machine.events.post("villain_summary_hold_saucer_until_done")
         self._kick_saucer(saucer)
-        self._sync_vars()
 
         self.machine.events.post("drop_target_bank_dt_bank_left_reset")
         self.machine.events.post("drop_target_bank_dt_bank_right_reset")
 
         if terminal_saucer:
             self.mode_done = True
+            self.saucer_chase_active = False
+            self.star_freeze_active = False
+            self.delay.remove("doctor_cool_star_freeze")
             self.delay.add(name="doctor_cool_complete_delay", ms=1_000, callback=self._complete_mode)
-        else:
+        elif not self.lit_saucers:
+            # The available window is exhausted. Return to the build phase;
+            # the next right-drop hit starts a fresh moving window.
+            self.saucer_chase_active = False
+            self.star_freeze_active = False
+            self.delay.remove("doctor_cool_star_freeze")
             self.machine.events.post("doctor_cool_build_phase_started")
+        else:
+            self.machine.events.post(
+                "doctor_cool_remaining_saucers_lit",
+                remaining=sorted(self.lit_saucers),
+                count=len(self.lit_saucers),
+            )
+
+        self._sync_vars()
 
     def _star_hit(self, **kwargs):
         if self.mode_done:

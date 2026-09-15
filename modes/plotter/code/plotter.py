@@ -18,6 +18,7 @@ class Plotter(CaseFileMixin, Mode):
     BACK_PAGE_VALUE = 500_000
     VUK_SECONDS = 20
     MORE_TIME_VUK_SECONDS = 30
+    JACKPOT_DISPLAY_MS = 2_000
     RUMORS_TO_LIGHT_SAUCER = 2
     BIGGER_JACKPOTS_MULTIPLIER = 2
 
@@ -54,6 +55,7 @@ class Plotter(CaseFileMixin, Mode):
         self.schemes = 0
         self.mode_points = 0
         self.vuk_lit = False
+        self.vuk_pending = False
         self.vuk_collected = False
         self.back_page_lit = False
         self.seconds_left = 0
@@ -122,11 +124,12 @@ class Plotter(CaseFileMixin, Mode):
     def _cleanup_mode_display_and_delays(self):
         if hasattr(self, "delay"):
             self.delay.remove("plotter_vuk_timer_tick")
+            self.delay.remove("plotter_start_vuk")
         self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post("hide_mode_status")
 
     def _pop_hit(self, **kwargs):
-        if self.mode_done:
+        if self.mode_done or self.vuk_pending:
             return
         spinner_was_ready = self.rumors >= self.RUMORS_TO_LIGHT_SAUCER
         self.rumors += 1
@@ -142,7 +145,7 @@ class Plotter(CaseFileMixin, Mode):
         self._update_status()
 
     def _spinner_hit(self, **kwargs):
-        if self.mode_done or self.vuk_lit:
+        if self.mode_done or self.vuk_lit or self.vuk_pending:
             return
         if self.rumors < self.RUMORS_TO_LIGHT_SAUCER:
             self.machine.events.post("show_mode_message", message_mode_title="NEED RUMORS", message_mode_subtitle="HIT POPS")
@@ -171,7 +174,7 @@ class Plotter(CaseFileMixin, Mode):
 
     def _saucer_hit(self, saucer, **kwargs):
         self.machine.events.post(f"delayed_kickout_saucer_{saucer}")
-        if self.mode_done or self.vuk_lit or not self.lit_saucers:
+        if self.mode_done or self.vuk_lit or self.vuk_pending or not self.lit_saucers:
             return
 
         assisted = False
@@ -191,24 +194,31 @@ class Plotter(CaseFileMixin, Mode):
         player = self.machine.game.player
         player["active_mode_stat_2"] = self.schemes
 
+        self.machine.events.post(
+            "show_mode_jackpot",
+            message_mode_title="PLOTTER JACKPOT",
+            message_mode_subtitle=(
+                f"SHOT ASSIST - {self.schemes} OF 3"
+                if assisted
+                else f"SCHEME {self.schemes} OF 3"
+            ),
+            message_mode_value=scheme_value,
+        )
+        self.machine.events.post("play_mode_jackpot")
+
         if self.schemes >= 3:
-            self._start_vuk_timer()
-        else:
-            self.machine.events.post(
-                "show_mode_message",
-                message_mode_title="SHOT ASSIST" if assisted else "SCHEME STOPPED",
-                message_mode_subtitle=(
-                    f"SAUCER {collected_saucer} COLLECTED — {self.schemes} OF 3"
-                    if assisted
-                    else f"{self.schemes} OF 3"
-                ),
-                message_mode_value=scheme_value,
+            self.vuk_pending = True
+            self.delay.reset(
+                name="plotter_start_vuk",
+                ms=self.JACKPOT_DISPLAY_MS,
+                callback=self._start_vuk_timer,
             )
         self._update_status()
 
     def _start_vuk_timer(self):
         if self.vuk_lit or self.mode_done:
             return
+        self.vuk_pending = False
 
         # Shot Assist can leave another saucer lit when the third scheme is
         # collected. Once the VUK phase begins, no surplus scheme remains live.
@@ -291,11 +301,12 @@ class Plotter(CaseFileMixin, Mode):
         self._score(self.BACK_PAGE_VALUE)
         self.machine.events.post("plotter_back_page_collected")
         self.machine.events.post(
-            "show_mode_message",
-            message_mode_title="BACK PAGE BONUS",
+            "show_mode_jackpot",
+            message_mode_title="BACK PAGE JACKPOT",
             message_mode_subtitle="THE PLOTTER DEFEATED",
             message_mode_value=self.BACK_PAGE_VALUE,
         )
+        self.machine.events.post("play_mode_jackpot")
         self.machine.events.post("villain_summary_delay_for_final_award")
         self._complete_mode()
 

@@ -226,6 +226,27 @@ show_player:
       loops: 2
       key: case_file_5bank_gi
 
+  # Restore collected target lamps without replaying Case File award voices.
+  case_files_restore_collected_lights{current_player.case_file_more_jackpots_collected == 1}:
+    case_file_more_jackpots_solid:
+      loops: -1
+
+  case_files_restore_collected_lights{current_player.case_file_more_time_collected == 1}:
+    case_file_more_time_solid:
+      loops: -1
+
+  case_files_restore_collected_lights{current_player.case_file_bigger_jackpots_collected == 1}:
+    case_file_bigger_jackpots_solid:
+      loops: -1
+
+  case_files_restore_collected_lights{current_player.case_file_safety_net_collected == 1}:
+    case_file_safety_net_solid:
+      loops: -1
+
+  case_files_restore_collected_lights{current_player.case_file_shot_assist_collected == 1}:
+    case_file_shot_assist_solid:
+      loops: -1
+
   # Stop the currently flashing target before setting the collected target solid.
   case_file_selected_stop:
     case_file_more_jackpots_flash:

@@ -26,7 +26,9 @@ Scoring
   upper spark last 13 seconds.
 
 Presentation and devices
-- Existing Electro light-show timing is retained.
+- Existing Electro light-show timing is retained. The center web uses the same
+  direct yellow normal-shot flash and white Super flash as the left web; it
+  does not run the shared center-web chase.
 - The Super uses a 10-second lower or 15-second upper countdown and
   persistent SUPER SPARK status showing the required shot.
 - The rooftop gate opens only for upper-playfield spark shots.

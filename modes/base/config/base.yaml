@@ -57,6 +57,11 @@ random_event_player:
     - player_added_callout_4
     - player_added_callout_5
 
+  play_outlane_drain_callout:
+    - outlane_drain_callout_1
+    - outlane_drain_callout_2
+    - outlane_drain_callout_3
+
 
 event_player:
   play_bonus_music:
@@ -211,13 +216,18 @@ sound_player:
       action: play
       bus: effects
 
-  s_outlane_r_active{current_player.ball_save_count == 0}:
+  outlane_drain_callout_1:
     jj_end_of_the_line:
       action: play
       bus: voice
 
-  s_outlane_l_active{current_player.ball_save_count == 0}:
+  outlane_drain_callout_2:
     jj_spiderman_caught:
+      action: play
+      bus: voice
+
+  outlane_drain_callout_3:
+    sm_it_hasnt_been_much_fun:
       action: play
       bus: voice
 

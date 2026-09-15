@@ -356,6 +356,10 @@ class Mysterio(CaseFileMixin, Mode):
         shot.is_lit = False
         self.machine.events.post(f"mysterio_stop_{shot.name}")
 
+    def _disable_all_shots(self):
+        for shot in self.shots:
+            self._disable_shot(shot)
+
     def _release_saucers(self):
         self.machine.events.post("clear_saucers_delayed")
 
@@ -376,7 +380,12 @@ class Mysterio(CaseFileMixin, Mode):
         collected_value = self.super_value
         self.mode_done = True
         self.mode_finishing = True
-        self._disable_shot(shot)
+        # Once the real Mysterio shot is revealed, remove every remaining
+        # illusion from the playfield so only the Jackpot presentation remains.
+        self._disable_all_shots()
+        self.delay.remove(self.VUK_CHASE_DELAY_NAME)
+        self.machine.events.post("mysterio_vuk_chase_stop")
+        self.machine.events.post("rooftop_diverter_close")
         self.mysterio_jackpot_value = collected_value
         self.machine.game.player["active_mode_stat_2"] = collected_value
         self._award_points(collected_value)

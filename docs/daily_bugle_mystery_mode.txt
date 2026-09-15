@@ -17,14 +17,23 @@ Award presentation
 ------------------
 - Every collected Daily Bugle Mystery starts the `db_award` widget immediately.
 - The newspaper video begins with its award label blank.
-- The selected award is applied immediately; display timing does not delay the
-  gameplay effect.
-- At exactly 3 seconds, `daily_bugle_award_text` is filled and the newspaper
-  label updates.
+- The selected award is chosen immediately but its gameplay event does not fire
+  until 3 seconds after the VUK entry.
+- At the same three-second point, `daily_bugle_award_text` is filled and the
+  newspaper label updates. Dynamic Case File and Next Villain names settle on
+  the event queue before the text is published.
 - Random Case File awards use the selected Case File name. START NEXT VILLAIN
   awards use the selected villain name.
-- The widget expires after 7 seconds. VUK release timing remains determined by
-  the existing per-award hold table and is not extended by this widget.
+- The old generic award messages are removed. Mystery Case Files and Mystery
+  Next Villains no longer post a second mode-message overlay, and the ordinary
+  Extra Ball widgets are suppressed while the Daily Bugle award owns the VUK.
+- The widget expires after 7 seconds. Each existing VUK hold duration now begins
+  when the award fires, rather than when the ball first enters the VUK.
+- BONUS X is removed from the random award pool while the player's bonus
+  multiplier is already at the 5X maximum.
+- VILLAIN READY can be awarded once per villain qualification cycle. When
+  awarded, it sets all three villain saucers to the maximum level. It becomes
+  eligible again only after a villain mode has ended.
 
 Audio routing
 -------------

@@ -14,7 +14,9 @@ Core rules and scoring
 - Left drops add 40K to the Jackpot, or 75K with Bigger Jackpots.
 - Any right drop starts the moving frozen-shipment chase.
 - A wrong saucer scores 10K, ejects, and resumes the chase after one second.
-- A correct saucer collects the current Frozen Diamond Jackpot.
+- A correct saucer collects the current Frozen Diamond Jackpot and clears only
+  that saucer. Any other saucers lit in the same window remain available for
+  additional shipment jackpots.
 - Three shipments complete the normal mode. More Jackpots requires four shipments.
 - A terminal saucer is held until the villain summary finishes.
 
@@ -33,8 +35,9 @@ Saucer availability progression
 Saucer lighting
 ---------------
 Only the two red hole lamps at each available saucer pulse red. The green
-number inserts l_1, l_2, and l_3 stay off. Wrong-saucer and shipment-collected
-feedback also use only the red hole lamps.
+number inserts l_1, l_2, and l_3 stay off. A shipment-collected flash affects
+only the saucer that was hit; the other lit saucers continue pulsing. Wrong-
+saucer feedback still uses all three red hole-lamp pairs.
 
 STAR freeze
 -----------
@@ -52,7 +55,7 @@ Case Files
 
 Preserved behavior
 ------------------
-The patch preserves the existing scoring, shipment count, chase speeds, one-
+The mode preserves the existing scoring, shipment count, chase speeds, one-
 second wrong-saucer resume, Diamond Bonus banking, red STAR flash, VUK feed,
 Daily Bugle Mystery ownership, completion delay cleanup, and terminal summary
 hold.

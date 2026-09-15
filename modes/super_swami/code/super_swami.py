@@ -196,6 +196,7 @@ class SuperSwami(CaseFileMixin, Mode):
         self._score(self.MORE_JACKPOTS_VALUE)
         self.machine.events.post("super_swami_vuk_chase_stop")
         self.machine.events.post("show_mode_message", message_mode_title="BLACKOUT JACKPOT", message_mode_subtitle="500K")
+        self.machine.events.post("play_mode_jackpot")
         self.machine.events.post("villain_summary_hold_vuk_until_done")
         self._complete_mode()
 

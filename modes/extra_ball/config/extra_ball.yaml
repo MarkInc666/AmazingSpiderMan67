@@ -12,13 +12,13 @@ extra_balls:
 
 
 widget_player:
-  mystery_extra_ball_lit:
+  mystery_extra_ball_lit{current_player.daily_bugle_vuk_hold_active != 1}:
     extra_ball_lit:
       expire: 3s
       priority: 1000
       action: play
 
-  mystery_extra_ball_award:
+  mystery_extra_ball_award{current_player.daily_bugle_vuk_hold_active != 1}:
     extra_ball:
       expire: 7s
       priority: 1000
@@ -33,6 +33,11 @@ widget_player:
 
 
 sound_player:
+  increase_outlane_add_a_ball:
+    hb_bounce_2:
+      action: play
+      bus: effects
+
   mystery_extra_ball_award:
     sm_extra_ball: 
       action: play
@@ -87,29 +92,21 @@ event_player:
     saved_ball_pending_plunger:
     show_ball_saved_widget:
       save_type: default
-      title: BALL SAVED
-      subtitle: KEEP SWINGING
 
   ball_save_mystery_ball_save_saving_ball:
     saved_ball_pending_plunger:
     show_ball_saved_widget:
       save_type: mystery
-      title: BALL SAVED
-      subtitle: DAILY BUGLE SAVE
 
   ball_save_case_file_ball_save_saving_ball:
     saved_ball_pending_plunger:
     show_ball_saved_widget:
       save_type: safety_net
-      title: BALL SAVED
-      subtitle: SAFETY NET
 
   ball_save_outlane_add_a_ball_save_saving_ball:
     outlane_add_a_ball_pending_plunger:
     show_ball_saved_widget:
       save_type: outlane
-      title: BALL SAVED
-      subtitle: OUTLANE SAVE
 
   ball_save_chapter_select_ball_save_saving_ball:
     saved_ball_pending_plunger:
@@ -117,14 +114,10 @@ event_player:
   show_ball_saved_safety_net:
     show_ball_saved_widget:
       save_type: safety_net
-      title: BALL SAVED
-      subtitle: SAFETY NET
 
   show_ball_saved_multiball:
     show_ball_saved_widget:
       save_type: multiball
-      title: BALL SAVED
-      subtitle: MULTIBALL SAVE
 
   ball_save_default_ball_save_disabled{current_player.ball_save_count > 0}:
     - decrease_ballsave_count
@@ -232,12 +225,23 @@ show_player:
   # Priority 95 places the banked-save pulse above the priority-80 bonus-lane
   # indications, while villain/wizard lighting and priority-900 hit feedback
   # can temporarily take ownership of the same inserts.
-  mode_extra_ball_started{current_player.outlane_add_a_ball_available > 0}:
+  mode_extra_ball_started{current_player.outlane_add_a_ball_available > 0 and current_player.multiball_autoplunge_active == 0}:
     outlane_add_a_ball_available_show:
       loops: -1
       priority: 95
 
-  increase_outlane_add_a_ball:
+  increase_outlane_add_a_ball{current_player.multiball_autoplunge_active == 0}:
+    outlane_add_a_ball_available_show:
+      loops: -1
+      priority: 95
+
+  # The award remains banked during multiball, but its outlane indication is
+  # hidden until multiball ends and the save can be used again.
+  player_multiball_autoplunge_active{value == 1}:
+    outlane_add_a_ball_available_show:
+      action: stop
+
+  player_multiball_autoplunge_active{value == 0 and current_player.outlane_add_a_ball_available > 0}:
     outlane_add_a_ball_available_show:
       loops: -1
       priority: 95

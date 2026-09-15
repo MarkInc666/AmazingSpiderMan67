@@ -114,6 +114,8 @@ class SpiderSlayer(CaseFileMixin, Mode):
         if self.hits == 0:
             self.hunt_started_at = time.monotonic()
 
+        first_hit_for_shot = self.shot_hits[shot] == 0
+
         hit_count = 1
         if self.phase == "hunt" and self.has_case_file("shot_assist") and not self.shot_assist_used:
             self.shot_assist_used = True
@@ -126,6 +128,11 @@ class SpiderSlayer(CaseFileMixin, Mode):
             total_value += self.shot_values[repeat_index]
             self.shot_hits[shot] += 1
         self._score(total_value)
+
+        if first_hit_for_shot:
+            # The shot remains active for reduced repeat values, but its light
+            # becomes solid so the next newly-added flashing shot stands out.
+            self.machine.events.post(f"spider_slayer_mark_{shot}_hit")
 
         if self.phase != "hunt":
             self.machine.events.post("spider_slayer_successful_hit", shot=shot, hits=self.hits, value=total_value)
@@ -215,6 +222,7 @@ class SpiderSlayer(CaseFileMixin, Mode):
         self._sync_vars()
         self.machine.events.post("spider_slayer_disable_safety_net")
         self.machine.events.post("show_mode_jackpot", message_mode_title="SPIDER-SLAYER DESTROYED", message_mode_subtitle="SLAYER JACKPOT", message_mode_value=self.collected_jackpot)
+        self.machine.events.post("play_mode_jackpot")
         self.machine.events.post("villain_summary_hold_vuk_until_done")
         self.delay.add(name="spider_slayer_finish", ms=2000, callback=self.machine.events.post, event="spider_slayer_mode_complete")
 

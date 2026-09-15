@@ -11,10 +11,14 @@ event_player:
 
 slide_player:
   mode_bonus_started:
-    bonus:
-      action: play
     main_game:
       action: remove
+
+  # Python supplies fresh tokens on the same frame the slide is created. This
+  # prevents a stale HELD panel or zero total from flashing at mode start.
+  asm_bonus_slide_show:
+    bonus:
+      action: play
 
   final_wizard_end_screen_show:
     bonus:
@@ -26,9 +30,7 @@ slide_player:
     final_wizard_end:
       action: remove
 
-  # Do not update the slide immediately on bonus_start. A gameplay MPFWidget
-  # may still be queued for deletion during the ball-ending transition.
-  # The first bonus_entry token update follows after teardown has settled.
+  # Later bonus_entry updates follow after gameplay-widget teardown settles.
 
   bonus_entry:
     bonus:

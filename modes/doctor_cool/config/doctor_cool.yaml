@@ -16,6 +16,12 @@ mode:
   code: doctor_cool.DoctorCool
   priority: 300
 
+sound_player:
+  play_mode_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
+
 widget_player:
   mode_doctor_cool_started:
     doctor_cool:
@@ -91,9 +97,29 @@ show_player:
     doctor_cool_wrong_saucer_show:
       loops: 2
 
-  doctor_cool_jackpot_collected:
-    doctor_cool_shipment_collected_show:
+  doctor_cool_saucer_1_jackpot_collected:
+    doctor_cool_saucer_1_collected_show:
       loops: 3
+
+  doctor_cool_saucer_2_jackpot_collected:
+    doctor_cool_saucer_2_collected_show:
+      loops: 3
+
+  doctor_cool_saucer_3_jackpot_collected:
+    doctor_cool_saucer_3_collected_show:
+      loops: 3
+
+  doctor_cool_saucer_1_off:
+    doctor_cool_saucer_1_lit_show:
+      action: stop
+
+  doctor_cool_saucer_2_off:
+    doctor_cool_saucer_2_lit_show:
+      action: stop
+
+  doctor_cool_saucer_3_off:
+    doctor_cool_saucer_3_lit_show:
+      action: stop
 
   doctor_cool_clear_saucer_lights:
     doctor_cool_saucer_1_lit_show:
@@ -102,7 +128,11 @@ show_player:
       action: stop
     doctor_cool_saucer_3_lit_show:
       action: stop
-    doctor_cool_shipment_collected_show:
+    doctor_cool_saucer_1_collected_show:
+      action: stop
+    doctor_cool_saucer_2_collected_show:
+      action: stop
+    doctor_cool_saucer_3_collected_show:
       action: stop
     doctor_cool_wrong_saucer_show:
       action: stop
@@ -118,7 +148,11 @@ show_player:
       action: stop
     doctor_cool_saucer_3_lit_show:
       action: stop
-    doctor_cool_shipment_collected_show:
+    doctor_cool_saucer_1_collected_show:
+      action: stop
+    doctor_cool_saucer_2_collected_show:
+      action: stop
+    doctor_cool_saucer_3_collected_show:
       action: stop
     doctor_cool_wrong_saucer_show:
       action: stop
@@ -156,6 +190,18 @@ light_player:
     l_2_hole_l: off
     l_2_hole_r: off
     l_3: off
+    l_3_hole_l: off
+    l_3_hole_r: off
+
+  doctor_cool_saucer_1_off:
+    l_1_hole_l: off
+    l_1_hole_r: off
+
+  doctor_cool_saucer_2_off:
+    l_2_hole_l: off
+    l_2_hole_r: off
+
+  doctor_cool_saucer_3_off:
     l_3_hole_l: off
     l_3_hole_r: off
 
@@ -208,21 +254,33 @@ shows:
         l_3_hole_l: off
         l_3_hole_r: off
 
-  doctor_cool_shipment_collected_show:
+  doctor_cool_saucer_1_collected_show:
     - duration: 150ms
       lights:
         l_1_hole_l: white
         l_1_hole_r: white
-        l_2_hole_l: white
-        l_2_hole_r: white
-        l_3_hole_l: white
-        l_3_hole_r: white
     - duration: 150ms
       lights:
         l_1_hole_l: off
         l_1_hole_r: off
+
+  doctor_cool_saucer_2_collected_show:
+    - duration: 150ms
+      lights:
+        l_2_hole_l: white
+        l_2_hole_r: white
+    - duration: 150ms
+      lights:
         l_2_hole_l: off
         l_2_hole_r: off
+
+  doctor_cool_saucer_3_collected_show:
+    - duration: 150ms
+      lights:
+        l_3_hole_l: white
+        l_3_hole_r: white
+    - duration: 150ms
+      lights:
         l_3_hole_l: off
         l_3_hole_r: off
 

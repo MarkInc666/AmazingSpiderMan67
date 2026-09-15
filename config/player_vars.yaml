@@ -177,6 +177,9 @@ player_vars:
   villain_start_ready:
     initial_value: 0
     value_type: int
+  mystery_villain_ready_awarded:
+    initial_value: 0
+    value_type: int
   villain_select_active:
     initial_value: 0
     value_type: int

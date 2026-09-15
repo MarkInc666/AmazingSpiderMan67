@@ -22,6 +22,10 @@ multiballs:
       - ball_ended
 
 sound_player:
+  play_mode_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
   goblin_flashing_shot_score:
     flockaway:
       action: play

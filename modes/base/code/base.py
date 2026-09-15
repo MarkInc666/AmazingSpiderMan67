@@ -121,6 +121,16 @@ class Base(Mode):
         self.add_mode_event_handler("ball_will_end", self._lock_and_clear_mode_display_context, priority=10000)
         self.add_mode_event_handler("ball_ending", self._lock_and_clear_mode_display_context, priority=10000)
         self.add_mode_event_handler("ball_ended", self._lock_and_clear_mode_display_context, priority=10000)
+        self.add_mode_event_handler(
+            "s_outlane_l_active",
+            self._maybe_play_outlane_drain_callout,
+            priority=10000,
+        )
+        self.add_mode_event_handler(
+            "s_outlane_r_active",
+            self._maybe_play_outlane_drain_callout,
+            priority=10000,
+        )
 
         self.add_mode_event_handler(
             "show_mode_status",
@@ -160,6 +170,29 @@ class Base(Mode):
         self._ball_end_display_lock = False
         self._clear_mode_message_vars()
         self._clear_mode_status_vars()
+
+    def _maybe_play_outlane_drain_callout(self, **kwargs):
+        """Play a drain quote only for an unsaved single-ball outlane drain."""
+        game = getattr(self.machine, "game", None)
+        player = getattr(game, "player", None)
+        if not game or not player:
+            return
+
+        try:
+            balls_in_play = int(game.balls_in_play or 0)
+            active_ball_saves = int(player["ball_save_count"] or 0)
+            outlane_save_available = int(player["outlane_add_a_ball_available"] or 0)
+            multiball_active = int(player["multiball_autoplunge_active"] or 0)
+        except (KeyError, TypeError, ValueError):
+            return
+
+        if (
+            balls_in_play == 1
+            and active_ball_saves == 0
+            and outlane_save_available == 0
+            and multiball_active == 0
+        ):
+            self.machine.events.post("play_outlane_drain_callout")
 
     def _start_dr_zapp_upper_flipper_lockout(self, **kwargs):
         """Disable only the right upper flipper for six seconds after Zapp.

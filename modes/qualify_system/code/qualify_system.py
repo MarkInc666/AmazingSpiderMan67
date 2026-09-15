@@ -44,7 +44,11 @@ class QualifySystem(Mode):
         self.add_mode_event_handler("ball_started", self._ball_started_restore)
         self.add_mode_event_handler("villain_started_set", self._reset_after_villain)
         self.add_mode_event_handler("villain_mode_started", self._reset_after_villain)
-        self.add_mode_event_handler("villain_mode_ended", self._reset_after_villain)
+        self.add_mode_event_handler(
+            "villain_mode_ended",
+            self._reset_after_villain,
+            reset_mystery_ready_award=True,
+        )
         self.add_mode_event_handler("chapter_mini_wizard_completed", self._reset_after_villain)
         self.add_mode_event_handler("qualify_system_restore_state", self._restore_state)
 
@@ -69,7 +73,7 @@ class QualifySystem(Mode):
 
 
     def _mystery_award_villain_start_ready(self, **kwargs):
-        """Daily Bugle READY VILLAIN: max all three villain-start saucers."""
+        """Daily Bugle READY VILLAIN: max all three saucers once per player."""
         if not self.qualify_logic_active:
             return
 
@@ -78,6 +82,13 @@ class QualifySystem(Mode):
             return
 
         player = self.machine.game.player
+        if self._safe_int(player["mystery_villain_ready_awarded"], 0) == 1:
+            self.machine.events.post(
+                "mystery_villain_start_ready_rejected",
+                reason="already_awarded",
+            )
+            return
+
         extra_blocked_flags = (
             "villain_select_active",
             "chapter_select_needed",
@@ -98,6 +109,7 @@ class QualifySystem(Mode):
             )
             self.machine.events.post(f"{saucer}_state_{self.MAX_SAUCER_STATE}")
 
+        player["mystery_villain_ready_awarded"] = 1
         self.machine.events.post("mystery_villain_start_ready_qualified")
         self._restore_state()
 
@@ -283,10 +295,15 @@ class QualifySystem(Mode):
 
         self._restore_state()
 
-    def _reset_after_villain(self, **kwargs):
+    def _reset_after_villain(self, reset_mystery_ready_award=False, **kwargs):
         for saucer in self.SAUCERS:
             self.machine.game.player[f"{saucer}_state"] = 0
             self.machine.game.player[f"{saucer}_drop_hit_this_cycle"] = 0
+
+        # VILLAIN READY may be collected once during each qualification cycle.
+        # Re-enable it only after the qualified villain has actually finished.
+        if reset_mystery_ready_award:
+            self.machine.game.player["mystery_villain_ready_awarded"] = 0
 
         self.machine.game.player["drop_bank_completions_this_ball"] = 0
         self.machine.events.post("villain_qualify_reset_after_villain")

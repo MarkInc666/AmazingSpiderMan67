@@ -229,6 +229,7 @@ class CharlesCameo(CaseFileMixin, Mode):
         else:
             title = "CAMEO JACKPOT"
         self._show_message(title, self._format_score(value), value=value, event="show_mode_jackpot")
+        self.machine.events.post("play_mode_super_jackpot" if is_super else "play_mode_jackpot")
         self._sync_vars()
 
         if is_super:

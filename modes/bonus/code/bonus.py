@@ -12,7 +12,7 @@ class Bonus(MpfBonus):
       * Earned multiplier lamps then add one base subtotal each, through the
         player's final multiplier, without recounting the bucket lamps.
       * Mode/chapter bonuses are shown after a longer pause and scored as shown.
-      * A lower panel shows the running current-ball bonus total throughout.
+      * The lower running-total panel appears after the first value is counted.
       * Carried Held Bonus is paid separately and never joins that running total.
     """
 
@@ -76,6 +76,18 @@ class Bonus(MpfBonus):
             return
 
         self._bonus_running = True
+
+        # Create the slide with fresh hidden-total tokens. Waiting for the first
+        # bonus_entry update can briefly reuse the previous ball's HELD state.
+        self.machine.events.post(
+            "asm_bonus_slide_show",
+            entry="bonus_title",
+            text="BONUS",
+            score="",
+            running_total="",
+            total_state="hidden",
+            player_number=self._player.number,
+        )
 
         # Remove gameplay widgets before the first bonus token update. GMC
         # queues widget deletion, so bonus_start intentionally does not call
@@ -488,7 +500,11 @@ class Bonus(MpfBonus):
             text=text,
             score=score,
             running_total=self._final_total,
-            total_state="held" if self._running_total_held else "normal",
+            total_state=(
+                "hidden"
+                if self._final_total <= 0
+                else "held" if self._running_total_held else "normal"
+            ),
             player_number=self._player.number,
         )
 

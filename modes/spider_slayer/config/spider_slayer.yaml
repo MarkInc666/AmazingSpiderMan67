@@ -114,6 +114,39 @@ show_player:
     spider_slayer_saucer_pulse:
       loops: -1
 
+  # A first hit changes that still-active shot from flashing to solid. Repeat
+  # hits remain valid at the mode's declining repeat values.
+  spider_slayer_mark_left_web_hit:
+    spider_slayer_left_web_pulse: {action: stop}
+    spider_slayer_left_web_solid: {loops: -1}
+  spider_slayer_mark_center_web_hit:
+    spider_slayer_center_web_pulse: {action: stop}
+    spider_slayer_center_web_solid: {loops: -1}
+  spider_slayer_mark_left_sling_hit:
+    spider_slayer_left_sling_pulse: {action: stop}
+    spider_slayer_left_sling_solid: {loops: -1}
+  spider_slayer_mark_right_sling_hit:
+    spider_slayer_right_sling_pulse: {action: stop}
+    spider_slayer_right_sling_solid: {loops: -1}
+  spider_slayer_mark_left_pop_hit:
+    spider_slayer_left_pop_pulse: {action: stop}
+    spider_slayer_left_pop_solid: {loops: -1}
+  spider_slayer_mark_right_pop_hit:
+    spider_slayer_right_pop_pulse: {action: stop}
+    spider_slayer_right_pop_solid: {loops: -1}
+  spider_slayer_mark_left_bank_hit:
+    spider_slayer_left_bank_pulse: {action: stop}
+    spider_slayer_left_bank_solid: {loops: -1}
+  spider_slayer_mark_right_bank_hit:
+    spider_slayer_right_bank_pulse: {action: stop}
+    spider_slayer_right_bank_solid: {loops: -1}
+  spider_slayer_mark_star_hit:
+    spider_slayer_star_pulse: {action: stop}
+    spider_slayer_star_solid: {loops: -1}
+  spider_slayer_mark_saucer_hit:
+    spider_slayer_saucer_pulse: {action: stop}
+    spider_slayer_saucer_solid: {loops: -1}
+
   spider_slayer_successful_hit:
     spider_slayer_hit_flash:
       loops: 1
@@ -143,6 +176,16 @@ show_player:
     spider_slayer_right_bank_pulse: {action: stop}
     spider_slayer_star_pulse: {action: stop}
     spider_slayer_saucer_pulse: {action: stop}
+    spider_slayer_left_web_solid: {action: stop}
+    spider_slayer_center_web_solid: {action: stop}
+    spider_slayer_left_sling_solid: {action: stop}
+    spider_slayer_right_sling_solid: {action: stop}
+    spider_slayer_left_pop_solid: {action: stop}
+    spider_slayer_right_pop_solid: {action: stop}
+    spider_slayer_left_bank_solid: {action: stop}
+    spider_slayer_right_bank_solid: {action: stop}
+    spider_slayer_star_solid: {action: stop}
+    spider_slayer_saucer_solid: {action: stop}
 
   spider_slayer_clear_all:
     spider_slayer_build_gi: {action: stop}
@@ -158,6 +201,16 @@ show_player:
     spider_slayer_right_bank_pulse: {action: stop}
     spider_slayer_star_pulse: {action: stop}
     spider_slayer_saucer_pulse: {action: stop}
+    spider_slayer_left_web_solid: {action: stop}
+    spider_slayer_center_web_solid: {action: stop}
+    spider_slayer_left_sling_solid: {action: stop}
+    spider_slayer_right_sling_solid: {action: stop}
+    spider_slayer_left_pop_solid: {action: stop}
+    spider_slayer_right_pop_solid: {action: stop}
+    spider_slayer_left_bank_solid: {action: stop}
+    spider_slayer_right_bank_solid: {action: stop}
+    spider_slayer_star_solid: {action: stop}
+    spider_slayer_saucer_solid: {action: stop}
   spider_slayer_vuk_chase_start:
     shared_final_vuk_chase:
       loops: -1
@@ -199,9 +252,9 @@ shows:
     lights: {gi: 104020}
   spider_slayer_hit_flash:
   - duration: 250ms
-    lights: {gi: FF3030}
+    lights: {gi: 30FFFF}
   - duration: 250ms
-    lights: {gi: 401010}
+    lights: {gi: 104040}
   spider_slayer_left_web_pulse:
   - duration: 500ms
     lights: {l_left_web_target: FF2020}
@@ -254,6 +307,37 @@ shows:
   - duration: 500ms
     lights: {l_1_hole_l: 401010, l_1_hole_r: 401010, l_2_hole_l: 401010, l_2_hole_r: 401010, l_3_hole_l: 401010, 
         l_3_hole_r: 401010}
+  spider_slayer_left_web_solid:
+  - duration: -1
+    lights: {l_left_web_target: A02020}
+  spider_slayer_center_web_solid:
+  - duration: -1
+    lights: {l_mid_web_target: A02020}
+  spider_slayer_left_sling_solid:
+  - duration: -1
+    lights: {l_gi_left_sling_upper: A02020, l_gi_left_sling_lower: A02020}
+  spider_slayer_right_sling_solid:
+  - duration: -1
+    lights: {l_gi_right_sling: A02020}
+  spider_slayer_left_pop_solid:
+  - duration: -1
+    lights: {l_pop_1_1: A02020}
+  spider_slayer_right_pop_solid:
+  - duration: -1
+    lights: {l_pop_2_1: A02020}
+  spider_slayer_left_bank_solid:
+  - duration: -1
+    lights: {l_gi_3bank: A02020}
+  spider_slayer_right_bank_solid:
+  - duration: -1
+    lights: {l_gi_5bank_lower: A02020, l_gi_5bank_upper: A02020}
+  spider_slayer_star_solid:
+  - duration: -1
+    lights: {l_star: A02020}
+  spider_slayer_saucer_solid:
+  - duration: -1
+    lights: {l_1_hole_l: A02020, l_1_hole_r: A02020, l_2_hole_l: A02020, l_2_hole_r: A02020, l_3_hole_l: A02020,
+        l_3_hole_r: A02020}
   spider_slayer_vuk_flash:
   - duration: 300ms
     lights: {l_gi_left_upper: 30FF60}

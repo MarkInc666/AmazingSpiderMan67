@@ -11,6 +11,12 @@ mode:
   code: super_swami.SuperSwami
   priority: 300
 
+sound_player:
+  play_mode_jackpot:
+    jackpot_2:
+      action: play
+      bus: effects
+
 widget_player:
   mode_super_swami_started:
     super_swami:

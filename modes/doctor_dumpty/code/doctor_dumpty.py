@@ -207,6 +207,7 @@ class DoctorDumpty(CaseFileMixin, Mode):
         # One physical hit = one popping SFX even when Shot Assist counts it twice.
         self.machine.events.post("doctor_dumpty_balloon_popped", value=award, hit_count=hit_count)
         self.machine.events.post("show_mode_jackpot", message_mode_title="BALLOON POPPED", message_mode_subtitle=f"{self.balloons_popped} POPPED", message_mode_value=award)
+        self.machine.events.post("play_mode_jackpot")
         self._sync_vars()
         self._update_status()
 

@@ -240,6 +240,7 @@ class VonRantenraven(CaseFileMixin, Mode):
         self.machine.events.post(self.TARGETS[target]["solid"])
         self.machine.events.post("von_rantenraven_jackpot_collected", target=target, number=target_number, value=points)
         self._show_message(title, self._format_score(points), value=self.mode_points, event="show_mode_jackpot")
+        self.machine.events.post("play_mode_super_jackpot" if target_number >= 3 else "play_mode_jackpot")
 
         if len(self.targets_hit) >= 3:
             self._complete_roof_attempt()

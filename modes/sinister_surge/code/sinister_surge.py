@@ -78,6 +78,7 @@ class SinisterSurge(Mode):
     RHINO_BERSERK_MS = 10_000
     SANDMAN_MOVE_MS = 4_000
     SANDMAN_RESET_SETTLE_MS = 500
+    AB_COMPLETE_FLASH_MS = 1_200
     MAX_BALLS = 4
 
     AREAS = {
@@ -172,6 +173,7 @@ class SinisterSurge(Mode):
         self.goblin_qualified_areas = set()
 
         self._reset_player_vars()
+        self._reset_ab()
 
         self._add_switch_handlers()
         self.add_mode_event_handler("sinister_surge_choose_first_area", self._choose_next_area)
@@ -182,6 +184,7 @@ class SinisterSurge(Mode):
 
         self._release_held_saucer()
         self._cancel_stage_timers()
+        self.delay.remove("sinister_surge_ab_complete_flash")
 
         self.machine.events.post("sinister_surge_clear_all_sinister_surge_lights")
         self.machine.events.post("sinister_surge_close_upper_gate")
@@ -495,8 +498,8 @@ class SinisterSurge(Mode):
         )
         self.machine.events.post(
             "show_mode_status",
-            mode_status_title="SUPER JACKPOTS",
-            mode_status_value=self._get("sinister_surge_super_jackpots"),
+            mode_status_title="VICTORY LAPS",
+            mode_status_value="COMPLETE A + B",
         )
 
     def _show_victory_lap_instruction(self):
@@ -536,24 +539,37 @@ class SinisterSurge(Mode):
         self.machine.events.post("play_mode_super_jackpot")
 
     def _a_hit(self, **kwargs):
+        first_a_hit = self._get("sinister_surge_a_hit") == 0
         self._set("sinister_surge_a_hit", 1)
+        if first_a_hit:
+            self.machine.events.post("sinister_surge_a_collected_show")
         if self.current_area == "rhino" and self.rhino_berserk and not self.jackpot_ready:
             self._secure_rhino_jackpot()
             return
         self._check_ab()
 
     def _b_hit(self, **kwargs):
+        first_b_hit = self._get("sinister_surge_b_hit") == 0
         self._set("sinister_surge_b_hit", 1)
+        if first_b_hit:
+            self.machine.events.post("sinister_surge_b_collected_show")
         if self.current_area == "rhino" and self.rhino_berserk and not self.jackpot_ready:
             self._secure_rhino_jackpot()
             return
         self._check_ab()
 
     def _check_ab(self):
+        if self._get("sinister_surge_ab_ready") == 1:
+            return
         if self._get("sinister_surge_a_hit") and self._get("sinister_surge_b_hit"):
             self._set("sinister_surge_ab_ready", 1)
             self.machine.events.post("sinister_surge_ab_complete")
-            self.machine.events.post("sinister_surge_ab_ready_show")
+            self.delay.remove("sinister_surge_ab_complete_flash")
+            self.delay.add(
+                name="sinister_surge_ab_complete_flash",
+                ms=self.AB_COMPLETE_FLASH_MS,
+                callback=self._show_ab_needed_lights,
+            )
             
             if self.victory_laps:
                 self.super_jackpot_ready = True
@@ -563,13 +579,47 @@ class SinisterSurge(Mode):
                 self.machine.events.post("sinister_surge_super_jackpot_lit", value=value)
                 self.machine.events.post("sinister_surge_super_jackpot_lit_show")
                 self._update_gate()
+                self.machine.events.post(
+                    "show_mode_status",
+                    mode_status_title="SUPER JACKPOT LIT",
+                    mode_status_value=f"{value:,}",
+                )
 
     def _reset_ab(self):
+        self.delay.remove("sinister_surge_ab_complete_flash")
         self._set("sinister_surge_a_hit", 0)
         self._set("sinister_surge_b_hit", 0)
         self._set("sinister_surge_ab_ready", 0)
         self.machine.events.post("sinister_surge_ab_reset")
-        self.machine.events.post("sinister_surge_ab_clear_show")
+        if self.victory_laps:
+            self.machine.events.post(
+                "show_mode_status",
+                mode_status_title="VICTORY LAPS",
+                mode_status_value="COMPLETE A + B",
+            )
+
+    def _show_ab_needed_lights(self):
+        if self.mode_exiting:
+            return
+        self.machine.events.post("sinister_surge_ab_needed_show")
+
+    def _restore_ab_state_lights(self):
+        """Restore normal A/B states after the Rhino Berserk override."""
+        self.machine.events.post("sinister_surge_ab_visual_clear")
+        if self._get("sinister_surge_ab_ready") == 1:
+            self.machine.events.post("sinister_surge_ab_needed_show")
+            return
+
+        self.machine.events.post(
+            "sinister_surge_a_collected_show"
+            if self._get("sinister_surge_a_hit") == 1
+            else "sinister_surge_a_needed_show"
+        )
+        self.machine.events.post(
+            "sinister_surge_b_collected_show"
+            if self._get("sinister_surge_b_hit") == 1
+            else "sinister_surge_b_needed_show"
+        )
 
     def _pop_hit(self, pop, **kwargs):
         if self.current_area == "rhino" and not self.jackpot_ready:
@@ -616,6 +666,7 @@ class SinisterSurge(Mode):
         self._set("sinister_surge_hits_still_needed", 5)
         self.machine.events.post("sinister_surge_rhino_lights_clear")
         self.machine.events.post("sinister_surge_rhino_rage_0")
+        self._restore_ab_state_lights()
         self._update_gate()
         if show_message:
             self.machine.events.post(
@@ -630,6 +681,7 @@ class SinisterSurge(Mode):
         self.rhino_berserk = True
         self._update_gate()
         self.machine.events.post("sinister_surge_rhino_berserk_started")
+        self.machine.events.post("sinister_surge_rhino_ab_needed_show")
         self.machine.events.post(
             "show_mode_message",
             message_mode_title="RHINO BERSERK!",
@@ -694,6 +746,7 @@ class SinisterSurge(Mode):
         self.delay.remove("sinister_surge_rhino_berserk_tick")
         self.rhino_berserk = False
         self.rhino_safe_locked = True
+        self._restore_ab_state_lights()
         value = self._rhino_jackpot_value()
         self._score(value)
         self.machine.events.post("sinister_surge_rhino_jackpot_locked", value=value)

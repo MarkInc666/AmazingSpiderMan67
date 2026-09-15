@@ -45,6 +45,8 @@ class CaseFiles(Mode):
         "shot_assist": "Spots progress or makes objectives easier",
     }
 
+    LIGHT_RESTORE_DELAY_MS = 500
+
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
         self.case_files_logic_active = True
@@ -72,6 +74,7 @@ class CaseFiles(Mode):
         # File or publish a widget update after the gameplay panel is removed.
         self.case_files_logic_active = False
         self.delay.remove("case_files_clear_intel_suppression")
+        self.delay.remove("case_files_restore_lights_after_bank_reset")
         self.machine.events.post("case_file_selected_stop")
         self.machine.events.post("case_files_clear_lights")
         self.machine.events.post("daily_bugle_widget_remove")
@@ -193,11 +196,6 @@ class CaseFiles(Mode):
 
         label = self.CASE_FILE_LABELS[key]
         self.machine.events.post(
-            "show_mode_message",
-            message_mode_title="CASE FILE",
-            message_mode_subtitle=label.upper(),
-        )
-        self.machine.events.post(
             "case_file_collected",
             case_file=key,
             label=label,
@@ -315,16 +313,16 @@ class CaseFiles(Mode):
         self._refresh_counts()
         self._publish_widget_vars()
 
-        for index, key in enumerate(self.CASE_FILES):
-            collected = self._case_file_value(key) == 1
-            self.machine.events.post(
-                f"case_file_{index + 1}_{'collected' if collected else 'uncollected'}",
-                case_file=key,
-                label=self.CASE_FILE_LABELS[key],
-                benefit=self.CASE_FILE_BENEFITS[key],
-            )
-
-        self._restore_selected_case_file()
+        self._restore_case_file_lights()
+        # Ball-start cleanup and the physical right-bank reset can finish after
+        # the CaseFiles mode's first restore pass. Reassert only the light state
+        # once that reset window has settled; do not replay collection callouts.
+        self.delay.remove("case_files_restore_lights_after_bank_reset")
+        self.delay.add(
+            name="case_files_restore_lights_after_bank_reset",
+            ms=self.LIGHT_RESTORE_DELAY_MS,
+            callback=self._restore_case_file_lights,
+        )
 
         self.machine.events.post(
             "case_files_status",
@@ -335,6 +333,18 @@ class CaseFiles(Mode):
             wizard_prep_summary=self.machine.game.player["wizard_prep_summary"],
             wizard_prep_next_award=self.machine.game.player["wizard_prep_next_award"],
         )
+
+    def _restore_case_file_lights(self):
+        if not self.case_files_logic_active:
+            return
+        if self._case_files_hidden_for_wizard() or self._case_files_locked():
+            return
+
+        # These are light-only restore events. The normal
+        # case_file_collected_<key> events also own award callouts and must not
+        # be replayed at the beginning of every ball.
+        self.machine.events.post("case_files_restore_collected_lights")
+        self._restore_selected_case_file()
 
     def _restore_selected_case_file(self):
         selected_index = int(self.machine.game.player["case_file_selected_index"])

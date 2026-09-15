@@ -239,6 +239,7 @@ class Brutus(CaseFileMixin, Mode):
             value=self._format_score(value),
             event="show_mode_jackpot",
         )
+        self.machine.events.post("play_mode_jackpot")
         terminal_saucer = self.jackpots >= self.required_jackpots
         if terminal_saucer:
             self.machine.events.post("villain_summary_hold_saucer_until_done")

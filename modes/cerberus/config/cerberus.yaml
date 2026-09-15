@@ -155,6 +155,7 @@ light_player:
     l_3: off
 
   cerberus_clear_all_lights:
+    l_gi_3bank: off
     l_upper_left: off
     l_upper_middle: off
     l_upper_right: off
@@ -172,11 +173,13 @@ shows:
   cerberus_upper_targets_flash_show:
     - duration: 250ms
       lights:
+        l_gi_3bank: yellow
         l_upper_left: yellow
         l_upper_middle: yellow
         l_upper_right: yellow
     - duration: 250ms
       lights:
+        l_gi_3bank: off
         l_upper_left: off
         l_upper_middle: off
         l_upper_right: off

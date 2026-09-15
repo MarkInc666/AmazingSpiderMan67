@@ -294,6 +294,7 @@ class DrVonSchlick(CaseFileMixin, Mode):
                 message_mode_subtitle="SUPER JACKPOT",
                 message_mode_value=self.SUPER_VALUE,
             )
+            self.machine.events.post("play_mode_super_jackpot")
             # Keep the flood-winning ball through the Jackpot presentation and
             # villain summary. VillainBookends owns the eventual release.
             self.machine.events.post("villain_summary_hold_vuk_until_done")

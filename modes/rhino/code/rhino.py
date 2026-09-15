@@ -193,6 +193,7 @@ class RhinoBash(CaseFileMixin, Mode):
         self.rhino_best_jackpot_value = max(self.rhino_best_jackpot_value, collected_value)
         self.machine.game.player["rhino_last_jackpot"] = collected_value
         self._show_message("RHINO JACKPOT", "BASH COLLECTED", value=collected_value, event="show_mode_jackpot")
+        self.machine.events.post("play_mode_jackpot")
         self.machine.events.post("rhino_jackpot_collected")
 
         if self.jackpots >= self.max_jackpots:

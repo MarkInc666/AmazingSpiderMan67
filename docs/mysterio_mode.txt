@@ -31,6 +31,8 @@ Presentation and completion
 - Keep the existing Mysterio shot-lighting style.
 - Status shows remaining active shots and the current Super value.
 - Correct shot displays “MYSTERIO SUPER JACKPOT” and the collected value.
+- Collecting it shuts off the final Jackpot light and stops upper-playfield
+  guidance.
 - The ball remains live while Mysterio rules stop scoring for a 2-second completion hold, then the normal villain-complete summary begins.
 - Ball-ending teardown skips the completion delay and stops immediately.
 - Ordinary, incorrect, and disabled saucer hits use delayed clearing. If the

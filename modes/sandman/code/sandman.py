@@ -263,6 +263,7 @@ class Sandman(CaseFileMixin, Mode):
             self.hit_order.append(target)
             self.flash_hits += 1
             self._show_message("FLASHING HIT!", f"RUN: {len(self.hit_order)}", event="show_mode_jackpot")
+            self.machine.events.post("play_mode_jackpot")
             self.machine.events.post("sandman_flashing_hit")
             if getattr(self, "case_file_bigger_jackpots", False):
                 self.machine.game.player["score"] += 150000

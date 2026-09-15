@@ -860,6 +860,7 @@ class TheWebTightens(Mode):
             message_mode_subtitle=self.FIDDLER_LABELS[shot],
             message_mode_value=value,
         )
+        self.machine.events.post("play_mode_jackpot")
         self.fiddler_expected_index += 1
         if self.fiddler_expected_index >= 2:
             self.fiddler_feedback_active = True

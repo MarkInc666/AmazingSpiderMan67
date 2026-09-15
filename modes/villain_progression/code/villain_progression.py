@@ -1650,11 +1650,6 @@ class VillainProgression(Mode):
             villain_key=villain_key,
             villain_name=info["name"],
         )
-        self.machine.events.post(
-            "show_mode_message",
-            message_mode_title="STARTING NEXT VILLAIN",
-            message_mode_subtitle=info["name"].upper(),
-        )
         self.delay.remove("mystery_start_next_villain")
         self.delay.add(
             name="mystery_start_next_villain",
@@ -1664,7 +1659,7 @@ class VillainProgression(Mode):
         )
 
     def _execute_mystery_start_next_villain(self, villain_key, **kwargs):
-        """Start the Mystery-selected villain after its award message is readable."""
+        """Start the Mystery-selected villain after its newspaper text is readable."""
         player = self.machine.game.player
         blocked_flags = (
             "villain_mode_running",
@@ -1687,7 +1682,7 @@ class VillainProgression(Mode):
         # sitting in the Daily Bugle VUK. The hold is armed when the award is
         # selected, before Daily Bugle can schedule its normal eject. Reassert
         # both cancellations here in case another request appeared during the
-        # two-second award message.
+        # two-second newspaper reveal.
         self._hold_mystery_vuk_for_intro(villain_key)
 
         self._start_villain(villain_key)

@@ -121,7 +121,7 @@ class Conquistador(CaseFileMixin, Mode):
         self.machine.events.post("rooftop_diverter_open")
         self.machine.events.post("conquistador_gate_open")
         self._show_message("PATH OPEN", "SPIN TO FIND FOUNTAIN")
-        self._show_status("SPIN TO FIND FOUNTAIN")
+        self._show_status(self._spins_needed_text())
         self._sync_vars()
 
     def _spinner_hit(self, **kwargs):
@@ -133,7 +133,7 @@ class Conquistador(CaseFileMixin, Mode):
         self.spins += 1
         self.machine.events.post("conquistador_spin_progress", spins=self.spins)
         if self.spins < self.REQUIRED_SPINS:
-            self._show_status("SPIN TO FIND FOUNTAIN")
+            self._show_status(self._spins_needed_text())
             self._sync_vars()
             return
 
@@ -308,6 +308,11 @@ class Conquistador(CaseFileMixin, Mode):
         player["conquistador_target_hits"] = self.target_hits
         player["conquistador_spins"] = self.spins
         player["conquistador_seconds_left"] = max(0, self.seconds_left)
+
+    def _spins_needed_text(self):
+        spins_needed = max(0, self.REQUIRED_SPINS - self.spins)
+        noun = "SPIN" if spins_needed == 1 else "SPINS"
+        return f"{spins_needed} {noun} NEEDED"
 
     def _show_status(self, text, seconds=""):
         # Timed Conquistador phases use their own gameplay timer. Show the

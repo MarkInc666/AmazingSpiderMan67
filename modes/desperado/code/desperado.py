@@ -222,6 +222,7 @@ class Desperado(Mode, CaseFileMixin):
         self._add_hit_vars()
         self.machine.events.post("desperado_extra_jackpot_collected", target=target, value=self.EXTRA_JACKPOT_VALUE)
         self._show_message("SHOWDOWN JACKPOT", f"DROP {target}", value=self._format_score(self.EXTRA_JACKPOT_VALUE), event="show_mode_jackpot")
+        self.machine.events.post("play_mode_jackpot")
         self._finish_mode(defeated=True)
 
     def _sweep_and_reset_bank(self):

@@ -239,6 +239,7 @@ class DrManta(CaseFileMixin, Mode):
         )
         title = "3X JACKPOT" if multiplier == 3 else "JACKPOT"
         self._show_message(title, self._format_score(award), value=self.mode_points, event="show_mode_jackpot")
+        self.machine.events.post("play_mode_jackpot")
         self._sync_vars()
         self._update_status()
 

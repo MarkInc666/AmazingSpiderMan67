@@ -11,8 +11,8 @@ Limited-flips monster mode.
 - Each main flipper button press spends 1 flip.
 - Each drop target hit adds 3 flips; every rubber hit adds 1 flip.
 - Drop banks reset immediately when completed.
-- Eye Jackpot = remaining flips * 100K, capped at 2M.
-- Bigger Jackpots changes the rate to 150K per flip; the cap remains 2M.
+- Eye Jackpot = remaining flips * 100K, capped at 4M.
+- Bigger Jackpots changes the rate to 150K per flip; the cap remains 4M.
 - More Jackpots adds a second Eye after a 2s Jackpot-message hold. The second
   Eye is available for 20s; expiry shows EYE SEE YOU for 2s, then ends.
 - Safety Net is a 10s ball save at mode start.
@@ -33,7 +33,7 @@ class Cyclops(CaseFileMixin, Mode):
     RUBBER_FLIP_AWARD = 1
     JACKPOT_PER_FLIP = 100_000
     BIGGER_JACKPOT_PER_FLIP = 150_000
-    JACKPOT_CAP = 2_000_000
+    JACKPOT_CAP = 4_000_000
     SECOND_EYE_SECONDS = 20
     PRESENTATION_HOLD_MS = 2_000
 

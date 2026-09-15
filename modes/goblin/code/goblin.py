@@ -273,6 +273,7 @@ class Goblin(CaseFileMixin, Mode):
         self.safe_hit_count += 1
         self.deactivate_safe_shot(shot_name)
         self.machine.events.post("goblin_flashing_shot_score", shot=shot_name, assisted=assisted)
+        self.machine.events.post("play_mode_jackpot")
         self._queue_safe_messages(immediate, player["goblin_chaos_bonus"])
 
         trigger_assist = (

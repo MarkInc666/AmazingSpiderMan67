@@ -65,10 +65,13 @@ MESSAGES AND STATUS
 - Second available Rumor: SPINNER READY / SHOOT THE YELLOW LOWER SPINNER.
 - Spinner attempted too early: NEED RUMORS / HIT POPS.
 - Spinner collection: SAUCER LIT / COLLECT THE RED SAUCER.
-- Lit saucer: SCHEME STOPPED plus progress toward three.
-- Assisted unlit saucer: SHOT ASSIST plus the lit saucer collected.
+- Lit saucer: PLOTTER JACKPOT plus scheme progress toward three.
+- Assisted unlit saucer: PLOTTER JACKPOT / SHOT ASSIST plus scheme progress.
+- The third scheme Jackpot remains visible for two seconds before the timed VUK
+  Super phase begins.
 - VUK phase: THE PLOTTER EXPOSED / SHOOT DAILY BUGLE VUK plus time remaining.
 - More Jackpots: THE PLOTTER SUPER / BACK PAGE LIT plus time remaining.
+- Back Page collect: BACK PAGE JACKPOT / THE PLOTTER DEFEATED.
 - Timer expiry distinguishes a missed VUK from a missed Back Page.
 
 
