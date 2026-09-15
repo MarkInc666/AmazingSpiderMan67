@@ -27,8 +27,14 @@ Award presentation
 - The old generic award messages are removed. Mystery Case Files and Mystery
   Next Villains no longer post a second mode-message overlay, and the ordinary
   Extra Ball widgets are suppressed while the Daily Bugle award owns the VUK.
-- The widget expires after 7 seconds. Each existing VUK hold duration now begins
-  when the award fires, rather than when the ball first enters the VUK.
+- Ordinary awards use a six-second newspaper presentation: 3 seconds blank,
+  then 3 seconds with the award name before Daily Bugle ejects the VUK ball.
+- START NEXT VILLAIN, EXTRA BALL, and COLLECT BONUS transfer VUK ownership to
+  their award handlers when the award is revealed at 3 seconds. The newspaper
+  remains visible for the second 3-second phase. At 6 seconds the handler takes
+  over its presentation. Custom Bonus runs for 4 seconds; Extra Ball runs for
+  6 seconds. Each handler releases the ball through the shared checked VUK eject
+  service when its presentation is complete.
 - BONUS X is removed from the random award pool while the player's bonus
   multiplier is already at the 5X maximum.
 - VILLAIN READY can be awarded once per villain qualification cycle. When

@@ -361,7 +361,7 @@ class Electro(CaseFileMixin, Mode):
         self.machine.game.player["active_mode_stat_1"] = self.electro_best_spark
 
         self._show_message("ELECTRO JACKPOT", self._shot_label(shot), value=jackpot_value, event="show_mode_jackpot")
-        self.machine.events.post("play_mode_jackpot")
+        #self.machine.events.post("play_mode_jackpot")
         self.machine.events.post("electro_jackpot_collected")
 
         if self.case_file_extra_spark_available:

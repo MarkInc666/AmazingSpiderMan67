@@ -162,9 +162,9 @@ sound_player:
       bus: voice
 
   asm_hold_bonus_awarded:
-    sm_ill_keep_these:
+    achieve:
       action: play
-      bus: voice
+      bus: effects
 
 mode_settings:
   display_delay_ms: 1000ms

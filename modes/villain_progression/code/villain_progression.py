@@ -1149,6 +1149,8 @@ class VillainProgression(Mode):
         player = self.machine.game.player
         if player and (
             self._safe_int(player["daily_bugle_vuk_hold_active"], 0) == 1
+            or self._safe_int(player["extra_ball_vuk_hold_active"], 0) == 1
+            or self._safe_int(player["custom_bonus_vuk_hold_active"], 0) == 1
             or self._safe_int(player["mystery_vuk_intro_hold_active"], 0) == 1
         ):
             self.machine.events.post("vuk_eject_suppressed_mystery_intro_hold")
@@ -1168,6 +1170,8 @@ class VillainProgression(Mode):
         player = self.machine.game.player
         if player and (
             self._safe_int(player["daily_bugle_vuk_hold_active"], 0) == 1
+            or self._safe_int(player["extra_ball_vuk_hold_active"], 0) == 1
+            or self._safe_int(player["custom_bonus_vuk_hold_active"], 0) == 1
             or self._safe_int(player["mystery_vuk_intro_hold_active"], 0) == 1
         ):
             self.machine.events.post("vuk_eject_suppressed_mystery_intro_hold")
@@ -1653,7 +1657,7 @@ class VillainProgression(Mode):
         self.delay.remove("mystery_start_next_villain")
         self.delay.add(
             name="mystery_start_next_villain",
-            ms=2000,
+            ms=3000,
             callback=self._execute_mystery_start_next_villain,
             villain_key=villain_key,
         )
@@ -1682,7 +1686,7 @@ class VillainProgression(Mode):
         # sitting in the Daily Bugle VUK. The hold is armed when the award is
         # selected, before Daily Bugle can schedule its normal eject. Reassert
         # both cancellations here in case another request appeared during the
-        # two-second newspaper reveal.
+        # three-second newspaper reveal.
         self._hold_mystery_vuk_for_intro(villain_key)
 
         self._start_villain(villain_key)

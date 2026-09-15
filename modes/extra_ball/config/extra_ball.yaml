@@ -2,6 +2,7 @@
 
 mode:
   start_events: ball_started
+  code: extra_ball.ExtraBall
   priority: 90
 
 
@@ -24,6 +25,12 @@ widget_player:
       priority: 1000
       action: play
 
+  daily_bugle_extra_ball_presentation_start:
+    extra_ball:
+      expire: 6s
+      priority: 1000
+      action: play
+
   show_ball_saved_widget:
     ball_saved:
       expire: 3s
@@ -38,8 +45,13 @@ sound_player:
       action: play
       bus: effects
 
-  mystery_extra_ball_award:
-    sm_extra_ball: 
+  mystery_extra_ball_award{current_player.daily_bugle_vuk_hold_active != 1}:
+    sm_extra_ball:
+      action: play
+      bus: voice
+
+  daily_bugle_extra_ball_presentation_start:
+    sm_extra_ball:
       action: play
       bus: voice
 
@@ -258,7 +270,15 @@ show_player:
     extra_ball_right_lit_show:
       loops: -1
 
-  mystery_extra_ball_award:
+  mystery_extra_ball_award{current_player.daily_bugle_vuk_hold_active != 1}:
+    extra_ball_lit_show:
+      action: stop
+    extra_ball_collect_gi_show:
+      loops: 6
+    extra_ball_award_show:
+      loops: 1
+
+  daily_bugle_extra_ball_presentation_start:
     extra_ball_lit_show:
       action: stop
     extra_ball_collect_gi_show:

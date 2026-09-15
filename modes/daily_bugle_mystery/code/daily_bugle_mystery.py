@@ -84,21 +84,20 @@ class DailyBugleMystery(Mode):
     }
 
     AWARD_TRIGGER_MS = 3000
-    AWARD_PRESENTATION_MS = 7000
+    AWARD_PRESENTATION_MS = 6000
     AWARD_RESULT_SETTLE_MS = 1
     AWARD_APPLY_DELAY_NAME = "daily_bugle_award_apply"
     AWARD_FINALIZE_DELAY_NAME = "daily_bugle_award_finalize"
 
-    # These holds begin after the award fires at three seconds. The VUK must
-    # remain held until the seven-second newspaper presentation has finished.
-    # START NEXT VILLAIN transfers VUK ownership to progression through the
-    # complete intro.
+    # Ordinary awards remain owned by Daily Bugle through the full six-second
+    # newspaper presentation. START NEXT VILLAIN, EXTRA BALL, and COLLECT BONUS
+    # transfer VUK ownership to their award handlers when the award is revealed
+    # at three seconds; those handlers wait for the second three-second
+    # newspaper phase before taking over the display.
     DEFAULT_AWARD_VUK_HOLD_MS = 2000
     AWARD_VUK_HOLD_MS = {
-        "mystery_award_collect_bonus": 4000,
         "mystery_award_light_extra_ball": 3000,
         "mystery_award_light_right_extra_ball": 3000,
-        "mystery_award_award_extra_ball": 7000,
         "mystery_award_start_next_villain": None,
     }
 
@@ -662,6 +661,28 @@ class DailyBugleMystery(Mode):
             )
             return
 
+        if (
+            self.current_mystery_award_event == "mystery_award_award_extra_ball"
+            and self._safe_int(player["extra_ball_vuk_hold_active"], 0) == 1
+        ):
+            self._cancel_vuk_delay_eject()
+            player["daily_bugle_vuk_hold_active"] = 0
+            self.machine.events.post(
+                "daily_bugle_vuk_eject_transferred_to_extra_ball"
+            )
+            return
+
+        if (
+            self.current_mystery_award_event == "mystery_award_collect_bonus"
+            and self._safe_int(player["custom_bonus_vuk_hold_active"], 0) == 1
+        ):
+            self._cancel_vuk_delay_eject()
+            player["daily_bugle_vuk_hold_active"] = 0
+            self.machine.events.post(
+                "daily_bugle_vuk_eject_transferred_to_custom_bonus"
+            )
+            return
+
         hold_ms = self.AWARD_VUK_HOLD_MS.get(
             self.current_mystery_award_event,
             self.DEFAULT_AWARD_VUK_HOLD_MS,
@@ -671,8 +692,8 @@ class DailyBugleMystery(Mode):
         if hold_ms is None:
             hold_ms = self.DEFAULT_AWARD_VUK_HOLD_MS
 
-        # The award is applied/revealed at AWARD_TRIGGER_MS, but the newspaper
-        # widget remains on-screen until AWARD_PRESENTATION_MS. Never eject the
+        # The award is applied/revealed at AWARD_TRIGGER_MS, but an ordinary
+        # newspaper widget remains on-screen until AWARD_PRESENTATION_MS. Never eject the
         # VUK while that presentation is still playing. Award-specific holds
         # may extend beyond the presentation, but may not shorten it.
         presentation_hold_ms = max(

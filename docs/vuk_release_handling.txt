@@ -8,7 +8,11 @@ Shared handling
 ---------------
 
 - Daily Bugle enabled, Mystery not ready: eject after 500 ms.
-- Daily Bugle enabled, Mystery ready: award Mystery and eject after 5 seconds.
+- Daily Bugle enabled, Mystery ready: hold the VUK through the newspaper award
+  presentation. Ordinary awards eject after the 3-second blank + 3-second award
+  name sequence. START NEXT VILLAIN, EXTRA BALL, and COLLECT BONUS transfer VUK
+  ownership to their handlers at the 3-second reveal; the handler takes over the
+  display at 6 seconds and ejects when its own presentation completes.
 - Chapter mini-wizard start: villain progression holds the ball through the
   intro and releases it when the intro finishes or is skipped.
 - A villain ending at the VUK posts villain_summary_hold_vuk_until_done.

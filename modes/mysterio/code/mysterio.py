@@ -383,6 +383,9 @@ class Mysterio(CaseFileMixin, Mode):
         # Once the real Mysterio shot is revealed, remove every remaining
         # illusion from the playfield so only the Jackpot presentation remains.
         self._disable_all_shots()
+        # Flash the actual hidden Super location after the normal Mysterio
+        # shot lights are removed so the winning shot gets a clear collect cue.
+        self.machine.events.post(f"mysterio_super_flash_{shot.name}")
         self.delay.remove(self.VUK_CHASE_DELAY_NAME)
         self.machine.events.post("mysterio_vuk_chase_stop")
         self.machine.events.post("rooftop_diverter_close")

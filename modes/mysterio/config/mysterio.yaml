@@ -229,6 +229,29 @@ show_player:
     mysterio_lite_upper_targets_show:
       action: stop
 
+  # Final hidden-shot collect: flash only the winning shot group.
+  mysterio_super_flash_left_web:
+    mysterio_super_flash_left_web_show:
+      loops: 2
+  mysterio_super_flash_left_pop:
+    mysterio_super_flash_left_pop_show:
+      loops: 2
+  mysterio_super_flash_right_pop:
+    mysterio_super_flash_right_pop_show:
+      loops: 2
+  mysterio_super_flash_left_drops:
+    mysterio_super_flash_left_drops_show:
+      loops: 2
+  mysterio_super_flash_right_drops:
+    mysterio_super_flash_right_drops_show:
+      loops: 2
+  mysterio_super_flash_saucers:
+    mysterio_super_flash_saucers_show:
+      loops: 2
+  mysterio_super_flash_upper_targets:
+    mysterio_super_flash_upper_targets_show:
+      loops: 2
+
 
 shows:
 
@@ -354,6 +377,128 @@ shows:
         l_upper_left: blue
         l_upper_middle: blue
         l_upper_right: blue
+
+  mysterio_super_flash_left_web_show:
+    - duration: 120ms
+      lights:
+        l_left_web_target: white
+    - duration: 120ms
+      lights:
+        l_left_web_target: off
+
+  mysterio_super_flash_left_pop_show:
+    - duration: 120ms
+      lights:
+        l_pop_1_1: white
+        l_pop_1_2: white
+        l_pop_1_3: white
+        l_pop_1_4: white
+        l_pop_1_5: white
+        l_pop_1_6: white
+        l_pop_1_7: white
+        l_pop_1_8: white
+        l_pop_1_9: white
+        l_pop_1_10: white
+        l_pop_1_11: white
+        l_pop_1_12: white
+    - duration: 120ms
+      lights:
+        l_pop_1_1: off
+        l_pop_1_2: off
+        l_pop_1_3: off
+        l_pop_1_4: off
+        l_pop_1_5: off
+        l_pop_1_6: off
+        l_pop_1_7: off
+        l_pop_1_8: off
+        l_pop_1_9: off
+        l_pop_1_10: off
+        l_pop_1_11: off
+        l_pop_1_12: off
+
+  mysterio_super_flash_right_pop_show:
+    - duration: 120ms
+      lights:
+        l_pop_2_1: white
+        l_pop_2_2: white
+        l_pop_2_3: white
+        l_pop_2_4: white
+        l_pop_2_5: white
+        l_pop_2_6: white
+        l_pop_2_7: white
+        l_pop_2_8: white
+        l_pop_2_9: white
+        l_pop_2_10: white
+        l_pop_2_11: white
+        l_pop_2_12: white
+    - duration: 120ms
+      lights:
+        l_pop_2_1: off
+        l_pop_2_2: off
+        l_pop_2_3: off
+        l_pop_2_4: off
+        l_pop_2_5: off
+        l_pop_2_6: off
+        l_pop_2_7: off
+        l_pop_2_8: off
+        l_pop_2_9: off
+        l_pop_2_10: off
+        l_pop_2_11: off
+        l_pop_2_12: off
+
+  mysterio_super_flash_left_drops_show:
+    - duration: 120ms
+      lights:
+        l_3bankbonus: white
+    - duration: 120ms
+      lights:
+        l_3bankbonus: off
+
+  mysterio_super_flash_right_drops_show:
+    - duration: 120ms
+      lights:
+        l_5bank_1: white
+        l_5bank_2: white
+        l_5bank_3: white
+        l_5bank_4: white
+        l_5bank_5: white
+    - duration: 120ms
+      lights:
+        l_5bank_1: off
+        l_5bank_2: off
+        l_5bank_3: off
+        l_5bank_4: off
+        l_5bank_5: off
+
+  mysterio_super_flash_saucers_show:
+    - duration: 120ms
+      lights:
+        l_1_hole_l: white
+        l_1_hole_r: white
+        l_2_hole_l: white
+        l_2_hole_r: white
+        l_3_hole_l: white
+        l_3_hole_r: white
+    - duration: 120ms
+      lights:
+        l_1_hole_l: off
+        l_1_hole_r: off
+        l_2_hole_l: off
+        l_2_hole_r: off
+        l_3_hole_l: off
+        l_3_hole_r: off
+
+  mysterio_super_flash_upper_targets_show:
+    - duration: 120ms
+      lights:
+        l_upper_left: white
+        l_upper_middle: white
+        l_upper_right: white
+    - duration: 120ms
+      lights:
+        l_upper_left: off
+        l_upper_middle: off
+        l_upper_right: off
 
 light_player:
   # Full-playfield GI theme while this mode is active.

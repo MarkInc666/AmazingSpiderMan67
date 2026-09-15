@@ -2,12 +2,19 @@
 
 mode:
   start_events: mystery_award_collect_bonus
+  stop_events:
+    - custom_bonus_complete
+    - ball_will_end
   code: custom_bonus.CustomBonus
-  priority: 50
+  priority: 550
 
 
-#todo, light shows and video/audio stuff
-event_player:
-  custom_bonus_complete:
-    - upkick
+slide_player:
+  custom_bonus_slide_show:
+    bonus:
+      action: play
+
+  custom_bonus_slide_hide:
+    bonus:
+      action: remove
     
