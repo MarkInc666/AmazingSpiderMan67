@@ -84,12 +84,15 @@ class DailyBugleMystery(Mode):
     }
 
     AWARD_TRIGGER_MS = 3000
+    AWARD_WIDGET_MS = 7000
     AWARD_RESULT_SETTLE_MS = 1
     AWARD_APPLY_DELAY_NAME = "daily_bugle_award_apply"
     AWARD_FINALIZE_DELAY_NAME = "daily_bugle_award_finalize"
 
-    # These holds begin after the award fires at three seconds. START NEXT
-    # VILLAIN transfers VUK ownership to progression through the complete intro.
+    # These holds begin after the award fires at three seconds. Never release
+    # the VUK before the seven-second newspaper presentation has completed.
+    # START NEXT VILLAIN transfers VUK ownership to progression through the
+    # complete intro instead of using a timed release here.
     DEFAULT_AWARD_VUK_HOLD_MS = 2000
     AWARD_VUK_HOLD_MS = {
         "mystery_award_collect_bonus": 4000,
@@ -655,6 +658,15 @@ class DailyBugleMystery(Mode):
         # normal post-award hold instead of leaving the VUK parked forever.
         if hold_ms is None:
             hold_ms = self.DEFAULT_AWARD_VUK_HOLD_MS
+
+        # The award is not applied until AWARD_TRIGGER_MS into the newspaper
+        # video. Preserve any award-specific longer hold, but never let the
+        # physical VUK eject while that seven-second presentation is still up.
+        widget_remaining_ms = max(
+            0, self.AWARD_WIDGET_MS - self.AWARD_TRIGGER_MS
+        )
+        hold_ms = max(hold_ms, widget_remaining_ms)
+
         self.delay.reset(
             name="daily_bugle_vuk_delay_eject",
             ms=hold_ms,
