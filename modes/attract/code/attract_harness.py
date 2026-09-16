@@ -46,3 +46,36 @@ class AttractHarness(Attract):
         elif entered == self.DISABLE_CODE:
             self._test_code_buffer.clear()
             self.machine.events.post("test_mode_harness_off_code_hit")
+
+    def result_of_start_request(self, ev_result=True):
+        """Show feedback when MPF refuses to start until balls are home."""
+        if ev_result is False and self._start_is_waiting_for_balls():
+            self.machine.events.post("attract_waiting_for_balls")
+
+        super().result_of_start_request(ev_result)
+
+    def _start_is_waiting_for_balls(self):
+        """Return whether the ball controller is the likely start blocker."""
+        if not hasattr(self.machine, "ball_devices"):
+            return False
+
+        ball_controller = self.machine.ball_controller
+
+        # Match MPF 0.80's start check. Unstable trough switches also deny the
+        # request, so treat that brief state as waiting for the balls to settle.
+        try:
+            counted_balls = ball_controller._count_balls()
+        except ValueError:
+            return True
+
+        if counted_balls < self.machine.config["machine"]["min_balls"]:
+            return True
+
+        if self.machine.config["game"]["allow_start_with_loose_balls"]:
+            return False
+
+        allowed_positions = ["home", "trough"]
+        if self.machine.config["game"]["allow_start_with_ball_in_drain"]:
+            allowed_positions.append("drain")
+
+        return not ball_controller.are_balls_collected(allowed_positions)

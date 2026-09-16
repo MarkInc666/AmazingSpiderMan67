@@ -23,6 +23,14 @@ To disarm the harness from ATTRACT:
 The attract flag is a non-persistent machine variable, so a power cycle also
 returns the machine to normal gameplay.
 
+Attract start feedback
+----------------------
+If START is pressed before all six balls have returned to the trough, MPF keeps
+the game in attract mode while its normal collection or ball-search process
+continues. A four-second WAITING FOR BALLS widget explains why the game did not
+start. Pressing START again refreshes the message; a successful game start
+removes it immediately.
+
 Mode selector controls
 ----------------------
 LEFT / RIGHT flipper release  = previous / next mode

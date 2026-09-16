@@ -54,6 +54,22 @@ variable_player:
       action: set_machine
 
 
+widget_player:
+  # MPF silently returns to attract when the ball controller rejects a start.
+  # Give the player immediate feedback while collection/search continues.
+  attract_waiting_for_balls:
+    waiting_for_balls:
+      action: play
+      key: waiting_for_balls
+      priority: 3000
+      expire: 4s
+
+  game_start:
+    waiting_for_balls:
+      action: remove
+      key: waiting_for_balls
+
+
 slide_player:
   mode_attract_started: attract
 
