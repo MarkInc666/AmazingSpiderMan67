@@ -14,6 +14,9 @@ class ExtraBall(Mode):
         self.add_mode_event_handler(
             "mystery_extra_ball_award", self._maybe_claim_daily_bugle_vuk
         )
+        self.add_mode_event_handler(
+            "mystery_extra_ball_direct_award", self._maybe_claim_daily_bugle_vuk
+        )
 
     def mode_stop(self, **kwargs):
         self.delay.remove("daily_bugle_extra_ball_takeover")

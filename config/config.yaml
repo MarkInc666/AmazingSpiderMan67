@@ -263,7 +263,10 @@ event_player:
 extra_ball_groups:
   main_extra_ball_group:
     max_per_game: 3
-    light_events: mystery_extra_ball_lit
+    light_events:
+      - mystery_extra_ball_lit
+      - mystery_right_extra_ball_lit
+    award_events: mystery_extra_ball_direct_award
     award_lit_events: mystery_extra_ball_award
 
 

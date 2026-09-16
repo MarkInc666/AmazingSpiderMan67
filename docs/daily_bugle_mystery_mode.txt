@@ -13,6 +13,18 @@ DAILY BUGLE MYSTERY — PICTURE BALANCE
 - The picture balance persists across balls, villain interruptions, and the normal
   Daily Bugle cycle reset posted after a villain summary.
 
+Extra Ball milestones
+---------------------
+- Mystery 3 lights the left-bank Extra Ball. Completing the lit left bank
+  consumes that lit award and queues one Extra Ball through the shared MPF
+  Extra Ball group.
+- Mystery 7 directly awards one Extra Ball through the same group, even when no
+  banked Extra Ball is currently lit.
+- Mystery 10 lights the right-bank Extra Ball. The right-bank light event also
+  lights the shared MPF Extra Ball group; completing the lit right bank consumes
+  that award and queues one Extra Ball.
+- Left-bank, right-bank, and direct awards share the three-per-game limit.
+
 Award presentation
 ------------------
 - Every collected Daily Bugle Mystery starts the `db_award` widget immediately.
