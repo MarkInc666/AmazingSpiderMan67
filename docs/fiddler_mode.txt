@@ -16,7 +16,7 @@ CORE GAMEPLAY
   3. Right Pop = violin note 3
   4. Right Bank Rubber = violin note 4
 - Left and right drop targets are forced down during the mode so the bank rubbers remain available.
-- All three saucers pulse white (FFFFFF) while Fiddler is waiting for the player to start/restart a round.
+- All three saucers pulse white (FFFFFF) while Fiddler is waiting for the player to start/restart a round, and the persistent prompt says SHOOT ANY SAUCER.
 - The four note-shot indicators alternate bright green 40FF40 and dim green
   208020 during WATCH and note feedback.
 - Entering any saucer holds the ball during WATCH and ejects that same saucer only when YOUR TURN begins. The first pattern therefore remains physically held in the saucer for the full WATCH presentation.
@@ -60,6 +60,8 @@ PATTERN PROGRESSION
 - Repeated note shots are allowed in a pattern.
 - Completing the first pattern is enough to count Fiddler as defeated for villain progression, but the gameplay continues until the failure limit is reached.
 - After every successful pattern the player must return to a saucer to start the next WATCH phase.
+- PATTERN COMPLETE remains visible for two seconds, then changes to SHOOT ANY
+  SAUCER. The earlier YOUR TURN reminder is canceled as soon as the pattern ends.
 
 FAILED ROUND
 - The first unassisted incorrect note in an attempt plays violin_bad_note and flashes the CORRECT shot for 1 second.
@@ -67,6 +69,8 @@ FAILED ROUND
 - After a round has failed, all four note shots are inactive for progression: hitting any of them plays violin_bad_note and flashes THAT SHOT'S own light for 1 second.
 - Additional note hits while the round is already failed do not add more failures.
 - The player must return to a saucer to continue.
+- While waiting after a failed round, the reminder says SHOOT ANY SAUCER; the
+  earlier YOUR TURN reminder cannot reappear.
 - After a failed round, the saucer starts a NEW randomized pattern with the SAME number of notes as the failed pattern.
 
 MODE END
@@ -90,4 +94,3 @@ SUMMARY
 - NOTES HIT = total correct notes scored.
 WATCH SETTLE DELAY
 - When Fiddler captures/holds the ball for WATCH (saucer or Mystery/VUK start), wait 2 seconds before the WATCH/demo sequence begins. The ball remains held during this settle delay.
-

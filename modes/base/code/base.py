@@ -25,6 +25,7 @@ class Base(Mode):
 
     TERMINAL_AWARD_EVENTS = (
         "villain_summary_delay_for_final_award",
+        "villain_summary_preserve_final_message",
         "villain_summary_hold_vuk_until_done",
         "villain_summary_hold_saucer_until_done",
     )

@@ -13,8 +13,8 @@ Shared handling
   name sequence. START NEXT VILLAIN, EXTRA BALL, and COLLECT BONUS transfer VUK
   ownership to their handlers at the 3-second reveal; the handler takes over the
   display at 6 seconds and ejects when its own presentation completes. Collect
-  Bonus takes over with a compact center widget at z-index 4090 so it renders
-  above the Daily Bugle award widget at layer 4000.
+  Bonus takes over with a compact 800 x 640 blue center widget for 3 seconds at
+  z-index 4090, so it renders above the Daily Bugle award widget at layer 4000.
 - Chapter mini-wizard start: villain progression holds the ball through the
   intro and releases it when the intro finishes or is skipped.
 - Villain Intro uses Godot z-index 4090, above the Daily Bugle award widget at
@@ -81,6 +81,10 @@ Terminal award presentation
 - Non-device terminal awards explicitly post
   villain_summary_delay_for_final_award. This uses the same two-second deadline
   without changing ball-device ownership.
+- Successful regular-villain completions also preserve the last gameplay
+  message and delay the summary only for the remainder of two seconds measured
+  from when that message appeared. This gives Rhino and every other villain the
+  same final-message window without doubling modes that already wait locally.
 - September 9, 2026 audit added the explicit non-device delay to Skymaster,
   Sandman, Dr. Magneto, Enforcers, Pardo, Lizard, Von Rantenraven, Desperado,
   Dr. Von Schlick, Noah Boddy, and Plotter's Back Page ending. Modes that already

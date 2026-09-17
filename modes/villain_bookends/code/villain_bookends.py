@@ -1256,6 +1256,7 @@ class VillainBookends(Mode):
         # two seconds before the bookend replaces it.
         self.terminal_award_summary_deadline = 0.0
         self.pending_terminal_summary_request = None
+        self.last_gameplay_message_time = 0.0
 
         self.add_mode_event_handler("villain_bookend_intro_request", self._intro_request)
         self.add_mode_event_handler("villain_bookend_summary_request", self._summary_request)
@@ -1270,6 +1271,19 @@ class VillainBookends(Mode):
         )
         self.add_mode_event_handler("villain_summary_hold_saucer_until_done", self._mark_terminal_award)
         self.add_mode_event_handler("villain_summary_delay_for_final_award", self._mark_terminal_award)
+        self.add_mode_event_handler("show_mode_message", self._record_gameplay_message)
+        self.add_mode_event_handler("show_mode_message_long", self._record_gameplay_message)
+        self.add_mode_event_handler("show_mode_jackpot", self._record_gameplay_message)
+
+    def _record_gameplay_message(self, **kwargs):
+        """Remember when the active villain last presented a player message."""
+        del kwargs
+        player = self.machine.game.player if self.machine.game else None
+        if not player:
+            return
+        if not player["villain_mode_running"] or player["villain_mode_in_summary"]:
+            return
+        self.last_gameplay_message_time = time.monotonic()
 
 
     def _mark_terminal_award(self, **kwargs):
@@ -1375,13 +1389,30 @@ class VillainBookends(Mode):
             return f"{int(value):,}"
         return str(value)
 
-    def _summary_request(self, villain=None, done_event=None, allow_skip=None, chapter_number=None, **kwargs):
+    def _summary_request(
+        self,
+        villain=None,
+        done_event=None,
+        allow_skip=None,
+        chapter_number=None,
+        ensure_final_message_hold=False,
+        **kwargs,
+    ):
         if villain not in self.VILLAINS:
             self.warning_log("Unknown villain summary requested: %s", villain)
             return
 
-        # Leave an explicitly marked terminal award on screen for a minimum of
-        # two seconds before the summary starts.
+        # Successful villain endings use the last gameplay-message timestamp,
+        # so every final message gets a full two seconds without adding a
+        # second blind delay to modes (such as Centaur) that already wait.
+        if ensure_final_message_hold and self.last_gameplay_message_time > 0:
+            self.terminal_award_summary_deadline = max(
+                self.terminal_award_summary_deadline,
+                self.last_gameplay_message_time + 2.0,
+            )
+
+        # Leave the final message or explicitly marked terminal award on screen
+        # for the remainder of its two-second presentation window.
         remaining = self.terminal_award_summary_deadline - time.monotonic()
         if remaining > 0:
             self.pending_terminal_summary_request = {
@@ -1389,6 +1420,7 @@ class VillainBookends(Mode):
                 "done_event": done_event,
                 "allow_skip": allow_skip,
                 "chapter_number": chapter_number,
+                "ensure_final_message_hold": ensure_final_message_hold,
                 **kwargs,
             }
             self.delay.reset(

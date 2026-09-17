@@ -56,14 +56,16 @@ ELECTRO
 - Missing the active location does not reset progress; the Spark simply continues roaming.
 
 GREEN GOBLIN
-- All three saucer hole-lamp pairs pulse white while waiting for the capture shot.
+- All three red saucer hole-lamp pairs pulse together while waiting for the
+  capture shot. If a ball was resting in a saucer from the previous stage, the
+  three-saucer ready show is reasserted after that ball is released.
 - Number inserts l_1/l_2/l_3 are not used for the Goblin saucer indication.
-- Any saucer starts the attempt and holds that ball for 4 seconds.
+- Any saucer starts the attempt and holds that ball for 10 seconds.
 - Four areas flash green: left web, center web, left drop bank, right drop bank.
 - Any individual drop hit qualifies its bank; each of the four areas counts once.
 - Hit 2 of the 4 areas before the 10-second safe-time hold ends to light Jackpot.
 - Success releases the held ball immediately.
-- Failure releases the held ball at 4 seconds and allows another saucer restart.
+- Failure releases the held ball at 10 seconds and allows another saucer restart.
 
 SAUCER REST
 - During any non-Goblin stage, one ball may rest in any saucer for up to 20 seconds.
@@ -74,10 +76,12 @@ SAUCER REST
 
 JACKPOTS / ADD-A-BALL
 - Standard stage Jackpot = 100K x (balls in play + stages cleared) + Case File bonus.
-- Complete A+B before collecting a standard stage Jackpot to add a ball on that Jackpot.
+- Outside Victory Laps, complete A+B to add a ball whenever multiball is down
+  to exactly 2 balls. If A+B is completed with more than 2 balls active, it
+  remains qualified and awards automatically when a drain leaves 2 balls.
+- Add-a-Ball resets A+B and can be earned again every time play returns to 2 balls.
 - Maximum balls in play: 4.
 - Added-ball save: 10 seconds.
-- A+B resets after each standard stage Jackpot.
 - Rhino's direct Berserk VUK awards 3x the Rhino stage Jackpot and resolves the stage
   without creating an additional standard VUK Jackpot afterward.
 
@@ -109,6 +113,6 @@ LIGHTING
   when their requirement is completed.
 - Electro: only the current roaming Spark location flashes; bank inserts respect
   their physical green lenses while webs/pops use yellow.
-- Goblin: saucer hole lamps pulse white while ready; during the 10-second safe-time attempt,
+- Goblin: all three red saucer hole-lamp pairs pulse while ready; during the 10-second safe-time attempt,
   the four qualifying areas flash green and each collected area turns off.
 - Victory Laps: full GI fade white -> red -> white -> blue -> white, repeating.

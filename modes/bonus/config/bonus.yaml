@@ -9,6 +9,22 @@ event_player:
   mode_bonus_started:
     - play_bonus_music
 
+widget_player:
+  asm_bonus_final_total_show:
+    bonus_final_total:
+      action: play
+      key: bonus_final_total
+
+  asm_bonus_final_total_hide:
+    bonus_final_total:
+      action: remove
+      key: bonus_final_total
+
+  mode_bonus_stopping:
+    bonus_final_total:
+      action: remove
+      key: bonus_final_total
+
 slide_player:
   mode_bonus_started:
     main_game:

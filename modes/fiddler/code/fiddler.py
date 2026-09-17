@@ -160,7 +160,7 @@ class Fiddler(CaseFileMixin, Mode):
         elif starting_saucer:
             self._saucer_hit(saucer=starting_saucer)
         else:
-            self._show_waiting_for_saucer("SHOOT A SAUCER", "WATCH THE PATTERN")
+            self._show_waiting_for_saucer("SHOOT ANY SAUCER", "WATCH THE PATTERN")
         self._sync_vars()
 
     @staticmethod
@@ -222,6 +222,8 @@ class Fiddler(CaseFileMixin, Mode):
         if self.demonstrating or self.feedback_active:
             return
 
+        self.delay.remove("fiddler_saucer_prompt")
+        self.machine.events.post("cancel_mode_message_reminder")
         self.held_saucer = saucer
         self.machine.game.player["fiddler_saucer_hold"] = 1
         self.machine.events.post("fiddler_saucers_not_ready")
@@ -512,10 +514,8 @@ class Fiddler(CaseFileMixin, Mode):
         if self.failures >= self.failure_limit:
             self._finish_mode_after_failures()
             return
-        self.waiting_for_saucer = True
         self.machine.events.post("fiddler_all_notes_off")
-        self.machine.events.post("fiddler_saucers_ready")
-        self._show_message("ROUND FAILED", "SHOOT A SAUCER")
+        self._show_waiting_for_saucer("ROUND FAILED", "SHOOT ANY SAUCER")
         self._sync_vars()
 
     def _failed_round_feedback_done(self):
@@ -523,8 +523,7 @@ class Fiddler(CaseFileMixin, Mode):
             return
         self.feedback_active = False
         self.machine.events.post("fiddler_all_notes_off")
-        self.machine.events.post("fiddler_saucers_ready")
-        self._show_message("ROUND FAILED", "SHOOT A SAUCER")
+        self._show_waiting_for_saucer("ROUND FAILED", "SHOOT ANY SAUCER")
 
     def _complete_pattern(self):
         if self.mode_done:
@@ -543,11 +542,25 @@ class Fiddler(CaseFileMixin, Mode):
         self.round_failed = False
         self.waiting_for_saucer = True
         self.machine.events.post("fiddler_saucers_ready")
+        self.machine.events.post("cancel_mode_message_reminder")
         self._show_message(
             "PATTERN COMPLETE",
             f"NEXT: {self.pattern_length} NOTE" + ("S" if self.pattern_length != 1 else ""),
         )
+        self.delay.reset(
+            name="fiddler_saucer_prompt",
+            ms=2_000,
+            callback=self._show_next_saucer_prompt,
+        )
         self._sync_vars()
+
+    def _show_next_saucer_prompt(self):
+        if self.mode_done or not self.waiting_for_saucer:
+            return
+        note_text = f"NEXT: {self.pattern_length} NOTE"
+        if self.pattern_length != 1:
+            note_text += "S"
+        self._show_waiting_for_saucer("SHOOT ANY SAUCER", note_text)
 
     def _finish_mode_after_failures(self):
         if self.mode_done:
@@ -624,7 +637,8 @@ class Fiddler(CaseFileMixin, Mode):
     def _show_waiting_for_saucer(self, title, subtitle):
         self.waiting_for_saucer = True
         self.machine.events.post("fiddler_saucers_ready")
-        self._show_message(title, subtitle)
+        self.machine.events.post("cancel_mode_message_reminder")
+        self._show_message(title, subtitle, reminder=True)
 
     def _score(self, points):
         player = self.machine.game.player
@@ -658,6 +672,7 @@ class Fiddler(CaseFileMixin, Mode):
             "fiddler_wrong_note_flash",
             "fiddler_shot_assist_flash",
             "fiddler_failed_round_flash",
+            "fiddler_saucer_prompt",
         ):
             self.delay.remove(name)
         self._clear_correct_note_flashes()

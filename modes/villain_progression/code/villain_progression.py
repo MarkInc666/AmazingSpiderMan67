@@ -1828,6 +1828,13 @@ class VillainProgression(Mode):
             state=finish_state,
         )
 
+        # Successful final shots should leave their last message visible while
+        # the gameplay mode stops. Villain Bookends measures the remaining part
+        # of the shared two-second window from the actual message timestamp, so
+        # modes with an existing local hold are not delayed twice.
+        if completed:
+            self.machine.events.post("villain_summary_preserve_final_message")
+
         # Ask MPF to stop the active gameplay mode now. The mode YAML also has
         # the concrete complete/fail events in stop_events, but this keeps the
         # behavior explicit from the single progression pipeline.
@@ -1839,7 +1846,10 @@ class VillainProgression(Mode):
         self.delay.add(
             name=f"{villain_key}_summary_after_mode_stop",
             ms=100,
-            callback=lambda: self._request_summary(villain_key),
+            callback=lambda: self._request_summary(
+                villain_key,
+                ensure_final_message_hold=completed,
+            ),
         )
 
         # Recalculate counts for the widget, but do not open the mini-wizard
@@ -1848,11 +1858,12 @@ class VillainProgression(Mode):
         self._sync_chapter_ready_flags(post_events=False)
         self._restore_state()
 
-    def _request_summary(self, villain_key):
+    def _request_summary(self, villain_key, ensure_final_message_hold=False):
         self.machine.events.post(
             "villain_bookend_summary_request",
             villain=villain_key,
             done_event=f"{villain_key}_mode_completed_summary",
+            ensure_final_message_hold=ensure_final_message_hold,
         )
 
     def _summary_done(self, villain=None, **kwargs):

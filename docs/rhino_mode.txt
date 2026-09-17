@@ -41,6 +41,8 @@ Bigger Jackpots adds 200K to every base value.
 - Each Rage advance announces the new level and reminds the player to keep hitting pops for more Rage.
 - Rage 5 changes to **RHINO BERSERK! / ESCAPE THROUGH ANY A/B** and uses the large countdown timer.
 - After a jackpot collect, the next cycle announces **BUILD RAGE AGAIN / HIT POPS**.
+- After the final Jackpot, **RHINO DEFEATED / MODE COMPLETE** remains visible
+  for two seconds before the villain summary appears.
 
 ## Berserk
 

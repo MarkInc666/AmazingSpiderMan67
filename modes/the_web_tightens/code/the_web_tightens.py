@@ -299,12 +299,7 @@ class TheWebTightens(Mode):
             self.waiting_for_vuk = True
             self.machine.events.post("rooftop_diverter_open")
             self.machine.events.post("the_web_tightens_vuk_lock_ready")
-            self.machine.events.post(
-                "show_mode_message_long",
-                message_mode_title=self.DISPLAY_NAME,
-                message_mode_subtitle="LOCK A BALL AT DAILY BUGLE",
-                message_mode_value=self.jackpot_value,
-            )
+            self._show_vuk_lock_prompt()
         self.machine.events.post("the_web_tightens_start_multiball")
         self._update_status()
         self._schedule_ball_guard()
@@ -430,6 +425,8 @@ class TheWebTightens(Mode):
         self.machine.events.post("request_vuk_eject", delay_ms=750)
 
     def _lock_vuk_for_cycle(self):
+        self.delay.remove("web_vuk_lock_prompt")
+        self.machine.events.post("cancel_mode_message_reminder")
         self.vuk_locked = True
         self.waiting_for_vuk = False
         self.waiting_for_saucer = True
@@ -1435,12 +1432,35 @@ class TheWebTightens(Mode):
         self.waiting_for_vuk = True
         self.machine.events.post("rooftop_diverter_open")
         self.machine.events.post("the_web_tightens_vuk_lock_ready")
+        # Leave the Super Jackpot presentation on screen for its normal two
+        # seconds, then replace it with the persistent lock instruction.
+        self.delay.reset(
+            name="web_vuk_lock_prompt",
+            ms=2_000,
+            callback=self._show_vuk_lock_prompt,
+        )
         self._sync_vars()
         self._update_status()
 
     # ------------------------------------------------------------------
     # Helpers / scoring / status
     # ------------------------------------------------------------------
+
+    def _show_vuk_lock_prompt(self):
+        if self.mode_done or not self.waiting_for_vuk:
+            return
+        subtitle = (
+            "LOCK A BALL TO BEGIN"
+            if self.cycle_number == 0
+            else f"LOCK A BALL FOR CYCLE {self.cycle_number + 1}"
+        )
+        self.machine.events.post(
+            "show_mode_message_long",
+            message_mode_title="SHOOT DAILY BUGLE",
+            message_mode_subtitle=subtitle,
+            message_mode_value=self.jackpot_value,
+            reminder=True,
+        )
 
     def _zone_for_switch(self, switch):
         for zone, switches in self.ZONE_SWITCHES.items():
@@ -1487,7 +1507,7 @@ class TheWebTightens(Mode):
         if self.waiting_for_vuk:
             next_cycle = 1 if self.cycle_number == 0 else self.cycle_number + 1
             title = f"CYCLE {next_cycle}"
-            value = "LOCK BALL AT DAILY BUGLE"
+            value = "SHOOT DAILY BUGLE"
         elif self.phase_announcing:
             next_phase = self.PHASES[self.phase_index].replace("_", " ").upper()
             title = next_phase

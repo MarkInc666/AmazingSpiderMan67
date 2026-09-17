@@ -6,6 +6,8 @@ CORE LOOP
 ---------
 - Starts as 2-ball multiball.
 - Player locks one ball in the Daily Bugle VUK.
+- While waiting for that lock, the center message and mode status say SHOOT
+  DAILY BUGLE. The center instruction repeats as a reminder until the VUK locks.
 - The VUK ball remains locked while five villain-inspired phases are played.
 - A saucer starts each phase. The phase name is announced for 2 seconds before
   that phase gameplay begins.
@@ -114,6 +116,8 @@ ROOFTOP SUPER / REPEAT CYCLE
     HIT ANY UPPER TARGET
     FOR SUPER JACKPOT
 - After the one Super is collected, the rooftop closes and the VUK is relit.
+- After the Super Jackpot message has displayed for two seconds, SHOOT DAILY
+  BUGLE returns and remains the active reminder for the next-cycle lock.
 - If a ball is locked in the VUK before the Super is collected, that Super
   attempt is forfeited and a new five-phase cycle begins.
 - Locking another ball in the VUK resets the cycle success count and begins at

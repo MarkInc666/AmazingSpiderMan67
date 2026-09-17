@@ -207,6 +207,12 @@ player_vars:
   custom_bonus_display_total:
     initial_value: 0
     value_type: int
+  bonus_final_display_total:
+    initial_value: 0
+    value_type: int
+  bonus_final_display_state:
+    initial_value: "normal"
+    value_type: str
   villain_summary_vuk_hold_active:
     initial_value: 0
     value_type: int

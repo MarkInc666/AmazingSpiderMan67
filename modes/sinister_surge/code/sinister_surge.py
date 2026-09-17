@@ -44,10 +44,11 @@ class SinisterSurge(Mode):
     Completing the active area lights Daily Bugle Jackpot at the VUK and opens the gate.
     Jackpot = 100K × (balls in play + cleared areas)
 
-    Complete A+B before collecting Jackpot to add-a-ball on Jackpot collect.
+    Complete A+B to add a ball whenever multiball is down to exactly 2 balls.
+    The qualification remains ready above 2 balls and is awarded on the drain
+    to 2. It resets after every added ball and may be earned repeatedly.
     Max 4 balls in play.
     10 second ball save when ball added.
-    A+B resets after each Jackpot.
 
     Saucers score 50K.
     If more than 1 ball is active, one saucer may hold one ball for 20s.
@@ -171,6 +172,7 @@ class SinisterSurge(Mode):
         self.rhino_berserk_seconds = 0
         self.goblin_attempt_active = False
         self.goblin_qualified_areas = set()
+        self.add_a_ball_award_pending = False
 
         self._reset_player_vars()
         self._reset_ab()
@@ -185,6 +187,7 @@ class SinisterSurge(Mode):
         self._release_held_saucer()
         self._cancel_stage_timers()
         self.delay.remove("sinister_surge_ab_complete_flash")
+        self.delay.remove("sinister_surge_two_ball_check")
 
         self.machine.events.post("sinister_surge_clear_all_sinister_surge_lights")
         self.machine.events.post("sinister_surge_close_upper_gate")
@@ -241,6 +244,7 @@ class SinisterSurge(Mode):
         self.add_mode_event_handler("s_saucer_1_active", self._saucer_1_hit)
         self.add_mode_event_handler("s_saucer_2_active", self._saucer_2_hit)
         self.add_mode_event_handler("s_saucer_3_active", self._saucer_3_hit)
+        self.add_mode_event_handler("balldevice_bd_trough_ball_enter", self._trough_ball_enter)
 
     def _reset_player_vars(self):
         self._set("active_mode_points", 0)
@@ -336,11 +340,14 @@ class SinisterSurge(Mode):
             )
         elif self.current_area == "electro":
             self._start_electro_attempt()
-        elif self.current_area == "goblin" and self.held_saucer is not None:
-            # Goblin's 10-second safe-time capture replaces the normal 20-second rest.
-            # Release a ball parked by the previous stage so the player can
-            # make a fresh saucer shot to begin the Goblin attempt.
-            self._release_held_saucer()
+        elif self.current_area == "goblin":
+            if self.held_saucer is not None:
+                # Goblin's 10-second safe-time capture replaces the normal
+                # 20-second rest. Release a previously parked ball first.
+                self._release_held_saucer()
+            # A saucer-release event asserts that pair off. Reassert the ready
+            # show afterward so all three Goblin saucers are visibly lit.
+            self.machine.events.post("sinister_surge_goblin_ready")
 
     def _area_instruction(self):
         instructions = {
@@ -452,10 +459,7 @@ class SinisterSurge(Mode):
         self._score(jackpot_value)
         self._add("sinister_surge_jackpots", 1)
 
-        if self._get("sinister_surge_ab_ready") == 1 and self._balls_in_play() < self.MAX_BALLS:
-            self.machine.events.post("sinister_surge_add_a_ball")
-
-        self._reset_ab()
+        self._try_award_add_a_ball()
         self.jackpot_ready = False
         self._set("sinister_surge_jackpot_ready", 0)
 
@@ -559,18 +563,13 @@ class SinisterSurge(Mode):
         self._check_ab()
 
     def _check_ab(self):
+        if self.add_a_ball_award_pending:
+            return
         if self._get("sinister_surge_ab_ready") == 1:
             return
         if self._get("sinister_surge_a_hit") and self._get("sinister_surge_b_hit"):
             self._set("sinister_surge_ab_ready", 1)
             self.machine.events.post("sinister_surge_ab_complete")
-            self.delay.remove("sinister_surge_ab_complete_flash")
-            self.delay.add(
-                name="sinister_surge_ab_complete_flash",
-                ms=self.AB_COMPLETE_FLASH_MS,
-                callback=self._show_ab_needed_lights,
-            )
-            
             if self.victory_laps:
                 self.super_jackpot_ready = True
                 value = (self.SUPER_JACKPOT_BASE * max(1, self._balls_in_play())) + self.case_file_bonus
@@ -584,6 +583,60 @@ class SinisterSurge(Mode):
                     mode_status_title="SUPER JACKPOT LIT",
                     mode_status_value=f"{value:,}",
                 )
+                return
+
+            if self._try_award_add_a_ball():
+                return
+
+            # Above two balls, keep A+B qualified until the multiball drains
+            # back to two. Restore the pulsing ready indication after the
+            # three-flash completion show.
+            self.delay.remove("sinister_surge_ab_complete_flash")
+            self.delay.add(
+                name="sinister_surge_ab_complete_flash",
+                ms=self.AB_COMPLETE_FLASH_MS,
+                callback=self._show_ab_needed_lights,
+            )
+
+    def _trough_ball_enter(self, **kwargs):
+        """Re-check a held A+B qualification after a multiball drain settles."""
+        del kwargs
+        if self.mode_exiting or self.victory_laps:
+            return
+        self.delay.reset(
+            name="sinister_surge_two_ball_check",
+            ms=300,
+            callback=self._try_award_add_a_ball,
+        )
+
+    def _try_award_add_a_ball(self):
+        if self.mode_exiting or self.victory_laps or self.add_a_ball_award_pending:
+            return False
+        if self._get("sinister_surge_ab_ready") != 1:
+            return False
+        if self._balls_in_play() != 2:
+            return False
+
+        self.add_a_ball_award_pending = True
+        self.machine.events.post("sinister_surge_add_a_ball")
+        self.machine.events.post(
+            "show_mode_message",
+            message_mode_title="ADD-A-BALL",
+            message_mode_subtitle="A + B COMPLETE",
+        )
+        self.delay.remove("sinister_surge_ab_complete_flash")
+        self.delay.add(
+            name="sinister_surge_ab_complete_flash",
+            ms=self.AB_COMPLETE_FLASH_MS,
+            callback=self._finish_add_a_ball_award,
+        )
+        return True
+
+    def _finish_add_a_ball_award(self):
+        self.add_a_ball_award_pending = False
+        if self.mode_exiting:
+            return
+        self._reset_ab()
 
     def _reset_ab(self):
         self.delay.remove("sinister_surge_ab_complete_flash")
@@ -775,10 +828,7 @@ class SinisterSurge(Mode):
         self._set("sinister_surge_hits_still_needed", 0)
         self.machine.events.post("sinister_surge_rhino_lights_clear")
 
-        if self._get("sinister_surge_ab_ready") == 1 and self._balls_in_play() < self.MAX_BALLS:
-            self.machine.events.post("sinister_surge_add_a_ball")
-
-        self._reset_ab()
+        self._try_award_add_a_ball()
         self.jackpot_ready = False
         self._set("sinister_surge_jackpot_ready", 0)
         self.machine.events.post("sinister_surge_area_complete", area="rhino")

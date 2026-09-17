@@ -59,7 +59,8 @@ class Bonus(MpfBonus):
     MODE_PAGE_DELAY_MS = 1100
     MODE_STEP_MS = 850
     HELD_BONUS_DISPLAY_MS = 1100
-    FINAL_SCORE_HOLD_MS = 2500
+    FINAL_TOTAL_MOVE_MS = 1000
+    FINAL_TOTAL_HOLD_MS = 2000
     FINAL_WIZARD_END_HOLD_MS = 5000
 
     def mode_start(self, **kwargs):
@@ -77,6 +78,7 @@ class Bonus(MpfBonus):
 
         self._bonus_running = True
         self._bonus_hurry_up = False
+        self._bonus_final_animation_active = False
         self._pending_bonus_delay = None
 
         # The stock MPF Bonus mode normally installs this handler. ASM67 owns
@@ -120,6 +122,8 @@ class Bonus(MpfBonus):
         # Prevent delayed bonus callbacks from updating the slide after the
         # mode has begun stopping.
         self._bonus_running = False
+        self._bonus_final_animation_active = False
+        self.machine.events.post("asm_bonus_final_total_hide")
         Mode.mode_stop(self, **kwargs)
 
     def _sequence_available(self):
@@ -141,6 +145,10 @@ class Bonus(MpfBonus):
         """Speed the current and remaining bonus steps with both flippers."""
         del kwargs
         if not self._sequence_available():
+            return
+        # The final total always gets its full one-second move and two-second
+        # center hold, even if the rest of Bonus has been hurried up.
+        if self._bonus_final_animation_active:
             return
         self._bonus_hurry_up = True
         if self._pending_bonus_delay:
@@ -487,12 +495,28 @@ class Bonus(MpfBonus):
     def _show_final_total(self):
         if not self._sequence_available():
             return
-        # The lower panel already holds the final BONUS TOTAL. End the center
-        # sequence with a clean completion message instead of repeating it.
-        self._show_bonus_entry("bonus_title", "BONUS COMPLETE", "")
-        self._schedule_bonus_step(
+        # Replace the slide's lower copy with an overlay at the exact same
+        # position. The overlay moves to screen center over one second and
+        # then holds there for two seconds.
+        self._player["bonus_final_display_total"] = self._final_total
+        self._player["bonus_final_display_state"] = (
+            "held" if self._running_total_held else "normal"
+        )
+        self.machine.events.post(
+            "bonus_entry",
+            entry="final_total",
+            text="",
+            score="",
+            running_total=self._final_total,
+            total_state="hidden",
+            player_number=self._player.number,
+        )
+        self.machine.events.post("asm_bonus_final_total_show")
+        self._bonus_final_animation_active = True
+        self._pending_bonus_delay = None
+        self.delay.add(
             name="asm_bonus_finish",
-            ms=self.FINAL_SCORE_HOLD_MS,
+            ms=self.FINAL_TOTAL_MOVE_MS + self.FINAL_TOTAL_HOLD_MS,
             callback=self._finish_bonus,
         )
 
@@ -549,6 +573,9 @@ class Bonus(MpfBonus):
     def _finish_bonus(self):
         if not self._sequence_available():
             return
+
+        self._bonus_final_animation_active = False
+        self.machine.events.post("asm_bonus_final_total_hide")
 
         try:
             final_wizard_completed = int(self._player["final_wizard_completed"] or 0) == 1
