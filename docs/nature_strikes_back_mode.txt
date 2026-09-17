@@ -1,0 +1,63 @@
+NATURE STRIKES BACK — CHAPTER 8 MINI-WIZARD
+
+STATUS
+- Implemented from the September 17 design pass.
+- Three-ball multiball. The wizard repeats cycles until multiball ends.
+- Chapter 8 Case Files do not provide helper powers in the wizard. The chapter
+  Case File total contributes +20K per collected Case File to wizard Jackpot
+  awards only, via mini_wizard_case_file_bonus.
+
+CYCLE 1 — BUILD THE CHARGE
+- Rooftop gate is open.
+- Lower/main spinner and upper spinner both count.
+- Spin requirement: cycle 1 = 10, cycle 2 = 15, cycle 3 = 20, cycle 4+ = 25.
+- Every qualifying spin scores 100K flat; Case File bonus is NOT added to spins.
+- During this stage only, each upper target lights its matching saucer:
+  left -> saucer 1, center -> saucer 2, right -> saucer 3.
+- Hitting any lit saucer clears all three saucer qualifications.
+- If fewer than 5 balls are in play, the lit saucer awards Add-a-Ball.
+- At 5 balls, the lit saucer scores 3M instead.
+- The qualification can be earned again during Stage 1 by hitting upper targets.
+
+CYCLE 2 — KILL THE SNOWMAN
+- Rooftop gate closes.
+- The stored electrical charge is discharged through both web targets.
+- First unique web target: 500K + Chapter 8 Case File bonus.
+- Second unique web target: 1M + Chapter 8 Case File bonus.
+- The second web hit explodes Snowman and freezes the city.
+
+CYCLE 3 — THAW THE CITY / BLOTTO
+- Rooftop gate remains closed.
+- Reuse the established six-zone map from Fifth Dimension Curse / other zone modes:
+  upper left, upper right, middle left, middle right, lower left, lower right.
+- All six zones start frozen. Every zone must be thawed once.
+- First valid hit in a frozen zone scores 250K + Chapter 8 Case File bonus.
+- Zone visual states:
+  frozen = cyan pulse
+  Blotto-blocked = purple pulse
+  unfrozen/warm = solid warm yellow
+- Blotto blocks one zone at a time. The old block is released when a new block is made.
+- Blotto cadence: cycle 1 = 16s, cycle 2 = 14s, cycle 3+ = 12s minimum.
+- A blocked zone cannot be thawed.
+- Star rollover clears the current Blotto block and resets the full Blotto timer.
+
+CYCLE 4 — STABILIZE / SUPER
+- When all six zones are warm, Blotto stops and the rooftop gate opens.
+- Gate stays open while the Daily Bugle VUK Super is available.
+- VUK Super = 3M + Chapter 8 Case File bonus.
+- Collecting the Super ejects the VUK ball and begins the next cycle.
+
+SAUCER PARKING
+- All three saucers can park balls during every stage whether or not they are lit.
+- Maximum hold = 20 seconds.
+- Only one loose/active ball is required on the playfield; all other balls may be parked.
+- If parking would leave zero loose balls, release one parked saucer immediately.
+- The mode continuously guards this condition so a drain while balls are parked cannot
+  leave the playfield with no playable ball.
+
+LIGHTING
+- Build Charge: lower spinner + rooftop upper-spinner GI cue pulse.
+- Snowman: both web inserts pulse; each collected web becomes solid.
+- Thaw City: six zones use cyan pulse / purple pulse / warm yellow solid.
+- Star pulses during Blotto stage.
+- Stable City: all six zones warm yellow and shared final VUK chase runs.

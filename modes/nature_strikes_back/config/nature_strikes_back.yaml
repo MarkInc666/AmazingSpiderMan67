@@ -1,9 +1,5 @@
 #config_version=6
 
-# Nature Strikes Back placeholder mini-wizard.
-# Frozen / Monster Oddities mini-wizard multiball.
-# Temporary flow: intro -> 2-ball multiball -> MB end -> summary -> next chapter.
-
 mode:
   start_events: start_mode_nature_strikes_back
   stop_events:
@@ -16,20 +12,33 @@ mode:
 
 multiballs:
   nature_strikes_back_multiball:
-    ball_count: 2
+    ball_count: 3
     ball_count_type: total
-    shoot_again: 15s
+    shoot_again: 20s
     start_events: nature_strikes_back_start_multiball
     stop_events:
       - stop_mode_nature_strikes_back
+
+  nature_strikes_back_add_a_ball:
+    ball_count: 1
+    ball_count_type: add
+    shoot_again: 10s
+    start_events: nature_strikes_back_add_a_ball
 
 variable_player:
   multiball_nature_strikes_back_multiball_started:
     multiball_autoplunge_active:
       action: set
       int: 1
-
   multiball_nature_strikes_back_multiball_ended:
+    multiball_autoplunge_active:
+      action: set
+      int: 0
+  multiball_nature_strikes_back_add_a_ball_started:
+    multiball_autoplunge_active:
+      action: set
+      int: 1
+  multiball_nature_strikes_back_add_a_ball_ended:
     multiball_autoplunge_active:
       action: set
       int: 0
@@ -38,73 +47,324 @@ widget_player:
   mode_nature_strikes_back_started:
     nature_strikes_back:
       action: play
-
   nature_strikes_back_mode_complete:
     nature_strikes_back:
       action: remove
-
   mode_nature_strikes_back_stopping:
     nature_strikes_back:
       action: remove
 
-  stop_mode_nature_strikes_back:
-    nature_strikes_back:
-      action: remove
-
+# Keep completed drop banks playable during the wizard.
 event_player:
-  s_pop_left_active: nature_strikes_back_shot_hit
-  s_pop_right_active: nature_strikes_back_shot_hit
-  s_trispinner_opto_active: nature_strikes_back_shot_hit
-  s_web_spinner_active: nature_strikes_back_shot_hit
-  s_star_rollover_active: nature_strikes_back_shot_hit
-  s_upper_target_left_active: nature_strikes_back_shot_hit
-  s_upper_target_center_active: nature_strikes_back_shot_hit
-  s_upper_target_right_active: nature_strikes_back_shot_hit
-  s_left_drops_1_active: nature_strikes_back_shot_hit
-  s_left_drops_2_active: nature_strikes_back_shot_hit
-  s_left_drops_3_active: nature_strikes_back_shot_hit
-  s_right_drops_1_active: nature_strikes_back_shot_hit
-  s_right_drops_2_active: nature_strikes_back_shot_hit
-  s_right_drops_3_active: nature_strikes_back_shot_hit
-  s_right_drops_4_active: nature_strikes_back_shot_hit
-  s_right_drops_5_active: nature_strikes_back_shot_hit
-  s_saucer_1_active:
-    nature_strikes_back_shot_hit:
-    delayed_kickout_saucer_1:
-  s_saucer_2_active:
-    nature_strikes_back_shot_hit:
-    delayed_kickout_saucer_2:
-  s_saucer_3_active:
-    nature_strikes_back_shot_hit:
-    delayed_kickout_saucer_3:
-  s_vuk_switch_active:
-    - nature_strikes_back_shot_hit
-    - request_vuk_eject
-
-  multiball_nature_strikes_back_multiball_ended: nature_strikes_back_complete_request
-
   mode_nature_strikes_back_started:
     - disable_daily_bugle_mystery
     - clear_saucers_delayed
     - drop_target_bank_dt_bank_left_reset
     - drop_target_bank_dt_bank_right_reset
-
   mode_nature_strikes_back_stopping:
     - enable_daily_bugle_mystery
     - daily_bugle_restore_state
     - clear_saucers_delayed
-
-  # Keep mini-wizard drop banks playable after they are completed.
   drop_target_bank_dt_bank_left_down: drop_target_bank_dt_bank_left_reset
   drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset
 
+show_player:
+  nature_strikes_back_stage_charge:
+    nature_charge_spinner_pulse: {loops: -1}
+    nature_left_web_pulse: {action: stop}
+    nature_center_web_pulse: {action: stop}
+    nature_star_pulse: {action: stop}
+    shared_final_vuk_chase: {action: stop}
+  nature_strikes_back_stage_snowman:
+    nature_charge_spinner_pulse: {action: stop}
+    nature_left_web_pulse: {loops: -1}
+    nature_center_web_pulse: {loops: -1}
+    nature_star_pulse: {action: stop}
+    shared_final_vuk_chase: {action: stop}
+  nature_strikes_back_stage_thaw:
+    nature_charge_spinner_pulse: {action: stop}
+    nature_left_web_pulse: {action: stop}
+    nature_center_web_pulse: {action: stop}
+    nature_star_pulse: {loops: -1}
+    shared_final_vuk_chase: {action: stop}
+  nature_strikes_back_stage_stable:
+    nature_charge_spinner_pulse: {action: stop}
+    nature_left_web_pulse: {action: stop}
+    nature_center_web_pulse: {action: stop}
+    nature_star_pulse: {action: stop}
+    shared_final_vuk_chase: {loops: -1}
+
+  nature_strikes_back_web_left_collected:
+    nature_left_web_pulse: {action: stop}
+  nature_strikes_back_web_center_collected:
+    nature_center_web_pulse: {action: stop}
+
+  nature_strikes_back_zone_upper_left_frozen: &zone_frozen_ul
+    nature_zone_upper_left_purple: {action: stop}
+    nature_zone_upper_left_cyan: {loops: -1}
+  nature_strikes_back_zone_upper_left_blocked:
+    nature_zone_upper_left_cyan: {action: stop}
+    nature_zone_upper_left_purple: {loops: -1}
+  nature_strikes_back_zone_upper_left_warm:
+    nature_zone_upper_left_cyan: {action: stop}
+    nature_zone_upper_left_purple: {action: stop}
+
+  nature_strikes_back_zone_upper_right_frozen:
+    nature_zone_upper_right_purple: {action: stop}
+    nature_zone_upper_right_cyan: {loops: -1}
+  nature_strikes_back_zone_upper_right_blocked:
+    nature_zone_upper_right_cyan: {action: stop}
+    nature_zone_upper_right_purple: {loops: -1}
+  nature_strikes_back_zone_upper_right_warm:
+    nature_zone_upper_right_cyan: {action: stop}
+    nature_zone_upper_right_purple: {action: stop}
+
+  nature_strikes_back_zone_middle_left_frozen:
+    nature_zone_middle_left_purple: {action: stop}
+    nature_zone_middle_left_cyan: {loops: -1}
+  nature_strikes_back_zone_middle_left_blocked:
+    nature_zone_middle_left_cyan: {action: stop}
+    nature_zone_middle_left_purple: {loops: -1}
+  nature_strikes_back_zone_middle_left_warm:
+    nature_zone_middle_left_cyan: {action: stop}
+    nature_zone_middle_left_purple: {action: stop}
+
+  nature_strikes_back_zone_middle_right_frozen:
+    nature_zone_middle_right_purple: {action: stop}
+    nature_zone_middle_right_cyan: {loops: -1}
+  nature_strikes_back_zone_middle_right_blocked:
+    nature_zone_middle_right_cyan: {action: stop}
+    nature_zone_middle_right_purple: {loops: -1}
+  nature_strikes_back_zone_middle_right_warm:
+    nature_zone_middle_right_cyan: {action: stop}
+    nature_zone_middle_right_purple: {action: stop}
+
+  nature_strikes_back_zone_lower_left_frozen:
+    nature_zone_lower_left_purple: {action: stop}
+    nature_zone_lower_left_cyan: {loops: -1}
+  nature_strikes_back_zone_lower_left_blocked:
+    nature_zone_lower_left_cyan: {action: stop}
+    nature_zone_lower_left_purple: {loops: -1}
+  nature_strikes_back_zone_lower_left_warm:
+    nature_zone_lower_left_cyan: {action: stop}
+    nature_zone_lower_left_purple: {action: stop}
+
+  nature_strikes_back_zone_lower_right_frozen:
+    nature_zone_lower_right_purple: {action: stop}
+    nature_zone_lower_right_cyan: {loops: -1}
+  nature_strikes_back_zone_lower_right_blocked:
+    nature_zone_lower_right_cyan: {action: stop}
+    nature_zone_lower_right_purple: {loops: -1}
+  nature_strikes_back_zone_lower_right_warm:
+    nature_zone_lower_right_cyan: {action: stop}
+    nature_zone_lower_right_purple: {action: stop}
+
+  mode_nature_strikes_back_stopping:
+    nature_charge_spinner_pulse: {action: stop}
+    nature_left_web_pulse: {action: stop}
+    nature_center_web_pulse: {action: stop}
+    nature_star_pulse: {action: stop}
+    shared_final_vuk_chase: {action: stop}
+    nature_saucer_1_pulse: {action: stop}
+    nature_saucer_2_pulse: {action: stop}
+    nature_saucer_3_pulse: {action: stop}
+    nature_zone_upper_left_cyan: {action: stop}
+    nature_zone_upper_left_purple: {action: stop}
+    nature_zone_upper_right_cyan: {action: stop}
+    nature_zone_upper_right_purple: {action: stop}
+    nature_zone_middle_left_cyan: {action: stop}
+    nature_zone_middle_left_purple: {action: stop}
+    nature_zone_middle_right_cyan: {action: stop}
+    nature_zone_middle_right_purple: {action: stop}
+    nature_zone_lower_left_cyan: {action: stop}
+    nature_zone_lower_left_purple: {action: stop}
+    nature_zone_lower_right_cyan: {action: stop}
+    nature_zone_lower_right_purple: {action: stop}
+
+  nature_strikes_back_saucer_1_lit:
+    nature_saucer_1_pulse: {loops: -1}
+  nature_strikes_back_saucer_2_lit:
+    nature_saucer_2_pulse: {loops: -1}
+  nature_strikes_back_saucer_3_lit:
+    nature_saucer_3_pulse: {loops: -1}
+  nature_strikes_back_saucers_unlit:
+    nature_saucer_1_pulse: {action: stop}
+    nature_saucer_2_pulse: {action: stop}
+    nature_saucer_3_pulse: {action: stop}
+
 light_player:
-  # Full-playfield GI theme while this mode is active.
   mode_nature_strikes_back_started:
-    gi: 60C040
+    gi: 303040
+
+  nature_strikes_back_stage_charge:
+    gi: 303040
+    l_left_web_target: off
+    l_mid_web_target: off
+    l_star: off
+  nature_strikes_back_stage_snowman:
+    l_left_web_target: 404040
+    l_mid_web_target: 404040
+    l_star: off
+  nature_strikes_back_stage_thaw:
+    l_left_web_target: off
+    l_mid_web_target: off
+  nature_strikes_back_stage_stable:
+    l_star: off
+
+  nature_strikes_back_saucers_unlit:
+    l_1: off
+    l_2: off
+    l_3: off
+  nature_strikes_back_saucer_1_parked:
+    l_1: 404040
+  nature_strikes_back_saucer_2_parked:
+    l_2: 404040
+  nature_strikes_back_saucer_3_parked:
+    l_3: 404040
+  nature_strikes_back_saucer_1_released:
+    l_1: off
+  nature_strikes_back_saucer_2_released:
+    l_2: off
+  nature_strikes_back_saucer_3_released:
+    l_3: off
+
+  nature_strikes_back_web_left_collected:
+    l_left_web_target: FFFFFF
+  nature_strikes_back_web_center_collected:
+    l_mid_web_target: FFFFFF
+
+  nature_strikes_back_zone_upper_left_warm:
+    swami_area_upper_left: F0D040
+  nature_strikes_back_zone_upper_right_warm:
+    swami_area_upper_right: F0D040
+  nature_strikes_back_zone_middle_left_warm:
+    swami_area_middle_left: F0D040
+  nature_strikes_back_zone_middle_right_warm:
+    swami_area_middle_right: F0D040
+  nature_strikes_back_zone_lower_left_warm:
+    swami_area_lower_left: F0D040
+  nature_strikes_back_zone_lower_right_warm:
+    swami_area_lower_right: F0D040
 
   mode_nature_strikes_back_stopping:
     gi: E0E0E0
+    l_1: off
+    l_2: off
+    l_3: off
+    l_left_web_target: off
+    l_mid_web_target: off
+    l_star: off
+
+shows:
+  nature_charge_spinner_pulse:
+    - duration: 400ms
+      lights:
+        l_spinner: FFFFFF
+        l_gi_a: FFFFFF
+    - duration: 400ms
+      lights:
+        l_spinner: 404040
+        l_gi_a: 404040
+
+  nature_left_web_pulse:
+    - duration: 500ms
+      lights: {l_left_web_target: FFFFFF}
+    - duration: 500ms
+      lights: {l_left_web_target: 404040}
+
+  nature_center_web_pulse:
+    - duration: 500ms
+      lights: {l_mid_web_target: FFFFFF}
+    - duration: 500ms
+      lights: {l_mid_web_target: 404040}
+
+  nature_star_pulse:
+    - duration: 500ms
+      lights: {l_star: FFFFFF}
+    - duration: 500ms
+      lights: {l_star: 404040}
+
+  nature_saucer_1_pulse:
+    - duration: 400ms
+      lights: {l_1: FFFFFF}
+    - duration: 400ms
+      lights: {l_1: 404040}
+  nature_saucer_2_pulse:
+    - duration: 400ms
+      lights: {l_2: FFFFFF}
+    - duration: 400ms
+      lights: {l_2: 404040}
+  nature_saucer_3_pulse:
+    - duration: 400ms
+      lights: {l_3: FFFFFF}
+    - duration: 400ms
+      lights: {l_3: 404040}
+
+  nature_zone_upper_left_cyan: &cyan_ul
+    - duration: 500ms
+      lights: {swami_area_upper_left: 40E0FF}
+    - duration: 500ms
+      lights: {swami_area_upper_left: 104050}
+  nature_zone_upper_left_purple:
+    - duration: 500ms
+      lights: {swami_area_upper_left: B040FF}
+    - duration: 500ms
+      lights: {swami_area_upper_left: 301040}
+
+  nature_zone_upper_right_cyan:
+    - duration: 500ms
+      lights: {swami_area_upper_right: 40E0FF}
+    - duration: 500ms
+      lights: {swami_area_upper_right: 104050}
+  nature_zone_upper_right_purple:
+    - duration: 500ms
+      lights: {swami_area_upper_right: B040FF}
+    - duration: 500ms
+      lights: {swami_area_upper_right: 301040}
+
+  nature_zone_middle_left_cyan:
+    - duration: 500ms
+      lights: {swami_area_middle_left: 40E0FF}
+    - duration: 500ms
+      lights: {swami_area_middle_left: 104050}
+  nature_zone_middle_left_purple:
+    - duration: 500ms
+      lights: {swami_area_middle_left: B040FF}
+    - duration: 500ms
+      lights: {swami_area_middle_left: 301040}
+
+  nature_zone_middle_right_cyan:
+    - duration: 500ms
+      lights: {swami_area_middle_right: 40E0FF}
+    - duration: 500ms
+      lights: {swami_area_middle_right: 104050}
+  nature_zone_middle_right_purple:
+    - duration: 500ms
+      lights: {swami_area_middle_right: B040FF}
+    - duration: 500ms
+      lights: {swami_area_middle_right: 301040}
+
+  nature_zone_lower_left_cyan:
+    - duration: 500ms
+      lights: {swami_area_lower_left: 40E0FF}
+    - duration: 500ms
+      lights: {swami_area_lower_left: 104050}
+  nature_zone_lower_left_purple:
+    - duration: 500ms
+      lights: {swami_area_lower_left: B040FF}
+    - duration: 500ms
+      lights: {swami_area_lower_left: 301040}
+
+  nature_zone_lower_right_cyan:
+    - duration: 500ms
+      lights: {swami_area_lower_right: 40E0FF}
+    - duration: 500ms
+      lights: {swami_area_lower_right: 104050}
+  nature_zone_lower_right_purple:
+    - duration: 500ms
+      lights: {swami_area_lower_right: B040FF}
+    - duration: 500ms
+      lights: {swami_area_lower_right: 301040}
 
 sound_player:
   play_mode_jackpot:
