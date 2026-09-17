@@ -5,7 +5,8 @@
 - The mode begins at Rage 0. Each pop hit advances exactly one Rage level, so five pops reach Berserk.
 - Every other configured Rhino Smash switch adds the current Rage amount to the pending jackpot.
 - A/B rollover lamps are revealed cumulatively as Rage rises: upper A at Rage 2, upper B at Rage 3, middle A at Rage 4, and middle B at Rage 5.
-- All four A/B rollover switches remain configured as jackpot collect switches.
+- A rollover can collect the jackpot only after its matching Rage threshold is
+  reached. Unlit A/B switches do not collect it.
 - Each collected jackpot resets to the Build Rage state (Rage 0) and starts the next jackpot at its new base value.
 - Five jackpots complete the mode; More Jackpots adds a sixth cycle.
 

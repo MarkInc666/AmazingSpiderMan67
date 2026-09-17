@@ -76,6 +76,17 @@ class Bonus(MpfBonus):
             return
 
         self._bonus_running = True
+        self._bonus_hurry_up = False
+        self._pending_bonus_delay = None
+
+        # The stock MPF Bonus mode normally installs this handler. ASM67 owns
+        # the bonus sequence, so install the same two-flipper speed-up hook
+        # here and apply it to the custom delay chain below.
+        if self.settings["hurry_up_event"]:
+            self.add_mode_event_handler(
+                self.settings["hurry_up_event"],
+                self._hurry_up_bonus,
+            )
 
         # Create the slide with fresh hidden-total tokens. Waiting for the first
         # bonus_entry update can briefly reuse the previous ball's HELD state.
@@ -99,7 +110,7 @@ class Bonus(MpfBonus):
 
         # Let other ball_ending handlers finish banking values before the
         # visible bonus count snapshots the player's bonus vars.
-        self.delay.add(
+        self._schedule_bonus_step(
             name="asm_bonus_begin_sequence",
             ms=100,
             callback=self._begin_bonus_sequence,
@@ -117,6 +128,23 @@ class Bonus(MpfBonus):
         if not self.machine.game:
             return False
         return getattr(self, "_player", None) is self.machine.game.player
+
+    def _schedule_bonus_step(self, name, ms, callback):
+        """Schedule one step, using the configured fast delay after cancel."""
+        self._pending_bonus_delay = name
+        effective_ms = ms
+        if self._bonus_hurry_up and ms > 0:
+            effective_ms = self.settings["hurry_up_delay_ms"]
+        self.delay.add(name=name, ms=effective_ms, callback=callback)
+
+    def _hurry_up_bonus(self, **kwargs):
+        """Speed the current and remaining bonus steps with both flippers."""
+        del kwargs
+        if not self._sequence_available():
+            return
+        self._bonus_hurry_up = True
+        if self._pending_bonus_delay:
+            self.delay.run_now(self._pending_bonus_delay)
 
     def _begin_bonus_sequence(self):
         if not self._sequence_available():
@@ -145,7 +173,7 @@ class Bonus(MpfBonus):
 
         self._show_bonus_entry("bonus_title", "BONUS", "")
 
-        self.delay.add(
+        self._schedule_bonus_step(
             name="asm_bonus_start_regular",
             ms=self.INTRO_DELAY_MS,
             callback=self._start_regular_or_mode_bonus,
@@ -178,7 +206,7 @@ class Bonus(MpfBonus):
         self._relight_lit_bonus_buckets()
         self._show_bonus_entry("bonus_title", "BONUS", "")
 
-        self.delay.add(
+        self._schedule_bonus_step(
             name="asm_bonus_first_bucket",
             ms=self.BUCKET_STEP_MS,
             callback=self._count_next_bonus_bucket,
@@ -208,7 +236,7 @@ class Bonus(MpfBonus):
         self._set_bonus_light(light_name, False)
 
         self._bucket_index += 1
-        self.delay.add(
+        self._schedule_bonus_step(
             name="asm_bonus_next_bucket",
             ms=self.BUCKET_STEP_MS,
             callback=self._count_next_bonus_bucket,
@@ -220,13 +248,13 @@ class Bonus(MpfBonus):
         self._turn_off_all_bonus_bucket_lights()
         self._next_multiplier = 2
         if self._bonus_multiplier >= 2 and self._regular_subtotal > 0:
-            self.delay.add(
+            self._schedule_bonus_step(
                 name="asm_bonus_first_multiplier",
                 ms=self.MULTIPLIER_STEP_MS,
                 callback=self._count_next_multiplier,
             )
             return
-        self.delay.add(
+        self._schedule_bonus_step(
             name="asm_bonus_finish_regular",
             ms=self.MODE_PAGE_DELAY_MS,
             callback=self._finish_regular_bonus,
@@ -236,7 +264,7 @@ class Bonus(MpfBonus):
         if not self._sequence_available():
             return
         if self._next_multiplier > self._bonus_multiplier:
-            self.delay.add(
+            self._schedule_bonus_step(
                 name="asm_bonus_finish_regular",
                 ms=self.MODE_PAGE_DELAY_MS,
                 callback=self._finish_regular_bonus,
@@ -263,13 +291,13 @@ class Bonus(MpfBonus):
         self._set_bonus_light(self.MULTIPLIER_LIGHTS[multiplier], False)
         self._next_multiplier += 1
         if self._next_multiplier > self._bonus_multiplier:
-            self.delay.add(
+            self._schedule_bonus_step(
                 name="asm_bonus_finish_regular",
                 ms=self.MODE_PAGE_DELAY_MS,
                 callback=self._finish_regular_bonus,
             )
             return
-        self.delay.add(
+        self._schedule_bonus_step(
             name="asm_bonus_next_multiplier",
             ms=self.MULTIPLIER_STEP_MS,
             callback=self._count_next_multiplier,
@@ -279,7 +307,7 @@ class Bonus(MpfBonus):
         if not self._sequence_available():
             return
         self._turn_off_all_bonus_lights()
-        self.delay.add(
+        self._schedule_bonus_step(
             name="asm_bonus_start_mode_page",
             ms=0,
             callback=self._start_mode_bonus_page,
@@ -292,7 +320,7 @@ class Bonus(MpfBonus):
         self._mode_index = 0
 
         if not self._mode_entries:
-            self.delay.add(
+            self._schedule_bonus_step(
                 name="asm_bonus_finalize_no_modes",
                 ms=self.MODE_PAGE_DELAY_MS,
                 callback=self._handle_hold_bonus,
@@ -300,7 +328,7 @@ class Bonus(MpfBonus):
             return
 
         self._show_bonus_entry("mode_title", "MODE BONUS", "")
-        self.delay.add(
+        self._schedule_bonus_step(
             name="asm_bonus_first_mode_entry",
             ms=self.MODE_PAGE_DELAY_MS,
             callback=self._count_next_mode_entry,
@@ -322,7 +350,7 @@ class Bonus(MpfBonus):
         if not self._sequence_available():
             return
         if self._mode_index >= len(self._mode_entries):
-            self.delay.add(
+            self._schedule_bonus_step(
                 name="asm_bonus_finalize",
                 ms=self.MODE_PAGE_DELAY_MS,
                 callback=self._handle_hold_bonus,
@@ -346,7 +374,7 @@ class Bonus(MpfBonus):
             self._player[var_name] = 0
 
         self._mode_index += 1
-        self.delay.add(
+        self._schedule_bonus_step(
             name="asm_bonus_next_mode_entry",
             ms=self.MODE_STEP_MS,
             callback=self._count_next_mode_entry,
@@ -386,7 +414,7 @@ class Bonus(MpfBonus):
         self._player["hold_bonus"] = 0
         self._reset_regular_bonus_state()
 
-        self.delay.add(
+        self._schedule_bonus_step(
             name="asm_bonus_start_held_awards",
             ms=self.HELD_BONUS_DISPLAY_MS if current_bonus_was_held else 0,
             callback=self._count_next_held_bonus,
@@ -409,7 +437,7 @@ class Bonus(MpfBonus):
             source=source,
         )
         self._held_bonus_index += 1
-        self.delay.add(
+        self._schedule_bonus_step(
             name="asm_bonus_next_held_award",
             ms=self.HELD_BONUS_DISPLAY_MS,
             callback=self._count_next_held_bonus,
@@ -438,7 +466,7 @@ class Bonus(MpfBonus):
             )
             self._player["final_wizard_remaining_balls"] = 0
             self._player["final_wizard_remaining_ball_bonus"] = 0
-            self.delay.add(
+            self._schedule_bonus_step(
                 name="asm_bonus_after_remaining_balls",
                 ms=self.MODE_STEP_MS,
                 callback=self._finalize_bonus_total,
@@ -459,8 +487,10 @@ class Bonus(MpfBonus):
     def _show_final_total(self):
         if not self._sequence_available():
             return
-        self._show_bonus_entry("final_score_hold", "TOTAL BONUS", self._final_total)
-        self.delay.add(
+        # The lower panel already holds the final BONUS TOTAL. End the center
+        # sequence with a clean completion message instead of repeating it.
+        self._show_bonus_entry("bonus_title", "BONUS COMPLETE", "")
+        self._schedule_bonus_step(
             name="asm_bonus_finish",
             ms=self.FINAL_SCORE_HOLD_MS,
             callback=self._finish_bonus,

@@ -39,6 +39,7 @@ class Centaur(CaseFileMixin, Mode):
     MORE_TIME_FINAL_TIMER_SECONDS = 12
     SECOND_CHANCE_GATE_SECONDS = 12
     RESULT_HOLD_MS = 1500
+    FINAL_MESSAGE_MS = 2000
     VUK_EJECT_MS = 1000
 
     LEFT_DROPS = ("left_1", "left_2", "left_3")
@@ -138,6 +139,7 @@ class Centaur(CaseFileMixin, Mode):
         self.delay.remove("centaur_final_timer_tick")
         self.delay.remove("centaur_second_chance_start")
         self.delay.remove("centaur_second_gate_tick")
+        self.delay.remove("centaur_final_message")
         if self.post_hold_active:
             self.machine.events.post("timer_timer_up_post_hold_complete")
         self.machine.events.post("centaur_clear_all_lights")
@@ -484,7 +486,7 @@ class Centaur(CaseFileMixin, Mode):
             self._sync_vars()
             return
 
-        self._finish_from_results()
+        self._hold_final_message()
 
     def _start_second_chance_gate(self):
         if self._done_or_summary() or self.phase != "second_pending":
@@ -535,7 +537,7 @@ class Centaur(CaseFileMixin, Mode):
             self._close_gate()
             self.machine.events.post("centaur_second_chance_gate_expired")
             self._show_mode_message("SECOND CHANCE LOST", "ROOF WINDOW EXPIRED")
-            self._finish_from_results()
+            self._hold_final_message()
             return
 
         self._schedule_second_gate_tick()
@@ -556,6 +558,18 @@ class Centaur(CaseFileMixin, Mode):
         else:
             self._fail_mode()
 
+    def _hold_final_message(self):
+        """Keep the terminal result visible before the summary replaces it."""
+        if self.mode_done or self.phase == "finishing":
+            return
+
+        self.phase = "finishing"
+        self.delay.add(
+            name="centaur_final_message",
+            ms=self.FINAL_MESSAGE_MS,
+            callback=self._finish_from_results,
+        )
+
     def _complete_mode(self, **kwargs):
         if self.mode_done:
             return
@@ -565,6 +579,7 @@ class Centaur(CaseFileMixin, Mode):
         self.delay.remove("centaur_final_timer_tick")
         self.delay.remove("centaur_second_chance_start")
         self.delay.remove("centaur_second_gate_tick")
+        self.delay.remove("centaur_final_message")
         self._close_gate()
         player = self.machine.game.player
         player["centaur_state"] = 2
@@ -580,6 +595,7 @@ class Centaur(CaseFileMixin, Mode):
         self.delay.remove("centaur_final_timer_tick")
         self.delay.remove("centaur_second_chance_start")
         self.delay.remove("centaur_second_gate_tick")
+        self.delay.remove("centaur_final_message")
         self._close_gate()
         player = self.machine.game.player
         player["centaur_state"] = 2

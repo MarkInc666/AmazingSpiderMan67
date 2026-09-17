@@ -40,10 +40,9 @@ class CustomBonus(Mode):
     def mode_stop(self, **kwargs):
         self.delay.remove("custom_bonus_takeover")
         self.delay.remove("custom_bonus_delay")
-        self.delay.remove("custom_bonus_display_update")
         if self.machine.game:
             self.machine.game.player["custom_bonus_vuk_hold_active"] = 0
-        self.machine.events.post("custom_bonus_slide_hide")
+        self.machine.events.post("custom_bonus_widget_hide")
         super().mode_stop(**kwargs)
 
     def collect_bonus(self, queue=None, **kwargs):
@@ -74,35 +73,18 @@ class CustomBonus(Mode):
             player["bonus_count"] = 0
             player["bonus_multiplier"] = 1
 
-        self.machine.events.post("custom_bonus_slide_show")
-        self.delay.reset(
-            name="custom_bonus_display_update",
-            ms=1,
-            callback=self._show_bonus_total,
-        )
+        player["custom_bonus_display_total"] = self.grand_total
+        self.machine.events.post("custom_bonus_widget_show")
         self.delay.reset(
             name="custom_bonus_delay",
             ms=self.CUSTOM_BONUS_PRESENTATION_MS,
             callback=self.finish_bonus,
         )
 
-    def _show_bonus_total(self):
-        if not self.machine.game:
-            return
-        self.machine.events.post(
-            "bonus_entry",
-            entry="final_score_hold",
-            text="BONUS TOTAL",
-            score=self.grand_total,
-            running_total=self.grand_total,
-            total_state="hidden",
-            player_number=self.machine.game.player.number,
-        )
-
     def finish_bonus(self):
         if not self.machine.game:
             return
         self.machine.game.player["custom_bonus_vuk_hold_active"] = 0
-        self.machine.events.post("custom_bonus_slide_hide")
+        self.machine.events.post("custom_bonus_widget_hide")
         self.machine.events.post("custom_bonus_complete")
         self.machine.events.post("request_vuk_eject")

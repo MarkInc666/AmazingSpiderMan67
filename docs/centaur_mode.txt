@@ -19,6 +19,8 @@ Approved gameplay
 - Right target 1 or 5 awards 50K consolation unless Shot Assist is active.
 - Each staged finale is one-shot: the first right rubber or outer target hit
   resolves that attempt. The timer may also expire without a result.
+- After the terminal finale result, its jackpot, consolation, or expiry message
+  remains on screen for two seconds before the villain summary begins.
 
 More Jackpots
 -------------

@@ -44,9 +44,15 @@ Award presentation
 - START NEXT VILLAIN, EXTRA BALL, and COLLECT BONUS transfer VUK ownership to
   their award handlers when the award is revealed at 3 seconds. The newspaper
   remains visible for the second 3-second phase. At 6 seconds the handler takes
-  over its presentation. Custom Bonus runs for 4 seconds; Extra Ball runs for
-  6 seconds. Each handler releases the ball through the shared checked VUK eject
-  service when its presentation is complete.
+  over its presentation. Custom Bonus uses a compact 1,000 x 750 center widget,
+  matching the Daily Bugle award footprint, with COLLECT BONUS above the centered
+  comma-separated amount. Its Godot z-index is 4090, above the Daily Bugle
+  widget's 4000 layer. The shared Villain Intro widget also uses z-index 4090 so
+  START NEXT VILLAIN takes over above the newspaper layer. Widget-player YAML
+  priority is intentionally omitted because MPF-GMC treats it as a mode-priority
+  offset, not an absolute visual layer. Custom Bonus runs for 4 seconds; Extra
+  Ball runs for 6 seconds. Each handler releases the ball through the shared
+  checked VUK eject service when its presentation is complete.
 - BONUS X is removed from the random award pool while the player's bonus
   multiplier is already at the 5X maximum.
 - VILLAIN READY can be awarded once per villain qualification cycle. When

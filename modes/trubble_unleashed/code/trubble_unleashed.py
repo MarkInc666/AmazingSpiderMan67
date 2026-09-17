@@ -380,7 +380,10 @@ class TrubbleUnleashed(Mode):
         self._schedule_centaur_tick()
 
     def _centaur_rubber_hit(self, **kwargs):
-        if self._inactive() or self.phase != "centaur" or not self.centaur_timer_active:
+        # The rubber becomes live as soon as the Centaur targets are staged.
+        # The pop-up post and its release timer protect the shot; they do not
+        # gate the award during multiball.
+        if self._inactive() or self.phase != "centaur" or not self.centaur_staged:
             return
         self.centaur_timer_active = False
         self.delay.remove("trubble_centaur_tick")
@@ -411,6 +414,8 @@ class TrubbleUnleashed(Mode):
             return
 
         self.right_down.add(target)
+        # Diana's staged drops are live immediately. The pop-up post protects
+        # the shot but does not gate scoring.
         if self.phase == "diana" and self.diana_staged and target in self.diana_targets:
             self._collect_diana(target)
             return

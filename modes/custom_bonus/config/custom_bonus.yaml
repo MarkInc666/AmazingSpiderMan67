@@ -9,12 +9,14 @@ mode:
   priority: 550
 
 
-slide_player:
-  custom_bonus_slide_show:
-    bonus:
+widget_player:
+  custom_bonus_widget_show:
+    custom_bonus:
       action: play
+      key: custom_bonus
 
-  custom_bonus_slide_hide:
-    bonus:
+  custom_bonus_widget_hide:
+    custom_bonus:
       action: remove
+      key: custom_bonus
     

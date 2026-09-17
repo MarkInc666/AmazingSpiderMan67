@@ -169,6 +169,7 @@ sound_player:
 mode_settings:
   display_delay_ms: 1000ms
   hurry_up_delay_ms: 50ms
+  hurry_up_event: flipper_cancel
   keep_multiplier: false
 
   # ASM67 uses custom bonus code rather than stock MPF bonus_entries:

@@ -81,8 +81,14 @@ show_player:
 
   spider_men_super_ready:
     spider_men_center_web_super_show: {loops: -1}
+    shared_center_web_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: FFFFFF
   spider_men_super_collected:
     spider_men_center_web_super_show: {action: stop}
+    shared_center_web_chase: {action: stop}
 
   spider_men_alignment_lights_off:
     spider_men_saucer_1_pulse_show: {action: stop}
@@ -101,6 +107,7 @@ show_player:
     spider_men_upper_a_pulse_show: {action: stop}
     spider_men_upper_b_pulse_show: {action: stop}
     spider_men_center_web_super_show: {action: stop}
+    shared_center_web_chase: {action: stop}
 
   mode_spider_men_stopping:
     spider_men_band_chase_show: {action: stop}
@@ -111,6 +118,7 @@ show_player:
     spider_men_upper_a_pulse_show: {action: stop}
     spider_men_upper_b_pulse_show: {action: stop}
     spider_men_center_web_super_show: {action: stop}
+    shared_center_web_chase: {action: stop}
 
 
 light_player:

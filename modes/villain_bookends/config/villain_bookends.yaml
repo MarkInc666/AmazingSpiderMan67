@@ -24,10 +24,12 @@ widget_player:
   villain_bookend_intro_show:
     villain_intro:
       action: play
+      key: villain_intro
 
   villain_bookend_intro_hide:
     villain_intro:
       action: remove
+      key: villain_intro
 
   villain_bookend_summary_show:
     villain_summary:

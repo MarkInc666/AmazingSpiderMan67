@@ -31,6 +31,13 @@ class RhinoBash(CaseFileMixin, Mode):
     POP_SCORE = 10000
     SMASH_SCORE = 25000
 
+    A_B_COLLECT_STAGES = {
+        "upper_a": 2,
+        "upper_b": 3,
+        "middle_a": 4,
+        "middle_b": 5,
+    }
+
     def _post_mode_jackpot_sfx_if_needed(
         self,
         guarded_display_event="",
@@ -89,7 +96,19 @@ class RhinoBash(CaseFileMixin, Mode):
         self.add_mode_event_handler("rhino_start", self.start_rh)
         self.add_mode_event_handler("rhino_pop_hit", self.pop_hit)
         self.add_mode_event_handler("rhino_smash_hit", self.smash_hit)
-        self.add_mode_event_handler("rhino_jackpot_collect_request", self.collect_jackpot)
+        for shot, required_stage in self.A_B_COLLECT_STAGES.items():
+            self.add_mode_event_handler(
+                f"rhino_jackpot_collect_{shot}",
+                self.collect_jackpot,
+                required_stage=required_stage,
+            )
+        # Retain the generic request for Shot Assist and diagnostic use, but
+        # require full Berserk qualification when no specific A/B is supplied.
+        self.add_mode_event_handler(
+            "rhino_jackpot_collect_request",
+            self.collect_jackpot,
+            required_stage=5,
+        )
 
         self.update_player_vars()
         self._show_message("RHINO BASH", "HIT POPS - BUILD RHINO'S RAGE", value=self.jackpot_value, reminder=True)
@@ -179,9 +198,11 @@ class RhinoBash(CaseFileMixin, Mode):
         self._show_message("JACKPOT BUILDS", f"+{self.add_value:,} FROM SMASH", value=self.jackpot_value)
         self.update_player_vars()
 
-    def collect_jackpot(self, **kwargs):
+    def collect_jackpot(self, required_stage=5, **kwargs):
         del kwargs
         if self.mode_done:
+            return
+        if self.rage_stage < int(required_stage):
             return
 
         self.stop_berserk()
@@ -202,7 +223,6 @@ class RhinoBash(CaseFileMixin, Mode):
 
         self._set_jackpot_for_cycle()
         self.reset_rage_cycle()
-        self.machine.events.post("rhino_ab_relight_after_jackpot")
         self.update_player_vars()
 
     def check_rage_stage(self):

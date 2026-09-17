@@ -12,9 +12,14 @@ Shared handling
   presentation. Ordinary awards eject after the 3-second blank + 3-second award
   name sequence. START NEXT VILLAIN, EXTRA BALL, and COLLECT BONUS transfer VUK
   ownership to their handlers at the 3-second reveal; the handler takes over the
-  display at 6 seconds and ejects when its own presentation completes.
+  display at 6 seconds and ejects when its own presentation completes. Collect
+  Bonus takes over with a compact center widget at z-index 4090 so it renders
+  above the Daily Bugle award widget at layer 4000.
 - Chapter mini-wizard start: villain progression holds the ball through the
   intro and releases it when the intro finishes or is skipped.
+- Villain Intro uses Godot z-index 4090, above the Daily Bugle award widget at
+  4000 and below the 4096 display-layer maximum. Its widget-player YAML does not
+  set priority because MPF-GMC interprets that value as a mode-priority offset.
 - A villain ending at the VUK posts villain_summary_hold_vuk_until_done.
   Villain Bookends keeps Daily Bugle disabled through the summary. Normally it
   releases the ball when the summary finishes or is skipped, then restores

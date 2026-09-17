@@ -34,6 +34,8 @@ Diana
 - Hitting any staged drop scores the Diana Jackpot and drops the remaining staged
   targets. The completed bank stays down until the next upper-playfield entry.
   Missing all 5 flips ends that Diana attempt.
+- Diana's staged drops are live immediately; scoring does not wait for the
+  pop-up post to drop.
 - Diana Jackpot = 1,000,000 + (Case Files x 20,000).
 - Right-bank GI pulses while Diana is active. Any standing Diana drop has its
   insert lit green.
@@ -46,8 +48,9 @@ Centaur
   targets 1 and 5 remain standing, and inserts 2,3,4 stay green to frame the
   rubber shot between the two standing targets.
 - Left upper exit raises the pop-up post. Pressing both flippers drops it early.
-- When the pop-up post drops, a large 5-second countdown starts.
-- Hit the right-bank rubber before time expires to collect the Centaur Jackpot
+- The staged right-bank rubber is live immediately, even while the pop-up post
+  is still raised. When the post drops, a large 5-second countdown starts.
+- Hit the right-bank rubber after staging and before the countdown expires to collect the Centaur Jackpot
   and drop the remaining right-bank targets. The bank stays down until the next
   upper-playfield entry.
 

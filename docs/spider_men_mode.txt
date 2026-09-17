@@ -74,7 +74,10 @@ height bands 1-8 as a continuous bottom-to-top chase. All bands use soft blue
 every 250ms, wrapping around at the ends, and then repeats.
 
 During the optional Super window, the six positions remain solid red, the
-soft-blue/pink band chase continues, and the center web flashes red.
+soft-blue/pink band chase continues, and the center web flashes red. A shared
+white approach chase also runs from Multibonus through Advance Multiplier and
+Special to the center-web insert. The approach chase stops immediately when
+the Super is collected, the window expires, or the mode stops.
 
 
 SUMMARY

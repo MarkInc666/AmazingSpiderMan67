@@ -18,12 +18,11 @@ Regular bonus lamps count once from low to high. If a multiplier is active, the
 copy of the base regular-bonus subtotal without replaying the regular lamps.
 
 Mode bonuses follow and add to the same running total. At the end of the
-current-ball sequence, the center panel displays:
+current-ball sequence, the center panel displays BONUS COMPLETE without a
+second copy of the total. The lower BONUS TOTAL panel remains visible during
+the existing final hold.
 
-TOTAL BONUS
-<current regular and mode bonus>
-
-A carried Held Bonus is deliberately excluded from BONUS TOTAL and TOTAL BONUS.
+A carried Held Bonus is deliberately excluded from BONUS TOTAL.
 It is presented afterward as a separate HELD BONUS and added directly to the
 player's score. This keeps a previous held value separate if the current bonus
 is held again.
@@ -38,13 +37,17 @@ If a carried Held Bonus also exists, the carried and newly earned values are
 shown and paid as separate HELD BONUS entries.
 
 The final total remains on screen for the existing 2.5-second hold.
+Pressing both flippers posts flipper_cancel and immediately advances the current
+bonus step. All remaining regular, multiplier, mode, held-bonus, and final-hold
+delays then use the configured 50ms hurry-up speed. The separate five-second
+Final Showdown retirement screen is not shortened.
 Machine testing remains required.
 
 
 FINAL SHOWDOWN RETIREMENT CASH-OUT
 ----------------------------------
 When a player completes Final Showdown, the current physical ball still drains and
-the normal end-of-ball Bonus sequence runs. Before TOTAL BONUS, the retiring player
+the normal end-of-ball Bonus sequence runs. Before BONUS COMPLETE, the retiring player
 receives BALLS REMAINING at 10,000,000 points for each future ball that is being
 forfeited: unused normal balls plus all earned extra balls still queued.
 
@@ -63,7 +66,7 @@ disables flippers/autofire as soon as Final Showdown multiball ends at one ball
 in play. The last physical ball drains into the normal Bonus sequence, where
 BALLS REMAINING awards 10,000,000 per unused normal or earned extra ball.
 
-After TOTAL BONUS, the retiring player receives a five-second full-screen ending:
+After BONUS COMPLETE, the retiring player receives a five-second full-screen ending:
 YOU'VE REACHED THE END / KINGPIN DEFEATED / FINAL SCORE. Bonus keeps its wait
 queue until this screen completes, so another player or attract cannot start
 underneath it.
