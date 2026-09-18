@@ -92,7 +92,11 @@ show_player:
     nature_left_web_pulse: {action: stop}
     nature_center_web_pulse: {action: stop}
     nature_star_pulse: {action: stop}
-    shared_final_vuk_chase: {loops: -1}
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 840
+      show_tokens:
+        color: F0D040
 
   nature_strikes_back_web_left_collected:
     nature_left_web_pulse: {action: stop}
