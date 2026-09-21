@@ -63,10 +63,17 @@ scoring uses the same Case File bonus path as normal play.
 
 Test-session flow
 -----------------
-Selected modes use their normal villain/wizard intro start event. Normal
-campaign qualification is bypassed. Test summaries are still shown. After a
-summary, the harness disables the flippers and autofire coils so any live ball
-drains. The test-session ball save protects only the last ball, preventing
+The attract machine flag is already armed before the test game posts its first
+ball_started event. Campaign-only background modes (villain qualification,
+villain saucer-start handling, Case File qualification, and Daily Bugle mystery)
+therefore do not start on the test-session ball. This prevents a normal chapter
+qualification state from appearing briefly before the selected test launches.
+
+Selected villains and wizards are not test-aware. The harness/progression layer
+sets up the disposable player state and then uses each mode's normal intro/start
+events. The gameplay mode runs the same code path it uses in a normal game.
+Test summaries are still shown. After a summary, the harness disables the
+flippers and autofire coils so any live ball drains. The test-session ball save protects only the last ball, preventing
 ball_ending and the end-of-ball bonus, then serves that ball back to the
 mechanical shooter lane without auto-plunging. TEST MODE SELECT reopens only
 after the replacement reaches the shooter lane. Multiball drains above one ball

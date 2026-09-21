@@ -2,7 +2,8 @@
 
 mode:
   code: case_files.CaseFiles
-  start_events: ball_started
+  start_events:
+    - ball_started{machine.test_mode_session_requested != 1}
   stop_events: ball_ending
   priority: 120
 

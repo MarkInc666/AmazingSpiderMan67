@@ -26,9 +26,8 @@ class MastermindTrap(Mode):
 
     MAX_BALLS = 4
     PARA_ATTEMPTS_REQUIRED = 3
-    PARA_JACKPOT = 300_000
+    PARA_JACKPOT = 500_000
     PARA_MATCH_MULTIPLIER = 3
-    ROOF_CENTER_TIMEOUT_MS = 6_000
 
     LIZARD_SERUM_POP_HITS = 2
     LIZARD_DELIVERIES_REQUIRED = 3
@@ -78,6 +77,8 @@ class MastermindTrap(Mode):
         self.para_upper_targets = set()
         self.staged_area = None
         self.staged_multiplier = 1
+        self.staged_target = None
+        self.staged_target_ready = False
 
         self.serum_hits = 0
         self.deliveries = 0
@@ -125,6 +126,8 @@ class MastermindTrap(Mode):
         self.add_mode_event_handler("s_upper_entrance_opto_active", self._upper_entry)
         self.add_mode_event_handler("s_upper_exit_left_opto_active", self._upper_exit, side="left")
         self.add_mode_event_handler("s_upper_exit_right_opto_active", self._upper_exit, side="right")
+        self.add_mode_event_handler("s_right_drops_top_rubber_active", self._middle_exit_inferred)
+        self.add_mode_event_handler("s_inlane_a_active", self._middle_exit_inferred)
         self.add_mode_event_handler("s_upper_target_left_active", self._upper_target, target="left")
         self.add_mode_event_handler("s_upper_target_center_active", self._upper_target, target="center")
         self.add_mode_event_handler("s_upper_target_right_active", self._upper_target, target="right")
@@ -135,9 +138,13 @@ class MastermindTrap(Mode):
         self.add_mode_event_handler("s_web_target_mid_active", self._mid_web_hit)
 
         for num in range(1, 4):
-            self.add_mode_event_handler(f"s_left_drops_{num}_active", self._left_bank_hit)
+            self.add_mode_event_handler(
+                f"s_left_drops_{num}_active", self._left_bank_hit, target=num
+            )
         for num in range(1, 6):
-            self.add_mode_event_handler(f"s_right_drops_{num}_active", self._right_bank_hit)
+            self.add_mode_event_handler(
+                f"s_right_drops_{num}_active", self._right_bank_hit, target=num
+            )
 
         self.add_mode_event_handler("s_web_spinner_active", self._main_spinner_hit)
         self.add_mode_event_handler("s_inlane_l_active", self._doc_inlane)
@@ -161,6 +168,8 @@ class MastermindTrap(Mode):
         self.para_upper_targets.clear()
         self.staged_area = None
         self.staged_multiplier = 1
+        self.staged_target = None
+        self.staged_target_ready = False
         self.roof_active = False
         self._release_all_saucers()
         self.machine.events.post("rooftop_diverter_close")
@@ -196,11 +205,6 @@ class MastermindTrap(Mode):
             return
         self.roof_active = True
         self.machine.events.post(f"{self.MODE_KEY}_roof_choice_on")
-        self.delay.reset(
-            name="mastermind_roof_center",
-            ms=self.ROOF_CENTER_TIMEOUT_MS,
-            callback=self._roof_center_timeout,
-        )
         self._sync_status("CHOOSE ROOF EXIT", "L / CENTER / R")
 
     def _upper_exit(self, side, **kwargs):
@@ -208,28 +212,72 @@ class MastermindTrap(Mode):
             return
         self._stage_para_area(side)
 
-    def _roof_center_timeout(self):
-        if self.phase == "para_scorpion" and self.roof_active and not self.staged_area:
-            self._stage_para_area("center")
+    def _middle_exit_inferred(self, **kwargs):
+        if self.phase != "para_scorpion" or not self.roof_active or self.staged_area:
+            return
+        self._stage_para_area("center")
 
     def _stage_para_area(self, exit_name):
-        self.delay.remove("mastermind_roof_center")
         self.roof_active = False
         self.machine.events.post(f"{self.MODE_KEY}_roof_choice_off")
         self.staged_area = self.EXIT_TO_AREA[exit_name]
+        self.staged_target = None
+        self.staged_target_ready = self.staged_area == "pops"
         matching_saucer = next(
             (s for s, area in self.SAUCER_TO_AREA.items() if area == self.staged_area), None
         )
         self.staged_multiplier = (
             self.PARA_MATCH_MULTIPLIER if matching_saucer in self.held_saucers else 1
         )
-        self.machine.events.post(f"{self.MODE_KEY}_para_stage_{self.staged_area}")
+
+        if self.staged_area == "left_bank":
+            self.staged_target = random.randint(1, 3)
+            self.machine.coils["c_left_bank_reset"].pulse()
+            self.delay.reset(
+                name="mastermind_stage_left_bank",
+                ms=400,
+                callback=self._prepare_para_left_bank,
+            )
+        elif self.staged_area == "right_bank":
+            self.staged_target = random.randint(1, 5)
+            self.machine.coils["c_right_bank_reset"].pulse()
+            self.delay.reset(
+                name="mastermind_stage_right_bank",
+                ms=400,
+                callback=self._prepare_para_right_bank,
+            )
+        else:
+            self.machine.events.post(f"{self.MODE_KEY}_para_stage_pops")
+
         suffix = "3X" if self.staged_multiplier == 3 else "1X"
         self._sync_status(f"{self.AREA_LABELS[self.staged_area]} JACKPOT", suffix)
 
-    def _collect_para_area(self, area):
+    def _prepare_para_left_bank(self):
+        if self.phase != "para_scorpion" or self.staged_area != "left_bank":
+            return
+        for num in range(1, 4):
+            if num != self.staged_target:
+                self.machine.coils[f"c_left_bank_drop_{num}"].pulse()
+        self.staged_target_ready = True
+        self.machine.events.post(f"{self.MODE_KEY}_para_stage_left_bank")
+
+    def _prepare_para_right_bank(self):
+        if self.phase != "para_scorpion" or self.staged_area != "right_bank":
+            return
+        for num in range(1, 6):
+            if num != self.staged_target:
+                self.machine.coils[f"c_right_bank_drop_{num}"].pulse()
+        self.staged_target_ready = True
+        self.machine.events.post(
+            f"{self.MODE_KEY}_para_stage_right_bank_{self.staged_target}"
+        )
+
+    def _collect_para_area(self, area, target=None):
         if self.phase != "para_scorpion" or self.staged_area != area:
             return False
+        if area in ("left_bank", "right_bank"):
+            if not self.staged_target_ready or target != self.staged_target:
+                return False
         value = self.PARA_JACKPOT * self.staged_multiplier
         self._score(value, major=True)
         self.para_attempts += 1
@@ -242,6 +290,8 @@ class MastermindTrap(Mode):
         )
         self.staged_area = None
         self.staged_multiplier = 1
+        self.staged_target = None
+        self.staged_target_ready = False
         self._release_all_saucers()
         self.machine.events.post("rooftop_diverter_close")
         if self.para_attempts >= self.PARA_ATTEMPTS_REQUIRED:
@@ -345,17 +395,17 @@ class MastermindTrap(Mode):
         if self.phase == "super":
             self._collect_super()
 
-    def _left_bank_hit(self, **kwargs):
+    def _left_bank_hit(self, target=None, **kwargs):
         if self.phase == "para_scorpion":
-            if self._collect_para_area("left_bank"):
+            if self._collect_para_area("left_bank", target=target):
                 return
         elif self.phase == "lizard_mysterio":
             self._delivery_shot("left_bank")
             self.machine.events.post("drop_target_bank_dt_bank_left_reset")
 
-    def _right_bank_hit(self, **kwargs):
+    def _right_bank_hit(self, target=None, **kwargs):
         if self.phase == "para_scorpion":
-            if self._collect_para_area("right_bank"):
+            if self._collect_para_area("right_bank", target=target):
                 return
         elif self.phase == "lizard_mysterio":
             self._delivery_shot("right_bank")
@@ -604,7 +654,8 @@ class MastermindTrap(Mode):
 
     def _clear_delays(self):
         for name in (
-            "mastermind_roof_center", "mastermind_next_phase", "mastermind_next_attempt",
+            "mastermind_stage_left_bank", "mastermind_stage_right_bank",
+            "mastermind_next_phase", "mastermind_next_attempt",
             "mastermind_next_serum", "mastermind_doc_3x_end",
             "mastermind_doc_3x_tick", "mastermind_super_start", "mastermind_super_tick",
             "mastermind_cycle_restart",

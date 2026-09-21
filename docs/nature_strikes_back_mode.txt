@@ -34,12 +34,13 @@ CYCLE 3 — THAW THE CITY / BLOTTO
 - First valid hit in a frozen zone scores 250K + Chapter 8 Case File bonus.
 - Zone visual states:
   frozen = cyan pulse
-  Blotto-blocked = purple pulse
+  Blotto-blocked = solid purple
   unfrozen/warm = solid warm yellow
-- Blotto blocks one zone at a time. The old block is released when a new block is made.
-- Blotto cadence: cycle 1 = 16s, cycle 2 = 14s, cycle 3+ = 12s minimum.
+- Blotto attacks accumulate instead of replacing the previous block. Up to 3 zones can be blocked at once.
+- Blocked zones are solid purple; frozen zones remain cyan pulse; thawed zones remain warm yellow solid.
+- Blotto cadence: cycle 1 = 8s, cycle 2 = 7s, cycle 3+ = 6s minimum.
 - A blocked zone cannot be thawed.
-- Star rollover clears the current Blotto block and resets the full Blotto timer.
+- Star rollover clears all current Blotto blocks and resets the full Blotto timer.
 
 CYCLE 4 — STABILIZE / SUPER
 - When all six zones are warm, Blotto stops and the rooftop gate opens.

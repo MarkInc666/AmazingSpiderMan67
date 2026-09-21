@@ -11,7 +11,7 @@ class NatureStrikesBack(Mode):
          matching saucers for repeatable Add-a-Balls (or 3M at the 5-ball cap).
       2. Close the roof and connect both web targets to discharge into Snowman.
       3. Snowman explodes and freezes all six established city zones. Thaw all
-         six while Blotto periodically blocks one zone. Star clears the block
+         six while Blotto rapidly accumulates blocked zones. Star clears all blocks
          and resets Blotto's timer.
       4. Once all zones are warm/stable, open the gate and shoot the Daily Bugle
          VUK for the Super Jackpot, then begin the next harder cycle.
@@ -36,7 +36,8 @@ class NatureStrikesBack(Mode):
     SUPER_BASE = 3_000_000
 
     SPINS_BY_CYCLE = (10, 15, 20, 25)
-    BLOTTO_MS_BY_CYCLE = (16_000, 14_000, 12_000)
+    BLOTTO_MS_BY_CYCLE = (8_000, 7_000, 6_000)
+    MAX_BLOTTO_BLOCKS = 3
 
     ZONE_SWITCHES = {
         "upper_left": [
@@ -81,13 +82,14 @@ class NatureStrikesBack(Mode):
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
         self.mode_done = False
+        self.multiball_active = False
         self.mode_points = 0
         self.cycle = 1
         self.stage = 0
         self.spin_count = 0
         self.webs_hit = set()
         self.thawed_zones = set()
-        self.blocked_zone = None
+        self.blocked_zones = set()
         self.lit_saucers = set()
         self.held_saucers = set()
         self.add_a_balls = 0
@@ -117,8 +119,12 @@ class NatureStrikesBack(Mode):
                 self.add_mode_event_handler(f"{switch}_active", self._zone_hit, zone=zone)
 
         self.add_mode_event_handler(
+            "multiball_nature_strikes_back_multiball_started",
+            self._multiball_started,
+        )
+        self.add_mode_event_handler(
             "multiball_nature_strikes_back_multiball_ended",
-            self._complete_mode,
+            self._multiball_ended,
         )
         self.add_mode_event_handler("nature_strikes_back_complete_request", self._complete_mode)
 
@@ -136,6 +142,7 @@ class NatureStrikesBack(Mode):
         self.delay.remove("nature_blotto")
         self.delay.remove("nature_ball_guard")
         self.delay.remove("nature_next_cycle")
+        self.delay.remove("nature_multiball_end_check")
         for saucer in (1, 2, 3):
             self.delay.remove(f"nature_saucer_{saucer}")
         self._release_all_saucers()
@@ -160,7 +167,7 @@ class NatureStrikesBack(Mode):
         self.spin_count = 0
         self.webs_hit.clear()
         self.thawed_zones.clear()
-        self.blocked_zone = None
+        self.blocked_zones.clear()
         self.delay.remove("nature_blotto")
         self._clear_lit_saucers()
         self.machine.events.post("nature_strikes_back_stage_charge")
@@ -264,8 +271,37 @@ class NatureStrikesBack(Mode):
     def _ball_guard(self, **kwargs):
         if self.mode_done:
             return
+        # The wizard survives ordinary multiball drains.  This explicit ball
+        # count check is intentionally authoritative in tester mode too, where
+        # the protected test ball can generate a different ball lifecycle from
+        # a normal game.  Nature ends only after its multiball has genuinely
+        # started and the live count has collapsed to one ball.
+        if self.multiball_active and self._balls_in_play() <= 1:
+            self._complete_mode()
+            return
         self._ensure_loose_ball()
         self._schedule_ball_guard()
+
+    def _multiball_started(self, **kwargs):
+        self.multiball_active = True
+
+    def _multiball_ended(self, **kwargs):
+        # MPF normally posts this as the multiball drops to one ball.  Recheck
+        # the actual live count instead of completing blindly so test/service
+        # starts cannot terminate Nature on an intermediate drain.
+        if self.mode_done or not self.multiball_active:
+            return
+        self.delay.reset(
+            name="nature_multiball_end_check",
+            ms=100,
+            callback=self._check_multiball_end,
+        )
+
+    def _check_multiball_end(self, **kwargs):
+        if self.mode_done or not self.multiball_active:
+            return
+        if self._balls_in_play() <= 1:
+            self._complete_mode()
 
     def _release_all_saucers(self):
         for saucer in tuple(sorted(self.held_saucers)):
@@ -304,12 +340,12 @@ class NatureStrikesBack(Mode):
             self._update_status()
 
     # ------------------------------------------------------------------
-    # Stage 3 - thaw six zones while Blotto blocks one at a time
+    # Stage 3 - thaw six zones while Blotto accumulates up to three blocks
     # ------------------------------------------------------------------
     def _start_thaw_stage(self):
         self.stage = 3
         self.thawed_zones.clear()
-        self.blocked_zone = None
+        self.blocked_zones.clear()
         self.machine.events.post("nature_strikes_back_stage_thaw")
         self.machine.events.post("rooftop_diverter_close")
         for zone in self.ZONE_SWITCHES:
@@ -321,7 +357,7 @@ class NatureStrikesBack(Mode):
     def _zone_hit(self, zone=None, **kwargs):
         if self.mode_done or self.stage != 3 or zone not in self.ZONE_SWITCHES:
             return
-        if zone == self.blocked_zone or zone in self.thawed_zones:
+        if zone in self.blocked_zones or zone in self.thawed_zones:
             return
         self.thawed_zones.add(zone)
         value = self.ZONE_BASE + self.case_file_bonus
@@ -347,32 +383,32 @@ class NatureStrikesBack(Mode):
     def _blotto_tick(self, **kwargs):
         if self.mode_done or self.stage != 3:
             return
-        previous = self.blocked_zone
-        self.blocked_zone = None
-        if previous:
-            self._publish_zone_state(previous)
-        choices = list(self.ZONE_SWITCHES)
-        if previous in choices and len(choices) > 1:
-            choices.remove(previous)
-        self.blocked_zone = random.choice(choices)
-        self._publish_zone_state(self.blocked_zone)
-        self.machine.events.post("nature_strikes_back_blotto_blocks", zone=self.blocked_zone)
-        self.machine.events.post(
-            "show_mode_message",
-            message_mode_title="BLOTTO BLOCKS",
-            message_mode_subtitle=self.ZONE_LABELS[self.blocked_zone],
-        )
+
+        # Accumulate multiple Blotto blocks. Cap at three simultaneous areas
+        # so the stage stays readable and the Star remains a tactical clear.
+        if len(self.blocked_zones) < self.MAX_BLOTTO_BLOCKS:
+            choices = [zone for zone in self.ZONE_SWITCHES if zone not in self.blocked_zones]
+            if choices:
+                zone = random.choice(choices)
+                self.blocked_zones.add(zone)
+                self._publish_zone_state(zone)
+                self.machine.events.post("nature_strikes_back_blotto_blocks", zone=zone)
+                self.machine.events.post(
+                    "show_mode_message",
+                    message_mode_title="BLOTTO BLOCKS",
+                    message_mode_subtitle=self.ZONE_LABELS[zone],
+                )
         self._schedule_blotto()
 
     def _star_hit(self, **kwargs):
         if self.mode_done or self.stage != 3:
             return
         self.delay.remove("nature_blotto")
-        if self.blocked_zone:
-            old = self.blocked_zone
-            self.blocked_zone = None
-            self._publish_zone_state(old)
-            self.machine.events.post("nature_strikes_back_blotto_cleared", zone=old)
+        cleared = list(self.blocked_zones)
+        self.blocked_zones.clear()
+        for zone in cleared:
+            self._publish_zone_state(zone)
+            self.machine.events.post("nature_strikes_back_blotto_cleared", zone=zone)
         self.machine.events.post("nature_strikes_back_star_clears_blotto")
         self._show_message("BLOTTO CLEARED", "BLOCK TIMER RESET")
         self._schedule_blotto()
@@ -380,7 +416,7 @@ class NatureStrikesBack(Mode):
     def _publish_zone_state(self, zone):
         if self.stage != 3 and self.stage != 4:
             return
-        if zone == self.blocked_zone:
+        if zone in self.blocked_zones:
             state = "blocked"
         elif zone in self.thawed_zones:
             state = "warm"
@@ -394,10 +430,11 @@ class NatureStrikesBack(Mode):
     def _start_stable_stage(self):
         self.stage = 4
         self.delay.remove("nature_blotto")
-        if self.blocked_zone:
-            old = self.blocked_zone
-            self.blocked_zone = None
-            self._publish_zone_state(old)
+        if self.blocked_zones:
+            cleared = list(self.blocked_zones)
+            self.blocked_zones.clear()
+            for zone in cleared:
+                self._publish_zone_state(zone)
         for zone in self.ZONE_SWITCHES:
             self.thawed_zones.add(zone)
             self._publish_zone_state(zone)

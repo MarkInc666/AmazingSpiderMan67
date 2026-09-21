@@ -199,8 +199,8 @@ class VillainBookends(Mode):
         'scorpion': {
             'title': 'SCORPION',
             'intro_1': 'ROOFTOP SPINS BUILD STINGER JACKPOT',
-            'intro_2': 'EXIT LEFT OR RIGHT TO STAGE DROPS',
-            'intro_3': 'HIT FLASHING DROP TARGET FOR JACKPOT',
+            'intro_2': 'ROOF EXITS STAGE DROPS OR POPS',
+            'intro_3': 'HIT THE STAGED SHOT FOR THE STING',
             'summary_title_complete': 'SCORPION DEFEATED',
             'summary_title_failed': 'SCORPION ESCAPED',
             'stat_1_label': 'STINGS',

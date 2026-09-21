@@ -60,6 +60,20 @@ event_player:
   s_upper_exit_left_opto_active:
     - scorpion_left_exit_chosen
 
+  # No dedicated middle roof-exit switch exists. Once rooftop entry has
+  # occurred, either of these switches proves the center drain was taken.
+  s_right_drops_top_rubber_active:
+    - scorpion_middle_exit_inferred
+
+  s_inlane_a_active:
+    - scorpion_middle_exit_inferred
+
+  s_pop_left_active:
+    - scorpion_pop_hit
+
+  s_pop_right_active:
+    - scorpion_pop_hit
+
   s_left_drops_1_active:
     - scorpion_left_drop_1_hit
   s_left_drops_2_active:
@@ -113,7 +127,15 @@ show_player:
     scorpion_ready_show:
       action: stop
 
+  scorpion_middle_sting_started:
+    scorpion_ready_show:
+      action: stop
+    scorpion_middle_sting_show:
+      loops: -1
+
   scorpion_sting_lights_off:
+    scorpion_middle_sting_show:
+      action: stop
     scorpion_safe_sting_show:
       action: stop
     scorpion_right_sting_target_1_show:
@@ -148,6 +170,8 @@ show_player:
       loops: -1
 
   scorpion_sting_success:
+    scorpion_middle_sting_show:
+      action: stop
     scorpion_safe_sting_show:
       action: stop
     scorpion_right_sting_target_1_show:
@@ -164,6 +188,8 @@ show_player:
       loops: 1
 
   scorpion_sting_failed:
+    scorpion_middle_sting_show:
+      action: stop
     scorpion_safe_sting_show:
       action: stop
     scorpion_right_sting_target_1_show:
@@ -187,6 +213,8 @@ show_player:
     scorpion_ready_show:
       action: stop
     scorpion_safe_sting_show:
+      action: stop
+    scorpion_middle_sting_show:
       action: stop
     scorpion_right_sting_target_1_show:
       action: stop
@@ -240,6 +268,28 @@ shows:
       lights:
         l_3bankbonus: off
         l_gi_3bank: off
+
+  scorpion_middle_sting_show:
+    - duration: 250ms
+      lights:
+        l_pop_1_1: green
+        l_pop_1_4: green
+        l_pop_1_7: green
+        l_pop_1_10: green
+        l_pop_2_1: green
+        l_pop_2_4: green
+        l_pop_2_7: green
+        l_pop_2_10: green
+    - duration: 250ms
+      lights:
+        l_pop_1_1: off
+        l_pop_1_4: off
+        l_pop_1_7: off
+        l_pop_1_10: off
+        l_pop_2_1: off
+        l_pop_2_4: off
+        l_pop_2_7: off
+        l_pop_2_10: off
 
   scorpion_right_sting_target_1_show:
     - duration: 250ms

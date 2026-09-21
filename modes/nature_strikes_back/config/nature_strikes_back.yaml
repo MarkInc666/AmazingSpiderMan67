@@ -3,10 +3,8 @@
 mode:
   start_events: start_mode_nature_strikes_back
   stop_events:
-    - ball_will_end
     - bonus_start
     - stop_mode_nature_strikes_back
-    - ball_ended
   code: nature_strikes_back.NatureStrikesBack
   priority: 800
 
@@ -310,10 +308,8 @@ shows:
     - duration: 500ms
       lights: {swami_area_upper_left: 104050}
   nature_zone_upper_left_purple:
-    - duration: 500ms
+    - duration: 1000ms
       lights: {swami_area_upper_left: B040FF}
-    - duration: 500ms
-      lights: {swami_area_upper_left: 301040}
 
   nature_zone_upper_right_cyan:
     - duration: 500ms
@@ -321,10 +317,8 @@ shows:
     - duration: 500ms
       lights: {swami_area_upper_right: 104050}
   nature_zone_upper_right_purple:
-    - duration: 500ms
+    - duration: 1000ms
       lights: {swami_area_upper_right: B040FF}
-    - duration: 500ms
-      lights: {swami_area_upper_right: 301040}
 
   nature_zone_middle_left_cyan:
     - duration: 500ms
@@ -332,10 +326,8 @@ shows:
     - duration: 500ms
       lights: {swami_area_middle_left: 104050}
   nature_zone_middle_left_purple:
-    - duration: 500ms
+    - duration: 1000ms
       lights: {swami_area_middle_left: B040FF}
-    - duration: 500ms
-      lights: {swami_area_middle_left: 301040}
 
   nature_zone_middle_right_cyan:
     - duration: 500ms
@@ -343,10 +335,8 @@ shows:
     - duration: 500ms
       lights: {swami_area_middle_right: 104050}
   nature_zone_middle_right_purple:
-    - duration: 500ms
+    - duration: 1000ms
       lights: {swami_area_middle_right: B040FF}
-    - duration: 500ms
-      lights: {swami_area_middle_right: 301040}
 
   nature_zone_lower_left_cyan:
     - duration: 500ms
@@ -354,10 +344,8 @@ shows:
     - duration: 500ms
       lights: {swami_area_lower_left: 104050}
   nature_zone_lower_left_purple:
-    - duration: 500ms
+    - duration: 1000ms
       lights: {swami_area_lower_left: B040FF}
-    - duration: 500ms
-      lights: {swami_area_lower_left: 301040}
 
   nature_zone_lower_right_cyan:
     - duration: 500ms
@@ -365,10 +353,8 @@ shows:
     - duration: 500ms
       lights: {swami_area_lower_right: 104050}
   nature_zone_lower_right_purple:
-    - duration: 500ms
+    - duration: 1000ms
       lights: {swami_area_lower_right: B040FF}
-    - duration: 500ms
-      lights: {swami_area_lower_right: 301040}
 
 sound_player:
   play_mode_jackpot:

@@ -11,6 +11,7 @@ class Scorpion(CaseFileMixin, Mode):
     BASE_STING_SECONDS = 8
     MORE_TIME_STING_SECONDS = 12
     SPINNER_JACKPOT_STEP = 50_000
+    MIDDLE_POP_AWARD = 250_000
     FULL_AWARDS = (250_000, 500_000, 1_000_000, 1_500_000)
     PARTIAL_AWARDS = (200_000, 300_000, 400_000, 500_000)
 
@@ -84,6 +85,8 @@ class Scorpion(CaseFileMixin, Mode):
         self.add_mode_event_handler("scorpion_upper_entered", self.upper_entered)
         self.add_mode_event_handler("scorpion_right_exit_chosen", self.right_exit_chosen)
         self.add_mode_event_handler("scorpion_left_exit_chosen", self.left_exit_chosen)
+        self.add_mode_event_handler("scorpion_middle_exit_inferred", self.middle_exit_inferred)
+        self.add_mode_event_handler("scorpion_pop_hit", self.pop_hit)
         for i in range(1, 4):
             self.add_mode_event_handler(
                 f"scorpion_left_drop_{i}_hit", self.left_drop_hit, target=i
@@ -189,6 +192,20 @@ class Scorpion(CaseFileMixin, Mode):
         # Left upper exit stages the right drop bank.
         self._start_sting(side="right")
 
+    def middle_exit_inferred(self, **kwargs):
+        # There is no dedicated middle roof-exit switch. Once the ball has
+        # entered the roof, the upper-right bank rubber or middle A rollover
+        # proves that it drained through the center path.
+        self._start_sting(side="center")
+
+    def pop_hit(self, **kwargs):
+        if (
+            not self.mode_done
+            and self.state == "sting"
+            and self.active_target_side == "center"
+        ):
+            self._resolve_attempt(result="pop")
+
     def _start_sting(self, side):
         if self.mode_done or not self.scoring_enabled or self.state != "ready":
             return
@@ -211,7 +228,7 @@ class Scorpion(CaseFileMixin, Mode):
                 callback=self.prepare_left_bank_after_reset,
             )
             self.machine.events.post("scorpion_safe_sting_started")
-        else:
+        elif side == "right":
             self.required_target = random.randint(1, 5)
             self.machine.coils["c_right_bank_reset"].pulse()
             self.delay.reset(
@@ -220,12 +237,17 @@ class Scorpion(CaseFileMixin, Mode):
                 callback=self.prepare_right_bank_after_reset,
             )
             self.machine.events.post("scorpion_hard_sting_started")
+        else:
+            self.required_target = None
+            self.machine.events.post("scorpion_middle_sting_started")
 
-        self.delay.reset(
-            name="scorpion_enable_rubber",
-            ms=1000,
-            callback=self._enable_rubber,
-        )
+        # Only the left/right bank routes have a rubber consolation shot.
+        if side in ("left", "right"):
+            self.delay.reset(
+                name="scorpion_enable_rubber",
+                ms=1000,
+                callback=self._enable_rubber,
+            )
 
         self._update_mode_status()
         self.delay.reset(
@@ -344,8 +366,15 @@ class Scorpion(CaseFileMixin, Mode):
         self.state = "awarding"
         self.delay.remove("scorpion_sting_tick")
         self.machine.events.post("scorpion_sting_lights_off")
-        if result == "target":
-            value = self._display_jackpot_value()
+        if result in ("target", "pop"):
+            if result == "pop":
+                # Middle route is intentionally a lower fixed award. It does
+                # not inherit the attempt escalation or spinner-built value.
+                value = int(self.MIDDLE_POP_AWARD * self.bigger_multiplier)
+                title = "CENTER STING"
+            else:
+                value = self._display_jackpot_value()
+                title = "SCORPION STING"
             self._add_score(value)
             self.scorpion_stings += 1
             self.scorpion_biggest_jackpot = max(self.scorpion_biggest_jackpot, value)
@@ -354,7 +383,7 @@ class Scorpion(CaseFileMixin, Mode):
             self.machine.events.post("play_mode_jackpot")
             self.machine.events.post(
                 "show_mode_jackpot",
-                message_mode_title="SCORPION STING",
+                message_mode_title=title,
                 message_mode_value=value,
             )
         else:
@@ -369,7 +398,7 @@ class Scorpion(CaseFileMixin, Mode):
         self.seconds_left = 0
         self.rubber_awarded = False
 
-        if result == "target":
+        if result in ("target", "pop"):
             # Preserve the jackpot popup for a full 2 seconds before any
             # next-attempt or defeat message can replace it.
             self.delay.reset(

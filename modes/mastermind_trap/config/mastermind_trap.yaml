@@ -149,7 +149,11 @@ show_player:
     mastermind_para_upper_targets: {action: stop}
     mastermind_para_left_bank: {action: stop}
     mastermind_para_pops: {action: stop}
-    mastermind_para_right_bank: {action: stop}
+    mastermind_para_right_bank_1: {action: stop}
+    mastermind_para_right_bank_2: {action: stop}
+    mastermind_para_right_bank_3: {action: stop}
+    mastermind_para_right_bank_4: {action: stop}
+    mastermind_para_right_bank_5: {action: stop}
     mastermind_roof_choice: {action: stop}
     mastermind_lizard_pops: {action: stop}
     mastermind_delivery_left_web: {action: stop}
@@ -170,12 +174,24 @@ show_player:
     mastermind_para_left_bank: {action: play, loops: -1}
   mastermind_trap_para_stage_pops:
     mastermind_para_pops: {action: play, loops: -1}
-  mastermind_trap_para_stage_right_bank:
-    mastermind_para_right_bank: {action: play, loops: -1}
+  mastermind_trap_para_stage_right_bank_1:
+    mastermind_para_right_bank_1: {action: play, loops: -1}
+  mastermind_trap_para_stage_right_bank_2:
+    mastermind_para_right_bank_2: {action: play, loops: -1}
+  mastermind_trap_para_stage_right_bank_3:
+    mastermind_para_right_bank_3: {action: play, loops: -1}
+  mastermind_trap_para_stage_right_bank_4:
+    mastermind_para_right_bank_4: {action: play, loops: -1}
+  mastermind_trap_para_stage_right_bank_5:
+    mastermind_para_right_bank_5: {action: play, loops: -1}
   mastermind_trap_para_area_collected:
     mastermind_para_left_bank: {action: stop}
     mastermind_para_pops: {action: stop}
-    mastermind_para_right_bank: {action: stop}
+    mastermind_para_right_bank_1: {action: stop}
+    mastermind_para_right_bank_2: {action: stop}
+    mastermind_para_right_bank_3: {action: stop}
+    mastermind_para_right_bank_4: {action: stop}
+    mastermind_para_right_bank_5: {action: stop}
 
 shows:
   mastermind_para_saucers:
@@ -224,25 +240,31 @@ shows:
       lights: {l_3bankbonus: green, l_gi_3bank: green}
     - duration: 300ms
       lights: {l_3bankbonus: off, l_gi_3bank: off}
-  mastermind_para_right_bank:
+  mastermind_para_right_bank_1:
     - duration: 300ms
-      lights:
-        l_5bank_1: green
-        l_5bank_2: green
-        l_5bank_3: green
-        l_5bank_4: green
-        l_5bank_5: green
-        l_gi_5bank_lower: green
-        l_gi_5bank_upper: green
+      lights: {l_5bank_1: green, l_gi_5bank_lower: green, l_gi_5bank_upper: green}
     - duration: 300ms
-      lights:
-        l_5bank_1: off
-        l_5bank_2: off
-        l_5bank_3: off
-        l_5bank_4: off
-        l_5bank_5: off
-        l_gi_5bank_lower: off
-        l_gi_5bank_upper: off
+      lights: {l_5bank_1: off, l_gi_5bank_lower: off, l_gi_5bank_upper: off}
+  mastermind_para_right_bank_2:
+    - duration: 300ms
+      lights: {l_5bank_2: green, l_gi_5bank_lower: green, l_gi_5bank_upper: green}
+    - duration: 300ms
+      lights: {l_5bank_2: off, l_gi_5bank_lower: off, l_gi_5bank_upper: off}
+  mastermind_para_right_bank_3:
+    - duration: 300ms
+      lights: {l_5bank_3: green, l_gi_5bank_lower: green, l_gi_5bank_upper: green}
+    - duration: 300ms
+      lights: {l_5bank_3: off, l_gi_5bank_lower: off, l_gi_5bank_upper: off}
+  mastermind_para_right_bank_4:
+    - duration: 300ms
+      lights: {l_5bank_4: green, l_gi_5bank_lower: green, l_gi_5bank_upper: green}
+    - duration: 300ms
+      lights: {l_5bank_4: off, l_gi_5bank_lower: off, l_gi_5bank_upper: off}
+  mastermind_para_right_bank_5:
+    - duration: 300ms
+      lights: {l_5bank_5: green, l_gi_5bank_lower: green, l_gi_5bank_upper: green}
+    - duration: 300ms
+      lights: {l_5bank_5: off, l_gi_5bank_lower: off, l_gi_5bank_upper: off}
   mastermind_para_pops:
     - duration: 300ms
       lights:

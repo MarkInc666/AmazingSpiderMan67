@@ -220,6 +220,9 @@ player_vars:
   mini_wizard_vuk_hold_active:
     initial_value: 0
     value_type: int
+  invasion_from_everywhere_vuk_hold_active:
+    initial_value: 0
+    value_type: int
   chapter_case_files_collected:
     initial_value: 0
     value_type: int

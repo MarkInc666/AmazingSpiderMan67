@@ -1152,6 +1152,7 @@ class VillainProgression(Mode):
             or self._safe_int(player["extra_ball_vuk_hold_active"], 0) == 1
             or self._safe_int(player["custom_bonus_vuk_hold_active"], 0) == 1
             or self._safe_int(player["mystery_vuk_intro_hold_active"], 0) == 1
+            or self._safe_int(player["invasion_from_everywhere_vuk_hold_active"], 0) == 1
         ):
             self.machine.events.post("vuk_eject_suppressed_mystery_intro_hold")
             return
@@ -1173,6 +1174,7 @@ class VillainProgression(Mode):
             or self._safe_int(player["extra_ball_vuk_hold_active"], 0) == 1
             or self._safe_int(player["custom_bonus_vuk_hold_active"], 0) == 1
             or self._safe_int(player["mystery_vuk_intro_hold_active"], 0) == 1
+            or self._safe_int(player["invasion_from_everywhere_vuk_hold_active"], 0) == 1
         ):
             self.machine.events.post("vuk_eject_suppressed_mystery_intro_hold")
             return
@@ -2101,7 +2103,7 @@ class VillainProgression(Mode):
 
         # The Web Tightens uses the VUK ball that started the wizard as its
         # first lock. Transfer ownership at intro end instead of kicking it.
-        if mini_key == "the_web_tightens":
+        if mini_key in ("the_web_tightens", "invasion_from_everywhere"):
             self.machine.events.post(
                 "mini_wizard_vuk_intro_hold_transferred",
                 mini_wizard=mini_key,

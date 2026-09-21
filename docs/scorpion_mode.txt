@@ -3,18 +3,20 @@
 ## Core loop
 
 1. Enter the rooftop. Rooftop entry immediately enables both upper exits.
-2. Spin the upper spinner to build the pending Sting Jackpot, then choose either upper exit.
-3. The opposite drop bank resets and stages one flashing target.
-4. Hit the staged target to collect the jackpot and end the attempt, or let the timer expire.
-5. A bank-rubber hit gives one consolation award per attempt but does not end it.
-6. Complete three attempts, or four with More Jackpots.
+2. Spin the upper spinner to build the pending Sting Jackpot, then choose a rooftop exit.
+3. Right exit stages one target on the left 3-bank; left exit stages one target on the right 5-bank.
+4. The middle exit has no dedicated switch: after rooftop entry, the right-bank upper rubber or middle A rollover infers the center drain and lights the pops.
+5. Hit the staged drop to collect the escalating jackpot, or hit either pop on the middle route for its fixed 250K award.
+6. A bank-rubber hit gives one consolation award per left/right attempt but does not end it. There is no rubber consolation on the middle-pop route.
+7. Complete three attempts, or four with More Jackpots.
 
 Left and right routes use the same awards. Their challenge comes from the physical shot geometry.
 
 ## Scoring
 
-- Base staged-target jackpots: 250K, 500K, 1M, then 1.5M on the fourth More Jackpots attempt.
-- Every upper-spinner hit adds 50K to the pending jackpot. Spinner hits do not score separately.
+- Base staged-drop jackpots: 250K, 500K, 1M, then 1.5M on the fourth More Jackpots attempt.
+- Middle-pop award: fixed 250K base on every attempt; it does not inherit attempt escalation or spinner build. Bigger Jackpots still applies its normal 50% boost.
+- Every upper-spinner hit adds 50K to the pending left/right staged-drop jackpot. Spinner hits do not score separately.
 - Rubber partial awards: 200K, 300K, 400K, then 500K.
 - A rubber consolation can be collected only once during each attempt. The attempt and timer continue afterward.
 - Timeout: no award.

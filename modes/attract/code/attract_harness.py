@@ -50,9 +50,44 @@ class AttractHarness(Attract):
     def result_of_start_request(self, ev_result=True):
         """Show feedback when MPF refuses to start until balls are home."""
         if ev_result is False and self._start_is_waiting_for_balls():
+            # Keep the player-facing WAITING FOR BALLS feedback, but also make
+            # a targeted attempt to free balls from the four common non-home
+            # locations before the next start request. Attract has no current
+            # player, so use switch-confirmed coil pulses instead of gameplay
+            # events which may depend on current_player variables/modes.
             self.machine.events.post("attract_waiting_for_balls")
+            self._recover_visible_loose_balls()
 
         super().result_of_start_request(ev_result)
+
+    def _recover_visible_loose_balls(self):
+        """Eject switch-confirmed loose balls while a start request is blocked.
+
+        The shooter lane, VUK and three saucers are all places where a ball can
+        legitimately be left after testing or an interrupted game. Only pulse
+        a device when its switch is presently active; MPF's normal ball
+        controller remains responsible for deciding when all balls are home.
+        """
+        recoveries = (
+            ("s_plunger", "c_auto_plunger", "plunger"),
+            ("s_vuk_switch", "c_vuk_to_upper", "vuk"),
+            ("s_saucer_1", "c_saucer_1", "saucer 1"),
+            ("s_saucer_2", "c_saucer_2", "saucer 2"),
+            ("s_saucer_3", "c_saucer_3", "saucer 3"),
+        )
+
+        for switch_name, coil_name, label in recoveries:
+            switch = self.machine.switches.get(switch_name)
+            coil = self.machine.coils.get(coil_name)
+            if switch is None or coil is None or not switch.state:
+                continue
+
+            self.info_log(
+                "Start blocked waiting for balls: recovering %s via %s",
+                label,
+                coil_name,
+            )
+            coil.pulse()
 
     def _start_is_waiting_for_balls(self):
         """Return whether the ball controller is the likely start blocker."""
