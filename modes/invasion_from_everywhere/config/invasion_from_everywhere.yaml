@@ -374,12 +374,12 @@ shows:
     - duration: 300ms
       lights: {l_5bank_5: green}
     - duration: 300ms
-      lights: {l_5bank_5: 004000}
+      lights: {l_5bank_5: "004000"}
   invasion_devargas_1_show:
     - duration: 300ms
       lights: {l_5bank_1: green}
     - duration: 300ms
-      lights: {l_5bank_1: 004000}
+      lights: {l_5bank_1: "004000"}
   invasion_devargas_bank_show:
     - duration: 300ms
       lights: {l_gi_5bank_lower: white, l_gi_5bank_upper: white}
