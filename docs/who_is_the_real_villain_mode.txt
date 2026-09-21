@@ -1,0 +1,113 @@
+WHO IS THE REAL VILLAIN? — CHAPTER 10 MINI-WIZARD
+Implementation checkpoint: 2026-09-21
+
+OVERVIEW
+- Repeating 2-ball wizard multiball.
+- Opening ball save: 20 seconds.
+- The mode repeats Cameo -> Desperado -> Brutus -> VUK Super until multiball ends.
+- Saucers are normal wizard parking spots (20-second maximum hold) whenever they are not active Cameo/Brutus objectives.
+- At least one loose ball must remain on the playfield; a parked ball is released early if needed.
+- Case Files do not provide helper powers in wizard modes. Every Jackpot/major award worth 500K or more adds 20K x Chapter 10 Case Files collected. Smaller awards do not receive the Case File adder.
+
+GLOBAL ROOFTOP ADD-A-BALL
+- Active throughout every phase whenever balls reach the rooftop.
+- Each upper target hit scores 50K.
+- Complete unique upper L/C/R targets to earn Add-a-Ball.
+- Maximum balls in play: 4.
+- Add-a-Ball starts/refreshes a 15-second ball save.
+- If already at 4 balls, upper-target completion scores 500K + Case File bonus instead.
+- Upper-target progress persists across phase changes until the set is completed, then resets.
+
+PHASE 1 — CHARLES CAMEO
+1. HIT BOTH POPS
+- Hit left pop once and right pop once.
+- Repeated hits on the same pop do not advance the reveal.
+
+2. RANDOM CAMEO PAIR
+- One pair is selected randomly:
+  * A / B rollovers
+  * Left / right slings
+  * Left / right bank rubbers
+- No pair repeats until all three have been used; then the random pool resets.
+- Unrevealed candidate pair pulses.
+
+3. RUBBER-PAIR EXPOSURE
+- A/B and slings are immediately ready for the truth-reveal step.
+- If bank rubbers are selected, the rooftop gate opens.
+- Each upper-spinner spin drops one bank drop target.
+- All 3 left-bank + all 5 right-bank targets are dropped to expose the rubber pair.
+- Once exposed, the rubber pair pulses and the truth-reveal saucers become active.
+
+4. PREMATURE CAMEO HIT
+- Hitting either candidate before the truth has been revealed:
+  * scores 100K flat
+  * does not advance
+  * plays one of the Daily Bugle impostor callouts ("he's the impostor" family)
+
+5. REVEAL THE TRUTH
+- Once the Cameo pair is ready, all three saucers flash.
+- Any balls already parked in saucers are ejected when the saucers begin flashing.
+- Shoot any flashing saucer:
+  * scores 100K flat
+  * shuts off the false candidate
+  * flashes the correct Cameo target
+- The truth-reveal ball is ejected; saucers resume normal parking behavior.
+
+6. CORRECT CAMEO
+- Hit the flashing correct candidate.
+- Award: 1M + Case File bonus.
+- Advance to Desperado.
+
+PHASE 2 — DESPERADO
+- Rooftop gate is open so the upper spinner remains available.
+- Right-bank GI pulses.
+- All five right-bank inserts are tracked individually:
+  * needed target = pulsing insert
+  * collected target = solid insert
+- Each of the 5 unique right-bank targets must be collected once.
+- Each newly collected target scores 50K flat.
+- The right bank resets after every target hit.
+- Upper spinner may collect/drop the next needed Desperado target at one spin per target; it awards the same 50K and counts as collected.
+- Once all five unique targets have been collected, advance to Brutus.
+
+PHASE 3 — BRUTUS
+- At phase start, all three saucers flash.
+- Any balls parked in saucers are immediately ejected when they become active objectives.
+- Any flashing saucer completes Brutus.
+- A left-bank hit causes Brutus to return and turns all saucers off.
+- When the saucers are off, a right-bank hit relights all three saucers.
+- Relighting the saucers also ejects any balls currently parked there.
+- Brutus saucer Jackpot: 500K + Case File bonus.
+- After collection, advance to VUK Super.
+
+PHASE 4 — VUK SUPER
+- Brutus completion opens the rooftop gate.
+- Shared rooftop/VUK chase lights start.
+- VUK Super is lit for 20 seconds.
+- Super Jackpot: 2M + Case File bonus.
+- If collected:
+  * award the Super
+  * eject the VUK ball after the award presentation
+  * return to a new Cameo cycle
+- If the 20-second timer expires:
+  * Super is lost with no consolation award
+  * chase turns off
+  * return directly to a new Cameo cycle
+
+CYCLE RESET
+- Pop progress clears.
+- Desperado progress clears.
+- Brutus state clears.
+- Saucer objective state returns to normal parking.
+- Gate returns to the Cameo starting state.
+- Cameo no-repeat pair pool persists until all three pair types have been used, then refills.
+- Upper-target Add-a-Ball progress does NOT reset merely because the phase/cycle changes; it resets only when L/C/R has been completed.
+
+MODE END
+- The wizard ends when the active multiball collapses to one ball.
+- Wizard progression is marked complete for chapter progression; the mode does not resume on a later ball.
+
+SUMMARY TRACKING
+- Active mode points = total wizard score.
+- Active mode hits = cycles completed (collected or missed Super ends a cycle).
+- Active mode major hits = VUK Supers collected.

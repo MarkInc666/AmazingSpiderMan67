@@ -1,16 +1,13 @@
 #config_version=6
 
-# Who Is the Real Villain? placeholder mini-wizard.
-# Crime & Disguise mini-wizard multiball.
-# Temporary flow: intro -> 2-ball multiball -> MB end -> summary -> next chapter.
+# Chapter 10 mini-wizard: Who Is the Real Villain?
+# Cameo -> Desperado -> Brutus -> 20s VUK Super, then repeat.
 
 mode:
   start_events: start_mode_who_is_the_real_villain
   stop_events:
-    - ball_will_end
     - bonus_start
     - stop_mode_who_is_the_real_villain
-    - ball_ended
   code: who_is_the_real_villain.WhoIsTheRealVillain
   priority: 800
 
@@ -18,101 +15,343 @@ multiballs:
   who_is_the_real_villain_multiball:
     ball_count: 2
     ball_count_type: total
-    shoot_again: 15s
+    shoot_again: 20s
     start_events: who_is_the_real_villain_start_multiball
+    add_a_ball_events:
+      - who_is_the_real_villain_add_a_ball
+    add_a_ball_shoot_again: 15s
+    add_a_ball_hurry_up_time: 3s
     stop_events:
       - stop_mode_who_is_the_real_villain
 
 variable_player:
   multiball_who_is_the_real_villain_multiball_started:
-    multiball_autoplunge_active:
-      action: set
-      int: 1
-
+    multiball_autoplunge_active: {action: set, int: 1}
   multiball_who_is_the_real_villain_multiball_ended:
-    multiball_autoplunge_active:
-      action: set
-      int: 0
+    multiball_autoplunge_active: {action: set, int: 0}
 
 widget_player:
   mode_who_is_the_real_villain_started:
-    who_is_the_real_villain:
-      action: play
-
+    who_is_the_real_villain: {action: play}
   who_is_the_real_villain_mode_complete:
-    who_is_the_real_villain:
-      action: remove
-
+    who_is_the_real_villain: {action: remove}
   mode_who_is_the_real_villain_stopping:
-    who_is_the_real_villain:
-      action: remove
+    who_is_the_real_villain: {action: remove}
 
-  stop_mode_who_is_the_real_villain:
-    who_is_the_real_villain:
-      action: remove
-
+# The Python mode owns all shot logic. This config owns visual/audio hardware
+# feedback and the multiball device only.
 event_player:
-  s_pop_left_active: who_is_the_real_villain_shot_hit
-  s_pop_right_active: who_is_the_real_villain_shot_hit
-  s_trispinner_opto_active: who_is_the_real_villain_shot_hit
-  s_web_spinner_active: who_is_the_real_villain_shot_hit
-  s_star_rollover_active: who_is_the_real_villain_shot_hit
-  s_upper_target_left_active: who_is_the_real_villain_shot_hit
-  s_upper_target_center_active: who_is_the_real_villain_shot_hit
-  s_upper_target_right_active: who_is_the_real_villain_shot_hit
-  s_left_drops_1_active: who_is_the_real_villain_shot_hit
-  s_left_drops_2_active: who_is_the_real_villain_shot_hit
-  s_left_drops_3_active: who_is_the_real_villain_shot_hit
-  s_right_drops_1_active: who_is_the_real_villain_shot_hit
-  s_right_drops_2_active: who_is_the_real_villain_shot_hit
-  s_right_drops_3_active: who_is_the_real_villain_shot_hit
-  s_right_drops_4_active: who_is_the_real_villain_shot_hit
-  s_right_drops_5_active: who_is_the_real_villain_shot_hit
-  s_saucer_1_active:
-    who_is_the_real_villain_shot_hit:
-    delayed_kickout_saucer_1:
-  s_saucer_2_active:
-    who_is_the_real_villain_shot_hit:
-    delayed_kickout_saucer_2:
-  s_saucer_3_active:
-    who_is_the_real_villain_shot_hit:
-    delayed_kickout_saucer_3:
-  s_vuk_switch_active:
-    - who_is_the_real_villain_shot_hit
-    - request_vuk_eject
-
-  multiball_who_is_the_real_villain_multiball_ended: who_is_the_real_villain_complete_request
-
   mode_who_is_the_real_villain_started:
-    - rooftop_diverter_open|500ms
     - disable_daily_bugle_mystery
     - clear_saucers_delayed
     - drop_target_bank_dt_bank_left_reset
     - drop_target_bank_dt_bank_right_reset
-
   mode_who_is_the_real_villain_stopping:
     - enable_daily_bugle_mystery
     - daily_bugle_restore_state
     - clear_saucers_delayed
+    - rooftop_diverter_close
 
-  # Keep mini-wizard drop banks playable after they are completed.
-  drop_target_bank_dt_bank_left_down: drop_target_bank_dt_bank_left_reset
-  drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset
+show_player:
+  who_is_the_real_villain_clear_all:
+    real_villain_pop_left_pulse: {action: stop}
+    real_villain_pop_right_pulse: {action: stop}
+    real_villain_ab_pair_pulse: {action: stop}
+    real_villain_sling_pair_pulse: {action: stop}
+    real_villain_rubber_pair_pulse: {action: stop}
+    real_villain_ab_left_flash: {action: stop}
+    real_villain_ab_right_flash: {action: stop}
+    real_villain_sling_left_flash: {action: stop}
+    real_villain_sling_right_flash: {action: stop}
+    real_villain_rubber_left_flash: {action: stop}
+    real_villain_rubber_right_flash: {action: stop}
+    real_villain_saucers_flash: {action: stop}
+    real_villain_desperado_gi_pulse: {action: stop}
+    real_villain_d1_pulse: {action: stop}
+    real_villain_d2_pulse: {action: stop}
+    real_villain_d3_pulse: {action: stop}
+    real_villain_d4_pulse: {action: stop}
+    real_villain_d5_pulse: {action: stop}
+    real_villain_upper_left_pulse: {action: stop}
+    real_villain_upper_center_pulse: {action: stop}
+    real_villain_upper_right_pulse: {action: stop}
+    real_villain_upper_spinner_pulse: {action: stop}
+    shared_final_vuk_chase: {action: stop}
+
+  who_is_the_real_villain_clear_phase_lights:
+    real_villain_pop_left_pulse: {action: stop}
+    real_villain_pop_right_pulse: {action: stop}
+    real_villain_ab_pair_pulse: {action: stop}
+    real_villain_sling_pair_pulse: {action: stop}
+    real_villain_rubber_pair_pulse: {action: stop}
+    real_villain_ab_left_flash: {action: stop}
+    real_villain_ab_right_flash: {action: stop}
+    real_villain_sling_left_flash: {action: stop}
+    real_villain_sling_right_flash: {action: stop}
+    real_villain_rubber_left_flash: {action: stop}
+    real_villain_rubber_right_flash: {action: stop}
+    real_villain_saucers_flash: {action: stop}
+    real_villain_desperado_gi_pulse: {action: stop}
+    real_villain_d1_pulse: {action: stop}
+    real_villain_d2_pulse: {action: stop}
+    real_villain_d3_pulse: {action: stop}
+    real_villain_d4_pulse: {action: stop}
+    real_villain_d5_pulse: {action: stop}
+    shared_final_vuk_chase: {action: stop}
+
+  who_is_the_real_villain_cameo_pops_on:
+    real_villain_pop_left_pulse: {loops: -1}
+    real_villain_pop_right_pulse: {loops: -1}
+  who_is_the_real_villain_pop_left_collected:
+    real_villain_pop_left_pulse: {action: stop}
+  who_is_the_real_villain_pop_right_collected:
+    real_villain_pop_right_pulse: {action: stop}
+
+  who_is_the_real_villain_clear_cameo_pair:
+    real_villain_ab_pair_pulse: {action: stop}
+    real_villain_sling_pair_pulse: {action: stop}
+    real_villain_rubber_pair_pulse: {action: stop}
+    real_villain_ab_left_flash: {action: stop}
+    real_villain_ab_right_flash: {action: stop}
+    real_villain_sling_left_flash: {action: stop}
+    real_villain_sling_right_flash: {action: stop}
+    real_villain_rubber_left_flash: {action: stop}
+    real_villain_rubber_right_flash: {action: stop}
+
+  who_is_the_real_villain_rubber_expose:
+    real_villain_upper_spinner_pulse: {loops: -1}
+
+  who_is_the_real_villain_cameo_ab_pulse:
+    real_villain_ab_pair_pulse: {loops: -1}
+  who_is_the_real_villain_cameo_slings_pulse:
+    real_villain_sling_pair_pulse: {loops: -1}
+  who_is_the_real_villain_cameo_rubbers_pulse:
+    real_villain_rubber_pair_pulse: {loops: -1}
+  who_is_the_real_villain_cameo_ab_left_flash:
+    real_villain_ab_left_flash: {loops: -1}
+  who_is_the_real_villain_cameo_ab_right_flash:
+    real_villain_ab_right_flash: {loops: -1}
+  who_is_the_real_villain_cameo_slings_left_flash:
+    real_villain_sling_left_flash: {loops: -1}
+  who_is_the_real_villain_cameo_slings_right_flash:
+    real_villain_sling_right_flash: {loops: -1}
+  who_is_the_real_villain_cameo_rubbers_left_flash:
+    real_villain_rubber_left_flash: {loops: -1}
+  who_is_the_real_villain_cameo_rubbers_right_flash:
+    real_villain_rubber_right_flash: {loops: -1}
+
+  who_is_the_real_villain_saucers_flash:
+    real_villain_saucers_flash: {loops: -1}
+  who_is_the_real_villain_saucers_off:
+    real_villain_saucers_flash: {action: stop}
+
+  who_is_the_real_villain_desperado_start:
+    real_villain_desperado_gi_pulse: {loops: -1}
+    real_villain_upper_spinner_pulse: {loops: -1}
+  who_is_the_real_villain_desperado_stop:
+    real_villain_desperado_gi_pulse: {action: stop}
+    real_villain_upper_spinner_pulse: {action: stop}
+    real_villain_d1_pulse: {action: stop}
+    real_villain_d2_pulse: {action: stop}
+    real_villain_d3_pulse: {action: stop}
+    real_villain_d4_pulse: {action: stop}
+    real_villain_d5_pulse: {action: stop}
+  who_is_the_real_villain_desperado_clear_inserts:
+    real_villain_d1_pulse: {action: stop}
+    real_villain_d2_pulse: {action: stop}
+    real_villain_d3_pulse: {action: stop}
+    real_villain_d4_pulse: {action: stop}
+    real_villain_d5_pulse: {action: stop}
+  who_is_the_real_villain_desperado_target_1_pulse:
+    real_villain_d1_pulse: {loops: -1}
+  who_is_the_real_villain_desperado_target_2_pulse:
+    real_villain_d2_pulse: {loops: -1}
+  who_is_the_real_villain_desperado_target_3_pulse:
+    real_villain_d3_pulse: {loops: -1}
+  who_is_the_real_villain_desperado_target_4_pulse:
+    real_villain_d4_pulse: {loops: -1}
+  who_is_the_real_villain_desperado_target_5_pulse:
+    real_villain_d5_pulse: {loops: -1}
+
+  who_is_the_real_villain_upper_targets_reset:
+    real_villain_upper_left_pulse: {loops: -1}
+    real_villain_upper_center_pulse: {loops: -1}
+    real_villain_upper_right_pulse: {loops: -1}
+  who_is_the_real_villain_upper_left_solid:
+    real_villain_upper_left_pulse: {action: stop}
+  who_is_the_real_villain_upper_center_solid:
+    real_villain_upper_center_pulse: {action: stop}
+  who_is_the_real_villain_upper_right_solid:
+    real_villain_upper_right_pulse: {action: stop}
+
+  who_is_the_real_villain_super_on:
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 840
+      show_tokens: {color: F0D040}
+  who_is_the_real_villain_super_off:
+    shared_final_vuk_chase: {action: stop}
 
 light_player:
-  # Full-playfield GI theme while this mode is active.
   mode_who_is_the_real_villain_started:
-    gi: FF5050
-
+    gi: 503050
   mode_who_is_the_real_villain_stopping:
     gi: E0E0E0
+    l_1_hole_l: off
+    l_1_hole_r: off
+    l_2_hole_l: off
+    l_2_hole_r: off
+    l_3_hole_l: off
+    l_3_hole_r: off
+    l_a_rollover: off
+    l_b_rollover: off
+    l_5bank_1: off
+    l_5bank_2: off
+    l_5bank_3: off
+    l_5bank_4: off
+    l_5bank_5: off
+    l_upper_left: off
+    l_upper_middle: off
+    l_upper_right: off
+
+  who_is_the_real_villain_saucer_1_parked: {l_1_hole_l: 400000, l_1_hole_r: 400000}
+  who_is_the_real_villain_saucer_2_parked: {l_2_hole_l: 400000, l_2_hole_r: 400000}
+  who_is_the_real_villain_saucer_3_parked: {l_3_hole_l: 400000, l_3_hole_r: 400000}
+  who_is_the_real_villain_saucer_1_released: {l_1_hole_l: off, l_1_hole_r: off}
+  who_is_the_real_villain_saucer_2_released: {l_2_hole_l: off, l_2_hole_r: off}
+  who_is_the_real_villain_saucer_3_released: {l_3_hole_l: off, l_3_hole_r: off}
+
+  who_is_the_real_villain_desperado_target_1_solid: {l_5bank_1: F0D040}
+  who_is_the_real_villain_desperado_target_2_solid: {l_5bank_2: F0D040}
+  who_is_the_real_villain_desperado_target_3_solid: {l_5bank_3: F0D040}
+  who_is_the_real_villain_desperado_target_4_solid: {l_5bank_4: F0D040}
+  who_is_the_real_villain_desperado_target_5_solid: {l_5bank_5: F0D040}
+
+  who_is_the_real_villain_upper_left_solid: {l_upper_left: F0D040}
+  who_is_the_real_villain_upper_center_solid: {l_upper_middle: F0D040}
+  who_is_the_real_villain_upper_right_solid: {l_upper_right: F0D040}
+
+shows:
+  real_villain_pop_left_pulse:
+    - duration: 400ms
+      lights: {l_pop_1_1: FFFFFF, l_pop_1_2: FFFFFF, l_pop_1_3: FFFFFF, l_pop_1_4: FFFFFF, l_pop_1_5: FFFFFF, l_pop_1_6: FFFFFF, l_pop_1_7: FFFFFF, l_pop_1_8: FFFFFF, l_pop_1_9: FFFFFF, l_pop_1_10: FFFFFF, l_pop_1_11: FFFFFF, l_pop_1_12: FFFFFF}
+    - duration: 400ms
+      lights: {l_pop_1_1: 404040, l_pop_1_2: 404040, l_pop_1_3: 404040, l_pop_1_4: 404040, l_pop_1_5: 404040, l_pop_1_6: 404040, l_pop_1_7: 404040, l_pop_1_8: 404040, l_pop_1_9: 404040, l_pop_1_10: 404040, l_pop_1_11: 404040, l_pop_1_12: 404040}
+  real_villain_pop_right_pulse:
+    - duration: 400ms
+      lights: {l_pop_2_1: FFFFFF, l_pop_2_2: FFFFFF, l_pop_2_3: FFFFFF, l_pop_2_4: FFFFFF, l_pop_2_5: FFFFFF, l_pop_2_6: FFFFFF, l_pop_2_7: FFFFFF, l_pop_2_8: FFFFFF, l_pop_2_9: FFFFFF, l_pop_2_10: FFFFFF, l_pop_2_11: FFFFFF, l_pop_2_12: FFFFFF}
+    - duration: 400ms
+      lights: {l_pop_2_1: 404040, l_pop_2_2: 404040, l_pop_2_3: 404040, l_pop_2_4: 404040, l_pop_2_5: 404040, l_pop_2_6: 404040, l_pop_2_7: 404040, l_pop_2_8: 404040, l_pop_2_9: 404040, l_pop_2_10: 404040, l_pop_2_11: 404040, l_pop_2_12: 404040}
+
+  real_villain_ab_pair_pulse:
+    - duration: 450ms
+      lights: {l_a_rollover: FFFFFF, l_b_rollover: FFFFFF}
+    - duration: 450ms
+      lights: {l_a_rollover: 404040, l_b_rollover: 404040}
+  real_villain_ab_left_flash:
+    - duration: 180ms
+      lights: {l_a_rollover: FFFFFF}
+    - duration: 180ms
+      lights: {l_a_rollover: off}
+  real_villain_ab_right_flash:
+    - duration: 180ms
+      lights: {l_b_rollover: FFFFFF}
+    - duration: 180ms
+      lights: {l_b_rollover: off}
+
+  real_villain_sling_pair_pulse:
+    - duration: 450ms
+      lights: {l_gi_left_sling_upper: FFFFFF, l_gi_left_sling_lower: FFFFFF, l_gi_right_sling: FFFFFF}
+    - duration: 450ms
+      lights: {l_gi_left_sling_upper: 404040, l_gi_left_sling_lower: 404040, l_gi_right_sling: 404040}
+  real_villain_sling_left_flash:
+    - duration: 180ms
+      lights: {l_gi_left_sling_upper: FFFFFF, l_gi_left_sling_lower: FFFFFF}
+    - duration: 180ms
+      lights: {l_gi_left_sling_upper: off, l_gi_left_sling_lower: off}
+  real_villain_sling_right_flash:
+    - duration: 180ms
+      lights: {l_gi_right_sling: FFFFFF}
+    - duration: 180ms
+      lights: {l_gi_right_sling: off}
+
+  real_villain_rubber_pair_pulse:
+    - duration: 450ms
+      lights: {l_gi_3bank: FFFFFF, l_gi_5bank_lower: FFFFFF, l_gi_5bank_upper: FFFFFF}
+    - duration: 450ms
+      lights: {l_gi_3bank: 404040, l_gi_5bank_lower: 404040, l_gi_5bank_upper: 404040}
+  real_villain_rubber_left_flash:
+    - duration: 180ms
+      lights: {l_gi_3bank: FFFFFF}
+    - duration: 180ms
+      lights: {l_gi_3bank: off}
+  real_villain_rubber_right_flash:
+    - duration: 180ms
+      lights: {l_gi_5bank_lower: FFFFFF, l_gi_5bank_upper: FFFFFF}
+    - duration: 180ms
+      lights: {l_gi_5bank_lower: off, l_gi_5bank_upper: off}
+
+  real_villain_saucers_flash:
+    - duration: 180ms
+      lights: {l_1_hole_l: red, l_1_hole_r: red, l_2_hole_l: red, l_2_hole_r: red, l_3_hole_l: red, l_3_hole_r: red}
+    - duration: 180ms
+      lights: {l_1_hole_l: off, l_1_hole_r: off, l_2_hole_l: off, l_2_hole_r: off, l_3_hole_l: off, l_3_hole_r: off}
+
+  real_villain_desperado_gi_pulse:
+    - duration: 450ms
+      lights: {l_gi_5bank_lower: F0D040, l_gi_5bank_upper: F0D040}
+    - duration: 450ms
+      lights: {l_gi_5bank_lower: 404040, l_gi_5bank_upper: 404040}
+  real_villain_d1_pulse:
+    - duration: 450ms
+      lights: {l_5bank_1: FFFFFF}
+    - duration: 450ms
+      lights: {l_5bank_1: 404040}
+  real_villain_d2_pulse:
+    - duration: 450ms
+      lights: {l_5bank_2: FFFFFF}
+    - duration: 450ms
+      lights: {l_5bank_2: 404040}
+  real_villain_d3_pulse:
+    - duration: 450ms
+      lights: {l_5bank_3: FFFFFF}
+    - duration: 450ms
+      lights: {l_5bank_3: 404040}
+  real_villain_d4_pulse:
+    - duration: 450ms
+      lights: {l_5bank_4: FFFFFF}
+    - duration: 450ms
+      lights: {l_5bank_4: 404040}
+  real_villain_d5_pulse:
+    - duration: 450ms
+      lights: {l_5bank_5: FFFFFF}
+    - duration: 450ms
+      lights: {l_5bank_5: 404040}
+
+  real_villain_upper_spinner_pulse:
+    - duration: 400ms
+      lights: {l_gi_a: FFFFFF}
+    - duration: 400ms
+      lights: {l_gi_a: 404040}
+
+  real_villain_upper_left_pulse:
+    - duration: 500ms
+      lights: {l_upper_left: FFFFFF}
+    - duration: 500ms
+      lights: {l_upper_left: 404040}
+  real_villain_upper_center_pulse:
+    - duration: 500ms
+      lights: {l_upper_middle: FFFFFF}
+    - duration: 500ms
+      lights: {l_upper_middle: 404040}
+  real_villain_upper_right_pulse:
+    - duration: 500ms
+      lights: {l_upper_right: FFFFFF}
+    - duration: 500ms
+      lights: {l_upper_right: 404040}
 
 sound_player:
   play_mode_jackpot:
-    jackpot_2:
-      action: play
-      bus: effects
+    jackpot_2: {action: play, bus: effects}
   play_mode_super_jackpot:
-    jackpot_2:
-      action: play
-      bus: effects
+    jackpot_2: {action: play, bus: effects}

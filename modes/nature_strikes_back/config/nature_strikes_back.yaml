@@ -214,21 +214,30 @@ light_player:
     l_star: off
 
   nature_strikes_back_saucers_unlit:
-    l_1: off
-    l_2: off
-    l_3: off
+    l_1_hole_l: off
+    l_1_hole_r: off
+    l_2_hole_l: off
+    l_2_hole_r: off
+    l_3_hole_l: off
+    l_3_hole_r: off
   nature_strikes_back_saucer_1_parked:
-    l_1: 404040
+    l_1_hole_l: 400000
+    l_1_hole_r: 400000
   nature_strikes_back_saucer_2_parked:
-    l_2: 404040
+    l_2_hole_l: 400000
+    l_2_hole_r: 400000
   nature_strikes_back_saucer_3_parked:
-    l_3: 404040
+    l_3_hole_l: 400000
+    l_3_hole_r: 400000
   nature_strikes_back_saucer_1_released:
-    l_1: off
+    l_1_hole_l: off
+    l_1_hole_r: off
   nature_strikes_back_saucer_2_released:
-    l_2: off
+    l_2_hole_l: off
+    l_2_hole_r: off
   nature_strikes_back_saucer_3_released:
-    l_3: off
+    l_3_hole_l: off
+    l_3_hole_r: off
 
   nature_strikes_back_web_left_collected:
     l_left_web_target: FFFFFF
@@ -250,9 +259,6 @@ light_player:
 
   mode_nature_strikes_back_stopping:
     gi: E0E0E0
-    l_1: off
-    l_2: off
-    l_3: off
     l_left_web_target: off
     l_mid_web_target: off
     l_star: off
@@ -288,19 +294,19 @@ shows:
 
   nature_saucer_1_pulse:
     - duration: 400ms
-      lights: {l_1: FFFFFF}
+      lights: {l_1_hole_l: red, l_1_hole_r: red}
     - duration: 400ms
-      lights: {l_1: 404040}
+      lights: {l_1_hole_l: 400000, l_1_hole_r: 400000}
   nature_saucer_2_pulse:
     - duration: 400ms
-      lights: {l_2: FFFFFF}
+      lights: {l_2_hole_l: red, l_2_hole_r: red}
     - duration: 400ms
-      lights: {l_2: 404040}
+      lights: {l_2_hole_l: 400000, l_2_hole_r: 400000}
   nature_saucer_3_pulse:
     - duration: 400ms
-      lights: {l_3: FFFFFF}
+      lights: {l_3_hole_l: red, l_3_hole_r: red}
     - duration: 400ms
-      lights: {l_3: 404040}
+      lights: {l_3_hole_l: 400000, l_3_hole_r: 400000}
 
   nature_zone_upper_left_cyan: &cyan_ul
     - duration: 500ms

@@ -376,27 +376,21 @@ light_player:
   mastermind_trap_doc_saucer_1_red:
     l_1_hole_l: red
     l_1_hole_r: red
-    l_1: red
   mastermind_trap_doc_saucer_1_off:
     l_1_hole_l: off
     l_1_hole_r: off
-    l_1: off
   mastermind_trap_doc_saucer_2_red:
     l_2_hole_l: red
     l_2_hole_r: red
-    l_2: red
   mastermind_trap_doc_saucer_2_off:
     l_2_hole_l: off
     l_2_hole_r: off
-    l_2: off
   mastermind_trap_doc_saucer_3_red:
     l_3_hole_l: red
     l_3_hole_r: red
-    l_3: red
   mastermind_trap_doc_saucer_3_off:
     l_3_hole_l: off
     l_3_hole_r: off
-    l_3: off
   mastermind_trap_doc_star_red: {l_star: red}
   mastermind_trap_doc_star_off: {l_star: off}
   mastermind_trap_doc_upper_a_red: {l_a_rollover: red}

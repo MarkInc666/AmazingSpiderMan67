@@ -354,15 +354,21 @@ light_player:
     l_left_b: "504000"
 
   mad_science_meltdown_saucer_lights_clear:
-    l_1: off
-    l_2: off
-    l_3: off
+    l_1_hole_l: off
+    l_1_hole_r: off
+    l_2_hole_l: off
+    l_2_hole_r: off
+    l_3_hole_l: off
+    l_3_hole_r: off
   mad_science_meltdown_saucer_1_parked_light:
-    l_1: green
+    l_1_hole_l: red
+    l_1_hole_r: red
   mad_science_meltdown_saucer_2_parked_light:
-    l_2: green
+    l_2_hole_l: red
+    l_2_hole_r: red
   mad_science_meltdown_saucer_3_parked_light:
-    l_3: green
+    l_3_hole_l: red
+    l_3_hole_r: red
 
 shows:
   mad_science_meltdown_left_bank_pulse:

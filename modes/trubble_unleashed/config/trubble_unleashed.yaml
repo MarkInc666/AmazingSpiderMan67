@@ -193,19 +193,19 @@ shows:
 
   trubble_unleashed_saucer_1_lit_show:
     - duration: 200ms
-      lights: {l_1: purple, l_1_hole_l: purple, l_1_hole_r: purple}
+      lights: {l_1_hole_l: red, l_1_hole_r: red}
     - duration: 200ms
-      lights: {l_1: off, l_1_hole_l: off, l_1_hole_r: off}
+      lights: {l_1_hole_l: off, l_1_hole_r: off}
   trubble_unleashed_saucer_2_lit_show:
     - duration: 200ms
-      lights: {l_2: purple, l_2_hole_l: purple, l_2_hole_r: purple}
+      lights: {l_2_hole_l: red, l_2_hole_r: red}
     - duration: 200ms
-      lights: {l_2: off, l_2_hole_l: off, l_2_hole_r: off}
+      lights: {l_2_hole_l: off, l_2_hole_r: off}
   trubble_unleashed_saucer_3_lit_show:
     - duration: 200ms
-      lights: {l_3: purple, l_3_hole_l: purple, l_3_hole_r: purple}
+      lights: {l_3_hole_l: red, l_3_hole_r: red}
     - duration: 200ms
-      lights: {l_3: off, l_3_hole_l: off, l_3_hole_r: off}
+      lights: {l_3_hole_l: off, l_3_hole_r: off}
 
   trubble_unleashed_cyclops_pulse:
     - duration: 200ms
@@ -270,13 +270,10 @@ light_player:
     l_gi_3bank: off
     l_gi_5bank_lower: off
     l_gi_5bank_upper: off
-    l_1: off
     l_1_hole_l: off
     l_1_hole_r: off
-    l_2: off
     l_2_hole_l: off
     l_2_hole_r: off
-    l_3: off
     l_3_hole_l: off
     l_3_hole_r: off
     l_upper_left: off

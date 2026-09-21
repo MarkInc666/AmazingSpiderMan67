@@ -285,9 +285,6 @@ light_player:
     l_pop_2_10: off
     l_pop_2_11: off
     l_pop_2_12: off
-    l_1: off
-    l_2: off
-    l_3: off
     l_3bankbonus: off
     l_5bank_1: off
     l_5bank_2: off
@@ -343,9 +340,9 @@ light_player:
     l_pop_2_10: "103010"
     l_pop_2_11: "103010"
     l_pop_2_12: "103010"
-  master_vine_saucer_1_collected: {l_1: "303030"}
-  master_vine_saucer_2_collected: {l_2: "303030"}
-  master_vine_saucer_3_collected: {l_3: "303030"}
+  master_vine_saucer_1_collected: {l_1_hole_l: "400000", l_1_hole_r: "400000"}
+  master_vine_saucer_2_collected: {l_2_hole_l: "400000", l_2_hole_r: "400000"}
+  master_vine_saucer_3_collected: {l_3_hole_l: "400000", l_3_hole_r: "400000"}
   master_vine_left_bank_collected: {l_3bankbonus: "303030"}
   master_vine_left_bank_off: {l_3bankbonus: off}
   master_vine_right_drop_1_collected: {l_5bank_1: "303030"}
@@ -357,7 +354,7 @@ light_player:
   master_vine_b_collected: {l_b_rollover: "303030"}
   master_vine_middle_a_collected: {l_right_a: "303030"}
   master_vine_middle_b_collected: {l_left_b: "303030"}
-  master_vine_star_collected: {l_star: "300000"}
+  master_vine_star_collected: {l_star: "400000"}
 
 shows:
   master_vine_upper_spinner_pulse:
@@ -421,19 +418,19 @@ shows:
       lights: *vine_right_pop_dim
   master_vine_saucer_1_pulse:
     - duration: 500ms
-      lights: {l_1: white}
+      lights: {l_1_hole_l: red, l_1_hole_r: red}
     - duration: 500ms
-      lights: {l_1: "303030"}
+      lights: {l_1_hole_l: "400000", l_1_hole_r: "400000"}
   master_vine_saucer_2_pulse:
     - duration: 500ms
-      lights: {l_2: white}
+      lights: {l_2_hole_l: red, l_2_hole_r: red}
     - duration: 500ms
-      lights: {l_2: "303030"}
+      lights: {l_2_hole_l: "400000", l_2_hole_r: "400000"}
   master_vine_saucer_3_pulse:
     - duration: 500ms
-      lights: {l_3: white}
+      lights: {l_3_hole_l: red, l_3_hole_r: red}
     - duration: 500ms
-      lights: {l_3: "303030"}
+      lights: {l_3_hole_l: "400000", l_3_hole_r: "400000"}
   master_vine_left_bank_pulse:
     - duration: 500ms
       lights: {l_3bankbonus: white}
@@ -488,7 +485,7 @@ shows:
     - duration: 500ms
       lights: {l_star: white}
     - duration: 500ms
-      lights: {l_star: "300000"}
+      lights: {l_star: "400000"}
 
 sound_player:
   play_mode_jackpot:
