@@ -9,7 +9,7 @@ One random city area is active at a time:
 - Spinner: 10 spins
 - Star: 3 hits
 - Upper Targets: 2 hits each
-- Drops: complete both banks
+- Drops: complete both banks (message: COMPLETE THE DROP TARGET BANKS)
 
 Active area hits score 50K.
 Inactive area hits score 20K.
@@ -17,10 +17,12 @@ Inactive area hits score 20K.
 Completing the active area lights Daily Bugle Jackpot at the VUK, opens the gate.
 Jackpot = 100K × (balls in play + cleared areas)
 
-Complete A+B before collecting Jackpot to add-a-ball on Jackpot collect.
+Complete A+B before a Daily Bugle/VUK visit to qualify add-a-ball.
+If fewer than 5 balls are in play when the VUK is reached, add-a-ball is awarded.
+This applies to normal Jackpot play and Victory Laps.
 Max 5 balls in play.
-10 second ball save when ball added 
-A+B resets after each Jackpot.
+10 second ball save when ball added.
+A+B is consumed/reset by the VUK visit. A+B lighting is yellow, never red.
 
 Saucers score 50K.
 If more than 1 ball is active, saucers hold the ball for 10s, then eject.
@@ -29,12 +31,14 @@ If only 1 ball remains, saucers eject immediately.
 Upper gate opens only when:
 - Daily Bugle Jackpot is ready
 - Spinner area is active
-- Upper Target area is active
+- Upper Target area is active (gate must open immediately for this phase)
 
 After all city areas are cleared:
 Victory Laps begin.
 All areas are lit for 50K per hit.
+Status shows Victory Laps / Complete A+B rather than a zero jackpot counter.
 A+B opens gate and Daily Bugle Super Jackpot is lit for 1M × balls in play.
+A+B may also award add-a-ball at the VUK whenever fewer than 5 balls are in play.
 
 Mode ends when only 1 ball remains.
 If a ball is held in a saucer when the mode ends, eject it.

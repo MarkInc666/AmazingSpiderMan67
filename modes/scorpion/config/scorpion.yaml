@@ -68,9 +68,7 @@ event_player:
   s_inlane_a_active:
     - scorpion_middle_exit_inferred
 
-  s_pop_left_active:
-    - scorpion_pop_hit
-
+  # The inferred middle exit targets only the RIGHT pop bumper.
   s_pop_right_active:
     - scorpion_pop_hit
 
@@ -270,26 +268,21 @@ shows:
         l_gi_3bank: off
 
   scorpion_middle_sting_show:
-    - duration: 250ms
+    # Middle route uses the RIGHT pop only. Light the entire 12-LED ring green.
+    - duration: 1s
       lights:
-        l_pop_1_1: green
-        l_pop_1_4: green
-        l_pop_1_7: green
-        l_pop_1_10: green
         l_pop_2_1: green
+        l_pop_2_2: green
+        l_pop_2_3: green
         l_pop_2_4: green
+        l_pop_2_5: green
+        l_pop_2_6: green
         l_pop_2_7: green
+        l_pop_2_8: green
+        l_pop_2_9: green
         l_pop_2_10: green
-    - duration: 250ms
-      lights:
-        l_pop_1_1: off
-        l_pop_1_4: off
-        l_pop_1_7: off
-        l_pop_1_10: off
-        l_pop_2_1: off
-        l_pop_2_4: off
-        l_pop_2_7: off
-        l_pop_2_10: off
+        l_pop_2_11: green
+        l_pop_2_12: green
 
   scorpion_right_sting_target_1_show:
     - duration: 250ms

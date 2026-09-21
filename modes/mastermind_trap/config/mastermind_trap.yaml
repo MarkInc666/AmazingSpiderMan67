@@ -266,26 +266,21 @@ shows:
     - duration: 300ms
       lights: {l_5bank_5: off, l_gi_5bank_lower: off, l_gi_5bank_upper: off}
   mastermind_para_pops:
-    - duration: 300ms
+    # Scorpion center route uses only the RIGHT pop; light its full LED ring.
+    - duration: 1s
       lights:
-        l_pop_1_1: green
-        l_pop_1_4: green
-        l_pop_1_7: green
-        l_pop_1_10: green
         l_pop_2_1: green
+        l_pop_2_2: green
+        l_pop_2_3: green
         l_pop_2_4: green
+        l_pop_2_5: green
+        l_pop_2_6: green
         l_pop_2_7: green
+        l_pop_2_8: green
+        l_pop_2_9: green
         l_pop_2_10: green
-    - duration: 300ms
-      lights:
-        l_pop_1_1: off
-        l_pop_1_4: off
-        l_pop_1_7: off
-        l_pop_1_10: off
-        l_pop_2_1: off
-        l_pop_2_4: off
-        l_pop_2_7: off
-        l_pop_2_10: off
+        l_pop_2_11: green
+        l_pop_2_12: green
   mastermind_lizard_pops:
     - duration: 500ms
       lights:

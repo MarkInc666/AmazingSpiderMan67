@@ -132,8 +132,8 @@ class MastermindTrap(Mode):
         self.add_mode_event_handler("s_upper_target_center_active", self._upper_target, target="center")
         self.add_mode_event_handler("s_upper_target_right_active", self._upper_target, target="right")
 
-        self.add_mode_event_handler("s_pop_left_active", self._pop_hit)
-        self.add_mode_event_handler("s_pop_right_active", self._pop_hit)
+        self.add_mode_event_handler("s_pop_left_active", self._pop_hit, side="left")
+        self.add_mode_event_handler("s_pop_right_active", self._pop_hit, side="right")
         self.add_mode_event_handler("s_web_target_left_active", self._left_web_hit)
         self.add_mode_event_handler("s_web_target_mid_active", self._mid_web_hit)
 
@@ -334,10 +334,14 @@ class MastermindTrap(Mode):
         self.machine.events.post(f"{self.MODE_KEY}_phase_lizard")
         self._sync_status("MAKE SERUM", "HIT POPS 0/2")
 
-    def _pop_hit(self, **kwargs):
+    def _pop_hit(self, side, **kwargs):
         if self.mode_done:
             return
-        if self.phase == "para_scorpion" and self._collect_para_area("pops"):
+        # Scorpion's inferred middle exit targets the RIGHT pop only. The left
+        # pop remains valid later in the Lizard/Mysterio serum phase.
+        if self.phase == "para_scorpion":
+            if side == "right" and self._collect_para_area("pops"):
+                return
             return
         if self.phase != "lizard_mysterio" or self.delivery_candidates:
             return

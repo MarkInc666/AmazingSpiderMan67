@@ -89,7 +89,7 @@ class FinalShowdown(Mode):
             "required": 6,
         },
         "drops": {
-            "display": "DROP TARGETS",
+            "display": "DROP TARGET BANKS",
             "required": 2,
         },
     }
@@ -262,15 +262,30 @@ class FinalShowdown(Mode):
         self._reset_area_specific_progress()
 
         self._update_gate()
+        # Upper-target play physically requires access to the rooftop. Post the
+        # open event explicitly when this phase is selected so no stale gate
+        # close from the previous area can win the transition.
+        if self.current_area == "upper_targets":
+            self.machine.events.post("final_showdown_open_upper_gate")
+
         self.machine.events.post("final_showdown_area_changed", area=self.current_area)
         self.machine.events.post("final_showdown_clear_area_lights")
         self.machine.events.post(f"final_showdown_area_{self.current_area}_lit")
-        self.machine.events.post(
-            "show_mode_message",
-            message_mode_title=f"HIT {area_data['display']}",
-            message_mode_subtitle=f"{area_data['required']} NEEDED",
-            reminder=True,
-        )
+
+        if self.current_area == "drops":
+            self.machine.events.post(
+                "show_mode_message",
+                message_mode_title="COMPLETE THE DROP TARGET BANKS",
+                message_mode_subtitle="",
+                reminder=True,
+            )
+        else:
+            self.machine.events.post(
+                "show_mode_message",
+                message_mode_title=f"HIT {area_data['display']}",
+                message_mode_subtitle=f"{area_data['required']} NEEDED",
+                reminder=True,
+            )
         self._update_area_status()
 
     def _reset_area_specific_progress(self):
@@ -363,6 +378,11 @@ class FinalShowdown(Mode):
             return
         self.machine.events.post("request_vuk_eject", delay_ms=2_000)
 
+        # A+B is a VUK qualification, not a normal-jackpot-only qualification.
+        # If A+B was completed before this VUK visit, award the add-a-ball
+        # whenever there is room, including during Victory Laps.
+        self._consume_ab_at_vuk()
+
         if self.victory_laps:
             self._collect_super_jackpot()
             return
@@ -373,15 +393,27 @@ class FinalShowdown(Mode):
 
         self._collect_jackpot()
 
+    def _consume_ab_at_vuk(self):
+        if self._get("final_showdown_ab_ready") != 1:
+            return
+
+        if self._balls_in_play() < self.MAX_BALLS:
+            self.machine.events.post("final_showdown_add_a_ball")
+            self.machine.events.post(
+                "show_mode_message",
+                message_mode_title="ADD-A-BALL",
+                message_mode_subtitle="A + B COLLECTED",
+            )
+
+        # The qualification is consumed by this VUK visit whether or not the
+        # machine was already at the five-ball cap.
+        self._reset_ab()
+
     def _collect_jackpot(self):
         jackpot_value = self._update_jackpot_value()
         self._score(jackpot_value)
         self._add("final_showdown_jackpots", 1)
 
-        if self._get("final_showdown_ab_ready") == 1 and self._balls_in_play() < self.MAX_BALLS:
-            self.machine.events.post("final_showdown_add_a_ball")
-
-        self._reset_ab()
         self.jackpot_ready = False
         self._set("final_showdown_jackpot_ready", 0)
 
@@ -419,8 +451,8 @@ class FinalShowdown(Mode):
         )
         self.machine.events.post(
             "show_mode_status",
-            mode_status_title="SUPER JACKPOTS",
-            mode_status_value=self._get("final_showdown_super_jackpots"),
+            mode_status_title="VICTORY LAPS",
+            mode_status_value="50K PER HIT",
         )
 
     def _victory_lap_hit(self):
@@ -438,7 +470,6 @@ class FinalShowdown(Mode):
         self.super_jackpot_ready = False
         self._set("final_showdown_super_jackpot_ready", 0)
         self._set("final_showdown_super_jackpot_value", 0)
-        self._reset_ab()
         self._update_gate()
 
         self.machine.events.post("final_showdown_super_jackpot_collected", value=value)
@@ -448,6 +479,11 @@ class FinalShowdown(Mode):
             message_mode_value=value,
         )
         self.machine.events.post("play_mode_super_jackpot")
+        self.machine.events.post(
+            "show_mode_status",
+            mode_status_title="VICTORY LAPS",
+            mode_status_value="COMPLETE A + B",
+        )
 
     def _a_hit(self, **kwargs):
         if self._ignore_gameplay_input():
@@ -465,6 +501,7 @@ class FinalShowdown(Mode):
         if self._get("final_showdown_a_hit") and self._get("final_showdown_b_hit"):
             self._set("final_showdown_ab_ready", 1)
             self.machine.events.post("final_showdown_ab_complete")
+            self.machine.events.post("final_showdown_ab_available_clear_show")
             self.machine.events.post("final_showdown_ab_ready_show")
             
             if self.victory_laps:
@@ -474,6 +511,11 @@ class FinalShowdown(Mode):
                 self._set("final_showdown_super_jackpot_value", value)
                 self.machine.events.post("final_showdown_super_jackpot_lit", value=value)
                 self.machine.events.post("final_showdown_super_jackpot_lit_show")
+                self.machine.events.post(
+                    "show_mode_status",
+                    mode_status_title="SUPER JACKPOT",
+                    mode_status_value=f"{value:,}",
+                )
                 self._update_gate()
 
     def _reset_ab(self):
@@ -482,6 +524,7 @@ class FinalShowdown(Mode):
         self._set("final_showdown_ab_ready", 0)
         self.machine.events.post("final_showdown_ab_reset")
         self.machine.events.post("final_showdown_ab_clear_show")
+        self.machine.events.post("final_showdown_ab_available_show")
 
     def _pop_hit(self, **kwargs):
         if self._ignore_gameplay_input():
@@ -638,6 +681,12 @@ class FinalShowdown(Mode):
         self.machine.events.post("hide_mode_status")
 
         self._release_all_held_saucers()
+
+        # Shut down every Final Showdown multiball/ball-save source before the
+        # retirement controller forces the last physical ball to drain. Without
+        # this, the terminal drain can still be interpreted as a saved ball and
+        # MPF may serve an unwanted replacement before Bonus.
+        self.machine.events.post("final_showdown_stop_all_multiballs")
 
         # Reaching one ball in play ends this player's Final Showdown attempt.
         # PlayerRetirement snapshots future balls and disables controls from

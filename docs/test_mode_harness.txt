@@ -36,17 +36,17 @@ Mode selector controls
 LEFT / RIGHT flipper release  = previous / next mode
 BOTH flippers                 = enter setup
 
-Selection 68 is EXIT TO ATTRACT. Plunge that selection to disarm the test
-harness, skip the normal end-of-ball bonus, end the disposable test game, and
-return to attract mode. The next press of START begins normal gameplay unless
-the attract-mode enable code is entered again.
+Selection 68 is EXIT TO ATTRACT. Press START on that selection to disarm the
+test harness, skip the normal end-of-ball bonus, end the disposable test game,
+and return to attract mode. The next press of START begins normal gameplay
+unless the attract-mode enable code is entered again.
 
 Villain setup
 -------------
 LEFT / RIGHT = choose More Jackpots, More Time, Bigger Jackpots, Safety Net,
                Shot Assist, or BACK
 BOTH         = toggle the highlighted Case File, or use BACK
-PLUNGE       = start the highlighted villain with exactly those Case Files
+START        = start the highlighted villain with exactly those Case Files
 
 The five test Case File choices are retained between test launches during the
 same test game.
@@ -55,7 +55,7 @@ Wizard / Final Wizard setup
 ---------------------------
 LEFT / RIGHT = adjust chapter Case File total from 0 through 25
 BOTH         = back to the mode list
-PLUNGE       = start the highlighted wizard with that total
+START        = start the highlighted wizard with that total
 
 The harness writes chapter_case_files_collected and the existing derived
 mini_wizard_case_file_bonus / mini_wizard_jackpot_value values, so wizard
@@ -63,24 +63,35 @@ scoring uses the same Case File bonus path as normal play.
 
 Test-session flow
 -----------------
-The attract machine flag is already armed before the test game posts its first
-ball_started event. Campaign-only background modes (villain qualification,
-villain saucer-start handling, Case File qualification, and Daily Bugle mystery)
-therefore do not start on the test-session ball. This prevents a normal chapter
-qualification state from appearing briefly before the selected test launches.
+The attract machine flag is armed before the disposable game begins.
+villain_progression is the only campaign coordinator that examines the original
+ball_started edge. It decides whether the ball belongs to a normal game or a
+test session. Normal games then receive a separate normal_game_ball_started
+event; campaign-only modes (chapter select, villain qualification, villain
+saucer-start handling, Case File qualification, Daily Bugle mystery and the
+normal skill shot) start from that event instead of ball_started. Test sessions
+never receive it. The test branch also clears the new-player chapter-select
+flags before opening TEST MODE SELECT. This removes the chapter/qualification
+race entirely rather than relying on same-event conditional mode starts.
 
 Selected villains and wizards are not test-aware. The harness/progression layer
 sets up the disposable player state and then uses each mode's normal intro/start
 events. The gameplay mode runs the same code path it uses in a normal game.
 Test summaries are still shown. After a summary, the harness disables the
-flippers and autofire coils so any live ball drains. The test-session ball save protects only the last ball, preventing
-ball_ending and the end-of-ball bonus, then serves that ball back to the
-mechanical shooter lane without auto-plunging. TEST MODE SELECT reopens only
-after the replacement reaches the shooter lane. Multiball drains above one ball
-are not saved, so multiball modes still reduce normally. A last-ball drain
-during an active test resolves that attempt as a failed/ended mode, shows its
-normal summary, and uses the same return loop.
+flippers and autofire coils so any live ball drains. The test-session ball save
+protects only the last ball, preventing ball_ending and the end-of-ball bonus,
+then serves that ball back to the mechanical shooter lane. TEST MODE SELECT
+reopens after the replacement reaches the shooter lane and leaves the ball
+parked there while the player chooses the next test. Pressing START launches the
+selected villain/wizard through its normal intro; 250 ms after that intro ends,
+the harness pulses the auto-plunger if the shooter-lane switch is still active.
+The shooter-lane switch is never used as a tester command. Multiball drains above
+one ball are not saved, so multiball modes still reduce normally. A last-ball
+drain during an active test resolves that attempt as a failed/ended mode, shows
+its normal summary, and uses the same return loop.
 
 Normal skill shot and the normal plunge ball save are suppressed for the entire
 test session. Mode-specific ball saves remain active so their behavior can still
-be tested.
+be tested. While TEST MODE SELECT is active, its START-button handler vetoes
+MPF's normal Ball-1 add-player request; START therefore belongs exclusively to
+the harness on that screen.

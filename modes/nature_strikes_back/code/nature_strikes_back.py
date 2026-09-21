@@ -210,7 +210,11 @@ class NatureStrikesBack(Mode):
             self._eject_saucer(saucer)
             return
 
-        if self.stage == 1 and saucer in self.lit_saucers:
+        # A saucer qualified during Stage 1 remains collectible throughout the
+        # entire wizard cycle. Add-a-Ball is never restricted to Stage 1; if
+        # there is room below the 5-ball cap when the qualified saucer is hit,
+        # award it immediately.
+        if saucer in self.lit_saucers:
             self._collect_lit_saucer(saucer)
 
         self.held_saucers.add(saucer)

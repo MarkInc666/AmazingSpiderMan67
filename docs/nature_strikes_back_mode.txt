@@ -15,7 +15,8 @@ CYCLE 1 — BUILD THE CHARGE
 - During this stage only, each upper target lights its matching saucer:
   left -> saucer 1, center -> saucer 2, right -> saucer 3.
 - Hitting any lit saucer clears all three saucer qualifications.
-- If fewer than 5 balls are in play, the lit saucer awards Add-a-Ball.
+- A saucer qualified during Stage 1 stays collectible through every later stage of that cycle.
+- If fewer than 5 balls are in play when the qualified saucer is collected, it always awards Add-a-Ball.
 - At 5 balls, the lit saucer scores 3M instead.
 - The qualification can be earned again during Stage 1 by hitting upper targets.
 

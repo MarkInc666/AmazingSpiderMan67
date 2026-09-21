@@ -43,3 +43,5 @@ Left and right routes use the same awards. Their challenge comes from the physic
 ## Completion
 
 After the final attempt, Scorpion scoring stops while the ball remains live. `SCORPION DEFEATED!` displays for two seconds, then the normal villain-complete summary begins. Ball-ending teardown skips this delay.
+
+Scorpion middle exit: after rooftop entry, the top-right bank rubber OR middle-right A rollover selects the RIGHT pop bumper; all 12 right-pop LEDs light green. The left pop is not used for this Scorpion target.

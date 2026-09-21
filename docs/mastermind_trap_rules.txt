@@ -34,3 +34,5 @@ SUPER
 - It remains at 100,000 for 2 more seconds.
 - Hit either web target to collect the current value. If not collected after the 2-second hold, the Super expires.
 - After collect or expiry, restart at Parafino + Scorpion and continue until multiball ends.
+
+Scorpion middle exit: after rooftop entry, the top-right bank rubber OR middle-right A rollover selects the RIGHT pop bumper; all 12 right-pop LEDs light green. The left pop is not used for this Scorpion target.

@@ -299,6 +299,14 @@ class VillainProgression(Mode):
         if self._safe_int(test_requested, 0) == 1:
             self.machine.game.player["test_mode_session"] = 1
             self.machine.game.player["test_mode_waiting_for_ball_return"] = 0
+            self.machine.game.player["test_mode_autoplunge_pending"] = 0
+            # New players normally begin with chapter_select_needed=1. Clear
+            # every chapter-select transition flag before the test selector is
+            # opened so the plunger/shooter lane cannot enter normal campaign
+            # selection while the harness owns the ball.
+            self.machine.game.player["chapter_select_needed"] = 0
+            self.machine.game.player["chapter_select_active"] = 0
+            self.machine.game.player["chapter_select_waiting_for_summary"] = 0
             self._clear_runtime_flow_flags()
             self._clear_active_case_file_helpers()
             self._add_handlers()
@@ -366,6 +374,12 @@ class VillainProgression(Mode):
                 post_restore=False,
                 reason="ball_start_restore",
             )
+
+        # Only normal campaign balls receive this initialization edge. The
+        # physical test harness never posts it, so campaign qualification,
+        # chapter selection, Case Files, Daily Bugle, villain-start and skill
+        # shot modes cannot race the test selector on the original ball_started.
+        self.machine.events.post("normal_game_ball_started")
 
         # Chapter Select starts automatically from config.yaml when needed;
         # the Start button remains reserved for normal start/add-player behavior.
@@ -956,6 +970,7 @@ class VillainProgression(Mode):
         self.add_mode_event_handler("mini_wizard_start_ready_at_daily_bugle", self._mini_wizard_ready_at_daily_bugle)
         self.add_mode_event_handler("s_vuk_switch_active", self._daily_bugle_hit)
         self.add_mode_event_handler("villain_bookend_intro_done", self._mini_wizard_intro_done)
+        self.add_mode_event_handler("villain_bookend_intro_done", self._test_mode_intro_done_autoplunge)
 
         # Shared VUK release API. The VUK is a raw switch/coil pair rather than
         # an MPF ball device, so delayed releases must survive the scoring
@@ -1010,6 +1025,10 @@ class VillainProgression(Mode):
         kind = str(mode_kind or "").upper()
         key = str(mode_key or "")
         player["test_mode_select_stage"] = "MODE"
+        # Keep the physical ball in the shooter lane through the normal intro.
+        # The harness will autoplunge after villain_bookend_intro_done; the
+        # selected gameplay mode itself remains completely test-unaware.
+        player["test_mode_autoplunge_pending"] = 1
 
         if kind == "VILLAIN" and key in self.VILLAINS:
             self._apply_test_case_files()
@@ -1045,6 +1064,7 @@ class VillainProgression(Mode):
 
         chapter_number, chapter_info = self._chapter_for_mini_wizard(key)
         if kind != "WIZARD" or not chapter_info:
+            player["test_mode_autoplunge_pending"] = 0
             self.machine.events.post("test_mode_launch_invalid", mode_key=key, mode_kind=kind)
             self._open_test_mode_selector()
             return
@@ -1072,6 +1092,28 @@ class VillainProgression(Mode):
         )
         self.machine.events.post("test_mode_started", mode_key=key, mode_kind=kind, case_files=total)
 
+    def _test_mode_intro_done_autoplunge(self, **kwargs):
+        """Autoplunge the tester ball after the selected mode's normal intro."""
+        if not self.machine.game:
+            return
+        player = self.machine.game.player
+        if self._safe_int(player["test_mode_session"], 0) != 1:
+            return
+        if self._safe_int(player["test_mode_autoplunge_pending"], 0) != 1:
+            return
+        player["test_mode_autoplunge_pending"] = 0
+        self.delay.reset(name="test_mode_launch_autoplunge", ms=250, callback=self._test_mode_autoplunge)
+
+    def _test_mode_autoplunge(self):
+        if not self.machine.game:
+            return
+        player = self.machine.game.player
+        if self._safe_int(player["test_mode_session"], 0) != 1:
+            return
+        plunger = self.machine.switches.get("s_plunger")
+        if plunger and self.machine.switch_controller.is_active(plunger):
+            self.machine.events.post("plunger_auto_fire")
+
     def _return_to_test_selector(self, reason="test_mode_complete"):
         player = self.machine.game.player
         self._release_summary_saucer_holds()
@@ -1083,6 +1125,7 @@ class VillainProgression(Mode):
         player["villain_current_name"] = ""
         player["villain_mode_running_name"] = ""
         player["mini_wizard_current_key"] = ""
+        player["test_mode_autoplunge_pending"] = 0
         player["test_mode_waiting_for_ball_return"] = 1
         self._post_global_cleanup_events(reason=reason)
         self.machine.events.post("cmd_flippers_disable")

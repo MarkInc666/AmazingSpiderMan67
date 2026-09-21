@@ -41,12 +41,15 @@ multiballs:
     start_events: final_showdown_start_multiball
     stop_events:
       - final_showdown_stop_multiball
+      - final_showdown_stop_all_multiballs
 
   final_showdown_add_a_ball:
     ball_count: 1
     ball_count_type: add
     shoot_again: 10s
     start_events: final_showdown_add_a_ball
+    stop_events:
+      - final_showdown_stop_all_multiballs
 
 
 event_player:
@@ -83,6 +86,7 @@ event_player:
     - final_showdown_reset_banks
     - clear_saucers
     - final_showdown_disable_daily_bugle_mystery
+    - final_showdown_ab_available_show
     - final_showdown_mode_intro
 
   final_showdown_reset_banks:
@@ -239,6 +243,17 @@ show_player:
       loops: -1
       speed: 4
 
+
+  final_showdown_ab_available_show:
+    final_showdown_ab_available_show:
+      action: play
+      loops: -1
+      speed: 2
+
+  final_showdown_ab_available_clear_show:
+    final_showdown_ab_available_show:
+      action: stop
+
   final_showdown_ab_ready_show:
     final_showdown_ab_ready_show:
       action: play
@@ -275,6 +290,8 @@ show_player:
     final_showdown_daily_bugle_jackpot_show:
       action: stop
     final_showdown_ab_ready_show:
+      action: stop
+    final_showdown_ab_available_show:
       action: stop
     final_showdown_victory_laps_show:
       action: stop
@@ -393,19 +410,33 @@ shows:
       lights:
         l_gi_top_1: off
 
-  final_showdown_ab_ready_show:
-    - duration: 200ms
+  final_showdown_ab_available_show:
+    - duration: 350ms
       lights:
-        l_a_rollover: purple
-        l_b_rollover: purple
-        l_right_a: purple
-        l_left_b: purple
-    - duration: 200ms
+        l_a_rollover: yellow
+        l_b_rollover: yellow
+        l_right_a: yellow
+        l_left_b: yellow
+    - duration: 350ms
       lights:
         l_a_rollover: off
         l_b_rollover: off
         l_right_a: off
         l_left_b: off
+
+  final_showdown_ab_ready_show:
+    - duration: 200ms
+      lights:
+        l_a_rollover: yellow
+        l_b_rollover: yellow
+        l_right_a: yellow
+        l_left_b: yellow
+    - duration: 200ms
+      lights:
+        l_a_rollover: F0C020
+        l_b_rollover: F0C020
+        l_right_a: F0C020
+        l_left_b: F0C020
 
   final_showdown_victory_laps_show:
     - duration: 150ms

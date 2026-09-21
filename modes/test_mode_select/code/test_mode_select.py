@@ -6,8 +6,9 @@ class TestModeSelect(Mode):
 
     Attract mode only arms the session. The player presses START normally, then
     this mode owns the selection UI while a real player/ball context exists.
-    A clean both-flipper chord enters setup/toggles a villain Case File; a ball
-    leaving the shooter lane launches the configured test.
+    A clean both-flipper chord enters setup/toggles a villain Case File. START
+    launches the highlighted test; the harness autoplunge occurs after the normal
+    villain/wizard intro finishes, so the gameplay mode never knows it is tested.
     """
 
     CATALOG = [
@@ -99,14 +100,15 @@ class TestModeSelect(Mode):
         self.clean_release = not self.left_active and not self.right_active
         self.both_armed = False
         self.suppress_next_single_release = False
-        self.launch_armed = self._switch_active("s_plunger")
-
         self.add_mode_event_handler("s_left_flipper_active", self._left_active)
         self.add_mode_event_handler("s_left_flipper_inactive", self._left_inactive)
         self.add_mode_event_handler("s_right_flipper_active", self._right_active)
         self.add_mode_event_handler("s_right_flipper_inactive", self._right_inactive)
-        self.add_mode_event_handler("s_plunger_active", self._plunger_active)
-        self.add_mode_event_handler("s_plunger_inactive", self._plunger_inactive)
+        self.add_mode_event_handler("s_startbutton_active", self._start_pressed)
+        # While the selector is active, START is a test-harness control, not an
+        # add-player request. player_add_request is a Boolean Event in MPF; a
+        # False return vetoes the normal Ball-1 add-player behavior.
+        self.add_mode_event_handler("player_add_request", self._deny_player_add)
 
         stage = str(player["test_mode_select_stage"] or "MODE")
         if stage not in ("MODE", "VILLAIN_SETUP", "WIZARD_SETUP"):
@@ -184,7 +186,6 @@ class TestModeSelect(Mode):
         if stage == "MODE":
             _, _, kind, _, _ = self.CATALOG[int(p["test_mode_select_index"])]
             if kind == "EXIT":
-                self.machine.events.post("test_mode_exit_requires_plunge")
                 self._publish()
                 return
             p["test_mode_select_stage"] = "VILLAIN_SETUP" if kind == "VILLAIN" else "WIZARD_SETUP"
@@ -202,19 +203,19 @@ class TestModeSelect(Mode):
             p["test_mode_select_stage"] = "MODE"
         self._publish()
 
-    def _plunger_active(self, **kwargs):
-        self.launch_armed = True
+    def _deny_player_add(self, **kwargs):
+        return False
 
-    def _plunger_inactive(self, **kwargs):
-        if not self.launch_armed:
+    def _start_pressed(self, **kwargs):
+        """Launch the highlighted test without using the shooter-lane switch."""
+        p = self.machine.game.player
+        index = int(p["test_mode_select_index"])
+        _, _, kind, _, _ = self.CATALOG[index]
+        if kind == "EXIT":
+            self._exit_to_attract()
             return
-        self.launch_armed = False
-        stage = self.machine.game.player["test_mode_select_stage"]
-        if stage == "MODE":
-            index = int(self.machine.game.player["test_mode_select_index"])
-            if self.CATALOG[index][2] == "EXIT":
-                self._exit_to_attract()
-            return
+        # START works from either the list or a setup page. The currently
+        # retained Case File settings/total are used exactly as displayed.
         self._launch()
 
     def _exit_to_attract(self):
@@ -256,10 +257,10 @@ class TestModeSelect(Mode):
             if kind == "EXIT":
                 p["test_mode_select_setup_title"] = "END TEST SESSION"
                 p["test_mode_select_detail"] = "RETURN TO ATTRACT"
-                p["test_mode_select_help"] = "PLUNGE = EXIT TO ATTRACT"
+                p["test_mode_select_help"] = "START = EXIT TO ATTRACT"
             else:
                 p["test_mode_select_setup_title"] = "CHOOSE MODE"
-                p["test_mode_select_help"] = "LEFT/RIGHT = SCROLL    BOTH FLIPPERS = SETUP"
+                p["test_mode_select_help"] = "LEFT/RIGHT = SCROLL    BOTH = SETUP    START = RUN"
             p["test_mode_select_setup_value"] = ""
             p["test_mode_select_case_summary"] = ""
         elif stage == "VILLAIN_SETUP":
@@ -272,13 +273,13 @@ class TestModeSelect(Mode):
             p["test_mode_select_setup_title"] = "VILLAIN CASE FILES"
             p["test_mode_select_setup_value"] = title
             p["test_mode_select_case_summary"] = self._case_summary()
-            p["test_mode_select_help"] = "LEFT/RIGHT = CHOOSE    BOTH = TOGGLE/BACK    PLUNGE = START"
+            p["test_mode_select_help"] = "LEFT/RIGHT = CHOOSE    BOTH = TOGGLE/BACK    START = RUN"
         else:
             total = int(p["test_wizard_case_files"])
             p["test_mode_select_setup_title"] = "WIZARD CASE FILE TOTAL"
             p["test_mode_select_setup_value"] = f"{total} / 25   (+{total * 20000:,} / JACKPOT)"
             p["test_mode_select_case_summary"] = ""
-            p["test_mode_select_help"] = "LEFT/RIGHT = 0-25    BOTH = BACK    PLUNGE = START"
+            p["test_mode_select_help"] = "LEFT/RIGHT = 0-25    BOTH = BACK    START = RUN"
         self.machine.events.post("test_mode_select_view_changed", mode_key=key, mode_kind=kind)
 
     def _case_summary(self):
