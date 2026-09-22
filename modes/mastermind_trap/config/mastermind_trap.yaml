@@ -93,10 +93,82 @@ show_player:
     mastermind_para_upper_targets:
       action: play
       loops: -1
+
   mastermind_trap_phase_lizard:
     mastermind_para_saucers: {action: stop}
     mastermind_para_upper_targets: {action: stop}
     mastermind_lizard_pops:
+      action: play
+      loops: -1
+
+  mastermind_trap_delivery_all_on:
+    mastermind_delivery_left_web:
+      action: play
+      loops: -1
+    mastermind_delivery_left_bank:
+      action: play
+      loops: -1
+    mastermind_delivery_right_bank:
+      action: play
+      loops: -1
+  mastermind_trap_delivery_left_web_off:
+    mastermind_delivery_left_web: {action: stop}
+  mastermind_trap_delivery_left_bank_off:
+    mastermind_delivery_left_bank: {action: stop}
+  mastermind_trap_delivery_right_bank_off:
+    mastermind_delivery_right_bank: {action: stop}
+  mastermind_trap_delivery_clear:
+    mastermind_delivery_left_web: {action: stop}
+    mastermind_delivery_left_bank: {action: stop}
+    mastermind_delivery_right_bank: {action: stop}
+
+  mastermind_trap_phase_doc:
+    mastermind_lizard_pops: {action: stop}
+    mastermind_delivery_left_web: {action: stop}
+    mastermind_delivery_left_bank: {action: stop}
+    mastermind_delivery_right_bank: {action: stop}
+    mastermind_doc_spinner:
+      action: play
+      loops: -1
+    mastermind_doc_inlanes:
+      action: play
+      loops: -1
+  mastermind_trap_doc_3x_on:
+    mastermind_doc_spinner: {action: stop}
+    mastermind_doc_spinner_3x:
+      action: play
+      loops: -1
+  mastermind_trap_doc_3x_off:
+    mastermind_doc_spinner_3x: {action: stop}
+    mastermind_doc_spinner:
+      action: play
+      loops: -1
+  mastermind_trap_doc_clear:
+    mastermind_doc_spinner: {action: stop}
+    mastermind_doc_spinner_3x: {action: stop}
+    mastermind_doc_inlanes: {action: stop}
+
+  mastermind_trap_super_on:
+    mastermind_super_webs:
+      action: play
+      loops: -1
+  mastermind_trap_super_off:
+    mastermind_super_webs: {action: stop}
+
+  mode_mastermind_trap_stopping:
+    mastermind_para_saucers: {action: stop}
+    mastermind_para_upper_targets: {action: stop}
+    mastermind_lizard_pops: {action: stop}
+    mastermind_delivery_left_web: {action: stop}
+    mastermind_delivery_left_bank: {action: stop}
+    mastermind_delivery_right_bank: {action: stop}
+    mastermind_doc_spinner: {action: stop}
+    mastermind_doc_spinner_3x: {action: stop}
+    mastermind_doc_inlanes: {action: stop}
+    mastermind_super_webs: {action: stop}
+
+shows:
+  mastermind_lizard_pops:
     # Match standalone Lizard: both complete pop rings pulse purple while serum is being made.
     - duration: 500ms
       lights:
@@ -150,6 +222,7 @@ show_player:
         l_pop_2_10: off
         l_pop_2_11: off
         l_pop_2_12: off
+
   mastermind_delivery_left_web:
     - duration: 300ms
       lights: {l_left_web_target: yellow}
@@ -179,7 +252,7 @@ show_player:
     - duration: 400ms
       lights: {l_spinner: white}
     - duration: 400ms
-      lights: {l_spinner: 303030}
+      lights: {l_spinner: "303030"}
   mastermind_doc_spinner_3x:
     - duration: 150ms
       lights: {l_spinner: white}
@@ -189,7 +262,7 @@ show_player:
     - duration: 500ms
       lights: {l_left_inlane: white, l_right_inlane: white}
     - duration: 500ms
-      lights: {l_left_inlane: 303030, l_right_inlane: 303030}
+      lights: {l_left_inlane: "303030", l_right_inlane: "303030"}
   mastermind_super_webs:
     - duration: 150ms
       lights: {l_left_web_target: white, l_mid_web_target: white}
