@@ -22,16 +22,6 @@ variable_player:
       action: set
       int: 0
 
-  multiball_sinister_surge_add_a_ball_started:
-    multiball_autoplunge_active:
-      action: set
-      int: 1
-
-  multiball_sinister_surge_add_a_ball_ended:
-    multiball_autoplunge_active:
-      action: set
-      int: 0
-
 
 multiballs:
   sinister_surge_multiball:
@@ -39,14 +29,12 @@ multiballs:
     ball_count_type: total
     shoot_again: 20s
     start_events: sinister_surge_start_multiball
+    add_a_ball_events:
+      - sinister_surge_add_a_ball
+    add_a_ball_shoot_again: 10s
+    add_a_ball_hurry_up_time: 3s
     stop_events:
       - sinister_surge_stop_multiball
-
-  sinister_surge_add_a_ball:
-    ball_count: 1
-    ball_count_type: add
-    shoot_again: 10s
-    start_events: sinister_surge_add_a_ball
 
 
 event_player:

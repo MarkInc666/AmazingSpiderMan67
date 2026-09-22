@@ -13,7 +13,7 @@ Rules:
 - After 4 unique drops are down, the rooftop gate opens.
 - Enter the rooftop and take the upper-left exit to stage the right bank.
 - Exit the upper playfield left to raise the pop-up post and stage the right bank.
-- Post holds for 6 seconds, or releases early by flipper/cradle cancel.
+- Post holds for 6 seconds, or releases early by flipper/cradle cancel. The staged Jackpot is live as soon as the right-bank targets finish staging; it does not wait for the post to release.
 - During the hold, the right bank is reset and targets 2, 3, and 4 are knocked down.
 - When the post releases, a final-shot timer starts: 6s normally, 12s with More Time.
 - Right-bank rubber awards the Centaur Jackpot.
@@ -349,6 +349,12 @@ class Centaur(CaseFileMixin, Mode):
             return
         self.machine.events.post("centaur_stage_right_bank_drops")
         self.machine.events.post("centaur_final_shot_staged")
+        # The staged Jackpot is live as soon as targets 2/3/4 are dropped.
+        # The pop-up post may remain raised for the rest of its hold window,
+        # but scoring must not wait for that post to release. If an early
+        # flipper release already started the final phase, do not start it twice.
+        if not self.final_active and self.phase == "post_hold":
+            self._start_final_phase()
 
     def _post_hold_cancel(self, **kwargs):
         if not self.post_hold_active:
@@ -366,7 +372,11 @@ class Centaur(CaseFileMixin, Mode):
         self.post_hold_active = False
         self.machine.events.post("timer_timer_up_post_hold_complete")
         self.machine.events.post("centaur_post_hold_released", reason=reason)
-        self._start_final_phase()
+        # Final scoring now starts when the bank finishes staging. If the post
+        # is released before the 500ms staging delay has completed, start it
+        # here as a fallback; otherwise do not restart/increment the attempt.
+        if not self.final_active and self.phase == "post_hold":
+            self._start_final_phase()
 
     def _start_final_phase(self):
         if self._done_or_summary():

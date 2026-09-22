@@ -97,211 +97,59 @@ show_player:
     mastermind_para_saucers: {action: stop}
     mastermind_para_upper_targets: {action: stop}
     mastermind_lizard_pops:
-      action: play
-      loops: -1
-  mastermind_trap_delivery_all_on:
-    mastermind_lizard_pops: {action: stop}
-    mastermind_delivery_left_web: {action: play, loops: -1}
-    mastermind_delivery_left_bank: {action: play, loops: -1}
-    mastermind_delivery_right_bank: {action: play, loops: -1}
-  mastermind_trap_delivery_left_web_off:
-    mastermind_delivery_left_web: {action: stop}
-  mastermind_trap_delivery_left_bank_off:
-    mastermind_delivery_left_bank: {action: stop}
-  mastermind_trap_delivery_right_bank_off:
-    mastermind_delivery_right_bank: {action: stop}
-  mastermind_trap_delivery_clear:
-    mastermind_delivery_left_web: {action: stop}
-    mastermind_delivery_left_bank: {action: stop}
-    mastermind_delivery_right_bank: {action: stop}
-  mastermind_trap_phase_doc:
-    mastermind_delivery_left_web: {action: stop}
-    mastermind_delivery_left_bank: {action: stop}
-    mastermind_delivery_right_bank: {action: stop}
-    mastermind_doc_spinner:
-      action: play
-      loops: -1
-    mastermind_doc_inlanes:
-      action: play
-      loops: -1
-  mastermind_trap_doc_3x_on:
-    mastermind_doc_spinner_3x:
-      action: play
-      loops: -1
-    mastermind_doc_spinner: {action: stop}
-  mastermind_trap_doc_3x_off:
-    mastermind_doc_spinner_3x: {action: stop}
-    mastermind_doc_spinner:
-      action: play
-      loops: -1
-  mastermind_trap_doc_clear:
-    mastermind_doc_spinner: {action: stop}
-    mastermind_doc_spinner_3x: {action: stop}
-    mastermind_doc_inlanes: {action: stop}
-  mastermind_trap_super_on:
-    mastermind_super_webs:
-      action: play
-      loops: -1
-  mastermind_trap_super_off:
-    mastermind_super_webs: {action: stop}
-  mastermind_trap_clear_lights:
-    mastermind_para_saucers: {action: stop}
-    mastermind_para_upper_targets: {action: stop}
-    mastermind_para_left_bank: {action: stop}
-    mastermind_para_pops: {action: stop}
-    mastermind_para_right_bank_1: {action: stop}
-    mastermind_para_right_bank_2: {action: stop}
-    mastermind_para_right_bank_3: {action: stop}
-    mastermind_para_right_bank_4: {action: stop}
-    mastermind_para_right_bank_5: {action: stop}
-    mastermind_roof_choice: {action: stop}
-    mastermind_lizard_pops: {action: stop}
-    mastermind_delivery_left_web: {action: stop}
-    mastermind_delivery_left_bank: {action: stop}
-    mastermind_delivery_right_bank: {action: stop}
-    mastermind_doc_spinner: {action: stop}
-    mastermind_doc_spinner_3x: {action: stop}
-    mastermind_doc_inlanes: {action: stop}
-    mastermind_super_webs: {action: stop}
-
-  mastermind_trap_roof_choice_on:
-    mastermind_roof_choice:
-      action: play
-      loops: -1
-  mastermind_trap_roof_choice_off:
-    mastermind_roof_choice: {action: stop}
-  mastermind_trap_para_stage_left_bank:
-    mastermind_para_left_bank: {action: play, loops: -1}
-  mastermind_trap_para_stage_pops:
-    mastermind_para_pops: {action: play, loops: -1}
-  mastermind_trap_para_stage_right_bank_1:
-    mastermind_para_right_bank_1: {action: play, loops: -1}
-  mastermind_trap_para_stage_right_bank_2:
-    mastermind_para_right_bank_2: {action: play, loops: -1}
-  mastermind_trap_para_stage_right_bank_3:
-    mastermind_para_right_bank_3: {action: play, loops: -1}
-  mastermind_trap_para_stage_right_bank_4:
-    mastermind_para_right_bank_4: {action: play, loops: -1}
-  mastermind_trap_para_stage_right_bank_5:
-    mastermind_para_right_bank_5: {action: play, loops: -1}
-  mastermind_trap_para_area_collected:
-    mastermind_para_left_bank: {action: stop}
-    mastermind_para_pops: {action: stop}
-    mastermind_para_right_bank_1: {action: stop}
-    mastermind_para_right_bank_2: {action: stop}
-    mastermind_para_right_bank_3: {action: stop}
-    mastermind_para_right_bank_4: {action: stop}
-    mastermind_para_right_bank_5: {action: stop}
-
-shows:
-  mastermind_para_saucers:
-    - duration: 700ms
-      lights:
-        l_1_hole_l: FFFFFF
-        l_1_hole_r: FFFFFF
-        l_2_hole_l: FFFFFF
-        l_2_hole_r: FFFFFF
-        l_3_hole_l: FFFFFF
-        l_3_hole_r: FFFFFF
-    - duration: 700ms
-      lights:
-        l_1_hole_l: 202020
-        l_1_hole_r: 202020
-        l_2_hole_l: 202020
-        l_2_hole_r: 202020
-        l_3_hole_l: 202020
-        l_3_hole_r: 202020
-  mastermind_para_upper_targets:
+    # Match standalone Lizard: both complete pop rings pulse purple while serum is being made.
     - duration: 500ms
       lights:
-        l_upper_left: white
-        l_upper_middle: white
-        l_upper_right: white
-    - duration: 500ms
-      lights:
-        l_upper_left: off
-        l_upper_middle: off
-        l_upper_right: off
-  mastermind_roof_choice:
-    - duration: 400ms
-      lights:
-        l_gi_top_1: white
-        l_upper_left: white
-        l_gi_top_4: off
-        l_upper_right: off
-    - duration: 400ms
-      lights:
-        l_gi_top_1: off
-        l_upper_left: off
-        l_gi_top_4: white
-        l_upper_right: white
-  mastermind_para_left_bank:
-    - duration: 300ms
-      lights: {l_3bankbonus: green, l_gi_3bank: green}
-    - duration: 300ms
-      lights: {l_3bankbonus: off, l_gi_3bank: off}
-  mastermind_para_right_bank_1:
-    - duration: 300ms
-      lights: {l_5bank_1: green, l_gi_5bank_lower: green, l_gi_5bank_upper: green}
-    - duration: 300ms
-      lights: {l_5bank_1: off, l_gi_5bank_lower: off, l_gi_5bank_upper: off}
-  mastermind_para_right_bank_2:
-    - duration: 300ms
-      lights: {l_5bank_2: green, l_gi_5bank_lower: green, l_gi_5bank_upper: green}
-    - duration: 300ms
-      lights: {l_5bank_2: off, l_gi_5bank_lower: off, l_gi_5bank_upper: off}
-  mastermind_para_right_bank_3:
-    - duration: 300ms
-      lights: {l_5bank_3: green, l_gi_5bank_lower: green, l_gi_5bank_upper: green}
-    - duration: 300ms
-      lights: {l_5bank_3: off, l_gi_5bank_lower: off, l_gi_5bank_upper: off}
-  mastermind_para_right_bank_4:
-    - duration: 300ms
-      lights: {l_5bank_4: green, l_gi_5bank_lower: green, l_gi_5bank_upper: green}
-    - duration: 300ms
-      lights: {l_5bank_4: off, l_gi_5bank_lower: off, l_gi_5bank_upper: off}
-  mastermind_para_right_bank_5:
-    - duration: 300ms
-      lights: {l_5bank_5: green, l_gi_5bank_lower: green, l_gi_5bank_upper: green}
-    - duration: 300ms
-      lights: {l_5bank_5: off, l_gi_5bank_lower: off, l_gi_5bank_upper: off}
-  mastermind_para_pops:
-    # Scorpion center route uses only the RIGHT pop; light its full LED ring.
-    - duration: 1s
-      lights:
-        l_pop_2_1: green
-        l_pop_2_2: green
-        l_pop_2_3: green
-        l_pop_2_4: green
-        l_pop_2_5: green
-        l_pop_2_6: green
-        l_pop_2_7: green
-        l_pop_2_8: green
-        l_pop_2_9: green
-        l_pop_2_10: green
-        l_pop_2_11: green
-        l_pop_2_12: green
-  mastermind_lizard_pops:
-    - duration: 500ms
-      lights:
-        l_pop_1_1: green
-        l_pop_1_4: green
-        l_pop_1_7: green
-        l_pop_1_10: green
-        l_pop_2_1: green
-        l_pop_2_4: green
-        l_pop_2_7: green
-        l_pop_2_10: green
+        l_pop_1_1: purple
+        l_pop_1_2: purple
+        l_pop_1_3: purple
+        l_pop_1_4: purple
+        l_pop_1_5: purple
+        l_pop_1_6: purple
+        l_pop_1_7: purple
+        l_pop_1_8: purple
+        l_pop_1_9: purple
+        l_pop_1_10: purple
+        l_pop_1_11: purple
+        l_pop_1_12: purple
+        l_pop_2_1: purple
+        l_pop_2_2: purple
+        l_pop_2_3: purple
+        l_pop_2_4: purple
+        l_pop_2_5: purple
+        l_pop_2_6: purple
+        l_pop_2_7: purple
+        l_pop_2_8: purple
+        l_pop_2_9: purple
+        l_pop_2_10: purple
+        l_pop_2_11: purple
+        l_pop_2_12: purple
     - duration: 500ms
       lights:
         l_pop_1_1: off
+        l_pop_1_2: off
+        l_pop_1_3: off
         l_pop_1_4: off
+        l_pop_1_5: off
+        l_pop_1_6: off
         l_pop_1_7: off
+        l_pop_1_8: off
+        l_pop_1_9: off
         l_pop_1_10: off
+        l_pop_1_11: off
+        l_pop_1_12: off
         l_pop_2_1: off
+        l_pop_2_2: off
+        l_pop_2_3: off
         l_pop_2_4: off
+        l_pop_2_5: off
+        l_pop_2_6: off
         l_pop_2_7: off
+        l_pop_2_8: off
+        l_pop_2_9: off
         l_pop_2_10: off
+        l_pop_2_11: off
+        l_pop_2_12: off
   mastermind_delivery_left_web:
     - duration: 300ms
       lights: {l_left_web_target: yellow}

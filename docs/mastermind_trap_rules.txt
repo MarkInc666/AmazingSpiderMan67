@@ -6,13 +6,14 @@ PHASE 1 - PARAFINO + SCORPION
 - Park a ball in any saucer. Saucer 1 represents Left Bank; Saucer 2 represents Pops; Saucer 3 represents Right Bank.
 - Parking a ball opens the rooftop gate. Another live ball enters the roof.
 - Left roof exit stages one random standing target on Right Bank; right roof exit stages one random standing target on Left Bank. The selected bank resets, then all non-required drops are knocked down.
-- There is no dedicated center-exit switch. After rooftop entry, the right-bank upper rubber or middle A rollover infers the center drain and stages Pops.
+- There is no dedicated center-exit switch. After rooftop entry, the right-bank upper rubber or middle-right A rollover infers the center drain and stages the RIGHT pop bumper.
 - If the staged area corresponds to any currently parked saucer, the staged Jackpot is 3X.
 - Base staged Jackpot: 500,000. Matching Jackpot: 1,500,000.
 - Collect three staged Jackpots to finish the phase.
 - Completing all three upper targets adds a ball when below the 4-ball cap; the upper targets reset for another possible Add-a-Ball.
 
 PHASE 2 - LIZARD + MYSTERIO
+- Both complete pop-bumper LED rings pulse purple, matching the standalone Lizard serum look.
 - Two pop hits make serum (25,000 each).
 - Three possible delivery locations flash as Mysterio illusions: Left Web, Left Bank, Right Bank.
 - One is the real delivery. A wrong choice scores 50,000, disappears, and gives LEFT / RIGHT Spidey-Sense guidance.
@@ -20,7 +21,8 @@ PHASE 2 - LIZARD + MYSTERIO
 - Make three successful deliveries to finish the phase.
 
 PHASE 3 - DOCTOR OCTOPUS
-- Main spinner scores 50,000 per spin.
+- Main spinner and upper spinner both score 50,000 per spin and add to the Doc Ock spin total.
+- Completing the right 5-bank opens the rooftop gate for 20 seconds so the upper spinner can be reached.
 - Six danger shots are Saucer 1, Saucer 2, Saucer 3, Star, A, and B.
 - All six start unlit. Hitting an unlit danger shot scores 50,000 and lights that position red.
 - Left/right flipper buttons rotate the entire red pattern left/right across the six danger positions, using the same rotating-pattern idea as the standalone Doctor Octopus mode.
@@ -30,7 +32,7 @@ PHASE 3 - DOCTOR OCTOPUS
 
 SUPER
 - After Doc Ock ends, both web targets flash for Super Jackpot.
-- Super starts at 2,000,000 and falls linearly to 100,000 over 8 seconds.
+- Super starts at 2,000,000 plus 50,000 for every Doc Ock spinner hit (lower or upper), then falls linearly to 100,000 over 8 seconds.
 - It remains at 100,000 for 2 more seconds.
 - Hit either web target to collect the current value. If not collected after the 2-second hold, the Super expires.
 - After collect or expiry, restart at Parafino + Scorpion and continue until multiball ends.

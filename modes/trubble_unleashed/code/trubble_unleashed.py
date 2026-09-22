@@ -70,6 +70,8 @@ class TrubbleUnleashed(Mode):
         self.centaur_spinner_spins = 0
         self.upper_post_active = False
         self.centaur_staged = False
+        self.centaur_stage_pending = False
+        self.centaur_stage_retries = 0
         self.centaur_timer_active = False
         self.centaur_seconds_left = 0
 
@@ -274,6 +276,8 @@ class TrubbleUnleashed(Mode):
         self.centaur_spinner_spins = 0
         self.upper_post_active = False
         self.centaur_staged = False
+        self.centaur_stage_pending = False
+        self.centaur_stage_retries = 0
         self.centaur_timer_active = False
         self.centaur_seconds_left = 0
         self.preserve_right_bank_down = False
@@ -340,7 +344,12 @@ class TrubbleUnleashed(Mode):
     def _stage_centaur_drops(self):
         if self._inactive() or self.phase != "centaur":
             return
-        self.centaur_staged = True
+        # The upper-entrance opto can retrigger while the ball is settling on
+        # the roof.  Never start a second reset/stage cycle for the same visit.
+        if self.centaur_staged or self.centaur_stage_pending:
+            return
+        self.centaur_stage_pending = True
+        self.centaur_stage_retries = 0
         self.ignored_auto_right.clear()
         self.right_down.clear()
         self.machine.events.post("drop_target_bank_dt_bank_right_reset")
@@ -350,9 +359,34 @@ class TrubbleUnleashed(Mode):
             callback=self._drop_centaur_non_targets,
         )
 
+    def _right_bank_is_fully_up(self):
+        for target in self.ALL_RIGHT_DROPS:
+            switch = self.machine.switches.get(f"s_right_drops_{target}")
+            if switch is None:
+                continue
+            if self.machine.switch_controller.is_active(switch):
+                return False
+        return True
+
     def _drop_centaur_non_targets(self):
-        if self._inactive() or self.phase != "centaur" or not self.centaur_staged:
+        if self._inactive() or self.phase != "centaur" or not self.centaur_stage_pending:
             return
+
+        # Do not fire the individual drop coils until the bank reset has
+        # physically completed.  Staging while one or more switches are still
+        # down can make the whole bank collapse as the reset bar settles.
+        if not self._right_bank_is_fully_up():
+            self.centaur_stage_retries += 1
+            self.machine.events.post("drop_target_bank_dt_bank_right_reset")
+            self.delay.reset(
+                name="trubble_centaur_stage",
+                ms=self.RIGHT_BANK_STAGE_DELAY_MS,
+                callback=self._drop_centaur_non_targets,
+            )
+            return
+
+        self.centaur_stage_pending = False
+        self.centaur_staged = True
         # Leave the two outside targets standing to frame the Centaur rubber.
         # The three center inserts remain lit to identify the rubber shot.
         for target in (2, 3, 4):
@@ -455,7 +489,8 @@ class TrubbleUnleashed(Mode):
         self.preserve_right_bank_down = False
         self.ignored_auto_right.clear()
         if self.phase == "centaur":
-            self.centaur_staged = False
+            # Stage once per rooftop visit.  A duplicate entrance-opto edge must
+            # not reset a bank that is already staged or currently staging.
             self._stage_centaur_drops()
             return
         self.right_down.clear()
@@ -675,6 +710,8 @@ class TrubbleUnleashed(Mode):
         self.diana_flips_left = 0
         self.diana_targets.clear()
         self.centaur_staged = False
+        self.centaur_stage_pending = False
+        self.centaur_stage_retries = 0
         self.centaur_timer_active = False
         self.delay.remove("trubble_centaur_tick")
         self.delay.remove("trubble_centaur_stage")

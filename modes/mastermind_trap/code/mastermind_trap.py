@@ -13,11 +13,13 @@ class MastermindTrap(Mode):
          saucer to the chosen exit makes the jackpot 3X. Three roof attempts.
       2. Lizard + Mysterio: two pop hits make serum, then find the real
          delivery among Mysterio illusions. Three successful deliveries.
-      3. Doctor Octopus: spinner scores while six danger shots (three saucers,
-         Star, A, B) accumulate into a red pattern. Flippers rotate the red
-         pattern. Inlanes light 3X spinner for six seconds. Three red hits end
-         the phase.
-      4. Super: either web target collects a value falling from 2M to 100K in
+      3. Doctor Octopus: both spinners score while six danger shots (three
+         saucers, Star, A, B) accumulate into a red pattern. Completing the
+         right drop bank opens rooftop access for the upper spinner. Flippers
+         rotate the red pattern. Inlanes light 3X spinner for six seconds.
+         Three red hits end the phase.
+      4. Super: either web target collects a value starting at 2M plus 50K per
+         Doc Ock spinner hit, then falling to 100K in
          eight seconds, then holding at 100K for two seconds.
     """
 
@@ -40,6 +42,7 @@ class MastermindTrap(Mode):
     DOC_RED_VALUE = 1_000
     DOC_STRIKES_TO_END = 3
     DOC_3X_MS = 6_000
+    DOC_ROOFTOP_GATE_MS = 20_000
 
     SUPER_START = 2_000_000
     SUPER_FLOOR = 100_000
@@ -91,6 +94,7 @@ class MastermindTrap(Mode):
         self.doc_3x_active = False
         self.doc_3x_remaining = 0
 
+        self.super_start_value = self.SUPER_START
         self.super_value = self.SUPER_START
         self.super_elapsed_ms = 0
 
@@ -127,7 +131,7 @@ class MastermindTrap(Mode):
         self.add_mode_event_handler("s_upper_exit_left_opto_active", self._upper_exit, side="left")
         self.add_mode_event_handler("s_upper_exit_right_opto_active", self._upper_exit, side="right")
         self.add_mode_event_handler("s_right_drops_top_rubber_active", self._middle_exit_inferred)
-        self.add_mode_event_handler("s_inlane_a_active", self._middle_exit_inferred)
+        self.add_mode_event_handler("s_inlane_m_r_active", self._middle_exit_inferred)
         self.add_mode_event_handler("s_upper_target_left_active", self._upper_target, target="left")
         self.add_mode_event_handler("s_upper_target_center_active", self._upper_target, target="center")
         self.add_mode_event_handler("s_upper_target_right_active", self._upper_target, target="right")
@@ -147,6 +151,8 @@ class MastermindTrap(Mode):
             )
 
         self.add_mode_event_handler("s_web_spinner_active", self._main_spinner_hit)
+        self.add_mode_event_handler("s_trispinner_opto_active", self._main_spinner_hit)
+        self.add_mode_event_handler("drop_target_bank_dt_bank_right_down", self._doc_right_bank_complete)
         self.add_mode_event_handler("s_inlane_l_active", self._doc_inlane)
         self.add_mode_event_handler("s_inlane_r_active", self._doc_inlane)
         self.add_mode_event_handler("s_star_rollover_active", self._doc_danger_hit, shot="star")
@@ -427,10 +433,27 @@ class MastermindTrap(Mode):
         self.doc_spins = 0
         self.doc_3x_active = False
         self.doc_3x_remaining = 0
+        self.delay.remove("mastermind_doc_gate_close")
+        self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post(f"{self.MODE_KEY}_delivery_clear")
         self.machine.events.post(f"{self.MODE_KEY}_phase_doc")
         self._refresh_doc_lights()
         self._sync_status("DOC OCK", "LIGHT SHOTS - AVOID RED")
+
+    def _doc_right_bank_complete(self, **kwargs):
+        if self.phase != "doc_ock" or self.mode_done:
+            return
+        self.machine.events.post("rooftop_diverter_open")
+        self.delay.reset(
+            name="mastermind_doc_gate_close",
+            ms=self.DOC_ROOFTOP_GATE_MS,
+            callback=self._doc_gate_close,
+        )
+        self._post_message("ROOFTOP ACCESS OPEN", "UPPER SPINNER AVAILABLE", "20 SECONDS")
+
+    def _doc_gate_close(self):
+        if self.phase == "doc_ock" and not self.mode_done:
+            self.machine.events.post("rooftop_diverter_close")
 
     def _doc_rotate_left(self, **kwargs):
         if self.phase != "doc_ock" or self.mode_done:
@@ -521,11 +544,14 @@ class MastermindTrap(Mode):
         self.delay.remove("mastermind_doc_3x_tick")
         self.delay.remove("mastermind_doc_3x_end")
         self.doc_3x_active = False
+        self.delay.remove("mastermind_doc_gate_close")
+        self.machine.events.post("rooftop_diverter_close")
         self._clear_doc_danger_lights()
         self.machine.events.post(f"{self.MODE_KEY}_doc_clear")
         self.machine.events.post(f"{self.MODE_KEY}_super_on")
         self.super_elapsed_ms = 0
-        self.super_value = self.SUPER_START
+        self.super_start_value = self.SUPER_START + (self.doc_spins * self.DOC_SPINNER_VALUE)
+        self.super_value = self.super_start_value
         self._set(f"{self.MODE_KEY}_super_jackpot_ready", 1)
         self._set(f"{self.MODE_KEY}_super_jackpot_value", self.super_value)
         self._post_message("SUPER JACKPOT", "EITHER WEB TARGET", self.super_value)
@@ -541,7 +567,7 @@ class MastermindTrap(Mode):
 
         if self.super_elapsed_ms < self.SUPER_COUNTDOWN_MS:
             fraction = self.super_elapsed_ms / self.SUPER_COUNTDOWN_MS
-            self.super_value = int(round(self.SUPER_START - ((self.SUPER_START - self.SUPER_FLOOR) * fraction)))
+            self.super_value = int(round(self.super_start_value - ((self.super_start_value - self.SUPER_FLOOR) * fraction)))
             self.super_value = max(self.SUPER_FLOOR, self.super_value)
         else:
             self.super_value = self.SUPER_FLOOR
@@ -661,7 +687,8 @@ class MastermindTrap(Mode):
             "mastermind_stage_left_bank", "mastermind_stage_right_bank",
             "mastermind_next_phase", "mastermind_next_attempt",
             "mastermind_next_serum", "mastermind_doc_3x_end",
-            "mastermind_doc_3x_tick", "mastermind_super_start", "mastermind_super_tick",
+            "mastermind_doc_3x_tick", "mastermind_doc_gate_close",
+            "mastermind_super_start", "mastermind_super_tick",
             "mastermind_cycle_restart",
         ):
             self.delay.remove(name)

@@ -14,6 +14,7 @@ Approved gameplay
 - The ball must enter the rooftop and take the upper-left exit. Rooftop access remains open until that left exit is actually made; leaving by the right exit returns the player to the VUK/roof-entry cue for another attempt.
 - The post holds for 6 seconds, or releases early through the established
   two-flipper cancel. The right bank resets, then targets 2, 3, and 4 drop.
+- The Jackpot is live as soon as the staged right-bank targets are down; the pop-up post may still be holding the ball.
 - The staged finale lasts 6 seconds, or 12 seconds with More Time.
 - Right-bank rubber awards the built Jackpot.
 - Right target 1 or 5 awards 50K consolation unless Shot Assist is active.

@@ -9,7 +9,8 @@ Cerberus - Three Heads
 - Each upper target lights and upgrades its matching saucer jackpot to 2X.
 - Additional target hits can build multiple lit or 2X saucers.
 - Any lit saucer collects a jackpot at its current multiplier.
-- After a collect, the gate opens and all remaining lit saucers return to 1X.
+- After a collect, the gate opens and all remaining lit saucers return to 1X,
+  unless all three saucers are lit; three lit saucers always keep the gate closed.
 - More Jackpots lets each saucer remain lit once after its first collect, at
   the same multiplier it had for that collect.
 - Upper spinner builds jackpot value and resets the timer once it is running.
@@ -361,7 +362,18 @@ class Cerberus(CaseFileMixin, Mode):
         if self._in_summary_or_done():
             return
 
-        if self.gate_open_for_upper:
+        all_saucers_lit = all(
+            self.saucer_jackpot_lit.get(saucer, False) for saucer in [1, 2, 3]
+        )
+
+        # Once all three jackpots are qualified, keep the ball downstairs so
+        # the player can collect them. This must override any earlier request
+        # to leave the rooftop gate open for an upper-target upgrade.
+        if all_saucers_lit:
+            self.gate_open_for_upper = False
+            self.machine.events.post("rooftop_diverter_close")
+            self.machine.events.post("cerberus_gate_closed_for_saucers")
+        elif self.gate_open_for_upper:
             self.machine.events.post("rooftop_diverter_open")
             self.machine.events.post("cerberus_gate_open_for_upper")
         elif any(self.saucer_jackpot_lit.get(saucer, False) for saucer in [1, 2, 3]):
