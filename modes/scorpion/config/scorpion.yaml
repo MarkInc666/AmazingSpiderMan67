@@ -65,7 +65,7 @@ event_player:
   s_right_drops_top_rubber_active:
     - scorpion_middle_exit_inferred
 
-  s_inlane_a_active:
+  s_inlane_m_r_active:
     - scorpion_middle_exit_inferred
 
   # The inferred middle exit targets only the RIGHT pop bumper.
