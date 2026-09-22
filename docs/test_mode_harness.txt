@@ -95,3 +95,28 @@ test session. Mode-specific ball saves remain active so their behavior can still
 be tested. While TEST MODE SELECT is active, its START-button handler vetoes
 MPF's normal Ball-1 add-player request; START therefore belongs exclusively to
 the harness on that screen.
+
+TEST HARNESS V3 - STRICT STARTUP ISOLATION
+
+The test game still uses a real MPF player/ball context, but raw ball_started is reserved for infrastructure only.
+Normal campaign/background gameplay is now bootstrapped exclusively by normal_game_ball_started, which villain_progression posts only for non-test sessions.
+
+Moved behind normal_game_ball_started:
+- chapter-select automatic startup
+- villain qualification
+- villain saucer-start handling
+- Case Files
+- Daily Bugle mystery
+- normal skill shot
+- Extra Ball background mode
+- Bonus Lanes background mode
+- Chaos Pops background mode
+
+Still allowed on raw ball_started because tested modes depend on the infrastructure:
+- base scoring/device support
+- light feedback
+- music control
+- villain bookends
+- villain progression/test harness owner
+
+The selected villain or wizard remains unaware of test mode.

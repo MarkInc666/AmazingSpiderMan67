@@ -221,7 +221,7 @@ event_player:
   # Chapter Select starts automatically when needed. Start button remains normal
   # MPF start/add-player only. The plunger-lane switch is the important fallback
   # trigger after the ball is served, so the transition cover cannot get stuck.
-  ball_started{current_player.chapter_select_needed == 1 and current_player.chapter_select_waiting_for_summary == 0 and current_player.chapter_select_active != 1}:
+  normal_game_ball_started{current_player.chapter_select_needed == 1 and current_player.chapter_select_waiting_for_summary == 0 and current_player.chapter_select_active != 1}:
     - chapter_select_start_requested|100ms
     - start_mode_chapter_select|300ms
 

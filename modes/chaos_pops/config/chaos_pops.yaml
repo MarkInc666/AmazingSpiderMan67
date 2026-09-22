@@ -15,7 +15,7 @@
 # starts the mode and provides optional display/sound/light hooks.
 
 mode:
-  start_events: ball_started
+  start_events: normal_game_ball_started
   stop_events:
     - ball_ending
     - ball_ended

@@ -1,7 +1,7 @@
 #config_version=6
 
 mode:
-  start_events: ball_started
+  start_events: normal_game_ball_started
   code: extra_ball.ExtraBall
   priority: 90
 
