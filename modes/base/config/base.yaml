@@ -248,6 +248,19 @@ sound_player:
 
 
 widget_player:
+  test_mode_background_restore:
+    chapter_select_transition:
+      action: remove
+      key: chapter_select_transition
+    chapter_selected_confirmation:
+      action: remove
+    villain_chapter_status:
+      action: remove
+      key: villain_chapter_status
+    daily_bugle_ready:
+      action: remove
+      key: daily_bugle_ready
+
   # When a ball begins in Chapter Select flow, cover the short delayed mode
   # start immediately so the normal main-game screen cannot flash first.
   mode_base_started{current_player.chapter_select_needed == 1}:
@@ -285,7 +298,7 @@ widget_player:
   # main_game the active slide.  Playing it on mode_base_started races the
   # main_game slide_player entry and can attach the widget to the outgoing
   # slide instead, leaving the left panel missing.
-  slide_main_game_active{current_player.final_wizard_ready != 1}:
+  slide_main_game_active{current_player.final_wizard_ready != 1 and current_player.test_mode_session != 1}:
     villain_chapter_status:
       action: play
       key: villain_chapter_status
@@ -491,6 +504,15 @@ slide_player:
   mode_base_started{current_player.chapter_select_needed == 1}:
     main_game:
       action: remove
+    attract:
+      action: remove
+
+  # Test mode clears chapter_select_needed after Base has already processed
+  # mode_base_started. Restore the neutral game background before the selector
+  # widget is attached so a chapter/comic screen is never left underneath it.
+  test_mode_background_restore:
+    main_game:
+      action: play
     attract:
       action: remove
 

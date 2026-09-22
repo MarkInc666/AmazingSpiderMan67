@@ -1006,6 +1006,12 @@ player_vars:
   test_mode_autoplunge_pending:
     initial_value: 0
     value_type: int
+  # Allows auto-plunger pulses only while a selected test is actually running.
+  # The selector and post-summary ball-return state keep this at zero so stale
+  # multiball/ball-save launch requests cannot fire additional balls.
+  test_mode_autolaunch_allowed:
+    initial_value: 0
+    value_type: int
   test_mode_exit_requested:
     initial_value: 0
     value_type: int

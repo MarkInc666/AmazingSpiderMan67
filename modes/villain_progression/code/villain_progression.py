@@ -300,6 +300,7 @@ class VillainProgression(Mode):
             self.machine.game.player["test_mode_session"] = 1
             self.machine.game.player["test_mode_waiting_for_ball_return"] = 0
             self.machine.game.player["test_mode_autoplunge_pending"] = 0
+            self.machine.game.player["test_mode_autolaunch_allowed"] = 0
             # New players normally begin with chapter_select_needed=1. Clear
             # every chapter-select transition flag before the test selector is
             # opened so the plunger/shooter lane cannot enter normal campaign
@@ -654,6 +655,18 @@ class VillainProgression(Mode):
         self.machine.events.post("daily_bugle_widget_update", reason=reason)
         self.machine.events.post("villain_mode_ended", villain_key="", villain="", reason=reason)
 
+    def _disable_test_mode_autolaunch(self):
+        """Block every queued/new auto-plunger request after test gameplay."""
+        if not self.machine.game:
+            return
+        player = self.machine.game.player
+        if self._safe_int(player["test_mode_session"], 0) != 1:
+            return
+        player["test_mode_autoplunge_pending"] = 0
+        player["test_mode_autolaunch_allowed"] = 0
+        player["multiball_autoplunge_active"] = 0
+        self.delay.remove("test_mode_launch_autoplunge")
+
     def _sync_chapter_ready_flags(self, post_events=True):
         """Compatibility wrapper for the recalculation pass."""
         self._recalculate_progression_from_states(post_events=post_events)
@@ -1005,7 +1018,19 @@ class VillainProgression(Mode):
         player["villain_current_name"] = ""
         player["villain_mode_running_name"] = ""
         player["mini_wizard_current_key"] = ""
-        self.machine.events.post("start_mode_test_mode_select")
+        player["multiball_autoplunge_active"] = 0
+        player["test_mode_autolaunch_allowed"] = 0
+        # Base initially suppresses main_game because a new player begins with
+        # chapter selection required. Restore a clean background first, then
+        # attach the selector widget after GMC has switched slides.
+        self.machine.events.post("stop_mode_chapter_select")
+        self.machine.events.post("test_mode_background_restore")
+        self.delay.reset(
+            name="test_mode_selector_show",
+            ms=100,
+            callback=self.machine.events.post,
+            event="start_mode_test_mode_select",
+        )
 
     def _apply_test_case_files(self):
         player = self.machine.game.player
@@ -1029,6 +1054,7 @@ class VillainProgression(Mode):
         # The harness will autoplunge after villain_bookend_intro_done; the
         # selected gameplay mode itself remains completely test-unaware.
         player["test_mode_autoplunge_pending"] = 1
+        player["test_mode_autolaunch_allowed"] = 1
 
         if kind == "VILLAIN" and key in self.VILLAINS:
             self._apply_test_case_files()
@@ -1065,6 +1091,7 @@ class VillainProgression(Mode):
         chapter_number, chapter_info = self._chapter_for_mini_wizard(key)
         if kind != "WIZARD" or not chapter_info:
             player["test_mode_autoplunge_pending"] = 0
+            player["test_mode_autolaunch_allowed"] = 0
             self.machine.events.post("test_mode_launch_invalid", mode_key=key, mode_kind=kind)
             self._open_test_mode_selector()
             return
@@ -1126,6 +1153,8 @@ class VillainProgression(Mode):
         player["villain_mode_running_name"] = ""
         player["mini_wizard_current_key"] = ""
         player["test_mode_autoplunge_pending"] = 0
+        player["test_mode_autolaunch_allowed"] = 0
+        player["multiball_autoplunge_active"] = 0
         player["test_mode_waiting_for_ball_return"] = 1
         self._post_global_cleanup_events(reason=reason)
         self.machine.events.post("cmd_flippers_disable")
@@ -1271,6 +1300,8 @@ class VillainProgression(Mode):
         if not chapter:
             self.machine.events.post("chapter_mini_wizard_finish_unknown", mini_wizard=mini_key)
             return
+
+        self._disable_test_mode_autolaunch()
 
         # Mini-wizards are consumed once played. A failed/ended mini-wizard
         # still counts as complete for progression and will not be replayed
@@ -1846,6 +1877,8 @@ class VillainProgression(Mode):
             self.machine.events.post("villain_finish_ignored_wrong_active_villain", villain_key=villain_key, current_key=current_key)
             return
 
+        self._disable_test_mode_autolaunch()
+
         # Snapshot any ball physically sitting in a saucer before the gameplay
         # mode stops. Mode-stop cleanup and already-scheduled eject requests are
         # suppressed until the bookend summary has finished.
@@ -2286,6 +2319,7 @@ class VillainProgression(Mode):
         if player["villain_current_key"] != self.FINAL_WIZARD_KEY:
             self.machine.events.post("final_wizard_finish_ignored_wrong_active_mode", current_key=player["villain_current_key"])
             return
+        self._disable_test_mode_autolaunch()
         completed = bool(completed)
         player[f"{self.FINAL_WIZARD_KEY}_state"] = self.COMPLETED
         player["final_wizard_ready"] = 0

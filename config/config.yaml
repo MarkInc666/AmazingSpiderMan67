@@ -324,7 +324,7 @@ coil_player:
     c_left_bank_reset:
       action: pulse
 
-  plunger_auto_fire:
+  plunger_auto_fire{current_player.test_mode_session != 1 or current_player.test_mode_autolaunch_allowed == 1}:
     c_auto_plunger:
       action: pulse
       

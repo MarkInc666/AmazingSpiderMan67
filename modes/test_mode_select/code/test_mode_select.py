@@ -223,6 +223,9 @@ class TestModeSelect(Mode):
         player = self.machine.game.player
         player["test_mode_exit_requested"] = 1
         player["test_mode_waiting_for_ball_return"] = 0
+        player["test_mode_autoplunge_pending"] = 0
+        player["test_mode_autolaunch_allowed"] = 0
+        player["multiball_autoplunge_active"] = 0
         self.machine.variables.set_machine_var("test_mode_session_requested", 0)
         self.machine.variables.set_machine_var("chapter_progression_test_unlock_all", 0)
         self.machine.events.post("test_mode_ball_loop_disable")
