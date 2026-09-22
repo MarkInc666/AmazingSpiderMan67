@@ -168,6 +168,36 @@ show_player:
     mastermind_super_webs: {action: stop}
 
 shows:
+  mastermind_para_saucers:
+    - duration: 400ms
+      lights:
+        l_1_hole_l: green
+        l_1_hole_r: green
+        l_2_hole_l: green
+        l_2_hole_r: green
+        l_3_hole_l: green
+        l_3_hole_r: green
+    - duration: 400ms
+      lights:
+        l_1_hole_l: off
+        l_1_hole_r: off
+        l_2_hole_l: off
+        l_2_hole_r: off
+        l_3_hole_l: off
+        l_3_hole_r: off
+
+  mastermind_para_upper_targets:
+    - duration: 300ms
+      lights:
+        l_upper_left: yellow
+        l_upper_middle: yellow
+        l_upper_right: yellow
+    - duration: 300ms
+      lights:
+        l_upper_left: blue
+        l_upper_middle: blue
+        l_upper_right: blue
+
   mastermind_lizard_pops:
     # Match standalone Lizard: both complete pop rings pulse purple while serum is being made.
     - duration: 500ms
