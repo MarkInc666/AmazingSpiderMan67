@@ -105,15 +105,6 @@ player_vars:
   crime_wave_mini_mode_points:
     initial_value: 0
     value_type: int
-  daily_bugle_rooftop_riot_state:
-    initial_value: not_played
-    value_type: str
-  daily_bugle_rooftop_riot_mode_points:
-    initial_value: 0
-    value_type: int
-  daily_bugle_rooftop_riot_hits:
-    initial_value: 0
-    value_type: int
   vulture_best_target_value:
     initial_value: 0
     value_type: int

@@ -1,0 +1,67 @@
+TIME-TOSSED SHOWDOWN — CHAPTER 11 WIZARD
+
+Type
+- 3-ball endurance multiball.
+- 20-second opening ball save.
+- Maximum 4 balls.
+- Mode ends when the multiball ends (down to one live ball).
+
+Core loop
+1. Rooftop setup / time portal.
+2. First 12 upper-flipper presses can build all three possible lower phases.
+3. Rooftop exit selects the lower phase:
+   - Left exit: Spider-Men
+   - Center exit: Master Vine
+   - Right exit: Master Technician
+4. Complete/end that lower phase, reopen the rooftop gate, reset setup counters, repeat.
+5. Any L/C/R sequence can repeat; there is no forced rotation or final Super.
+
+Rooftop setup
+- Gate is open only during the rooftop phase.
+- Shared rooftop chase runs while the gate is open.
+- First 12 upper flips build all three possible outcomes simultaneously.
+- After flip 12, upper shots score only their normal/basic upper-playfield values and no longer build the next phase.
+- Upper-target total hits: +10K to each Master Technician spinner award.
+- Unique upper targets: qualify Spider-Men saucers (L->Saucer 1, C->Saucer 2, R->Saucer 3).
+- Upper-spinner spins: light additional Master Vine targets, capped at 20.
+- Center exit is inferred by the right-bank upper rubber or the middle-right A rollover, matching the established rooftop center-exit rule.
+
+Spider-Men phase
+- Uses the same six rotating positions/control language as standalone Spider-Men:
+  Saucer 1, Saucer 2, Saucer 3, Star, A, B.
+- Initial lit pattern always contains Star.
+- Each unique upper target hit during the preceding rooftop setup adds its corresponding saucer to the initial lit pattern.
+- Flippers rotate the entire lit/unlit six-position pattern exactly like standalone Spider-Men.
+- Hit a currently lit position to collect it; the light is consumed.
+- Jackpot: 250K + 20K x Chapter 11 Case Files.
+- Phase ends when every initially qualified light has been consumed.
+
+Master Vine phase
+- Uses the same lower-playfield shot pool as standalone Master Vine.
+- Star is always lit.
+- Rooftop upper-spinner spins randomly light that many additional Vine shots, capped at 20.
+- Each lit Vine shot is one-use.
+- Jackpot: 100K + 20K x Chapter 11 Case Files.
+- Phase ends when all lit Vine shots are collected.
+
+Master Technician phase
+- Both drop banks reset, then every drop is knocked down except left-bank target 1.
+- Main lower spinner remains the scoring shot until the standing left-bank target is hit.
+- Spinner value per spin:
+  100K + (20K x Chapter 11 Case Files) + (10K x rooftop upper-target hits).
+- Hitting the standing left-bank target ends the phase immediately.
+- Star is always lit:
+  - Below 4 balls: Star adds a ball, starts a 15-second add-a-ball save, and is consumed for that Technician phase.
+  - At 4 balls: Star scores one current spinner-value award and remains lit. If room opens later, the same Star can still add a ball.
+
+Saucer parking
+- All three saucers may park balls in every phase.
+- Maximum hold is 15 seconds per saucer ball.
+- At least one ball must remain free on the playfield.
+- If a new hold would leave no free ball, eject the oldest parked saucer ball first.
+
+Lighting
+- Rooftop: shared rooftop chase while gate is open; upper targets/upper spinner use a yellow setup pulse for the first 12 flips.
+- Spider-Men: reuse the standalone red rotating-position language.
+- Master Vine: reuse the standalone green shot language.
+- Master Technician: reuse the standalone cool-blue/white spinner/bank language; Star is the add-a-ball indicator.

@@ -1198,22 +1198,17 @@ class VillainBookends(Mode):
             'state_var': 'who_is_the_real_villain_state',
             'song': 'play_song_49',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   title: TIME-TOSSED SHOWDOWN
-        #   intro_1: Chapter 10 mini-wizard multiball.
-        #   intro_2: Survive the time-tossed brawl.
-        #   intro_3: Chapter case files raise the values.
         'time_tossed_showdown': {
-            'title': 'TIME SHOWDOWN',
-            'intro_1': 'Time-tossed battle.',
-            'intro_2': 'Survive multiball.',
-            'intro_3': 'Case files boost value.',
-            'summary_title_complete': 'SHOWDOWN WON',
-            'summary_title_failed': 'SHOWDOWN LOST',
-            'stat_1_label': 'HITS',
+            'title': 'TIME-TOSSED SHOWDOWN',
+            'intro_1': 'Three eras collide in multiball.',
+            'intro_2': 'Build the future on the rooftop.',
+            'intro_3': 'Your exit chooses the next battle.',
+            'summary_title_complete': 'TIME SURVIVED',
+            'summary_title_failed': 'TIME SURVIVED',
+            'stat_1_label': 'JACKPOTS',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'STATE',
-            'stat_2_var': 'time_tossed_showdown_state',
+            'stat_2_label': 'PHASES',
+            'stat_2_var': 'active_mode_stat_1',
             'points_var': 'active_mode_points',
             'state_var': 'time_tossed_showdown_state',
             'song': 'play_song_50',

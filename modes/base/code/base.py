@@ -101,7 +101,6 @@ class Base(Mode):
         "mode_who_is_the_real_villain_stopping",
         "mode_harley_clivendon_stopping",
         "mode_crime_wave_stopping",
-        "mode_daily_bugle_rooftop_riot_stopping",
     )
 
     def mode_start(self, **kwargs):

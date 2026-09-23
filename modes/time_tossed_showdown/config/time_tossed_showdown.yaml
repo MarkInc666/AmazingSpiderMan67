@@ -1,25 +1,28 @@
 #config_version=6
 
-# Time-Tossed Showdown placeholder mini-wizard.
-# Time / History / Outlaws mini-wizard multiball.
-# Temporary flow: intro -> 2-ball multiball -> MB end -> summary -> next chapter.
+# Time-Tossed Showdown - Chapter 11 endurance wizard.
+# Rooftop setup builds all three possible lower phases for the first 12 upper
+# flips. Exit selects the phase: left Spider-Men, center Master Vine, right
+# Master Technician. Repeat until the 3-ball multiball ends.
 
 mode:
   start_events: start_mode_time_tossed_showdown
   stop_events:
-    - ball_will_end
     - bonus_start
     - stop_mode_time_tossed_showdown
-    - ball_ended
   code: time_tossed_showdown.TimeTossedShowdown
   priority: 800
 
 multiballs:
   time_tossed_showdown_multiball:
-    ball_count: 2
+    ball_count: 3
     ball_count_type: total
-    shoot_again: 15s
+    shoot_again: 20s
     start_events: time_tossed_showdown_start_multiball
+    add_a_ball_events:
+      - time_tossed_showdown_add_a_ball
+    add_a_ball_shoot_again: 15s
+    add_a_ball_hurry_up_time: 3s
     stop_events:
       - stop_mode_time_tossed_showdown
 
@@ -28,7 +31,6 @@ variable_player:
     multiball_autoplunge_active:
       action: set
       int: 1
-
   multiball_time_tossed_showdown_multiball_ended:
     multiball_autoplunge_active:
       action: set
@@ -38,81 +40,326 @@ widget_player:
   mode_time_tossed_showdown_started:
     time_tossed_showdown:
       action: play
-
   time_tossed_showdown_mode_complete:
     time_tossed_showdown:
       action: remove
-
   mode_time_tossed_showdown_stopping:
     time_tossed_showdown:
       action: remove
 
-  stop_mode_time_tossed_showdown:
-    time_tossed_showdown:
-      action: remove
-
+# Python owns all scoring and state. These are shared-device service events only.
 event_player:
-  s_pop_left_active: time_tossed_showdown_shot_hit
-  s_pop_right_active: time_tossed_showdown_shot_hit
-  s_trispinner_opto_active: time_tossed_showdown_shot_hit
-  s_web_spinner_active: time_tossed_showdown_shot_hit
-  s_star_rollover_active: time_tossed_showdown_shot_hit
-  s_upper_target_left_active: time_tossed_showdown_shot_hit
-  s_upper_target_center_active: time_tossed_showdown_shot_hit
-  s_upper_target_right_active: time_tossed_showdown_shot_hit
-  s_left_drops_1_active: time_tossed_showdown_shot_hit
-  s_left_drops_2_active: time_tossed_showdown_shot_hit
-  s_left_drops_3_active: time_tossed_showdown_shot_hit
-  s_right_drops_1_active: time_tossed_showdown_shot_hit
-  s_right_drops_2_active: time_tossed_showdown_shot_hit
-  s_right_drops_3_active: time_tossed_showdown_shot_hit
-  s_right_drops_4_active: time_tossed_showdown_shot_hit
-  s_right_drops_5_active: time_tossed_showdown_shot_hit
-  s_saucer_1_active:
-    time_tossed_showdown_shot_hit:
-    delayed_kickout_saucer_1:
-  s_saucer_2_active:
-    time_tossed_showdown_shot_hit:
-    delayed_kickout_saucer_2:
-  s_saucer_3_active:
-    time_tossed_showdown_shot_hit:
-    delayed_kickout_saucer_3:
-  s_vuk_switch_active:
-    - time_tossed_showdown_shot_hit
-    - request_vuk_eject
-
-  multiball_time_tossed_showdown_multiball_ended: time_tossed_showdown_complete_request
+  s_vuk_switch_active: request_vuk_eject
 
   mode_time_tossed_showdown_started:
-    - rooftop_diverter_open|500ms
     - disable_daily_bugle_mystery
     - clear_saucers_delayed
-    - drop_target_bank_dt_bank_left_reset
-    - drop_target_bank_dt_bank_right_reset
 
   mode_time_tossed_showdown_stopping:
     - enable_daily_bugle_mystery
     - daily_bugle_restore_state
     - clear_saucers_delayed
+    - rooftop_diverter_close
 
-  # Keep mini-wizard drop banks playable after they are completed.
-  drop_target_bank_dt_bank_left_down: drop_target_bank_dt_bank_left_reset
-  drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset
+show_player:
+  # Rooftop selection/setup: shared chase is visible only while gate is open.
+  time_tossed_showdown_rooftop:
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 840
+      show_tokens: {color: "FFD040"}
+    time_tossed_roof_targets_pulse:
+      loops: -1
+      priority: 835
+    time_tossed_tech_pulse: {action: stop}
+    time_tossed_tech_star_pulse: {action: stop}
+    time_tossed_spider_saucer_1_pulse: {action: stop}
+    time_tossed_spider_saucer_2_pulse: {action: stop}
+    time_tossed_spider_saucer_3_pulse: {action: stop}
+    time_tossed_spider_star_pulse: {action: stop}
+    time_tossed_spider_upper_a_pulse: {action: stop}
+    time_tossed_spider_upper_b_pulse: {action: stop}
+
+  time_tossed_showdown_roof_setup_locked:
+    time_tossed_roof_targets_pulse: {action: stop}
+
+  time_tossed_showdown_rooftop_off:
+    shared_final_vuk_chase: {action: stop}
+    time_tossed_roof_targets_pulse: {action: stop}
+
+  # Spider-Men uses the same red pulsing visual language as standalone.
+  time_tossed_showdown_spider_saucer_1_lit:
+    time_tossed_spider_saucer_1_pulse: {loops: -1, priority: 840}
+  time_tossed_showdown_spider_saucer_2_lit:
+    time_tossed_spider_saucer_2_pulse: {loops: -1, priority: 840}
+  time_tossed_showdown_spider_saucer_3_lit:
+    time_tossed_spider_saucer_3_pulse: {loops: -1, priority: 840}
+  time_tossed_showdown_spider_star_lit:
+    time_tossed_spider_star_pulse: {loops: -1, priority: 840}
+  time_tossed_showdown_spider_upper_a_lit:
+    time_tossed_spider_upper_a_pulse: {loops: -1, priority: 840}
+  time_tossed_showdown_spider_upper_b_lit:
+    time_tossed_spider_upper_b_pulse: {loops: -1, priority: 840}
+
+  time_tossed_showdown_spider_all_off: &spider_all_off
+    time_tossed_spider_saucer_1_pulse: {action: stop}
+    time_tossed_spider_saucer_2_pulse: {action: stop}
+    time_tossed_spider_saucer_3_pulse: {action: stop}
+    time_tossed_spider_star_pulse: {action: stop}
+    time_tossed_spider_upper_a_pulse: {action: stop}
+    time_tossed_spider_upper_b_pulse: {action: stop}
+
+  time_tossed_showdown_phase_technician:
+    time_tossed_tech_pulse: {loops: -1, priority: 835}
+    time_tossed_tech_star_pulse: {loops: -1, priority: 840}
+
+  time_tossed_showdown_tech_star_consumed:
+    time_tossed_tech_star_pulse: {action: stop}
+
+  time_tossed_showdown_clear_phase_lights:
+    <<: *spider_all_off
+    shared_final_vuk_chase: {action: stop}
+    time_tossed_roof_targets_pulse: {action: stop}
+    time_tossed_tech_pulse: {action: stop}
+    time_tossed_tech_star_pulse: {action: stop}
+
+  time_tossed_showdown_clear_all:
+    <<: *spider_all_off
+    shared_final_vuk_chase: {action: stop}
+    time_tossed_roof_targets_pulse: {action: stop}
+    time_tossed_tech_pulse: {action: stop}
+    time_tossed_tech_star_pulse: {action: stop}
 
 light_player:
-  # Full-playfield GI theme while this mode is active.
   mode_time_tossed_showdown_started:
-    gi: 8060FF
+    gi: "403060"
+
+  # Rooftop setup / locked indication.
+  time_tossed_showdown_rooftop:
+    gi: "403060"
+  time_tossed_showdown_roof_setup_locked:
+    l_upper_left: "504010"
+    l_upper_middle: "504010"
+    l_upper_right: "504010"
+    l_gi_a: "504010"
+  time_tossed_showdown_rooftop_off:
+    l_upper_left: off
+    l_upper_middle: off
+    l_upper_right: off
+    l_gi_a: off
+
+  # Master Vine: same green palette / shot ownership as standalone Vine.
+  time_tossed_showdown_phase_vine:
+    gi: "204020"
+  time_tossed_showdown_vine_all_off: &vine_all_off
+    l_left_web_target: off
+    l_mid_web_target: off
+    l_gi_left_sling_lower: off
+    l_gi_left_sling_upper: off
+    l_gi_right_sling: off
+    l_pop_1_1: off
+    l_pop_1_2: off
+    l_pop_1_3: off
+    l_pop_1_4: off
+    l_pop_1_5: off
+    l_pop_1_6: off
+    l_pop_1_7: off
+    l_pop_1_8: off
+    l_pop_1_9: off
+    l_pop_1_10: off
+    l_pop_1_11: off
+    l_pop_1_12: off
+    l_pop_2_1: off
+    l_pop_2_2: off
+    l_pop_2_3: off
+    l_pop_2_4: off
+    l_pop_2_5: off
+    l_pop_2_6: off
+    l_pop_2_7: off
+    l_pop_2_8: off
+    l_pop_2_9: off
+    l_pop_2_10: off
+    l_pop_2_11: off
+    l_pop_2_12: off
+    l_1_hole_l: off
+    l_1_hole_r: off
+    l_2_hole_l: off
+    l_2_hole_r: off
+    l_3_hole_l: off
+    l_3_hole_r: off
+    l_3bankbonus: off
+    l_5bank_1: off
+    l_5bank_2: off
+    l_5bank_3: off
+    l_5bank_4: off
+    l_5bank_5: off
+    l_a_rollover: off
+    l_b_rollover: off
+    l_right_a: off
+    l_left_b: off
+    l_star: off
+
+  time_tossed_showdown_vine_left_web_lit: {l_left_web_target: "40F040"}
+  time_tossed_showdown_vine_center_web_lit: {l_mid_web_target: "40F040"}
+  time_tossed_showdown_vine_left_sling_lit:
+    l_gi_left_sling_lower: "40F040"
+    l_gi_left_sling_upper: "40F040"
+  time_tossed_showdown_vine_right_sling_lit: {l_gi_right_sling: "40F040"}
+  time_tossed_showdown_vine_left_pop_lit: &vine_left_pop_green
+    l_pop_1_1: "40F040"
+    l_pop_1_2: "40F040"
+    l_pop_1_3: "40F040"
+    l_pop_1_4: "40F040"
+    l_pop_1_5: "40F040"
+    l_pop_1_6: "40F040"
+    l_pop_1_7: "40F040"
+    l_pop_1_8: "40F040"
+    l_pop_1_9: "40F040"
+    l_pop_1_10: "40F040"
+    l_pop_1_11: "40F040"
+    l_pop_1_12: "40F040"
+  time_tossed_showdown_vine_right_pop_lit: &vine_right_pop_green
+    l_pop_2_1: "40F040"
+    l_pop_2_2: "40F040"
+    l_pop_2_3: "40F040"
+    l_pop_2_4: "40F040"
+    l_pop_2_5: "40F040"
+    l_pop_2_6: "40F040"
+    l_pop_2_7: "40F040"
+    l_pop_2_8: "40F040"
+    l_pop_2_9: "40F040"
+    l_pop_2_10: "40F040"
+    l_pop_2_11: "40F040"
+    l_pop_2_12: "40F040"
+  time_tossed_showdown_vine_saucer_1_lit: {l_1_hole_l: "40F040", l_1_hole_r: "40F040"}
+  time_tossed_showdown_vine_saucer_2_lit: {l_2_hole_l: "40F040", l_2_hole_r: "40F040"}
+  time_tossed_showdown_vine_saucer_3_lit: {l_3_hole_l: "40F040", l_3_hole_r: "40F040"}
+  time_tossed_showdown_vine_left_drop_1_lit: {l_3bankbonus: "40F040"}
+  time_tossed_showdown_vine_left_drop_2_lit: {l_3bankbonus: "40F040"}
+  time_tossed_showdown_vine_left_drop_3_lit: {l_3bankbonus: "40F040"}
+  time_tossed_showdown_vine_right_drop_1_lit: {l_5bank_1: "40F040"}
+  time_tossed_showdown_vine_right_drop_2_lit: {l_5bank_2: "40F040"}
+  time_tossed_showdown_vine_right_drop_3_lit: {l_5bank_3: "40F040"}
+  time_tossed_showdown_vine_right_drop_4_lit: {l_5bank_4: "40F040"}
+  time_tossed_showdown_vine_right_drop_5_lit: {l_5bank_5: "40F040"}
+  time_tossed_showdown_vine_a_lit: {l_a_rollover: "40F040"}
+  time_tossed_showdown_vine_b_lit: {l_b_rollover: "40F040"}
+  time_tossed_showdown_vine_middle_a_lit: {l_right_a: "40F040"}
+  time_tossed_showdown_vine_middle_b_lit: {l_left_b: "40F040"}
+  time_tossed_showdown_vine_star_lit: {l_star: "40F040"}
+
+  # Spider-Men phase: lights themselves are driven by pulse shows below.
+  time_tossed_showdown_phase_spider:
+    gi: "303060"
+
+  # Master Technician phase borrows the cool-blue/white standalone language.
+  time_tossed_showdown_phase_technician:
+    gi: "203060"
+  time_tossed_showdown_tech_ready:
+    l_spinner: white
+    l_gi_3bank: white
+    l_star: yellow
+  time_tossed_showdown_tech_star_consumed:
+    l_star: off
+  time_tossed_showdown_tech_spinner_scored:
+    l_spinner: "FFFF40"
+  time_tossed_showdown_tech_star_score:
+    l_star: yellow
+
+  time_tossed_showdown_spider_all_off:
+    l_1_hole_l: off
+    l_1_hole_r: off
+    l_2_hole_l: off
+    l_2_hole_r: off
+    l_3_hole_l: off
+    l_3_hole_r: off
+    l_star: off
+    l_a_rollover: off
+    l_b_rollover: off
+
+  time_tossed_showdown_clear_phase_lights:
+    <<: *vine_all_off
+    l_upper_left: off
+    l_upper_middle: off
+    l_upper_right: off
+    l_gi_a: off
+    l_spinner: off
+    l_gi_3bank: off
+
+  time_tossed_showdown_clear_all:
+    <<: *vine_all_off
+    l_upper_left: off
+    l_upper_middle: off
+    l_upper_right: off
+    l_gi_a: off
+    l_spinner: off
+    l_gi_3bank: off
+    gi: "E0E0E0"
 
   mode_time_tossed_showdown_stopping:
-    gi: E0E0E0
+    gi: "E0E0E0"
 
 sound_player:
   play_mode_jackpot:
     jackpot_2:
       action: play
       bus: effects
-  play_mode_super_jackpot:
-    jackpot_2:
-      action: play
-      bus: effects
+
+shows:
+  # Rooftop setup cues: the three targets and upper-spinner GI pulse together.
+  time_tossed_roof_targets_pulse:
+    - duration: 400ms
+      lights:
+        l_upper_left: FFD040
+        l_upper_middle: FFD040
+        l_upper_right: FFD040
+        l_gi_a: FFD040
+    - duration: 400ms
+      lights:
+        l_upper_left: "503810"
+        l_upper_middle: "503810"
+        l_upper_right: "503810"
+        l_gi_a: "503810"
+
+  # Spider-Men copies the standalone red full/low pulse language.
+  time_tossed_spider_saucer_1_pulse:
+    - duration: 350ms
+      lights: {l_1_hole_l: red, l_1_hole_r: red}
+    - duration: 350ms
+      lights: {l_1_hole_l: "400000", l_1_hole_r: "400000"}
+  time_tossed_spider_saucer_2_pulse:
+    - duration: 350ms
+      lights: {l_2_hole_l: red, l_2_hole_r: red}
+    - duration: 350ms
+      lights: {l_2_hole_l: "400000", l_2_hole_r: "400000"}
+  time_tossed_spider_saucer_3_pulse:
+    - duration: 350ms
+      lights: {l_3_hole_l: red, l_3_hole_r: red}
+    - duration: 350ms
+      lights: {l_3_hole_l: "400000", l_3_hole_r: "400000"}
+  time_tossed_spider_star_pulse:
+    - duration: 350ms
+      lights: {l_star: red}
+    - duration: 350ms
+      lights: {l_star: "400000"}
+  time_tossed_spider_upper_a_pulse:
+    - duration: 350ms
+      lights: {l_a_rollover: red}
+    - duration: 350ms
+      lights: {l_a_rollover: "400000"}
+  time_tossed_spider_upper_b_pulse:
+    - duration: 350ms
+      lights: {l_b_rollover: red}
+    - duration: 350ms
+      lights: {l_b_rollover: "400000"}
+
+  time_tossed_tech_pulse:
+    - duration: 450ms
+      lights: {l_spinner: white, l_gi_3bank: white}
+    - duration: 450ms
+      lights: {l_spinner: "303030", l_gi_3bank: "303030"}
+  time_tossed_tech_star_pulse:
+    - duration: 400ms
+      lights: {l_star: yellow}
+    - duration: 400ms
+      lights: {l_star: "404000"}
