@@ -68,9 +68,12 @@ villain_progression is the only campaign coordinator that examines the original
 ball_started edge. It decides whether the ball belongs to a normal game or a
 test session. Normal games then receive a separate normal_game_ball_started
 event; campaign-only modes (chapter select, villain qualification, villain
-saucer-start handling, Case File qualification, Daily Bugle mystery and the
-normal skill shot) start from that event instead of ball_started. Test sessions
-never receive it. The test branch also clears the new-player chapter-select
+saucer-start handling, Case File qualification and the normal skill shot) start
+from that event instead of ball_started. Test sessions never receive it. Daily
+Bugle Mystery and Extra Ball now receive a separate test_mode_support_started
+edge so their shared switch SFX, VUK/award support and ball-save presentation
+remain available without booting normal campaign progression. The test branch
+also clears the new-player chapter-select
 flags before opening TEST MODE SELECT. This removes the chapter/qualification
 race entirely rather than relying on same-event conditional mode starts.
 
@@ -86,9 +89,12 @@ parked there while the player chooses the next test. Pressing START launches the
 selected villain/wizard through its normal intro; 250 ms after that intro ends,
 the harness pulses the auto-plunger if the shooter-lane switch is still active.
 The shooter-lane switch is never used as a tester command. Multiball drains above
-one ball are not saved, so multiball modes still reduce normally. A last-ball
-drain during an active test resolves that attempt as a failed/ended mode, shows
-its normal summary, and uses the same return loop.
+one ball are not saved, so multiball modes still reduce normally. If the harness
+last-ball save fires while a multiball device is still active, progression does
+not treat that save as a failed test attempt; the tested mode owns its normal
+multiball-ended behavior. Outside active multiball, a last-ball drain during an
+active test resolves that attempt as a failed/ended mode, shows its normal
+summary, and uses the same return loop.
 
 Normal skill shot and the normal plunge ball save are suppressed for the entire
 test session. Mode-specific ball saves remain active so their behavior can still
@@ -106,9 +112,7 @@ Moved behind normal_game_ball_started:
 - villain qualification
 - villain saucer-start handling
 - Case Files
-- Daily Bugle mystery
 - normal skill shot
-- Extra Ball background mode
 - Bonus Lanes background mode
 - Chaos Pops background mode
 
@@ -118,5 +122,9 @@ Still allowed on raw ball_started because tested modes depend on the infrastruct
 - music control
 - villain bookends
 - villain progression/test harness owner
+
+Started only by test_mode_support_started during a harness game:
+- Daily Bugle Mystery (shared upper-playfield SFX and normal disable/enable path)
+- Extra Ball (ball-save count/widget/SFX, SHOOT AGAIN lamp and Daily Bugle extra-ball VUK ownership)
 
 The selected villain or wizard remains unaware of test mode.

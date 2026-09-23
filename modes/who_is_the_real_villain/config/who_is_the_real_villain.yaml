@@ -122,23 +122,23 @@ show_player:
     real_villain_upper_spinner_pulse: {loops: -1}
 
   who_is_the_real_villain_cameo_ab_pulse:
-    real_villain_ab_pair_pulse: {loops: -1}
+    real_villain_ab_pair_pulse: {loops: -1, priority: 100}
   who_is_the_real_villain_cameo_slings_pulse:
-    real_villain_sling_pair_pulse: {loops: -1}
+    real_villain_sling_pair_pulse: {loops: -1, priority: 100}
   who_is_the_real_villain_cameo_rubbers_pulse:
-    real_villain_rubber_pair_pulse: {loops: -1}
+    real_villain_rubber_pair_pulse: {loops: -1, priority: 100}
   who_is_the_real_villain_cameo_ab_left_flash:
-    real_villain_ab_left_flash: {loops: -1}
+    real_villain_ab_left_flash: {loops: -1, priority: 120}
   who_is_the_real_villain_cameo_ab_right_flash:
-    real_villain_ab_right_flash: {loops: -1}
+    real_villain_ab_right_flash: {loops: -1, priority: 120}
   who_is_the_real_villain_cameo_slings_left_flash:
-    real_villain_sling_left_flash: {loops: -1}
+    real_villain_sling_left_flash: {loops: -1, priority: 120}
   who_is_the_real_villain_cameo_slings_right_flash:
-    real_villain_sling_right_flash: {loops: -1}
+    real_villain_sling_right_flash: {loops: -1, priority: 120}
   who_is_the_real_villain_cameo_rubbers_left_flash:
-    real_villain_rubber_left_flash: {loops: -1}
+    real_villain_rubber_left_flash: {loops: -1, priority: 120}
   who_is_the_real_villain_cameo_rubbers_right_flash:
-    real_villain_rubber_right_flash: {loops: -1}
+    real_villain_rubber_right_flash: {loops: -1, priority: 120}
 
   who_is_the_real_villain_saucers_flash:
     real_villain_saucers_flash: {loops: -1}
@@ -259,37 +259,42 @@ shows:
     - duration: 180ms
       lights: {l_b_rollover: off}
 
+  # Candidate pairs need to read clearly over the mode's purple GI.  Use a
+  # hard yellow/off pulse instead of the old white/404040 breathing effect.
   real_villain_sling_pair_pulse:
-    - duration: 450ms
-      lights: {l_gi_left_sling_upper: FFFFFF, l_gi_left_sling_lower: FFFFFF, l_gi_right_sling: FFFFFF}
-    - duration: 450ms
-      lights: {l_gi_left_sling_upper: 404040, l_gi_left_sling_lower: 404040, l_gi_right_sling: 404040}
+    - duration: 300ms
+      lights: {l_gi_left_sling_upper: F0D040, l_gi_left_sling_lower: F0D040, l_gi_right_sling: F0D040}
+    - duration: 300ms
+      lights: {l_gi_left_sling_upper: off, l_gi_left_sling_lower: off, l_gi_right_sling: off}
   real_villain_sling_left_flash:
-    - duration: 180ms
+    - duration: 140ms
       lights: {l_gi_left_sling_upper: FFFFFF, l_gi_left_sling_lower: FFFFFF}
-    - duration: 180ms
+    - duration: 140ms
       lights: {l_gi_left_sling_upper: off, l_gi_left_sling_lower: off}
   real_villain_sling_right_flash:
-    - duration: 180ms
+    - duration: 140ms
       lights: {l_gi_right_sling: FFFFFF}
-    - duration: 180ms
+    - duration: 140ms
       lights: {l_gi_right_sling: off}
 
+  # The rubber Cameo pair previously pulsed only the bank GI, which was easy
+  # to miss.  Include the actual bank inserts so both candidate areas announce
+  # themselves strongly.  Preserve the green-lens inserts by driving them white.
   real_villain_rubber_pair_pulse:
-    - duration: 450ms
-      lights: {l_gi_3bank: FFFFFF, l_gi_5bank_lower: FFFFFF, l_gi_5bank_upper: FFFFFF}
-    - duration: 450ms
-      lights: {l_gi_3bank: 404040, l_gi_5bank_lower: 404040, l_gi_5bank_upper: 404040}
+    - duration: 300ms
+      lights: {l_gi_3bank: F0D040, l_3bankbonus: FFFFFF, l_gi_5bank_lower: F0D040, l_gi_5bank_upper: F0D040, l_5bank_1: FFFFFF, l_5bank_2: FFFFFF, l_5bank_3: FFFFFF, l_5bank_4: FFFFFF, l_5bank_5: FFFFFF}
+    - duration: 300ms
+      lights: {l_gi_3bank: off, l_3bankbonus: off, l_gi_5bank_lower: off, l_gi_5bank_upper: off, l_5bank_1: off, l_5bank_2: off, l_5bank_3: off, l_5bank_4: off, l_5bank_5: off}
   real_villain_rubber_left_flash:
-    - duration: 180ms
-      lights: {l_gi_3bank: FFFFFF}
-    - duration: 180ms
-      lights: {l_gi_3bank: off}
+    - duration: 140ms
+      lights: {l_gi_3bank: FFFFFF, l_3bankbonus: FFFFFF}
+    - duration: 140ms
+      lights: {l_gi_3bank: off, l_3bankbonus: off}
   real_villain_rubber_right_flash:
-    - duration: 180ms
-      lights: {l_gi_5bank_lower: FFFFFF, l_gi_5bank_upper: FFFFFF}
-    - duration: 180ms
-      lights: {l_gi_5bank_lower: off, l_gi_5bank_upper: off}
+    - duration: 140ms
+      lights: {l_gi_5bank_lower: FFFFFF, l_gi_5bank_upper: FFFFFF, l_5bank_1: FFFFFF, l_5bank_2: FFFFFF, l_5bank_3: FFFFFF, l_5bank_4: FFFFFF, l_5bank_5: FFFFFF}
+    - duration: 140ms
+      lights: {l_gi_5bank_lower: off, l_gi_5bank_upper: off, l_5bank_1: off, l_5bank_2: off, l_5bank_3: off, l_5bank_4: off, l_5bank_5: off}
 
   real_villain_saucers_flash:
     - duration: 180ms

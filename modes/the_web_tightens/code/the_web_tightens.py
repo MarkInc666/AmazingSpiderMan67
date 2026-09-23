@@ -544,9 +544,8 @@ class TheWebTightens(Mode):
     def _ball_guard(self):
         if self.mode_done:
             return
-        if self.multiball_active and self._balls_in_play() <= 1:
-            self._complete_mode()
-            return
+        # This watchdog only manages trapped/free balls. MPF's
+        # multiball-ended event is authoritative for mode completion.
         if (
             self.phase not in (None, "super")
             and not self.transitioning

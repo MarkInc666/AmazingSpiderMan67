@@ -1,7 +1,9 @@
 #config_version=6
 
 mode:
-  start_events: normal_game_ball_started
+  start_events:
+    - normal_game_ball_started
+    - test_mode_support_started
   code: extra_ball.ExtraBall
   priority: 90
 
@@ -311,45 +313,24 @@ show_player:
     extra_ball_right_award_show:
       loops: 1
 
-#todo:  flash shoot again light during goblin, vulture, parafino MBs  - find events from logs
-
-  ball_save_default_ball_save_enabled:
+# Shared SHOOT AGAIN presentation. ExtraBall Python tracks all active save
+# sources (default, Mystery, Case File, and multiball shoot-again windows) so
+# one save ending cannot turn the lamp off while another is still active.
+  shared_shoot_again_flash:
+    shoot_again_fast_flash:
+      action: stop
     shoot_again_flash:
       loops: -1
+      priority: 130
 
-  ball_save_default_ball_save_hurry_up:
-    shoot_again_fast_flash:
-      loops: -1
-
-  ball_save_default_ball_save_disabled:
+  shared_shoot_again_fast:
     shoot_again_flash:
       action: stop
     shoot_again_fast_flash:
-      action: stop
-
-  ball_save_mystery_ball_save_enabled:
-    shoot_again_flash:
       loops: -1
+      priority: 140
 
-  ball_save_mystery_ball_save_hurry_up:
-    shoot_again_fast_flash:
-      loops: -1
-
-  ball_save_mystery_ball_save_disabled:
-    shoot_again_flash:
-      action: stop
-    shoot_again_fast_flash:
-      action: stop
-
-  ball_save_case_file_ball_save_enabled:
-    shoot_again_flash:
-      loops: -1
-
-  ball_save_case_file_ball_save_hurry_up:
-    shoot_again_fast_flash:
-      loops: -1
-
-  ball_save_case_file_ball_save_disabled:
+  shared_shoot_again_off:
     shoot_again_flash:
       action: stop
     shoot_again_fast_flash:
@@ -400,10 +381,11 @@ shows:
         l_extraball: red
 
   extra_ball_award_show:
+    # Persist only the SHOOT AGAIN insert for the rest of the ball. The GI
+    # celebration is handled separately by extra_ball_collect_gi_show.
     - duration: -1
       lights:
         l_shoot_again: white
-        gi: white
         
   extra_ball_right_lit_show:
     - duration: 200ms
@@ -414,7 +396,7 @@ shows:
         l_right_extraball: red
 
   extra_ball_right_award_show:
+    # Same persistent state for a right-side Extra Ball award.
     - duration: -1
       lights:
         l_shoot_again: white
-        gi: white

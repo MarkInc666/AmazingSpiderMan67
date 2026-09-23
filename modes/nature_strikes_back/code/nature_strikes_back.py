@@ -142,7 +142,6 @@ class NatureStrikesBack(Mode):
         self.delay.remove("nature_blotto")
         self.delay.remove("nature_ball_guard")
         self.delay.remove("nature_next_cycle")
-        self.delay.remove("nature_multiball_end_check")
         for saucer in (1, 2, 3):
             self.delay.remove(f"nature_saucer_{saucer}")
         self._release_all_saucers()
@@ -275,14 +274,9 @@ class NatureStrikesBack(Mode):
     def _ball_guard(self, **kwargs):
         if self.mode_done:
             return
-        # The wizard survives ordinary multiball drains.  This explicit ball
-        # count check is intentionally authoritative in tester mode too, where
-        # the protected test ball can generate a different ball lifecycle from
-        # a normal game.  Nature ends only after its multiball has genuinely
-        # started and the live count has collapsed to one ball.
-        if self.multiball_active and self._balls_in_play() <= 1:
-            self._complete_mode()
-            return
+        # Keep at least one loose ball available while saucers are holding
+        # balls. MPF's multiball-ended event is authoritative for deciding
+        # when the multiball has collapsed to one ball.
         self._ensure_loose_ball()
         self._schedule_ball_guard()
 
@@ -290,22 +284,10 @@ class NatureStrikesBack(Mode):
         self.multiball_active = True
 
     def _multiball_ended(self, **kwargs):
-        # MPF normally posts this as the multiball drops to one ball.  Recheck
-        # the actual live count instead of completing blindly so test/service
-        # starts cannot terminate Nature on an intermediate drain.
         if self.mode_done or not self.multiball_active:
             return
-        self.delay.reset(
-            name="nature_multiball_end_check",
-            ms=100,
-            callback=self._check_multiball_end,
-        )
-
-    def _check_multiball_end(self, **kwargs):
-        if self.mode_done or not self.multiball_active:
-            return
-        if self._balls_in_play() <= 1:
-            self._complete_mode()
+        self.multiball_active = False
+        self._complete_mode()
 
     def _release_all_saucers(self):
         for saucer in tuple(sorted(self.held_saucers)):

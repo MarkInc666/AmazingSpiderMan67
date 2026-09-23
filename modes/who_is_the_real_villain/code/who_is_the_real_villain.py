@@ -524,13 +524,11 @@ class WhoIsTheRealVillain(Mode):
     def _multiball_ended(self, **kwargs):
         if self.mode_done or not self.multiball_active:
             return
-        self.delay.reset(name="real_villain_mb_end_check", ms=100, callback=self._check_multiball_end)
-
-    def _check_multiball_end(self):
-        if self.mode_done or not self.multiball_active:
-            return
-        if self._balls_in_play() <= 1:
-            self._complete_mode()
+        # MPF's multiball lifecycle is authoritative. This event is posted
+        # when the multiball has collapsed to its configured end condition
+        # (one ball remaining for this mode), so do not re-count balls here.
+        self.multiball_active = False
+        self._complete_mode()
 
     def _schedule_ball_guard(self):
         self.delay.reset(name="real_villain_ball_guard", ms=500, callback=self._ball_guard)
@@ -538,9 +536,10 @@ class WhoIsTheRealVillain(Mode):
     def _ball_guard(self):
         if self.mode_done:
             return
-        if self.multiball_active and self._balls_in_play() <= 1:
-            self._complete_mode()
-            return
+        # Keep at least one loose ball available when balls are parked in
+        # saucers, but never use transient balls_in_play counts to decide
+        # whether multiball has ended. MPF's multiball_..._ended event owns
+        # that transition.
         self._ensure_free_ball()
         self._schedule_ball_guard()
 

@@ -3,6 +3,7 @@
 mode:
   start_events:
     - normal_game_ball_started
+    - test_mode_support_started
   stop_events: ball_ending
   code: daily_bugle_mystery.DailyBugleMystery
   priority: 300

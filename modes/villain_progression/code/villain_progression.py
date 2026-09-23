@@ -991,6 +991,7 @@ class VillainProgression(Mode):
         # switch-confirmed retry in case the first pulse does not clear the VUK.
         self.add_mode_event_handler("request_vuk_eject", self._request_vuk_eject)
         self.add_mode_event_handler("cancel_vuk_eject_request", self._cancel_vuk_eject_request)
+        self.add_mode_event_handler("wizard_drain_vuk_eject", self._wizard_drain_vuk_eject)
         self.add_mode_event_handler("up_kick", self._up_kick_requested)
         self.add_mode_event_handler("villain_summary_hold_vuk_until_done", self._cancel_vuk_eject_request)
         self.add_mode_event_handler("villain_summary_hold_saucer_until_done", self._hold_saucer_until_summary_done)
@@ -1178,6 +1179,18 @@ class VillainProgression(Mode):
         if not current_key or self._safe_int(player["villain_mode_in_summary"], 0) == 1:
             return
 
+        # The harness loop ball save exists only to keep the test session alive.
+        # During a tested multiball, every real drain can trigger this save while
+        # the tested mode still legitimately has multiple balls in play.  Do not
+        # treat that saved drain as the end of the test attempt; the multiball
+        # mode itself owns its normal end condition.
+        if self._safe_int(player["multiball_autoplunge_active"], 0) == 1:
+            self.machine.events.post(
+                "test_mode_multiball_drain_ignored",
+                mode_key=current_key,
+            )
+            return
+
         if current_key in self.VILLAINS:
             self._villain_mode_finished(villain_key=current_key, completed=False)
         elif self._is_mini_wizard_key(current_key):
@@ -1265,6 +1278,41 @@ class VillainProgression(Mode):
     def _cancel_vuk_eject_request(self, **kwargs):
         self.delay.remove("shared_vuk_eject_request")
         self.delay.remove("shared_vuk_eject_verify")
+
+    def _wizard_drain_vuk_eject(self, **kwargs):
+        """Force a re-entered VUK ball back to the playfield during drain-out.
+
+        Wizard/test cleanup deliberately disables the flippers and waits for
+        live balls to reach the trough. At that point no award/mode is allowed
+        to keep ownership of a newly-entered VUK ball, so clear stale hold
+        flags before using the normal switch-verified VUK release path.
+        """
+        del kwargs
+        if not self.machine.game:
+            return
+
+        player = self.machine.game.player
+        drain_active = (
+            self._safe_int(player["chapter_select_waiting_for_summary"], 0) == 1
+            or self._safe_int(player["final_wizard_completed"], 0) == 1
+            or self._safe_int(player["test_mode_waiting_for_ball_return"], 0) == 1
+        )
+        if not drain_active:
+            return
+
+        for hold_var in (
+            "dr_manta_vuk_hold_active",
+            "invasion_from_everywhere_vuk_hold_active",
+            "daily_bugle_vuk_hold_active",
+            "extra_ball_vuk_hold_active",
+            "custom_bonus_vuk_hold_active",
+            "mystery_vuk_intro_hold_active",
+            "villain_summary_vuk_hold_active",
+        ):
+            player[hold_var] = 0
+
+        self.machine.events.post("cancel_vuk_eject_request")
+        self.machine.events.post("up_kick")
 
     def _up_kick_requested(self, **kwargs):
         """Verify one raw VUK pulse and retry once if the ball remains."""

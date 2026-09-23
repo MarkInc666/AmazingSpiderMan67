@@ -238,6 +238,22 @@ event_player:
   s_saucer_3_active{current_player.chapter_select_needed == 1}:
     - delayed_kickout_saucer_3
 
+  # Once a wizard/test attempt has disabled controls and is waiting for the
+  # remaining live balls to drain, traps must become pass-throughs. These use
+  # the raw saucer kickouts so a ball which re-enters a previously summary-held
+  # saucer cannot get parked there and prevent the trough drain.
+  s_saucer_1_active{current_player.chapter_select_waiting_for_summary == 1 or current_player.final_wizard_completed == 1 or current_player.test_mode_waiting_for_ball_return == 1}:
+    - kickout_saucer_1
+
+  s_saucer_2_active{current_player.chapter_select_waiting_for_summary == 1 or current_player.final_wizard_completed == 1 or current_player.test_mode_waiting_for_ball_return == 1}:
+    - kickout_saucer_2
+
+  s_saucer_3_active{current_player.chapter_select_waiting_for_summary == 1 or current_player.final_wizard_completed == 1 or current_player.test_mode_waiting_for_ball_return == 1}:
+    - kickout_saucer_3
+
+  s_vuk_switch_active{current_player.chapter_select_waiting_for_summary == 1 or current_player.final_wizard_completed == 1 or current_player.test_mode_waiting_for_ball_return == 1}:
+    - wizard_drain_vuk_eject
+
   drop_target_bank_dt_bank_left_down{current_player.villain_mode_running == 0}:
     - drop_target_bank_dt_bank_left_reset
 
