@@ -26,9 +26,12 @@ Shared handling
   Daily Bugle after the release and retry window.
 - If that VUK shot completes the fifth villain in the current Comic, the held
   ball is transferred after the villain summary directly into the newly-ready
-  chapter-wizard intro. It is not kicked out and the player does not have to
-  shoot the VUK a second time. If the VUK switch unexpectedly clears before
-  the deferred start, the normal wizard-ready-at-VUK state is restored.
+  chapter-wizard intro. The summary is hidden and fully torn down first; a
+  500 ms handoff gap follows before the wizard intro starts. No wizard-ready
+  event/chase/intro is published during the summary teardown frame. The ball is
+  not kicked out and the player does not have to shoot the VUK a second time.
+  If the VUK switch unexpectedly clears before the deferred start, the normal
+  wizard-ready-at-VUK state is restored after the same clean handoff gap.
 - request_vuk_eject with delay_ms schedules a release from the persistent
   villain-progression mode, so the release survives the requesting mode ending.
 - Every up_kick pulse is checked after 900 ms. If s_vuk_switch is still active,

@@ -1,0 +1,25 @@
+{
+  "port": 8767,
+  "modes": [
+    "General / Base Game", "Test Harness", "Daily Bugle / Case Files", "Bonus", "Service / Mechanical", "Final Showdown / Kingpin",
+    "Rhino", "Sandman", "Vulture", "Electro", "Green Goblin", "Sinister Surge",
+    "Doctor Octopus", "Mysterio", "Scorpion", "Green Lizard", "Parafino", "Mastermind Trap",
+    "Cerberus", "Vulcan", "Diana", "Cyclops", "Centaur", "Trubble Unleashed",
+    "The Plotter", "The Fly Twins", "5th Ave Phantom", "The Enforcers", "Doctor Cool", "Crime Wave",
+    "Harley Clivendon", "The Conquistador", "Spider-Slayer", "Metal Monster", "Fiddler", "The Web Tightens",
+    "Pardo", "The Fantastic Fakir", "Kotep", "Super Swami", "Infinata", "Fifth Dimension Curse",
+    "Dr. Noah Boddy", "Dr. Magneto", "Professor Pretorius", "Doctor Dumpty", "Dr. Von Schlick", "Mad Science Meltdown",
+    "Clive and Blotto", "Doctor Zapp", "Bolton and Boomer", "The Snowman", "The Plutonians", "Nature Strikes Back",
+    "Dr. Manta", "Igor", "Doctor Atlantean", "DeVargas", "The Molemen", "Invasion from Everywhere",
+    "Charles Cameo", "Brutus", "Desperado", "Skymaster", "Conner's Reptiles", "Who Is the Real Villain?",
+    "Sir Galahad", "Master Vine", "Master Technician", "The Spider-Men", "Baron von Rantenraven", "Time-Tossed Showdown"
+  ],
+  "types": ["Bug", "Enhancement", "Balance", "Polish", "Question"],
+  "areas": [
+    "Gameplay / Rules", "LEDs / Lighting", "Audio / SFX", "Music", "Video", "Display / Widgets", "Timing", "Scoring",
+    "Ball Save", "Multiball / Add-a-Ball", "VUK", "Saucers", "Drop Targets", "Gate / Rooftop", "Switches",
+    "Coils / Mechanical", "Bonus", "Test Harness", "Service", "Other"
+  ],
+  "priorities": ["Critical", "High", "Normal", "Low"],
+  "statuses": ["New", "Confirmed", "In Progress", "Fixed", "Retest", "Complete", "Deferred", "Won't Fix"]
+}

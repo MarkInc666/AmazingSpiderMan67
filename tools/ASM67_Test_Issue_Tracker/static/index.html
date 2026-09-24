@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#191f26">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="ASM67 Tracker">
+  <title>ASM67 Test Issue Tracker</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header>
+  <div>
+    <h1>ASM67 Test Issue Tracker</h1>
+    <p>Log it fast. Fix it. Retest it. Then complete it.</p>
+  </div>
+  <div class="header-actions">
+    <button id="copyBtn" class="secondary">Copy for ChatGPT</button>
+    <button id="mdBtn" class="secondary">Export Markdown</button>
+    <button id="csvBtn" class="secondary">Export CSV</button>
+  </div>
+</header>
+
+<main>
+<section class="card connection-card" id="connectionCard">
+  <div class="connection-copy">
+    <h2>Phone access</h2>
+    <p>Use the same Wi-Fi as this computer, then scan the code or open:</p>
+    <a id="phoneUrl" href="#">Finding LAN address…</a>
+    <p class="small-help">On iPhone, Safari → Share → <strong>Add to Home Screen</strong> for app-like access. All devices use the same issue file on this computer.</p>
+  </div>
+  <div id="qr" class="qr" aria-label="QR code for phone access"></div>
+</section>
+
+<section class="card quick-add">
+  <h2>Add issue</h2>
+  <div class="grid selectors">
+    <label>Mode<select id="mode"></select></label>
+    <label>Type<select id="type"></select></label>
+    <label>Area<select id="area"></select></label>
+    <label>Priority<select id="priority"></select></label>
+  </div>
+  <label>Short title<input id="title" maxlength="180" placeholder="e.g. Blotto blocked zone pulses instead of solid purple"></label>
+  <label>Notes / reproduction<textarea id="notes" rows="3" placeholder="What happened? What did you expect? Any sequence to reproduce it?"></textarea></label>
+  <div class="add-row"><button id="addBtn" class="primary">Add Issue</button><span id="saveMsg"></span></div>
+</section>
+
+<section class="card">
+  <div class="toolbar">
+    <div class="quick-tabs">
+      <button data-quick="open" class="tab active">Open</button>
+      <button data-quick="retest" class="tab">Retest</button>
+      <button data-quick="" class="tab">All</button>
+    </div>
+    <input id="search" placeholder="Search issues…">
+  </div>
+  <div class="grid filters">
+    <label>Mode<select id="fMode"><option value="">All modes</option></select></label>
+    <label>Type<select id="fType"><option value="">All types</option></select></label>
+    <label>Area<select id="fArea"><option value="">All areas</option></select></label>
+    <label>Status<select id="fStatus"><option value="">All statuses</option></select></label>
+  </div>
+  <div class="summary" id="summary"></div>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>ID</th><th>Mode</th><th>Type / Area</th><th>Priority</th><th>Issue</th><th>Status</th><th>Updated</th><th></th></tr></thead>
+      <tbody id="issues"></tbody>
+    </table>
+  </div>
+</section>
+</main>
+
+<dialog id="editDialog">
+  <form method="dialog" id="editForm">
+    <div class="dialog-head"><h2>Edit issue <span id="editId"></span></h2><button value="cancel" class="icon">×</button></div>
+    <div class="grid selectors">
+      <label>Mode<select id="eMode"></select></label>
+      <label>Type<select id="eType"></select></label>
+      <label>Area<select id="eArea"></select></label>
+      <label>Priority<select id="ePriority"></select></label>
+      <label>Status<select id="eStatus"></select></label>
+    </div>
+    <label>Short title<input id="eTitle" maxlength="180"></label>
+    <label>Notes / reproduction<textarea id="eNotes" rows="7"></textarea></label>
+    <div class="dialog-actions">
+      <button type="button" id="deleteBtn" class="danger">Delete</button>
+      <span class="spacer"></span>
+      <button value="cancel" class="secondary">Cancel</button>
+      <button type="button" id="saveEditBtn" class="primary">Save</button>
+    </div>
+  </form>
+</dialog>
+
+<div id="toast"></div>
+<script src="/qrcode.bundle.js"></script>
+<script src="/app.js"></script>
+</body>
+</html>

@@ -44,6 +44,7 @@ class VillainProgression(Mode):
     GATE_OPEN_MAX_ATTEMPTS = 2
     VUK_EJECT_DEFAULT_DELAY_MS = 1_500
     VUK_EJECT_VERIFY_MS = 900
+    SUMMARY_TO_WIZARD_HANDOFF_MS = 500
     GATE_POWER_SWITCHES = (
         "s_left_flipper",
         "s_right_flipper",
@@ -314,6 +315,15 @@ class VillainProgression(Mode):
             self.add_mode_event_handler("clear_saucers", self._clear_saucers)
             self.add_mode_event_handler("clear_saucers_delayed", self._clear_saucers_delayed)
             self.machine.game.player["villain_mode_running"] = 1
+
+            # Start the normal shared support systems that a villain/wizard
+            # coexists with during real gameplay, without starting campaign
+            # qualification/chapter flow. Daily Bugle Mystery intentionally
+            # banks rooftop spinner pictures here just as it does on a normal
+            # ball; individual modes may still disable it through their normal
+            # disable_daily_bugle_mystery event. Extra Ball support also uses
+            # this edge.
+            self.machine.events.post("test_mode_support_started")
             self.machine.events.post("test_mode_ball_loop_enable")
             self.delay.add(name="test_mode_selector_start", ms=250, callback=self._open_test_mode_selector)
             return
@@ -2041,7 +2051,13 @@ class VillainProgression(Mode):
         # Reassert the Daily Bugle/VUK-ready state after summary cleanup even if
         # this is not a fresh 0->1 transition; otherwise no gate-open event is
         # posted and the player sees WIZ READY with a closed gate.
-        self._check_chapter_complete()
+        # Recalculate readiness without publishing any wizard-ready events yet.
+        # villain_bookend_summary_done is posted from inside VillainBookends'
+        # summary teardown, immediately after the summary-hide event. Publishing
+        # readiness or starting the wizard synchronously here can overlap that
+        # teardown on the display/audio bus. The summary owns this frame; the
+        # chapter wizard gets a clean handoff after a short gap below.
+        self._sync_chapter_ready_flags(post_events=False)
         if (
             self._safe_int(player["chapter_mini_wizard_ready"], 0) == 1
             and self._safe_int(player["chapter_select_needed"], 0) == 0
@@ -2049,26 +2065,62 @@ class VillainProgression(Mode):
         ):
             summary_vuk_held = self._safe_int(kwargs.get("summary_vuk_held"), 0) == 1
             if summary_vuk_held and self._vuk_is_occupied():
-                # VillainBookends is still inside its summary teardown here.
-                # Claim the physical ball now, then defer the intro request so
-                # the finished summary cannot clear the new intro's state.
+                # Transfer physical ownership synchronously so VillainBookends
+                # does not eject the winning VUK ball when its teardown resumes.
+                # The wizard intro itself is deliberately delayed until after
+                # the summary has completely disappeared.
                 self.machine.events.post(
                     "villain_summary_transfer_vuk_to_mini_wizard",
                     villain=villain,
                 )
                 self.delay.reset(
                     name="mini_wizard_start_from_summary_vuk",
-                    ms=50,
+                    ms=self.SUMMARY_TO_WIZARD_HANDOFF_MS,
                     callback=self._start_mini_wizard_from_summary_vuk,
                     villain=villain,
                 )
             else:
-                self._mini_wizard_ready_at_daily_bugle(
-                    post_restore=False,
+                self.delay.reset(
+                    name="mini_wizard_ready_after_summary",
+                    ms=self.SUMMARY_TO_WIZARD_HANDOFF_MS,
+                    callback=self._publish_mini_wizard_ready_after_summary,
                     reason="villain_summary_done",
                 )
         self._restore_state()
         self._schedule_case_files_restore(reason="villain_summary_done")
+
+
+    def _publish_mini_wizard_ready_after_summary(self, reason="villain_summary_done", **kwargs):
+        """Publish chapter-wizard readiness only after the villain summary is gone."""
+        if not self.machine.game:
+            return
+
+        player = self.machine.game.player
+        ready = (
+            self._safe_int(player["chapter_mini_wizard_ready"], 0) == 1
+            and self._safe_int(player["chapter_select_needed"], 0) == 0
+            and self._safe_int(player["chapter_select_active"], 0) == 0
+            and self._safe_int(player["villain_mode_running"], 0) == 0
+        )
+        if not ready:
+            return
+
+        chapter = self._get_current_chapter()
+        if not chapter:
+            return
+
+        self.machine.events.post(
+            "chapter_mini_wizard_ready",
+            chapter=chapter["key"],
+            chapter_name=chapter["name"],
+            mini_wizard_key=chapter["mini_wizard_key"],
+            mini_wizard_name=chapter["mini_wizard_name"],
+            mini_wizard_event=chapter["mini_wizard_event"],
+        )
+        self._mini_wizard_ready_at_daily_bugle(
+            post_restore=True,
+            reason=reason,
+        )
 
     def _start_mini_wizard_from_summary_vuk(self, villain=None, **kwargs):
         """Start a newly-qualified chapter wizard with the held winning ball."""
