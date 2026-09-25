@@ -2350,9 +2350,32 @@ class VillainProgression(Mode):
         # presenting the normal Chapter Select transition.
         self._release_chapter_select_summary_hold(mini_wizard=mini_key)
 
+        # The summary is finished now. Release any wizard-held physical balls
+        # before the Comic Collected presentation begins, so the player does
+        # not watch the comic while a ball remains trapped in a saucer/VUK.
         self._release_summary_saucer_holds()
+        self._clear_saucers_now(reason="mini_wizard_summary_done")
+        if self._vuk_is_occupied():
+            for hold_var in (
+                "mini_wizard_vuk_hold_active",
+                "invasion_from_everywhere_vuk_hold_active",
+                "villain_summary_vuk_hold_active",
+            ):
+                player[hold_var] = 0
+            self.machine.events.post("cancel_vuk_eject_request")
+            self.machine.events.post("up_kick")
+
         self._post_global_cleanup_events(reason="mini_wizard_completed")
-        self.machine.events.post("chapter_comic_collected", chapter_number=chapter_number, chapter_name=chapter["name"])
+        # Give the physical kickouts a brief head start before Comic Collected
+        # takes over the display. Gameplay/progression state is already final.
+        self.delay.reset(
+            name="mini_wizard_comic_collected_after_release",
+            ms=450,
+            callback=self.machine.events.post,
+            event="chapter_comic_collected",
+            chapter_number=chapter_number,
+            chapter_name=chapter["name"],
+        )
         if self._safe_int(player["final_wizard_ready"], 0) == 1:
             self.machine.events.post("final_wizard_saucers_ready")
             self.machine.events.post(

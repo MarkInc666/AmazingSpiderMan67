@@ -16,7 +16,9 @@ function safeJson(obj){
   return JSON.stringify(obj).replace(/[^\x00-\x7F]/g,c=>'\\u'+c.charCodeAt(0).toString(16).padStart(4,'0'));
 }
 async function load(){
-  const r=await fetch('/api/issues?'+qp()); issues=await r.json(); render();
+  const r=await fetch('/api/issues?'+qp());
+  if(!r.ok){const msg=await responseError(r);toast('Could not load issues: '+msg);return}
+  const data=await r.json(); issues=Array.isArray(data)?data:(data?[data]:[]); render();
 }
 function td(label, html){ return `<td data-label="${label}">${html}</td>`; }
 function render(){
@@ -33,26 +35,45 @@ function render(){
       td('Status',`<select class="status-select">${opts.statuses.map(s=>`<option${s===i.status?' selected':''}>${esc(s)}</option>`).join('')}</select>`)+
       td('Updated',`<small>${fmt(i.updated_at)}</small>`)+
       td('',`<button class="edit-btn">Edit</button>`);
-    tr.querySelector('.status-select').addEventListener('change', async e=>{await update(i.id,{status:e.target.value});toast(`Issue #${i.id} → ${e.target.value}`);load()});
+    tr.querySelector('.status-select').addEventListener('change', async e=>{
+      try{await update(i.id,{status:e.target.value});toast(`Issue #${i.id} → ${e.target.value}`);await load()}
+      catch(err){toast('Could not save status: '+err.message);await load()}
+    });
     tr.querySelector('.edit-btn').addEventListener('click',()=>openEdit(i)); $('issues').append(tr);
   });
 }
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const css=s=>String(s).replace(/[^a-z0-9_-]/gi,'');
 function fmt(s){try{return new Date(s).toLocaleString()}catch{return s}}
-async function update(id, body){return fetch('/api/issues/'+id,{method:'PUT',headers:{'Content-Type':'application/json'},body:safeJson(body)})}
+async function responseError(r){
+  try{const data=await r.json();return data.detail||data.error||(`HTTP ${r.status}`)}catch{try{return (await r.text())||(`HTTP ${r.status}`)}catch{return `HTTP ${r.status}`}}
+}
+async function update(id, body){
+  const r=await fetch('/api/issues/'+id,{method:'PUT',headers:{'Content-Type':'application/json'},body:safeJson(body)});
+  if(!r.ok) throw new Error(await responseError(r));
+  return r;
+}
 function toast(t){const el=$('toast');el.textContent=t;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),1800)}
 
 async function add(){
   const body={mode:$('mode').value,issue_type:$('type').value,area:$('area').value,priority:$('priority').value,title:$('title').value.trim(),notes:$('notes').value.trim()};
   if(!body.title){$('title').focus();return}
   const r=await fetch('/api/issues',{method:'POST',headers:{'Content-Type':'application/json'},body:safeJson(body)});
-  if(!r.ok){toast('Could not save issue');return}
-  $('title').value='';$('notes').value='';toast('Issue added');$('title').focus();load();
+  if(!r.ok){toast('Could not save issue: '+await responseError(r));return}
+  $('title').value='';$('notes').value='';toast('Issue added');$('title').focus();await load();
 }
 function openEdit(i){editIssue=i;$('editId').textContent='#'+i.id;$('eMode').value=i.mode;$('eType').value=i.issue_type;$('eArea').value=i.area;$('ePriority').value=i.priority;$('eStatus').value=i.status;$('eTitle').value=i.title;$('eNotes').value=i.notes||'';$('editDialog').showModal()}
-async function saveEdit(){if(!editIssue)return;const body={mode:$('eMode').value,issue_type:$('eType').value,area:$('eArea').value,priority:$('ePriority').value,status:$('eStatus').value,title:$('eTitle').value.trim(),notes:$('eNotes').value.trim()};await update(editIssue.id,body);$('editDialog').close();toast('Issue saved');load()}
-async function del(){if(!editIssue||!confirm(`Delete issue #${editIssue.id}?`))return;await fetch('/api/issues/'+editIssue.id,{method:'DELETE'});$('editDialog').close();toast('Issue deleted');load()}
+async function saveEdit(){
+  if(!editIssue)return;
+  const body={mode:$('eMode').value,issue_type:$('eType').value,area:$('eArea').value,priority:$('ePriority').value,status:$('eStatus').value,title:$('eTitle').value.trim(),notes:$('eNotes').value.trim()};
+  try{await update(editIssue.id,body);$('editDialog').close();toast('Issue saved');await load()}catch(e){toast('Could not save issue: '+e.message)}
+}
+async function del(){
+  if(!editIssue||!confirm(`Delete issue #${editIssue.id}?`))return;
+  const r=await fetch('/api/issues/'+editIssue.id,{method:'DELETE'});
+  if(!r.ok){toast('Could not delete issue: '+await responseError(r));return}
+  $('editDialog').close();toast('Issue deleted');await load();
+}
 async function copyText(text){
   try{ if(navigator.clipboard && window.isSecureContext){ await navigator.clipboard.writeText(text); return true; } }catch{}
   const ta=document.createElement('textarea');ta.value=text;ta.style.position='fixed';ta.style.opacity='0';document.body.append(ta);ta.focus();ta.select();

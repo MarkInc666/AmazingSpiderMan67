@@ -219,7 +219,9 @@ class InvasionFromEverywhere(Mode):
         player["invasion_from_everywhere_vuk_hold_active"] = 1 if active else 0
         if active:
             player["mini_wizard_vuk_hold_active"] = 1
-        self.machine.events.post("cancel_vuk_eject_request")
+            # Claiming the VUK cancels any stale generic release. Releasing
+            # ownership must NOT cancel a newly requested terminal eject.
+            self.machine.events.post("cancel_vuk_eject_request")
 
     def _vuk_is_occupied(self):
         switch = self.machine.switches.get("s_vuk_switch")
@@ -515,6 +517,7 @@ class InvasionFromEverywhere(Mode):
             return
         self.mode_done = True
         self._set_vuk_hold(False)
+        self.machine.game.player["mini_wizard_vuk_hold_active"] = 0
         if self._vuk_is_occupied():
             self.machine.events.post("request_vuk_eject", delay_ms=0)
         player = self.machine.game.player

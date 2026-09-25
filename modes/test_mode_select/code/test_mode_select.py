@@ -255,6 +255,17 @@ class TestModeSelect(Mode):
         p["test_mode_select_name"] = name.upper()
         p["test_mode_select_detail"] = (f"CHAPTER {chapter} - {kind}" if chapter else kind)
 
+        # Show the same three-line rules text used by the normal villain/wizard
+        # intro. Pull it from the live bookends mode so the tester never gets
+        # out of sync with production intro wording.
+        intro = {}
+        bookends = self.machine.modes.get("villain_bookends") if hasattr(self.machine, "modes") else None
+        if bookends:
+            intro = getattr(bookends, "VILLAINS", {}).get(key, {}) or {}
+        p["test_mode_select_intro_1"] = str(intro.get("intro_1", "") or "")
+        p["test_mode_select_intro_2"] = str(intro.get("intro_2", "") or "")
+        p["test_mode_select_intro_3"] = str(intro.get("intro_3", "") or "")
+
         stage = p["test_mode_select_stage"]
         if stage == "MODE":
             if kind == "EXIT":

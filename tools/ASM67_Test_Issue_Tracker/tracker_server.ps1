@@ -11,7 +11,31 @@ $DataFile = Join-Path $DataDir 'issues.json'
 $ConfigFile = Join-Path $AppDir 'config.json'
 
 if (!(Test-Path $DataDir)) { New-Item -ItemType Directory -Path $DataDir | Out-Null }
-if (!(Test-Path $DataFile)) { '[]' | Set-Content -LiteralPath $DataFile -Encoding UTF8 }
+
+# Normalize storage on startup. The original package shipped with a zero-byte
+# issues.json, which exists but is not valid JSON and therefore skipped the
+# old "create if missing" initialization.
+$initializeDataFile = $false
+if (!(Test-Path -LiteralPath $DataFile -PathType Leaf)) {
+    $initializeDataFile = $true
+} else {
+    try {
+        $existingRaw = Get-Content -LiteralPath $DataFile -Raw -Encoding UTF8
+        if ([string]::IsNullOrWhiteSpace($existingRaw)) {
+            $initializeDataFile = $true
+        } else {
+            $existingParsed = $existingRaw | ConvertFrom-Json
+            if ($null -eq $existingParsed) { $initializeDataFile = $true }
+        }
+    } catch {
+        $backup = "$DataFile.invalid.$([DateTime]::Now.ToString('yyyyMMdd-HHmmss')).bak"
+        try { Copy-Item -LiteralPath $DataFile -Destination $backup -Force } catch { }
+        $initializeDataFile = $true
+    }
+}
+if ($initializeDataFile) {
+    [IO.File]::WriteAllText($DataFile, "[]`r`n", [Text.UTF8Encoding]::new($false))
+}
 
 $config = Get-Content -LiteralPath $ConfigFile -Raw -Encoding UTF8 | ConvertFrom-Json
 if ($Port -le 0) { $Port = [int]$config.port }
@@ -34,8 +58,24 @@ function Get-Issues {
 }
 
 function Save-Issues([object[]]$Issues) {
+    $items = @($Issues)
     $tmp = "$DataFile.tmp"
-    @($Issues) | ConvertTo-Json -Depth 8 | Set-Content -LiteralPath $tmp -Encoding UTF8
+    $bak = "$DataFile.bak"
+
+    # -InputObject is important here: piping a one-item collection into
+    # ConvertTo-Json lets PowerShell unwrap it. We always persist a JSON array.
+    $json = ConvertTo-Json -InputObject $items -Depth 8
+
+    if (Test-Path -LiteralPath $DataFile -PathType Leaf) {
+        try { Copy-Item -LiteralPath $DataFile -Destination $bak -Force } catch { }
+    }
+
+    [IO.File]::WriteAllText($tmp, $json + "`r`n", [Text.UTF8Encoding]::new($false))
+
+    # Verify the temp file before replacing live data.
+    $verify = Get-Content -LiteralPath $tmp -Raw -Encoding UTF8 | ConvertFrom-Json
+    if ($null -eq $verify -and $items.Count -gt 0) { throw 'Temporary issue database verification failed.' }
+
     Move-Item -Force -LiteralPath $tmp -Destination $DataFile
 }
 
@@ -183,7 +223,7 @@ function Send-Text($Stream, [int]$Status, [string]$Text, [string]$ContentType = 
 }
 
 function Send-Json($Stream, [int]$Status, $Object) {
-    $json = $Object | ConvertTo-Json -Depth 10 -Compress
+    $json = ConvertTo-Json -InputObject $Object -Depth 10 -Compress
     Send-Text $Stream $Status $json 'application/json; charset=utf-8'
 }
 
@@ -223,7 +263,7 @@ function Handle-Request($Req) {
     $targetParts = $Req.Target.Split('?',2)
     $path = [Uri]::UnescapeDataString($targetParts[0])
     $query = Parse-Query $(if ($targetParts.Count -gt 1) { $targetParts[1] } else { '' })
-    $issues = Get-Issues
+    $issues = @(Get-Issues)
 
     try {
         if ($Req.Method -eq 'GET' -and $path -eq '/api/options') {

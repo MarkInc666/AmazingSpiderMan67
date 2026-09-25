@@ -199,8 +199,8 @@ light_player:
     l_left_b: off
     l_star: off
 
-  time_tossed_showdown_vine_left_web_lit: {l_left_web_target: "40F040"}
-  time_tossed_showdown_vine_center_web_lit: {l_mid_web_target: "40F040"}
+  time_tossed_showdown_vine_left_web_lit: {l_left_web_target: white}
+  time_tossed_showdown_vine_center_web_lit: {l_mid_web_target: white}
   time_tossed_showdown_vine_left_sling_lit:
     l_gi_left_sling_lower: "40F040"
     l_gi_left_sling_upper: "40F040"
@@ -231,22 +231,22 @@ light_player:
     l_pop_2_10: "40F040"
     l_pop_2_11: "40F040"
     l_pop_2_12: "40F040"
-  time_tossed_showdown_vine_saucer_1_lit: {l_1_hole_l: "40F040", l_1_hole_r: "40F040"}
-  time_tossed_showdown_vine_saucer_2_lit: {l_2_hole_l: "40F040", l_2_hole_r: "40F040"}
-  time_tossed_showdown_vine_saucer_3_lit: {l_3_hole_l: "40F040", l_3_hole_r: "40F040"}
-  time_tossed_showdown_vine_left_drop_1_lit: {l_3bankbonus: "40F040"}
-  time_tossed_showdown_vine_left_drop_2_lit: {l_3bankbonus: "40F040"}
-  time_tossed_showdown_vine_left_drop_3_lit: {l_3bankbonus: "40F040"}
-  time_tossed_showdown_vine_right_drop_1_lit: {l_5bank_1: "40F040"}
-  time_tossed_showdown_vine_right_drop_2_lit: {l_5bank_2: "40F040"}
-  time_tossed_showdown_vine_right_drop_3_lit: {l_5bank_3: "40F040"}
-  time_tossed_showdown_vine_right_drop_4_lit: {l_5bank_4: "40F040"}
-  time_tossed_showdown_vine_right_drop_5_lit: {l_5bank_5: "40F040"}
-  time_tossed_showdown_vine_a_lit: {l_a_rollover: "40F040"}
-  time_tossed_showdown_vine_b_lit: {l_b_rollover: "40F040"}
-  time_tossed_showdown_vine_middle_a_lit: {l_right_a: "40F040"}
-  time_tossed_showdown_vine_middle_b_lit: {l_left_b: "40F040"}
-  time_tossed_showdown_vine_star_lit: {l_star: "40F040"}
+  time_tossed_showdown_vine_saucer_1_lit: {l_1_hole_l: red, l_1_hole_r: red}
+  time_tossed_showdown_vine_saucer_2_lit: {l_2_hole_l: red, l_2_hole_r: red}
+  time_tossed_showdown_vine_saucer_3_lit: {l_3_hole_l: red, l_3_hole_r: red}
+  time_tossed_showdown_vine_left_drop_1_lit: {l_3bankbonus: white}
+  time_tossed_showdown_vine_left_drop_2_lit: {l_3bankbonus: white}
+  time_tossed_showdown_vine_left_drop_3_lit: {l_3bankbonus: white}
+  time_tossed_showdown_vine_right_drop_1_lit: {l_5bank_1: white}
+  time_tossed_showdown_vine_right_drop_2_lit: {l_5bank_2: white}
+  time_tossed_showdown_vine_right_drop_3_lit: {l_5bank_3: white}
+  time_tossed_showdown_vine_right_drop_4_lit: {l_5bank_4: white}
+  time_tossed_showdown_vine_right_drop_5_lit: {l_5bank_5: white}
+  time_tossed_showdown_vine_a_lit: {l_a_rollover: white}
+  time_tossed_showdown_vine_b_lit: {l_b_rollover: white}
+  time_tossed_showdown_vine_middle_a_lit: {l_right_a: white}
+  time_tossed_showdown_vine_middle_b_lit: {l_left_b: white}
+  time_tossed_showdown_vine_star_lit: {l_star: white}
 
   # Spider-Men phase: lights themselves are driven by pulse shows below.
   time_tossed_showdown_phase_spider:

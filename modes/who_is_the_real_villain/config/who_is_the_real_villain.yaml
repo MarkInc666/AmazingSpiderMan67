@@ -66,6 +66,7 @@ show_player:
     real_villain_rubber_left_flash: {action: stop}
     real_villain_rubber_right_flash: {action: stop}
     real_villain_saucers_flash: {action: stop}
+    real_villain_exposure_banks_pulse: {action: stop}
     real_villain_desperado_gi_pulse: {action: stop}
     real_villain_d1_pulse: {action: stop}
     real_villain_d2_pulse: {action: stop}
@@ -91,6 +92,7 @@ show_player:
     real_villain_rubber_left_flash: {action: stop}
     real_villain_rubber_right_flash: {action: stop}
     real_villain_saucers_flash: {action: stop}
+    real_villain_exposure_banks_pulse: {action: stop}
     real_villain_desperado_gi_pulse: {action: stop}
     real_villain_d1_pulse: {action: stop}
     real_villain_d2_pulse: {action: stop}
@@ -120,6 +122,10 @@ show_player:
 
   who_is_the_real_villain_rubber_expose:
     real_villain_upper_spinner_pulse: {loops: -1}
+    real_villain_exposure_banks_pulse: {loops: -1, priority: 115}
+  who_is_the_real_villain_rubber_expose_done:
+    real_villain_upper_spinner_pulse: {action: stop}
+    real_villain_exposure_banks_pulse: {action: stop}
 
   who_is_the_real_villain_cameo_ab_pulse:
     real_villain_ab_pair_pulse: {loops: -1, priority: 100}
@@ -141,7 +147,7 @@ show_player:
     real_villain_rubber_right_flash: {loops: -1, priority: 120}
 
   who_is_the_real_villain_saucers_flash:
-    real_villain_saucers_flash: {loops: -1}
+    real_villain_saucers_flash: {loops: -1, priority: 160}
   who_is_the_real_villain_saucers_off:
     real_villain_saucers_flash: {action: stop}
 
@@ -221,6 +227,13 @@ light_player:
   who_is_the_real_villain_saucer_2_released: {l_2_hole_l: off, l_2_hole_r: off}
   who_is_the_real_villain_saucer_3_released: {l_3_hole_l: off, l_3_hole_r: off}
 
+  who_is_the_real_villain_desperado_clear_inserts:
+    l_5bank_1: off
+    l_5bank_2: off
+    l_5bank_3: off
+    l_5bank_4: off
+    l_5bank_5: off
+
   who_is_the_real_villain_desperado_target_1_solid: {l_5bank_1: F0D040}
   who_is_the_real_villain_desperado_target_2_solid: {l_5bank_2: F0D040}
   who_is_the_real_villain_desperado_target_3_solid: {l_5bank_3: F0D040}
@@ -297,11 +310,34 @@ shows:
       lights: {l_gi_5bank_lower: off, l_gi_5bank_upper: off, l_5bank_1: off, l_5bank_2: off, l_5bank_3: off, l_5bank_4: off, l_5bank_5: off}
 
   real_villain_saucers_flash:
-    - duration: 180ms
+    - duration: 260ms
       lights: {l_1_hole_l: red, l_1_hole_r: red, l_2_hole_l: red, l_2_hole_r: red, l_3_hole_l: red, l_3_hole_r: red}
-    - duration: 180ms
-      lights: {l_1_hole_l: off, l_1_hole_r: off, l_2_hole_l: off, l_2_hole_r: off, l_3_hole_l: off, l_3_hole_r: off}
+    - duration: 260ms
+      lights: {l_1_hole_l: "600000", l_1_hole_r: "600000", l_2_hole_l: "600000", l_2_hole_r: "600000", l_3_hole_l: "600000", l_3_hole_r: "600000"}
 
+  real_villain_exposure_banks_pulse:
+    - duration: 350ms
+      lights:
+        l_gi_3bank: purple
+        l_3bankbonus: white
+        l_gi_5bank_lower: purple
+        l_gi_5bank_upper: purple
+        l_5bank_1: white
+        l_5bank_2: white
+        l_5bank_3: white
+        l_5bank_4: white
+        l_5bank_5: white
+    - duration: 350ms
+      lights:
+        l_gi_3bank: "302040"
+        l_3bankbonus: "303030"
+        l_gi_5bank_lower: "302040"
+        l_gi_5bank_upper: "302040"
+        l_5bank_1: "303030"
+        l_5bank_2: "303030"
+        l_5bank_3: "303030"
+        l_5bank_4: "303030"
+        l_5bank_5: "303030"
   real_villain_desperado_gi_pulse:
     - duration: 450ms
       lights: {l_gi_5bank_lower: F0D040, l_gi_5bank_upper: F0D040}

@@ -397,6 +397,10 @@ class WhoIsTheRealVillain(Mode):
             self.machine.events.post("request_vuk_eject", delay_ms=0)
             return
         if self.phase == "super":
+            # Move out of the collectible state immediately. The raw VUK
+            # switch can chatter/retrigger while the ball is physically held;
+            # without this guard the Super and its audio could award repeatedly.
+            self.phase = "super_collected"
             self.delay.remove("real_villain_super_tick")
             self.machine.events.post("who_is_the_real_villain_super_off")
             value = self._major_value(self.SUPER_BASE)
@@ -435,6 +439,7 @@ class WhoIsTheRealVillain(Mode):
         self.rubber_exposure_index += 1
         if self.rubber_exposure_index >= len(self.RUBBER_EXPOSURE_ORDER):
             self.phase = "cameo_pair"
+            self.machine.events.post("who_is_the_real_villain_rubber_expose_done")
             self.machine.events.post("who_is_the_real_villain_cameo_rubbers_pulse")
             self._enable_truth_saucers()
             self._show_message("RUBBERS EXPOSED", "SHOOT A SAUCER TO REVEAL THE TRUTH", reminder=True)
