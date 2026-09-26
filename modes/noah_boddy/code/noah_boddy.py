@@ -36,7 +36,7 @@ class NoahBoddy(CaseFileMixin, Mode):
     MODE_KEY = "noah_boddy"
     DISPLAY_NAME = "Noah Boddy"
 
-    BASE_JACKPOT = 250_000
+    BASE_JACKPOT = 500_000
     SPINNER_ADD_VALUE = 25_000
     UPPER_TARGET_SCORE = 25_000
     MORE_JACKPOTS_UPPER_TARGET_SCORE = 75_000

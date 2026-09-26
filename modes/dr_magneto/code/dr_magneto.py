@@ -62,6 +62,7 @@ class DrMagneto(CaseFileMixin, Mode):
         self.pops_completed = 0
         self.super_jackpots = 0
         self.seconds_left = 0
+        self.side_seconds_left = {"left": 0, "right": 0}
         self.shot_assist_used = False
         self.star_lit = False
         self.rollover_lit = {"a": False, "b": False}
@@ -139,6 +140,7 @@ class DrMagneto(CaseFileMixin, Mode):
         else:
             self._light_rollover(rollover)
 
+        self.machine.events.post("dr_magneto_qualifier_sfx")
         self._update_status()
         self._sync_vars()
 
@@ -164,6 +166,8 @@ class DrMagneto(CaseFileMixin, Mode):
         )
         self.machine.events.post(f"dr_magneto_{rollover}_lit")
         qualifier_side = "left" if rollover == "a" else "right"
+        self.side_seconds_left[qualifier_side] = self.objective_seconds
+        self._ensure_side_timer_tick()
         self.machine.events.post(f"dr_magneto_{qualifier_side}_qualifier_stop")
 
         if was_lit:
@@ -190,6 +194,7 @@ class DrMagneto(CaseFileMixin, Mode):
         self.delay.remove(f"dr_magneto_{rollover}_fast_delay")
         self.machine.events.post(f"dr_magneto_{rollover}_expired")
         qualifier_side = "left" if rollover == "a" else "right"
+        self.side_seconds_left[qualifier_side] = 0
         self.machine.events.post(f"dr_magneto_{qualifier_side}_qualifier_ready")
         self._update_status()
         self._sync_vars()
@@ -215,6 +220,9 @@ class DrMagneto(CaseFileMixin, Mode):
         )
         self.rollovers_collected += 1
         self._score(value)
+        qualifier_side = "left" if rollover == "a" else "right"
+        self.side_seconds_left[qualifier_side] = 0
+        self.machine.events.post("dr_magneto_rollover_sfx")
         pop_side = self.POP_FOR_ROLLOVER[rollover]
         self._light_pop(pop_side)
         self._show_message(
@@ -243,6 +251,8 @@ class DrMagneto(CaseFileMixin, Mode):
             callback=self._objective_fast,
             objective=f"{side}_pop",
         )
+        self.side_seconds_left[side] = self.objective_seconds
+        self._ensure_side_timer_tick()
         self.machine.events.post(f"dr_magneto_{side}_pop_flashing")
         if was_flashing:
             return
@@ -258,6 +268,7 @@ class DrMagneto(CaseFileMixin, Mode):
         if self.mode_done or self.phase != "circuits" or self.pop_state[side] != "flashing":
             return
         self.pop_state[side] = "off"
+        self.side_seconds_left[side] = 0
         self.delay.remove(f"dr_magneto_{side}_pop_fast_delay")
         self.machine.events.post(f"dr_magneto_{side}_pop_expired")
         self.machine.events.post(f"dr_magneto_{side}_qualifier_ready")
@@ -278,7 +289,9 @@ class DrMagneto(CaseFileMixin, Mode):
         self.delay.remove(f"dr_magneto_{side}_pop_timeout")
         self.delay.remove(f"dr_magneto_{side}_pop_fast_delay")
         self.pops_completed += 1
+        self.side_seconds_left[side] = 0
         self._score(self.POP_VALUE)
+        self.machine.events.post("dr_magneto_pop_sfx")
         self.machine.events.post(f"dr_magneto_{side}_pop_solid")
         self._show_message("POP MAGNETIZED", f"{side.upper()} POP COMPLETE", value=self.POP_VALUE)
 
@@ -339,15 +352,17 @@ class DrMagneto(CaseFileMixin, Mode):
     def _center_web_hit(self, **kwargs):
         if self.mode_done or self.phase != "super":
             return
+        self.phase = "complete_pending"
         self.delay.remove("dr_magneto_super_tick")
         self.delay.remove("dr_magneto_super_chase_fast_delay")
         value = self.BIGGER_SUPER_VALUE if self.has_case_file("bigger_jackpots") else self.SUPER_VALUE
         self.super_jackpots = 1
         self._score(value)
         self.machine.events.post("dr_magneto_super_collected", value=value)
+        self.machine.events.post("dr_magneto_super_jackpot_sfx")
         self._show_jackpot("MAGNETO SUPER", value)
         self.machine.events.post("villain_summary_delay_for_final_award")
-        self._complete_mode()
+        self.delay.reset(name="dr_magneto_final_complete", ms=2000, callback=self._complete_mode)
 
     def _light_star(self):
         if not self.has_case_file("more_jackpots") or self.mode_done:
@@ -418,6 +433,23 @@ class DrMagneto(CaseFileMixin, Mode):
             if self.pop_state.get(side) == "flashing":
                 self.machine.events.post(f"dr_magneto_{side}_pop_fast")
 
+    def _ensure_side_timer_tick(self):
+        if self.mode_done or self.phase != "circuits":
+            return
+        self.delay.reset(name="dr_magneto_side_timer_tick", ms=1000, callback=self._side_timer_tick)
+
+    def _side_timer_tick(self):
+        if self.mode_done or self.phase != "circuits":
+            return
+        active = False
+        for side in ("left", "right"):
+            if self.side_seconds_left[side] > 0:
+                self.side_seconds_left[side] -= 1
+                active = active or self.side_seconds_left[side] > 0
+        self._update_status()
+        if active:
+            self._ensure_side_timer_tick()
+
     def _super_chase_fast(self):
         if not self.mode_done and self.phase == "super":
             self.machine.events.post("dr_magneto_super_chase_fast")
@@ -425,12 +457,18 @@ class DrMagneto(CaseFileMixin, Mode):
     def _update_status(self):
         if self.mode_done or self.phase != "circuits":
             return
-        left = "SOLID" if self.pop_state["left"] == "solid" else "BUILD"
-        right = "SOLID" if self.pop_state["right"] == "solid" else "BUILD"
+        def side_label(side):
+            if self.pop_state[side] == "solid":
+                return "SOLID"
+            seconds = self.side_seconds_left[side]
+            if seconds > 0:
+                return f"{seconds}s"
+            return "BUILD"
+
         self.machine.events.post(
             "show_mode_status",
             mode_status_title="MAGNETIC CIRCUITS",
-            mode_status_value=f"LEFT {left} / RIGHT {right}",
+            mode_status_value=f"LEFT {side_label('left')} / RIGHT {side_label('right')}",
         )
 
     def _show_message(self, title, subtitle="", value="", reminder=False):

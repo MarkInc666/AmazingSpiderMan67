@@ -212,9 +212,11 @@ shows:
   - duration: 250ms
     lights:
       l_3bankbonus: green
+      l_gi_3bank: green
   - duration: 250ms
     lights:
       l_3bankbonus: off
+      l_gi_3bank: off
 
   dr_von_schlick_left_pop_flash:
   - duration: 250ms
@@ -250,9 +252,11 @@ shows:
   - duration: 250ms
     lights:
       l_mid_web_target: green
+      l_gi_spinner: green
   - duration: 250ms
     lights:
       l_mid_web_target: off
+      l_gi_spinner: off
 
   dr_von_schlick_right_pop_flash:
   - duration: 250ms
@@ -292,6 +296,8 @@ shows:
       l_5bank_3: green
       l_5bank_4: green
       l_5bank_5: green
+      l_gi_5bank_lower: green
+      l_gi_5bank_upper: green
   - duration: 250ms
     lights:
       l_5bank_1: off
@@ -299,6 +305,8 @@ shows:
       l_5bank_3: off
       l_5bank_4: off
       l_5bank_5: off
+      l_gi_5bank_lower: off
+      l_gi_5bank_upper: off
 
 sound_player:
   play_mode_jackpot:

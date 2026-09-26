@@ -44,20 +44,12 @@ event_player:
 light_player:
   clive_blotto_mode_lighting_start:
     gi: 241038
+    l_spinner: FFFFFF
 
-  # Meter urgency is shown on the spinner GI.
-  clive_blotto_meter_low:
-    l_gi_spinner:
-      color: FFFFFF
-      fade: 250ms
-  clive_blotto_meter_medium:
-    l_gi_spinner:
-      color: FFFFFF
-      fade: 100ms
-  clive_blotto_meter_high:
-    l_gi_spinner:
-      color: FF4040
-      fade: 50ms
+  # Keep spinner guidance constant. Infected-zone lighting carries urgency.
+  clive_blotto_meter_low: {}
+  clive_blotto_meter_medium: {}
+  clive_blotto_meter_high: {}
 
   # Infected areas pulse purple in their physical GI region.
   clive_blotto_infect_upper_left:
@@ -171,6 +163,7 @@ light_player:
     gi: 40FF40
   clive_blotto_restore_all_lights:
     gi: E0E0E0
+    l_spinner: off
 
 sound_player:
   play_mode_jackpot:

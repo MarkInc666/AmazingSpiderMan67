@@ -7,7 +7,7 @@ GAMEPLAY
 - A/B and flashing-pop objectives last 8 seconds, or 10 seconds with More Time.
 - Rollover awards are 100K, or 150K with Bigger Jackpots. Each completed pop awards 250K.
 - Completing both pops lights the center-web Super for 16 seconds, or 20 seconds with More Time.
-- The Super is 500K, or 750K with Bigger Jackpots. Collection defeats Dr. Magneto; expiry ends the mode.
+- The Super is 500K, or 750K with Bigger Jackpots. Collection scores and plays immediately, then Dr. Magneto completes after a 2-second final-award hold; expiry ends the mode.
 
 CASE FILES
 - More Jackpots: each newly lit objective also lights STAR for six seconds at 250K.

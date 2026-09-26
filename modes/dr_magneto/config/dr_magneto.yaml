@@ -355,6 +355,22 @@ shows:
         l_star: off
 
 sound_player:
+  dr_magneto_qualifier_sfx:
+    short_click:
+      action: play
+      bus: effects
+  dr_magneto_rollover_sfx:
+    bell1:
+      action: play
+      bus: effects
+  dr_magneto_pop_sfx:
+    bell2:
+      action: play
+      bus: effects
+  dr_magneto_super_jackpot_sfx:
+    jackpot_2:
+      action: play
+      bus: effects
   play_mode_jackpot:
     jackpot_2:
       action: play

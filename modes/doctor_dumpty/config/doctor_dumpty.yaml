@@ -79,6 +79,8 @@ show_player:
   doctor_dumpty_gas_phase_complete:
     doctor_dumpty_left_bank_blue:
       action: stop
+    doctor_dumpty_left_bank_go:
+      loops: -1
 
   doctor_dumpty_light_gas_left_sling:
     doctor_dumpty_gas_left_sling:
@@ -112,11 +114,15 @@ show_player:
       action: stop
 
   doctor_dumpty_roof_phase_started:
+    doctor_dumpty_left_bank_go:
+      action: stop
     doctor_dumpty_upper_red:
       loops: -1
 
   doctor_dumpty_all_lights_off:
     doctor_dumpty_left_bank_blue:
+      action: stop
+    doctor_dumpty_left_bank_go:
       action: stop
     doctor_dumpty_gas_left_sling:
       action: stop
@@ -133,9 +139,17 @@ show_player:
 
 shows:
   doctor_dumpty_left_bank_blue:
-    - duration: 500ms
+    - duration: 350ms
       lights:
         l_gi_3bank: blue
+    - duration: 350ms
+      lights:
+        l_gi_3bank: 202060
+
+  doctor_dumpty_left_bank_go:
+    - duration: 1s
+      lights:
+        l_gi_3bank: green
 
   doctor_dumpty_gas_left_sling:
     - duration: 300ms
