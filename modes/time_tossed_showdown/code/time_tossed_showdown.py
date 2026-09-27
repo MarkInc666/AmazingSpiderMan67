@@ -483,7 +483,7 @@ class TimeTossedShowdown(Mode):
             self.tech_star_available = False
             self.machine.events.post("time_tossed_showdown_add_a_ball")
             self.machine.events.post("time_tossed_showdown_tech_star_consumed")
-            self._show_message("ADD-A-BALL", "STAR COLLECTED", reminder=True)
+            self._show_message("ADD-A-BALL", "STAR COLLECTED", reminder=False)
         else:
             # At the cap the Star behaves like another spinner shot and remains
             # lit. If a ball later drains, the same Star can still add a ball.
