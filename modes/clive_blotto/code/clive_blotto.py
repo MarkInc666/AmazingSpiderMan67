@@ -95,6 +95,8 @@ class CliveBlotto(CaseFileMixin, Mode):
         self.cleared_count = 0
         self.attack_count = 0
         self.mode_points = 0
+        self.right_pop_pulse_active = False
+        self.right_pop_pulse_on = False
         self.more_jackpots_collected = set()
         self.case_files = self.get_case_file_bonuses()
         self.shot_assist_available = self.has_case_file("shot_assist")
@@ -146,6 +148,8 @@ class CliveBlotto(CaseFileMixin, Mode):
         self.add_mode_event_handler("s_trispinner_opto_active", self._spinner_hit)
         self.add_mode_event_handler("clive_blotto_complete_request", self._complete_mode)
         self.add_mode_event_handler("clive_blotto_fail_request", self._fail_mode)
+        self.add_mode_event_handler("clive_blotto_infect_middle_right", self._start_right_pop_pulse)
+        self.add_mode_event_handler("clive_blotto_clear_middle_right", self._stop_right_pop_pulse)
 
         if self.has_case_file("safety_net"):
             self.machine.events.post("start_case_file_ball_save")
@@ -174,9 +178,12 @@ class CliveBlotto(CaseFileMixin, Mode):
         self._schedule_growth()
 
     def mode_stop(self, **kwargs):
-        self.delay.remove("clive_blotto_growth")
-        self.delay.remove("clive_blotto_completion_hold")
+        # Stop every pending mode callback before tearing down displays/lights.
+        # This prevents growth/status messages from leaking into the summary.
+        self.mode_done = True
+        self.delay.clear()
         self.machine.events.post("cancel_mode_message_reminder")
+        self.machine.events.post("hide_mode_message")
         self.machine.events.post("hide_mode_status")
         self.machine.events.post("clive_blotto_restore_all_lights")
         self.machine.events.post("clear_saucers")
@@ -184,6 +191,36 @@ class CliveBlotto(CaseFileMixin, Mode):
         self.machine.events.post("drop_target_bank_dt_bank_right_reset")
         self.clear_active_case_file_helpers()
         super().mode_stop(**kwargs)
+
+
+    def _start_right_pop_pulse(self, **kwargs):
+        if self.mode_done:
+            return
+        self.right_pop_pulse_active = True
+        self.right_pop_pulse_on = False
+        self._toggle_right_pop_pulse()
+
+    def _stop_right_pop_pulse(self, **kwargs):
+        self.right_pop_pulse_active = False
+        self.right_pop_pulse_on = False
+        self.delay.remove("clive_blotto_right_pop_pulse")
+        self.machine.events.post("clive_blotto_right_pop_pulse_off")
+
+    def _toggle_right_pop_pulse(self, **kwargs):
+        if self.mode_done or not self.right_pop_pulse_active:
+            self._stop_right_pop_pulse()
+            return
+        self.right_pop_pulse_on = not self.right_pop_pulse_on
+        self.machine.events.post(
+            "clive_blotto_right_pop_pulse_on"
+            if self.right_pop_pulse_on
+            else "clive_blotto_right_pop_pulse_off"
+        )
+        self.delay.add(
+            name="clive_blotto_right_pop_pulse",
+            ms=400,
+            callback=self._toggle_right_pop_pulse,
+        )
 
     def _schedule_growth(self):
         if self.mode_done:

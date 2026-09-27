@@ -10,7 +10,7 @@ class DoctorAtlantean(CaseFileMixin, Mode):
     DISPLAY_NAME = "Doctor Atlantean"
 
     MAX_WATER_LEVEL = 8
-    STARTING_WATER_LEVEL = 6
+    STARTING_WATER_LEVEL = 5
     SINKING_ANIMATION_MS = 4_000
     NORMAL_TIMER_SECONDS = 20
     MORE_TIME_SECONDS = 30
@@ -60,6 +60,8 @@ class DoctorAtlantean(CaseFileMixin, Mode):
         self.mode_points = 0
         self.spinner_jackpot_ready = False
         self.shot_assist_available = False
+        self.rooftop_active = False
+        self.rooftop_exit_recorded = False
 
         self.case_files = self.get_case_file_bonuses()
         self.target_score = (
@@ -98,6 +100,18 @@ class DoctorAtlantean(CaseFileMixin, Mode):
         )
         self.add_mode_event_handler(
             "doctor_atlantean_upper_exit_hit", self._upper_exit_hit
+        )
+        self.add_mode_event_handler(
+            "s_vuk_switch_active", self._vuk_entered
+        )
+        self.add_mode_event_handler(
+            "doctor_atlantean_roof_entered", self._roof_entered
+        )
+        self.add_mode_event_handler(
+            "s_right_drops_top_rubber_active", self._center_exit_inferred
+        )
+        self.add_mode_event_handler(
+            "s_inlane_m_r_active", self._center_exit_inferred
         )
         self.add_mode_event_handler(
             "doctor_atlantean_complete_request", self._complete_mode
@@ -221,7 +235,6 @@ class DoctorAtlantean(CaseFileMixin, Mode):
                 value=self.UNLIT_TARGET_SCORE,
             )
 
-        self._reset_water_timer()
         self._sync_vars()
 
     def _spinner_hit(self, **kwargs):
@@ -251,28 +264,49 @@ class DoctorAtlantean(CaseFileMixin, Mode):
                 "doctor_atlantean_spinner_scored", value=value
             )
 
-        self._reset_water_timer()
         self._sync_vars()
+
+    def _vuk_entered(self, **kwargs):
+        if self.mode_done or self.phase != "active":
+            return
+        self._reset_water_timer()
+
+    def _roof_entered(self, **kwargs):
+        if self.mode_done or self.phase != "active":
+            return
+        self.rooftop_active = True
+        self.rooftop_exit_recorded = False
+
+    def _center_exit_inferred(self, **kwargs):
+        if self.mode_done or self.phase != "active":
+            return
+        if not self.rooftop_active or self.rooftop_exit_recorded:
+            return
+        self._record_rooftop_exit(exit_name="center")
 
     def _upper_exit_hit(self, **kwargs):
         if self.mode_done or self.phase != "active":
             return
+        if self.rooftop_exit_recorded:
+            return
+        self._record_rooftop_exit(exit_name="side")
 
+    def _record_rooftop_exit(self, exit_name):
+        if self.mode_done or self.phase != "active":
+            return
+        self.rooftop_exit_recorded = True
+        self.rooftop_active = False
         self._score(self.EXIT_SCORE)
-        old_level = self.water_level
         self._set_water_level(self.water_level + 1)
+        if self.mode_done:
+            return
         self.machine.events.post(
             "doctor_atlantean_upper_exit_scored",
             value=self.EXIT_SCORE,
             water_level=self.water_level,
+            exit_name=exit_name,
         )
-
-        # Entering maximum danger always starts a fresh full countdown. Other
-        # exits do not count as the target/spinner activity that resets it.
-        if old_level < self.MAX_WATER_LEVEL <= self.water_level:
-            self._reset_water_timer()
-        else:
-            self._sync_vars()
+        self._reset_water_timer()
 
     def _reset_water_timer(self):
         if self.mode_done or self.phase != "active":

@@ -42,9 +42,6 @@ event_player:
   s_right_drops_5_active: doctor_dumpty_gas_right_bank
 
   s_upper_entrance_opto_active: doctor_dumpty_upper_entry
-  s_upper_target_left_active: doctor_dumpty_upper_target_hit
-  s_upper_target_center_active: doctor_dumpty_upper_target_hit
-  s_upper_target_right_active: doctor_dumpty_upper_target_hit
   s_trispinner_opto_active: doctor_dumpty_upper_spinner_hit
 
   s_vuk_switch_active:
@@ -81,6 +78,11 @@ show_player:
       action: stop
     doctor_dumpty_left_bank_go:
       loops: -1
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 340
+      show_tokens:
+        color: FFD040
 
   doctor_dumpty_light_gas_left_sling:
     doctor_dumpty_gas_left_sling:
@@ -116,10 +118,14 @@ show_player:
   doctor_dumpty_roof_phase_started:
     doctor_dumpty_left_bank_go:
       action: stop
+    shared_final_vuk_chase:
+      action: stop
     doctor_dumpty_upper_red:
       loops: -1
 
   doctor_dumpty_all_lights_off:
+    shared_final_vuk_chase:
+      action: stop
     doctor_dumpty_left_bank_blue:
       action: stop
     doctor_dumpty_left_bank_go:

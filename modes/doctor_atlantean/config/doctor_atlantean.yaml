@@ -1,9 +1,9 @@
 #config_version=6
 
 # Doctor Atlantean - Up From Nowhere.
-# The mode begins with a four-second six-band sinking animation. Pulsing-green
-# upper targets lower the 0-8 water level; either upper exit raises it. Upper
-# target/spinner activity resets the active water countdown. Reaching level 0
+# The mode begins with a four-second five-band sinking animation. Pulsing-green
+# upper targets lower the 0-8 water level; any rooftop exit raises it. The water
+# countdown resets on VUK entry and rooftop exit, not on target/spinner hits. Reaching level 0
 # raises Manhattan and wins; inactivity for a full countdown at level 8 loses.
 
 mode:

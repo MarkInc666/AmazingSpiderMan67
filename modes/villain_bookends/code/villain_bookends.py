@@ -1614,6 +1614,16 @@ class VillainBookends(Mode):
         if stage == "summary" and villain in self.COMIC_SUMMARY_VILLAINS:
             chapter_number = self.current_comic_chapter or self.COMIC_SUMMARY_VILLAINS[villain]
             self.machine.events.post("villain_bookend_summary_hide")
+            # The six-second score summary is now genuinely finished, but the
+            # three-second Comic COLLECTED cover has not started yet. Chapter
+            # wizard physical-ball cleanup belongs at this boundary; the
+            # caller's normal done_event intentionally remains deferred until
+            # after the Comic screen so progression timing is unchanged.
+            self.machine.events.post(
+                "chapter_mini_wizard_score_summary_done",
+                mini_wizard=villain,
+                chapter_number=int(chapter_number),
+            )
             # One Comic Collected widget owns all 11 chapter covers. The
             # selector is player-scoped. Clear it before creating the widget,
             # then reassert the chapter after the scene exists so GMC receives

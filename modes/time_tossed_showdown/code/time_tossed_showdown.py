@@ -360,7 +360,7 @@ class TimeTossedShowdown(Mode):
         self._refresh_vine_lights()
         self._show_message(
             "MASTER VINE",
-            f"COLLECT {len(self.vine_lit)} GREEN SHOTS",
+            f"COLLECT {len(self.vine_lit)} LIT SHOTS",
             value=self._vine_value(),
             reminder=True,
         )
@@ -617,7 +617,7 @@ class TimeTossedShowdown(Mode):
             value = f"{sum(1 for lit in self.spider_pattern if lit)} JACKPOTS LEFT"
         elif self.phase == "vine":
             title = "MASTER VINE"
-            value = f"{len(self.vine_lit)} GREEN SHOTS LEFT"
+            value = f"{len(self.vine_lit)} LIT SHOTS LEFT"
         elif self.phase == "technician_staging":
             title = "MASTER TECHNICIAN"
             value = "STAGING DROPS"

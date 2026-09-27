@@ -468,7 +468,10 @@ class DrMagneto(CaseFileMixin, Mode):
         self.machine.events.post(
             "show_mode_status",
             mode_status_title="MAGNETIC CIRCUITS",
-            mode_status_value=f"LEFT {side_label('left')} / RIGHT {side_label('right')}",
+            mode_status_value=(
+                f"LEFT  {side_label('left')}\n"
+                f"RIGHT {side_label('right')}"
+            ),
         )
 
     def _show_message(self, title, subtitle="", value="", reminder=False):

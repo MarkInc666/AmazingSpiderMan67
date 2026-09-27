@@ -972,6 +972,10 @@ class VillainProgression(Mode):
         # real gameplay modes.
         self.add_mode_event_handler("villain_played", self._villain_completed)
         self.add_mode_event_handler("villain_bookend_summary_done", self._summary_done)
+        self.add_mode_event_handler(
+            "chapter_mini_wizard_score_summary_done",
+            self._mini_wizard_score_summary_done,
+        )
         self.add_mode_event_handler("chapter_mini_wizard_completed", self._mini_wizard_completed)
 
         # Mini-wizard gameplay ends first, then bookends shows the summary,
@@ -1409,6 +1413,67 @@ class VillainProgression(Mode):
             villain=mini_key,
             chapter_number=chapter_number,
             done_event=f"{mini_key}_summary_done",
+        )
+
+    def _mini_wizard_score_summary_done(self, mini_wizard=None, **kwargs):
+        """Release wizard-held physical balls before Comic COLLECTED.
+
+        Villain bookends intentionally holds the normal ``*_summary_done``
+        event until the Comic COLLECTED cover has finished.  Physical balls,
+        however, should begin draining as soon as the six-second score summary
+        ends.  This event is the explicit boundary between those two displays.
+        """
+        del kwargs
+        if not self.machine.game:
+            return
+
+        player = self.machine.game.player
+        mini_key = mini_wizard or player["mini_wizard_current_key"]
+        if not mini_key:
+            return
+
+        self._release_summary_saucer_holds()
+
+        # Force-release occupied lower saucers here instead of going through
+        # the ordinary clear_saucers guard.  A chapter wizard has ended and no
+        # gameplay mode should retain ownership of a trapped ball while the
+        # Comic COLLECTED cover is displayed.  Keep coil pulses staggered.
+        occupied = []
+        for saucer_number, (switch_name, _kickout_event) in self.SAUCER_EJECTS.items():
+            try:
+                if self.machine.switch_controller.is_active(self.machine.switches[switch_name]):
+                    occupied.append(saucer_number)
+            except (KeyError, TypeError):
+                continue
+
+        for saucer_number in self.SAUCER_EJECTS:
+            self.delay.remove(f"clear_saucer_{saucer_number}_stagger")
+            self.delay.remove(f"request_saucer_eject_{saucer_number}")
+
+        for index, saucer_number in enumerate(occupied):
+            _switch_name, kickout_event = self.SAUCER_EJECTS[saucer_number]
+            self.delay.reset(
+                name=f"mini_wizard_summary_release_saucer_{saucer_number}",
+                ms=index * self.SAUCER_CLEAR_STAGGER_MS,
+                callback=self.machine.events.post,
+                event=kickout_event,
+            )
+
+        # The Daily Bugle VUK is a raw switch/coil path.  Clear every known
+        # wizard/summary hold flag before pulsing the up-kicker.
+        if self._vuk_is_occupied():
+            for hold_var in (
+                "mini_wizard_vuk_hold_active",
+                "invasion_from_everywhere_vuk_hold_active",
+                "villain_summary_vuk_hold_active",
+            ):
+                player[hold_var] = 0
+            self.machine.events.post("cancel_vuk_eject_request")
+            self.machine.events.post("up_kick")
+
+        self.machine.events.post(
+            "chapter_mini_wizard_physical_balls_released",
+            mini_wizard=mini_key,
         )
 
     def _mini_wizard_summary_done(self, mini_wizard=None, **kwargs):

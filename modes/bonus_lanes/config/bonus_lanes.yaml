@@ -1,7 +1,9 @@
 #config_version=6
 
 mode:
-  start_events: normal_game_ball_started
+  start_events:
+    - normal_game_ball_started
+    - test_mode_support_started
   code: bonus_lanes.BonusLanes
   priority: 80
 

@@ -36,9 +36,10 @@ class NoahBoddy(CaseFileMixin, Mode):
     MODE_KEY = "noah_boddy"
     DISPLAY_NAME = "Noah Boddy"
 
-    BASE_JACKPOT = 500_000
+    BASE_JACKPOT = 1_000_000
     SPINNER_ADD_VALUE = 25_000
     UPPER_TARGET_SCORE = 25_000
+    FALSE_DROP_SCORE = 100_000
     MORE_JACKPOTS_UPPER_TARGET_SCORE = 75_000
     HURRYUP_SECONDS = 16
     MORE_TIME_HURRYUP_SECONDS = 24
@@ -351,10 +352,12 @@ class NoahBoddy(CaseFileMixin, Mode):
             target_to_drop = random.choice(non_secret_targets)
             self.revealed_non_secret_targets.add(target_to_drop)
             self._drop_programmatically(target_to_drop)
+            self._score(self.FALSE_DROP_SCORE)
             self.machine.events.post(
                 "noah_boddy_non_secret_target_dropped",
                 target=target_to_drop,
                 target_label=self.TARGET_LABELS[target_to_drop],
+                score=self.FALSE_DROP_SCORE,
                 remaining=len(self.standing_targets),
             )
 

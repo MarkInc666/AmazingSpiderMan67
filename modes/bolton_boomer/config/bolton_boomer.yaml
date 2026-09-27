@@ -154,7 +154,29 @@ light_player:
     l_gi_left_sling_lower: stop
     l_gi_right_sling: stop
     l_pop_1_1: stop
+    l_pop_1_2: stop
+    l_pop_1_3: stop
+    l_pop_1_4: stop
+    l_pop_1_5: stop
+    l_pop_1_6: stop
+    l_pop_1_7: stop
+    l_pop_1_8: stop
+    l_pop_1_9: stop
+    l_pop_1_10: stop
+    l_pop_1_11: stop
+    l_pop_1_12: stop
     l_pop_2_1: stop
+    l_pop_2_2: stop
+    l_pop_2_3: stop
+    l_pop_2_4: stop
+    l_pop_2_5: stop
+    l_pop_2_6: stop
+    l_pop_2_7: stop
+    l_pop_2_8: stop
+    l_pop_2_9: stop
+    l_pop_2_10: stop
+    l_pop_2_11: stop
+    l_pop_2_12: stop
     l_gi_3bank: stop
     l_gi_5bank_lower: stop
     l_gi_5bank_upper: stop
@@ -190,14 +212,14 @@ shows:
       lights: {l_gi_right_sling: off}
   bolton_boomer_left_pop_pulse:
     - duration: 500ms
-      lights: {l_pop_1_1: yellow}
+      lights: {l_pop_1_1: yellow, l_pop_1_2: yellow, l_pop_1_3: yellow, l_pop_1_4: yellow, l_pop_1_5: yellow, l_pop_1_6: yellow, l_pop_1_7: yellow, l_pop_1_8: yellow, l_pop_1_9: yellow, l_pop_1_10: yellow, l_pop_1_11: yellow, l_pop_1_12: yellow}
     - duration: 500ms
-      lights: {l_pop_1_1: off}
+      lights: {l_pop_1_1: off, l_pop_1_2: off, l_pop_1_3: off, l_pop_1_4: off, l_pop_1_5: off, l_pop_1_6: off, l_pop_1_7: off, l_pop_1_8: off, l_pop_1_9: off, l_pop_1_10: off, l_pop_1_11: off, l_pop_1_12: off}
   bolton_boomer_right_pop_pulse:
     - duration: 500ms
-      lights: {l_pop_2_1: yellow}
+      lights: {l_pop_2_1: yellow, l_pop_2_2: yellow, l_pop_2_3: yellow, l_pop_2_4: yellow, l_pop_2_5: yellow, l_pop_2_6: yellow, l_pop_2_7: yellow, l_pop_2_8: yellow, l_pop_2_9: yellow, l_pop_2_10: yellow, l_pop_2_11: yellow, l_pop_2_12: yellow}
     - duration: 500ms
-      lights: {l_pop_2_1: off}
+      lights: {l_pop_2_1: off, l_pop_2_2: off, l_pop_2_3: off, l_pop_2_4: off, l_pop_2_5: off, l_pop_2_6: off, l_pop_2_7: off, l_pop_2_8: off, l_pop_2_9: off, l_pop_2_10: off, l_pop_2_11: off, l_pop_2_12: off}
   bolton_boomer_left_bank_pulse:
     - duration: 500ms
       lights: {l_gi_3bank: yellow}

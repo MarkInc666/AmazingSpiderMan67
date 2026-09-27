@@ -230,7 +230,29 @@ light_player:
     l_gi_left_sling_lower: stop
     l_gi_right_sling: stop
     l_pop_1_1: stop
+    l_pop_1_2: stop
+    l_pop_1_3: stop
+    l_pop_1_4: stop
+    l_pop_1_5: stop
+    l_pop_1_6: stop
+    l_pop_1_7: stop
+    l_pop_1_8: stop
+    l_pop_1_9: stop
+    l_pop_1_10: stop
+    l_pop_1_11: stop
+    l_pop_1_12: stop
     l_pop_2_1: stop
+    l_pop_2_2: stop
+    l_pop_2_3: stop
+    l_pop_2_4: stop
+    l_pop_2_5: stop
+    l_pop_2_6: stop
+    l_pop_2_7: stop
+    l_pop_2_8: stop
+    l_pop_2_9: stop
+    l_pop_2_10: stop
+    l_pop_2_11: stop
+    l_pop_2_12: stop
     l_gi_3bank: stop
     l_gi_5bank_lower: stop
     l_gi_5bank_upper: stop
@@ -277,14 +299,14 @@ shows:
     lights: {l_gi_right_sling: 401010}
   spider_slayer_left_pop_pulse:
   - duration: 500ms
-    lights: {l_pop_1_1: FF2020}
+    lights: {l_pop_1_1: FF2020, l_pop_1_2: FF2020, l_pop_1_3: FF2020, l_pop_1_4: FF2020, l_pop_1_5: FF2020, l_pop_1_6: FF2020, l_pop_1_7: FF2020, l_pop_1_8: FF2020, l_pop_1_9: FF2020, l_pop_1_10: FF2020, l_pop_1_11: FF2020, l_pop_1_12: FF2020}
   - duration: 500ms
-    lights: {l_pop_1_1: 401010}
+    lights: {l_pop_1_1: 401010, l_pop_1_2: 401010, l_pop_1_3: 401010, l_pop_1_4: 401010, l_pop_1_5: 401010, l_pop_1_6: 401010, l_pop_1_7: 401010, l_pop_1_8: 401010, l_pop_1_9: 401010, l_pop_1_10: 401010, l_pop_1_11: 401010, l_pop_1_12: 401010}
   spider_slayer_right_pop_pulse:
   - duration: 500ms
-    lights: {l_pop_2_1: FF2020}
+    lights: {l_pop_2_1: FF2020, l_pop_2_2: FF2020, l_pop_2_3: FF2020, l_pop_2_4: FF2020, l_pop_2_5: FF2020, l_pop_2_6: FF2020, l_pop_2_7: FF2020, l_pop_2_8: FF2020, l_pop_2_9: FF2020, l_pop_2_10: FF2020, l_pop_2_11: FF2020, l_pop_2_12: FF2020}
   - duration: 500ms
-    lights: {l_pop_2_1: 401010}
+    lights: {l_pop_2_1: 401010, l_pop_2_2: 401010, l_pop_2_3: 401010, l_pop_2_4: 401010, l_pop_2_5: 401010, l_pop_2_6: 401010, l_pop_2_7: 401010, l_pop_2_8: 401010, l_pop_2_9: 401010, l_pop_2_10: 401010, l_pop_2_11: 401010, l_pop_2_12: 401010}
   spider_slayer_left_bank_pulse:
   - duration: 500ms
     lights: {l_gi_3bank: FF2020}
@@ -321,10 +343,10 @@ shows:
     lights: {l_gi_right_sling: A02020}
   spider_slayer_left_pop_solid:
   - duration: -1
-    lights: {l_pop_1_1: A02020}
+    lights: {l_pop_1_1: A02020, l_pop_1_2: A02020, l_pop_1_3: A02020, l_pop_1_4: A02020, l_pop_1_5: A02020, l_pop_1_6: A02020, l_pop_1_7: A02020, l_pop_1_8: A02020, l_pop_1_9: A02020, l_pop_1_10: A02020, l_pop_1_11: A02020, l_pop_1_12: A02020}
   spider_slayer_right_pop_solid:
   - duration: -1
-    lights: {l_pop_2_1: A02020}
+    lights: {l_pop_2_1: A02020, l_pop_2_2: A02020, l_pop_2_3: A02020, l_pop_2_4: A02020, l_pop_2_5: A02020, l_pop_2_6: A02020, l_pop_2_7: A02020, l_pop_2_8: A02020, l_pop_2_9: A02020, l_pop_2_10: A02020, l_pop_2_11: A02020, l_pop_2_12: A02020}
   spider_slayer_left_bank_solid:
   - duration: -1
     lights: {l_gi_3bank: A02020}

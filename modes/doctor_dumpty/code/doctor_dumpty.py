@@ -91,7 +91,12 @@ class DoctorDumpty(CaseFileMixin, Mode):
         for area in self.GAS_AREAS:
             self.add_mode_event_handler(f"doctor_dumpty_gas_{area}", self._gas_hit, area=area)
         self.add_mode_event_handler("doctor_dumpty_upper_entry", self._upper_entry)
-        self.add_mode_event_handler("doctor_dumpty_upper_target_hit", self._upper_target_hit)
+        # Listen to the three physical upper standups directly.  Do not fan them
+        # through a shared event; rapid hits on either the same or a different
+        # target must each reach the balloon jackpot handler independently.
+        self.add_mode_event_handler("s_upper_target_left_active", self._upper_target_hit)
+        self.add_mode_event_handler("s_upper_target_center_active", self._upper_target_hit)
+        self.add_mode_event_handler("s_upper_target_right_active", self._upper_target_hit)
         self.add_mode_event_handler("doctor_dumpty_upper_spinner_hit", self._upper_spinner_hit)
 
         self.machine.events.post("disable_daily_bugle_mystery")

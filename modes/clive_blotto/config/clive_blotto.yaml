@@ -165,6 +165,35 @@ light_player:
     gi: E0E0E0
     l_spinner: off
 
+show_player:
+  # Only overlay the right-pop ring while the middle-right area is infected.
+  # When this overlay is stopped, the ring falls back to the mode-wide GI color.
+  clive_blotto_right_pop_pulse_on:
+    clive_blotto_right_pop_infected:
+      loops: -1
+      priority: 500
+  clive_blotto_right_pop_pulse_off:
+    clive_blotto_right_pop_infected: {action: stop}
+  mode_clive_blotto_stopping:
+    clive_blotto_right_pop_infected: {action: stop}
+
+shows:
+  clive_blotto_right_pop_infected:
+    - duration: 1s
+      lights:
+        l_pop_2_1: A040FF
+        l_pop_2_2: A040FF
+        l_pop_2_3: A040FF
+        l_pop_2_4: A040FF
+        l_pop_2_5: A040FF
+        l_pop_2_6: A040FF
+        l_pop_2_7: A040FF
+        l_pop_2_8: A040FF
+        l_pop_2_9: A040FF
+        l_pop_2_10: A040FF
+        l_pop_2_11: A040FF
+        l_pop_2_12: A040FF
+
 sound_player:
   play_mode_jackpot:
     jackpot_2:

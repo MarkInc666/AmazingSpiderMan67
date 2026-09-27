@@ -22,7 +22,8 @@ CORE GAMEPLAY
   to collect the Secret Jackpot. Expiry displays NOAH BODDY ESCAPED.
 
 SCORING
-- Secret Jackpot starts at 250,000.
+- Each non-secret drop eliminated during the search scores 100,000.
+- Secret Jackpot starts at 1,000,000.
 - Upper-target reveal hits score 25,000.
 - Bigger Jackpots doubles the full Secret Jackpot, including spinner additions.
 - More Jackpots changes upper-target reveal scoring to 75,000.

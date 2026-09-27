@@ -102,8 +102,8 @@ show_player:
     shared_final_vuk_chase: {action: stop}
 
   who_is_the_real_villain_cameo_pops_on:
-    real_villain_pop_left_pulse: {loops: -1}
-    real_villain_pop_right_pulse: {loops: -1}
+    real_villain_pop_left_pulse: {loops: -1, priority: 340}
+    real_villain_pop_right_pulse: {loops: -1, priority: 340}
   who_is_the_real_villain_pop_left_collected:
     real_villain_pop_left_pulse: {action: stop}
   who_is_the_real_villain_pop_right_collected:
@@ -147,7 +147,7 @@ show_player:
     real_villain_rubber_right_flash: {loops: -1, priority: 120}
 
   who_is_the_real_villain_saucers_flash:
-    real_villain_saucers_flash: {loops: -1, priority: 160}
+    real_villain_saucers_flash: {loops: -1, priority: 340}
   who_is_the_real_villain_saucers_off:
     real_villain_saucers_flash: {action: stop}
 
@@ -219,6 +219,13 @@ light_player:
     l_upper_left: off
     l_upper_middle: off
     l_upper_right: off
+
+  who_is_the_real_villain_clear_phase_lights:
+    l_5bank_1: off
+    l_5bank_2: off
+    l_5bank_3: off
+    l_5bank_4: off
+    l_5bank_5: off
 
   who_is_the_real_villain_saucer_1_parked: {l_1_hole_l: 400000, l_1_hole_r: 400000}
   who_is_the_real_villain_saucer_2_parked: {l_2_hole_l: 400000, l_2_hole_r: 400000}
@@ -310,10 +317,10 @@ shows:
       lights: {l_gi_5bank_lower: off, l_gi_5bank_upper: off, l_5bank_1: off, l_5bank_2: off, l_5bank_3: off, l_5bank_4: off, l_5bank_5: off}
 
   real_villain_saucers_flash:
-    - duration: 260ms
+    - duration: 300ms
       lights: {l_1_hole_l: red, l_1_hole_r: red, l_2_hole_l: red, l_2_hole_r: red, l_3_hole_l: red, l_3_hole_r: red}
-    - duration: 260ms
-      lights: {l_1_hole_l: "600000", l_1_hole_r: "600000", l_2_hole_l: "600000", l_2_hole_r: "600000", l_3_hole_l: "600000", l_3_hole_r: "600000"}
+    - duration: 300ms
+      lights: {l_1_hole_l: off, l_1_hole_r: off, l_2_hole_l: off, l_2_hole_r: off, l_3_hole_l: off, l_3_hole_r: off}
 
   real_villain_exposure_banks_pulse:
     - duration: 350ms
