@@ -1,4 +1,5 @@
 import random
+import time
 
 from mpf.core.mode import Mode
 
@@ -9,6 +10,7 @@ class FifthDimensionCurse(Mode):
     MODE_KEY = "fifth_dimension_curse"
     DISPLAY_NAME = "Fifth Dimension Curse"
     VUK_EJECT_DELAY_MS = 1_500
+    VUK_COLLECT_LOCKOUT_SECONDS = 2.0
     RUBY_SAUCER_EJECT_DELAY_MS = 2_000
     RUBY_SUPER_BASE_VALUE = 1_000_000
     ADD_A_BALL_WINDOW_MS = 10_000
@@ -81,6 +83,7 @@ class FifthDimensionCurse(Mode):
         self.add_a_ball_target = None
         self.add_a_balls_awarded = 0
         self.jackpots_collected = 0
+        self._vuk_collect_lockout_until = 0.0
         self.parked_saucers = set()
         self.ruby_lit_saucers = set()
         self.ruby_release_pending = set()
@@ -191,6 +194,9 @@ class FifthDimensionCurse(Mode):
     def _vuk_hit(self, **kwargs):
         if self.mode_done:
             return
+        now = time.monotonic()
+        if now < self._vuk_collect_lockout_until:
+            return
         zones = len(self.active_zones)
         if zones <= 0:
             self.machine.events.post(
@@ -200,6 +206,7 @@ class FifthDimensionCurse(Mode):
             return
 
         value = 500_000 + (zones - 1) * 250_000 + self.case_file_bonus
+        self._vuk_collect_lockout_until = now + self.VUK_COLLECT_LOCKOUT_SECONDS
         self._score(value)
         self.jackpots_collected += 1
         player = self.machine.game.player

@@ -437,6 +437,9 @@ class NatureStrikesBack(Mode):
             self.machine.events.post("request_vuk_eject", delay_ms=750)
             return
 
+        # Leave the collectible stage before scoring so VUK switch chatter
+        # cannot award the same Super more than once during the delayed eject.
+        self.stage = 5
         value = self.SUPER_BASE + self.case_file_bonus
         self.supers += 1
         self._score(value)

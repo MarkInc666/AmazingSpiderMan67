@@ -1,3 +1,5 @@
+import time
+
 from mpf.core.mode import Mode
 
 
@@ -9,6 +11,7 @@ class CrimeWave(Mode):
     AREA_TIMEOUT_MS = 20_000
     SAUCER_HOLD_MS = 15_000
     BASE_JACKPOT_PER_AREA = 250_000
+    VUK_COLLECT_LOCKOUT_SECONDS = 2.0
 
     AREAS = ("plotter", "fly_twins", "phantom", "enforcers", "doctor_cool")
     SAUCER_EJECT_EVENTS = {
@@ -48,6 +51,7 @@ class CrimeWave(Mode):
         self.held_saucers = set()
         self.jackpots = 0
         self.mode_points = 0
+        self._vuk_collect_lockout_until = 0.0
 
         player = self.machine.game.player
         self.case_file_bonus = player["mini_wizard_case_file_bonus"]
@@ -157,6 +161,10 @@ class CrimeWave(Mode):
         Daily Bugle Mystery is disabled during this wizard, so Crime Wave must
         own VUK switch response and kick the ball out itself.
         """
+        now = time.monotonic()
+        if now < self._vuk_collect_lockout_until:
+            return
+        self._vuk_collect_lockout_until = now + self.VUK_COLLECT_LOCKOUT_SECONDS
         self.machine.events.post("request_vuk_eject", delay_ms=1_500)
         self._upper_exit_hit(**kwargs)
 

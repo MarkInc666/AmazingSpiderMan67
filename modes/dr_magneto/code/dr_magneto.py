@@ -359,7 +359,6 @@ class DrMagneto(CaseFileMixin, Mode):
         self.super_jackpots = 1
         self._score(value)
         self.machine.events.post("dr_magneto_super_collected", value=value)
-        self.machine.events.post("dr_magneto_super_jackpot_sfx")
         self._show_jackpot("MAGNETO SUPER", value)
         self.machine.events.post("villain_summary_delay_for_final_award")
         self.delay.reset(name="dr_magneto_final_complete", ms=2000, callback=self._complete_mode)
