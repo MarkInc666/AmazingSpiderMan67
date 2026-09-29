@@ -224,11 +224,7 @@ class TimeTossedShowdown(Mode):
         self.roof_flips_used += 1
         if self.roof_flips_used >= self.ROOFTOP_SETUP_FLIPS:
             self.machine.events.post("time_tossed_showdown_roof_setup_locked")
-            self._show_message(
-                "CHOOSE YOUR PATH",
-                "EXIT LEFT, RIGHT OR CENTER",
-                reminder=True,
-            )            
+            self._show_message("SETUP LOCKED", "EXIT CHOOSES THE ERA", reminder=True)
         self._update_status()
 
     def _setup_window_open(self):
