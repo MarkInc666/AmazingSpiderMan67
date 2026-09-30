@@ -255,6 +255,8 @@ class TestModeSelect(Mode):
         p["test_mode_select_name"] = name.upper()
         p["test_mode_select_detail"] = (f"CHAPTER {chapter} - {kind}" if chapter else kind)
 
+        p["test_mode_select_mode_key"] = key
+
         # Show the same three-line rules text used by the normal villain/wizard
         # intro. Pull it from the live bookends mode so the tester never gets
         # out of sync with production intro wording.
