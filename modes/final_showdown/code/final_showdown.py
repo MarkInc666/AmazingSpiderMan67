@@ -645,9 +645,10 @@ class FinalShowdown(Mode):
         kind = self.web_collect_kind
         self._clear_web_collect()
         if kind == "timed_super":
-            self._fail_showdown("SUPER JACKPOT MISSED", "KINGPIN GETS AWAY")
+            self._show_message("SUPER JACKPOT MISSED", "PHASE COMPLETE")
         else:
-            self._fail_showdown("JACKPOT MISSED", "KINGPIN GETS AWAY")
+            self._show_message("JACKPOT MISSED", "PHASE COMPLETE")
+        self._finish_phase()
 
     def _clear_web_collect(self):
         self.delay.remove("final_showdown_web_collect_timeout")
@@ -747,7 +748,8 @@ class FinalShowdown(Mode):
         self.machine.events.post("cmd_upper_flippers_enable")
         self.machine.events.post("rooftop_diverter_close")
         if value <= 0:
-            self._fail_showdown("ROOFTOP JACKPOT MISSED", "NO SPINNER VALUE BUILT")
+            self._show_message("ROOFTOP JACKPOT MISSED", "NO SPINNER VALUE BUILT")
+            self._finish_phase()
             return
         self._award_jackpot(value)
         self._finish_phase()
@@ -846,7 +848,8 @@ class FinalShowdown(Mode):
     def _area_lower_timeout(self):
         if self.current_phase != "area_control" or self.area_roof_active:
             return
-        self._fail_showdown("AREA CONTROL FAILED", "25 SECONDS EXPIRED")
+        self._show_message("AREA CONTROL INCOMPLETE", "25 SECONDS EXPIRED")
+        self._finish_phase()
 
     def _area_roof_timeout(self):
         if self.current_phase != "area_control" or not self.area_roof_active:
@@ -854,7 +857,8 @@ class FinalShowdown(Mode):
         self.machine.events.post("cmd_upper_flippers_disable")
         self.machine.events.post("rooftop_diverter_close")
         if not self.area_roof_target_hit:
-            self._fail_showdown("ROOFTOP AREA FAILED", "TARGET NOT HIT")
+            self._show_message("ROOFTOP AREA INCOMPLETE", "TARGET NOT HIT")
+            self._finish_phase()
             return
         self._show_message("ROOFTOP TIME", f"{self.area_spinner_spins * self.AREA_SPINNER_VALUE:,} COLLECTED")
         self._finish_phase()
@@ -1051,11 +1055,20 @@ class FinalShowdown(Mode):
 
     def _ball_will_end(self, **kwargs):
         del kwargs
-        if self.mode_exiting or not self.final_shot_active:
+        if self.mode_exiting:
             return
-        # A valid final-shot save prevents ball_will_end entirely. Reaching
-        # this event means there was no remaining game ball available to buy
-        # another attempt at the Daily Bugle VUK.
+
+        # Reaching ball_will_end means there are no physical balls left in
+        # play. Merely dropping from multiball to one ball is allowed and is
+        # handled by ignoring multiball_ended below. Before Kingpin is exposed,
+        # exhausting that last live ball ends the Final Showdown attempt.
+        if not self.final_shot_active:
+            self._fail_showdown("KINGPIN GETS AWAY", "ALL BALLS LOST")
+            return
+
+        # During the final VUK shot, the dedicated only-last-ball save may buy
+        # another attempt by consuming a future game ball. If ball_will_end is
+        # reached anyway, no such retry was available.
         self._fail_showdown("KINGPIN GETS AWAY", "FINAL BALL LOST")
 
     def _remaining_game_balls(self):
@@ -1331,14 +1344,17 @@ class FinalShowdown(Mode):
         self.machine.events.post("final_showdown_mode_failed")
 
     def _multiball_ended(self, **kwargs):
+        del kwargs
         if self.mode_exiting:
             return
-        if self.current_phase == "final_lock" and self.final_shot_active:
-            # Multiball normally reports ended when play reaches one ball. Once
-            # Kingpin is exposed, that is allowed; only losing the final live
-            # ball defeats the player.
-            return
-        self._fail_showdown("KINGPIN GETS AWAY", "FINAL SHOWDOWN LOST")
+
+        # MPF reports multiball ended when play drops to one ball. Final
+        # Showdown deliberately continues on that last ball. The attempt only
+        # fails when ball_will_end confirms that every live ball has actually
+        # drained. Once Kingpin is exposed, this same rule lets the final VUK
+        # shot continue down to one ball while its conditional save owns any
+        # future-ball retries.
+        return
 
     # ------------------------------------------------------------------
     # Scoring / display helpers
