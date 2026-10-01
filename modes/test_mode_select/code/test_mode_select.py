@@ -100,6 +100,8 @@ class TestModeSelect(Mode):
         self.clean_release = not self.left_active and not self.right_active
         self.both_armed = False
         self.suppress_next_single_release = False
+        self.left_repeat_started = False
+        self.right_repeat_started = False
         self.add_mode_event_handler("s_left_flipper_active", self._left_active)
         self.add_mode_event_handler("s_left_flipper_inactive", self._left_inactive)
         self.add_mode_event_handler("s_right_flipper_active", self._right_active)
@@ -129,24 +131,48 @@ class TestModeSelect(Mode):
 
     def _left_active(self, **kwargs):
         self.left_active = True
+        self.left_repeat_started = False
+        self.delay.reset(name="test_mode_left_hold", ms=1000, callback=self._left_hold_repeat)
         self._arm_both()
 
     def _right_active(self, **kwargs):
         self.right_active = True
+        self.right_repeat_started = False
+        self.delay.reset(name="test_mode_right_hold", ms=1000, callback=self._right_hold_repeat)
         self._arm_both()
 
     def _left_inactive(self, **kwargs):
         select = self.both_armed
         self.left_active = False
+        self.delay.remove("test_mode_left_hold")
         self._release(select, "left")
+        self.left_repeat_started = False
 
     def _right_inactive(self, **kwargs):
         select = self.both_armed
         self.right_active = False
+        self.delay.remove("test_mode_right_hold")
         self._release(select, "right")
+        self.right_repeat_started = False
+
+    def _left_hold_repeat(self):
+        if not self.left_active or self.right_active or self.both_armed:
+            return
+        self.left_repeat_started = True
+        self._move(-1)
+        self.delay.reset(name="test_mode_left_hold", ms=200, callback=self._left_hold_repeat)
+
+    def _right_hold_repeat(self):
+        if not self.right_active or self.left_active or self.both_armed:
+            return
+        self.right_repeat_started = True
+        self._move(1)
+        self.delay.reset(name="test_mode_right_hold", ms=200, callback=self._right_hold_repeat)
 
     def _arm_both(self):
         if self.clean_release and self.left_active and self.right_active:
+            self.delay.remove("test_mode_left_hold")
+            self.delay.remove("test_mode_right_hold")
             self.both_armed = True
 
     def _release(self, select, direction):
@@ -164,9 +190,11 @@ class TestModeSelect(Mode):
             self.clean_release = True
             self.both_armed = False
         if direction == "right" and not self.left_active:
-            self._move(1)
+            if not self.right_repeat_started:
+                self._move(1)
         elif direction == "left" and not self.right_active:
-            self._move(-1)
+            if not self.left_repeat_started:
+                self._move(-1)
 
     def _move(self, delta):
         p = self.machine.game.player

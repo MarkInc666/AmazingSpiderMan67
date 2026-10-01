@@ -57,12 +57,25 @@ event_player:
     crime_wave_saucer_hit:
       saucer: 3
 
-  # Daily Bugle Mystery is disabled during this wizard, so Crime Wave must
-  # respond to balls sitting in the VUK and kick them back out itself.
+  # Crime Wave owns the VUK while Daily Bugle Mystery is disabled.
   s_vuk_switch_active: crime_wave_vuk_hit
 
-  s_upper_exit_left_opto_active: crime_wave_upper_exit_hit
-  s_upper_exit_right_opto_active: crime_wave_upper_exit_hit
+  # Physical left/right roof exits.
+  s_upper_exit_left_opto_active:
+    crime_wave_upper_exit_hit:
+      exit_name: left
+  s_upper_exit_right_opto_active:
+    crime_wave_upper_exit_hit:
+      exit_name: right
+
+  # There is no physical center-exit switch. These are the established
+  # center-drain inference switches used by the other rooftop modes.
+  s_right_drops_top_rubber_active: crime_wave_center_exit_hit
+  s_inlane_m_r_active: crime_wave_center_exit_hit
+
+  # Either web target collects an active Super Jackpot.
+  s_web_target_left_active: crime_wave_web_hit
+  s_web_target_mid_active: crime_wave_web_hit
 
   multiball_crime_wave_multiball_ended: crime_wave_complete_request
 
@@ -87,46 +100,324 @@ widget_player:
 
 light_player:
   mode_crime_wave_started:
-    gi: 8080FF
+    gi: EFA0A0
+  crime_wave_gi_restore:
+    gi: EFA0A0
+  crime_wave_super_gi_on:
+    gi: FFFFFF
+  crime_wave_super_gi_off:
+    gi: off
   mode_crime_wave_stopping:
     gi: E0E0E0
 
-  crime_wave_saucers_available:
-    l_1_hole_l: red
-    l_1_hole_r: red
-    l_2_hole_l: red
-    l_2_hole_r: red
-    l_3_hole_l: red
-    l_3_hole_r: red
+show_player:
+  # Plotter / pops: cyan. Pulse = available, solid = captured,
+  # fast flash = under 5 seconds remaining.
+  crime_wave_area_plotter_available:
+    crime_wave_plotter_active: {action: stop}
+    crime_wave_plotter_warning: {action: stop}
+    crime_wave_plotter_available: {loops: -1}
+  crime_wave_area_plotter_active:
+    crime_wave_plotter_available: {action: stop}
+    crime_wave_plotter_warning: {action: stop}
+    crime_wave_plotter_active: {loops: -1}
+  crime_wave_area_plotter_warning:
+    crime_wave_plotter_available: {action: stop}
+    crime_wave_plotter_active: {action: stop}
+    crime_wave_plotter_warning: {loops: -1}
 
-  crime_wave_saucer_1_held:
-    l_1_hole_l: red
-    l_1_hole_r: red
-  crime_wave_saucer_1_released:
-    l_1_hole_l: red
-    l_1_hole_r: red
+  # Fly Twins / upper targets: cyan.
+  crime_wave_area_fly_twins_available:
+    crime_wave_fly_twins_active: {action: stop}
+    crime_wave_fly_twins_warning: {action: stop}
+    crime_wave_fly_twins_available: {loops: -1}
+  crime_wave_area_fly_twins_active:
+    crime_wave_fly_twins_available: {action: stop}
+    crime_wave_fly_twins_warning: {action: stop}
+    crime_wave_fly_twins_active: {loops: -1}
+  crime_wave_area_fly_twins_warning:
+    crime_wave_fly_twins_available: {action: stop}
+    crime_wave_fly_twins_active: {action: stop}
+    crime_wave_fly_twins_warning: {loops: -1}
 
-  crime_wave_saucer_2_held:
-    l_2_hole_l: red
-    l_2_hole_r: red
-  crime_wave_saucer_2_released:
-    l_2_hole_l: red
-    l_2_hole_r: red
+  # 5th Ave Phantom / right bank GI + inserts: cyan.
+  crime_wave_area_phantom_available:
+    crime_wave_phantom_active: {action: stop}
+    crime_wave_phantom_warning: {action: stop}
+    crime_wave_phantom_available: {loops: -1}
+  crime_wave_area_phantom_active:
+    crime_wave_phantom_available: {action: stop}
+    crime_wave_phantom_warning: {action: stop}
+    crime_wave_phantom_active: {loops: -1}
+  crime_wave_area_phantom_warning:
+    crime_wave_phantom_available: {action: stop}
+    crime_wave_phantom_active: {action: stop}
+    crime_wave_phantom_warning: {loops: -1}
 
-  crime_wave_saucer_3_held:
-    l_3_hole_l: red
-    l_3_hole_r: red
-  crime_wave_saucer_3_released:
-    l_3_hole_l: red
-    l_3_hole_r: red
+  # Enforcers / left bank GI + inserts: cyan.
+  crime_wave_area_enforcers_available:
+    crime_wave_enforcers_active: {action: stop}
+    crime_wave_enforcers_warning: {action: stop}
+    crime_wave_enforcers_available: {loops: -1}
+  crime_wave_area_enforcers_active:
+    crime_wave_enforcers_available: {action: stop}
+    crime_wave_enforcers_warning: {action: stop}
+    crime_wave_enforcers_active: {loops: -1}
+  crime_wave_area_enforcers_warning:
+    crime_wave_enforcers_available: {action: stop}
+    crime_wave_enforcers_active: {action: stop}
+    crime_wave_enforcers_warning: {loops: -1}
 
-  crime_wave_clear_saucer_lights:
-    l_1_hole_l: off
-    l_1_hole_r: off
-    l_2_hole_l: off
-    l_2_hole_r: off
-    l_3_hole_l: off
-    l_3_hole_r: off
+  # Doctor Cool / saucer targets: white is deliberately brighter than red.
+  crime_wave_area_doctor_cool_available:
+    crime_wave_doctor_cool_active: {action: stop}
+    crime_wave_doctor_cool_warning: {action: stop}
+    crime_wave_doctor_cool_available: {loops: -1}
+  crime_wave_area_doctor_cool_active:
+    crime_wave_doctor_cool_available: {action: stop}
+    crime_wave_doctor_cool_warning: {action: stop}
+    crime_wave_doctor_cool_active: {loops: -1}
+  crime_wave_area_doctor_cool_warning:
+    crime_wave_doctor_cool_available: {action: stop}
+    crime_wave_doctor_cool_active: {action: stop}
+    crime_wave_doctor_cool_warning: {loops: -1}
+
+  crime_wave_super_on:
+    crime_wave_super_web_flash: {loops: -1}
+  crime_wave_super_off:
+    crime_wave_super_web_flash: {action: stop}
+
+  crime_wave_area_shows_stop:
+    crime_wave_plotter_available: {action: stop}
+    crime_wave_plotter_active: {action: stop}
+    crime_wave_plotter_warning: {action: stop}
+    crime_wave_fly_twins_available: {action: stop}
+    crime_wave_fly_twins_active: {action: stop}
+    crime_wave_fly_twins_warning: {action: stop}
+    crime_wave_phantom_available: {action: stop}
+    crime_wave_phantom_active: {action: stop}
+    crime_wave_phantom_warning: {action: stop}
+    crime_wave_enforcers_available: {action: stop}
+    crime_wave_enforcers_active: {action: stop}
+    crime_wave_enforcers_warning: {action: stop}
+    crime_wave_doctor_cool_available: {action: stop}
+    crime_wave_doctor_cool_active: {action: stop}
+    crime_wave_doctor_cool_warning: {action: stop}
+
+  crime_wave_clear_lights:
+    crime_wave_plotter_available: {action: stop}
+    crime_wave_plotter_active: {action: stop}
+    crime_wave_plotter_warning: {action: stop}
+    crime_wave_fly_twins_available: {action: stop}
+    crime_wave_fly_twins_active: {action: stop}
+    crime_wave_fly_twins_warning: {action: stop}
+    crime_wave_phantom_available: {action: stop}
+    crime_wave_phantom_active: {action: stop}
+    crime_wave_phantom_warning: {action: stop}
+    crime_wave_enforcers_available: {action: stop}
+    crime_wave_enforcers_active: {action: stop}
+    crime_wave_enforcers_warning: {action: stop}
+    crime_wave_doctor_cool_available: {action: stop}
+    crime_wave_doctor_cool_active: {action: stop}
+    crime_wave_doctor_cool_warning: {action: stop}
+    crime_wave_super_web_flash: {action: stop}
+
+shows:
+  crime_wave_plotter_available:
+    - duration: 500ms
+      lights:
+        l_pop_1_1: cyan
+        l_pop_1_2: cyan
+        l_pop_1_3: cyan
+        l_pop_1_4: cyan
+        l_pop_1_5: cyan
+        l_pop_1_6: cyan
+        l_pop_1_7: cyan
+        l_pop_1_8: cyan
+        l_pop_1_9: cyan
+        l_pop_1_10: cyan
+        l_pop_1_11: cyan
+        l_pop_1_12: cyan
+        l_pop_2_1: cyan
+        l_pop_2_2: cyan
+        l_pop_2_3: cyan
+        l_pop_2_4: cyan
+        l_pop_2_5: cyan
+        l_pop_2_6: cyan
+        l_pop_2_7: cyan
+        l_pop_2_8: cyan
+        l_pop_2_9: cyan
+        l_pop_2_10: cyan
+        l_pop_2_11: cyan
+        l_pop_2_12: cyan
+    - duration: 500ms
+      lights:
+        l_pop_1_1: 204040
+        l_pop_1_2: 204040
+        l_pop_1_3: 204040
+        l_pop_1_4: 204040
+        l_pop_1_5: 204040
+        l_pop_1_6: 204040
+        l_pop_1_7: 204040
+        l_pop_1_8: 204040
+        l_pop_1_9: 204040
+        l_pop_1_10: 204040
+        l_pop_1_11: 204040
+        l_pop_1_12: 204040
+        l_pop_2_1: 204040
+        l_pop_2_2: 204040
+        l_pop_2_3: 204040
+        l_pop_2_4: 204040
+        l_pop_2_5: 204040
+        l_pop_2_6: 204040
+        l_pop_2_7: 204040
+        l_pop_2_8: 204040
+        l_pop_2_9: 204040
+        l_pop_2_10: 204040
+        l_pop_2_11: 204040
+        l_pop_2_12: 204040
+  crime_wave_plotter_active:
+    - duration: 1s
+      lights:
+        l_pop_1_1: cyan
+        l_pop_1_2: cyan
+        l_pop_1_3: cyan
+        l_pop_1_4: cyan
+        l_pop_1_5: cyan
+        l_pop_1_6: cyan
+        l_pop_1_7: cyan
+        l_pop_1_8: cyan
+        l_pop_1_9: cyan
+        l_pop_1_10: cyan
+        l_pop_1_11: cyan
+        l_pop_1_12: cyan
+        l_pop_2_1: cyan
+        l_pop_2_2: cyan
+        l_pop_2_3: cyan
+        l_pop_2_4: cyan
+        l_pop_2_5: cyan
+        l_pop_2_6: cyan
+        l_pop_2_7: cyan
+        l_pop_2_8: cyan
+        l_pop_2_9: cyan
+        l_pop_2_10: cyan
+        l_pop_2_11: cyan
+        l_pop_2_12: cyan
+  crime_wave_plotter_warning:
+    - duration: 250ms
+      lights:
+        l_pop_1_1: cyan
+        l_pop_1_2: cyan
+        l_pop_1_3: cyan
+        l_pop_1_4: cyan
+        l_pop_1_5: cyan
+        l_pop_1_6: cyan
+        l_pop_1_7: cyan
+        l_pop_1_8: cyan
+        l_pop_1_9: cyan
+        l_pop_1_10: cyan
+        l_pop_1_11: cyan
+        l_pop_1_12: cyan
+        l_pop_2_1: cyan
+        l_pop_2_2: cyan
+        l_pop_2_3: cyan
+        l_pop_2_4: cyan
+        l_pop_2_5: cyan
+        l_pop_2_6: cyan
+        l_pop_2_7: cyan
+        l_pop_2_8: cyan
+        l_pop_2_9: cyan
+        l_pop_2_10: cyan
+        l_pop_2_11: cyan
+        l_pop_2_12: cyan
+    - duration: 250ms
+      lights:
+        l_pop_1_1: off
+        l_pop_1_2: off
+        l_pop_1_3: off
+        l_pop_1_4: off
+        l_pop_1_5: off
+        l_pop_1_6: off
+        l_pop_1_7: off
+        l_pop_1_8: off
+        l_pop_1_9: off
+        l_pop_1_10: off
+        l_pop_1_11: off
+        l_pop_1_12: off
+        l_pop_2_1: off
+        l_pop_2_2: off
+        l_pop_2_3: off
+        l_pop_2_4: off
+        l_pop_2_5: off
+        l_pop_2_6: off
+        l_pop_2_7: off
+        l_pop_2_8: off
+        l_pop_2_9: off
+        l_pop_2_10: off
+        l_pop_2_11: off
+        l_pop_2_12: off
+
+  crime_wave_fly_twins_available:
+    - duration: 500ms
+      lights: {l_upper_left: cyan, l_upper_middle: cyan, l_upper_right: cyan}
+    - duration: 500ms
+      lights: {l_upper_left: 204040, l_upper_middle: 204040, l_upper_right: 204040}
+  crime_wave_fly_twins_active:
+    - duration: 1s
+      lights: {l_upper_left: cyan, l_upper_middle: cyan, l_upper_right: cyan}
+  crime_wave_fly_twins_warning:
+    - duration: 250ms
+      lights: {l_upper_left: cyan, l_upper_middle: cyan, l_upper_right: cyan}
+    - duration: 250ms
+      lights: {l_upper_left: off, l_upper_middle: off, l_upper_right: off}
+
+  crime_wave_phantom_available:
+    - duration: 500ms
+      lights: {l_gi_5bank_lower: cyan, l_gi_5bank_upper: cyan, l_5bank_1: cyan, l_5bank_2: cyan, l_5bank_3: cyan, l_5bank_4: cyan, l_5bank_5: cyan}
+    - duration: 500ms
+      lights: {l_gi_5bank_lower: 204040, l_gi_5bank_upper: 204040, l_5bank_1: 204040, l_5bank_2: 204040, l_5bank_3: 204040, l_5bank_4: 204040, l_5bank_5: 204040}
+  crime_wave_phantom_active:
+    - duration: 1s
+      lights: {l_gi_5bank_lower: cyan, l_gi_5bank_upper: cyan, l_5bank_1: cyan, l_5bank_2: cyan, l_5bank_3: cyan, l_5bank_4: cyan, l_5bank_5: cyan}
+  crime_wave_phantom_warning:
+    - duration: 250ms
+      lights: {l_gi_5bank_lower: cyan, l_gi_5bank_upper: cyan, l_5bank_1: cyan, l_5bank_2: cyan, l_5bank_3: cyan, l_5bank_4: cyan, l_5bank_5: cyan}
+    - duration: 250ms
+      lights: {l_gi_5bank_lower: off, l_gi_5bank_upper: off, l_5bank_1: off, l_5bank_2: off, l_5bank_3: off, l_5bank_4: off, l_5bank_5: off}
+
+  crime_wave_enforcers_available:
+    - duration: 500ms
+      lights: {l_gi_3bank: cyan, l_3bankbonus: cyan, l_left_special: cyan, l_left_multibonus: cyan}
+    - duration: 500ms
+      lights: {l_gi_3bank: 204040, l_3bankbonus: 204040, l_left_special: 204040, l_left_multibonus: 204040}
+  crime_wave_enforcers_active:
+    - duration: 1s
+      lights: {l_gi_3bank: cyan, l_3bankbonus: cyan, l_left_special: cyan, l_left_multibonus: cyan}
+  crime_wave_enforcers_warning:
+    - duration: 250ms
+      lights: {l_gi_3bank: cyan, l_3bankbonus: cyan, l_left_special: cyan, l_left_multibonus: cyan}
+    - duration: 250ms
+      lights: {l_gi_3bank: off, l_3bankbonus: off, l_left_special: off, l_left_multibonus: off}
+
+  crime_wave_doctor_cool_available:
+    - duration: 500ms
+      lights: {l_1_hole_l: white, l_1_hole_r: white, l_2_hole_l: white, l_2_hole_r: white, l_3_hole_l: white, l_3_hole_r: white}
+    - duration: 500ms
+      lights: {l_1_hole_l: 404040, l_1_hole_r: 404040, l_2_hole_l: 404040, l_2_hole_r: 404040, l_3_hole_l: 404040, l_3_hole_r: 404040}
+  crime_wave_doctor_cool_active:
+    - duration: 1s
+      lights: {l_1_hole_l: white, l_1_hole_r: white, l_2_hole_l: white, l_2_hole_r: white, l_3_hole_l: white, l_3_hole_r: white}
+  crime_wave_doctor_cool_warning:
+    - duration: 250ms
+      lights: {l_1_hole_l: white, l_1_hole_r: white, l_2_hole_l: white, l_2_hole_r: white, l_3_hole_l: white, l_3_hole_r: white}
+    - duration: 250ms
+      lights: {l_1_hole_l: off, l_1_hole_r: off, l_2_hole_l: off, l_2_hole_r: off, l_3_hole_l: off, l_3_hole_r: off}
+
+  crime_wave_super_web_flash:
+    - duration: 250ms
+      lights: {l_left_web_target: white, l_mid_web_target: white}
+    - duration: 250ms
+      lights: {l_left_web_target: off, l_mid_web_target: off}
 
 sound_player:
   play_mode_jackpot:

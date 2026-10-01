@@ -30,6 +30,7 @@ class RhinoBash(CaseFileMixin, Mode):
 
     POP_SCORE = 10000
     SMASH_SCORE = 25000
+    BASE_SMASH_ADD = 10000
 
     A_B_COLLECT_STAGES = {
         "upper_a": 2,
@@ -77,7 +78,7 @@ class RhinoBash(CaseFileMixin, Mode):
         self.bigger_jackpots = False
         self.jackpot_base = 0
         self.jackpot_value = 0
-        self.add_value = 0
+        self.add_value = self.BASE_SMASH_ADD
         self.berserk_running = False
         self.mode_done = False
 
@@ -135,12 +136,8 @@ class RhinoBash(CaseFileMixin, Mode):
         if self.mode_done or self.berserk_running:
             return
 
-        if self.rage_stage == 0:
-            title = "HIT POPS - BUILD RAGE"
-            value = f"JACKPOT {self.jackpot_value:,}"
-        else:
-            title = f"RAGE {self.rage_stage} - +{self.add_value:,} PER HIT"
-            value = f"JACKPOT {self.jackpot_value:,}"
+        title = f"RAGE {self.rage_stage} - +{self.add_value:,} PER HIT"
+        value = f"JACKPOT {self.jackpot_value:,}"
 
         self.machine.events.post(
             "show_mode_status",
@@ -301,7 +298,7 @@ class RhinoBash(CaseFileMixin, Mode):
     def reset_rage_cycle(self):
         self.rage_stage = 0
         self.pops = 0
-        self.add_value = 0
+        self.add_value = self.BASE_SMASH_ADD
         self.post_rage_show()
         self._show_message(
             "BUILD RAGE AGAIN",

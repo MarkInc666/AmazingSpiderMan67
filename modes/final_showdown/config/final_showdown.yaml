@@ -3,7 +3,6 @@
 mode:
   start_events: start_mode_final_showdown
   stop_events:
-    - ball_will_end
     - bonus_start
     - final_showdown_mode_completed_summary
     - ball_ended
@@ -11,7 +10,6 @@ mode:
   code: final_showdown.FinalShowdown
 
 variable_player:
-
   multiball_final_showdown_multiball_started:
     multiball_autoplunge_active:
       action: set
@@ -22,6 +20,25 @@ variable_player:
       action: set
       int: 0
 
+
+ball_saves:
+  # Once Kingpin is exposed, unused future game balls become retries for the
+  # final Daily Bugle VUK shot. This save protects only the last live ball and
+  # returns the replacement to the shooter lane. Code consumes one future game
+  # ball on every save and disables this device when none remain.
+  final_showdown_final_shot_save:
+    active_time: 0s
+    hurry_up_time: 0s
+    grace_period: 0s
+    balls_to_save: -1
+    only_last_ball: true
+    auto_launch: false
+    enable_events: final_showdown_enable_final_shot_save
+    disable_events:
+      - final_showdown_disable_final_shot_save
+      - final_showdown_mode_complete
+      - final_showdown_mode_failed
+      - mode_final_showdown_stopping
 
 multiballs:
   final_showdown_multiball:
@@ -37,30 +54,16 @@ multiballs:
       - final_showdown_stop_multiball
       - final_showdown_stop_all_multiballs
 
-
 event_player:
-
-  drop_target_bank_dt_bank_left_down:
-    - drop_target_bank_dt_bank_left_reset
-
-  drop_target_bank_dt_bank_right_down:
-    - drop_target_bank_dt_bank_right_reset
-
-  multiball_final_showdown_multiball_started:
-    - final_showdown_choose_first_area
-
   final_showdown_mode_complete:
     villain_bookend_summary_request:
       villain: final_showdown
       done_event: final_showdown_mode_completed_summary
 
-  mode_final_showdown_stopping:
-    - final_showdown_enable_daily_bugle_mystery
-    - daily_bugle_restore_state
-    - final_showdown_close_upper_gate
-    - final_showdown_release_all_saucers
-    - clear_saucers
-    - final_showdown_clear_all_final_showdown_lights
+  final_showdown_mode_failed:
+    villain_bookend_summary_request:
+      villain: final_showdown
+      done_event: final_showdown_mode_completed_summary
 
   mode_final_showdown_started:
     - cmd_flippers_enable
@@ -69,324 +72,366 @@ event_player:
     - final_showdown_start_multiball|1s
 
   final_showdown_setup:
-    - final_showdown_reset_banks
-    - clear_saucers
-    - final_showdown_disable_daily_bugle_mystery
-    - final_showdown_ab_available_show
-    - final_showdown_mode_intro
-
-  final_showdown_reset_banks:
     - drop_target_bank_dt_bank_left_reset|100ms
     - drop_target_bank_dt_bank_right_reset|200ms
+    - clear_saucers
+    - disable_daily_bugle_mystery
+    - final_showdown_ab_available_show
 
-  multiball_final_showdown_multiball_ended:
-    - final_showdown_multiball_ended
+  mode_final_showdown_stopping:
+    - enable_daily_bugle_mystery
+    - daily_bugle_restore_state
+    - rooftop_diverter_close
+    - final_showdown_release_all_saucers
+    - clear_saucers
+    - final_showdown_clear_all_final_showdown_lights
+    - cmd_upper_flippers_enable
 
   final_showdown_open_upper_gate: rooftop_diverter_open
-
   final_showdown_close_upper_gate: rooftop_diverter_close
-
-  final_showdown_disable_daily_bugle_mystery: disable_daily_bugle_mystery
-
-  final_showdown_enable_daily_bugle_mystery: enable_daily_bugle_mystery
-
 
 widget_player:
   mode_final_showdown_started:
     final_showdown:
       action: play
 
-  final_showdown_mode_ended:
+  mode_final_showdown_stopping:
     final_showdown:
       action: remove
 
-  xfinal_showdown_mode_intro:
-    final_showdown_intro:
-      action: play
-      expire: 5s
-
-  final_showdown_area_changed:
-    final_showdown_area_status:
-      action: play
-      expire: 3s
-
-  ball_ending:
-    final_showdown_area_status:
-      action: remove
-
-  mode_final_showdown_stopping:
-    final_showdown_area_status:
-      action: remove
-
-  xfinal_showdown_jackpot_lit:
-    final_showdown_jackpot_lit:
-      action: play
-      expire: 3s
-
-  xfinal_showdown_victory_laps_started:
-    final_showdown_victory_laps:
-      action: play
-      expire: 4s
-
-  xfinal_showdown_mode_complete:
-    final_showdown_complete:
-      action: play
-      expire: 5s
-
-  xfinal_showdown_mode_complete_goal_missed:
-    final_showdown_goal_missed:
-      action: play
-      expire: 5s
-
-
-
 light_player:
+  # Reveal/collect saucer positions.
+  final_showdown_reveal_saucer_1_on:
+    l_1_hole_l: 40E0E0
+    l_1_hole_r: 40E0E0
+  final_showdown_reveal_saucer_1_off:
+    l_1_hole_l: off
+    l_1_hole_r: off
+  final_showdown_reveal_saucer_2_on:
+    l_2_hole_l: 40E0E0
+    l_2_hole_r: 40E0E0
+  final_showdown_reveal_saucer_2_off:
+    l_2_hole_l: off
+    l_2_hole_r: off
+  final_showdown_reveal_saucer_3_on:
+    l_3_hole_l: 40E0E0
+    l_3_hole_r: 40E0E0
+  final_showdown_reveal_saucer_3_off:
+    l_3_hole_l: off
+    l_3_hole_r: off
+
+  final_showdown_reveal_clear:
+    l_1_hole_l: off
+    l_1_hole_r: off
+    l_2_hole_l: off
+    l_2_hole_r: off
+    l_3_hole_l: off
+    l_3_hole_r: off
+
+  # Temporary parking / final permanent locks.
   final_showdown_saucer_hold_started{saucer=="saucer_1"}:
-    l_1_hole_l: red
-    l_1_hole_r: red
+    l_1_hole_l: 804040
+    l_1_hole_r: 804040
   final_showdown_saucer_released{saucer=="saucer_1"}:
     l_1_hole_l: off
     l_1_hole_r: off
-
   final_showdown_saucer_hold_started{saucer=="saucer_2"}:
-    l_2_hole_l: red
-    l_2_hole_r: red
+    l_2_hole_l: 804040
+    l_2_hole_r: 804040
   final_showdown_saucer_released{saucer=="saucer_2"}:
     l_2_hole_l: off
     l_2_hole_r: off
-
   final_showdown_saucer_hold_started{saucer=="saucer_3"}:
-    l_3_hole_l: red
-    l_3_hole_r: red
+    l_3_hole_l: 804040
+    l_3_hole_r: 804040
   final_showdown_saucer_released{saucer=="saucer_3"}:
     l_3_hole_l: off
     l_3_hole_r: off
 
-  mode_final_showdown_stopping:
+  final_showdown_final_saucer_locked{saucer=="saucer_1"}:
+    l_1_hole_l: red
+    l_1_hole_r: red
+  final_showdown_final_saucer_released{saucer=="saucer_1"}:
     l_1_hole_l: off
     l_1_hole_r: off
+  final_showdown_final_saucer_locked{saucer=="saucer_2"}:
+    l_2_hole_l: red
+    l_2_hole_r: red
+  final_showdown_final_saucer_released{saucer=="saucer_2"}:
     l_2_hole_l: off
     l_2_hole_r: off
+  final_showdown_final_saucer_locked{saucer=="saucer_3"}:
+    l_3_hole_l: red
+    l_3_hole_r: red
+  final_showdown_final_saucer_released{saucer=="saucer_3"}:
     l_3_hole_l: off
     l_3_hole_r: off
 
+  # Rooftop build phase.
+  final_showdown_rooftop_on:
+    l_upper_left: 40E0E0
+    l_upper_middle: 40E0E0
+    l_upper_right: 40E0E0
+    l_gi_a: 40E0E0
+  final_showdown_rooftop_off:
+    l_upper_left: off
+    l_upper_middle: off
+    l_upper_right: off
+    l_gi_a: off
+
+  # Area-control lower zones: cyan while needed, brighter when complete.
+  final_showdown_area_left_needed:
+    l_gi_3bank: 208080
+    l_left_web_target: 208080
+  final_showdown_area_left_complete:
+    l_gi_3bank: 80FFFF
+    l_left_web_target: 80FFFF
+  final_showdown_area_right_needed:
+    l_gi_5bank_lower: 208080
+    l_gi_5bank_upper: 208080
+    l_5bank_1: 208080
+    l_5bank_2: 208080
+    l_5bank_3: 208080
+    l_5bank_4: 208080
+    l_5bank_5: 208080
+  final_showdown_area_right_complete:
+    l_gi_5bank_lower: 80FFFF
+    l_gi_5bank_upper: 80FFFF
+    l_5bank_1: 80FFFF
+    l_5bank_2: 80FFFF
+    l_5bank_3: 80FFFF
+    l_5bank_4: 80FFFF
+    l_5bank_5: 80FFFF
+  final_showdown_area_center_needed:
+    l_pop_1_1: 208080
+    l_pop_1_4: 208080
+    l_pop_1_7: 208080
+    l_pop_1_10: 208080
+    l_pop_2_1: 208080
+    l_pop_2_4: 208080
+    l_pop_2_7: 208080
+    l_pop_2_10: 208080
+    l_mid_web_target: 208080
+  final_showdown_area_center_complete:
+    l_pop_1_1: 80FFFF
+    l_pop_1_4: 80FFFF
+    l_pop_1_7: 80FFFF
+    l_pop_1_10: 80FFFF
+    l_pop_2_1: 80FFFF
+    l_pop_2_4: 80FFFF
+    l_pop_2_7: 80FFFF
+    l_pop_2_10: 80FFFF
+    l_mid_web_target: 80FFFF
+  final_showdown_area_slings_needed:
+    l_gi_left_sling_upper: 208080
+    l_gi_left_sling_lower: 208080
+    l_gi_right_sling: 208080
+  final_showdown_area_slings_complete:
+    l_gi_left_sling_upper: 80FFFF
+    l_gi_left_sling_lower: 80FFFF
+    l_gi_right_sling: 80FFFF
+  final_showdown_area_roof_target_complete:
+    l_gi_a: 80FFFF
+
+  final_showdown_area_control_off:
+    l_pop_1_1: off
+    l_pop_1_4: off
+    l_pop_1_7: off
+    l_pop_1_10: off
+    l_pop_2_1: off
+    l_pop_2_4: off
+    l_pop_2_7: off
+    l_pop_2_10: off
+    l_gi_3bank: off
+    l_left_web_target: off
+    l_gi_5bank_lower: off
+    l_gi_5bank_upper: off
+    l_5bank_1: off
+    l_5bank_2: off
+    l_5bank_3: off
+    l_5bank_4: off
+    l_5bank_5: off
+    l_mid_web_target: off
+    l_gi_left_sling_upper: off
+    l_gi_left_sling_lower: off
+    l_gi_right_sling: off
+    l_gi_a: off
+
 show_player:
-
-  final_showdown_clear_area_lights:
-    final_showdown_pops_lit_show:
-      action: stop
-    final_showdown_spinner_lit_show:
-      action: stop
-    final_showdown_star_lit_show:
-      action: stop
-    final_showdown_upper_targets_lit_show:
-      action: stop
-    final_showdown_drops_lit_show:
-      action: stop
-
-  final_showdown_area_pops_lit:
-    final_showdown_pops_lit_show:
-      action: play
-      loops: -1
-      speed: 2
-
-  final_showdown_area_spinner_lit:
-    final_showdown_spinner_lit_show:
-      action: play
-      loops: -1
-      speed: 2
-
-  final_showdown_area_star_lit:
-    final_showdown_star_lit_show:
-      action: play
-      loops: -1
-      speed: 2
-
-  final_showdown_area_upper_targets_lit:
-    final_showdown_upper_targets_lit_show:
-      action: play
-      loops: -1
-      speed: 2
-
-  final_showdown_area_drops_lit:
-    final_showdown_drops_lit_show:
-      action: play
-      loops: -1
-      speed: 2
-
-  final_showdown_jackpot_lit_show:
-    final_showdown_daily_bugle_jackpot_show:
-      action: play
-      loops: -1
-      speed: 4
-
-
   final_showdown_ab_available_show:
     final_showdown_ab_available_show:
       action: play
       loops: -1
-      speed: 2
-
+      priority: 1050
   final_showdown_ab_available_clear_show:
     final_showdown_ab_available_show:
       action: stop
 
-  final_showdown_ab_ready_show:
-    final_showdown_ab_ready_show:
+  final_showdown_add_a_ball_ready_show:
+    final_showdown_add_a_ball_ready_show:
       action: play
       loops: -1
-      speed: 3
-
-  final_showdown_ab_clear_show:
-    final_showdown_ab_ready_show:
+      priority: 1100
+  final_showdown_add_a_ball_ready_clear:
+    final_showdown_add_a_ball_ready_show:
       action: stop
 
-  final_showdown_victory_laps_show:
-    final_showdown_victory_laps_show:
+  final_showdown_web_jackpot_on:
+    final_showdown_web_jackpot_show:
       action: play
       loops: -1
-      speed: 5
+      priority: 1150
+  final_showdown_web_jackpot_off:
+    final_showdown_web_jackpot_show:
+      action: stop
 
-  final_showdown_super_jackpot_lit_show:
-    final_showdown_super_jackpot_show:
+  final_showdown_kingpin_vuk_on:
+    shared_final_vuk_chase:
       action: play
       loops: -1
-      speed: 6
+      priority: 1200
+      show_tokens: {color: "FF4040"}
+  final_showdown_kingpin_vuk_off:
+    shared_final_vuk_chase:
+      action: stop
+
+  final_showdown_timed_left_web_on:
+    final_showdown_timed_left_web_show:
+      action: play
+      loops: -1
+      priority: 1080
+  final_showdown_timed_left_web_off:
+    final_showdown_timed_left_web_show:
+      action: stop
+
+  final_showdown_timed_center_web_on:
+    final_showdown_timed_center_web_show:
+      action: play
+      loops: -1
+      priority: 1080
+  final_showdown_timed_center_web_off:
+    final_showdown_timed_center_web_show:
+      action: stop
+
+  final_showdown_timed_left_pop_on:
+    final_showdown_timed_left_pop_show:
+      action: play
+      loops: -1
+      priority: 1080
+  final_showdown_timed_left_pop_off:
+    final_showdown_timed_left_pop_show:
+      action: stop
+
+  final_showdown_timed_right_pop_on:
+    final_showdown_timed_right_pop_show:
+      action: play
+      loops: -1
+      priority: 1080
+  final_showdown_timed_right_pop_off:
+    final_showdown_timed_right_pop_show:
+      action: stop
+
+  final_showdown_timed_left_bank_on:
+    final_showdown_timed_left_bank_show:
+      action: play
+      loops: -1
+      priority: 1080
+  final_showdown_timed_left_bank_off:
+    final_showdown_timed_left_bank_show:
+      action: stop
+
+  final_showdown_timed_right_bank_on:
+    final_showdown_timed_right_bank_show:
+      action: play
+      loops: -1
+      priority: 1080
+  final_showdown_timed_right_bank_off:
+    final_showdown_timed_right_bank_show:
+      action: stop
+
+  final_showdown_timed_upper_a_on:
+    final_showdown_timed_upper_a_show:
+      action: play
+      loops: -1
+      priority: 1080
+  final_showdown_timed_upper_a_off:
+    final_showdown_timed_upper_a_show:
+      action: stop
+
+  final_showdown_timed_upper_b_on:
+    final_showdown_timed_upper_b_show:
+      action: play
+      loops: -1
+      priority: 1080
+  final_showdown_timed_upper_b_off:
+    final_showdown_timed_upper_b_show:
+      action: stop
+
+  final_showdown_timed_middle_a_on:
+    final_showdown_timed_middle_a_show:
+      action: play
+      loops: -1
+      priority: 1080
+  final_showdown_timed_middle_a_off:
+    final_showdown_timed_middle_a_show:
+      action: stop
+
+  final_showdown_timed_middle_b_on:
+    final_showdown_timed_middle_b_show:
+      action: play
+      loops: -1
+      priority: 1080
+  final_showdown_timed_middle_b_off:
+    final_showdown_timed_middle_b_show:
+      action: stop
+
+  final_showdown_timed_upper_targets_on:
+    final_showdown_timed_upper_targets_show:
+      action: play
+      loops: -1
+      priority: 1080
+  final_showdown_timed_upper_targets_off:
+    final_showdown_timed_upper_targets_show:
+      action: stop
+
+  final_showdown_timed_spinner_on:
+    final_showdown_timed_spinner_show:
+      action: play
+      loops: -1
+      priority: 1080
+  final_showdown_timed_spinner_off:
+    final_showdown_timed_spinner_show:
+      action: stop
+
+  final_showdown_timed_upper_spinner_on:
+    final_showdown_timed_upper_spinner_show:
+      action: play
+      loops: -1
+      priority: 1080
+  final_showdown_timed_upper_spinner_off:
+    final_showdown_timed_upper_spinner_show:
+      action: stop
 
   final_showdown_clear_all_final_showdown_lights:
-    final_showdown_pops_lit_show:
-      action: stop
-    final_showdown_spinner_lit_show:
-      action: stop
-    final_showdown_star_lit_show:
-      action: stop
-    final_showdown_upper_targets_lit_show:
-      action: stop
-    final_showdown_drops_lit_show:
-      action: stop
-    final_showdown_daily_bugle_jackpot_show:
-      action: stop
-    final_showdown_ab_ready_show:
-      action: stop
-    final_showdown_ab_available_show:
-      action: stop
-    final_showdown_victory_laps_show:
-      action: stop
-    final_showdown_super_jackpot_show:
-      action: stop
+    final_showdown_ab_available_show: {action: stop}
+    final_showdown_add_a_ball_ready_show: {action: stop}
+    final_showdown_web_jackpot_show: {action: stop}
+    shared_final_vuk_chase: {action: stop}
+    final_showdown_timed_left_web_show: {action: stop}
+    final_showdown_timed_center_web_show: {action: stop}
+    final_showdown_timed_left_pop_show: {action: stop}
+    final_showdown_timed_right_pop_show: {action: stop}
+    final_showdown_timed_left_bank_show: {action: stop}
+    final_showdown_timed_right_bank_show: {action: stop}
+    final_showdown_timed_upper_a_show: {action: stop}
+    final_showdown_timed_upper_b_show: {action: stop}
+    final_showdown_timed_middle_a_show: {action: stop}
+    final_showdown_timed_middle_b_show: {action: stop}
+    final_showdown_timed_upper_targets_show: {action: stop}
+    final_showdown_timed_spinner_show: {action: stop}
+    final_showdown_timed_upper_spinner_show: {action: stop}
 
 shows:
-
-  final_showdown_pops_lit_show:
-    - duration: 500ms
-      lights:
-        l_pop_1_1: orange
-        l_pop_1_2: orange
-        l_pop_1_3: orange
-        l_pop_1_4: orange
-        l_pop_1_5: orange
-        l_pop_1_6: orange
-        l_pop_1_7: orange
-        l_pop_1_8: orange
-        l_pop_1_9: orange
-        l_pop_1_10: orange
-        l_pop_1_11: orange
-        l_pop_1_12: orange
-        l_pop_2_1: orange
-        l_pop_2_2: orange
-        l_pop_2_3: orange
-        l_pop_2_4: orange
-        l_pop_2_5: orange
-        l_pop_2_6: orange
-        l_pop_2_7: orange
-        l_pop_2_8: orange
-        l_pop_2_9: orange
-        l_pop_2_10: orange
-        l_pop_2_11: orange
-        l_pop_2_12: orange
-    - duration: 500ms
-      lights:
-        l_pop_1_1: F09010
-        l_pop_1_2: F09010
-        l_pop_1_3: F09010
-        l_pop_1_4: F09010
-        l_pop_1_5: F09010
-        l_pop_1_6: F09010
-        l_pop_1_7: F09010
-        l_pop_1_8: F09010
-        l_pop_1_9: F09010
-        l_pop_1_10: F09010
-        l_pop_1_11: F09010
-        l_pop_1_12: F09010
-        l_pop_2_1: F09010
-        l_pop_2_2: F09010
-        l_pop_2_3: F09010
-        l_pop_2_4: F09010
-        l_pop_2_5: F09010
-        l_pop_2_6: F09010
-        l_pop_2_7: F09010
-        l_pop_2_8: F09010
-        l_pop_2_9: F09010
-        l_pop_2_10: F09010
-        l_pop_2_11: F09010
-        l_pop_2_12: F09010
-
-  final_showdown_spinner_lit_show:
-    - duration: 200ms
-      lights:
-        l_gi_a: orange
-        l_spinner: orange
-    - duration: 200ms
-      lights:
-        l_gi_a: off
-        l_spinner: off
-
-  final_showdown_star_lit_show:
-    - duration: 250ms
-      lights:
-        l_star: yellow
-    - duration: 250ms
-      lights:
-        l_star: off
-
-  final_showdown_upper_targets_lit_show:
-    - duration: 120ms
-      lights:
-        l_upper_left: yellow
-        l_upper_middle: yellow
-        l_upper_right: yellow
-    - duration: 120ms
-      lights:
-        l_upper_left: blue
-        l_upper_middle: blue
-        l_upper_right: blue
-
-  final_showdown_drops_lit_show:
-    - duration: 250ms
-      lights:
-        l_3bankbonus: yellow
-        l_5bank_1: yellow
-        l_5bank_2: yellow
-        l_5bank_3: yellow
-        l_5bank_4: yellow
-        l_5bank_5: yellow
-    - duration: 120ms
-      lights:
-        l_3bankbonus: blue
-        l_5bank_1: blue
-        l_5bank_2: blue
-        l_5bank_3: blue
-        l_5bank_4: blue
-        l_5bank_5: blue
-
-  final_showdown_daily_bugle_jackpot_show:
-    - duration: 150ms
-      lights:
-        l_gi_top_1: white
-    - duration: 150ms
-      lights:
-        l_gi_top_1: off
-
   final_showdown_ab_available_show:
     - duration: 350ms
       lights:
@@ -401,37 +446,181 @@ shows:
         l_right_a: off
         l_left_b: off
 
-  final_showdown_ab_ready_show:
-    - duration: 200ms
+  final_showdown_add_a_ball_ready_show:
+    - duration: 250ms
       lights:
-        l_a_rollover: yellow
-        l_b_rollover: yellow
-        l_right_a: yellow
-        l_left_b: yellow
-    - duration: 200ms
+        l_1: FFFFFF
+        l_2: FFFFFF
+        l_3: FFFFFF
+    - duration: 250ms
       lights:
-        l_a_rollover: F0C020
-        l_b_rollover: F0C020
-        l_right_a: F0C020
-        l_left_b: F0C020
+        l_1: 404040
+        l_2: 404040
+        l_3: 404040
 
-  final_showdown_victory_laps_show:
+  final_showdown_web_jackpot_show:
     - duration: 150ms
       lights:
-        gi: white
+        l_left_web_target: FFFFFF
+        l_mid_web_target: FFFFFF
     - duration: 150ms
       lights:
-        gi: off
+        l_left_web_target: off
+        l_mid_web_target: off
 
-  final_showdown_super_jackpot_show:
-    - duration: 100ms
+  final_showdown_timed_left_web_show:
+    - duration: 350ms
       lights:
-        l_gi_top_1: red
-        gi: red
-    - duration: 100ms
+        l_left_web_target: F0F060
+    - duration: 350ms
       lights:
-        l_gi_top_1: white
-        gi: white      
+        l_left_web_target: 303000
+
+  final_showdown_timed_center_web_show:
+    - duration: 350ms
+      lights:
+        l_mid_web_target: F0F060
+    - duration: 350ms
+      lights:
+        l_mid_web_target: 303000
+
+  final_showdown_timed_left_pop_show:
+    - duration: 350ms
+      lights:
+        l_pop_1_1: F0F060
+        l_pop_1_2: F0F060
+        l_pop_1_3: F0F060
+        l_pop_1_4: F0F060
+        l_pop_1_5: F0F060
+        l_pop_1_6: F0F060
+        l_pop_1_7: F0F060
+        l_pop_1_8: F0F060
+        l_pop_1_9: F0F060
+        l_pop_1_10: F0F060
+        l_pop_1_11: F0F060
+        l_pop_1_12: F0F060
+    - duration: 350ms
+      lights:
+        l_pop_1_1: 303000
+        l_pop_1_2: 303000
+        l_pop_1_3: 303000
+        l_pop_1_4: 303000
+        l_pop_1_5: 303000
+        l_pop_1_6: 303000
+        l_pop_1_7: 303000
+        l_pop_1_8: 303000
+        l_pop_1_9: 303000
+        l_pop_1_10: 303000
+        l_pop_1_11: 303000
+        l_pop_1_12: 303000
+
+  final_showdown_timed_right_pop_show:
+    - duration: 350ms
+      lights:
+        l_pop_2_1: F0F060
+        l_pop_2_2: F0F060
+        l_pop_2_3: F0F060
+        l_pop_2_4: F0F060
+        l_pop_2_5: F0F060
+        l_pop_2_6: F0F060
+        l_pop_2_7: F0F060
+        l_pop_2_8: F0F060
+        l_pop_2_9: F0F060
+        l_pop_2_10: F0F060
+        l_pop_2_11: F0F060
+        l_pop_2_12: F0F060
+    - duration: 350ms
+      lights:
+        l_pop_2_1: 303000
+        l_pop_2_2: 303000
+        l_pop_2_3: 303000
+        l_pop_2_4: 303000
+        l_pop_2_5: 303000
+        l_pop_2_6: 303000
+        l_pop_2_7: 303000
+        l_pop_2_8: 303000
+        l_pop_2_9: 303000
+        l_pop_2_10: 303000
+        l_pop_2_11: 303000
+        l_pop_2_12: 303000
+
+  final_showdown_timed_left_bank_show:
+    - duration: 350ms
+      lights:
+        l_gi_3bank: F0F060
+    - duration: 350ms
+      lights:
+        l_gi_3bank: 303000
+
+  final_showdown_timed_right_bank_show:
+    - duration: 350ms
+      lights:
+        l_gi_5bank_lower: F0F060
+        l_gi_5bank_upper: F0F060
+    - duration: 350ms
+      lights:
+        l_gi_5bank_lower: 303000
+        l_gi_5bank_upper: 303000
+
+  final_showdown_timed_upper_a_show:
+    - duration: 350ms
+      lights:
+        l_a_rollover: F0F060
+    - duration: 350ms
+      lights:
+        l_a_rollover: 303000
+
+  final_showdown_timed_upper_b_show:
+    - duration: 350ms
+      lights:
+        l_b_rollover: F0F060
+    - duration: 350ms
+      lights:
+        l_b_rollover: 303000
+
+  final_showdown_timed_middle_a_show:
+    - duration: 350ms
+      lights:
+        l_right_a: F0F060
+    - duration: 350ms
+      lights:
+        l_right_a: 303000
+
+  final_showdown_timed_middle_b_show:
+    - duration: 350ms
+      lights:
+        l_left_b: F0F060
+    - duration: 350ms
+      lights:
+        l_left_b: 303000
+
+  final_showdown_timed_upper_targets_show:
+    - duration: 350ms
+      lights:
+        l_upper_left: F0F060
+        l_upper_middle: F0F060
+        l_upper_right: F0F060
+    - duration: 350ms
+      lights:
+        l_upper_left: 303000
+        l_upper_middle: 303000
+        l_upper_right: 303000
+
+  final_showdown_timed_spinner_show:
+    - duration: 350ms
+      lights:
+        l_spinner: F0F060
+    - duration: 350ms
+      lights:
+        l_spinner: 303000
+
+  final_showdown_timed_upper_spinner_show:
+    - duration: 350ms
+      lights:
+        l_gi_a: F0F060
+    - duration: 350ms
+      lights:
+        l_gi_a: 303000
 
 sound_player:
   play_mode_jackpot:

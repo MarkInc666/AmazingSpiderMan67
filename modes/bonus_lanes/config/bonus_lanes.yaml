@@ -170,6 +170,7 @@ show_player:
   bonus_center_web_lit:
     bonus_center_web_show:
       loops: -1
+      priority: 1000
 
   bonus_center_web_collected:
     bonus_center_web_show:
@@ -182,6 +183,7 @@ show_player:
   bonus_left_web_lit:
     bonus_left_web_show:
       loops: -1
+      priority: 1000
 
   bonus_left_web_collected:
     bonus_left_web_show:

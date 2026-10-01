@@ -19,6 +19,13 @@ class PlayerRetirement(Mode):
             "final_showdown_mode_complete",
             self._retire_current_player,
             priority=10000,
+            completed=True,
+        )
+        self.add_mode_event_handler(
+            "final_showdown_mode_failed",
+            self._retire_current_player,
+            priority=10000,
+            completed=False,
         )
         self.add_mode_event_handler(
             "final_showdown_mode_completed_summary",
@@ -59,7 +66,7 @@ class PlayerRetirement(Mode):
         except (KeyError, TypeError):
             return False
 
-    def _retire_current_player(self, **kwargs):
+    def _retire_current_player(self, completed=False, **kwargs):
         del kwargs
         game = self.machine.game
         if not game or not game.player:
@@ -78,20 +85,26 @@ class PlayerRetirement(Mode):
         earned_extra_balls = max(0, self._safe_int(player["extra_balls"], 0))
         remaining_balls = normal_balls_remaining + earned_extra_balls
 
-        player["final_wizard_remaining_balls"] = remaining_balls
-        player["final_wizard_remaining_ball_bonus"] = remaining_balls * 10000000
+        # Only a successful Kingpin defeat converts unused future balls into
+        # the 50M-per-ball completion award. A failed Final Showdown still
+        # retires this player, but unused balls are simply forfeited.
+        bonus_balls = remaining_balls if completed else 0
+        remaining_ball_bonus = bonus_balls * 50000000
+        player["final_wizard_remaining_balls"] = bonus_balls
+        player["final_wizard_remaining_ball_bonus"] = remaining_ball_bonus
         player[self.RETIRED_VAR] = 1
 
         self.machine.events.post(
             "player_game_completed_final_wizard",
             player=player.number,
-            remaining_balls=remaining_balls,
-            remaining_ball_bonus=remaining_balls * 10000000,
+            completed=bool(completed),
+            remaining_balls=bonus_balls,
+            remaining_ball_bonus=remaining_ball_bonus,
         )
 
-        # Multiball ending at one ball is the terminal gameplay moment. Do not
-        # wait for the summary before allowing the last physical ball to drain
-        # into MPF's normal ball-ending / Bonus queue.
+        # Once Final Showdown resolves (success or defeat), do not wait for the
+        # summary before allowing the remaining physical balls to drain into
+        # MPF's normal ball-ending / Bonus queue.
         self._disable_retired_player_controls(player)
 
     def _disable_retired_player_controls(self, player):

@@ -948,6 +948,7 @@ class VillainProgression(Mode):
         self.add_mode_event_handler("chapter_select_selected", self._chapter_selected)
         self.add_mode_event_handler("villain_progression_start_final_wizard", self._start_final_wizard)
         self.add_mode_event_handler("final_showdown_mode_complete", self._final_wizard_gameplay_finished, completed=True)
+        self.add_mode_event_handler("final_showdown_mode_failed", self._final_wizard_gameplay_finished, completed=False)
         self.add_mode_event_handler("villain_progression_restore_state", self._restore_state)
         # Explicit test backdoor. This exposes all uncollected chapter Comics
         # without marking any Comic collected or advancing Final Wizard progress.

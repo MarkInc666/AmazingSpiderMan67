@@ -8,7 +8,7 @@ class AttractHarness(Attract):
 
     ENABLE_CODE = ("L", "L", "R", "R", "L", "R", "L", "R")
     DISABLE_CODE = ("R", "R", "L", "L", "R", "L", "R", "L")
-    CODE_TIMEOUT = 5.0
+    CODE_TIMEOUT = 8.0
     MAX_CODE_LENGTH = 8
 
     def mode_start(self, **kwargs):
