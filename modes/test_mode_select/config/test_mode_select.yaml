@@ -49,6 +49,11 @@ widget_player:
       action: play
       priority: 3000
 
+  # MPFConditional nodes reevaluate when their parent widget is updated.
+  test_mode_select_view_changed:
+    test_mode_select:
+      action: update
+
   stop_mode_test_mode_select:
     test_mode_select:
       action: remove

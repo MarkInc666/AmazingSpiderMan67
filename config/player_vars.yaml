@@ -1030,6 +1030,15 @@ player_vars:
   test_mode_select_detail:
     initial_value: ""
     value_type: str
+  test_mode_select_intro_1:
+    initial_value: ""
+    value_type: str
+  test_mode_select_intro_2:
+    initial_value: ""
+    value_type: str
+  test_mode_select_intro_3:
+    initial_value: ""
+    value_type: str
   test_mode_select_setup_title:
     initial_value: ""
     value_type: str
