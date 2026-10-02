@@ -3,7 +3,9 @@ KINGPIN: FINAL SHOWDOWN
 OVERVIEW
 
 Final Showdown starts as a 2-ball multiball with a 20 second opening ball save.
-The wizard contains five recap phases followed by the Kingpin lock phase.
+It contains five recap phases. A phase is only removed from the selection pool
+when it is successfully completed. Failed phases remain unfinished and may be
+selected again later.
 
 The five recap phases are:
 - Timed Collect
@@ -13,29 +15,26 @@ The five recap phases are:
 - Reveal & Collect
 
 Timed Collect is always the opening phase. During every recap phase, each hit on
-the main/lower spinner advances the NEXT PHASE pointer to the next unplayed
-phase. When the current phase ends, the phase under that pointer starts next.
-Played phases are skipped. After all five recap phases have played, Final Lock
-starts automatically.
+the main/lower spinner advances the NEXT PHASE pointer through the unfinished
+phases other than the one currently being played. When the current phase ends,
+the phase under that pointer starts next. If only the current phase remains
+unfinished, a failure immediately repeats it.
 
-Final Showdown is a single continuous wizard attempt. Dropping from multiball to
-one ball does NOT end the wizard; the recap phases continue on the last live ball.
-The recap sequence ends only when Kingpin is exposed after all five phases, or
-when every live ball has actually drained.
+Once all five recap phases have been completed successfully, the rooftop gate
+opens and the Daily Bugle VUK becomes the final Kingpin shot.
+
+Dropping from multiball to one ball does not end Final Showdown. If every live
+ball drains before the final Kingpin shot is qualified, Kingpin gets away and
+the player's game ends.
 
 
 KINGPIN BANK
 
-Every phase Jackpot or Super Jackpot is scored immediately and is also added to
-the KINGPIN BANK. Incidental phase scoring is not added to the bank.
+Phase Jackpots and Super Jackpots are scored immediately and are also added to
+the KINGPIN BANK. Incidental scoring is not added unless a phase specifically
+says that it is banked.
 
-Examples of scoring that DOES NOT enter the Kingpin Bank:
-- Timed Collect 100K shots
-- Staged Drop 250K target hits
-- Area Control 100K upper-spinner spins
-- Reveal phase 50K drop-target hits
-
-The final Kingpin shot scores the complete accumulated KINGPIN BANK again.
+The final Daily Bugle VUK shot scores the entire accumulated KINGPIN BANK again.
 
 
 ADD-A-BALL
@@ -55,8 +54,9 @@ When A+B is complete:
 - If already at 4 balls, the qualification remains banked until a ball is lost.
 - After an add-a-ball is collected, A+B resets and can be completed again.
 
-Outside Final Lock, surplus balls may park in a saucer for 20 seconds before
-being ejected. Phase-specific saucer rules override the normal parking behavior.
+During recap phases, surplus balls may park in a saucer for 20 seconds before
+being ejected. Reveal & Collect overrides normal saucer parking while its saucer
+awards are active.
 
 
 PHASE 1 - TIMED COLLECT
@@ -79,27 +79,27 @@ Uses the same repeatable shot pool as DeVargas / City of Gold:
 - Upper spinner
 
 One available shot is added every second. Lit shots remain available until
-collected or until the 20 second window ends. A collected shot may be selected
-again later in the same phase.
+collected or until the 20 second window ends. Each collected shot scores
+100,000.
 
-Each collected timed shot scores 100,000.
-
-At the end of 20 seconds all remaining timed shots clear and both web targets
-light for 20 seconds for the SUPER JACKPOT.
+At the end of the 20 second window:
+- If zero shots were collected, the phase fails immediately and no Super lights.
+- If one or more shots were collected, both web targets light for 20 seconds.
 
 SUPER JACKPOT = 1,000,000 + (250,000 x timed shots collected).
 
 Either web target collects the Super Jackpot. The collected Super is added to
-the Kingpin Bank. If the 20 second web-target window expires, the Super is lost and the next recap phase begins.
+the Kingpin Bank and the phase succeeds. If the 20 second web-target window
+expires, the phase fails and remains unfinished.
 
 Upper-playfield timed opportunities open the rooftop gate as needed.
 
 
 PHASE 2 - STAGED DROPS
 
-Three precision stages are played.
+Four precision rounds are played.
 
-For each stage:
+For each round:
 1. Both drop banks reset.
 2. The game programmatically drops every target except one selected standing
    target.
@@ -110,25 +110,19 @@ For each stage:
 
 Programmatic knockdowns do not count as player hits.
 
-After all three stages, the number of successful target hits sets the multiplier
-for the next Jackpot:
+After all four rounds, successful target hits set the multiplier for a
+1,000,000 base Jackpot:
 
-0 successes = 1X
-1 success   = 2X
-2 successes = 3X
-3 successes = 5X
+0 successes = 0X -- phase fails immediately and no Jackpot lights
+1 success   = 2X = 2,000,000
+2 successes = 4X = 4,000,000
+3 successes = 6X = 6,000,000
+4 successes = 8X = 8,000,000
 
-Base Jackpot = 1,000,000.
-
-Both web targets then light for 20 seconds. Either web target collects:
-
-0 successes = 1,000,000
-1 success   = 2,000,000
-2 successes = 3,000,000
-3 successes = 5,000,000
-
-The collected Jackpot is added to the Kingpin Bank. If the web-target window
-times out, the Jackpot is lost and the next recap phase begins.
+With at least one successful round, both web targets light for 20 seconds.
+Either web target collects the Jackpot, adds it to the Kingpin Bank, and
+completes the phase. If the web-target window expires, the phase fails and
+remains unfinished.
 
 
 PHASE 3 - ROOFTOP BUILD
@@ -136,7 +130,7 @@ PHASE 3 - ROOFTOP BUILD
 The rooftop gate opens. The build window begins when a ball enters the rooftop.
 
 The player has 20 presses of the upper-right flipper. After the 20th press the
-upper flippers disable until the rooftop visit ends.
+upper flipper disables until the rooftop visit ends.
 
 During the build window:
 - Each upper-spinner spin adds 100,000 to the common exit Jackpot base.
@@ -161,15 +155,20 @@ The Jackpot is collected at the exit actually taken:
 - Center exit is inferred by the established right-bank upper rubber or
   middle-A switch = CENTER Jackpot
 
-The collected exit Jackpot is added to the Kingpin Bank and the phase ends.
+The phase succeeds only if the rooftop visit included:
+- at least one upper-spinner spin, and
+- at least one upper-target hit.
+
+If either requirement is missing when the ball exits, the phase fails and
+remains unfinished. A successful exit Jackpot is added to the Kingpin Bank.
 
 
 PHASE 4 - AREA CONTROL
 
 LOWER PLAYFIELD
 
-The player has 25 seconds to control all four lower areas.
-Completed areas remain complete for the rest of this phase.
+The player has 25 seconds to control all four lower areas. Completed areas stay
+complete for that attempt.
 
 Left area:
 - Complete the left drop bank
@@ -188,144 +187,101 @@ Slingshot area:
 - Hit the left sling
 - Hit the right sling
 
-If all four lower areas are not completed within 25 seconds, Area Control ends
-without its rooftop opportunity and the next recap phase begins.
+If all four lower areas are not completed within 25 seconds, the phase fails
+and remains unfinished.
 
 ROOFTOP
 
-When all four lower areas are controlled, the rooftop gate opens.
-The rooftop timer begins only when a ball enters the rooftop.
+When all four lower areas are controlled, the rooftop gate opens. The rooftop
+20-second timer begins when a ball enters the rooftop.
 
-The player then has 20 seconds.
+The first hit on any upper target completes the fifth/rooftop area. If no upper
+target is hit before the 20-second rooftop timer expires, the phase fails.
 
-The first hit on any upper target completes the fifth/rooftop area and enables
-the upper spinner for scoring.
-
-After the rooftop target is hit:
+After the rooftop target has been hit:
 - Each upper-spinner spin scores 100,000.
 
-At the end of the 20 second rooftop window:
-- The upper flippers disable.
+When the 20-second rooftop timer expires:
+- The upper flipper disables.
 - The rooftop gate closes.
-- The phase ends.
-
-The 100K spinner awards are regular phase scoring and are not added to the
-Kingpin Bank.
+- The phase succeeds.
+- The total 100,000-per-spin value earned during this rooftop period is added
+  to the Kingpin Bank. It is not scored a second time when banked.
 
 
 PHASE 5 - REVEAL & COLLECT
 
 Every drop-target hit scores 50,000.
 
-Before the first saucer collect, completing either drop bank reveals one
-additional saucer, up to all three.
+There are six possible revealed collect shots:
+- Left saucer
+- Center saucer
+- Right saucer
+- Star rollover
+- Upper A
+- Upper B
 
-Flipper buttons rotate the lit/unlit saucer pattern throughout the phase.
-During the reveal portion this lets the player position an UNLIT safe saucer
-where an accidental ball is likely to settle.
+Completing either drop bank reveals one additional shot, up to all six.
+Flipper buttons rotate the lit/unlit pattern across all six possible collect
+positions.
 
-Reveal states:
-- 1 saucer revealed: 1 lit / 2 unlit
-- 2 saucers revealed: 2 lit / 1 unlit
-- 3 saucers revealed: all 3 lit
+A 20-second reveal timer begins when the phase starts. Each new bank completion
+that reveals another shot resets this timer to 20 seconds.
 
-The first lit saucer collected ends further revealing, but already-revealed
-saucer awards remain collectible. Flipper cycling continues during collection,
-allowing the player to move the remaining lit positions toward the ball.
+Before the first collect, flipper cycling can be used defensively to move unlit
+safe positions toward the ball. The first lit-shot collect ends further
+revealing and starts the collect portion.
 
-Saucer Jackpot value is fixed by how many saucers had been revealed when the
-first lit saucer was collected:
+The value of every collect is fixed by how many shots had been revealed when
+the first collect was made:
 
-1 revealed = 1,000,000 per collected saucer
-2 revealed = 2,000,000 per collected saucer
-3 revealed = 3,000,000 per collected saucer
+1 revealed = 1,000,000 each
+2 revealed = 2,000,000 each
+3 revealed = 3,000,000 each
+4 revealed = 4,000,000 each
+5 revealed = 5,000,000 each
+6 revealed = 6,000,000 each
 
-Therefore revealing and collecting all three can award up to 9,000,000.
-Each saucer Jackpot is added to the Kingpin Bank.
+Each collected award is scored immediately and added to the Kingpin Bank.
 
-An unlit saucer does not collect a Reveal Jackpot and follows normal 20-second
-parking behavior.
+After the first collect, a 20-second collect timer runs. Every additional
+successful collect resets that timer to 20 seconds. Flipper cycling remains
+active so the remaining lit awards can be repositioned.
 
-The phase ends after all saucer awards that were revealed before the first
-collect have been collected.
+Success condition: at least one revealed shot is collected.
 
-
-FINAL LOCK - KINGPIN
-
-After all five recap phases have played, Final Lock begins.
-
-Normal playfield scoring remains active. The rooftop gate stays CLOSED until
-all three saucers are filled.
-
-A+B add-a-ball remains available throughout Final Lock.
-
-Balls entering the three saucers become permanent Final Lock balls instead of
-20-second parked balls. If a saucer is already occupied when Final Lock starts,
-that occupied ball becomes a Final Lock ball immediately.
-
-Objective:
-- Lock one ball in saucer 1.
-- Lock one ball in saucer 2.
-- Lock one ball in saucer 3.
-- Keep one additional ball free on the playfield.
-
-When all three saucers are filled and a free fourth ball remains:
-- The rooftop gate opens.
-- The Daily Bugle VUK becomes the Kingpin shot.
-- The three locked saucer balls are released one at a time, two seconds apart.
-- The gate stays open and the VUK remains qualified throughout the release.
-
-Once Kingpin is exposed, normal multiball-ended handling is overridden. The
-player only needs to keep at least one live ball and shoot the Daily Bugle VUK.
-
-If play drains to the last live ball and the player still has an unused game
-ball remaining, a dedicated only-last-ball save returns a ball to the shooter
-lane. That save consumes one unused game ball but does not tear down Final
-Showdown or reset the Kingpin Bank. The player continues in the same final VUK
-shot state.
-
-When no unused game balls remain, that final-shot save is disabled. Losing the
-last live ball then ends Final Showdown in defeat: KINGPIN GETS AWAY.
-
-Before Kingpin is exposed, a safety rule prevents every physical ball from
-remaining parked in the saucers with no free ball available: one lock is
-released if necessary.
-
-Shoot the Daily Bugle VUK after Kingpin is exposed to defeat Kingpin.
-
-FINAL KINGPIN AWARD = complete accumulated KINGPIN BANK.
-
-That award is scored in addition to all phase Jackpots when they were originally
-collected.
-
-Successful Kingpin collection completes Final Showdown and follows the existing
-per-player Final Wizard completion/retirement flow. Any unused game balls still
-remaining at that moment are consumed and award 50,000,000 each as a single
-BALLS REMAINING completion award; those unused balls are not played and do not
-run separate normal bonus counts.
-
-Before Kingpin is exposed, MPF's normal multiball-ended event does not end Final
-Showdown when play drops to one ball. The recap phases continue until either
-Kingpin is exposed or the final live ball actually drains. During the final VUK
-state, the conditional last-ball save described above may consume remaining game
-balls to keep the same Final Showdown attempt alive. A failed Final Showdown ends
-that player's game through the same retirement/end-of-game flow as a successful
-final Kingpin shot, but awards no remaining-ball completion bonus.
+- If the reveal timer expires before any collect, the phase fails.
+- Once at least one shot has been collected, the phase is successful.
+- If all revealed awards are collected, the phase ends immediately.
+- Otherwise, when the 20-second collect timer expires, the phase ends
+  successfully and any remaining revealed awards are lost.
 
 
-PHASE MISSES / GAME END
-------------------------
-Missing a recap-phase objective does NOT end Final Showdown. The missed Jackpot
-or Super Jackpot is simply lost and the mode advances to the next unplayed
-phase. This includes:
-- Timed Collect Super timing out.
-- Staged Drops Jackpot timing out.
-- Rooftop Build exiting with no spinner value built.
-- Area Control failing to finish the four lower areas in 25 seconds.
-- Area Control reaching the roof but failing to hit an upper target in 20 seconds.
+FINAL KINGPIN SHOT
 
-Dropping to one ball before Kingpin is exposed does NOT end Final Showdown. The
-current recap phase continues on that ball. If the last live ball drains before
-Kingpin is exposed, Final Showdown ends in defeat. Once the final Kingpin VUK
-shot is active, the conditional last-ball save may consume an unused game ball
-to continue the final shot; with none remaining, that last-ball drain is defeat.
+After all five recap phases have been completed successfully:
+- The rooftop gate opens immediately.
+- The Daily Bugle VUK lights as the final Kingpin shot.
+- No saucer-lock or parking requirement is used.
+- Any balls already parked in saucers are released.
+- Multiball may continue with any number of balls, or naturally collapse to a
+  single live ball.
+- A+B add-a-ball remains available until Kingpin is defeated.
+
+Shoot the Daily Bugle VUK to defeat Kingpin.
+
+The final shot awards the entire accumulated KINGPIN BANK again and completes
+the player's game.
+
+If the final shot reaches the last live ball, a dedicated only-last-ball save
+may consume one unused future game ball and return a replacement to the shooter
+lane. Normal remaining game balls are consumed first, then earned extra balls.
+The final-shot state and Kingpin Bank remain intact through these retries.
+
+If no future game balls remain and the final live ball drains before the VUK is
+made, KINGPIN GETS AWAY and the player's game ends in defeat.
+
+On successful Kingpin defeat, any still-unused future normal balls or earned
+extra balls are worth 50,000,000 each. Those balls are consumed as a single
+remaining-balls completion award; they are not played and do not receive normal
+end-of-ball bonus counts.

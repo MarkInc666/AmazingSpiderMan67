@@ -136,6 +136,10 @@ light_player:
   final_showdown_reveal_saucer_3_off:
     l_3_hole_l: off
     l_3_hole_r: off
+  final_showdown_reveal_star_on:
+    l_star: FFFFFF
+  final_showdown_reveal_star_off:
+    l_star: off
 
   final_showdown_reveal_clear:
     l_1_hole_l: off
@@ -144,8 +148,9 @@ light_player:
     l_2_hole_r: off
     l_3_hole_l: off
     l_3_hole_r: off
+    l_star: off
 
-  # Temporary parking / final permanent locks.
+  # Temporary 20-second parking during recap phases.
   final_showdown_saucer_hold_started{saucer=="saucer_1"}:
     l_1_hole_l: 804040
     l_1_hole_r: 804040
@@ -165,24 +170,6 @@ light_player:
     l_3_hole_l: off
     l_3_hole_r: off
 
-  final_showdown_final_saucer_locked{saucer=="saucer_1"}:
-    l_1_hole_l: red
-    l_1_hole_r: red
-  final_showdown_final_saucer_released{saucer=="saucer_1"}:
-    l_1_hole_l: off
-    l_1_hole_r: off
-  final_showdown_final_saucer_locked{saucer=="saucer_2"}:
-    l_2_hole_l: red
-    l_2_hole_r: red
-  final_showdown_final_saucer_released{saucer=="saucer_2"}:
-    l_2_hole_l: off
-    l_2_hole_r: off
-  final_showdown_final_saucer_locked{saucer=="saucer_3"}:
-    l_3_hole_l: red
-    l_3_hole_r: red
-  final_showdown_final_saucer_released{saucer=="saucer_3"}:
-    l_3_hole_l: off
-    l_3_hole_r: off
 
   # Rooftop build phase.
   final_showdown_rooftop_on:
@@ -335,6 +322,24 @@ show_player:
     final_showdown_add_a_ball_ready_show:
       action: stop
 
+  final_showdown_reveal_upper_a_on:
+    final_showdown_reveal_upper_a_on_show: {action: play, loops: -1, priority: 1180}
+    final_showdown_reveal_upper_a_off_show: {action: stop}
+  final_showdown_reveal_upper_a_off:
+    final_showdown_reveal_upper_a_on_show: {action: stop}
+    final_showdown_reveal_upper_a_off_show: {action: play, loops: -1, priority: 1180}
+  final_showdown_reveal_upper_b_on:
+    final_showdown_reveal_upper_b_on_show: {action: play, loops: -1, priority: 1180}
+    final_showdown_reveal_upper_b_off_show: {action: stop}
+  final_showdown_reveal_upper_b_off:
+    final_showdown_reveal_upper_b_on_show: {action: stop}
+    final_showdown_reveal_upper_b_off_show: {action: play, loops: -1, priority: 1180}
+  final_showdown_reveal_clear:
+    final_showdown_reveal_upper_a_on_show: {action: stop}
+    final_showdown_reveal_upper_a_off_show: {action: stop}
+    final_showdown_reveal_upper_b_on_show: {action: stop}
+    final_showdown_reveal_upper_b_off_show: {action: stop}
+
   final_showdown_web_jackpot_on:
     final_showdown_web_jackpot_show:
       action: play
@@ -472,6 +477,10 @@ show_player:
       action: stop
 
   final_showdown_clear_all_final_showdown_lights:
+    final_showdown_reveal_upper_a_on_show: {action: stop}
+    final_showdown_reveal_upper_a_off_show: {action: stop}
+    final_showdown_reveal_upper_b_on_show: {action: stop}
+    final_showdown_reveal_upper_b_off_show: {action: stop}
     final_showdown_a_available_show: {action: stop}
     final_showdown_b_available_show: {action: stop}
     final_showdown_ab_complete_show: {action: stop}
@@ -592,6 +601,23 @@ shows:
         l_1: 404040
         l_2: 404040
         l_3: 404040
+
+  final_showdown_reveal_upper_a_on_show:
+    - duration: 1s
+      lights:
+        l_a_rollover: FFFFFF
+  final_showdown_reveal_upper_a_off_show:
+    - duration: 1s
+      lights:
+        l_a_rollover: off
+  final_showdown_reveal_upper_b_on_show:
+    - duration: 1s
+      lights:
+        l_b_rollover: FFFFFF
+  final_showdown_reveal_upper_b_off_show:
+    - duration: 1s
+      lights:
+        l_b_rollover: off
 
   final_showdown_web_jackpot_show:
     - duration: 150ms

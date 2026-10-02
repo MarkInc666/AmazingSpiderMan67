@@ -7,12 +7,12 @@ class FinalShowdown(Mode):
     """Kingpin / Final Showdown.
 
     Final Showdown is a two-ball multiball built from five recap phases. The
-    lower spinner chooses the next unplayed phase while the current phase is
-    active. Phase jackpots are scored immediately and also accumulated in the
-    Kingpin Bank. After all five phases, three balls must be locked in the
-    saucers. That exposes Kingpin, opens the rooftop gate, releases the three
-    locks two seconds apart, and leaves the Daily Bugle VUK as the final shot.
-    Unused future game balls can buy retries of that final shot.
+    lower spinner chooses the next unfinished phase while the current phase is
+    active. Failed phases remain available and repeat until successfully
+    cleared. Phase jackpots are scored immediately and also accumulated in the
+    Kingpin Bank. Clearing all five phases opens the rooftop gate and lights the
+    Daily Bugle VUK as the final Kingpin shot. Unused future game balls can buy
+    retries of that final shot.
     """
 
     PHASES = ("timed", "staged_drops", "rooftop", "area_control", "reveal")
@@ -39,7 +39,7 @@ class FinalShowdown(Mode):
 
     STAGED_TARGET_VALUE = 250_000
     STAGED_BASE_JACKPOT = 1_000_000
-    STAGED_MULTIPLIERS = (1, 2, 3, 5)
+    STAGED_MULTIPLIERS = (0, 2, 4, 6, 8)
     STAGED_SETTLE_MS = 450
 
     ROOFTOP_FLIPS = 20
@@ -50,7 +50,8 @@ class FinalShowdown(Mode):
     AREA_SPINNER_VALUE = 100_000
 
     REVEAL_DROP_VALUE = 50_000
-    REVEAL_SAUCER_VALUES = {1: 1_000_000, 2: 2_000_000, 3: 3_000_000}
+    REVEAL_MAX = 6
+    REVEAL_WINDOW_MS = 20_000
     REVEAL_EJECT_MS = 2_000
     REVEAL_FINISH_AFTER_EJECT_MS = 200
 
@@ -122,7 +123,7 @@ class FinalShowdown(Mode):
         self._runtime_state = {}
         self.mode_exiting = False
         self.current_phase = None
-        self.played_phases = set()
+        self.completed_phases = set()
         self.next_phase = None
         self.kingpin_bank = 0
 
@@ -166,6 +167,7 @@ class FinalShowdown(Mode):
         self.reveal_collect_started = False
         self.reveal_collect_value = 0
         self.reveal_lit_positions = set()
+        self.reveal_collected_count = 0
 
         self._reset_player_vars()
         self._register_handlers()
@@ -241,6 +243,7 @@ class FinalShowdown(Mode):
         # Spinners / rooftop.
         self.add_mode_event_handler("s_web_spinner_active", self._main_spinner)
         self.add_mode_event_handler("s_trispinner_opto_active", self._upper_spinner)
+        self.add_mode_event_handler("s_star_rollover_active", self._star_rollover)
         self.add_mode_event_handler("s_upper_entrance_opto_active", self._upper_entrance)
         self.add_mode_event_handler("s_upper_exit_left_opto_active", self._roof_exit, exit_name="left")
         self.add_mode_event_handler("s_upper_exit_right_opto_active", self._roof_exit, exit_name="right")
@@ -312,24 +315,18 @@ class FinalShowdown(Mode):
     # Phase framework / spinner selection
     # ------------------------------------------------------------------
     def _start_phase(self, phase):
-        if self.mode_exiting:
-            return
-        if phase == "final_lock":
-            self._start_final_lock()
-            return
-        if phase not in self.PHASES or phase in self.played_phases:
+        if self.mode_exiting or phase not in self.PHASES or phase in self.completed_phases:
             return
 
         self._invalidate_all_saucer_ejects()
         self.current_phase = phase
-        self.played_phases.add(phase)
         self._set("final_showdown_current_area", phase)
         self._set("final_showdown_current_area_display", self.PHASE_NAMES[phase])
-        self._set("final_showdown_areas_cleared", len(self.played_phases) - 1)
-        self._set("final_showdown_area_progress", len(self.played_phases) - 1)
-        self._set("final_showdown_hits_still_needed", len(self.PHASES) - len(self.played_phases) + 1)
+        self._set("final_showdown_areas_cleared", len(self.completed_phases))
+        self._set("final_showdown_area_progress", len(self.completed_phases))
+        self._set("final_showdown_hits_still_needed", len(self.PHASES) - len(self.completed_phases))
 
-        remaining = self._unplayed_phases()
+        remaining = self._next_phase_choices()
         self.next_phase = remaining[0] if remaining else None
         self._publish_next_phase()
 
@@ -343,24 +340,29 @@ class FinalShowdown(Mode):
 
         getattr(self, f"_start_{phase}_phase")()
 
-    def _finish_phase(self):
+    def _finish_phase(self, success=True):
         if self.mode_exiting or self.current_phase not in self.PHASES:
             return
         phase = self.current_phase
         self._cleanup_phase(phase)
-        self._set("final_showdown_areas_cleared", len(self.played_phases))
-        self._set("final_showdown_area_progress", len(self.played_phases))
-        self._set("final_showdown_hits_still_needed", len(self.PHASES) - len(self.played_phases))
-        self.machine.events.post("final_showdown_phase_complete", phase=phase)
+        if success:
+            self.completed_phases.add(phase)
+            self.machine.events.post("final_showdown_phase_complete", phase=phase)
+        else:
+            self.machine.events.post("final_showdown_phase_failed", phase=phase)
 
-        remaining = self._unplayed_phases()
-        if not remaining:
+        self._set("final_showdown_areas_cleared", len(self.completed_phases))
+        self._set("final_showdown_area_progress", len(self.completed_phases))
+        self._set("final_showdown_hits_still_needed", len(self.PHASES) - len(self.completed_phases))
+
+        if len(self.completed_phases) >= len(self.PHASES):
             self.current_phase = None
             self.next_phase = None
             self._publish_next_phase()
             self.delay.reset(name="final_showdown_next_phase", ms=500, callback=self._start_final_lock)
             return
 
+        remaining = self._unfinished_phases()
         selected = self.next_phase if self.next_phase in remaining else remaining[0]
         self.current_phase = None
         self.delay.reset(
@@ -370,14 +372,22 @@ class FinalShowdown(Mode):
             phase=selected,
         )
 
+    def _fail_phase(self, title, subtitle="TRY AGAIN LATER"):
+        if self.current_phase not in self.PHASES or self.mode_exiting:
+            return
+        self._show_message(title, subtitle)
+        self._finish_phase(success=False)
+
     def _cleanup_phase(self, phase):
         if phase == "timed":
             self.delay.remove("final_showdown_timed_end")
             self.delay.remove("final_showdown_timed_spawn")
             self._clear_timed_shots()
+            self._clear_web_collect()
         elif phase == "staged_drops":
             self.delay.remove("final_showdown_staged_settle")
-            self.delay.remove("final_showdown_web_collect_timeout")
+            self.delay.remove("final_showdown_staged_next")
+            self.delay.remove("final_showdown_staged_ready")
             self.staged_programming = False
             self.staged_target = None
             self._clear_web_collect()
@@ -394,16 +404,24 @@ class FinalShowdown(Mode):
             self.machine.events.post("rooftop_diverter_close")
             self.machine.events.post("final_showdown_area_control_off")
         elif phase == "reveal":
+            self.delay.remove("final_showdown_reveal_timeout")
+            self.delay.remove("final_showdown_reveal_finish")
             self.machine.events.post("final_showdown_reveal_clear")
             self._reset_drop_banks()
 
-    def _unplayed_phases(self):
-        return [phase for phase in self.PHASES if phase not in self.played_phases]
+    def _unfinished_phases(self):
+        return [phase for phase in self.PHASES if phase not in self.completed_phases]
+
+    def _next_phase_choices(self):
+        choices = [phase for phase in self._unfinished_phases() if phase != self.current_phase]
+        if not choices and self.current_phase in self.PHASES and self.current_phase not in self.completed_phases:
+            choices = [self.current_phase]
+        return choices
 
     def _advance_next_phase(self):
         if self.current_phase not in self.PHASES:
             return
-        remaining = self._unplayed_phases()
+        remaining = self._next_phase_choices()
         if not remaining:
             self.next_phase = None
             self._publish_next_phase()
@@ -425,6 +443,7 @@ class FinalShowdown(Mode):
     # ------------------------------------------------------------------
     def _a_rollover(self, **kwargs):
         self._timed_hit("upper_a")
+        self._collect_reveal_ab(4)
         self._mark_a()
 
     def _middle_a(self, **kwargs):
@@ -434,6 +453,7 @@ class FinalShowdown(Mode):
 
     def _b_rollover(self, **kwargs):
         self._timed_hit("upper_b")
+        self._collect_reveal_ab(5)
         self._mark_b()
 
     def _middle_b(self, **kwargs):
@@ -492,8 +512,6 @@ class FinalShowdown(Mode):
 
     def _clear_pending_add_a_ball(self):
         self.pending_add_a_ball = False
-        if self.current_phase == "final_lock":
-            self._check_final_lock_state()
 
     def _reset_ab(self):
         self.a_hit = False
@@ -559,6 +577,9 @@ class FinalShowdown(Mode):
         self.delay.remove("final_showdown_timed_spawn")
         self._clear_timed_shots()
         self.machine.events.post("rooftop_diverter_close")
+        if self.timed_shots_made <= 0:
+            self._fail_phase("TIMED COLLECT FAILED", "NO SHOTS COLLECTED")
+            return
         value = self.TIMED_SUPER_BASE + (self.timed_shots_made * self.TIMED_SUPER_PER_SHOT)
         self._start_web_collect("timed_super", value)
 
@@ -592,8 +613,11 @@ class FinalShowdown(Mode):
     def _start_next_staged_target(self):
         if self.current_phase != "staged_drops":
             return
-        if self.staged_stage >= 3:
+        if self.staged_stage >= 4:
             multiplier = self.STAGED_MULTIPLIERS[self.staged_successes]
+            if multiplier <= 0:
+                self._fail_phase("STAGED DROPS FAILED", "NO TARGETS HIT")
+                return
             value = self.STAGED_BASE_JACKPOT * multiplier
             self._start_web_collect("staged_jackpot", value)
             return
@@ -614,7 +638,7 @@ class FinalShowdown(Mode):
         )
         self._show_status(
             "STAGED DROPS",
-            f"STAGE {self.staged_stage}/3  HITS {self.staged_successes}",
+            f"STAGE {self.staged_stage}/4  HITS {self.staged_successes}",
         )
 
     def _program_staged_target(self):
@@ -693,10 +717,9 @@ class FinalShowdown(Mode):
         kind = self.web_collect_kind
         self._clear_web_collect()
         if kind == "timed_super":
-            self._show_message("SUPER JACKPOT MISSED", "PHASE COMPLETE")
+            self._fail_phase("SUPER JACKPOT MISSED", "TIMED COLLECT FAILED")
         else:
-            self._show_message("JACKPOT MISSED", "PHASE COMPLETE")
-        self._finish_phase()
+            self._fail_phase("JACKPOT MISSED", "STAGED DROPS FAILED")
 
     def _clear_web_collect(self):
         self.delay.remove("final_showdown_web_collect_timeout")
@@ -795,12 +818,14 @@ class FinalShowdown(Mode):
         value = self._rooftop_exit_value(exit_name)
         self.machine.events.post("cmd_upper_flippers_enable")
         self.machine.events.post("rooftop_diverter_close")
-        if value <= 0:
-            self._show_message("ROOFTOP JACKPOT MISSED", "NO SPINNER VALUE BUILT")
-            self._finish_phase()
+        if self.roof_spinner_spins <= 0:
+            self._fail_phase("ROOFTOP BUILD FAILED", "NO SPINNER SPINS")
+            return
+        if sum(self.roof_target_hits.values()) <= 0:
+            self._fail_phase("ROOFTOP BUILD FAILED", "NO UPPER TARGETS")
             return
         self._award_jackpot(value)
-        self._finish_phase()
+        self._finish_phase(success=True)
 
     def _rooftop_exit_value(self, exit_name):
         base = self.roof_spinner_spins * self.ROOFTOP_SPIN_VALUE
@@ -896,8 +921,7 @@ class FinalShowdown(Mode):
     def _area_lower_timeout(self):
         if self.current_phase != "area_control" or self.area_roof_active:
             return
-        self._show_message("AREA CONTROL INCOMPLETE", "25 SECONDS EXPIRED")
-        self._finish_phase()
+        self._fail_phase("AREA CONTROL FAILED", "25 SECONDS EXPIRED")
 
     def _area_roof_timeout(self):
         if self.current_phase != "area_control" or not self.area_roof_active:
@@ -905,215 +929,166 @@ class FinalShowdown(Mode):
         self.machine.events.post("cmd_upper_flippers_disable")
         self.machine.events.post("rooftop_diverter_close")
         if not self.area_roof_target_hit:
-            self._show_message("ROOFTOP AREA INCOMPLETE", "TARGET NOT HIT")
-            self._finish_phase()
+            self._fail_phase("AREA CONTROL FAILED", "ROOFTOP TARGET NOT HIT")
             return
-        self._show_message("ROOFTOP TIME", f"{self.area_spinner_spins * self.AREA_SPINNER_VALUE:,} COLLECTED")
-        self._finish_phase()
+        spinner_value = self.area_spinner_spins * self.AREA_SPINNER_VALUE
+        if spinner_value > 0:
+            self._add_to_kingpin_bank(spinner_value)
+        self._show_message("ROOFTOP TIME", f"{spinner_value:,} BANKED")
+        self._finish_phase(success=True)
 
     # ------------------------------------------------------------------
     # Phase 5: reveal / collect
     # ------------------------------------------------------------------
+    # Positions: 0-2 saucers, 3 star, 4 upper A, 5 upper B.
     def _start_reveal_phase(self):
         self.reveal_count = 0
         self.reveal_collect_started = False
         self.reveal_collect_value = 0
         self.reveal_lit_positions = set()
+        self.reveal_collected_count = 0
         self._reset_drop_banks()
         self._refresh_reveal_lights()
-        self._show_message("REVEAL & COLLECT", "COMPLETE BANKS - FLIPPERS MOVE SAUCERS", reminder=True)
+        self.delay.reset(
+            name="final_showdown_reveal_timeout",
+            ms=self.REVEAL_WINDOW_MS,
+            callback=self._reveal_timeout,
+        )
+        self._show_message("REVEAL & COLLECT", "COMPLETE BANKS - FLIPPERS MOVE SHOTS", reminder=True)
         self._update_reveal_status()
 
-    def _reveal_saucer(self):
-        if self.current_phase != "reveal" or self.reveal_collect_started or self.reveal_count >= 3:
+    def _reveal_shot(self):
+        if self.current_phase != "reveal" or self.reveal_collect_started or self.reveal_count >= self.REVEAL_MAX:
             return
         self.reveal_count += 1
-        unlit = [position for position in range(3) if position not in self.reveal_lit_positions]
+        unlit = [position for position in range(self.REVEAL_MAX) if position not in self.reveal_lit_positions]
         if unlit:
             self.reveal_lit_positions.add(unlit[0])
+        self.delay.reset(
+            name="final_showdown_reveal_timeout",
+            ms=self.REVEAL_WINDOW_MS,
+            callback=self._reveal_timeout,
+        )
         self._refresh_reveal_lights()
         self._update_reveal_status()
-        self._show_message("SAUCER REVEALED", f"{self.reveal_count} OF 3")
+        self._show_message("SHOT REVEALED", f"{self.reveal_count} OF {self.REVEAL_MAX}")
 
     def _rotate_reveal(self, direction):
         if self.current_phase != "reveal" or not self.reveal_lit_positions:
             return
-        self.reveal_lit_positions = {(position + direction) % 3 for position in self.reveal_lit_positions}
+        self.reveal_lit_positions = {
+            (position + direction) % self.REVEAL_MAX for position in self.reveal_lit_positions
+        }
         self._refresh_reveal_lights()
 
     def _refresh_reveal_lights(self):
-        for position in range(3):
+        names = ("saucer_1", "saucer_2", "saucer_3", "star", "upper_a", "upper_b")
+        for position, name in enumerate(names):
             self.machine.events.post(
-                f"final_showdown_reveal_saucer_{position + 1}_{'on' if position in self.reveal_lit_positions else 'off'}"
+                f"final_showdown_reveal_{name}_{'on' if position in self.reveal_lit_positions else 'off'}"
             )
 
-    def _collect_reveal_saucer(self, saucer):
-        position = saucer - 1
-        if position not in self.reveal_lit_positions:
+    def _collect_reveal_position(self, position, saucer=None):
+        if self.current_phase != "reveal" or position not in self.reveal_lit_positions:
             return False
         if not self.reveal_collect_started:
             self.reveal_collect_started = True
-            self.reveal_collect_value = self.REVEAL_SAUCER_VALUES.get(self.reveal_count, 0)
+            self.reveal_collect_value = self.reveal_count * 1_000_000
         self.reveal_lit_positions.discard(position)
+        self.reveal_collected_count += 1
         self._award_jackpot(self.reveal_collect_value)
+        self.delay.reset(
+            name="final_showdown_reveal_timeout",
+            ms=self.REVEAL_WINDOW_MS,
+            callback=self._reveal_timeout,
+        )
         self._refresh_reveal_lights()
         self._update_reveal_status()
-        self._eject_saucer(
-            saucer,
-            delay_ms=self.REVEAL_EJECT_MS,
-            owner="reveal",
-            expected_phase="reveal",
-        )
-        if not self.reveal_lit_positions:
-            # Do not leave Reveal before its final jackpot ball has actually
-            # been released. Otherwise the delayed eject can land in the next
-            # recap phase and kick a newly parked ball.
-            self.delay.reset(
-                name="final_showdown_reveal_finish",
-                ms=self.REVEAL_EJECT_MS + self.REVEAL_FINISH_AFTER_EJECT_MS,
-                callback=self._finish_phase,
+
+        if saucer is not None:
+            self._eject_saucer(
+                saucer,
+                delay_ms=self.REVEAL_EJECT_MS,
+                owner="reveal",
+                expected_phase="reveal",
             )
+
+        if not self.reveal_lit_positions:
+            if saucer is not None:
+                self.delay.reset(
+                    name="final_showdown_reveal_finish",
+                    ms=self.REVEAL_EJECT_MS + self.REVEAL_FINISH_AFTER_EJECT_MS,
+                    callback=self._finish_phase,
+                    success=True,
+                )
+            else:
+                self._finish_phase(success=True)
         return True
+
+    def _collect_reveal_saucer(self, saucer):
+        return self._collect_reveal_position(saucer - 1, saucer=saucer)
+
+    def _star_rollover(self, **kwargs):
+        del kwargs
+        if self.current_phase == "reveal":
+            self._collect_reveal_position(3)
+
+    def _collect_reveal_ab(self, position):
+        if self.current_phase == "reveal":
+            self._collect_reveal_position(position)
+
+    def _reveal_timeout(self):
+        if self.current_phase != "reveal":
+            return
+        if self.reveal_collected_count > 0:
+            self._show_message("REVEAL COMPLETE", f"{self.reveal_collected_count} COLLECTED")
+            self._finish_phase(success=True)
+        else:
+            self._fail_phase("REVEAL FAILED", "NO REVEALED SHOT COLLECTED")
 
     def _update_reveal_status(self):
         if self.reveal_collect_started:
             self._show_status(
-                "COLLECT SAUCERS",
+                "COLLECT REVEALED SHOTS",
                 f"{len(self.reveal_lit_positions)} LEFT  {self.reveal_collect_value:,} EACH",
             )
         else:
-            value = self.REVEAL_SAUCER_VALUES.get(self.reveal_count, 0)
-            self._show_status("REVEAL SAUCERS", f"REVEALED {self.reveal_count}/3  VALUE {value:,}")
+            value = self.reveal_count * 1_000_000
+            self._show_status(
+                "REVEAL SHOTS",
+                f"REVEALED {self.reveal_count}/{self.REVEAL_MAX}  VALUE {value:,}",
+            )
 
     # ------------------------------------------------------------------
-    # Final Kingpin lock phase
+    # Final Kingpin shot
     # ------------------------------------------------------------------
     def _start_final_lock(self):
         if self.mode_exiting:
             return
         self._invalidate_all_saucer_ejects()
         self.current_phase = "final_lock"
+        self.final_gate_ready = True
+        self.final_shot_active = True
         self.machine.events.post("final_showdown_parking_saucers_off")
-        self.locked_saucers.clear()
-        self.final_gate_ready = False
-        self.final_shot_active = False
-        for saucer in (1, 2, 3):
-            switch = self.machine.switches.get(f"s_saucer_{saucer}")
-            if switch and self.machine.switch_controller.is_active(switch):
-                self._cancel_saucer_hold(saucer)
-                self.locked_saucers.add(saucer)
-                self.machine.events.post("final_showdown_final_saucer_locked", saucer=f"saucer_{saucer}")
+        self._release_all_saucers()
         self._set("final_showdown_current_area", "final_lock")
         self._set("final_showdown_current_area_display", self.PHASE_NAMES["final_lock"])
-        self.machine.events.post("rooftop_diverter_close")
-        self.machine.events.post("final_showdown_final_lock_started")
-        self._show_message("KINGPIN", "LOCK 3 SAUCERS", value=self.kingpin_bank, reminder=True)
-        self._check_final_lock_state()
-
-    def _lock_saucer(self, saucer):
-        if saucer in self.locked_saucers:
-            return
-        self._cancel_saucer_hold(saucer)
-        self.locked_saucers.add(saucer)
-        self.machine.events.post("final_showdown_final_saucer_locked", saucer=f"saucer_{saucer}")
-        self._check_final_lock_state()
-
-    def _check_final_lock_state(self):
-        if self.current_phase != "final_lock" or self.mode_exiting:
-            return
-
-        # Once Kingpin is exposed, the final shot is its own state. The gate
-        # remains open while the three lock balls are released back into play,
-        # and normal multiball-end handling is intentionally ignored.
-        if self.final_shot_active:
-            self._update_final_lock_status()
-            return
-
-        free_balls = self._balls_in_play() - len(self.locked_saucers)
-
-        if len(self.locked_saucers) >= 3 and free_balls > 0:
-            self._begin_final_shot()
-            return
-
-        if self.final_gate_ready:
-            self.final_gate_ready = False
-            self.machine.events.post("rooftop_diverter_close")
-            self.machine.events.post("final_showdown_kingpin_vuk_off")
-
-        # Never leave every physical ball parked before Kingpin is exposed. If
-        # there is no free ball and an add-a-ball is not already on its way,
-        # release one lock so the player can continue building the final state.
-        if free_balls <= 0 and self.locked_saucers and not self.pending_add_a_ball:
-            self._release_one_final_lock()
-            return
-
-        self._update_final_lock_status()
-
-    def _begin_final_shot(self):
-        if self.final_shot_active or self.mode_exiting:
-            return
-        self.final_shot_active = True
-        self.final_gate_ready = True
         self.machine.events.post("rooftop_diverter_open")
         self.machine.events.post("final_showdown_kingpin_vuk_on")
         self._update_final_shot_ball_save()
         self._show_message("KINGPIN EXPOSED", "SHOOT DAILY BUGLE", value=self.kingpin_bank, reminder=True)
-
-        # Release the three locked balls one at a time, two seconds apart. The
-        # first release is immediate; the final shot remains live throughout.
-        for index, saucer in enumerate(sorted(self.locked_saucers)):
-            if index == 0:
-                self._release_final_shot_ball(saucer)
-            else:
-                self.delay.reset(
-                    name=f"final_showdown_final_release_{index}",
-                    ms=index * 2000,
-                    callback=self._release_final_shot_ball,
-                    saucer=saucer,
-                )
-        self._update_final_lock_status()
-
-    def _release_final_shot_ball(self, saucer):
-        if self.mode_exiting or not self.final_shot_active:
-            return
-        if saucer not in self.locked_saucers:
-            return
-        self.locked_saucers.discard(saucer)
-        self.machine.events.post("final_showdown_final_saucer_released", saucer=f"saucer_{saucer}")
-        self._eject_saucer(saucer)
-        self._update_final_lock_status()
-
-    def _release_one_final_lock(self):
-        if not self.locked_saucers:
-            return
-        saucer = sorted(self.locked_saucers)[-1]
-        self.locked_saucers.discard(saucer)
-        self.final_gate_ready = False
-        self.machine.events.post("rooftop_diverter_close")
-        self.machine.events.post("final_showdown_kingpin_vuk_off")
-        self.machine.events.post("final_showdown_final_saucer_released", saucer=f"saucer_{saucer}")
-        self._eject_saucer(saucer)
         self._update_final_lock_status()
 
     def _update_final_lock_status(self):
-        if self.final_shot_active or self.final_gate_ready:
-            self._show_status("KINGPIN EXPOSED", f"FINAL SHOT {self.kingpin_bank:,}")
-        else:
-            self._show_status("LOCK SAUCERS", f"{len(self.locked_saucers)}/3  KINGPIN BANK {self.kingpin_bank:,}")
+        self._show_status("KINGPIN EXPOSED", f"FINAL SHOT {self.kingpin_bank:,}")
 
     def _ball_drain(self, **kwargs):
         if self.current_phase != "final_lock" or self.mode_exiting:
             return
         if self.final_shot_active:
             # During the final VUK shot the dedicated only-last-ball save owns
-            # survival. Do not use the normal multiball-ended result here.
+            # survival. Do not use normal multiball-end handling here.
             self._update_final_shot_ball_save()
-            return
-        self.delay.reset(
-            name="final_showdown_final_drain_check",
-            ms=150,
-            callback=self._check_final_lock_state,
-        )
 
     def _ball_will_end(self, **kwargs):
         del kwargs
@@ -1283,7 +1258,7 @@ class FinalShowdown(Mode):
             self.machine.events.post(f"drop_target_bank_dt_bank_{bank}_reset")
             return
         if self.current_phase == "reveal":
-            self._reveal_saucer()
+            self._reveal_shot()
             self.machine.events.post(f"drop_target_bank_dt_bank_{bank}_reset")
             return
         # Timed and all other phases retain normal bank reset behavior.
@@ -1309,12 +1284,7 @@ class FinalShowdown(Mode):
         self._collect_add_a_ball_if_ready()
 
         if self.current_phase == "final_lock":
-            if self.final_shot_active:
-                # Once Kingpin is exposed, saucers no longer relock balls. Keep
-                # all surviving balls moving while the player shoots the VUK.
-                self._eject_saucer(saucer, delay_ms=250)
-            else:
-                self._lock_saucer(saucer)
+            self._eject_saucer(saucer, delay_ms=250)
             return
 
         if self.current_phase == "reveal" and self._collect_reveal_saucer(saucer):
@@ -1535,8 +1505,7 @@ class FinalShowdown(Mode):
     def _award_jackpot(self, value, super_jackpot=False):
         value = max(0, int(value))
         self._score(value)
-        self.kingpin_bank += value
-        self._set("final_showdown_kingpin_bank", self.kingpin_bank)
+        self._add_to_kingpin_bank(value)
         self._add("final_showdown_jackpots", 1)
         self._add("active_mode_major_hits", 1)
         if super_jackpot:
@@ -1547,6 +1516,13 @@ class FinalShowdown(Mode):
             message_mode_value=value,
         )
         self.machine.events.post("play_mode_super_jackpot" if super_jackpot else "play_mode_jackpot")
+
+    def _add_to_kingpin_bank(self, value):
+        value = max(0, int(value))
+        if value <= 0:
+            return
+        self.kingpin_bank += value
+        self._set("final_showdown_kingpin_bank", self.kingpin_bank)
         self.machine.events.post("final_showdown_kingpin_bank_changed", value=self.kingpin_bank)
 
     def _score(self, points):

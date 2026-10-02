@@ -400,6 +400,7 @@ ball_saves:
     active_time: 16s
     hurry_up_time: 3s
     grace_period: 2s
+    balls_to_save: -1
     enable_events:
       - start_my_default_ball_save
 #    timer_start_events:
