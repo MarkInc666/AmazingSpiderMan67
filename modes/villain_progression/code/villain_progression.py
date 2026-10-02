@@ -794,8 +794,36 @@ class VillainProgression(Mode):
         "3": ("s_saucer_3", "kickout_saucer_3"),
     }
 
+
+    def _final_showdown_owns_saucers(self):
+        mode = self.machine.modes.get("final_showdown") if hasattr(self.machine, "modes") else None
+        if mode and getattr(mode, "active", False):
+            return True
+        player = self.machine.game.player if self.machine.game else None
+        if not player:
+            return False
+        try:
+            return (
+                str(player["villain_current_key"]) == "final_showdown"
+                and int(player["villain_mode_running"]) == 1
+            )
+        except (KeyError, TypeError, ValueError):
+            return False
+
+    def _cancel_pending_saucer_ejects(self, **kwargs):
+        """Cancel shared delayed saucer actions before an owning mode takes control."""
+        del kwargs
+        self.delay.remove("clear_saucers")
+        self.delay.remove("clear_saucers_delayed")
+        for saucer_number in self.SAUCER_EJECTS:
+            self.delay.remove(f"clear_saucer_{saucer_number}_stagger")
+            self.delay.remove(f"request_saucer_eject_{saucer_number}")
+
     def _clear_saucers_delayed(self, **kwargs):
         """Delay normal saucer kickout so saucer awards feel intentional."""
+        if self._final_showdown_owns_saucers():
+            self.machine.events.post("shared_saucer_eject_suppressed", source="clear_saucers_delayed")
+            return
         self.delay.remove("clear_saucers_delayed")
         self.delay.add(
             name="clear_saucers_delayed",
@@ -805,6 +833,9 @@ class VillainProgression(Mode):
 
     def _clear_saucers(self, **kwargs):
         """Default saucer cleanup waits briefly before kicking balls out."""
+        if self._final_showdown_owns_saucers():
+            self.machine.events.post("shared_saucer_eject_suppressed", source="clear_saucers")
+            return
         self.info_log("CLEAR SAUCERS requested. kwargs=%s", kwargs)
         self.delay.remove("clear_saucers")
         self.delay.add(
@@ -820,6 +851,9 @@ class VillainProgression(Mode):
         saucer switches first and only posts the matching raw kickout event
         when a ball is actually sitting there.
         """
+        if self._final_showdown_owns_saucers():
+            self.machine.events.post("shared_saucer_eject_suppressed", source="clear_saucers_now")
+            return
         self.info_log("CLEAR SAUCERS NOW called. kwargs=%s", kwargs)
 
         player = self.machine.game.player if self.machine.game else None
@@ -857,10 +891,24 @@ class VillainProgression(Mode):
 
     def _delayed_kickout_saucer(self, saucer_number, **kwargs):
         """Public delayed kickout event for modes that hold/release saucers."""
-        self._request_saucer_eject(saucer_number=saucer_number)
+        if self._final_showdown_owns_saucers():
+            self.machine.events.post(
+                "shared_saucer_eject_suppressed",
+                source="delayed_kickout",
+                saucer=str(saucer_number),
+            )
+            return
+        self._request_saucer_eject(saucer_number=saucer_number, **kwargs)
 
     def _request_saucer_eject(self, saucer_number=None, delay_ms=None, **kwargs):
         """Schedule one occupancy-checked saucer release from this persistent mode."""
+        if self._final_showdown_owns_saucers():
+            self.machine.events.post(
+                "shared_saucer_eject_suppressed",
+                source="request_saucer_eject",
+                saucer=str(saucer_number),
+            )
+            return
         saucer_number = str(saucer_number)
         if saucer_number not in self.SAUCER_EJECTS:
             self.warning_log("Unknown delayed saucer kickout requested: %s", saucer_number)
@@ -889,6 +937,13 @@ class VillainProgression(Mode):
         )
 
     def _kickout_saucer_if_occupied(self, saucer_number, **kwargs):
+        if self._final_showdown_owns_saucers():
+            self.machine.events.post(
+                "shared_saucer_eject_suppressed",
+                source="pending_shared_callback",
+                saucer=str(saucer_number),
+            )
+            return
         saucer_number = str(saucer_number)
         if saucer_number in self.summary_held_saucers:
             self.machine.events.post(
@@ -1020,6 +1075,7 @@ class VillainProgression(Mode):
         self.add_mode_event_handler("delayed_kickout_saucer_3", self._delayed_kickout_saucer, saucer_number="3")
         self.add_mode_event_handler("request_saucer_eject", self._request_saucer_eject)
         self.add_mode_event_handler("clear_saucers_now", self._clear_saucers_now)
+        self.add_mode_event_handler("cancel_pending_saucer_ejects", self._cancel_pending_saucer_ejects)
         self.add_mode_event_handler("s_left_flipper_inactive", self._try_pending_mini_wizard_gate_open)
         self.add_mode_event_handler("s_right_flipper_inactive", self._try_pending_mini_wizard_gate_open)
         self.add_mode_event_handler("s_right_flipper_upper_inactive", self._try_pending_mini_wizard_gate_open)
@@ -1194,11 +1250,27 @@ class VillainProgression(Mode):
         if not current_key or self._safe_int(player["villain_mode_in_summary"], 0) == 1:
             return
 
+        # The test loop ball save emits its saving event for every drain, but
+        # `balls` is 0 when no ball was actually saved (for example 4->3,
+        # 3->2, or 2->1 during Final Showdown). Only a real last-ball save
+        # reports one or more saved balls. Final Showdown is allowed to keep
+        # playing at one live ball, so only the latter is an exhausted attempt.
+        if current_key == self.FINAL_WIZARD_KEY:
+            saved_balls = self._safe_int(kwargs.get("balls"), 0)
+            if saved_balls <= 0:
+                self.machine.events.post(
+                    "test_mode_multiball_drain_ignored",
+                    mode_key=current_key,
+                )
+                return
+            self.machine.events.post("final_showdown_test_last_ball_lost")
+            return
+
         # The harness loop ball save exists only to keep the test session alive.
-        # During a tested multiball, every real drain can trigger this save while
-        # the tested mode still legitimately has multiple balls in play.  Do not
-        # treat that saved drain as the end of the test attempt; the multiball
-        # mode itself owns its normal end condition.
+        # During other tested multiballs, every real drain can trigger this save
+        # while the tested mode still legitimately has multiple balls in play.
+        # Do not treat that saved drain as the end of the test attempt; the
+        # multiball mode itself owns its normal end condition.
         if self._safe_int(player["multiball_autoplunge_active"], 0) == 1:
             self.machine.events.post(
                 "test_mode_multiball_drain_ignored",

@@ -74,7 +74,6 @@ event_player:
   final_showdown_setup:
     - drop_target_bank_dt_bank_left_reset|100ms
     - drop_target_bank_dt_bank_right_reset|200ms
-    - clear_saucers
     - disable_daily_bugle_mystery
     - final_showdown_ab_available_show
 
@@ -83,9 +82,7 @@ event_player:
     - daily_bugle_restore_state
     - rooftop_diverter_close
     - final_showdown_release_all_saucers
-    - clear_saucers
     - final_showdown_clear_all_final_showdown_lights
-    - cmd_upper_flippers_enable
 
   final_showdown_open_upper_gate: rooftop_diverter_open
   final_showdown_close_upper_gate: rooftop_diverter_close
@@ -100,22 +97,42 @@ widget_player:
       action: remove
 
 light_player:
+  # A/B add-a-ball qualification. Available letters flash independently; a
+  # collected letter stays solid. Completing A+B clears the solid states while
+  # the three-flash completion show runs, then both remain dark until collected.
+  final_showdown_a_hit:
+    l_a_rollover: yellow
+    l_right_a: yellow
+  final_showdown_b_hit:
+    l_b_rollover: yellow
+    l_left_b: yellow
+  final_showdown_ab_complete:
+    l_a_rollover: off
+    l_b_rollover: off
+    l_right_a: off
+    l_left_b: off
+  final_showdown_ab_reset:
+    l_a_rollover: off
+    l_b_rollover: off
+    l_right_a: off
+    l_left_b: off
+
   # Reveal/collect saucer positions.
   final_showdown_reveal_saucer_1_on:
-    l_1_hole_l: 40E0E0
-    l_1_hole_r: 40E0E0
+    l_1_hole_l: FFFFFF
+    l_1_hole_r: FFFFFF
   final_showdown_reveal_saucer_1_off:
     l_1_hole_l: off
     l_1_hole_r: off
   final_showdown_reveal_saucer_2_on:
-    l_2_hole_l: 40E0E0
-    l_2_hole_r: 40E0E0
+    l_2_hole_l: FFFFFF
+    l_2_hole_r: FFFFFF
   final_showdown_reveal_saucer_2_off:
     l_2_hole_l: off
     l_2_hole_r: off
   final_showdown_reveal_saucer_3_on:
-    l_3_hole_l: 40E0E0
-    l_3_hole_r: 40E0E0
+    l_3_hole_l: FFFFFF
+    l_3_hole_r: FFFFFF
   final_showdown_reveal_saucer_3_off:
     l_3_hole_l: off
     l_3_hole_r: off
@@ -169,10 +186,10 @@ light_player:
 
   # Rooftop build phase.
   final_showdown_rooftop_on:
-    l_upper_left: 40E0E0
-    l_upper_middle: 40E0E0
-    l_upper_right: 40E0E0
-    l_gi_a: 40E0E0
+    l_upper_left: FFFFFF
+    l_upper_middle: FFFFFF
+    l_upper_right: FFFFFF
+    l_gi_a: FFFFFF
   final_showdown_rooftop_off:
     l_upper_left: off
     l_upper_middle: off
@@ -258,13 +275,55 @@ light_player:
     l_gi_a: off
 
 show_player:
+  final_showdown_parking_saucers_on:
+    final_showdown_parking_saucer_1_pulse: {action: play, loops: -1, priority: 1060}
+    final_showdown_parking_saucer_2_pulse: {action: play, loops: -1, priority: 1060}
+    final_showdown_parking_saucer_3_pulse: {action: play, loops: -1, priority: 1060}
+  final_showdown_parking_saucers_off:
+    final_showdown_parking_saucer_1_pulse: {action: stop}
+    final_showdown_parking_saucer_2_pulse: {action: stop}
+    final_showdown_parking_saucer_3_pulse: {action: stop}
+  final_showdown_parking_saucer_unavailable{saucer=="saucer_1"}:
+    final_showdown_parking_saucer_1_pulse: {action: stop}
+  final_showdown_parking_saucer_unavailable{saucer=="saucer_2"}:
+    final_showdown_parking_saucer_2_pulse: {action: stop}
+  final_showdown_parking_saucer_unavailable{saucer=="saucer_3"}:
+    final_showdown_parking_saucer_3_pulse: {action: stop}
+  final_showdown_parking_saucer_available{saucer=="saucer_1"}:
+    final_showdown_parking_saucer_1_pulse: {action: play, loops: -1, priority: 1060}
+  final_showdown_parking_saucer_available{saucer=="saucer_2"}:
+    final_showdown_parking_saucer_2_pulse: {action: play, loops: -1, priority: 1060}
+  final_showdown_parking_saucer_available{saucer=="saucer_3"}:
+    final_showdown_parking_saucer_3_pulse: {action: play, loops: -1, priority: 1060}
+
   final_showdown_ab_available_show:
-    final_showdown_ab_available_show:
+    final_showdown_a_available_show:
       action: play
       loops: -1
       priority: 1050
+    final_showdown_b_available_show:
+      action: play
+      loops: -1
+      priority: 1050
+  final_showdown_a_hit:
+    final_showdown_a_available_show:
+      action: stop
+  final_showdown_b_hit:
+    final_showdown_b_available_show:
+      action: stop
+  final_showdown_ab_complete:
+    final_showdown_a_available_show:
+      action: stop
+    final_showdown_b_available_show:
+      action: stop
+    final_showdown_ab_complete_show:
+      action: play
+      loops: 0
+      priority: 1120
   final_showdown_ab_available_clear_show:
-    final_showdown_ab_available_show:
+    final_showdown_a_available_show:
+      action: stop
+    final_showdown_b_available_show:
       action: stop
 
   final_showdown_add_a_ball_ready_show:
@@ -413,7 +472,9 @@ show_player:
       action: stop
 
   final_showdown_clear_all_final_showdown_lights:
-    final_showdown_ab_available_show: {action: stop}
+    final_showdown_a_available_show: {action: stop}
+    final_showdown_b_available_show: {action: stop}
+    final_showdown_ab_complete_show: {action: stop}
     final_showdown_add_a_ball_ready_show: {action: stop}
     final_showdown_web_jackpot_show: {action: stop}
     shared_final_vuk_chase: {action: stop}
@@ -432,14 +493,88 @@ show_player:
     final_showdown_timed_upper_spinner_show: {action: stop}
 
 shows:
-  final_showdown_ab_available_show:
+  final_showdown_parking_saucer_1_pulse:
+    - duration: 500ms
+      lights:
+        l_1_hole_l: 804040
+        l_1_hole_r: 804040
+    - duration: 500ms
+      lights:
+        l_1_hole_l: 202020
+        l_1_hole_r: 202020
+
+  final_showdown_parking_saucer_2_pulse:
+    - duration: 500ms
+      lights:
+        l_2_hole_l: 804040
+        l_2_hole_r: 804040
+    - duration: 500ms
+      lights:
+        l_2_hole_l: 202020
+        l_2_hole_r: 202020
+
+  final_showdown_parking_saucer_3_pulse:
+    - duration: 500ms
+      lights:
+        l_3_hole_l: 804040
+        l_3_hole_r: 804040
+    - duration: 500ms
+      lights:
+        l_3_hole_l: 202020
+        l_3_hole_r: 202020
+
+  final_showdown_a_available_show:
     - duration: 350ms
+      lights:
+        l_a_rollover: yellow
+        l_right_a: yellow
+    - duration: 350ms
+      lights:
+        l_a_rollover: off
+        l_right_a: off
+
+  final_showdown_b_available_show:
+    - duration: 350ms
+      lights:
+        l_b_rollover: yellow
+        l_left_b: yellow
+    - duration: 350ms
+      lights:
+        l_b_rollover: off
+        l_left_b: off
+
+  final_showdown_ab_complete_show:
+    - duration: 125ms
       lights:
         l_a_rollover: yellow
         l_b_rollover: yellow
         l_right_a: yellow
         l_left_b: yellow
-    - duration: 350ms
+    - duration: 125ms
+      lights:
+        l_a_rollover: off
+        l_b_rollover: off
+        l_right_a: off
+        l_left_b: off
+    - duration: 125ms
+      lights:
+        l_a_rollover: yellow
+        l_b_rollover: yellow
+        l_right_a: yellow
+        l_left_b: yellow
+    - duration: 125ms
+      lights:
+        l_a_rollover: off
+        l_b_rollover: off
+        l_right_a: off
+        l_left_b: off
+    - duration: 125ms
+      lights:
+        l_a_rollover: yellow
+        l_b_rollover: yellow
+        l_right_a: yellow
+        l_left_b: yellow
+    - duration: 125ms
       lights:
         l_a_rollover: off
         l_b_rollover: off

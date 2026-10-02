@@ -1,5 +1,4 @@
 import random
-from functools import partial
 
 from mpf.core.mode import Mode
 
@@ -29,6 +28,7 @@ class FinalShowdown(Mode):
     MAX_BALLS = 4
     SAUCER_HOLD_MS = 20_000
     ADDED_BALL_PENDING_MS = 2_000
+    FINAL_VICTORY_HOLD_MS = 8_000
 
     TIMED_DURATION_MS = 20_000
     TIMED_SPAWN_MS = 1_000
@@ -51,6 +51,8 @@ class FinalShowdown(Mode):
 
     REVEAL_DROP_VALUE = 50_000
     REVEAL_SAUCER_VALUES = {1: 1_000_000, 2: 2_000_000, 3: 3_000_000}
+    REVEAL_EJECT_MS = 2_000
+    REVEAL_FINISH_AFTER_EJECT_MS = 200
 
     TIMED_SHOTS = (
         "left_web",
@@ -75,9 +77,9 @@ class FinalShowdown(Mode):
     )
 
     SAUCER_EJECT_EVENTS = {
-        1: "delayed_kickout_saucer_1",
-        2: "delayed_kickout_saucer_2",
-        3: "delayed_kickout_saucer_3",
+        1: "kickout_saucer_1",
+        2: "kickout_saucer_2",
+        3: "kickout_saucer_3",
     }
 
     PERSISTENT_VARS = {
@@ -112,6 +114,11 @@ class FinalShowdown(Mode):
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
 
+        # A fresh Final Showdown attempt must not inherit the completed flag
+        # from an earlier Kingpin victory (important for test-mode replays too).
+        if self.machine.game and self.machine.game.player:
+            self.machine.game.player["final_wizard_completed"] = 0
+
         self._runtime_state = {}
         self.mode_exiting = False
         self.current_phase = None
@@ -126,6 +133,10 @@ class FinalShowdown(Mode):
 
         self.held_saucers = set()
         self.locked_saucers = set()
+        # Each delayed Kingpin saucer eject gets a per-saucer generation token.
+        # A new hit/action invalidates any older callback so a stale Reveal,
+        # parking, or final-lock release can never eject a newly owned ball.
+        self._saucer_eject_generation = {1: 0, 2: 0, 3: 0}
         self.final_gate_ready = False
         self.final_shot_active = False
 
@@ -159,6 +170,12 @@ class FinalShowdown(Mode):
         self._reset_player_vars()
         self._register_handlers()
 
+        # Final Showdown owns all saucer timing while active. Cancel any
+        # delayed clear/eject left behind by bookends or another mode before
+        # taking ownership, then clear any balls physically sitting in a saucer.
+        self.machine.events.post("cancel_pending_saucer_ejects")
+        self._clear_startup_saucers()
+
         self.machine.events.post("disable_daily_bugle_mystery")
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("cmd_upper_flippers_enable")
@@ -169,7 +186,6 @@ class FinalShowdown(Mode):
         self.mode_exiting = True
         self.delay.clear()
         self._release_all_saucers()
-        self.machine.events.post("cmd_upper_flippers_enable")
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("final_showdown_disable_final_shot_save")
         self.machine.events.post("final_showdown_clear_all_final_showdown_lights")
@@ -178,6 +194,20 @@ class FinalShowdown(Mode):
         self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post("hide_mode_status")
         super().mode_stop(**kwargs)
+
+    def _clear_startup_saucers(self):
+        occupied = []
+        for saucer in (1, 2, 3):
+            switch = self.machine.switches.get(f"s_saucer_{saucer}")
+            if switch and self.machine.switch_controller.is_active(switch):
+                occupied.append(saucer)
+        for index, saucer in enumerate(occupied):
+            self._eject_saucer(
+                saucer,
+                delay_ms=index * 300,
+                owner="startup_clear",
+                expected_phase=None,
+            )
 
     def _register_handlers(self):
         # Multiball / drain lifecycle.
@@ -197,6 +227,7 @@ class FinalShowdown(Mode):
             priority=100000,
         )
         self.add_mode_event_handler("final_showdown_release_all_saucers", self._release_all_saucers)
+        self.add_mode_event_handler("final_showdown_test_last_ball_lost", self._test_last_ball_lost)
 
         # A+B / flipper controls.
         self.add_mode_event_handler("s_inlane_a_active", self._a_rollover)
@@ -289,6 +320,7 @@ class FinalShowdown(Mode):
         if phase not in self.PHASES or phase in self.played_phases:
             return
 
+        self._invalidate_all_saucer_ejects()
         self.current_phase = phase
         self.played_phases.add(phase)
         self._set("final_showdown_current_area", phase)
@@ -304,6 +336,10 @@ class FinalShowdown(Mode):
         self.machine.events.post("cmd_upper_flippers_enable")
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("final_showdown_phase_changed", phase=phase)
+        if phase == "reveal":
+            self.machine.events.post("final_showdown_parking_saucers_off")
+        else:
+            self.machine.events.post("final_showdown_parking_saucers_on")
 
         getattr(self, f"_start_{phase}_phase")()
 
@@ -405,17 +441,19 @@ class FinalShowdown(Mode):
         self._mark_b()
 
     def _mark_a(self):
-        if self.mode_exiting:
+        if self.mode_exiting or self.a_hit:
             return
         self.a_hit = True
         self._set("final_showdown_a_hit", 1)
+        self.machine.events.post("final_showdown_a_hit")
         self._check_ab()
 
     def _mark_b(self):
-        if self.mode_exiting:
+        if self.mode_exiting or self.b_hit:
             return
         self.b_hit = True
         self._set("final_showdown_b_hit", 1)
+        self.machine.events.post("final_showdown_b_hit")
         self._check_ab()
 
     def _check_ab(self):
@@ -431,7 +469,17 @@ class FinalShowdown(Mode):
     def _collect_add_a_ball_if_ready(self):
         if not self.add_a_ball_ready or self._balls_in_play() >= self.MAX_BALLS:
             return False
-        self.machine.events.post("final_showdown_add_a_ball")
+
+        # MPF ends a multiball device when play drops to one ball. Final
+        # Showdown deliberately continues on that last ball, so the normal
+        # add_a_ball event is no longer valid at that point. Restart the
+        # 2-ball multiball from one ball; from 2-3 balls use its normal
+        # add-a-ball path.
+        if self._balls_in_play() <= 1:
+            self.machine.events.post("final_showdown_start_multiball")
+        else:
+            self.machine.events.post("final_showdown_add_a_ball")
+
         self.pending_add_a_ball = True
         self.delay.reset(
             name="final_showdown_add_ball_pending",
@@ -910,9 +958,21 @@ class FinalShowdown(Mode):
         self._award_jackpot(self.reveal_collect_value)
         self._refresh_reveal_lights()
         self._update_reveal_status()
-        self._eject_saucer(saucer, delay_ms=500)
+        self._eject_saucer(
+            saucer,
+            delay_ms=self.REVEAL_EJECT_MS,
+            owner="reveal",
+            expected_phase="reveal",
+        )
         if not self.reveal_lit_positions:
-            self.delay.reset(name="final_showdown_reveal_finish", ms=700, callback=self._finish_phase)
+            # Do not leave Reveal before its final jackpot ball has actually
+            # been released. Otherwise the delayed eject can land in the next
+            # recap phase and kick a newly parked ball.
+            self.delay.reset(
+                name="final_showdown_reveal_finish",
+                ms=self.REVEAL_EJECT_MS + self.REVEAL_FINISH_AFTER_EJECT_MS,
+                callback=self._finish_phase,
+            )
         return True
 
     def _update_reveal_status(self):
@@ -931,7 +991,9 @@ class FinalShowdown(Mode):
     def _start_final_lock(self):
         if self.mode_exiting:
             return
+        self._invalidate_all_saucer_ejects()
         self.current_phase = "final_lock"
+        self.machine.events.post("final_showdown_parking_saucers_off")
         self.locked_saucers.clear()
         self.final_gate_ready = False
         self.final_shot_active = False
@@ -1239,6 +1301,11 @@ class FinalShowdown(Mode):
         if self.mode_exiting or saucer not in (1, 2, 3):
             return
 
+        # A fresh saucer switch means this occupancy is new/current. Any
+        # delayed eject that was scheduled for an older occupancy must not be
+        # allowed to fire against this ball.
+        self._invalidate_saucer_eject(saucer)
+        self.machine.events.post("cancel_pending_saucer_ejects")
         self._collect_add_a_ball_if_ready()
 
         if self.current_phase == "final_lock":
@@ -1259,14 +1326,16 @@ class FinalShowdown(Mode):
         if saucer in self.held_saucers:
             return
 
-        # Never park the last free ball during the normal recap phases.
-        # If all other live balls are already held in saucers, eject this one
-        # instead so play can continue.
-        if self._balls_in_play() - len(self.held_saucers) <= 1:
+        # Always allow the first ball to park. Only enforce the last-free-ball
+        # guard after at least one ball is already parked. This avoids a false
+        # quick eject if MPF briefly reports balls_in_play=1 while another ball
+        # is still physically loose on the playfield.
+        if self.held_saucers and self._balls_in_play() - len(self.held_saucers) <= 1:
             self._eject_saucer(saucer, delay_ms=250)
             return
 
         self.held_saucers.add(saucer)
+        self.machine.events.post("final_showdown_parking_saucer_unavailable", saucer=f"saucer_{saucer}")
         self.machine.events.post("final_showdown_saucer_hold_started", saucer=f"saucer_{saucer}")
         self.delay.reset(
             name=f"final_showdown_saucer_{saucer}_hold",
@@ -1280,36 +1349,90 @@ class FinalShowdown(Mode):
             return
         self.held_saucers.discard(saucer)
         self.machine.events.post("final_showdown_saucer_released", saucer=f"saucer_{saucer}")
+        if self.current_phase in ("timed", "staged_drops", "rooftop", "area_control"):
+            self.machine.events.post("final_showdown_parking_saucer_available", saucer=f"saucer_{saucer}")
         self._eject_saucer(saucer)
 
     def _cancel_saucer_hold(self, saucer):
         self.delay.remove(f"final_showdown_saucer_{saucer}_hold")
         self.held_saucers.discard(saucer)
 
-    def _eject_saucer(self, saucer, delay_ms=0):
+    def _invalidate_saucer_eject(self, saucer):
+        if saucer not in self._saucer_eject_generation:
+            return
+        self._saucer_eject_generation[saucer] += 1
+        self.delay.remove(f"final_showdown_saucer_{saucer}_eject")
+
+    def _invalidate_all_saucer_ejects(self):
+        for saucer in (1, 2, 3):
+            self._invalidate_saucer_eject(saucer)
+
+    def _post_owned_saucer_eject(self, saucer, generation, owner, expected_phase):
+        if self.mode_exiting:
+            return
+        if generation != self._saucer_eject_generation.get(saucer):
+            self.log.debug(
+                "Ignoring stale Final Showdown saucer %s eject owner=%s generation=%s",
+                saucer, owner, generation,
+            )
+            return
+        if expected_phase is not None and self.current_phase != expected_phase:
+            self.log.debug(
+                "Ignoring Final Showdown saucer %s eject owner=%s: phase changed %s -> %s",
+                saucer, owner, expected_phase, self.current_phase,
+            )
+            return
+        event = self.SAUCER_EJECT_EVENTS.get(saucer)
+        if event:
+            self.machine.events.post(event)
+
+    def _eject_saucer(self, saucer, delay_ms=0, owner="final_showdown", expected_phase=None):
         event = self.SAUCER_EJECT_EVENTS.get(saucer)
         if not event:
             return
+
+        # Supersede any older Kingpin eject for this saucer before scheduling
+        # the new one. Shared villain_progression remains only the physical
+        # executor of the explicit request.
+        self._invalidate_saucer_eject(saucer)
+        generation = self._saucer_eject_generation[saucer]
+
         if delay_ms:
+            if expected_phase is None:
+                expected_phase = self.current_phase
             self.delay.reset(
                 name=f"final_showdown_saucer_{saucer}_eject",
                 ms=delay_ms,
-                callback=partial(self.machine.events.post, event),
+                callback=self._post_owned_saucer_eject,
+                saucer=saucer,
+                generation=generation,
+                owner=owner,
+                expected_phase=expected_phase,
             )
         else:
             self.machine.events.post(event)
 
     def _release_all_saucers(self, **kwargs):
+        self._invalidate_all_saucer_ejects()
+
+        # Clear Kingpin's logical hold/lock state first. A ball can enter a
+        # saucer during the victory hold after mode_exiting is set, so that
+        # physical occupancy may never be added to either tracking set.
         for saucer in list(self.held_saucers):
             self._cancel_saucer_hold(saucer)
             self.machine.events.post("final_showdown_saucer_released", saucer=f"saucer_{saucer}")
-            self._eject_saucer(saucer)
         self.held_saucers.clear()
 
         for saucer in list(self.locked_saucers):
             self.machine.events.post("final_showdown_final_saucer_released", saucer=f"saucer_{saucer}")
-            self._eject_saucer(saucer)
         self.locked_saucers.clear()
+
+        # Trust the physical switches at cleanup. Eject every actually occupied
+        # saucer, including balls that arrived after the winning VUK shot.
+        for saucer in (1, 2, 3):
+            switch = self.machine.switches.get(f"s_saucer_{saucer}")
+            if switch and self.machine.switch_controller.is_active(switch):
+                self._eject_saucer(saucer)
 
     def _vuk_hit(self, **kwargs):
         if self.mode_exiting:
@@ -1325,14 +1448,47 @@ class FinalShowdown(Mode):
     def _defeat_kingpin(self):
         if self.mode_exiting:
             return
+
+        # The winning VUK shot is a deliberate victory hold. Keep the physical
+        # ball trapped while the finale/message plays, disable the flippers so
+        # any remaining multiball balls can drain naturally, and only release
+        # the VUK / start the summary after the hold has finished.
         self.mode_exiting = True
         final_value = self.kingpin_bank
         self._score(final_value)
-        self.machine.events.post("request_vuk_eject")
+
         self.machine.events.post("final_showdown_disable_final_shot_save")
         self.machine.events.post("final_showdown_stop_all_multiballs")
+        self.machine.events.post("final_showdown_kingpin_vuk_off")
+        self.machine.events.post("cmd_flippers_disable")
+        self.machine.events.post("cmd_upper_flippers_disable")
+        self.machine.events.post("cancel_mode_message_reminder")
+        self.machine.events.post("hide_mode_status")
+        self.machine.events.post(
+            "final_showdown_victory_hold_started",
+            value=final_value,
+            duration_ms=self.FINAL_VICTORY_HOLD_MS,
+        )
         self.machine.events.post("final_showdown_kingpin_defeated", value=final_value)
-        self._show_message("KINGPIN DEFEATED", f"{final_value:,}")
+        self._show_message("KINGPIN DEFEATED", f"{final_value:,}", reminder=True)
+
+        self.delay.reset(
+            name="final_showdown_victory_hold",
+            ms=self.FINAL_VICTORY_HOLD_MS,
+            callback=self._finish_kingpin_victory_hold,
+            final_value=final_value,
+        )
+
+    def _finish_kingpin_victory_hold(self, final_value=0):
+        # Keep every flipper disabled through the handoff. Clear any balls that
+        # are still trapped in Kingpin-owned saucers, then release the winning
+        # VUK ball and continue into the completion/summary flow.
+        self.machine.events.post("cmd_flippers_disable")
+        self.machine.events.post("cmd_upper_flippers_disable")
+        self.machine.events.post("cancel_mode_message_reminder")
+        self._release_all_saucers()
+        self.machine.events.post("final_showdown_victory_hold_finished", value=int(final_value))
+        self.machine.events.post("request_vuk_eject")
         self.machine.events.post("final_showdown_mode_complete")
 
     def _fail_showdown(self, title="KINGPIN GETS AWAY", subtitle="FINAL SHOWDOWN LOST"):
@@ -1350,6 +1506,15 @@ class FinalShowdown(Mode):
         self.machine.events.post("final_showdown_stop_all_multiballs")
         self._show_message(title, subtitle)
         self.machine.events.post("final_showdown_mode_failed")
+
+    def _test_last_ball_lost(self, **kwargs):
+        del kwargs
+        if self.mode_exiting:
+            return
+        # In test mode the harness saves the physical last ball so the test
+        # session can continue. Treat that saved drain as a real exhausted
+        # Final Showdown attempt; otherwise recap play can loop forever.
+        self._fail_showdown("KINGPIN GETS AWAY", "ALL BALLS LOST")
 
     def _multiball_ended(self, **kwargs):
         del kwargs
