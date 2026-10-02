@@ -1258,6 +1258,14 @@ class FinalShowdown(Mode):
     def _park_saucer(self, saucer):
         if saucer in self.held_saucers:
             return
+
+        # Never park the last free ball during the normal recap phases.
+        # If all other live balls are already held in saucers, eject this one
+        # instead so play can continue.
+        if self._balls_in_play() - len(self.held_saucers) <= 1:
+            self._eject_saucer(saucer, delay_ms=250)
+            return
+
         self.held_saucers.add(saucer)
         self.machine.events.post("final_showdown_saucer_hold_started", saucer=f"saucer_{saucer}")
         self.delay.reset(

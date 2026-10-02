@@ -205,7 +205,7 @@ class CrimeWave(Mode):
             saucer=saucer,
         )
         self._refresh_vuk_display_if_active()
-        if self._balls_in_play() - len(self.held_saucers) <= 1:
+        if self._balls_in_play() - len(self.held_saucers) <= 0:
             self._release_saucer(saucer)
 
     def _release_saucer(self, saucer, **kwargs):
