@@ -1121,6 +1121,15 @@ class VillainProgression(Mode):
         player = self.machine.game.player
         kind = str(mode_kind or "").upper()
         key = str(mode_key or "")
+
+        # Every test launch is a fresh disposable attempt. Clear persistent
+        # post-wizard drain guards left by a previous test before starting the
+        # next selected mode; otherwise the machine-level saucer/VUK safety
+        # rules will immediately eject shots in the new test.
+        player["final_wizard_completed"] = 0
+        player["chapter_select_waiting_for_summary"] = 0
+        player["test_mode_waiting_for_ball_return"] = 0
+
         player["test_mode_select_stage"] = "MODE"
         # Keep the physical ball in the shooter lane through the normal intro.
         # The harness will autoplunge after villain_bookend_intro_done; the
