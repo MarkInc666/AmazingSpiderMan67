@@ -80,6 +80,7 @@
     l_a_rollover: F0F0F0
     l_gi_a: F0F0F0
     l_star: F0F0F0
+    l_star2: F0F0F0
     l_special: F0F0F0
     l_advance_multiplier: F0F0F0
     l_mid_multibonus: F0F0F0
@@ -185,6 +186,7 @@
     l_a_rollover: 50F050
     l_gi_a: 50F050
     l_star: 50F050
+    l_star2: 50F050
     l_special: 50F050
     l_advance_multiplier: 50F050
     l_mid_multibonus: 50F050
@@ -291,6 +293,7 @@
     l_a_rollover: 5050F0
     l_gi_a: 5050F0
     l_star: 5050F0
+    l_star2: 5050F0
     l_special: 5050F0
     l_advance_multiplier: 5050F0
     l_mid_multibonus: 5050F0
@@ -397,6 +400,7 @@
     l_a_rollover: F05050
     l_gi_a: F05050
     l_star: F05050
+    l_star2: F05050
     l_special: F05050
     l_advance_multiplier: F05050
     l_mid_multibonus: F05050

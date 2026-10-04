@@ -444,9 +444,11 @@ shows:
     - duration: 250ms
       lights:
         l_star: red
+        l_star2: red
     - duration: 250ms
       lights:
         l_star: off        
+        l_star2: off        
 
   doc_ock_breakout_5_show:
     - duration: 250ms

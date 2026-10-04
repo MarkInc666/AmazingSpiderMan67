@@ -284,8 +284,8 @@ light_player:
   the_web_tightens_slayer_right_bank_off:
     l_gi_5bank_lower: 404040
     l_gi_5bank_upper: 404040
-  the_web_tightens_slayer_star_on: {l_star: FF2020}
-  the_web_tightens_slayer_star_off: {l_star: off}
+  the_web_tightens_slayer_star_on: {l_star: FF2020, l_star2: FF2020}
+  the_web_tightens_slayer_star_off: {l_star: off, l_star2: off}
   the_web_tightens_slayer_saucer_on:
     l_1_hole_l: FF2020
     l_1_hole_r: FF2020
@@ -310,6 +310,7 @@ light_player:
     l_gi_5bank_lower: 404040
     l_gi_5bank_upper: 404040
     l_star: off
+    l_star2: off
     l_1_hole_l: 404040
     l_1_hole_r: 404040
     l_2_hole_l: 404040
@@ -435,6 +436,7 @@ light_player:
     l_upper_left: off
     l_upper_right: off
     l_star: off
+    l_star2: off
     l_gi_top_1: FFFFFF
     l_gi_top_2: FFFFFF
     l_gi_top_3: FFFFFF
@@ -444,12 +446,14 @@ light_player:
     l_upper_middle: off
     l_upper_right: off
     l_star: off
+    l_star2: off
 
   the_web_tightens_clear_phase_lights:
     l_left_web_target: stop
     l_mid_web_target: stop
     l_spinner: stop
     l_star: stop
+    l_star2: stop
     l_gi_3bank: stop
     l_gi_5bank_lower: stop
     l_gi_5bank_upper: stop
@@ -509,6 +513,7 @@ light_player:
     l_mid_web_target: stop
     l_spinner: stop
     l_star: stop
+    l_star2: stop
     l_gi_3bank: stop
     l_gi_5bank_lower: stop
     l_gi_5bank_upper: stop
@@ -567,9 +572,11 @@ shows:
     - duration: 300ms
       lights:
         l_star: FFFFFF
+        l_star2: FFFFFF
     - duration: 300ms
       lights:
         l_star: off
+        l_star2: off
 
   the_web_tightens_clock_tower_super_flash:
     - duration: 250ms

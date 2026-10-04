@@ -113,101 +113,114 @@ lights:
     #white    
 
 
+    
+  l_upper_right:
+    number: playfield-2-1
+    tags: insert_band_8
+    #white
+  l_upper_middle:
+    number: playfield-2-2  
+    tags: insert_band_8
+    #white
+  l_upper_left:
+    number: playfield-2-3      
+    tags: insert_band_8
+    #white
   l_pop_1_1:
-    number: playfield-2-1  
+    number: playfield-2-4  
     tags: gi, swami_area_upper_left, band_6
     #white    
   l_pop_1_2:
-    number: playfield-2-2  
-    tags: gi, swami_area_middle_left, band_6
-    #white    
-  l_pop_1_3:
-    number: playfield-2-3  
-    tags: gi, swami_area_middle_left, band_6
-    #white    
-  l_pop_1_4:
-    number: playfield-2-4  
-    tags: gi, swami_area_middle_left, band_6
-    #white    
-  l_pop_1_5:
     number: playfield-2-5  
     tags: gi, swami_area_middle_left, band_6
     #white    
+  l_pop_1_3:
+    number: playfield-2-6 
+    tags: gi, swami_area_middle_left, band_6
+    #white    
+  l_pop_1_4:
+    number: playfield-2-7 
+    tags: gi, swami_area_middle_left, band_6
+    #white    
+  l_pop_1_5:
+    number: playfield-2-8 
+    tags: gi, swami_area_middle_left, band_6
+    #white    
   l_pop_1_6:
-    number: playfield-2-6  
+    number: playfield-2-9 
     tags: gi, swami_area_middle_left, band_6
     #white    
   l_pop_1_7:
-    number: playfield-2-7  
+    number: playfield-2-10
     tags: gi, swami_area_middle_left, band_6
     #white    
   l_pop_1_8:
-    number: playfield-2-8  
+    number: playfield-2-11
     tags: gi, swami_area_middle_left, band_6
     #white    
   l_pop_1_9:
-    number: playfield-2-9  
+    number: playfield-2-12
     tags: gi, swami_area_middle_left, band_6
     #white    
   l_pop_1_10:
-    number: playfield-2-10  
+    number: playfield-2-13 
     tags: gi, swami_area_middle_left, band_6
     #white    
   l_pop_1_11:
-    number: playfield-2-11
+    number: playfield-2-14
     tags: gi, swami_area_upper_left, band_6
     #white    
   l_pop_1_12:
-    number: playfield-2-12
+    number: playfield-2-15
     tags: gi, swami_area_upper_left, band_6
     #white    
     
   l_pop_2_1:
-    number: playfield-2-13  
+    number: playfield-2-16 
     tags: gi, swami_area_upper_right, band_6
     #white    
   l_pop_2_2:
-    number: playfield-2-14  
+    number: playfield-2-17 
     tags: gi, swami_area_middle_right, band_6
     #white    
   l_pop_2_3:
-    number: playfield-2-15  
+    number: playfield-2-18 
     tags: gi, swami_area_middle_right, band_6
     #white
   l_pop_2_4:
-    number: playfield-2-16  
-    tags: gi, swami_area_middle_right, band_6
-    #white    
-  l_pop_2_5:
-    number: playfield-2-17  
-    tags: gi, swami_area_middle_right, band_6
-    #white    
-  l_pop_2_6:
-    number: playfield-2-18 
-    tags: gi, swami_area_middle_right, band_6
-    #white    
-  l_pop_2_7:
     number: playfield-2-19 
     tags: gi, swami_area_middle_right, band_6
     #white    
+  l_pop_2_5:
+    number: playfield-2-20
+    tags: gi, swami_area_middle_right, band_6
+    #white    
+  l_pop_2_6:
+    number: playfield-2-21
+    tags: gi, swami_area_middle_right, band_6
+    #white    
+  l_pop_2_7:
+    number: playfield-2-22
+    tags: gi, swami_area_middle_right, band_6
+    #white    
   l_pop_2_8:
-    number: playfield-2-20 
+    number: playfield-2-23
     tags: gi, swami_area_middle_right, band_6
     #white    
   l_pop_2_9:
-    number: playfield-2-21 
+    number: playfield-2-24
     tags: gi, swami_area_middle_right, band_6
     #white    
   l_pop_2_10:
-    number: playfield-2-22  
+    number: playfield-2-25 
     tags: gi, swami_area_middle_right, band_6
     #white    
   l_pop_2_11:
-    number: playfield-2-23
+    number: playfield-2-26
     tags: gi, swami_area_upper_right, band_6
     #white    
   l_pop_2_12:
-    number: playfield-2-24
+    number: playfield-2-27
     tags: gi, swami_area_upper_right, band_6
     #white    
 
@@ -333,109 +346,99 @@ lights:
     number: playfield-4-8
     tags: insert_band_7
     #red    
-  l_special:
+  l_star2:
     number: playfield-4-9
+    tags: insert_band_7
+    #red    
+  l_special:
+    number: playfield-4-10
     tags: insert_band_6
     #yellow    
   l_advance_multiplier:
-    number: playfield-4-11
+    number: playfield-4-12
     tags: insert_band_6
     #green
   l_mid_multibonus:
-    number: playfield-4-10
+    number: playfield-4-11
     tags: insert_band_6
     #white
   l_mid_web_target:
-    number: playfield-4-12
+    number: playfield-4-13
     tags: insert_band_7
     #white    
   l_gi_mid_spider:
-    number: playfield-4-13
+    number: playfield-4-14
     tags: gi, swami_area_upper_right, band_7
     type: grb    
     #white    
   l_3:
-    number: playfield-4-14
+    number: playfield-4-15
     tags: insert_band_7
     #green    
   l_3_hole_r:
-    number: playfield-4-15
-    tags: band_7, insert_band_7
-    #red
-  l_3_hole_l:
     number: playfield-4-16
     tags: band_7, insert_band_7
     #red
-  l_2_hole_r:
+  l_3_hole_l:
     number: playfield-4-17
     tags: band_7, insert_band_7
     #red
-  l_2:
+  l_2_hole_r:
     number: playfield-4-18
+    tags: band_7, insert_band_7
+    #red
+  l_2:
+    number: playfield-4-19
     tags: insert_band_7
     #green
   l_2_hole_l:
-    number: playfield-4-19
-    tags: band_7, insert_band_7
-    #red
-  l_1_hole_r:
     number: playfield-4-20
     tags: band_7, insert_band_7
     #red
-  l_123_bonus:
+  l_1_hole_r:
     number: playfield-4-21
+    tags: band_7, insert_band_7
+    #red
+  l_123_bonus:
+    number: playfield-4-22
     tags: insert_band_6
     #white
   l_1:
-    number: playfield-4-22
+    number: playfield-4-23
     tags: insert_band_7
     #green
   l_1_hole_l:
-    number: playfield-4-23
+    number: playfield-4-24
     tags: band_7, insert_band_7
     #red
   l_gi_ramp:
-    number: playfield-4-24
+    number: playfield-4-25
     tags: gi, swami_area_upper_left, band_7
     type: grb    
     #white
   l_gi_spinner:
-    number: playfield-4-25
+    number: playfield-4-26
     tags: gi, swami_area_middle_left, band_6
     type: grb  
     #white
   l_gi_top_1: 
-    number: playfield-4-26
-    tags: gi, swami_area_upper_left, band_8
-    type: grb  
-    #white
-  l_gi_top_2: 
     number: playfield-4-27
     tags: gi, swami_area_upper_left, band_8
     type: grb  
     #white
-  l_gi_top_3: 
+  l_gi_top_2: 
     number: playfield-4-28
-    tags: gi, swami_area_upper_right, band_8
+    tags: gi, swami_area_upper_left, band_8
     type: grb  
     #white
-  l_gi_top_4: 
+  l_gi_top_3: 
     number: playfield-4-29
     tags: gi, swami_area_upper_right, band_8
     type: grb  
     #white
-  l_upper_right:
-    number: playfield-4-30  
-    tags: insert_band_8
+  l_gi_top_4: 
+    number: playfield-4-30
+    tags: gi, swami_area_upper_right, band_8
+    type: grb  
     #white
-  l_upper_middle:
-    number: playfield-4-31  
-    tags: insert_band_8
-    #white
-  l_upper_left:
-    number: playfield-4-32      
-    tags: insert_band_8
-    #white
-
-
-
+    

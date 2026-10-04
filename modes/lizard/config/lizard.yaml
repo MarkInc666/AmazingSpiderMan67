@@ -388,14 +388,17 @@ shows:
     - duration: 250ms
       lights:
         l_star: red
+        l_star2: red
     - duration: 250ms
       lights:
         l_star: off
+        l_star2: off
 
   lizard_star_10x_armed_show:
     - duration: 1s
       lights:
         l_star: red
+        l_star2: red
 
   lizard_left_web_show:
     - duration: 250ms

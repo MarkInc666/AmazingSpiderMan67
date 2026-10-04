@@ -350,9 +350,11 @@ shows:
     - duration: 200ms
       lights:
         l_star: red
+        l_star2: red
     - duration: 200ms
       lights:
         l_star: off
+        l_star2: off
 
 sound_player:
   dr_magneto_qualifier_sfx:

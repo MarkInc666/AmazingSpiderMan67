@@ -181,6 +181,7 @@ light_player:
     l_gi_5bank_lower: stop
     l_gi_5bank_upper: stop
     l_star: stop
+    l_star2: stop
     l_1_hole_l: stop
     l_1_hole_r: stop
     l_2_hole_l: stop
@@ -232,9 +233,9 @@ shows:
       lights: {l_gi_5bank_lower: off, l_gi_5bank_upper: off}
   bolton_boomer_star_pulse:
     - duration: 500ms
-      lights: {l_star: yellow}
+      lights: {l_star: yellow, l_star2: yellow}
     - duration: 500ms
-      lights: {l_star: off}
+      lights: {l_star: off, l_star2: off}
 
   bolton_boomer_saucers_pulse:
     - duration: 500ms

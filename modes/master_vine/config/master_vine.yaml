@@ -296,6 +296,7 @@ light_player:
     l_right_a: off
     l_left_b: off
     l_star: off
+    l_star2: off
 
   master_vine_all_lights_off:
     <<: *vine_all_objectives_off
@@ -354,7 +355,7 @@ light_player:
   master_vine_b_collected: {l_b_rollover: "303030"}
   master_vine_middle_a_collected: {l_right_a: "303030"}
   master_vine_middle_b_collected: {l_left_b: "303030"}
-  master_vine_star_collected: {l_star: "400000"}
+  master_vine_star_collected: {l_star: "400000", l_star2: "400000"}
 
 shows:
   master_vine_upper_spinner_pulse:
@@ -483,9 +484,9 @@ shows:
       lights: {l_left_b: "303030"}
   master_vine_star_pulse:
     - duration: 500ms
-      lights: {l_star: white}
+      lights: {l_star: white, l_star2: white}
     - duration: 500ms
-      lights: {l_star: "400000"}
+      lights: {l_star: "400000", l_star2: "400000"}
 
 sound_player:
   play_mode_jackpot:

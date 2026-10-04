@@ -111,7 +111,7 @@ show_player:
     flash_skillshot:
       key: skillshot_lit_show
       show_tokens:
-        lights: l_star
+        lights: l_star, l_star2
 
   skillshot_lit_upper_a:
     flash_skillshot:

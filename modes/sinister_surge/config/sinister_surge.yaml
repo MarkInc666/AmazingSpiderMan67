@@ -620,9 +620,11 @@ shows:
     - duration: 250ms
       lights:
         l_star: yellow
+        l_star2: yellow
     - duration: 250ms
       lights:
         l_star: off
+        l_star2: off
 
   sinister_surge_upper_targets_lit_show:
     - duration: 120ms

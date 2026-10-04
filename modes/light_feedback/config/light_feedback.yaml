@@ -124,7 +124,7 @@ show_player:
       loops: 1
       priority: 900
       show_tokens:
-        lights: l_star
+        lights: l_star, l_star2
   s_inlane_a_active:
     switch_feedback_single:
       loops: 1

@@ -272,6 +272,7 @@ light_player:
     l_upper_right: off
   fifth_dimension_curse_add_a_ball_target_clear:
     l_star: off
+    l_star2: off
     l_a_rollover: off
     l_b_rollover: off
   fifth_dimension_curse_saucer_lights_clear:
@@ -446,9 +447,9 @@ show_player:
 shows:
   fifth_dimension_curse_add_a_ball_star_pulse:
     - duration: 500ms
-      lights: {l_star: white}
+      lights: {l_star: white, l_star2: white}
     - duration: 500ms
-      lights: {l_star: off}
+      lights: {l_star: off, l_star2: off}
   fifth_dimension_curse_add_a_ball_upper_a_pulse:
     - duration: 500ms
       lights: {l_a_rollover: white}

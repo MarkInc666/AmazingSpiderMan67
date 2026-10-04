@@ -135,6 +135,7 @@ light_player:
     l_3_hole_l: off
     l_3_hole_r: off
     l_star: off
+    l_star2: off
     l_a_rollover: off
     l_b_rollover: off
 
@@ -146,6 +147,7 @@ light_player:
     l_3_hole_l: off
     l_3_hole_r: off
     l_star: off
+    l_star2: off
     l_a_rollover: off
     l_b_rollover: off
     l_mid_web_target: off
@@ -161,6 +163,7 @@ light_player:
     l_3_hole_r: red
   spider_men_star_solid:
     l_star: red
+    l_star2: red
   spider_men_upper_a_solid:
     l_a_rollover: red
   spider_men_upper_b_solid:
@@ -226,9 +229,9 @@ shows:
 
   spider_men_star_pulse_show:
     - duration: 500ms
-      lights: {l_star: red}
+      lights: {l_star: red, l_star2: red}
     - duration: 500ms
-      lights: {l_star: "400000"}
+      lights: {l_star: "400000", l_star2: "400000"}
 
   spider_men_upper_a_pulse_show:
     - duration: 500ms

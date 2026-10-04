@@ -219,9 +219,11 @@ shows:
   - duration: 250ms
     lights:
       l_star: red
+      l_star2: red
   - duration: 250ms
     lights:
       l_star: off
+      l_star2: off
 
   fifth_avenue_phantom_left_drops_show:
   - duration: 250ms
@@ -353,6 +355,7 @@ light_player:
 
   fifth_avenue_phantom_clear_lights:
     l_star: off
+    l_star2: off
     l_gi_5bank_lower: off
     l_gi_5bank_upper: off
     l_5bank_1: off

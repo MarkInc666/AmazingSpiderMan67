@@ -181,6 +181,7 @@ light_player:
     l_gi_5bank_lower: off
     l_gi_5bank_upper: off
     l_star: off
+    l_star2: off
 
   doctor_cool_clear_saucer_lights:
     l_1: off
@@ -309,6 +310,8 @@ shows:
     - duration: 250ms
       lights:
         l_star: red
+        l_star2: red
     - duration: 250ms
       lights:
         l_star: off
+        l_star2: off

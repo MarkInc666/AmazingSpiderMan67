@@ -198,6 +198,7 @@ light_player:
     l_right_a: off
     l_left_b: off
     l_star: off
+    l_star2: off
 
   time_tossed_showdown_vine_left_web_lit: {l_left_web_target: white}
   time_tossed_showdown_vine_center_web_lit: {l_mid_web_target: white}
@@ -246,7 +247,7 @@ light_player:
   time_tossed_showdown_vine_b_lit: {l_b_rollover: white}
   time_tossed_showdown_vine_middle_a_lit: {l_right_a: white}
   time_tossed_showdown_vine_middle_b_lit: {l_left_b: white}
-  time_tossed_showdown_vine_star_lit: {l_star: white}
+  time_tossed_showdown_vine_star_lit: {l_star: white, l_star2: white}
 
   # Spider-Men phase: lights themselves are driven by pulse shows below.
   time_tossed_showdown_phase_spider:
@@ -259,12 +260,15 @@ light_player:
     l_spinner: white
     l_gi_3bank: white
     l_star: yellow
+    l_star2: yellow
   time_tossed_showdown_tech_star_consumed:
     l_star: off
+    l_star2: off
   time_tossed_showdown_tech_spinner_scored:
     l_spinner: "FFFF40"
   time_tossed_showdown_tech_star_score:
     l_star: yellow
+    l_star2: yellow
 
   time_tossed_showdown_spider_all_off:
     l_1_hole_l: off
@@ -274,6 +278,7 @@ light_player:
     l_3_hole_l: off
     l_3_hole_r: off
     l_star: off
+    l_star2: off
     l_a_rollover: off
     l_b_rollover: off
 
@@ -339,9 +344,9 @@ shows:
       lights: {l_3_hole_l: "400000", l_3_hole_r: "400000"}
   time_tossed_spider_star_pulse:
     - duration: 350ms
-      lights: {l_star: red}
+      lights: {l_star: red, l_star2: red}
     - duration: 350ms
-      lights: {l_star: "400000"}
+      lights: {l_star: "400000", l_star2: "400000"}
   time_tossed_spider_upper_a_pulse:
     - duration: 350ms
       lights: {l_a_rollover: red}
@@ -360,6 +365,6 @@ shows:
       lights: {l_spinner: "303030", l_gi_3bank: "303030"}
   time_tossed_tech_star_pulse:
     - duration: 400ms
-      lights: {l_star: yellow}
+      lights: {l_star: yellow, l_star2: yellow}
     - duration: 400ms
-      lights: {l_star: "404000"}
+      lights: {l_star: "404000", l_star2: "404000"}

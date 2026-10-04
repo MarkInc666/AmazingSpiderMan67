@@ -249,9 +249,9 @@ shows:
         l_3_hole_r: off
   conners_reptiles_star_pulse:
     - duration: 450ms
-      lights: {l_star: red}
+      lights: {l_star: red, l_star2: red}
     - duration: 450ms
-      lights: {l_star: off}
+      lights: {l_star: off, l_star2: off}
 
 sound_player:
   play_mode_jackpot:

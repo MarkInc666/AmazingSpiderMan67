@@ -322,6 +322,7 @@ shows:
     - duration: 250ms
       lights:
         l_star: purple
+        l_star2: purple
 
   villain_select_scorpion_show:
     - duration: 250ms
@@ -386,6 +387,7 @@ shows:
     - duration: 250ms
       lights:
         l_star: purple
+        l_star2: purple
         l_left_web_target: purple
         l_mid_web_target: purple
 

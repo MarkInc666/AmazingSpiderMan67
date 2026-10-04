@@ -95,6 +95,7 @@ light_player:
     l_gi_left_upper_flipper: off
   metal_zone_upper_right_destroyed:
     l_star: off
+    l_star2: off
     l_a_rollover: off
     l_b_rollover: off
     l_gi_ab: off
@@ -420,6 +421,7 @@ shows:
     - duration: 250ms
       lights:
         l_star: red
+        l_star2: red
         l_a_rollover: yellow
         l_b_rollover: yellow
         l_gi_ab: orange
@@ -431,6 +433,7 @@ shows:
     - duration: 250ms
       lights:
         l_star: off
+        l_star2: off
         l_a_rollover: off
         l_b_rollover: off
         l_gi_ab: off
@@ -443,6 +446,7 @@ shows:
     - duration: -1
       lights:
         l_star: red
+        l_star2: red
         l_a_rollover: yellow
         l_b_rollover: yellow
         l_gi_ab: 00BF00
@@ -455,6 +459,7 @@ shows:
     - duration: 600ms
       lights:
         l_star: red
+        l_star2: red
         l_a_rollover: yellow
         l_b_rollover: yellow
         l_gi_ab: 00BF00
@@ -466,6 +471,7 @@ shows:
     - duration: 600ms
       lights:
         l_star: off
+        l_star2: off
         l_a_rollover: off
         l_b_rollover: off
         l_gi_ab: off

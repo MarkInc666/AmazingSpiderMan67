@@ -138,8 +138,10 @@ light_player:
     l_3_hole_r: off
   final_showdown_reveal_star_on:
     l_star: FFFFFF
+    l_star2: FFFFFF
   final_showdown_reveal_star_off:
     l_star: off
+    l_star2: off
 
   final_showdown_reveal_clear:
     l_1_hole_l: off
@@ -149,6 +151,7 @@ light_player:
     l_3_hole_l: off
     l_3_hole_r: off
     l_star: off
+    l_star2: off
 
   # Temporary 20-second parking during recap phases.
   final_showdown_saucer_hold_started{saucer=="saucer_1"}:

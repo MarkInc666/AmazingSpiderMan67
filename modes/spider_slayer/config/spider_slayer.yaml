@@ -257,6 +257,7 @@ light_player:
     l_gi_5bank_lower: stop
     l_gi_5bank_upper: stop
     l_star: stop
+    l_star2: stop
     l_1_hole_l: stop
     l_1_hole_r: stop
     l_2_hole_l: stop
@@ -319,9 +320,9 @@ shows:
     lights: {l_gi_5bank_lower: 401010, l_gi_5bank_upper: 401010}
   spider_slayer_star_pulse:
   - duration: 500ms
-    lights: {l_star: FF2020}
+    lights: {l_star: FF2020, l_star2: FF2020}
   - duration: 500ms
-    lights: {l_star: 401010}
+    lights: {l_star: 401010, l_star2: 401010}
   spider_slayer_saucer_pulse:
   - duration: 500ms
     lights: {l_1_hole_l: FF2020, l_1_hole_r: FF2020, l_2_hole_l: FF2020, l_2_hole_r: FF2020, l_3_hole_l: FF2020, 
@@ -355,7 +356,7 @@ shows:
     lights: {l_gi_5bank_lower: A02020, l_gi_5bank_upper: A02020}
   spider_slayer_star_solid:
   - duration: -1
-    lights: {l_star: A02020}
+    lights: {l_star: A02020, l_star2: A02020}
   spider_slayer_saucer_solid:
   - duration: -1
     lights: {l_1_hole_l: A02020, l_1_hole_r: A02020, l_2_hole_l: A02020, l_2_hole_r: A02020, l_3_hole_l: A02020,
