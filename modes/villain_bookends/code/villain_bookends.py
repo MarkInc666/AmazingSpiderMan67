@@ -7,6 +7,8 @@ class VillainBookends(Mode):
 
     INTRO_MS = 5000
     SUMMARY_MS = 6000
+    WIZARD_INTRO_MS = 6000
+    WIZARD_SUMMARY_MS = 7000
     COMIC_SUMMARY_MS = 3000
     COMIC_SUMMARY_VILLAINS = {
         "sinister_surge": 1,
@@ -1330,12 +1332,35 @@ class VillainBookends(Mode):
         self.delay.remove("villain_summary_restore_daily_bugle")
         self.machine.events.post("villain_summary_vuk_hold_transferred_to_mini_wizard")
 
+    def _is_wizard(self, villain):
+        return villain in self.UNSKIPPABLE_SUMMARY_VILLAINS
+
+    def _set_wizard_chapter_roster(self, villain):
+        """Use the exact definitions and display names used by the chapter panel.
+
+        Snapshot machine variables so test harness starts and chapter transitions
+        cannot leave this summary showing another chapter's roster.
+        """
+        progression = self.machine.modes.get("villain_progression")
+        chapter = next((item for item in progression.CHAPTERS
+                        if item["mini_wizard_key"] == villain), None) if progression else None
+        number = self.COMIC_SUMMARY_VILLAINS.get(villain)
+        self._set_machine_var("wizard_bookend_chapter", f"CHAPTER {number}" if number else "FINAL WIZARD")
+        for index in range(1, 6):
+            name = ""
+            if chapter and index <= len(chapter["villains"]):
+                key = chapter["villains"][index - 1]
+                name = progression.VILLAINS[key]["name"]
+            self._set_machine_var(f"wizard_bookend_villain_{index}", name)
+        if number and not chapter:
+            self.warning_log("Wizard chapter roster unavailable for %s", villain)
+
     def _intro_request(self, villain=None, start_event=None, **kwargs):
         if villain not in self.VILLAINS:
             self.warning_log("Unknown villain intro requested: %s", villain)
             return
 
-        self.machine.events.post("play_song_14")
+        self.machine.events.post("play_wizard_intro_music" if self._is_wizard(villain) else "play_song_14")
         self.machine.game.player["villain_mode_in_summary"] = False
 
         data = self.VILLAINS[villain]
@@ -1358,12 +1383,12 @@ class VillainBookends(Mode):
         self._set_machine_var("villain_bookend_footer", "HOLD BOTH FLIPPERS TO SKIP")
 
         self.machine.events.post("villain_bookend_summary_hide")
-        self.machine.events.post("villain_bookend_intro_show", villain=villain)
+        self.machine.events.post("wizard_bookend_intro_show" if self._is_wizard(villain) else "villain_bookend_intro_show", villain=villain)
 
         self.delay.remove("villain_bookend_done")
         self.delay.add(
             name="villain_bookend_done",
-            ms=self.INTRO_MS,
+            ms=self.WIZARD_INTRO_MS if self._is_wizard(villain) else self.INTRO_MS,
             callback=self._finish_current_bookend
         )
 
@@ -1429,7 +1454,7 @@ class VillainBookends(Mode):
         self.pending_terminal_summary_request = None
         self.delay.remove("villain_terminal_award_summary_delay")
 
-        self.machine.events.post("play_song_21")
+        self.machine.events.post("play_wizard_summary_music" if self._is_wizard(villain) else "play_song_21")
         self.machine.game.player["villain_mode_in_summary"] = True
 
         if self.summary_vuk_release_pending:
@@ -1496,10 +1521,18 @@ class VillainBookends(Mode):
             )
 
         self.machine.events.post("villain_bookend_intro_hide")
-        # Chapter wizards use two distinct bookends: first the normal mode
-        # summary with score/stats, then a dedicated Comic COLLECTED screen.
-        # Do not substitute the Comic widget for the summary.
-        self.machine.events.post("villain_bookend_summary_show", villain=villain)
+        # Snapshot the chapter roster before any progression or widget changes.
+        if self._is_wizard(villain):
+            self._set_machine_var("wizard_bookend_name", data["title"])
+            self._set_machine_var("wizard_bookend_score", f"{points:,}")
+            self._set_machine_var("wizard_bookend_result", title)
+            self._set_wizard_chapter_roster(villain)
+        summary_event = (
+            "wizard_final_summary_show" if villain == "final_showdown"
+            else "wizard_bookend_summary_show" if comic_summary
+            else "villain_bookend_summary_show"
+        )
+        self.machine.events.post(summary_event, villain=villain)
         # Own the playfield lighting for the full summary so stopped gameplay-mode
         # shows cannot bleed through. Wizards use the slower six-second shutdown;
         # ordinary villains get a fast top-to-bottom neutral wipe, then hold dim.
@@ -1511,7 +1544,7 @@ class VillainBookends(Mode):
         self.delay.remove("villain_bookend_done")
         self.delay.add(
             name="villain_bookend_done",
-            ms=self.SUMMARY_MS,
+            ms=self.WIZARD_SUMMARY_MS if comic_summary else self.SUMMARY_MS,
             callback=self._finish_current_bookend
         )
 
@@ -1548,7 +1581,7 @@ class VillainBookends(Mode):
         self._set_machine_var("villain_bookend_line_3", data["intro_3"])
         self._set_machine_var("villain_bookend_footer", "RELEASE FLIPPER TO RETURN")
 
-        self.machine.events.post("villain_bookend_intro_show", villain=villain)
+        self.machine.events.post("wizard_bookend_intro_show" if self._is_wizard(villain) else "villain_bookend_intro_show", villain=villain)
 
     def _intro_hold_release(self, **kwargs):
         self.machine.events.post("villain_bookend_intro_hide")
@@ -1608,13 +1641,13 @@ class VillainBookends(Mode):
         starting_saucer = None
         starting_vuk = False
 
-        # A chapter wizard gets a full six-second score/stat summary followed
+        # A chapter wizard gets a seven-second chapter summary followed
         # by a three-second fixed-cover Comic COLLECTED screen. Progression and
         # the caller's done_event are held until both bookends have completed.
         if stage == "summary" and villain in self.COMIC_SUMMARY_VILLAINS:
             chapter_number = self.current_comic_chapter or self.COMIC_SUMMARY_VILLAINS[villain]
             self.machine.events.post("villain_bookend_summary_hide")
-            # The six-second score summary is now genuinely finished, but the
+            # The seven-second chapter summary is now finished, but the
             # three-second Comic COLLECTED cover has not started yet. Chapter
             # wizard physical-ball cleanup belongs at this boundary; the
             # caller's normal done_event intentionally remains deferred until

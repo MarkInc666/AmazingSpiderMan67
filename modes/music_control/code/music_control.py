@@ -4,6 +4,11 @@ from mpf.core.mode import Mode
 
 class MusicControl(Mode):
 
+    # Temporary bookend assignments. Replace only these two numbers when the
+    # new tracks are registered in music_control.yaml (target: 6s and 10s).
+    WIZARD_INTRO_SONG = 99
+    WIZARD_SUMMARY_SONG = 98
+
     CHAPTER_BASE_SONGS = {
         1: 1,
         2: 74,
@@ -29,6 +34,14 @@ class MusicControl(Mode):
                 partial(self.play_song, song_number=song_number)
             )
 
+        self.add_mode_event_handler(
+            "play_wizard_intro_music",
+            partial(self.play_song, song_number=self.WIZARD_INTRO_SONG),
+        )
+        self.add_mode_event_handler(
+            "play_wizard_summary_music",
+            partial(self.play_song, song_number=self.WIZARD_SUMMARY_SONG),
+        )
         self.add_mode_event_handler("music_stop_current", self.stop_current_song)
         self.add_mode_event_handler("play_chapter_base_music", self.play_chapter_base_music)
 

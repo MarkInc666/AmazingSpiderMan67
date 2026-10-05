@@ -491,3 +491,13 @@ sound_player:
     walk_and_talk:
       bus: music
       loops: -1
+
+  play_music_song_98:
+    extro_music:
+      bus: music
+      loops: 0
+
+  play_music_song_99:
+    in_color_intro:
+      bus: music
+      loops: 0

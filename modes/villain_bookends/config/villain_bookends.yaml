@@ -26,7 +26,15 @@ widget_player:
       action: play
       key: villain_intro
 
+  wizard_bookend_intro_show:
+    wizard_intro:
+      action: play
+      key: wizard_intro
+
   villain_bookend_intro_hide:
+    wizard_intro:
+      action: remove
+      key: wizard_intro
     villain_intro:
       action: remove
       key: villain_intro
@@ -35,7 +43,19 @@ widget_player:
     villain_summary:
       action: play
 
+  wizard_bookend_summary_show:
+    wizard_summary:
+      action: play
+
+  wizard_final_summary_show:
+    wizard_final_summary:
+      action: play
+
   villain_bookend_summary_hide:
+    wizard_summary:
+      action: remove
+    wizard_final_summary:
+      action: remove
     villain_summary:
       action: remove
 

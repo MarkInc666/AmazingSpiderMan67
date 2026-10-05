@@ -1,0 +1,59 @@
+ASM67 WIZARD BOOKENDS — October 5, 2026
+Based on ASM67_2026_10_05_12am.zip.
+
+INSTALL
+Copy the modes/, widgets/, and docs/ folders from this patch into the machine
+project, merging folders and replacing the matching files. Keep the three new
+wizard scenes in the same widgets folder as villain_intro.tscn.
+
+PRESENTATION
+All 11 chapter wizards and Final Showdown now use wizard_intro.tscn.
+Wizard intros: 6 seconds; existing double-flipper skip and instruction recall
+still work. Gameplay starts with each wizard's existing assigned song.
+
+Chapter wizard summaries: 7 seconds in wizard_summary.tscn, followed by the
+existing 3-second Comic COLLECTED screen. Total: 10 seconds. Summary music runs
+across both screens; it does not restart at the comic transition. Existing
+physical-ball cleanup still occurs at the transition to Comic COLLECTED, and
+progression/done events still wait until the comic screen has finished.
+
+The summary echoes the chapter panel's navy rows, red header, yellow heading,
+and green checkmarks. All five names are shown together. Names/order come from
+the live villain_progression.CHAPTERS and VILLAINS definitions, matched by
+wizard key, rather than the selected chapter or a duplicated list. Snapshot
+machine variables prevent chapter transitions or test-harness starts from
+showing stale player-panel values. Values use thousands separators.
+
+Final Showdown uses wizard_final_summary.tscn, without a chapter roster or
+Comic COLLECTED screen. Its existing 6-second summary timing is retained.
+Ordinary villain intros, summaries, songs, and timings remain as before.
+
+MUSIC PLACEHOLDERS
+No new music files are required yet. Dedicated events:
+  play_wizard_intro_music
+  play_wizard_summary_music
+
+Temporary fallback assignments are in modes/music_control/code/music_control.py:
+  WIZARD_INTRO_SONG = 14
+  WIZARD_SUMMARY_SONG = 21
+These currently reuse the existing bookend tracks. When new songs are available,
+register them in music_control.yaml using the existing play_music_song_N pattern
+and change these two numbers. Target approximately 6 seconds for intro and
+10 seconds for summary plus comic. Wizard gameplay songs remain unchanged.
+
+VARIABLES
+No new player variables are required. New strings are machine variables set by
+villain_bookends and read by GMC with variable_type = 2:
+  wizard_bookend_name, wizard_bookend_score, wizard_bookend_result
+  wizard_bookend_chapter, wizard_bookend_villain_1 through _5
+
+VERIFICATION
+Python execution with a stub MPF event/delay environment checked all 11 roster
+snapshots and 7+3-second transitions, deferred completion, unskippable summaries,
+ordinary-villain timing, Final Showdown routing, and dedicated music switching.
+YAML parsing, scene node/resource references, and all chapter text widths were
+checked. Godot text fit was estimated with a sans-serif font proxy.
+
+Still requires GMC/machine testing: scene discovery/display, actual Godot font
+layout, music transitions, flipper-held instructions, Comic COLLECTED covers,
+and physical-ball release/progression timing.
