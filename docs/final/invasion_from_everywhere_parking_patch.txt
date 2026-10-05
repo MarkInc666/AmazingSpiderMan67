@@ -1,0 +1,6 @@
+INVASION FROM EVERYWHERE PARKING PATCH — October 5, 2026
+Merge matching files into the project; keep previous patches installed.
+Retains 20s holds and relay awards. Adds drain/VUK-lock/continuous oldest-ball
+safety, common lighting, 300ms staggered cleanup and direct-stop VUK release.
+Workbook contains cumulative notes for the first nine wizard parking patches.
+Python stub checks passed; MPF/GMC and machine testing remain pending.

@@ -86,16 +86,42 @@ event_player:
   drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset
 
 show_player:
+  mastermind_trap_saucer_1_parking_clear:
+    mastermind_trap_saucer_1_parking_available_show: {action: stop}
+    mastermind_trap_saucer_1_parking_held_show: {action: stop}
+    mastermind_trap_saucer_1_parking_objective_show: {action: stop}
+  mastermind_trap_saucer_1_parking_available:
+    mastermind_trap_saucer_1_parking_available_show: {loops: -1, priority: 100}
+  mastermind_trap_saucer_1_parking_held:
+    mastermind_trap_saucer_1_parking_held_show: {loops: -1, priority: 100}
+  mastermind_trap_saucer_1_parking_objective:
+    mastermind_trap_saucer_1_parking_objective_show: {loops: -1, priority: 100}
+  mastermind_trap_saucer_2_parking_clear:
+    mastermind_trap_saucer_2_parking_available_show: {action: stop}
+    mastermind_trap_saucer_2_parking_held_show: {action: stop}
+    mastermind_trap_saucer_2_parking_objective_show: {action: stop}
+  mastermind_trap_saucer_2_parking_available:
+    mastermind_trap_saucer_2_parking_available_show: {loops: -1, priority: 100}
+  mastermind_trap_saucer_2_parking_held:
+    mastermind_trap_saucer_2_parking_held_show: {loops: -1, priority: 100}
+  mastermind_trap_saucer_2_parking_objective:
+    mastermind_trap_saucer_2_parking_objective_show: {loops: -1, priority: 100}
+  mastermind_trap_saucer_3_parking_clear:
+    mastermind_trap_saucer_3_parking_available_show: {action: stop}
+    mastermind_trap_saucer_3_parking_held_show: {action: stop}
+    mastermind_trap_saucer_3_parking_objective_show: {action: stop}
+  mastermind_trap_saucer_3_parking_available:
+    mastermind_trap_saucer_3_parking_available_show: {loops: -1, priority: 100}
+  mastermind_trap_saucer_3_parking_held:
+    mastermind_trap_saucer_3_parking_held_show: {loops: -1, priority: 100}
+  mastermind_trap_saucer_3_parking_objective:
+    mastermind_trap_saucer_3_parking_objective_show: {loops: -1, priority: 100}
   mastermind_trap_phase_para:
-    mastermind_para_saucers:
-      action: play
-      loops: -1
     mastermind_para_upper_targets:
       action: play
       loops: -1
 
   mastermind_trap_phase_lizard:
-    mastermind_para_saucers: {action: stop}
     mastermind_para_upper_targets: {action: stop}
     mastermind_lizard_pops:
       action: play
@@ -156,7 +182,6 @@ show_player:
     mastermind_super_webs: {action: stop}
 
   mode_mastermind_trap_stopping:
-    mastermind_para_saucers: {action: stop}
     mastermind_para_upper_targets: {action: stop}
     mastermind_lizard_pops: {action: stop}
     mastermind_delivery_left_web: {action: stop}
@@ -168,24 +193,75 @@ show_player:
     mastermind_super_webs: {action: stop}
 
 shows:
-  mastermind_para_saucers:
-    - duration: 400ms
+  mastermind_trap_saucer_1_parking_available_show:
+    - duration: 750ms
       lights:
-        l_1_hole_l: green
-        l_1_hole_r: green
-        l_2_hole_l: green
-        l_2_hole_r: green
-        l_3_hole_l: green
-        l_3_hole_r: green
-    - duration: 400ms
+        l_1_hole_l: {color: "FF0000", fade: 750ms}
+        l_1_hole_r: {color: "FF0000", fade: 750ms}
+    - duration: 750ms
       lights:
-        l_1_hole_l: off
-        l_1_hole_r: off
-        l_2_hole_l: off
-        l_2_hole_r: off
-        l_3_hole_l: off
-        l_3_hole_r: off
-
+        l_1_hole_l: {color: "400000", fade: 750ms}
+        l_1_hole_r: {color: "400000", fade: 750ms}
+  mastermind_trap_saucer_1_parking_held_show:
+    - duration: 1s
+      lights:
+        l_1_hole_l: "BF0000"
+        l_1_hole_r: "BF0000"
+  mastermind_trap_saucer_1_parking_objective_show:
+    - duration: 200ms
+      lights:
+        l_1_hole_l: "FFFFFF"
+        l_1_hole_r: "FFFFFF"
+    - duration: 200ms
+      lights:
+        l_1_hole_l: "off"
+        l_1_hole_r: "off"
+  mastermind_trap_saucer_2_parking_available_show:
+    - duration: 750ms
+      lights:
+        l_2_hole_l: {color: "FF0000", fade: 750ms}
+        l_2_hole_r: {color: "FF0000", fade: 750ms}
+    - duration: 750ms
+      lights:
+        l_2_hole_l: {color: "400000", fade: 750ms}
+        l_2_hole_r: {color: "400000", fade: 750ms}
+  mastermind_trap_saucer_2_parking_held_show:
+    - duration: 1s
+      lights:
+        l_2_hole_l: "BF0000"
+        l_2_hole_r: "BF0000"
+  mastermind_trap_saucer_2_parking_objective_show:
+    - duration: 200ms
+      lights:
+        l_2_hole_l: "FFFFFF"
+        l_2_hole_r: "FFFFFF"
+    - duration: 200ms
+      lights:
+        l_2_hole_l: "off"
+        l_2_hole_r: "off"
+  mastermind_trap_saucer_3_parking_available_show:
+    - duration: 750ms
+      lights:
+        l_3_hole_l: {color: "FF0000", fade: 750ms}
+        l_3_hole_r: {color: "FF0000", fade: 750ms}
+    - duration: 750ms
+      lights:
+        l_3_hole_l: {color: "400000", fade: 750ms}
+        l_3_hole_r: {color: "400000", fade: 750ms}
+  mastermind_trap_saucer_3_parking_held_show:
+    - duration: 1s
+      lights:
+        l_3_hole_l: "BF0000"
+        l_3_hole_r: "BF0000"
+  mastermind_trap_saucer_3_parking_objective_show:
+    - duration: 200ms
+      lights:
+        l_3_hole_l: "FFFFFF"
+        l_3_hole_r: "FFFFFF"
+    - duration: 200ms
+      lights:
+        l_3_hole_l: "off"
+        l_3_hole_r: "off"
   mastermind_para_upper_targets:
     - duration: 300ms
       lights:
@@ -300,29 +376,19 @@ shows:
       lights: {l_left_web_target: off, l_mid_web_target: off}
 
 light_player:
+  mastermind_trap_saucer_1_parking_off:
+    l_1_hole_l: off
+    l_1_hole_r: off
+  mastermind_trap_saucer_2_parking_off:
+    l_2_hole_l: off
+    l_2_hole_r: off
+  mastermind_trap_saucer_3_parking_off:
+    l_3_hole_l: off
+    l_3_hole_r: off
   mode_mastermind_trap_started:
     gi: 7030A0
   mode_mastermind_trap_stopping:
     gi: E0E0E0
-
-  mastermind_trap_saucer_1_held:
-    l_1_hole_l: white
-    l_1_hole_r: white
-  mastermind_trap_saucer_2_held:
-    l_2_hole_l: white
-    l_2_hole_r: white
-  mastermind_trap_saucer_3_held:
-    l_3_hole_l: white
-    l_3_hole_r: white
-  mastermind_trap_saucer_1_released:
-    l_1_hole_l: off
-    l_1_hole_r: off
-  mastermind_trap_saucer_2_released:
-    l_2_hole_l: off
-    l_2_hole_r: off
-  mastermind_trap_saucer_3_released:
-    l_3_hole_l: off
-    l_3_hole_r: off
 
   mastermind_trap_doc_saucer_1_red:
     l_1_hole_l: red

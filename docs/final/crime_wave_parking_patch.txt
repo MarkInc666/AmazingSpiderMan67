@@ -1,0 +1,4 @@
+CRIME WAVE PARKING PATCH — October 5, 2026
+Merge files into the project, replacing matching paths. Keep earlier patches.
+Includes cumulative Sinister, Mastermind, Trubble and Crime Wave workbook notes.
+Python stub checks passed. MPF/GMC and physical-machine testing remain pending.

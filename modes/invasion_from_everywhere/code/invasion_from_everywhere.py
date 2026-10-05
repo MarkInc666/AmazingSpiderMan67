@@ -1,4 +1,5 @@
 import random
+import time
 
 from mpf.core.mode import Mode
 
@@ -64,6 +65,9 @@ class InvasionFromEverywhere(Mode):
         self.phase = "load_vuk"
         self.vuk_held = False
         self.held_saucers = []
+        self.saucer_available_after = {}
+        self.saucer_light_states = {}
+        self.terminal_vuk_release_requested = False
         self.saucer_qualified = set()
 
         self.igor_current_set = None
@@ -102,11 +106,15 @@ class InvasionFromEverywhere(Mode):
             self._start_load_vuk()
 
         self._sync_vars()
+        self._refresh_saucer_lights()
+        self._schedule_ball_guard()
 
     def mode_stop(self, **kwargs):
+        self.mode_done = True
         self.delay.clear()
         self._set_vuk_hold(False)
         self._release_all_saucers()
+        self._release_terminal_vuk()
         self.machine.events.post("invasion_from_everywhere_clear_all")
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("enable_daily_bugle_mystery")
@@ -158,6 +166,8 @@ class InvasionFromEverywhere(Mode):
             self._multiball_ended,
         )
         self.add_mode_event_handler("invasion_from_everywhere_complete_request", self._complete_mode)
+        self.add_mode_event_handler("ball_drain", self._ball_drain)
+        self.add_mode_event_handler("invasion_from_everywhere_clear_all", self._invalidate_saucer_lights)
 
     # ------------------------------------------------------------------
     # VUK / phase routing
@@ -201,6 +211,7 @@ class InvasionFromEverywhere(Mode):
             self._start_molemen()
         else:
             self._start_devargas()
+        self._check_free_ball()
 
     def _launch_vuk_to_rooftop(self):
         if not self.vuk_held:
@@ -380,7 +391,7 @@ class InvasionFromEverywhere(Mode):
         if self.mode_done:
             self._eject_saucer(saucer)
             return
-        if saucer in self.held_saucers:
+        if saucer in self.held_saucers or time.monotonic() < self.saucer_available_after.get(saucer, 0):
             return
 
         qualifies = saucer in self.saucer_qualified
@@ -434,18 +445,20 @@ class InvasionFromEverywhere(Mode):
             saucer=saucer,
         )
         self.machine.events.post(f"invasion_saucer_{saucer}_parked")
+        self._refresh_saucer_lights()
 
-    def _release_saucer(self, saucer=None):
+    def _release_saucer(self, saucer=None, delay_ms=0):
         if saucer not in self.held_saucers:
             return
         self.held_saucers.remove(saucer)
         self.delay.remove(f"invasion_saucer_{saucer}")
         self.machine.events.post(f"invasion_saucer_{saucer}_released")
-        self._eject_saucer(saucer)
+        self._eject_saucer(saucer, delay_ms)
+        self._refresh_saucer_lights()
 
     def _release_all_saucers(self):
-        for saucer in list(self.held_saucers):
-            self._release_saucer(saucer)
+        for index, saucer in enumerate(list(self.held_saucers)):
+            self._release_saucer(saucer, delay_ms=index * 300)
 
     def _ensure_free_ball(self):
         held = len(self.held_saucers) + (1 if self.vuk_held else 0)
@@ -454,8 +467,65 @@ class InvasionFromEverywhere(Mode):
         if self.held_saucers:
             self._release_saucer(self.held_saucers[0])
 
-    def _eject_saucer(self, saucer):
-        self.machine.events.post("request_saucer_eject", saucer_number=saucer, delay_ms=0)
+    def _eject_saucer(self, saucer, delay_ms=0):
+        self.saucer_available_after[saucer] = time.monotonic() + (delay_ms + 750) / 1000
+        self.machine.events.post("request_saucer_eject", saucer_number=saucer, delay_ms=delay_ms)
+
+    def _ball_drain(self, **kwargs):
+        if not self.mode_done:
+            self.delay.reset(name="invasion_drain_parking_check", ms=1, callback=self._check_free_ball)
+
+    def _check_free_ball(self):
+        if not self.mode_done:
+            self._ensure_free_ball()
+            self._refresh_saucer_lights()
+
+    def _schedule_ball_guard(self):
+        if not self.mode_done:
+            self.delay.reset(name="invasion_ball_guard", ms=250, callback=self._ball_guard)
+
+    def _ball_guard(self):
+        self._check_free_ball()
+        self._schedule_ball_guard()
+
+    def _release_terminal_vuk(self):
+        self._set_vuk_hold(False)
+        self.vuk_held = False
+        if self.machine.game:
+            self.machine.game.player["mini_wizard_vuk_hold_active"] = 0
+        if not self.terminal_vuk_release_requested and self._vuk_is_occupied():
+            self.terminal_vuk_release_requested = True
+            self.machine.events.post("request_vuk_eject", delay_ms=0)
+
+    def _invalidate_saucer_lights(self, **kwargs):
+        self.saucer_light_states.clear()
+
+    def _refresh_saucer_lights(self):
+        held = len(self.held_saucers) + int(self.vuk_held)
+        can_park = len(self.held_saucers) < 3 and self._balls_in_play() - held >= 2
+        now = time.monotonic()
+        for saucer in (1, 2, 3):
+            objective = saucer in self.saucer_qualified and (
+                (self.phase == "igor" and self.igor_complete)
+                or self.phase == "molemen"
+                or (self.phase == "devargas" and self.devargas_step == "saucer")
+            )
+            if self.mode_done:
+                state = "off"
+            elif saucer in self.held_saucers:
+                state = "held"
+            elif now < self.saucer_available_after.get(saucer, 0):
+                state = "off"
+            elif objective:
+                state = "objective"
+            elif can_park:
+                state = "available"
+            else:
+                state = "off"
+            if self.saucer_light_states.get(saucer) != state:
+                self.machine.events.post(f"invasion_saucer_{saucer}_parking_clear")
+                self.machine.events.post(f"invasion_saucer_{saucer}_parking_{state}")
+                self.saucer_light_states[saucer] = state
 
     # ------------------------------------------------------------------
     # Atlantean rooftop payoff
@@ -516,10 +586,7 @@ class InvasionFromEverywhere(Mode):
         if self.mode_done:
             return
         self.mode_done = True
-        self._set_vuk_hold(False)
-        self.machine.game.player["mini_wizard_vuk_hold_active"] = 0
-        if self._vuk_is_occupied():
-            self.machine.events.post("request_vuk_eject", delay_ms=0)
+        self._release_terminal_vuk()
         player = self.machine.game.player
         player[f"{self.MODE_KEY}_state"] = 2
         self.machine.events.post(f"{self.MODE_KEY}_mode_complete")
@@ -553,6 +620,7 @@ class InvasionFromEverywhere(Mode):
             self.machine.events.post("reset_mode_message_reminder")
 
     def _update_status(self):
+        self._refresh_saucer_lights()
         if self.mode_done:
             return
         if self.phase == "load_vuk":

@@ -130,16 +130,36 @@ show_player:
     trubble_unleashed_upper_center_pulse_show: {action: stop}
     trubble_unleashed_upper_right_pulse_show: {action: stop}
 
-  trubble_unleashed_saucer_1_lit:
-    trubble_unleashed_saucer_1_lit_show: {loops: -1, priority: 840}
-  trubble_unleashed_saucer_2_lit:
-    trubble_unleashed_saucer_2_lit_show: {loops: -1, priority: 840}
-  trubble_unleashed_saucer_3_lit:
-    trubble_unleashed_saucer_3_lit_show: {loops: -1, priority: 840}
-  trubble_unleashed_clear_saucer_lights:
-    trubble_unleashed_saucer_1_lit_show: {action: stop}
-    trubble_unleashed_saucer_2_lit_show: {action: stop}
-    trubble_unleashed_saucer_3_lit_show: {action: stop}
+  trubble_unleashed_saucer_1_parking_available:
+    trubble_unleashed_saucer_1_parking_available_show: {loops: -1, priority: 100}
+  trubble_unleashed_saucer_1_parking_held:
+    trubble_unleashed_saucer_1_parking_held_show: {loops: -1, priority: 100}
+  trubble_unleashed_saucer_1_parking_objective:
+    trubble_unleashed_saucer_1_parking_objective_show: {loops: -1, priority: 100}
+  trubble_unleashed_saucer_1_parking_clear:
+    trubble_unleashed_saucer_1_parking_available_show: {action: stop}
+    trubble_unleashed_saucer_1_parking_held_show: {action: stop}
+    trubble_unleashed_saucer_1_parking_objective_show: {action: stop}
+  trubble_unleashed_saucer_2_parking_available:
+    trubble_unleashed_saucer_2_parking_available_show: {loops: -1, priority: 100}
+  trubble_unleashed_saucer_2_parking_held:
+    trubble_unleashed_saucer_2_parking_held_show: {loops: -1, priority: 100}
+  trubble_unleashed_saucer_2_parking_objective:
+    trubble_unleashed_saucer_2_parking_objective_show: {loops: -1, priority: 100}
+  trubble_unleashed_saucer_2_parking_clear:
+    trubble_unleashed_saucer_2_parking_available_show: {action: stop}
+    trubble_unleashed_saucer_2_parking_held_show: {action: stop}
+    trubble_unleashed_saucer_2_parking_objective_show: {action: stop}
+  trubble_unleashed_saucer_3_parking_available:
+    trubble_unleashed_saucer_3_parking_available_show: {loops: -1, priority: 100}
+  trubble_unleashed_saucer_3_parking_held:
+    trubble_unleashed_saucer_3_parking_held_show: {loops: -1, priority: 100}
+  trubble_unleashed_saucer_3_parking_objective:
+    trubble_unleashed_saucer_3_parking_objective_show: {loops: -1, priority: 100}
+  trubble_unleashed_saucer_3_parking_clear:
+    trubble_unleashed_saucer_3_parking_available_show: {action: stop}
+    trubble_unleashed_saucer_3_parking_held_show: {action: stop}
+    trubble_unleashed_saucer_3_parking_objective_show: {action: stop}
 
   trubble_unleashed_cyclops_lit:
     trubble_unleashed_cyclops_pulse: {loops: -1, priority: 845}
@@ -153,9 +173,15 @@ show_player:
     trubble_unleashed_upper_left_pulse_show: {action: stop}
     trubble_unleashed_upper_center_pulse_show: {action: stop}
     trubble_unleashed_upper_right_pulse_show: {action: stop}
-    trubble_unleashed_saucer_1_lit_show: {action: stop}
-    trubble_unleashed_saucer_2_lit_show: {action: stop}
-    trubble_unleashed_saucer_3_lit_show: {action: stop}
+    trubble_unleashed_saucer_1_parking_available_show: {action: stop}
+    trubble_unleashed_saucer_1_parking_held_show: {action: stop}
+    trubble_unleashed_saucer_1_parking_objective_show: {action: stop}
+    trubble_unleashed_saucer_2_parking_available_show: {action: stop}
+    trubble_unleashed_saucer_2_parking_held_show: {action: stop}
+    trubble_unleashed_saucer_2_parking_objective_show: {action: stop}
+    trubble_unleashed_saucer_3_parking_available_show: {action: stop}
+    trubble_unleashed_saucer_3_parking_held_show: {action: stop}
+    trubble_unleashed_saucer_3_parking_objective_show: {action: stop}
     trubble_unleashed_cyclops_pulse: {action: stop}
 
 shows:
@@ -191,19 +217,43 @@ shows:
     - duration: 250ms
       lights: {l_upper_right: 401040}
 
-  trubble_unleashed_saucer_1_lit_show:
+  trubble_unleashed_saucer_1_parking_available_show:
+    - duration: 750ms
+      lights: {l_1_hole_l: FF0000-f750ms, l_1_hole_r: FF0000-f750ms}
+    - duration: 750ms
+      lights: {l_1_hole_l: 400000-f750ms, l_1_hole_r: 400000-f750ms}
+  trubble_unleashed_saucer_1_parking_held_show:
+    - duration: 1s
+      lights: {l_1_hole_l: BF0000, l_1_hole_r: BF0000}
+  trubble_unleashed_saucer_1_parking_objective_show:
     - duration: 200ms
-      lights: {l_1_hole_l: red, l_1_hole_r: red}
+      lights: {l_1_hole_l: FFFFFF, l_1_hole_r: FFFFFF}
     - duration: 200ms
       lights: {l_1_hole_l: off, l_1_hole_r: off}
-  trubble_unleashed_saucer_2_lit_show:
+  trubble_unleashed_saucer_2_parking_available_show:
+    - duration: 750ms
+      lights: {l_2_hole_l: FF0000-f750ms, l_2_hole_r: FF0000-f750ms}
+    - duration: 750ms
+      lights: {l_2_hole_l: 400000-f750ms, l_2_hole_r: 400000-f750ms}
+  trubble_unleashed_saucer_2_parking_held_show:
+    - duration: 1s
+      lights: {l_2_hole_l: BF0000, l_2_hole_r: BF0000}
+  trubble_unleashed_saucer_2_parking_objective_show:
     - duration: 200ms
-      lights: {l_2_hole_l: red, l_2_hole_r: red}
+      lights: {l_2_hole_l: FFFFFF, l_2_hole_r: FFFFFF}
     - duration: 200ms
       lights: {l_2_hole_l: off, l_2_hole_r: off}
-  trubble_unleashed_saucer_3_lit_show:
+  trubble_unleashed_saucer_3_parking_available_show:
+    - duration: 750ms
+      lights: {l_3_hole_l: FF0000-f750ms, l_3_hole_r: FF0000-f750ms}
+    - duration: 750ms
+      lights: {l_3_hole_l: 400000-f750ms, l_3_hole_r: 400000-f750ms}
+  trubble_unleashed_saucer_3_parking_held_show:
+    - duration: 1s
+      lights: {l_3_hole_l: BF0000, l_3_hole_r: BF0000}
+  trubble_unleashed_saucer_3_parking_objective_show:
     - duration: 200ms
-      lights: {l_3_hole_l: red, l_3_hole_r: red}
+      lights: {l_3_hole_l: FFFFFF, l_3_hole_r: FFFFFF}
     - duration: 200ms
       lights: {l_3_hole_l: off, l_3_hole_r: off}
 
@@ -214,6 +264,15 @@ shows:
       lights: {l_mid_web_target: off}
 
 light_player:
+  trubble_unleashed_saucer_1_parking_off:
+    l_1_hole_l: off
+    l_1_hole_r: off
+  trubble_unleashed_saucer_2_parking_off:
+    l_2_hole_l: off
+    l_2_hole_r: off
+  trubble_unleashed_saucer_3_parking_off:
+    l_3_hole_l: off
+    l_3_hole_r: off
   mode_trubble_unleashed_started:
     gi: FF70C0
   mode_trubble_unleashed_stopping:

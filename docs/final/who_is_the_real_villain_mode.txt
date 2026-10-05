@@ -1,12 +1,15 @@
 WHO IS THE REAL VILLAIN? — CHAPTER 10 MINI-WIZARD
-Implementation checkpoint: 2026-09-21
+Implementation checkpoint: 2026-10-05
 
 OVERVIEW
 - Repeating 2-ball wizard multiball.
 - Opening ball save: 20 seconds.
 - The mode repeats Cameo -> Desperado -> Brutus -> VUK Super until multiball ends.
 - Saucers are normal wizard parking spots (20-second maximum hold) whenever they are not active Cameo/Brutus objectives.
-- At least one loose ball must remain on the playfield; a parked ball is released early if needed.
+- Park up to 3 saucer balls while retaining at least one loose ball (2-ball start permits 1 parked; 4-ball cap permits 3).
+- Each parked ball has an independent 20-second watchdog. Oldest arrival releases first when needed, including a check after each drain and a 250ms continuous guard.
+- Available empty spots pulse slowly red. Held spots are solid 75% red (BF0000). Active empty Cameo/Brutus objectives flash white; held takes precedence. Other available spots remain lit when capacity permits.
+- Multi-ball releases are oldest first, staggered by 300ms. Balls waiting for a scheduled live release remain counted as held. Brief eject clearance prevents switch chatter from collecting or reparking that same ball.
 - Case Files do not provide helper powers in wizard modes. Every Jackpot/major award worth 500K or more adds 20K x Chapter 10 Case Files collected. Smaller awards do not receive the Case File adder.
 
 GLOBAL ROOFTOP ADD-A-BALL
@@ -46,12 +49,12 @@ PHASE 1 — CHARLES CAMEO
 
 5. REVEAL THE TRUTH
 - Once the Cameo pair is ready, all three saucers flash.
-- Any balls already parked in saucers are ejected when the saucers begin flashing.
+- Any balls already parked in saucers are released oldest first at 300ms intervals when the objectives activate.
 - Shoot any flashing saucer:
   * scores 100K flat
   * shuts off the false candidate
   * flashes the correct Cameo target
-- The truth-reveal ball is ejected; saucers resume normal parking behavior.
+- The truth-reveal ball is ejected after 500ms; saucers resume normal parking behavior.
 
 6. CORRECT CAMEO
 - Hit the flashing correct candidate.
@@ -72,13 +75,13 @@ PHASE 2 — DESPERADO
 
 PHASE 3 — BRUTUS
 - At phase start, all three saucers flash.
-- Any balls parked in saucers are immediately ejected when they become active objectives.
+- Any balls parked in saucers are released oldest first at 300ms intervals when they become active objectives.
 - Any flashing saucer completes Brutus.
 - A left-bank hit causes Brutus to return and turns all saucers off.
 - When the saucers are off, a right-bank hit relights all three saucers.
 - Relighting the saucers also ejects any balls currently parked there.
 - Brutus saucer Jackpot: 500K + Case File bonus.
-- After collection, advance to VUK Super.
+- The collecting saucer ball is ejected after 750ms. After collection, advance to VUK Super.
 
 PHASE 4 — VUK SUPER
 - Brutus completion opens the rooftop gate.
@@ -104,6 +107,7 @@ CYCLE RESET
 - Upper-target Add-a-Ball progress does NOT reset merely because the phase/cycle changes; it resets only when L/C/R has been completed.
 
 MODE END
+- Release remaining parked balls oldest first with 300ms spacing, including direct stops.
 - The wizard ends when the active multiball collapses to one ball.
 - Wizard progression is marked complete for chapter progression; the mode does not resume on a later ball.
 

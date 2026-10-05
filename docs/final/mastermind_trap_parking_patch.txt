@@ -1,0 +1,15 @@
+MASTERMIND TRAP PARKING PATCH — October 5, 2026
+Merge into the machine project, replacing matching files.
+Based on ASM67_2026_10_05_12am.zip, plus the Sinister Surge workbook note update.
+
+Phase 1 and Mysterio: up to 3 parked, keeping 1 loose. Doc: none. Super: max 1.
+All holds have independent 20-second timers. Oldest-ball free-ball recovery,
+staggered releases and common saucer lighting are included. No new player vars.
+
+The workbook includes BOTH Sinister Surge and Mastermind parking notes, so it
+can replace the workbook supplied in the preceding Sinister patch. Code changes
+are only for Mastermind; keep the earlier Sinister and wizard-screen patches.
+
+Python stub checks cover phase/cap limits, timers, drain recovery, Doc handoff,
+release staggering, light precedence and YAML. MPF/GMC/machine testing remains.
+Test the phase-1 lock/roof/3x interaction when a 20-second timeout occurs.

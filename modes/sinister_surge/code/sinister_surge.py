@@ -1,3 +1,5 @@
+import time
+
 from random import choice
 from mpf.core.mode import Mode
 
@@ -159,7 +161,10 @@ class SinisterSurge(Mode):
         self.victory_laps = False
         self.super_jackpot_ready = False
         self.case_file_bonus = self._get("mini_wizard_case_file_bonus", 0)
-        self.held_saucer = None
+        self.held_saucers = []
+        self.goblin_saucer = None
+        self.saucer_available_after = {}
+        self.saucer_light_states = {}
         self.sandman_current_target = None
         self.sandman_down_targets = set()
         self.vulture_target_hit = False
@@ -180,11 +185,13 @@ class SinisterSurge(Mode):
         self._add_switch_handlers()
         self.add_mode_event_handler("sinister_surge_choose_first_area", self._choose_next_area)
         self.add_mode_event_handler("sinister_surge_multiball_ended", self._multiball_ended)
+        self._schedule_parking_guard()
 
     def mode_stop(self, **kwargs):
         self.mode_exiting = True
+        self.delay.remove("sinister_surge_parking_guard")
 
-        self._release_held_saucer()
+        self._release_all_parked_saucers()
         self._cancel_stage_timers()
         self.delay.remove("sinister_surge_ab_complete_flash")
         self.delay.remove("sinister_surge_two_ball_check")
@@ -341,12 +348,8 @@ class SinisterSurge(Mode):
         elif self.current_area == "electro":
             self._start_electro_attempt()
         elif self.current_area == "goblin":
-            if self.held_saucer is not None:
-                # Goblin's 10-second safe-time capture replaces the normal
-                # 20-second rest. Release a previously parked ball first.
-                self._release_held_saucer()
-            # A saucer-release event asserts that pair off. Reassert the ready
-            # show afterward so all three Goblin saucers are visibly lit.
+            # Begin Goblin with a fresh capture. Physical releases are staggered.
+            self._release_all_parked_saucers()
             self.machine.events.post("sinister_surge_goblin_ready")
 
     def _area_instruction(self):
@@ -407,7 +410,7 @@ class SinisterSurge(Mode):
         self._cancel_stage_timers()
         self.machine.events.post("sinister_surge_clear_stage_lights")
 
-        if completed_area == "goblin" and self.held_saucer is not None:
+        if completed_area == "goblin" and self.goblin_saucer is not None:
             self._release_held_saucer()
         elif completed_area == "sandman":
             # Leave the physical bank clean after the callback ends.
@@ -588,9 +591,8 @@ class SinisterSurge(Mode):
             if self._try_award_add_a_ball():
                 return
 
-            # Above two balls, keep A+B qualified until the multiball drains
-            # back to two. Restore the pulsing ready indication after the
-            # three-flash completion show.
+            # At the four-ball cap, retain A+B until a drain makes room.
+            # Restore the ready indication after the completion show.
             self.delay.remove("sinister_surge_ab_complete_flash")
             self.delay.add(
                 name="sinister_surge_ab_complete_flash",
@@ -614,7 +616,7 @@ class SinisterSurge(Mode):
             return False
         if self._get("sinister_surge_ab_ready") != 1:
             return False
-        if self._balls_in_play() != 2:
+        if not 2 <= self._balls_in_play() < self.MAX_BALLS:
             return False
 
         self.add_a_ball_award_pending = True
@@ -1130,7 +1132,8 @@ class SinisterSurge(Mode):
     def _start_goblin_attempt(self, saucer_name):
         self.goblin_attempt_active = True
         self.goblin_qualified_areas.clear()
-        self.held_saucer = saucer_name
+        self.goblin_saucer = saucer_name
+        self.held_saucers.append(saucer_name)
         self._set("sinister_surge_area_progress", 0)
         self._set("sinister_surge_hits_still_needed", 2)
         self.machine.events.post("sinister_surge_saucer_hold_started", saucer=saucer_name)
@@ -1143,7 +1146,8 @@ class SinisterSurge(Mode):
             reminder=True,
         )
         self._update_area_status()
-        self.delay.add(
+        self._refresh_parking_lights()
+        self.delay.reset(
             name="sinister_surge_goblin_attempt",
             ms=self.GOBLIN_HOLD_MS,
             callback=self._goblin_timeout,
@@ -1176,53 +1180,103 @@ class SinisterSurge(Mode):
     def _saucer_3_hit(self, **kwargs):
         self._handle_saucer_hit("saucer_3")
 
-    def _handle_saucer_hit(self, saucer_name): 
+    def _handle_saucer_hit(self, saucer_name):
+        # Ignore chatter from a ball already owned by this mode.
+        if saucer_name in self.held_saucers:
+            return
         self._score(self.SAUCER_SCORE)
-
-        if self.mode_exiting:
+        if (self.mode_exiting or not self._can_park_ball()
+                or time.monotonic() < self.saucer_available_after.get(saucer_name, 0)):
             self._eject_saucer(saucer_name)
             return
 
-        if self._balls_in_play() <= 1:
-            self._eject_saucer(saucer_name)
-            return
-
-        # Only one ball may be parked in the three saucers at a time.
-        if self.held_saucer is not None:
-            if saucer_name != self.held_saucer:
-                self._eject_saucer(saucer_name)
-            return
-
-        if self.current_area == "goblin" and not self.jackpot_ready and not self.victory_laps:
+        if (self.current_area == "goblin" and not self.goblin_attempt_active
+                and not self.jackpot_ready and not self.victory_laps):
             self._start_goblin_attempt(saucer_name)
             return
 
-        self.held_saucer = saucer_name
+        self.held_saucers.append(saucer_name)
         self.machine.events.post("sinister_surge_saucer_hold_started", saucer=saucer_name)
-
-        self.delay.remove("sinister_surge_saucer_hold")
-        self.delay.add(
-            name="sinister_surge_saucer_hold",
+        self.delay.reset(
+            name=f"sinister_surge_{saucer_name}_park",
             ms=self.SAUCER_HOLD_MS,
-            callback=self._release_held_saucer,
+            callback=self._release_parked_saucer,
+            saucer_name=saucer_name,
         )
+        self._refresh_parking_lights()
+
+    def _can_park_ball(self):
+        return len(self.held_saucers) < 3 and self._balls_in_play() - len(self.held_saucers) > 1
 
     def _release_held_saucer(self, **kwargs):
-        saucer_name = self.held_saucer
-        if saucer_name is None:
-            return
-
-        self.delay.remove("sinister_surge_saucer_hold")
+        """Release only Goblin's challenge ball; ordinary holds are independent."""
         self.delay.remove("sinister_surge_goblin_attempt")
-        self.held_saucer = None
-        self._eject_saucer(saucer_name)
+        saucer_name = self.goblin_saucer
+        self.goblin_saucer = None
+        if saucer_name:
+            self._release_parked_saucer(saucer_name)
+
+    def _release_parked_saucer(self, saucer_name, delay_ms=0, **kwargs):
+        if saucer_name not in self.held_saucers:
+            return
+        self.delay.remove(f"sinister_surge_{saucer_name}_park")
+        self.held_saucers.remove(saucer_name)
+        self.saucer_available_after[saucer_name] = time.monotonic() + delay_ms / 1000.0 + 0.75
         self.machine.events.post("sinister_surge_saucer_released", saucer=saucer_name)
+        self._eject_saucer(saucer_name, delay_ms)
+        self._refresh_parking_lights()
 
-    def _eject_saucer(self, saucer_name):
-        event = self.SAUCER_EJECT_EVENTS.get(saucer_name)
+    def _release_all_parked_saucers(self):
+        self.delay.remove("sinister_surge_goblin_attempt")
+        self.goblin_saucer = None
+        self.goblin_attempt_active = False
+        for index, saucer_name in enumerate(tuple(self.held_saucers)):
+            self._release_parked_saucer(saucer_name, delay_ms=index * 300)
 
-        if event:
-            self.machine.events.post(event)
+    def _eject_saucer(self, saucer_name, delay_ms=0):
+        if saucer_name not in self.SAUCER_EJECT_EVENTS:
+            return
+        self.machine.events.post(
+            "request_saucer_eject",
+            saucer_number=int(saucer_name.rsplit("_", 1)[1]),
+            delay_ms=delay_ms,
+        )
+
+    def _schedule_parking_guard(self):
+        if not self.mode_exiting:
+            self.delay.reset(name="sinister_surge_parking_guard", ms=250, callback=self._parking_guard)
+
+    def _parking_guard(self):
+        if self.mode_exiting:
+            return
+        if self.held_saucers and self._balls_in_play() - len(self.held_saucers) <= 0:
+            oldest = self.held_saucers[0]
+            if oldest == self.goblin_saucer and self.goblin_attempt_active:
+                # A safety release ends this capture attempt rather than leaving
+                # a challenge active without its captured ball.
+                self._goblin_timeout()
+            else:
+                self._release_parked_saucer(oldest)
+        self._refresh_parking_lights()
+        self._schedule_parking_guard()
+
+    def _refresh_parking_lights(self):
+        objective = (self.current_area == "goblin" and not self.goblin_attempt_active
+                     and not self.jackpot_ready and not self.victory_laps)
+        available = not self.mode_exiting and self._can_park_ball()
+        now = time.monotonic()
+        for saucer_name in self.SAUCER_EJECT_EVENTS:
+            state = "off"
+            if not self.mode_exiting:
+                if saucer_name in self.held_saucers:
+                    state = "held"
+                elif available and now >= self.saucer_available_after.get(saucer_name, 0):
+                    state = "objective" if objective else "available"
+            if self.saucer_light_states.get(saucer_name) == state:
+                continue
+            self.saucer_light_states[saucer_name] = state
+            self.machine.events.post(f"sinister_surge_{saucer_name}_parking_clear")
+            self.machine.events.post(f"sinister_surge_{saucer_name}_parking_{state}")
 
     def _cancel_stage_timers(self):
         for name in (
@@ -1240,8 +1294,9 @@ class SinisterSurge(Mode):
         self.mode_exiting = True
         self.info_log("Sinister Surge multiball ended.")
 
+        self.delay.remove("sinister_surge_parking_guard")
         self._cancel_stage_timers()
-        self._release_held_saucer()
+        self._release_all_parked_saucers()
 
         if self.victory_laps:
             self.machine.events.post("sinister_surge_mode_complete")

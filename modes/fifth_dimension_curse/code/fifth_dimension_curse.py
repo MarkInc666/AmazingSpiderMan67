@@ -14,6 +14,7 @@ class FifthDimensionCurse(Mode):
     RUBY_SAUCER_EJECT_DELAY_MS = 2_000
     RUBY_SUPER_BASE_VALUE = 1_000_000
     ADD_A_BALL_WINDOW_MS = 10_000
+    SAUCER_HOLD_MS = 20_000
     MAX_BALLS = 4
 
     ZONE_SWITCHES = {
@@ -85,6 +86,9 @@ class FifthDimensionCurse(Mode):
         self.jackpots_collected = 0
         self._vuk_collect_lockout_until = 0.0
         self.parked_saucers = set()
+        self.parking_order = []
+        self.saucer_available_after = {}
+        self.saucer_light_states = {}
         self.ruby_lit_saucers = set()
         self.ruby_release_pending = set()
 
@@ -122,6 +126,7 @@ class FifthDimensionCurse(Mode):
             )
 
         self.add_mode_event_handler("s_vuk_switch_active", self._vuk_hit)
+        self.add_mode_event_handler("ball_drain", self._ball_drain)
         self.add_mode_event_handler("fifth_dimension_curse_multiball_ended", self._multiball_ended)
         self.add_mode_event_handler(f"{self.MODE_KEY}_fail_request", self._complete_mode)
 
@@ -137,10 +142,15 @@ class FifthDimensionCurse(Mode):
             message_mode_subtitle="LIGHT ZONES - COLLECT VUK JACKPOTS",
             reminder=True,
         )
+        self._refresh_saucer_lights()
         self._schedule_ball_guard()
         self._update_gate_and_status()
 
     def mode_stop(self, **kwargs):
+        self.mode_done = True
+        self.delay.remove("fdc_drain_parking_check")
+        for index, saucer in enumerate(list(self.parking_order)):
+            self._kick_saucer(saucer, delay_ms=index * 300)
         for zone in self.ZONE_SWITCHES:
             self.delay.remove(f"fdc_{zone}_flicker")
             self.delay.remove(f"fdc_{zone}_dim")
@@ -156,7 +166,6 @@ class FifthDimensionCurse(Mode):
         self.machine.events.post("fifth_dimension_curse_saucer_lights_clear")
         self.machine.events.post("fifth_dimension_curse_ruby_lights_clear")
         self.machine.events.post("rooftop_diverter_close")
-        self.machine.events.post("clear_saucers_delayed")
         player = self.machine.game.player
         if player["mini_wizard_current_key"] == self.MODE_KEY:
             player["mini_wizard_current_key"] = ""
@@ -218,7 +227,7 @@ class FifthDimensionCurse(Mode):
             message_mode_value=value,
         )
         self.machine.events.post("play_mode_jackpot")
-        self.ruby_lit_saucers.update(self.parked_saucers)
+        self.ruby_lit_saucers.update(self.parked_saucers - self.ruby_release_pending)
         self._refresh_ruby_lights()
         self.machine.events.post(
             "request_vuk_eject",
@@ -231,11 +240,14 @@ class FifthDimensionCurse(Mode):
         if self.mode_done or saucer is None:
             return
         saucer = int(saucer)
-        if saucer in self.parked_saucers:
+        if saucer in self.parked_saucers or time.monotonic() < self.saucer_available_after.get(saucer, 0):
             return
 
         if self._can_park_current_saucer():
             self.parked_saucers.add(saucer)
+            self.parking_order.append(saucer)
+            self.delay.reset(name=f"fdc_saucer_{saucer}_park", ms=self.SAUCER_HOLD_MS,
+                             callback=self._park_timeout, saucer=saucer)
             self.machine.events.post(
                 "show_mode_message",
                 message_mode_title="RUBY PARKED",
@@ -249,11 +261,13 @@ class FifthDimensionCurse(Mode):
         if self.mode_done or saucer is None:
             return
         saucer = int(saucer)
-        if saucer not in self.ruby_lit_saucers:
+        if saucer not in self.ruby_lit_saucers or saucer in self.ruby_release_pending:
             return
 
         self.ruby_lit_saucers.discard(saucer)
         self.ruby_release_pending.add(saucer)
+        # The scored Ruby now owns a controlled two-second release.
+        self.delay.remove(f"fdc_saucer_{saucer}_park")
         self._refresh_ruby_lights()
 
         value = self.RUBY_SUPER_BASE_VALUE + self.case_file_bonus
@@ -282,7 +296,7 @@ class FifthDimensionCurse(Mode):
     def _can_park_current_saucer(self):
         # The entering ball is physically in the saucer but is not yet counted
         # in parked_saucers. Keep at least one other ball loose and playable.
-        return (self._balls_in_play() - len(self.parked_saucers) - 1) >= 1
+        return len(self.parked_saucers) < 3 and (self._balls_in_play() - len(self.parked_saucers) - 1) >= 1
 
     def _schedule_ball_guard(self):
         if not self.mode_done:
@@ -292,26 +306,37 @@ class FifthDimensionCurse(Mode):
                 callback=self._ball_guard,
             )
 
-    def _ball_guard(self, **kwargs):
+    def _ball_drain(self, **kwargs):
+        if not self.mode_done:
+            # Check after the drain relay applies saves and updates the game count.
+            self.delay.reset(name="fdc_drain_parking_check", ms=1, callback=self._check_loose_balls)
+
+    def _check_loose_balls(self):
         if self.mode_done:
             return
-        if self.parked_saucers and self._playable_loose_balls() <= 0:
-            available = sorted(self.parked_saucers - self.ruby_release_pending)
-            saucer = available[0] if available else sorted(self.parked_saucers)[0]
-            self._kick_saucer(saucer)
+        if self.parking_order and self._playable_loose_balls() <= 0:
+            self._kick_saucer(self.parking_order[0])
+        self._refresh_saucer_lights()
+
+    def _ball_guard(self, **kwargs):
+        self._check_loose_balls()
         self._schedule_ball_guard()
 
-    def _kick_saucer(self, saucer):
+    def _park_timeout(self, saucer):
+        if not self.mode_done and saucer in self.parked_saucers and saucer not in self.ruby_release_pending:
+            self._kick_saucer(saucer)
+
+    def _kick_saucer(self, saucer, delay_ms=0):
         saucer = int(saucer)
+        self.delay.remove(f"fdc_saucer_{saucer}_park")
         self.delay.remove(f"fdc_ruby_eject_{saucer}")
         self.parked_saucers.discard(saucer)
+        if saucer in self.parking_order:
+            self.parking_order.remove(saucer)
         self.ruby_lit_saucers.discard(saucer)
         self.ruby_release_pending.discard(saucer)
-        self.machine.events.post(
-            "request_saucer_eject",
-            saucer_number=saucer,
-            delay_ms=0,
-        )
+        self.saucer_available_after[saucer] = time.monotonic() + (delay_ms + 750) / 1000
+        self.machine.events.post("request_saucer_eject", saucer_number=saucer, delay_ms=delay_ms)
         self._refresh_saucer_lights()
         self._refresh_ruby_lights()
 
@@ -319,9 +344,22 @@ class FifthDimensionCurse(Mode):
         return max(0, self._balls_in_play() - len(self.parked_saucers))
 
     def _refresh_saucer_lights(self):
-        self.machine.events.post("fifth_dimension_curse_saucer_lights_clear")
-        for saucer in sorted(self.parked_saucers):
-            self.machine.events.post(f"fifth_dimension_curse_saucer_{saucer}_parked")
+        now = time.monotonic()
+        for saucer in (1, 2, 3):
+            if self.mode_done:
+                state = "off"
+            elif saucer in self.parked_saucers:
+                state = "held"
+            elif now < self.saucer_available_after.get(saucer, 0):
+                state = "off"
+            elif self._can_park_current_saucer():
+                state = "available"
+            else:
+                state = "off"
+            if self.saucer_light_states.get(saucer) != state:
+                self.machine.events.post(f"fifth_dimension_curse_saucer_{saucer}_parking_clear")
+                self.machine.events.post(f"fifth_dimension_curse_saucer_{saucer}_parking_{state}")
+                self.saucer_light_states[saucer] = state
 
     def _refresh_ruby_lights(self):
         self.machine.events.post("fifth_dimension_curse_ruby_lights_clear")

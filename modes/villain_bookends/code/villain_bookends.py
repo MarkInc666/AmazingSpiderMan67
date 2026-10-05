@@ -1360,7 +1360,7 @@ class VillainBookends(Mode):
             self.warning_log("Unknown villain intro requested: %s", villain)
             return
 
-        self.machine.events.post("play_wizard_intro_music" if self._is_wizard(villain) else "play_song_14")
+        self.machine.events.post("play_song_14" if self._is_wizard(villain) else "play_villain_intro_music")
         self.machine.game.player["villain_mode_in_summary"] = False
 
         data = self.VILLAINS[villain]
@@ -1454,7 +1454,7 @@ class VillainBookends(Mode):
         self.pending_terminal_summary_request = None
         self.delay.remove("villain_terminal_award_summary_delay")
 
-        self.machine.events.post("play_wizard_summary_music" if self._is_wizard(villain) else "play_song_21")
+        self.machine.events.post("play_song_21" if self._is_wizard(villain) else "play_villain_summary_music")
         self.machine.game.player["villain_mode_in_summary"] = True
 
         if self.summary_vuk_release_pending:

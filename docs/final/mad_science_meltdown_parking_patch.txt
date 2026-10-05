@@ -1,0 +1,7 @@
+MAD SCIENCE MELTDOWN PARKING PATCH — October 5, 2026
+Merge matching files into the project; keep previous patches installed.
+Raises containment to 3 parked with 1 loose, and Noah maximum multiplier to 4X.
+Adds independent 20s holds, oldest drain recovery, common saucer lighting and
+300ms staggered releases at Noah collection and mode end.
+Workbook includes cumulative notes for the first seven wizard parking patches.
+Python stub checks passed; MPF/GMC and machine testing remain pending.

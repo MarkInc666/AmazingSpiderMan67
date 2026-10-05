@@ -1,0 +1,7 @@
+NATURE STRIKES BACK PARKING PATCH — October 5, 2026
+Merge matching files into the project; keep previous patches installed.
+Keeps 20s timers and active occupied-switch hit handling (timer refresh and
+qualified-award handling). Adds oldest drain recovery, common lighting and
+300ms staggered cleanup. Stage 1 qualifications carry through later stages.
+Workbook contains cumulative notes for the first eight wizard parking patches.
+Python stub checks passed; MPF/GMC and machine testing remain pending.

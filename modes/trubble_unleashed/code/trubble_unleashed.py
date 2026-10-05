@@ -1,4 +1,5 @@
 import random
+import time
 from functools import partial
 
 from mpf.core.delays import DelayManager
@@ -53,6 +54,9 @@ class TrubbleUnleashed(Mode):
         self.ignored_auto_right = set()
         self.preserve_right_bank_down = False
         self.parked_saucers = set()
+        self.parking_order = []
+        self.saucer_available_after = {}
+        self.saucer_light_states = {}
 
         self.gate_open = False
         self.phase = None  # None, diana, centaur
@@ -135,7 +139,7 @@ class TrubbleUnleashed(Mode):
         self.machine.events.post("trubble_unleashed_clear_all_lights")
         self.machine.events.post("trubble_unleashed_vuk_chase_stop")
         self.machine.events.post("rooftop_diverter_close")
-        self.machine.events.post("clear_saucers")
+        self._release_all_parked_saucers()
         self.machine.events.post("cancel_mode_message_reminder")
         super().mode_stop(**kwargs)
 
@@ -537,10 +541,12 @@ class TrubbleUnleashed(Mode):
         return self.CERBERUS_BASE_JACKPOT + self.case_file_bonus
 
     def _saucer_hit(self, saucer=None, **kwargs):
+        saucer = int(saucer)
+        if saucer in self.parked_saucers or time.monotonic() < self.saucer_available_after.get(saucer, 0):
+            return
         if self._inactive():
             self._kick_saucer(saucer)
             return
-        saucer = int(saucer)
         if saucer in self.lit_saucers:
             self.lit_saucers.discard(saucer)
             value = self._cerberus_value()
@@ -559,6 +565,7 @@ class TrubbleUnleashed(Mode):
         # loose and playable; otherwise eject it to prevent a deadlock.
         if self._can_park_current_saucer():
             self.parked_saucers.add(saucer)
+            self.parking_order.append(saucer)
             self.delay.reset(
                 name=f"trubble_saucer_{saucer}_max_park",
                 ms=self.MAX_SAUCER_PARK_MS,
@@ -567,6 +574,7 @@ class TrubbleUnleashed(Mode):
             self.machine.events.post("trubble_unleashed_saucer_parked", saucer=saucer)
         else:
             self._kick_saucer(saucer)
+        self._update_saucer_lights()
         self._sync_vars()
 
     # ------------------------------------------------------------------
@@ -632,17 +640,16 @@ class TrubbleUnleashed(Mode):
             self.delay.reset(name="trubble_ball_guard", ms=250, callback=self._ball_guard)
 
     def _ball_guard(self):
-        if self.mode_done:
+        if self.mode_done or self.mode_exiting:
             return
         if self.parked_saucers and self._playable_loose_balls() <= 0:
-            saucer = sorted(self.parked_saucers)[0]
-            self.parked_saucers.remove(saucer)
-            self._kick_saucer(saucer, delay_ms=0)
+            self._kick_saucer(self.parking_order[0], delay_ms=0)
+        self._update_saucer_lights()
         self._schedule_ball_guard()
 
     def _can_park_current_saucer(self):
         # Current ball is already physically in the saucer but not yet in parked_saucers.
-        return (self._balls_in_play() - len(self.parked_saucers) - 1) >= 1
+        return len(self.parked_saucers) < 3 and (self._balls_in_play() - len(self.parked_saucers) - 1) >= 1
 
     def _playable_loose_balls(self):
         return max(0, self._balls_in_play() - len(self.parked_saucers))
@@ -663,21 +670,21 @@ class TrubbleUnleashed(Mode):
 
     def _kick_saucer(self, saucer, delay_ms=None):
         saucer = int(saucer)
+        if saucer not in (1, 2, 3):
+            return
         self.delay.remove(f"trubble_saucer_{saucer}_max_park")
         self.parked_saucers.discard(saucer)
-        event = {
-            1: "delayed_kickout_saucer_1",
-            2: "delayed_kickout_saucer_2",
-            3: "delayed_kickout_saucer_3",
-        }.get(saucer)
-        if not event:
-            return
+        if saucer in self.parking_order:
+            self.parking_order.remove(saucer)
         if delay_ms is None:
-            self.machine.events.post(event)
-        elif delay_ms <= 0:
-            self.machine.events.post(event, delay_ms=0)
-        else:
-            self.machine.events.post(event, delay_ms=delay_ms)
+            delay_ms = self.SAUCER_EJECT_MS
+        self.saucer_available_after[saucer] = time.monotonic() + (delay_ms + 750) / 1000
+        self.machine.events.post("request_saucer_eject", saucer_number=saucer, delay_ms=delay_ms)
+        self._update_saucer_lights()
+
+    def _release_all_parked_saucers(self):
+        for index, saucer in enumerate(list(self.parking_order)):
+            self._kick_saucer(saucer, delay_ms=index * 300)
 
     def _multiball_ended(self, **kwargs):
         if not self.mode_done:
@@ -690,6 +697,7 @@ class TrubbleUnleashed(Mode):
         self.mode_exiting = True
         self._set("trubble_unleashed_state", 2)
         self.delay.clear()
+        self._release_all_parked_saucers()
         self.machine.events.post("hide_mode_status")
         self.machine.events.post("trubble_unleashed_clear_all_lights")
         self.machine.events.post("trubble_unleashed_vuk_chase_stop")
@@ -765,9 +773,25 @@ class TrubbleUnleashed(Mode):
                 self.machine.events.post(f"trubble_unleashed_upper_{name}_pulse")
 
     def _update_saucer_lights(self):
-        self.machine.events.post("trubble_unleashed_clear_saucer_lights")
-        for saucer in sorted(self.lit_saucers):
-            self.machine.events.post(f"trubble_unleashed_saucer_{saucer}_lit")
+        now = time.monotonic()
+        active = not self.mode_done and not self.mode_exiting
+        for saucer in (1, 2, 3):
+            if not active:
+                state = "off"
+            elif saucer in self.parked_saucers:
+                state = "held"
+            elif now < self.saucer_available_after.get(saucer, 0):
+                state = "off"
+            elif saucer in self.lit_saucers:
+                state = "objective"
+            elif self._can_park_current_saucer():
+                state = "available"
+            else:
+                state = "off"
+            if self.saucer_light_states.get(saucer) != state:
+                self.machine.events.post(f"trubble_unleashed_saucer_{saucer}_parking_clear")
+                self.machine.events.post(f"trubble_unleashed_saucer_{saucer}_parking_{state}")
+                self.saucer_light_states[saucer] = state
 
     # ------------------------------------------------------------------
     # Display / score / state

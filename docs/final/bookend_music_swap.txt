@@ -1,0 +1,19 @@
+BOOKEND MUSIC SWAP — 2026-10-05
+
+Based on the uploaded modes.zip, preserving the newly assigned tracks.
+Apply after the original wizard bookends patch. This replaces the earlier music-swap ZIP.
+
+Wizards:
+  Intro: song 14, loopystart
+  Summary: song 21, spider_intro_strong
+Ordinary villains:
+  Intro: song 99, in_color_intro
+  Summary: song 98, extro_music
+
+Villain tracks use play_villain_intro_music / play_villain_summary_music and
+VILLAIN_INTRO_SONG / VILLAIN_SUMMARY_SONG in music_control.py.
+The uploaded music_control.yaml already registers all four songs; it needs no change.
+Scenes, durations, comic transitions and gameplay music are preserved.
+
+Python syntax and actual event-to-sound routing checked against uploaded YAML.
+Machine playback testing pending.

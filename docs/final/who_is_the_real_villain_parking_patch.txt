@@ -1,0 +1,10 @@
+WHO IS THE REAL VILLAIN PARKING PATCH — 2026-10-05
+
+Apply these five files over ASM67_2026_10_05_12am with earlier wizard patches retained.
+Includes cumulative chapter workbook notes through Chapter 10.
+
+20s watchdog retained. Up to 3 parked with 1 loose. Drain check after relay, 250ms guard, oldest recovery, common individual saucer lighting, 300ms multi-release spacing.
+Cameo/Brutus objective activation still clears parked balls; collection keeps existing 500ms/750ms eject delays.
+Scoring, phase sequence, four-ball cap and occupied-hit protection retained.
+
+Validation: Python stub behavior checks and YAML parsing. Actual MPF/GMC and machine testing pending.

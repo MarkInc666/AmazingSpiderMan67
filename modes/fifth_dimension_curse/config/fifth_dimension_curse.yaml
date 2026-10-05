@@ -54,7 +54,6 @@ event_player:
   mode_fifth_dimension_curse_stopping:
     - enable_daily_bugle_mystery
     - daily_bugle_restore_state
-    - clear_saucers_delayed
     - drop_target_bank_dt_bank_left_reset
     - drop_target_bank_dt_bank_right_reset
   drop_target_bank_dt_bank_left_down: drop_target_bank_dt_bank_left_reset
@@ -62,6 +61,15 @@ event_player:
   multiball_fifth_dimension_curse_multiball_ended: fifth_dimension_curse_multiball_ended
 
 light_player:
+  fifth_dimension_curse_saucer_1_parking_off:
+    l_1_hole_l: off
+    l_1_hole_r: off
+  fifth_dimension_curse_saucer_2_parking_off:
+    l_2_hole_l: off
+    l_2_hole_r: off
+  fifth_dimension_curse_saucer_3_parking_off:
+    l_3_hole_l: off
+    l_3_hole_r: off
   fifth_dimension_curse_dim_all_zones:
     l_gi_ramp: 303030
     l_gi_top_1: 303030
@@ -282,15 +290,6 @@ light_player:
     l_2_hole_r: off
     l_3_hole_l: off
     l_3_hole_r: off
-  fifth_dimension_curse_saucer_1_parked:
-    l_1_hole_l: red
-    l_1_hole_r: red
-  fifth_dimension_curse_saucer_2_parked:
-    l_2_hole_l: red
-    l_2_hole_r: red
-  fifth_dimension_curse_saucer_3_parked:
-    l_3_hole_l: red
-    l_3_hole_r: red
   fifth_dimension_curse_ruby_lights_clear:
     l_upper_left: off
     l_upper_middle: off
@@ -303,6 +302,27 @@ light_player:
     l_upper_right: FF4444
 
 show_player:
+  fifth_dimension_curse_saucer_1_parking_available:
+    fifth_dimension_curse_saucer_1_parking_available_show: {loops: -1, priority: 100}
+  fifth_dimension_curse_saucer_1_parking_held:
+    fifth_dimension_curse_saucer_1_parking_held_show: {loops: -1, priority: 100}
+  fifth_dimension_curse_saucer_1_parking_clear:
+    fifth_dimension_curse_saucer_1_parking_available_show: {action: stop}
+    fifth_dimension_curse_saucer_1_parking_held_show: {action: stop}
+  fifth_dimension_curse_saucer_2_parking_available:
+    fifth_dimension_curse_saucer_2_parking_available_show: {loops: -1, priority: 100}
+  fifth_dimension_curse_saucer_2_parking_held:
+    fifth_dimension_curse_saucer_2_parking_held_show: {loops: -1, priority: 100}
+  fifth_dimension_curse_saucer_2_parking_clear:
+    fifth_dimension_curse_saucer_2_parking_available_show: {action: stop}
+    fifth_dimension_curse_saucer_2_parking_held_show: {action: stop}
+  fifth_dimension_curse_saucer_3_parking_available:
+    fifth_dimension_curse_saucer_3_parking_available_show: {loops: -1, priority: 100}
+  fifth_dimension_curse_saucer_3_parking_held:
+    fifth_dimension_curse_saucer_3_parking_held_show: {loops: -1, priority: 100}
+  fifth_dimension_curse_saucer_3_parking_clear:
+    fifth_dimension_curse_saucer_3_parking_available_show: {action: stop}
+    fifth_dimension_curse_saucer_3_parking_held_show: {action: stop}
   fifth_dimension_curse_add_a_ball_star_lit:
     fifth_dimension_curse_add_a_ball_star_pulse:
       action: play
@@ -419,6 +439,12 @@ show_player:
       action: stop
 
   mode_fifth_dimension_curse_stopping:
+    fifth_dimension_curse_saucer_1_parking_available_show: {action: stop}
+    fifth_dimension_curse_saucer_1_parking_held_show: {action: stop}
+    fifth_dimension_curse_saucer_2_parking_available_show: {action: stop}
+    fifth_dimension_curse_saucer_2_parking_held_show: {action: stop}
+    fifth_dimension_curse_saucer_3_parking_available_show: {action: stop}
+    fifth_dimension_curse_saucer_3_parking_held_show: {action: stop}
     fifth_dimension_curse_add_a_ball_star_pulse:
       action: stop
     fifth_dimension_curse_add_a_ball_upper_a_pulse:
@@ -445,6 +471,30 @@ show_player:
       action: stop
 
 shows:
+  fifth_dimension_curse_saucer_1_parking_available_show:
+    - duration: 750ms
+      lights: {l_1_hole_l: FF0000-f750ms, l_1_hole_r: FF0000-f750ms}
+    - duration: 750ms
+      lights: {l_1_hole_l: 400000-f750ms, l_1_hole_r: 400000-f750ms}
+  fifth_dimension_curse_saucer_1_parking_held_show:
+    - duration: 1s
+      lights: {l_1_hole_l: BF0000, l_1_hole_r: BF0000}
+  fifth_dimension_curse_saucer_2_parking_available_show:
+    - duration: 750ms
+      lights: {l_2_hole_l: FF0000-f750ms, l_2_hole_r: FF0000-f750ms}
+    - duration: 750ms
+      lights: {l_2_hole_l: 400000-f750ms, l_2_hole_r: 400000-f750ms}
+  fifth_dimension_curse_saucer_2_parking_held_show:
+    - duration: 1s
+      lights: {l_2_hole_l: BF0000, l_2_hole_r: BF0000}
+  fifth_dimension_curse_saucer_3_parking_available_show:
+    - duration: 750ms
+      lights: {l_3_hole_l: FF0000-f750ms, l_3_hole_r: FF0000-f750ms}
+    - duration: 750ms
+      lights: {l_3_hole_l: 400000-f750ms, l_3_hole_r: 400000-f750ms}
+  fifth_dimension_curse_saucer_3_parking_held_show:
+    - duration: 1s
+      lights: {l_3_hole_l: BF0000, l_3_hole_r: BF0000}
   fifth_dimension_curse_add_a_ball_star_pulse:
     - duration: 500ms
       lights: {l_star: white, l_star2: white}

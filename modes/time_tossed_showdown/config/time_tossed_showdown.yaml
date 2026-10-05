@@ -58,10 +58,49 @@ event_player:
   mode_time_tossed_showdown_stopping:
     - enable_daily_bugle_mystery
     - daily_bugle_restore_state
-    - clear_saucers_delayed
     - rooftop_diverter_close
 
 show_player:
+  mode_time_tossed_showdown_stopping:
+    time_tossed_saucer_1_parking_available_show: {action: stop}
+    time_tossed_saucer_1_parking_held_show: {action: stop}
+    time_tossed_saucer_1_parking_objective_show: {action: stop}
+    time_tossed_saucer_2_parking_available_show: {action: stop}
+    time_tossed_saucer_2_parking_held_show: {action: stop}
+    time_tossed_saucer_2_parking_objective_show: {action: stop}
+    time_tossed_saucer_3_parking_available_show: {action: stop}
+    time_tossed_saucer_3_parking_held_show: {action: stop}
+    time_tossed_saucer_3_parking_objective_show: {action: stop}
+  time_tossed_saucer_1_parking_available:
+    time_tossed_saucer_1_parking_available_show: {loops: -1, priority: 100}
+  time_tossed_saucer_1_parking_held:
+    time_tossed_saucer_1_parking_held_show: {loops: -1, priority: 100}
+  time_tossed_saucer_1_parking_objective:
+    time_tossed_saucer_1_parking_objective_show: {loops: -1, priority: 100}
+  time_tossed_saucer_1_parking_clear:
+    time_tossed_saucer_1_parking_available_show: {action: stop}
+    time_tossed_saucer_1_parking_held_show: {action: stop}
+    time_tossed_saucer_1_parking_objective_show: {action: stop}
+  time_tossed_saucer_2_parking_available:
+    time_tossed_saucer_2_parking_available_show: {loops: -1, priority: 100}
+  time_tossed_saucer_2_parking_held:
+    time_tossed_saucer_2_parking_held_show: {loops: -1, priority: 100}
+  time_tossed_saucer_2_parking_objective:
+    time_tossed_saucer_2_parking_objective_show: {loops: -1, priority: 100}
+  time_tossed_saucer_2_parking_clear:
+    time_tossed_saucer_2_parking_available_show: {action: stop}
+    time_tossed_saucer_2_parking_held_show: {action: stop}
+    time_tossed_saucer_2_parking_objective_show: {action: stop}
+  time_tossed_saucer_3_parking_available:
+    time_tossed_saucer_3_parking_available_show: {loops: -1, priority: 100}
+  time_tossed_saucer_3_parking_held:
+    time_tossed_saucer_3_parking_held_show: {loops: -1, priority: 100}
+  time_tossed_saucer_3_parking_objective:
+    time_tossed_saucer_3_parking_objective_show: {loops: -1, priority: 100}
+  time_tossed_saucer_3_parking_clear:
+    time_tossed_saucer_3_parking_available_show: {action: stop}
+    time_tossed_saucer_3_parking_held_show: {action: stop}
+    time_tossed_saucer_3_parking_objective_show: {action: stop}
   # Rooftop selection/setup: shared chase is visible only while gate is open.
   time_tossed_showdown_rooftop:
     shared_final_vuk_chase:
@@ -73,9 +112,6 @@ show_player:
       priority: 835
     time_tossed_tech_pulse: {action: stop}
     time_tossed_tech_star_pulse: {action: stop}
-    time_tossed_spider_saucer_1_pulse: {action: stop}
-    time_tossed_spider_saucer_2_pulse: {action: stop}
-    time_tossed_spider_saucer_3_pulse: {action: stop}
     time_tossed_spider_star_pulse: {action: stop}
     time_tossed_spider_upper_a_pulse: {action: stop}
     time_tossed_spider_upper_b_pulse: {action: stop}
@@ -88,12 +124,7 @@ show_player:
     time_tossed_roof_targets_pulse: {action: stop}
 
   # Spider-Men uses the same red pulsing visual language as standalone.
-  time_tossed_showdown_spider_saucer_1_lit:
-    time_tossed_spider_saucer_1_pulse: {loops: -1, priority: 840}
   time_tossed_showdown_spider_saucer_2_lit:
-    time_tossed_spider_saucer_2_pulse: {loops: -1, priority: 840}
-  time_tossed_showdown_spider_saucer_3_lit:
-    time_tossed_spider_saucer_3_pulse: {loops: -1, priority: 840}
   time_tossed_showdown_spider_star_lit:
     time_tossed_spider_star_pulse: {loops: -1, priority: 840}
   time_tossed_showdown_spider_upper_a_lit:
@@ -102,9 +133,6 @@ show_player:
     time_tossed_spider_upper_b_pulse: {loops: -1, priority: 840}
 
   time_tossed_showdown_spider_all_off: &spider_all_off
-    time_tossed_spider_saucer_1_pulse: {action: stop}
-    time_tossed_spider_saucer_2_pulse: {action: stop}
-    time_tossed_spider_saucer_3_pulse: {action: stop}
     time_tossed_spider_star_pulse: {action: stop}
     time_tossed_spider_upper_a_pulse: {action: stop}
     time_tossed_spider_upper_b_pulse: {action: stop}
@@ -124,6 +152,15 @@ show_player:
     time_tossed_tech_star_pulse: {action: stop}
 
   time_tossed_showdown_clear_all:
+    time_tossed_saucer_1_parking_available_show: {action: stop}
+    time_tossed_saucer_1_parking_held_show: {action: stop}
+    time_tossed_saucer_1_parking_objective_show: {action: stop}
+    time_tossed_saucer_2_parking_available_show: {action: stop}
+    time_tossed_saucer_2_parking_held_show: {action: stop}
+    time_tossed_saucer_2_parking_objective_show: {action: stop}
+    time_tossed_saucer_3_parking_available_show: {action: stop}
+    time_tossed_saucer_3_parking_held_show: {action: stop}
+    time_tossed_saucer_3_parking_objective_show: {action: stop}
     <<: *spider_all_off
     shared_final_vuk_chase: {action: stop}
     time_tossed_roof_targets_pulse: {action: stop}
@@ -181,12 +218,6 @@ light_player:
     l_pop_2_10: off
     l_pop_2_11: off
     l_pop_2_12: off
-    l_1_hole_l: off
-    l_1_hole_r: off
-    l_2_hole_l: off
-    l_2_hole_r: off
-    l_3_hole_l: off
-    l_3_hole_r: off
     l_3bankbonus: off
     l_5bank_1: off
     l_5bank_2: off
@@ -232,9 +263,6 @@ light_player:
     l_pop_2_10: "40F040"
     l_pop_2_11: "40F040"
     l_pop_2_12: "40F040"
-  time_tossed_showdown_vine_saucer_1_lit: {l_1_hole_l: red, l_1_hole_r: red}
-  time_tossed_showdown_vine_saucer_2_lit: {l_2_hole_l: red, l_2_hole_r: red}
-  time_tossed_showdown_vine_saucer_3_lit: {l_3_hole_l: red, l_3_hole_r: red}
   time_tossed_showdown_vine_left_drop_1_lit: {l_3bankbonus: white}
   time_tossed_showdown_vine_left_drop_2_lit: {l_3bankbonus: white}
   time_tossed_showdown_vine_left_drop_3_lit: {l_3bankbonus: white}
@@ -271,12 +299,6 @@ light_player:
     l_star2: yellow
 
   time_tossed_showdown_spider_all_off:
-    l_1_hole_l: off
-    l_1_hole_r: off
-    l_2_hole_l: off
-    l_2_hole_r: off
-    l_3_hole_l: off
-    l_3_hole_r: off
     l_star: off
     l_star2: off
     l_a_rollover: off
@@ -311,6 +333,45 @@ sound_player:
       bus: effects
 
 shows:
+  time_tossed_saucer_1_parking_available_show:
+    - duration: 750ms
+      lights: {l_1_hole_l: FF0000-f750ms, l_1_hole_r: FF0000-f750ms}
+    - duration: 750ms
+      lights: {l_1_hole_l: 400000-f750ms, l_1_hole_r: 400000-f750ms}
+  time_tossed_saucer_1_parking_held_show:
+    - duration: 1s
+      lights: {l_1_hole_l: BF0000, l_1_hole_r: BF0000}
+  time_tossed_saucer_1_parking_objective_show:
+    - duration: 200ms
+      lights: {l_1_hole_l: FFFFFF, l_1_hole_r: FFFFFF}
+    - duration: 200ms
+      lights: {l_1_hole_l: off, l_1_hole_r: off}
+  time_tossed_saucer_2_parking_available_show:
+    - duration: 750ms
+      lights: {l_2_hole_l: FF0000-f750ms, l_2_hole_r: FF0000-f750ms}
+    - duration: 750ms
+      lights: {l_2_hole_l: 400000-f750ms, l_2_hole_r: 400000-f750ms}
+  time_tossed_saucer_2_parking_held_show:
+    - duration: 1s
+      lights: {l_2_hole_l: BF0000, l_2_hole_r: BF0000}
+  time_tossed_saucer_2_parking_objective_show:
+    - duration: 200ms
+      lights: {l_2_hole_l: FFFFFF, l_2_hole_r: FFFFFF}
+    - duration: 200ms
+      lights: {l_2_hole_l: off, l_2_hole_r: off}
+  time_tossed_saucer_3_parking_available_show:
+    - duration: 750ms
+      lights: {l_3_hole_l: FF0000-f750ms, l_3_hole_r: FF0000-f750ms}
+    - duration: 750ms
+      lights: {l_3_hole_l: 400000-f750ms, l_3_hole_r: 400000-f750ms}
+  time_tossed_saucer_3_parking_held_show:
+    - duration: 1s
+      lights: {l_3_hole_l: BF0000, l_3_hole_r: BF0000}
+  time_tossed_saucer_3_parking_objective_show:
+    - duration: 200ms
+      lights: {l_3_hole_l: FFFFFF, l_3_hole_r: FFFFFF}
+    - duration: 200ms
+      lights: {l_3_hole_l: off, l_3_hole_r: off}
   # Rooftop setup cues: the three targets and upper-spinner GI pulse together.
   time_tossed_roof_targets_pulse:
     - duration: 400ms
@@ -327,21 +388,6 @@ shows:
         l_gi_a: "503810"
 
   # Spider-Men copies the standalone red full/low pulse language.
-  time_tossed_spider_saucer_1_pulse:
-    - duration: 350ms
-      lights: {l_1_hole_l: red, l_1_hole_r: red}
-    - duration: 350ms
-      lights: {l_1_hole_l: "400000", l_1_hole_r: "400000"}
-  time_tossed_spider_saucer_2_pulse:
-    - duration: 350ms
-      lights: {l_2_hole_l: red, l_2_hole_r: red}
-    - duration: 350ms
-      lights: {l_2_hole_l: "400000", l_2_hole_r: "400000"}
-  time_tossed_spider_saucer_3_pulse:
-    - duration: 350ms
-      lights: {l_3_hole_l: red, l_3_hole_r: red}
-    - duration: 350ms
-      lights: {l_3_hole_l: "400000", l_3_hole_r: "400000"}
   time_tossed_spider_star_pulse:
     - duration: 350ms
       lights: {l_star: red, l_star2: red}

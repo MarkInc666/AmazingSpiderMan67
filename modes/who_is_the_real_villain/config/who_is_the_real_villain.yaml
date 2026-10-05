@@ -49,11 +49,59 @@ event_player:
   mode_who_is_the_real_villain_stopping:
     - enable_daily_bugle_mystery
     - daily_bugle_restore_state
-    - clear_saucers_delayed
     - rooftop_diverter_close
 
 show_player:
+  mode_who_is_the_real_villain_stopping:
+    real_villain_saucer_1_parking_available_show: {action: stop}
+    real_villain_saucer_1_parking_held_show: {action: stop}
+    real_villain_saucer_1_parking_objective_show: {action: stop}
+    real_villain_saucer_2_parking_available_show: {action: stop}
+    real_villain_saucer_2_parking_held_show: {action: stop}
+    real_villain_saucer_2_parking_objective_show: {action: stop}
+    real_villain_saucer_3_parking_available_show: {action: stop}
+    real_villain_saucer_3_parking_held_show: {action: stop}
+    real_villain_saucer_3_parking_objective_show: {action: stop}
+  real_villain_saucer_1_parking_available:
+    real_villain_saucer_1_parking_available_show: {loops: -1, priority: 100}
+  real_villain_saucer_1_parking_held:
+    real_villain_saucer_1_parking_held_show: {loops: -1, priority: 100}
+  real_villain_saucer_1_parking_objective:
+    real_villain_saucer_1_parking_objective_show: {loops: -1, priority: 100}
+  real_villain_saucer_1_parking_clear:
+    real_villain_saucer_1_parking_available_show: {action: stop}
+    real_villain_saucer_1_parking_held_show: {action: stop}
+    real_villain_saucer_1_parking_objective_show: {action: stop}
+  real_villain_saucer_2_parking_available:
+    real_villain_saucer_2_parking_available_show: {loops: -1, priority: 100}
+  real_villain_saucer_2_parking_held:
+    real_villain_saucer_2_parking_held_show: {loops: -1, priority: 100}
+  real_villain_saucer_2_parking_objective:
+    real_villain_saucer_2_parking_objective_show: {loops: -1, priority: 100}
+  real_villain_saucer_2_parking_clear:
+    real_villain_saucer_2_parking_available_show: {action: stop}
+    real_villain_saucer_2_parking_held_show: {action: stop}
+    real_villain_saucer_2_parking_objective_show: {action: stop}
+  real_villain_saucer_3_parking_available:
+    real_villain_saucer_3_parking_available_show: {loops: -1, priority: 100}
+  real_villain_saucer_3_parking_held:
+    real_villain_saucer_3_parking_held_show: {loops: -1, priority: 100}
+  real_villain_saucer_3_parking_objective:
+    real_villain_saucer_3_parking_objective_show: {loops: -1, priority: 100}
+  real_villain_saucer_3_parking_clear:
+    real_villain_saucer_3_parking_available_show: {action: stop}
+    real_villain_saucer_3_parking_held_show: {action: stop}
+    real_villain_saucer_3_parking_objective_show: {action: stop}
   who_is_the_real_villain_clear_all:
+    real_villain_saucer_1_parking_available_show: {action: stop}
+    real_villain_saucer_1_parking_held_show: {action: stop}
+    real_villain_saucer_1_parking_objective_show: {action: stop}
+    real_villain_saucer_2_parking_available_show: {action: stop}
+    real_villain_saucer_2_parking_held_show: {action: stop}
+    real_villain_saucer_2_parking_objective_show: {action: stop}
+    real_villain_saucer_3_parking_available_show: {action: stop}
+    real_villain_saucer_3_parking_held_show: {action: stop}
+    real_villain_saucer_3_parking_objective_show: {action: stop}
     real_villain_pop_left_pulse: {action: stop}
     real_villain_pop_right_pulse: {action: stop}
     real_villain_ab_pair_pulse: {action: stop}
@@ -65,7 +113,6 @@ show_player:
     real_villain_sling_right_flash: {action: stop}
     real_villain_rubber_left_flash: {action: stop}
     real_villain_rubber_right_flash: {action: stop}
-    real_villain_saucers_flash: {action: stop}
     real_villain_exposure_banks_pulse: {action: stop}
     real_villain_desperado_gi_pulse: {action: stop}
     real_villain_d1_pulse: {action: stop}
@@ -91,7 +138,6 @@ show_player:
     real_villain_sling_right_flash: {action: stop}
     real_villain_rubber_left_flash: {action: stop}
     real_villain_rubber_right_flash: {action: stop}
-    real_villain_saucers_flash: {action: stop}
     real_villain_exposure_banks_pulse: {action: stop}
     real_villain_desperado_gi_pulse: {action: stop}
     real_villain_d1_pulse: {action: stop}
@@ -146,10 +192,7 @@ show_player:
   who_is_the_real_villain_cameo_rubbers_right_flash:
     real_villain_rubber_right_flash: {loops: -1, priority: 120}
 
-  who_is_the_real_villain_saucers_flash:
-    real_villain_saucers_flash: {loops: -1, priority: 340}
   who_is_the_real_villain_saucers_off:
-    real_villain_saucers_flash: {action: stop}
 
   who_is_the_real_villain_desperado_start:
     real_villain_desperado_gi_pulse: {loops: -1}
@@ -227,12 +270,6 @@ light_player:
     l_5bank_4: off
     l_5bank_5: off
 
-  who_is_the_real_villain_saucer_1_parked: {l_1_hole_l: 400000, l_1_hole_r: 400000}
-  who_is_the_real_villain_saucer_2_parked: {l_2_hole_l: 400000, l_2_hole_r: 400000}
-  who_is_the_real_villain_saucer_3_parked: {l_3_hole_l: 400000, l_3_hole_r: 400000}
-  who_is_the_real_villain_saucer_1_released: {l_1_hole_l: off, l_1_hole_r: off}
-  who_is_the_real_villain_saucer_2_released: {l_2_hole_l: off, l_2_hole_r: off}
-  who_is_the_real_villain_saucer_3_released: {l_3_hole_l: off, l_3_hole_r: off}
 
   who_is_the_real_villain_desperado_clear_inserts:
     l_5bank_1: off
@@ -252,6 +289,45 @@ light_player:
   who_is_the_real_villain_upper_right_solid: {l_upper_right: F0D040}
 
 shows:
+  real_villain_saucer_1_parking_available_show:
+    - duration: 750ms
+      lights: {l_1_hole_l: FF0000-f750ms, l_1_hole_r: FF0000-f750ms}
+    - duration: 750ms
+      lights: {l_1_hole_l: 400000-f750ms, l_1_hole_r: 400000-f750ms}
+  real_villain_saucer_1_parking_held_show:
+    - duration: 1s
+      lights: {l_1_hole_l: BF0000, l_1_hole_r: BF0000}
+  real_villain_saucer_1_parking_objective_show:
+    - duration: 200ms
+      lights: {l_1_hole_l: FFFFFF, l_1_hole_r: FFFFFF}
+    - duration: 200ms
+      lights: {l_1_hole_l: off, l_1_hole_r: off}
+  real_villain_saucer_2_parking_available_show:
+    - duration: 750ms
+      lights: {l_2_hole_l: FF0000-f750ms, l_2_hole_r: FF0000-f750ms}
+    - duration: 750ms
+      lights: {l_2_hole_l: 400000-f750ms, l_2_hole_r: 400000-f750ms}
+  real_villain_saucer_2_parking_held_show:
+    - duration: 1s
+      lights: {l_2_hole_l: BF0000, l_2_hole_r: BF0000}
+  real_villain_saucer_2_parking_objective_show:
+    - duration: 200ms
+      lights: {l_2_hole_l: FFFFFF, l_2_hole_r: FFFFFF}
+    - duration: 200ms
+      lights: {l_2_hole_l: off, l_2_hole_r: off}
+  real_villain_saucer_3_parking_available_show:
+    - duration: 750ms
+      lights: {l_3_hole_l: FF0000-f750ms, l_3_hole_r: FF0000-f750ms}
+    - duration: 750ms
+      lights: {l_3_hole_l: 400000-f750ms, l_3_hole_r: 400000-f750ms}
+  real_villain_saucer_3_parking_held_show:
+    - duration: 1s
+      lights: {l_3_hole_l: BF0000, l_3_hole_r: BF0000}
+  real_villain_saucer_3_parking_objective_show:
+    - duration: 200ms
+      lights: {l_3_hole_l: FFFFFF, l_3_hole_r: FFFFFF}
+    - duration: 200ms
+      lights: {l_3_hole_l: off, l_3_hole_r: off}
   real_villain_pop_left_pulse:
     - duration: 400ms
       lights: {l_pop_1_1: purple, l_pop_1_2: purple, l_pop_1_3: purple, l_pop_1_4: purple, l_pop_1_5: purple, l_pop_1_6: purple, l_pop_1_7: purple, l_pop_1_8: purple, l_pop_1_9: purple, l_pop_1_10: purple, l_pop_1_11: purple, l_pop_1_12: purple}
@@ -315,12 +391,6 @@ shows:
       lights: {l_gi_5bank_lower: FFFFFF, l_gi_5bank_upper: FFFFFF, l_5bank_1: FFFFFF, l_5bank_2: FFFFFF, l_5bank_3: FFFFFF, l_5bank_4: FFFFFF, l_5bank_5: FFFFFF}
     - duration: 140ms
       lights: {l_gi_5bank_lower: off, l_gi_5bank_upper: off, l_5bank_1: off, l_5bank_2: off, l_5bank_3: off, l_5bank_4: off, l_5bank_5: off}
-
-  real_villain_saucers_flash:
-    - duration: 300ms
-      lights: {l_1_hole_l: red, l_1_hole_r: red, l_2_hole_l: red, l_2_hole_r: red, l_3_hole_l: red, l_3_hole_r: red}
-    - duration: 300ms
-      lights: {l_1_hole_l: off, l_1_hole_r: off, l_2_hole_l: off, l_2_hole_r: off, l_3_hole_l: off, l_3_hole_r: off}
 
   real_villain_exposure_banks_pulse:
     - duration: 350ms

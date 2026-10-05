@@ -1,0 +1,9 @@
+TRUBBLE UNLEASHED PARKING PATCH — October 5, 2026
+Merge these files into the project, replacing matching paths.
+Keep the earlier Sinister, Mastermind and wizard-screen patches.
+
+Retains independent 12-second holds and Cyclops releasing one random ball.
+Adds common lighting, duplicate-hit protection, oldest-ball drain recovery
+and 300ms staggered parked-ball cleanup. Rooftop phase changes retain parking.
+The workbook contains cumulative Sinister, Mastermind and Trubble notes.
+Python stub checks passed. MPF/GMC and machine testing remain pending.

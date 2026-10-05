@@ -11,7 +11,8 @@ CORE LOOP
 - The VUK ball remains locked while five villain-inspired phases are played.
 - A saucer starts each phase. The phase name is announced for 2 seconds before
   that phase gameplay begins.
-- While a phase is waiting to be started, all three saucer hole lamps pulse white.
+- While a phase is waiting to be started, empty available saucers flash white.
+  Held saucers remain solid 75% red.
 - Saucers park excess balls during a phase, but the mode always preserves at
   least one loose playable ball. If attrition leaves only held saucer balls and
   the VUK lock, one saucer ball is released automatically.
@@ -151,7 +152,7 @@ PHYSICAL / MACHINE TEST ITEMS
 - The Super transition now verifies the physical rooftop gate-open switch before the VUK kick. If the gate has not opened, the mode retries the high-level open request and keeps the VUK ball held until the gate is confirmed open; only then does the roof feed begin.
 
 2026-09-06 presentation/ball-hold update:
-- During every villain phase, balls entering saucers may remain parked as long as at least one loose ball remains playable. Parked saucer balls may remain held across phase transitions; the ball guard releases one only if play would otherwise stall.
+- During every villain phase, balls entering saucers may remain parked as long as at least one loose ball remains playable. Up to one ball may remain parked across an ordinary phase transition; its existing parking timer continues. The ball guard releases the oldest eligible ball if play would otherwise stall.
 - Harley & Clivendon: the Star flashes while the timed Star collect is ready.
 - Fiddler phase uses the same violin note/bad-note SFX and the same bright/dim green WATCH strobe timing and shot lighting as standalone Fiddler.
 
@@ -164,3 +165,25 @@ PHYSICAL / MACHINE TEST ITEMS
 - Metal attack, Conquistador center-web, and Harley Star countdowns now remain
   the final display event so the shared large red timer is not immediately
   replaced by the smaller phase-status widget.
+
+2026-10-05 parking consistency update:
+- Ordinary saucer holds have independent 20-second timers. The deliberate VUK
+  cycle lock remains controlled by the mode and is not ordinary saucer parking.
+- Capacity is at most 3 saucers and always subtracts the VUK-held ball.
+- Fiddler GET READY/WATCH may temporarily hold the last loose ball; release
+  the oldest saucer after WATCH if needed for YOUR TURN. Parking timers defer
+  during that demonstration. Repeated held-switch hits do not reset timers.
+- Between ordinary phases retain at most the oldest parked ball, only if a
+  loose ball remains after releases. Release excess balls staggered by 300ms.
+  The retained ball's timer continues; shoot another empty saucer to start.
+- Drains trigger a check after the game count/saves update; a 250ms guard
+  also checks. Safety releases use the oldest ball not already scheduled out.
+- Final Super preserves gate verification and VUK roof feed, then saucer
+  release after 6 seconds with 2-second staggering. Scheduled saucers stay
+  represented as held until their kicks; ordinary timers are cancelled once
+  the controlled release is scheduled. No new parking during Super.
+- Mode end releases all saucer-held balls with 300ms staggering.
+- Empty phase-start and Metal/Harley/Slayer saucer objectives flash white.
+  Ordinary available parking slowly pulses red. Held overrides objectives
+  with solid 75% red (BF0000). Unavailable ordinary spots are off.
+- MPF/GMC and physical-machine verification remain pending.

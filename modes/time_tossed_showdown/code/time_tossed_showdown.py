@@ -1,4 +1,5 @@
 import random
+import time
 
 from mpf.core.delays import DelayManager
 from mpf.core.mode import Mode
@@ -86,6 +87,8 @@ class TimeTossedShowdown(Mode):
         self.jackpots = 0
         self.phases_completed = 0
         self.held_saucers = []
+        self.saucer_available_after = {}
+        self.saucer_light_states = {}
 
         # Rooftop setup state.
         self.roof_visit_active = False
@@ -118,8 +121,10 @@ class TimeTossedShowdown(Mode):
         self.machine.events.post("time_tossed_showdown_clear_all")
         self.machine.events.post("time_tossed_showdown_start_multiball")
         self._start_rooftop_phase()
+        self._schedule_ball_guard()
 
     def mode_stop(self, **kwargs):
+        self.mode_done = True
         self.delay.clear()
         self._release_all_saucers()
         self.machine.events.post("time_tossed_showdown_clear_all")
@@ -154,16 +159,23 @@ class TimeTossedShowdown(Mode):
         self.add_mode_event_handler("s_left_flipper_active", self._spider_rotate_left)
         self.add_mode_event_handler("s_right_flipper_active", self._spider_rotate_right)
         for index, shot in enumerate(self.SPIDER_SHOTS):
+            if shot["key"].startswith("saucer_"):
+                continue  # Saucer awards and parking share one arrival handler.
             self.add_mode_event_handler(shot["switch"] + "_active", self._spider_shot_hit, index=index)
 
         # Master Vine uses the exact standalone shot pool.
         for shot, event in self.VINE_SWITCHES.items():
+            if shot.startswith("saucer_"):
+                continue
             self.add_mode_event_handler(event, self._vine_shot_hit, shot=shot)
 
         # Master Technician.
         self.add_mode_event_handler("s_web_spinner_active", self._tech_spinner_hit)
         self.add_mode_event_handler("s_left_drops_1_active", self._tech_danger_drop_hit)
         self.add_mode_event_handler("s_star_rollover_active", self._tech_star_hit)
+
+        self.add_mode_event_handler("ball_drain", self._ball_drain)
+        self.add_mode_event_handler("time_tossed_showdown_clear_all", self._invalidate_saucer_lights)
 
         # Saucers park in every phase.
         for saucer in (1, 2, 3):
@@ -339,6 +351,7 @@ class TimeTossedShowdown(Mode):
             self._update_status()
 
     def _refresh_spider_lights(self):
+        self._refresh_saucer_lights()
         self.machine.events.post("time_tossed_showdown_spider_all_off")
         for index, lit in enumerate(self.spider_pattern):
             if lit:
@@ -383,6 +396,7 @@ class TimeTossedShowdown(Mode):
             self._update_status()
 
     def _refresh_vine_lights(self):
+        self._refresh_saucer_lights()
         self.machine.events.post("time_tossed_showdown_vine_all_off")
         for shot in self.vine_lit:
             self.machine.events.post(f"time_tossed_showdown_vine_{shot}_lit")
@@ -505,9 +519,27 @@ class TimeTossedShowdown(Mode):
     # Saucer parking
     # ------------------------------------------------------------------
     def _saucer_seen(self, saucer=None, **kwargs):
-        if self.mode_done or saucer not in (1, 2, 3):
+        if saucer not in (1, 2, 3):
             return
-        if saucer in self.held_saucers:
+        if self.mode_done:
+            self._eject_saucer(saucer)
+            return
+        already_parked = saucer in self.held_saucers
+        if not already_parked and time.monotonic() < self.saucer_available_after.get(saucer, 0):
+            return
+
+        # Each active edge is a shot, including a free ball bumping an occupied
+        # saucer inactive then active. Collect the current objective without
+        # creating a second parked ball or restarting its safety watchdog.
+        if self.phase == "spider_men":
+            self._spider_shot_hit(index=saucer - 1)
+        elif self.phase == "vine":
+            self._vine_shot_hit(shot=f"saucer_{saucer}")
+        if self.mode_done:
+            self._eject_saucer(saucer)
+            return
+        if already_parked:
+            self._check_free_ball()
             return
         self.held_saucers.append(saucer)
         self.delay.reset(
@@ -517,26 +549,75 @@ class TimeTossedShowdown(Mode):
             saucer=saucer,
         )
         self.machine.events.post(f"time_tossed_showdown_saucer_{saucer}_parked")
-        self._ensure_free_ball()
+        self._check_free_ball()
 
-    def _release_saucer(self, saucer=None, **kwargs):
+    def _release_saucer(self, saucer=None, delay_ms=0, **kwargs):
         if saucer not in self.held_saucers:
             return
         self.held_saucers.remove(saucer)
         self.delay.remove(f"time_tossed_saucer_{saucer}")
         self.machine.events.post(f"time_tossed_showdown_saucer_{saucer}_released")
-        self.machine.events.post("request_saucer_eject", saucer_number=saucer, delay_ms=0)
+        self._eject_saucer(saucer, delay_ms)
 
     def _release_all_saucers(self):
-        for saucer in list(self.held_saucers):
-            self._release_saucer(saucer)
+        # These shared requests survive local mode delay cleanup.
+        for index, saucer in enumerate(list(self.held_saucers)):
+            self._release_saucer(saucer, delay_ms=index * 300)
 
     def _ensure_free_ball(self):
-        if self._balls_in_play() - len(self.held_saucers) >= 1:
-            return
-        if self.held_saucers:
+        while self.held_saucers and self._balls_in_play() - len(self.held_saucers) < 1:
             # List order is parking order: oldest ball is released first.
             self._release_saucer(self.held_saucers[0])
+
+    def _eject_saucer(self, saucer, delay_ms=0):
+        self.saucer_available_after[saucer] = time.monotonic() + (delay_ms + 750) / 1000
+        self.machine.events.post("request_saucer_eject", saucer_number=saucer, delay_ms=delay_ms)
+        self._refresh_saucer_lights()
+
+    def _ball_drain(self, **kwargs):
+        if not self.mode_done:
+            # Evaluate after the drain relay updates authoritative balls_in_play.
+            self.delay.reset(name="time_tossed_drain_parking_check", ms=1,
+                             callback=self._check_free_ball)
+
+    def _check_free_ball(self):
+        if not self.mode_done:
+            self._ensure_free_ball()
+            self._refresh_saucer_lights()
+
+    def _schedule_ball_guard(self):
+        if not self.mode_done:
+            self.delay.reset(name="time_tossed_ball_guard", ms=250, callback=self._ball_guard)
+
+    def _ball_guard(self):
+        self._check_free_ball()
+        self._schedule_ball_guard()
+
+    def _invalidate_saucer_lights(self, **kwargs):
+        self.saucer_light_states.clear()
+
+    def _refresh_saucer_lights(self):
+        can_park = len(self.held_saucers) < 3 and self._balls_in_play() - len(self.held_saucers) >= 2
+        now = time.monotonic()
+        for saucer in (1, 2, 3):
+            objective = ((self.phase == "spider_men" and self.spider_pattern[saucer - 1])
+                         or (self.phase == "vine" and f"saucer_{saucer}" in self.vine_lit))
+            if self.mode_done:
+                state = "off"
+            elif saucer in self.held_saucers:
+                state = "held"
+            elif now < self.saucer_available_after.get(saucer, 0):
+                state = "off"
+            elif objective:
+                state = "objective"
+            elif can_park:
+                state = "available"
+            else:
+                state = "off"
+            if self.saucer_light_states.get(saucer) != state:
+                self.machine.events.post(f"time_tossed_saucer_{saucer}_parking_clear")
+                self.machine.events.post(f"time_tossed_saucer_{saucer}_parking_{state}")
+                self.saucer_light_states[saucer] = state
 
     # ------------------------------------------------------------------
     # Common phase / mode flow
@@ -545,6 +626,7 @@ class TimeTossedShowdown(Mode):
         if self.mode_done or self.phase in ("rooftop", "phase_complete"):
             return
         self.phase = "phase_complete"
+        self._refresh_saucer_lights()
         self.phases_completed += 1
         self._sync_vars()
         self.machine.events.post("time_tossed_showdown_clear_phase_lights")
@@ -607,6 +689,7 @@ class TimeTossedShowdown(Mode):
         player[f"{self.MODE_KEY}_case_file_bonus"] = self.case_file_bonus
 
     def _update_status(self):
+        self._refresh_saucer_lights()
         if self.mode_done:
             return
         if self.phase == "rooftop":

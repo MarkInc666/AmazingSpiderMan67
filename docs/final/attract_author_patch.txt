@@ -1,0 +1,10 @@
+ATTRACT AUTHOR PANEL — 2026-10-05
+
+Carousel order: credits -> author -> mpf_logo. Existing 5s timing/navigation retained.
+Author panel credits the original May 1980 Gottlieb game, Ed Krynski (design),
+Gordon Morison (artwork), and modernization by Mark Incitti using MPF / GODOT / FAST PINBALL, 2026.
+Original programmer credit could not be verified and is omitted pending confirmation.
+
+Historical reference: https://pinside.com/pinball/machine/spider-man-amazing/details
+Config based on uploaded modes.zip; scene based on ASM67_2026_10_05_12am.zip.
+Config order and scene structure checked; text fit checked with font proxy. Godot display testing pending.

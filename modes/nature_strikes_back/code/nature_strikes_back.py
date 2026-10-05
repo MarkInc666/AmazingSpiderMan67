@@ -1,4 +1,5 @@
 import random
+import time
 
 from mpf.core.mode import Mode
 
@@ -17,7 +18,7 @@ class NatureStrikesBack(Mode):
          VUK for the Super Jackpot, then begin the next harder cycle.
 
     Saucers remain available for parking throughout the wizard. A parked ball is
-    held for at most 20 seconds, but is released immediately if parking would
+    held for 20 seconds after its latest saucer hit, but is released if parking would
     leave no loose ball on the playfield.
     """
 
@@ -92,6 +93,9 @@ class NatureStrikesBack(Mode):
         self.blocked_zones = set()
         self.lit_saucers = set()
         self.held_saucers = set()
+        self.parking_order = []
+        self.saucer_available_after = {}
+        self.saucer_light_states = {}
         self.add_a_balls = 0
         self.supers = 0
 
@@ -127,6 +131,7 @@ class NatureStrikesBack(Mode):
             self._multiball_ended,
         )
         self.add_mode_event_handler("nature_strikes_back_complete_request", self._complete_mode)
+        self.add_mode_event_handler("ball_drain", self._ball_drain)
 
         self._schedule_ball_guard()
 
@@ -139,6 +144,8 @@ class NatureStrikesBack(Mode):
         self._start_charge_stage()
 
     def mode_stop(self, **kwargs):
+        self.mode_done = True
+        self.delay.remove("nature_drain_parking_check")
         self.delay.remove("nature_blotto")
         self.delay.remove("nature_ball_guard")
         self.delay.remove("nature_next_cycle")
@@ -190,7 +197,7 @@ class NatureStrikesBack(Mode):
         if self.mode_done or self.stage != 1 or saucer not in (1, 2, 3):
             return
         self.lit_saucers.add(saucer)
-        self.machine.events.post(f"nature_strikes_back_saucer_{saucer}_lit")
+        self._refresh_saucer_lights()
         self.machine.events.post(
             "show_mode_message",
             message_mode_title="ADD-A-BALL LIT",
@@ -216,6 +223,10 @@ class NatureStrikesBack(Mode):
         if saucer in self.lit_saucers:
             self._collect_lit_saucer(saucer)
 
+        # Occupied-switch hits intentionally still process awards and refresh
+        # the hold timer. They do not change the ball's original parking order.
+        if saucer not in self.held_saucers:
+            self.parking_order.append(saucer)
         self.held_saucers.add(saucer)
         self.machine.events.post(f"nature_strikes_back_saucer_{saucer}_parked")
         self.delay.remove(f"nature_saucer_{saucer}")
@@ -226,6 +237,7 @@ class NatureStrikesBack(Mode):
             saucer=saucer,
         )
         self._ensure_loose_ball()
+        self._refresh_saucer_lights()
 
     def _collect_lit_saucer(self, saucer):
         self._clear_lit_saucers()
@@ -243,24 +255,37 @@ class NatureStrikesBack(Mode):
 
     def _clear_lit_saucers(self):
         self.lit_saucers.clear()
-        self.machine.events.post("nature_strikes_back_saucers_unlit")
+        self._refresh_saucer_lights()
 
     def _ensure_loose_ball(self):
         if self._balls_in_play() - len(self.held_saucers) >= 1:
             return
         if not self.held_saucers:
             return
-        self._release_saucer(sorted(self.held_saucers)[0])
+        self._release_saucer(self.parking_order[0])
 
-    def _release_saucer(self, saucer=None, **kwargs):
+    def _release_saucer(self, saucer=None, delay_ms=0, **kwargs):
         if saucer not in (1, 2, 3):
             return
         self.delay.remove(f"nature_saucer_{saucer}")
         was_held = saucer in self.held_saucers
         self.held_saucers.discard(saucer)
+        if saucer in self.parking_order:
+            self.parking_order.remove(saucer)
         if was_held:
             self.machine.events.post(f"nature_strikes_back_saucer_{saucer}_released")
-        self._eject_saucer(saucer)
+        self._eject_saucer(saucer, delay_ms)
+        self._refresh_saucer_lights()
+
+    def _ball_drain(self, **kwargs):
+        if not self.mode_done:
+            # Check after the drain relay updates counts and applies ball saves.
+            self.delay.reset(name="nature_drain_parking_check", ms=1, callback=self._drain_parking_check)
+
+    def _drain_parking_check(self):
+        if not self.mode_done:
+            self._ensure_loose_ball()
+            self._refresh_saucer_lights()
 
     def _schedule_ball_guard(self):
         if self.mode_done:
@@ -278,6 +303,7 @@ class NatureStrikesBack(Mode):
         # balls. MPF's multiball-ended event is authoritative for deciding
         # when the multiball has collapsed to one ball.
         self._ensure_loose_ball()
+        self._refresh_saucer_lights()
         self._schedule_ball_guard()
 
     def _multiball_started(self, **kwargs):
@@ -290,11 +316,33 @@ class NatureStrikesBack(Mode):
         self._complete_mode()
 
     def _release_all_saucers(self):
-        for saucer in tuple(sorted(self.held_saucers)):
-            self._release_saucer(saucer)
+        for index, saucer in enumerate(list(self.parking_order)):
+            self._release_saucer(saucer, delay_ms=index * 300)
 
-    def _eject_saucer(self, saucer):
-        self.machine.events.post("request_saucer_eject", saucer_number=saucer, delay_ms=0)
+    def _eject_saucer(self, saucer, delay_ms=0):
+        self.saucer_available_after[saucer] = time.monotonic() + (delay_ms + 750) / 1000
+        self.machine.events.post("request_saucer_eject", saucer_number=saucer, delay_ms=delay_ms)
+
+    def _refresh_saucer_lights(self):
+        now = time.monotonic()
+        can_park = len(self.held_saucers) < 3 and self._balls_in_play() - len(self.held_saucers) >= 2
+        for saucer in (1, 2, 3):
+            if self.mode_done:
+                state = "off"
+            elif saucer in self.held_saucers:
+                state = "held"
+            elif now < self.saucer_available_after.get(saucer, 0):
+                state = "off"
+            elif saucer in self.lit_saucers:
+                state = "objective"
+            elif can_park:
+                state = "available"
+            else:
+                state = "off"
+            if self.saucer_light_states.get(saucer) != state:
+                self.machine.events.post(f"nature_strikes_back_saucer_{saucer}_parking_clear")
+                self.machine.events.post(f"nature_strikes_back_saucer_{saucer}_parking_{state}")
+                self.saucer_light_states[saucer] = state
 
     # ------------------------------------------------------------------
     # Stage 2 - discharge Snowman through both webs
@@ -302,7 +350,6 @@ class NatureStrikesBack(Mode):
     def _start_snowman_stage(self):
         self.stage = 2
         self.webs_hit.clear()
-        self._clear_lit_saucers()
         self.machine.events.post("nature_strikes_back_stage_snowman")
         self.machine.events.post("rooftop_diverter_close")
         self._show_message("KILL THE SNOWMAN", "CONNECT BOTH WEB TARGETS")

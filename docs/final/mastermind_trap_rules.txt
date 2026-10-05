@@ -5,6 +5,10 @@ Start: 2-ball multiball. Maximum 4 balls. The mode cycles through three phases a
 PHASE 1 - PARAFINO + SCORPION
 - Park a ball in any saucer. Saucer 1 represents Left Bank; Saucer 2 represents Pops; Saucer 3 represents Right Bank.
 - Parking a ball opens the rooftop gate. Another live ball enters the roof.
+- Up to three balls can park while one remains loose; every hold has a 20-second maximum.
+- Collecting the staged Jackpot releases all parked balls, staggered 300ms apart.
+- If the final held ball releases before an exit is selected, close the gate and require a new capture.
+- The matching multiplier is fixed when the rooftop exit stages the area, as before.
 - Left roof exit stages one random standing target on Right Bank; right roof exit stages one random standing target on Left Bank. The selected bank resets, then all non-required drops are knocked down.
 - There is no dedicated center-exit switch. After rooftop entry, the right-bank upper rubber or middle-right A rollover infers the center drain and stages the RIGHT pop bumper.
 - If the staged area corresponds to any currently parked saucer, the staged Jackpot is 3X.
@@ -13,6 +17,7 @@ PHASE 1 - PARAFINO + SCORPION
 - Completing all three upper targets adds a ball when below the 4-ball cap; the upper targets reset for another possible Add-a-Ball.
 
 PHASE 2 - LIZARD + MYSTERIO
+- Ordinary parking is allowed: up to three held while one remains loose, with independent 20-second timers.
 - Both complete pop-bumper LED rings pulse purple, matching the standalone Lizard serum look.
 - Two pop hits make serum (25,000 each).
 - Three possible delivery locations flash as Mysterio illusions: Left Web, Left Bank, Right Bank.
@@ -31,6 +36,7 @@ PHASE 3 - DOCTOR OCTOPUS
 - Either lower inlane starts/resets a 6-second 3X Spinner window. Spinner is worth 150,000 per spin during 3X.
 
 SUPER
+- Ordinary parking is allowed for one ball maximum, provided another remains loose; maximum hold 20 seconds.
 - After Doc Ock ends, both web targets flash for Super Jackpot.
 - Super starts at 2,000,000 plus 50,000 for every Doc Ock spinner hit (lower or upper), then falls linearly to 100,000 over 8 seconds.
 - It remains at 100,000 for 2 more seconds.
@@ -38,3 +44,17 @@ SUPER
 - After collect or expiry, restart at Parafino + Scorpion and continue until multiball ends.
 
 Scorpion middle exit: after rooftop entry, the top-right bank rubber OR middle-right A rollover selects the RIGHT pop bumper; all 12 right-pop LEDs light green. The left pop is not used for this Scorpion target.
+
+COMMON PARKING / LIGHTING — October 5, 2026
+- Every parked ball, including phase-1 objective locks, has its own 20-second timer.
+- A 250ms watchdog releases the oldest parked ball when none remain loose.
+- Jackpot collection, phase changes and mode end can release balls sooner.
+- Phase changes and mode end release all parked balls, staggered 300ms apart.
+- No parked ball carries from Mysterio into Doctor Octopus.
+- Phase 1 empty capture objectives flash white (200ms on/off).
+- Ordinary empty parking spots pulse red (750ms fade up/down).
+- Every occupied saucer shows solid 75% red (BF0000), overriding ready indications.
+- Other empty spots stay lit while another capture is safe; unavailable spots are off.
+- Doctor Octopus retains its existing red danger lamps; no parking shows run there.
+- Ejects use the shared occupancy-checked request path.
+- Implemented and checked in a Python stub environment; machine testing pending.

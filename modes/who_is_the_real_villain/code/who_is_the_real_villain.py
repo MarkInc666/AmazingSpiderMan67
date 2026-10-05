@@ -1,4 +1,5 @@
 import random
+import time
 
 from mpf.core.mode import Mode
 
@@ -86,6 +87,9 @@ class WhoIsTheRealVillain(Mode):
 
         self.super_seconds_left = 0
         self.held_saucers = []
+        self.pending_saucer_releases = set()
+        self.saucer_available_after = {}
+        self.saucer_light_states = {}
         self.upper_targets_hit = set()
 
         player = self.machine.game.player
@@ -111,6 +115,7 @@ class WhoIsTheRealVillain(Mode):
         self._sync_vars()
 
     def mode_stop(self, **kwargs):
+        self.mode_done = True
         self.delay.clear()
         self._release_all_saucers()
         self.machine.events.post("who_is_the_real_villain_clear_all")
@@ -149,6 +154,8 @@ class WhoIsTheRealVillain(Mode):
         for saucer in (1, 2, 3):
             self.add_mode_event_handler(f"s_saucer_{saucer}_active", self._saucer_hit, saucer=saucer)
         self.add_mode_event_handler("s_vuk_switch_active", self._vuk_hit)
+        self.add_mode_event_handler("ball_drain", self._ball_drain)
+        self.add_mode_event_handler("who_is_the_real_villain_clear_all", self._invalidate_saucer_lights)
 
         self.add_mode_event_handler(
             "multiball_who_is_the_real_villain_multiball_started", self._multiball_started
@@ -474,7 +481,7 @@ class WhoIsTheRealVillain(Mode):
         if self.mode_done:
             self._eject_saucer(saucer)
             return
-        if saucer in self.held_saucers:
+        if saucer in self.held_saucers or time.monotonic() < self.saucer_available_after.get(saucer, 0):
             return
 
         if self.phase == "cameo_pair" and self.cameo_pair is not None and not self.cameo_truth_revealed:
@@ -498,18 +505,33 @@ class WhoIsTheRealVillain(Mode):
             saucer=saucer,
         )
         self.machine.events.post(f"who_is_the_real_villain_saucer_{saucer}_parked")
+        self._refresh_saucer_lights()
 
-    def _release_saucer(self, saucer=None):
+    def _forget_released_saucer(self, saucer):
+        if saucer in self.held_saucers:
+            self.held_saucers.remove(saucer)
+        self.pending_saucer_releases.discard(saucer)
+        self.machine.events.post(f"who_is_the_real_villain_saucer_{saucer}_released")
+        self._refresh_saucer_lights()
+
+    def _release_saucer(self, saucer=None, delay_ms=0):
         if saucer not in self.held_saucers:
             return
-        self.held_saucers.remove(saucer)
         self.delay.remove(f"real_villain_saucer_{saucer}")
-        self.machine.events.post(f"who_is_the_real_villain_saucer_{saucer}_released")
-        self._eject_saucer(saucer)
+        self.delay.remove(f"real_villain_saucer_{saucer}_release")
+        if delay_ms > 0 and not self.mode_done:
+            # Count the ball as held until its shared eject request is due.
+            self.pending_saucer_releases.add(saucer)
+            self.delay.reset(name=f"real_villain_saucer_{saucer}_release", ms=delay_ms,
+                             callback=self._forget_released_saucer, saucer=saucer)
+        else:
+            self._forget_released_saucer(saucer)
+        self._eject_saucer(saucer, delay_ms)
 
     def _release_all_saucers(self):
-        for saucer in list(self.held_saucers):
-            self._release_saucer(saucer)
+        # Shared requests survive mode stop; local bookkeeping is only needed live.
+        for index, saucer in enumerate(list(self.held_saucers)):
+            self._release_saucer(saucer, delay_ms=index * 300)
 
     def _ensure_free_ball(self):
         if self._balls_in_play() - len(self.held_saucers) >= 1:
@@ -518,7 +540,46 @@ class WhoIsTheRealVillain(Mode):
             self._release_saucer(self.held_saucers[0])
 
     def _eject_saucer(self, saucer, delay_ms=0):
+        self.saucer_available_after[saucer] = time.monotonic() + (delay_ms + 750) / 1000
         self.machine.events.post("request_saucer_eject", saucer_number=saucer, delay_ms=delay_ms)
+        self._refresh_saucer_lights()
+
+    def _ball_drain(self, **kwargs):
+        if not self.mode_done:
+            # Run after the ball_drain relay updates authoritative balls_in_play.
+            self.delay.reset(name="real_villain_drain_parking_check", ms=1,
+                             callback=self._check_free_ball)
+
+    def _check_free_ball(self):
+        if not self.mode_done:
+            self._ensure_free_ball()
+            self._refresh_saucer_lights()
+
+    def _invalidate_saucer_lights(self, **kwargs):
+        self.saucer_light_states.clear()
+
+    def _refresh_saucer_lights(self):
+        can_park = len(self.held_saucers) < 3 and self._balls_in_play() - len(self.held_saucers) >= 2
+        objective = (self.phase == "cameo_pair" and self.cameo_pair is not None
+                     and not self.cameo_truth_revealed) or (self.phase == "brutus" and self.brutus_saucers_lit)
+        now = time.monotonic()
+        for saucer in (1, 2, 3):
+            if self.mode_done:
+                state = "off"
+            elif saucer in self.held_saucers:
+                state = "held"
+            elif now < self.saucer_available_after.get(saucer, 0):
+                state = "off"
+            elif objective:
+                state = "objective"
+            elif can_park:
+                state = "available"
+            else:
+                state = "off"
+            if self.saucer_light_states.get(saucer) != state:
+                self.machine.events.post(f"real_villain_saucer_{saucer}_parking_clear")
+                self.machine.events.post(f"real_villain_saucer_{saucer}_parking_{state}")
+                self.saucer_light_states[saucer] = state
 
     # ------------------------------------------------------------------
     # Ball lifecycle / helpers
@@ -536,7 +597,7 @@ class WhoIsTheRealVillain(Mode):
         self._complete_mode()
 
     def _schedule_ball_guard(self):
-        self.delay.reset(name="real_villain_ball_guard", ms=500, callback=self._ball_guard)
+        self.delay.reset(name="real_villain_ball_guard", ms=250, callback=self._ball_guard)
 
     def _ball_guard(self):
         if self.mode_done:
@@ -545,7 +606,7 @@ class WhoIsTheRealVillain(Mode):
         # saucers, but never use transient balls_in_play counts to decide
         # whether multiball has ended. MPF's multiball_..._ended event owns
         # that transition.
-        self._ensure_free_ball()
+        self._check_free_ball()
         self._schedule_ball_guard()
 
     def _complete_mode(self, **kwargs):
@@ -630,6 +691,7 @@ class WhoIsTheRealVillain(Mode):
         )
 
     def _update_status(self):
+        self._refresh_saucer_lights()
         if self.phase == "cameo_pops":
             title = "CAMEO - FIND THE PAIR"
             value = f"POPS {len(self.pops_hit)}/2"

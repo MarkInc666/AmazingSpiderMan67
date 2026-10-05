@@ -64,7 +64,46 @@ event_player:
     - rooftop_diverter_close
 
 show_player:
+  invasion_saucer_1_parking_available:
+    invasion_saucer_1_parking_available_show: {loops: -1, priority: 100}
+  invasion_saucer_1_parking_held:
+    invasion_saucer_1_parking_held_show: {loops: -1, priority: 100}
+  invasion_saucer_1_parking_objective:
+    invasion_saucer_1_parking_objective_show: {loops: -1, priority: 100}
+  invasion_saucer_1_parking_clear:
+    invasion_saucer_1_parking_available_show: {action: stop}
+    invasion_saucer_1_parking_held_show: {action: stop}
+    invasion_saucer_1_parking_objective_show: {action: stop}
+  invasion_saucer_2_parking_available:
+    invasion_saucer_2_parking_available_show: {loops: -1, priority: 100}
+  invasion_saucer_2_parking_held:
+    invasion_saucer_2_parking_held_show: {loops: -1, priority: 100}
+  invasion_saucer_2_parking_objective:
+    invasion_saucer_2_parking_objective_show: {loops: -1, priority: 100}
+  invasion_saucer_2_parking_clear:
+    invasion_saucer_2_parking_available_show: {action: stop}
+    invasion_saucer_2_parking_held_show: {action: stop}
+    invasion_saucer_2_parking_objective_show: {action: stop}
+  invasion_saucer_3_parking_available:
+    invasion_saucer_3_parking_available_show: {loops: -1, priority: 100}
+  invasion_saucer_3_parking_held:
+    invasion_saucer_3_parking_held_show: {loops: -1, priority: 100}
+  invasion_saucer_3_parking_objective:
+    invasion_saucer_3_parking_objective_show: {loops: -1, priority: 100}
+  invasion_saucer_3_parking_clear:
+    invasion_saucer_3_parking_available_show: {action: stop}
+    invasion_saucer_3_parking_held_show: {action: stop}
+    invasion_saucer_3_parking_objective_show: {action: stop}
   invasion_from_everywhere_clear_all:
+    invasion_saucer_1_parking_available_show: {action: stop}
+    invasion_saucer_1_parking_held_show: {action: stop}
+    invasion_saucer_1_parking_objective_show: {action: stop}
+    invasion_saucer_2_parking_available_show: {action: stop}
+    invasion_saucer_2_parking_held_show: {action: stop}
+    invasion_saucer_2_parking_objective_show: {action: stop}
+    invasion_saucer_3_parking_available_show: {action: stop}
+    invasion_saucer_3_parking_held_show: {action: stop}
+    invasion_saucer_3_parking_objective_show: {action: stop}
     shared_final_vuk_chase: {action: stop}
     invasion_igor_good_right_bank_show: {action: stop}
     invasion_igor_good_right_pop_show: {action: stop}
@@ -73,9 +112,6 @@ show_player:
     invasion_molemen_left_area_show: {action: stop}
     invasion_molemen_center_area_show: {action: stop}
     invasion_molemen_right_area_show: {action: stop}
-    invasion_saucer_1_ready_show: {action: stop}
-    invasion_saucer_2_ready_show: {action: stop}
-    invasion_saucer_3_ready_show: {action: stop}
     invasion_atlantean_targets_show: {action: stop}
     invasion_atlantean_spinner_show: {action: stop}
     invasion_devargas_5_show: {action: stop}
@@ -127,28 +163,8 @@ show_player:
     invasion_molemen_left_area_show: {loops: -1}
     invasion_molemen_center_area_show: {loops: -1}
     invasion_molemen_right_area_show: {loops: -1}
-  invasion_molemen_saucer_1_ready:
-    invasion_saucer_1_ready_show: {loops: -1}
-  invasion_molemen_saucer_2_ready:
-    invasion_saucer_2_ready_show: {loops: -1}
-  invasion_molemen_saucer_3_ready:
-    invasion_saucer_3_ready_show: {loops: -1}
 
-  invasion_saucers_ready:
-    invasion_saucer_1_ready_show: {loops: -1}
-    invasion_saucer_2_ready_show: {loops: -1}
-    invasion_saucer_3_ready_show: {loops: -1}
-  invasion_saucers_off:
-    invasion_saucer_1_ready_show: {action: stop}
-    invasion_saucer_2_ready_show: {action: stop}
-    invasion_saucer_3_ready_show: {action: stop}
 
-  invasion_saucer_1_parked:
-    invasion_saucer_1_ready_show: {action: stop}
-  invasion_saucer_2_parked:
-    invasion_saucer_2_ready_show: {action: stop}
-  invasion_saucer_3_parked:
-    invasion_saucer_3_ready_show: {action: stop}
 
   invasion_from_everywhere_phase_devargas:
     shared_final_vuk_chase: {action: stop}
@@ -172,9 +188,6 @@ show_player:
     invasion_devargas_spinner_show: {loops: -1}
   invasion_devargas_saucers:
     invasion_devargas_spinner_show: {action: stop}
-    invasion_saucer_1_ready_show: {loops: -1}
-    invasion_saucer_2_ready_show: {loops: -1}
-    invasion_saucer_3_ready_show: {loops: -1}
 
   invasion_from_everywhere_phase_atlantean:
     shared_final_vuk_chase: {action: stop}
@@ -197,6 +210,15 @@ show_player:
     invasion_atlantean_spinner_show: {action: stop}
 
   mode_invasion_from_everywhere_stopping:
+    invasion_saucer_1_parking_available_show: {action: stop}
+    invasion_saucer_1_parking_held_show: {action: stop}
+    invasion_saucer_1_parking_objective_show: {action: stop}
+    invasion_saucer_2_parking_available_show: {action: stop}
+    invasion_saucer_2_parking_held_show: {action: stop}
+    invasion_saucer_2_parking_objective_show: {action: stop}
+    invasion_saucer_3_parking_available_show: {action: stop}
+    invasion_saucer_3_parking_held_show: {action: stop}
+    invasion_saucer_3_parking_objective_show: {action: stop}
     shared_final_vuk_chase: {action: stop}
     invasion_igor_good_right_bank_show: {action: stop}
     invasion_igor_good_right_pop_show: {action: stop}
@@ -205,9 +227,6 @@ show_player:
     invasion_molemen_left_area_show: {action: stop}
     invasion_molemen_center_area_show: {action: stop}
     invasion_molemen_right_area_show: {action: stop}
-    invasion_saucer_1_ready_show: {action: stop}
-    invasion_saucer_2_ready_show: {action: stop}
-    invasion_saucer_3_ready_show: {action: stop}
     invasion_atlantean_targets_show: {action: stop}
     invasion_atlantean_spinner_show: {action: stop}
     invasion_devargas_5_show: {action: stop}
@@ -216,6 +235,15 @@ show_player:
     invasion_devargas_spinner_show: {action: stop}
 
 light_player:
+  invasion_saucer_1_parking_off:
+    l_1_hole_l: off
+    l_1_hole_r: off
+  invasion_saucer_2_parking_off:
+    l_2_hole_l: off
+    l_2_hole_r: off
+  invasion_saucer_3_parking_off:
+    l_3_hole_l: off
+    l_3_hole_r: off
   mode_invasion_from_everywhere_started:
     gi: 505080
   mode_invasion_from_everywhere_stopping:
@@ -285,14 +313,47 @@ light_player:
     l_pop_2_11: red
     l_pop_2_12: red
 
-  invasion_saucer_1_parked: {l_1_hole_l: 400000, l_1_hole_r: 400000}
-  invasion_saucer_2_parked: {l_2_hole_l: 400000, l_2_hole_r: 400000}
-  invasion_saucer_3_parked: {l_3_hole_l: 400000, l_3_hole_r: 400000}
-  invasion_saucer_1_released: {l_1_hole_l: off, l_1_hole_r: off}
-  invasion_saucer_2_released: {l_2_hole_l: off, l_2_hole_r: off}
-  invasion_saucer_3_released: {l_3_hole_l: off, l_3_hole_r: off}
 
 shows:
+  invasion_saucer_1_parking_available_show:
+    - duration: 750ms
+      lights: {l_1_hole_l: FF0000-f750ms, l_1_hole_r: FF0000-f750ms}
+    - duration: 750ms
+      lights: {l_1_hole_l: 400000-f750ms, l_1_hole_r: 400000-f750ms}
+  invasion_saucer_1_parking_held_show:
+    - duration: 1s
+      lights: {l_1_hole_l: BF0000, l_1_hole_r: BF0000}
+  invasion_saucer_1_parking_objective_show:
+    - duration: 200ms
+      lights: {l_1_hole_l: FFFFFF, l_1_hole_r: FFFFFF}
+    - duration: 200ms
+      lights: {l_1_hole_l: off, l_1_hole_r: off}
+  invasion_saucer_2_parking_available_show:
+    - duration: 750ms
+      lights: {l_2_hole_l: FF0000-f750ms, l_2_hole_r: FF0000-f750ms}
+    - duration: 750ms
+      lights: {l_2_hole_l: 400000-f750ms, l_2_hole_r: 400000-f750ms}
+  invasion_saucer_2_parking_held_show:
+    - duration: 1s
+      lights: {l_2_hole_l: BF0000, l_2_hole_r: BF0000}
+  invasion_saucer_2_parking_objective_show:
+    - duration: 200ms
+      lights: {l_2_hole_l: FFFFFF, l_2_hole_r: FFFFFF}
+    - duration: 200ms
+      lights: {l_2_hole_l: off, l_2_hole_r: off}
+  invasion_saucer_3_parking_available_show:
+    - duration: 750ms
+      lights: {l_3_hole_l: FF0000-f750ms, l_3_hole_r: FF0000-f750ms}
+    - duration: 750ms
+      lights: {l_3_hole_l: 400000-f750ms, l_3_hole_r: 400000-f750ms}
+  invasion_saucer_3_parking_held_show:
+    - duration: 1s
+      lights: {l_3_hole_l: BF0000, l_3_hole_r: BF0000}
+  invasion_saucer_3_parking_objective_show:
+    - duration: 200ms
+      lights: {l_3_hole_l: FFFFFF, l_3_hole_r: FFFFFF}
+    - duration: 200ms
+      lights: {l_3_hole_l: off, l_3_hole_r: off}
   invasion_igor_good_right_bank_show:
     - duration: 250ms
       lights: {l_gi_5bank_lower: green, l_gi_5bank_upper: green}
@@ -353,22 +414,6 @@ shows:
       lights: {l_pop_2_1: white, l_pop_2_2: white, l_pop_2_3: white, l_pop_2_4: white, l_pop_2_5: white, l_pop_2_6: white, l_pop_2_7: white, l_pop_2_8: white, l_pop_2_9: white, l_pop_2_10: white, l_pop_2_11: white, l_pop_2_12: white}
     - duration: 500ms
       lights: {l_pop_2_1: off, l_pop_2_2: off, l_pop_2_3: off, l_pop_2_4: off, l_pop_2_5: off, l_pop_2_6: off, l_pop_2_7: off, l_pop_2_8: off, l_pop_2_9: off, l_pop_2_10: off, l_pop_2_11: off, l_pop_2_12: off}
-
-  invasion_saucer_1_ready_show:
-    - duration: 350ms
-      lights: {l_1_hole_l: red, l_1_hole_r: red}
-    - duration: 350ms
-      lights: {l_1_hole_l: off, l_1_hole_r: off}
-  invasion_saucer_2_ready_show:
-    - duration: 350ms
-      lights: {l_2_hole_l: red, l_2_hole_r: red}
-    - duration: 350ms
-      lights: {l_2_hole_l: off, l_2_hole_r: off}
-  invasion_saucer_3_ready_show:
-    - duration: 350ms
-      lights: {l_3_hole_l: red, l_3_hole_r: red}
-    - duration: 350ms
-      lights: {l_3_hole_l: off, l_3_hole_r: off}
 
   invasion_devargas_5_show:
     - duration: 300ms

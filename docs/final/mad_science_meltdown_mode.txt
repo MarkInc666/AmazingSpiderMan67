@@ -73,15 +73,20 @@ Saucer containment - Dr. Von Schlick
 ------------------------------------
 - Any saucer may park its entering ball while at least one other ball remains
   loose and playable.
-- No more than two balls may be parked.
+- Up to three balls may be parked, keeping at least one loose. With the
+  normal 3-ball start, at most two park; with 4 balls, all three may park.
+- Independent 20-second holds. Occupied-switch hits do not restart timers.
 - Noah multiplier by parked-ball count:
   - 0 parked: 1X
   - 1 parked: 2X
   - 2 parked: 3X
+  - 3 parked: 4X
 - The Case File bonus and upper-spinner build are included before multiplication.
-- Collecting Noah releases all parked balls.
-- A repeating deadlock guard releases a parked ball if no loose ball remains.
-- All saucers are released when the mode stops.
+- Collecting Noah scores using the live containment multiplier, then releases
+  all parked balls oldest first, staggered by 300ms.
+- Each drain triggers a check after game-count and ball-save updates. The
+  oldest parked ball is released if none remain loose. A 250ms guard also checks.
+- Mode end releases parked balls oldest first, staggered by 300ms.
 
 Magneto Add-a-Ball
 ------------------
@@ -116,7 +121,9 @@ Lighting
 - The open-gate VUK route uses a visible blue chase.
 - Middle A and B use their yellow-lens inserts. Center web uses the shared white
   approach chase during its 10-second award window.
-- Parked saucers light their matching green 1/2/3 inserts.
+- Available empty saucers slowly pulse red. Held saucers show solid 75% red
+  (BF0000). Unavailable ordinary saucers are off. Containment has no separate
+  saucer collect objective; the multiplied Noah collect is at the right bank.
 
 Summary variables
 -----------------
@@ -130,3 +137,5 @@ Summary variables
 - mad_science_meltdown_parked_balls
 - mad_science_meltdown_jackpot_value
 - mad_science_meltdown_magneto_seconds
+
+2026-10-05 containment update: Python stub checks passed. MPF/GMC and physical-machine verification remain pending.

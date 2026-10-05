@@ -1,0 +1,7 @@
+FIFTH DIMENSION CURSE PARKING PATCH — October 5, 2026
+Merge files into the project, replacing matching paths. Keep previous patches.
+Adds 20s ordinary holds, oldest-ball drain safety, common saucer lighting and
+300ms staggered end release. Preserves controlled 2s Ruby release, and excludes
+release-pending balls from Ruby qualification/scoring.
+Workbook includes cumulative notes for the first six wizard parking patches.
+Python stub checks passed; MPF/GMC and machine testing remain pending.

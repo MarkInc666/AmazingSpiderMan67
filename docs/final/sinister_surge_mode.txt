@@ -56,9 +56,9 @@ ELECTRO
 - Missing the active location does not reset progress; the Spark simply continues roaming.
 
 GREEN GOBLIN
-- All three red saucer hole-lamp pairs pulse together while waiting for the
-  capture shot. If a ball was resting in a saucer from the previous stage, the
-  three-saucer ready show is reasserted after that ball is released.
+- Entering Goblin releases all previously parked balls, staggered 300ms apart.
+- Empty eligible saucers flash white while waiting for a fresh capture.
+- The challenge ball is tracked separately from ordinary parked balls.
 - Number inserts l_1/l_2/l_3 are not used for the Goblin saucer indication.
 - Any saucer starts the attempt and holds that ball for 10 seconds.
 - Four areas flash green: left web, center web, left drop bank, right drop bank.
@@ -67,19 +67,22 @@ GREEN GOBLIN
 - Success releases the held ball immediately.
 - Failure releases the held ball at 10 seconds and allows another saucer restart.
 
-SAUCER REST
-- During any non-Goblin stage, one ball may rest in any saucer for up to 20 seconds.
-- Only one saucer ball may be resting at a time.
-- A ball entering another saucer while one is already held ejects normally.
-- The rest does not pause the current stage or its timers.
-- Green Goblin replaces the rest with its specific 10-second safe-time hold.
+SAUCER PARKING
+- Up to three balls may park, provided at least one ball remains loose.
+- Capacity: 1 ball in play = 0 parked; 2 = 1; 3 = 2; 4 = 3.
+- Each ordinary parked ball has its own 20-second timer, including additional
+  parking during an active Goblin challenge. Parking does not pause stage timers.
+- A 250ms watchdog releases the oldest parked ball if no loose ball remains.
+- If that safety release is Goblin's challenge ball, reset the attempt.
+- Ordinary parking releases never cancel Goblin's independent 10-second timer.
+- Mode end cancels parking/challenge timers and requests staggered releases.
+- Shared occupancy-checked requests execute the saucer ejects.
 
 JACKPOTS / ADD-A-BALL
 - Standard stage Jackpot = 100K x (balls in play + stages cleared) + Case File bonus.
-- Outside Victory Laps, complete A+B to add a ball whenever multiball is down
-  to exactly 2 balls. If A+B is completed with more than 2 balls active, it
-  remains qualified and awards automatically when a drain leaves 2 balls.
-- Add-a-Ball resets A+B and can be earned again every time play returns to 2 balls.
+- Outside Victory Laps, complete A+B to add a ball with 2 or 3 balls in play.
+- At the four-ball cap, retain A+B qualification until a drain creates room.
+- Add-a-Ball resets A+B and can be earned again below the cap.
 - Maximum balls in play: 4.
 - Added-ball save: 10 seconds.
 - Rhino's direct Berserk VUK awards 3x the Rhino stage Jackpot and resolves the stage
@@ -113,6 +116,11 @@ LIGHTING
   when their requirement is completed.
 - Electro: only the current roaming Spark location flashes; bank inserts respect
   their physical green lenses while webs/pops use yellow.
-- Goblin: all three red saucer hole-lamp pairs pulse while ready; during the 10-second safe-time attempt,
-  the four qualifying areas flash green and each collected area turns off.
+- Saucers: slow red fade pulse (750ms up/down) when empty and parking available;
+  solid 75% red (BF0000) while held; fast white flash (200ms on/off) for Goblin
+  capture objectives. Held state always overrides availability/objective lighting.
+- Empty spots remain available after other balls park while another capture is safe.
+  At capacity, empty spots turn off and entering balls return promptly.
+- Goblin: during the 10-second challenge, its four qualifying areas flash green
+  and each collected area turns off. Other eligible empty saucers pulse red.
 - Victory Laps: full GI fade white -> red -> white -> blue -> white, repeating.

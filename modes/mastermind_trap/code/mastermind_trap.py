@@ -1,5 +1,6 @@
 import math
 import random
+import time
 
 from mpf.core.mode import Mode
 
@@ -27,6 +28,7 @@ class MastermindTrap(Mode):
     DISPLAY_NAME = "Mastermind Trap"
 
     MAX_BALLS = 4
+    SAUCER_HOLD_MS = 20_000
     PARA_ATTEMPTS_REQUIRED = 3
     PARA_JACKPOT = 500_000
     PARA_MATCH_MULTIPLIER = 3
@@ -75,6 +77,9 @@ class MastermindTrap(Mode):
         self.cycle = 1
 
         self.held_saucers = set()
+        self.parking_order = []
+        self.saucer_available_after = {}
+        self.saucer_light_states = {}
         self.roof_active = False
         self.para_attempts = 0
         self.para_upper_targets = set()
@@ -109,8 +114,10 @@ class MastermindTrap(Mode):
         self.machine.events.post("clear_saucers_delayed")
         self._post_message("MASTERMIND TRAP", "PARAFINO + SCORPION", "PARK A BALL")
         self._start_para_scorpion()
+        self._schedule_parking_guard()
 
     def mode_stop(self, **kwargs):
+        self.mode_done = True
         self._clear_delays()
         self._release_all_saucers()
         player = self.machine.game.player
@@ -183,28 +190,34 @@ class MastermindTrap(Mode):
         self._sync_status("PARK A BALL", "SAUCER -> ROOF")
 
     def _saucer_hit(self, saucer, **kwargs):
+        if saucer in self.held_saucers:
+            return
         if self.mode_done:
+            self._eject_saucer(saucer)
             return
         if self.phase == "doc_ock":
             self._doc_danger_hit(shot=f"saucer_{saucer}")
-            self.machine.events.post(f"delayed_kickout_saucer_{saucer}")
+            self._eject_saucer(saucer)
             return
-        if self.phase != "para_scorpion":
-            self.machine.events.post(f"delayed_kickout_saucer_{saucer}")
-            return
-
-        balls = self._balls_in_play()
-        # Always preserve at least one playable ball. A last live ball may enter
-        # a saucer, but it is immediately returned instead of being parked.
-        if saucer not in self.held_saucers and len(self.held_saucers) >= max(0, balls - 1):
-            self.machine.events.post(f"delayed_kickout_saucer_{saucer}")
+        if (not self._can_park_ball()
+                or time.monotonic() < self.saucer_available_after.get(saucer, 0)):
+            self._eject_saucer(saucer)
             return
 
         self.held_saucers.add(saucer)
+        self.parking_order.append(saucer)
+        self.delay.reset(
+            name=f"mastermind_saucer_{saucer}_park",
+            ms=self.SAUCER_HOLD_MS,
+            callback=self._release_parked_saucer,
+            saucer=saucer,
+        )
         self.machine.events.post(f"{self.MODE_KEY}_saucer_{saucer}_held")
-        self.machine.events.post("rooftop_diverter_open")
-        areas = ", ".join(self.AREA_LABELS[self.SAUCER_TO_AREA[s]] for s in sorted(self.held_saucers))
-        self._sync_status("ROOF OPEN", areas)
+        if self.phase == "para_scorpion":
+            self.machine.events.post("rooftop_diverter_open")
+            areas = ", ".join(self.AREA_LABELS[self.SAUCER_TO_AREA[s]] for s in sorted(self.held_saucers))
+            self._sync_status("ROOF OPEN", areas)
+        self._refresh_parking_lights()
 
     def _upper_entry(self, **kwargs):
         if self.phase != "para_scorpion" or not self.held_saucers or self.staged_area:
@@ -428,6 +441,7 @@ class MastermindTrap(Mode):
         if self.mode_done:
             return
         self.phase = "doc_ock"
+        self._release_all_saucers()
         self.doc_red_pattern = [False] * len(self.DOC_SHOTS)
         self.doc_strikes = 0
         self.doc_spins = 0
@@ -541,6 +555,7 @@ class MastermindTrap(Mode):
         if self.mode_done:
             return
         self.phase = "super"
+        self._release_all_saucers()
         self.delay.remove("mastermind_doc_3x_tick")
         self.delay.remove("mastermind_doc_3x_end")
         self.doc_3x_active = False
@@ -614,11 +629,69 @@ class MastermindTrap(Mode):
     # ------------------------------------------------------------------
     # Helpers
     # ------------------------------------------------------------------
+    def _parking_limit(self):
+        if self.mode_done:
+            return 0
+        return {"para_scorpion": 3, "lizard_mysterio": 3, "super": 1}.get(self.phase, 0)
+
+    def _can_park_ball(self):
+        return (len(self.held_saucers) < self._parking_limit()
+                and self._balls_in_play() - len(self.held_saucers) > 1)
+
+    def _eject_saucer(self, saucer, delay_ms=0):
+        self.machine.events.post("request_saucer_eject", saucer_number=saucer, delay_ms=delay_ms)
+
+    def _release_parked_saucer(self, saucer, delay_ms=0, **kwargs):
+        if saucer not in self.held_saucers:
+            return
+        self.delay.remove(f"mastermind_saucer_{saucer}_park")
+        self.held_saucers.remove(saucer)
+        if saucer in self.parking_order:
+            self.parking_order.remove(saucer)
+        self.saucer_available_after[saucer] = time.monotonic() + delay_ms / 1000.0 + 0.75
+        self.machine.events.post(f"{self.MODE_KEY}_saucer_{saucer}_released")
+        self._eject_saucer(saucer, delay_ms)
+        if self.phase == "para_scorpion" and not self.held_saucers:
+            self.machine.events.post("rooftop_diverter_close")
+            if not self.staged_area:
+                self.roof_active = False
+                self.machine.events.post(f"{self.MODE_KEY}_roof_choice_off")
+                if not self.mode_done:
+                    self._sync_status("PARK A BALL", "SAUCER -> ROOF")
+        self._refresh_parking_lights()
+
     def _release_all_saucers(self):
-        for saucer in sorted(self.held_saucers):
-            self.machine.events.post(f"{self.MODE_KEY}_saucer_{saucer}_released")
-            self.machine.events.post(f"delayed_kickout_saucer_{saucer}")
-        self.held_saucers.clear()
+        for index, saucer in enumerate(tuple(self.parking_order)):
+            self._release_parked_saucer(saucer, delay_ms=index * 300)
+        self._refresh_parking_lights()
+
+    def _schedule_parking_guard(self):
+        if not self.mode_done:
+            self.delay.reset(name="mastermind_parking_guard", ms=250, callback=self._parking_guard)
+
+    def _parking_guard(self):
+        if self.mode_done:
+            return
+        if self.parking_order and self._balls_in_play() - len(self.held_saucers) <= 0:
+            self._release_parked_saucer(self.parking_order[0])
+        self._refresh_parking_lights()
+        self._schedule_parking_guard()
+
+    def _refresh_parking_lights(self):
+        available = self._can_park_ball()
+        now = time.monotonic()
+        for saucer in (1, 2, 3):
+            state = "off"
+            if not self.mode_done:
+                if saucer in self.held_saucers:
+                    state = "held"
+                elif available and now >= self.saucer_available_after.get(saucer, 0):
+                    state = "objective" if self.phase == "para_scorpion" else "available"
+            if self.saucer_light_states.get(saucer) == state:
+                continue
+            self.saucer_light_states[saucer] = state
+            self.machine.events.post(f"{self.MODE_KEY}_saucer_{saucer}_parking_clear")
+            self.machine.events.post(f"{self.MODE_KEY}_saucer_{saucer}_parking_{state}")
 
     def _balls_in_play(self):
         if not self.machine.game:
@@ -683,6 +756,9 @@ class MastermindTrap(Mode):
         self.machine.events.post(f"stop_mode_{self.MODE_KEY}")
 
     def _clear_delays(self):
+        self.delay.remove("mastermind_parking_guard")
+        for saucer in (1, 2, 3):
+            self.delay.remove(f"mastermind_saucer_{saucer}_park")
         for name in (
             "mastermind_stage_left_bank", "mastermind_stage_right_bank",
             "mastermind_next_phase", "mastermind_next_attempt",

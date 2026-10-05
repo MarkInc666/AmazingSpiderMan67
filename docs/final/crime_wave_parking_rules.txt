@@ -1,0 +1,16 @@
+CRIME WAVE — PARKING RULES
+
+Starts with 3-ball multiball. Up to 3 saucers may hold balls, provided 1
+ball remains loose. Normally 2 can park with the 3-ball start.
+Independent 15-second holds. Occupied switch chatter does not score, refresh
+Doctor Cool, or restart parking timers.
+On each drain, check after the game count and ball saves update. Release the
+oldest parked ball if none remain loose. A 250ms guard also checks continuously.
+Rooftop reward uses its live matching parked-ball 2x bonus, then releases that
+matching ball. Other parked balls keep their independent timers.
+Mode end releases parked balls in order, staggered by 300ms.
+
+Empty saucers flash white when Doctor Cool is uncaptured or in his final
+5-second warning. Otherwise available parking slowly pulses red. Held spots
+show solid 75% red (BF0000), overriding objectives. Unavailable ordinary spots
+are off. Other villain-area timing, scoring and Super rules are unchanged.

@@ -15,6 +15,7 @@ mode_settings:
     - high_score_3
     - title
     - credits
+    - author
     - mpf_logo
 
   next_item_events: s_right_flipper_active, timer_attract_carousel_timer_complete

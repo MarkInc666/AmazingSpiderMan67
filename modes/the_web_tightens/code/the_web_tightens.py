@@ -152,6 +152,7 @@ class TheWebTightens(Mode):
         "s_upper_target_right",
     }
 
+    SAUCER_HOLD_MS = 20_000
     PHASE_ANNOUNCE_MS = 2_000
     SUPER_GATE_VERIFY_MS = 1000
     SUPER_GATE_MAX_ATTEMPTS = 2
@@ -207,6 +208,10 @@ class TheWebTightens(Mode):
         self.super_gate_open_attempts = 0
         self.vuk_relock_lockout_until = 0.0
         self.held_saucers = set()
+        self.parking_order = []
+        self.pending_saucer_releases = {}
+        self.saucer_available_after = {}
+        self.saucer_light_states = {}
         self.saucer_lockout_until = 0.0
 
         self.fiddler_sequence = []
@@ -274,6 +279,7 @@ class TheWebTightens(Mode):
             self._multiball_ended,
         )
         self.add_mode_event_handler(f"{self.MODE_KEY}_fail_request", self._complete_mode)
+        self.add_mode_event_handler("ball_drain", self._ball_drain)
 
         # The Web Tightens owns the rooftop gate. Keep it closed during the
         # VUK lock and all five villain phases, and allow it open only for the
@@ -284,6 +290,7 @@ class TheWebTightens(Mode):
         self.machine.events.post("chapter_mini_wizard_started", mini_wizard=self.MODE_KEY)
         self.machine.events.post("disable_daily_bugle_mystery")
         self.machine.events.post("daily_bugle_cancel_vuk_delay_eject")
+        self.saucer_light_states.clear()
         self.machine.events.post("the_web_tightens_clear_all")
         self.machine.events.post("the_web_tightens_base_lighting")
 
@@ -307,8 +314,10 @@ class TheWebTightens(Mode):
         self._schedule_ball_guard()
 
     def mode_stop(self, **kwargs):
+        self.mode_done = True
         self.delay.clear()
-        self._release_all_saucers(delay_step_ms=0)
+        self._release_all_saucers(delay_step_ms=300)
+        self.saucer_light_states.clear()
         self.machine.events.post("the_web_tightens_clear_all")
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("cancel_mode_message_reminder")
@@ -445,6 +454,7 @@ class TheWebTightens(Mode):
         self.machine.events.post("daily_bugle_cancel_vuk_delay_eject")
         self.machine.events.post("cancel_vuk_eject_request")
         self.machine.events.post("rooftop_diverter_close")
+        self.saucer_light_states.clear()
         self.machine.events.post("the_web_tightens_clear_all")
         self.machine.events.post("the_web_tightens_base_lighting")
         self.machine.events.post("the_web_tightens_vuk_locked")
@@ -463,6 +473,8 @@ class TheWebTightens(Mode):
             return
 
         now = time.monotonic()
+        if saucer in self.held_saucers or now < self.saucer_available_after.get(saucer, 0):
+            return
         if now < self.saucer_lockout_until:
             self._eject_saucer(saucer, 250)
             return
@@ -475,9 +487,10 @@ class TheWebTightens(Mode):
             return
 
         if self.waiting_for_saucer and not self.transitioning:
-            self.held_saucers.add(saucer)
+            self._hold_saucer(saucer)
             self.waiting_for_saucer = False
             self._announce_phase(self.phase_index)
+            self._check_loose_balls()
             return
 
         if self.transitioning or self.phase is None:
@@ -501,62 +514,142 @@ class TheWebTightens(Mode):
             return
         self._park_or_eject_saucer(saucer)
 
-    def _park_or_eject_saucer(self, saucer):
-        self.held_saucers.add(saucer)
-        if self._playable_loose_balls() <= 0 and not self.fiddler_demonstrating:
-            self.held_saucers.discard(saucer)
-            self._eject_saucer(saucer, 250)
+    def _hold_saucer(self, saucer):
+        if saucer in self.held_saucers:
             return
+        self.held_saucers.add(saucer)
+        self.parking_order.append(saucer)
+        self.delay.reset(name=f"web_saucer_{saucer}_park", ms=self.SAUCER_HOLD_MS,
+                         callback=self._park_timeout, saucer=saucer)
         self.machine.events.post("the_web_tightens_ball_parked", saucer=saucer)
+        self._update_saucer_lights()
+
+    def _park_timeout(self, saucer):
+        if self.mode_done or saucer not in self.held_saucers or saucer in self.pending_saucer_releases:
+            return
+        if self._fiddler_holds_last_ball():
+            self.delay.reset(name=f"web_saucer_{saucer}_park", ms=250,
+                             callback=self._park_timeout, saucer=saucer)
+            return
+        self._release_saucer(saucer)
+
+    def _fiddler_holds_last_ball(self):
+        return self.fiddler_demonstrating or (
+            self.phase_announcing and self.phase_index < len(self.PHASES)
+            and self.PHASES[self.phase_index] == "fiddler"
+        )
+
+    def _can_park_ball(self):
+        return (not self.mode_done and self.vuk_locked and not self.waiting_for_vuk
+                and self.phase not in (None, "super") and not self.transitioning
+                and len(self.held_saucers) < 3 and self._playable_loose_balls() >= 2)
+
+    def _park_or_eject_saucer(self, saucer):
+        if self._can_park_ball() or (self.fiddler_demonstrating and len(self.held_saucers) < 3):
+            self._hold_saucer(saucer)
+        else:
+            self._eject_saucer(saucer, 250)
 
     def _eject_saucer(self, saucer, delay_ms=0):
-        self.machine.events.post(
-            "request_saucer_eject",
-            saucer_number=saucer,
-            delay_ms=delay_ms,
-        )
+        self.saucer_available_after[saucer] = time.monotonic() + (delay_ms + 750) / 1000
+        self.machine.events.post("request_saucer_eject", saucer_number=saucer, delay_ms=delay_ms)
+        self._update_saucer_lights()
+
+    def _forget_released_saucer(self, saucer):
+        self.held_saucers.discard(saucer)
+        if saucer in self.parking_order:
+            self.parking_order.remove(saucer)
+        self.pending_saucer_releases.pop(saucer, None)
+        self.delay.remove(f"web_saucer_{saucer}_park")
+        self._update_saucer_lights()
+
+    def _release_saucer(self, saucer, delay_ms=0):
+        self.delay.remove(f"web_saucer_{saucer}_park")
+        self.delay.remove(f"web_saucer_{saucer}_release")
+        if delay_ms > 0 and not self.mode_done:
+            # Keep the held state and free-ball count honest until the scheduled kick.
+            self.pending_saucer_releases[saucer] = True
+            self.delay.reset(name=f"web_saucer_{saucer}_release", ms=delay_ms,
+                             callback=self._forget_released_saucer, saucer=saucer)
+        else:
+            self._forget_released_saucer(saucer)
+        self._eject_saucer(saucer, delay_ms)
 
     def _release_one_saucer(self):
-        if not self.held_saucers:
-            return False
-        saucer = sorted(self.held_saucers)[0]
-        self.held_saucers.remove(saucer)
-        self._eject_saucer(saucer, 0)
-        return True
+        for saucer in self.parking_order:
+            if saucer not in self.pending_saucer_releases:
+                self._release_saucer(saucer)
+                return True
+        return False
 
-    def _release_all_saucers(self, delay_step_ms=200, initial_delay_ms=0):
-        held = sorted(self.held_saucers)
-        self.held_saucers.clear()
+    def _release_all_saucers(self, delay_step_ms=300, initial_delay_ms=0):
+        held = list(self.parking_order)
         for index, saucer in enumerate(held):
-            delay_ms = initial_delay_ms + (index * delay_step_ms)
-            self._eject_saucer(saucer, delay_ms)
+            self._release_saucer(saucer, initial_delay_ms + index * delay_step_ms)
         if held:
-            last_delay_ms = initial_delay_ms + ((len(held) - 1) * delay_step_ms)
-            self.saucer_lockout_until = time.monotonic() + (last_delay_ms / 1000.0) + 1.5
+            last_delay_ms = initial_delay_ms + (len(held) - 1) * delay_step_ms
+            self.saucer_lockout_until = time.monotonic() + last_delay_ms / 1000 + 1.5
+
+    def _retain_one_between_phases(self):
+        held = [s for s in self.parking_order if s not in self.pending_saucer_releases]
+        # Retain the oldest only when the VUK lock still leaves another loose ball.
+        keep = held[0] if held and self._balls_in_play() - int(self.vuk_locked) >= 2 else None
+        released = [s for s in held if s != keep]
+        for index, saucer in enumerate(released):
+            self._release_saucer(saucer, index * 300)
+        if released:
+            self.saucer_lockout_until = time.monotonic() + (len(released) - 1) * .3 + 1.5
+        self._update_saucer_lights()
+
+    def _ball_drain(self, **kwargs):
+        if not self.mode_done:
+            self.delay.reset(name="web_drain_parking_check", ms=1, callback=self._check_loose_balls)
+
+    def _check_loose_balls(self):
+        if self.mode_done:
+            return
+        if (not self._fiddler_holds_last_ball()
+                and self.held_saucers and self._playable_loose_balls() <= 0):
+            self._release_one_saucer()
+        self._update_saucer_lights()
 
     def _schedule_ball_guard(self):
-        if self.mode_done:
-            return
-        self.delay.reset(
-            name="the_web_tightens_ball_guard",
-            ms=250,
-            callback=self._ball_guard,
-        )
+        if not self.mode_done:
+            self.delay.reset(name="the_web_tightens_ball_guard", ms=250, callback=self._ball_guard)
 
     def _ball_guard(self):
-        if self.mode_done:
-            return
-        # This watchdog only manages trapped/free balls. MPF's
-        # multiball-ended event is authoritative for mode completion.
-        if (
-            self.phase not in (None, "super")
-            and not self.transitioning
-            and not self.fiddler_demonstrating
-            and self.held_saucers
-            and self._playable_loose_balls() <= 0
-        ):
-            self._release_one_saucer()
+        self._check_loose_balls()
         self._schedule_ball_guard()
+
+    def _update_saucer_lights(self):
+        zone = "upper_left"
+        objective = (self.waiting_for_saucer and not self.transitioning) or (
+            not self.transitioning and (
+                (self.phase == "metal" and zone in self.metal_attacked)
+                or (self.phase == "harley" and not self.harley_star_ready and zone not in self.harley_completed)
+                or (self.phase == "spider_slayer" and "saucer" in self.slayer_active)
+            )
+        )
+        now = time.monotonic()
+        for saucer in (1, 2, 3):
+            if self.mode_done:
+                state = "off"
+            elif saucer in self.held_saucers:
+                state = "held"
+            elif now < max(self.saucer_lockout_until, self.saucer_available_after.get(saucer, 0)):
+                state = "off"
+            elif not self.vuk_locked or self.waiting_for_vuk or self.phase == "super":
+                state = "off"
+            elif objective:
+                state = "objective"
+            elif self._can_park_ball() or (self.fiddler_demonstrating and len(self.held_saucers) < 3):
+                state = "available"
+            else:
+                state = "off"
+            if self.saucer_light_states.get(saucer) != state:
+                self.machine.events.post(f"the_web_tightens_saucer_{saucer}_parking_clear")
+                self.machine.events.post(f"the_web_tightens_saucer_{saucer}_parking_{state}")
+                self.saucer_light_states[saucer] = state
 
     def _balls_in_play(self):
         if not self.machine.game:
@@ -675,7 +768,7 @@ class TheWebTightens(Mode):
         self.phase_index += 1
         self._sync_vars()
         if self.phase_index < len(self.PHASES):
-            self._release_all_saucers(delay_step_ms=200)
+            self._retain_one_between_phases()
         self.delay.reset(
             name="the_web_tightens_phase_transition",
             ms=1_200,
@@ -1239,7 +1332,7 @@ class TheWebTightens(Mode):
         self.phase_index += 1
         self._sync_vars()
         if self.phase_index < len(self.PHASES):
-            self._release_all_saucers(delay_step_ms=200)
+            self._retain_one_between_phases()
         self.delay.reset(
             name="the_web_tightens_phase_transition",
             ms=1_200,
@@ -1504,6 +1597,7 @@ class TheWebTightens(Mode):
         player["active_mode_stat_2"] = self.supers_collected
 
     def _update_status(self):
+        self._update_saucer_lights()
         if self.waiting_for_vuk:
             next_cycle = 1 if self.cycle_number == 0 else self.cycle_number + 1
             title = f"CYCLE {next_cycle}"

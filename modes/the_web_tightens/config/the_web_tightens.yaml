@@ -52,7 +52,6 @@ event_player:
     - drop_target_bank_dt_bank_left_reset
     - drop_target_bank_dt_bank_right_reset
   mode_the_web_tightens_stopping:
-    - clear_saucers_delayed
     - drop_target_bank_dt_bank_left_reset
     - drop_target_bank_dt_bank_right_reset
 
@@ -67,13 +66,36 @@ show_player:
     shared_final_vuk_chase:
       action: stop
 
-  the_web_tightens_saucers_ready:
-    the_web_tightens_saucer_pulse:
-      loops: -1
-      priority: 845
-  the_web_tightens_saucers_not_ready:
-    the_web_tightens_saucer_pulse:
-      action: stop
+  the_web_tightens_saucer_1_parking_available:
+    the_web_tightens_saucer_1_parking_available_show: {loops: -1, priority: 100}
+  the_web_tightens_saucer_1_parking_held:
+    the_web_tightens_saucer_1_parking_held_show: {loops: -1, priority: 100}
+  the_web_tightens_saucer_1_parking_objective:
+    the_web_tightens_saucer_1_parking_objective_show: {loops: -1, priority: 100}
+  the_web_tightens_saucer_1_parking_clear:
+    the_web_tightens_saucer_1_parking_available_show: {action: stop}
+    the_web_tightens_saucer_1_parking_held_show: {action: stop}
+    the_web_tightens_saucer_1_parking_objective_show: {action: stop}
+  the_web_tightens_saucer_2_parking_available:
+    the_web_tightens_saucer_2_parking_available_show: {loops: -1, priority: 100}
+  the_web_tightens_saucer_2_parking_held:
+    the_web_tightens_saucer_2_parking_held_show: {loops: -1, priority: 100}
+  the_web_tightens_saucer_2_parking_objective:
+    the_web_tightens_saucer_2_parking_objective_show: {loops: -1, priority: 100}
+  the_web_tightens_saucer_2_parking_clear:
+    the_web_tightens_saucer_2_parking_available_show: {action: stop}
+    the_web_tightens_saucer_2_parking_held_show: {action: stop}
+    the_web_tightens_saucer_2_parking_objective_show: {action: stop}
+  the_web_tightens_saucer_3_parking_available:
+    the_web_tightens_saucer_3_parking_available_show: {loops: -1, priority: 100}
+  the_web_tightens_saucer_3_parking_held:
+    the_web_tightens_saucer_3_parking_held_show: {loops: -1, priority: 100}
+  the_web_tightens_saucer_3_parking_objective:
+    the_web_tightens_saucer_3_parking_objective_show: {loops: -1, priority: 100}
+  the_web_tightens_saucer_3_parking_clear:
+    the_web_tightens_saucer_3_parking_available_show: {action: stop}
+    the_web_tightens_saucer_3_parking_held_show: {action: stop}
+    the_web_tightens_saucer_3_parking_objective_show: {action: stop}
 
   the_web_tightens_conquistador_web:
     shared_center_web_chase:
@@ -97,8 +119,6 @@ show_player:
   the_web_tightens_super_collected:
     the_web_tightens_clock_tower_super_flash:
       action: stop
-    the_web_tightens_saucer_pulse:
-      action: stop
 
   the_web_tightens_clear_all:
     shared_final_vuk_chase:
@@ -109,10 +129,26 @@ show_player:
       action: stop
     the_web_tightens_clock_tower_super_flash:
       action: stop
-    the_web_tightens_saucer_pulse:
-      action: stop
+    the_web_tightens_saucer_1_parking_available_show: {action: stop}
+    the_web_tightens_saucer_1_parking_held_show: {action: stop}
+    the_web_tightens_saucer_1_parking_objective_show: {action: stop}
+    the_web_tightens_saucer_2_parking_available_show: {action: stop}
+    the_web_tightens_saucer_2_parking_held_show: {action: stop}
+    the_web_tightens_saucer_2_parking_objective_show: {action: stop}
+    the_web_tightens_saucer_3_parking_available_show: {action: stop}
+    the_web_tightens_saucer_3_parking_held_show: {action: stop}
+    the_web_tightens_saucer_3_parking_objective_show: {action: stop}
 
 light_player:
+  the_web_tightens_saucer_1_parking_off:
+    l_1_hole_l: off
+    l_1_hole_r: off
+  the_web_tightens_saucer_2_parking_off:
+    l_2_hole_l: off
+    l_2_hole_r: off
+  the_web_tightens_saucer_3_parking_off:
+    l_3_hole_l: off
+    l_3_hole_r: off
   mode_the_web_tightens_started:
     gi: 604080
   the_web_tightens_base_lighting:
@@ -286,20 +322,6 @@ light_player:
     l_gi_5bank_upper: 404040
   the_web_tightens_slayer_star_on: {l_star: FF2020, l_star2: FF2020}
   the_web_tightens_slayer_star_off: {l_star: off, l_star2: off}
-  the_web_tightens_slayer_saucer_on:
-    l_1_hole_l: FF2020
-    l_1_hole_r: FF2020
-    l_2_hole_l: FF2020
-    l_2_hole_r: FF2020
-    l_3_hole_l: FF2020
-    l_3_hole_r: FF2020
-  the_web_tightens_slayer_saucer_off:
-    l_1_hole_l: 404040
-    l_1_hole_r: 404040
-    l_2_hole_l: 404040
-    l_2_hole_r: 404040
-    l_3_hole_l: 404040
-    l_3_hole_r: 404040
   the_web_tightens_slayer_clear:
     l_left_web_target: off
     l_mid_web_target: off
@@ -311,12 +333,6 @@ light_player:
     l_gi_5bank_upper: 404040
     l_star: off
     l_star2: off
-    l_1_hole_l: 404040
-    l_1_hole_r: 404040
-    l_2_hole_l: 404040
-    l_2_hole_r: 404040
-    l_3_hole_l: 404040
-    l_3_hole_r: 404040
 
   # Six-zone lighting reused by Metal-Eating Monster and Harley & Clivendon.
   the_web_tightens_metal_all_safe:
@@ -473,12 +489,6 @@ light_player:
     l_gi_left_upper: stop
     l_gi_spinner: stop
     l_gi_right_lower_triangle: stop
-    l_1_hole_l: stop
-    l_1_hole_r: stop
-    l_2_hole_l: stop
-    l_2_hole_r: stop
-    l_3_hole_l: stop
-    l_3_hole_r: stop
     l_pop_1_1: stop
     l_pop_1_2: stop
     l_pop_1_3: stop
@@ -533,12 +543,6 @@ light_player:
     l_gi_left_upper: stop
     l_gi_spinner: stop
     l_gi_right_lower_triangle: stop
-    l_1_hole_l: stop
-    l_1_hole_r: stop
-    l_2_hole_l: stop
-    l_2_hole_r: stop
-    l_3_hole_l: stop
-    l_3_hole_r: stop
     l_pop_1_1: stop
     l_pop_1_2: stop
     l_pop_1_3: stop
@@ -590,23 +594,45 @@ shows:
         l_upper_middle: off
         l_upper_right: off
 
-  the_web_tightens_saucer_pulse:
-    - duration: 500ms
-      lights:
-        l_1_hole_l: FFFFFF
-        l_1_hole_r: FFFFFF
-        l_2_hole_l: FFFFFF
-        l_2_hole_r: FFFFFF
-        l_3_hole_l: FFFFFF
-        l_3_hole_r: FFFFFF
-    - duration: 500ms
-      lights:
-        l_1_hole_l: 404040
-        l_1_hole_r: 404040
-        l_2_hole_l: 404040
-        l_2_hole_r: 404040
-        l_3_hole_l: 404040
-        l_3_hole_r: 404040
+  the_web_tightens_saucer_1_parking_available_show:
+    - duration: 750ms
+      lights: {l_1_hole_l: FF0000-f750ms, l_1_hole_r: FF0000-f750ms}
+    - duration: 750ms
+      lights: {l_1_hole_l: 400000-f750ms, l_1_hole_r: 400000-f750ms}
+  the_web_tightens_saucer_1_parking_held_show:
+    - duration: 1s
+      lights: {l_1_hole_l: BF0000, l_1_hole_r: BF0000}
+  the_web_tightens_saucer_1_parking_objective_show:
+    - duration: 200ms
+      lights: {l_1_hole_l: FFFFFF, l_1_hole_r: FFFFFF}
+    - duration: 200ms
+      lights: {l_1_hole_l: off, l_1_hole_r: off}
+  the_web_tightens_saucer_2_parking_available_show:
+    - duration: 750ms
+      lights: {l_2_hole_l: FF0000-f750ms, l_2_hole_r: FF0000-f750ms}
+    - duration: 750ms
+      lights: {l_2_hole_l: 400000-f750ms, l_2_hole_r: 400000-f750ms}
+  the_web_tightens_saucer_2_parking_held_show:
+    - duration: 1s
+      lights: {l_2_hole_l: BF0000, l_2_hole_r: BF0000}
+  the_web_tightens_saucer_2_parking_objective_show:
+    - duration: 200ms
+      lights: {l_2_hole_l: FFFFFF, l_2_hole_r: FFFFFF}
+    - duration: 200ms
+      lights: {l_2_hole_l: off, l_2_hole_r: off}
+  the_web_tightens_saucer_3_parking_available_show:
+    - duration: 750ms
+      lights: {l_3_hole_l: FF0000-f750ms, l_3_hole_r: FF0000-f750ms}
+    - duration: 750ms
+      lights: {l_3_hole_l: 400000-f750ms, l_3_hole_r: 400000-f750ms}
+  the_web_tightens_saucer_3_parking_held_show:
+    - duration: 1s
+      lights: {l_3_hole_l: BF0000, l_3_hole_r: BF0000}
+  the_web_tightens_saucer_3_parking_objective_show:
+    - duration: 200ms
+      lights: {l_3_hole_l: FFFFFF, l_3_hole_r: FFFFFF}
+    - duration: 200ms
+      lights: {l_3_hole_l: off, l_3_hole_r: off}
 
 sound_player:
   # Reuse the standalone Fiddler violin effects inside this wizard. The

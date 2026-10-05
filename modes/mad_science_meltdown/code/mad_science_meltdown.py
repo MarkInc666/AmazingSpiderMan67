@@ -1,4 +1,5 @@
 import random
+import time
 
 from mpf.core.delays import DelayManager
 from mpf.core.mode import Mode
@@ -16,7 +17,8 @@ class MadScienceMeltdown(Mode):
     GAS_RED_SCORE = 25_000
     GAS_YELLOW_SCORE = 50_000
     MAX_BALLS = 4
-    MAX_PARKED_BALLS = 2
+    MAX_PARKED_BALLS = 3
+    SAUCER_HOLD_MS = 20_000
     MAGNETO_SECONDS = 10
     VUK_EJECT_MS = 1_000
     RIGHT_DROP_PENDING_MS = 1_500
@@ -66,6 +68,9 @@ class MadScienceMeltdown(Mode):
         self.noah_revealed = False
 
         self.parked_saucers = set()
+        self.parking_order = []
+        self.saucer_available_after = {}
+        self.saucer_light_states = {}
         self.a_collected = False
         self.b_collected = False
         self.magneto_ready = False
@@ -119,6 +124,8 @@ class MadScienceMeltdown(Mode):
         self.add_mode_event_handler(f"{self.MODE_KEY}_vuk_hit", self._vuk_hit)
         self.add_mode_event_handler(f"{self.MODE_KEY}_multiball_ended", self._multiball_ended)
         self.add_mode_event_handler(f"{self.MODE_KEY}_fail_request", self._complete_mode)
+        self.add_mode_event_handler("ball_drain", self._ball_drain)
+        self.add_mode_event_handler(f"{self.MODE_KEY}_clear_all_lights", self._invalidate_saucer_lights)
 
         self.machine.events.post("chapter_mini_wizard_started", mini_wizard=self.MODE_KEY)
         self.machine.events.post(f"{self.MODE_KEY}_setup")
@@ -147,7 +154,7 @@ class MadScienceMeltdown(Mode):
         self.machine.events.post(f"{self.MODE_KEY}_clear_all_lights")
         self.machine.events.post(f"{self.MODE_KEY}_vuk_chase_stop")
         self.machine.events.post("rooftop_diverter_close")
-        self.machine.events.post("clear_saucers")
+        self._release_all_parked_saucers()
         self.machine.events.post("drop_target_bank_dt_bank_left_reset")
         self.machine.events.post("drop_target_bank_dt_bank_right_reset")
         if self.machine.game and self._get("mini_wizard_current_key", "") == self.MODE_KEY:
@@ -509,14 +516,17 @@ class MadScienceMeltdown(Mode):
         if saucer is None:
             return
         saucer = int(saucer)
+        if saucer in self.parked_saucers or time.monotonic() < self.saucer_available_after.get(saucer, 0):
+            return
         if self._inactive():
             self._kick_saucer(saucer)
-            return
-        if saucer in self.parked_saucers:
             return
 
         if self._can_park_current_saucer():
             self.parked_saucers.add(saucer)
+            self.parking_order.append(saucer)
+            self.delay.reset(name=f"{self.MODE_KEY}_saucer_{saucer}_park",
+                             ms=self.SAUCER_HOLD_MS, callback=self._park_timeout, saucer=saucer)
             multiplier = 1 + len(self.parked_saucers)
             self.machine.events.post(
                 f"{self.MODE_KEY}_saucer_parked",
@@ -544,33 +554,49 @@ class MadScienceMeltdown(Mode):
                 callback=self._ball_guard,
             )
 
-    def _ball_guard(self):
-        if self.mode_done:
+    def _ball_drain(self, **kwargs):
+        if not self._inactive():
+            # Check after the drain relay updates the count and applies ball saves.
+            self.delay.reset(name=f"{self.MODE_KEY}_drain_parking_check", ms=1,
+                             callback=self._check_loose_balls)
+
+    def _check_loose_balls(self):
+        if self._inactive():
             return
-        if self.parked_saucers and self._playable_loose_balls() <= 0:
-            saucer = sorted(self.parked_saucers)[0]
-            self._kick_saucer(saucer, delay_ms=0)
+        if self.parking_order and self._playable_loose_balls() <= 0:
+            saucer = self.parking_order[0]
+            self._kick_saucer(saucer)
             self.machine.events.post(f"{self.MODE_KEY}_deadlock_release", saucer=saucer)
-            self._refresh_saucer_lights()
-            self._sync_vars()
+        self._refresh_saucer_lights()
+
+    def _ball_guard(self):
+        self._check_loose_balls()
         self._schedule_ball_guard()
 
+    def _park_timeout(self, saucer):
+        if not self._inactive() and saucer in self.parked_saucers:
+            self._kick_saucer(saucer)
+
     def _release_all_parked_saucers(self):
-        for index, saucer in enumerate(sorted(self.parked_saucers)):
-            self._kick_saucer(saucer, delay_ms=index * 250)
-        self.parked_saucers.clear()
+        for index, saucer in enumerate(list(self.parking_order)):
+            self._kick_saucer(saucer, delay_ms=index * 300)
         self._refresh_saucer_lights()
 
     def _kick_saucer(self, saucer, delay_ms=None):
         saucer = int(saucer)
+        self.delay.remove(f"{self.MODE_KEY}_saucer_{saucer}_park")
         self.parked_saucers.discard(saucer)
+        if saucer in self.parking_order:
+            self.parking_order.remove(saucer)
         if delay_ms is None:
             delay_ms = 0
-        self.machine.events.post(
-            "request_saucer_eject",
-            saucer_number=saucer,
-            delay_ms=max(0, int(delay_ms)),
-        )
+        delay_ms = max(0, int(delay_ms))
+        self.saucer_available_after[saucer] = time.monotonic() + (delay_ms + 750) / 1000
+        self.machine.events.post("request_saucer_eject", saucer_number=saucer, delay_ms=delay_ms)
+        self._refresh_saucer_lights()
+        self._sync_vars()
+        if not self._inactive():
+            self._update_status()
 
     def _playable_loose_balls(self):
         return max(0, self._balls_in_play() - len(self.parked_saucers))
@@ -654,10 +680,26 @@ class MadScienceMeltdown(Mode):
         else:
             self.machine.events.post(f"{self.MODE_KEY}_b_ready")
 
+    def _invalidate_saucer_lights(self, **kwargs):
+        self.saucer_light_states.clear()
+
     def _refresh_saucer_lights(self):
-        self.machine.events.post(f"{self.MODE_KEY}_saucer_lights_clear")
-        for saucer in self.parked_saucers:
-            self.machine.events.post(f"{self.MODE_KEY}_saucer_{saucer}_parked_light")
+        now = time.monotonic()
+        for saucer in (1, 2, 3):
+            if self._inactive():
+                state = "off"
+            elif saucer in self.parked_saucers:
+                state = "held"
+            elif now < self.saucer_available_after.get(saucer, 0):
+                state = "off"
+            elif self._can_park_current_saucer():
+                state = "available"
+            else:
+                state = "off"
+            if self.saucer_light_states.get(saucer) != state:
+                self.machine.events.post(f"{self.MODE_KEY}_saucer_{saucer}_parking_clear")
+                self.machine.events.post(f"{self.MODE_KEY}_saucer_{saucer}_parking_{state}")
+                self.saucer_light_states[saucer] = state
 
     def _active_gas_count(self):
         return sum(1 for level in self.gas_states.values() if level > 0)
@@ -734,6 +776,7 @@ class MadScienceMeltdown(Mode):
         self.mode_done = True
         self.mode_exiting = True
         self.delay.clear()
+        self._release_all_parked_saucers()
         self._set(f"{self.MODE_KEY}_state", 2)
         self._sync_vars()
         self.machine.events.post("hide_mode_status")

@@ -52,7 +52,6 @@ event_player:
   mode_nature_strikes_back_stopping:
     - enable_daily_bugle_mystery
     - daily_bugle_restore_state
-    - clear_saucers_delayed
   drop_target_bank_dt_bank_left_down: drop_target_bank_dt_bank_left_reset
   drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset
 
@@ -157,9 +156,15 @@ show_player:
     nature_center_web_pulse: {action: stop}
     nature_star_pulse: {action: stop}
     shared_final_vuk_chase: {action: stop}
-    nature_saucer_1_pulse: {action: stop}
-    nature_saucer_2_pulse: {action: stop}
-    nature_saucer_3_pulse: {action: stop}
+    nature_strikes_back_saucer_1_parking_available_show: {action: stop}
+    nature_strikes_back_saucer_1_parking_held_show: {action: stop}
+    nature_strikes_back_saucer_1_parking_objective_show: {action: stop}
+    nature_strikes_back_saucer_2_parking_available_show: {action: stop}
+    nature_strikes_back_saucer_2_parking_held_show: {action: stop}
+    nature_strikes_back_saucer_2_parking_objective_show: {action: stop}
+    nature_strikes_back_saucer_3_parking_available_show: {action: stop}
+    nature_strikes_back_saucer_3_parking_held_show: {action: stop}
+    nature_strikes_back_saucer_3_parking_objective_show: {action: stop}
     nature_zone_upper_left_cyan: {action: stop}
     nature_zone_upper_left_purple: {action: stop}
     nature_zone_upper_right_cyan: {action: stop}
@@ -173,18 +178,47 @@ show_player:
     nature_zone_lower_right_cyan: {action: stop}
     nature_zone_lower_right_purple: {action: stop}
 
-  nature_strikes_back_saucer_1_lit:
-    nature_saucer_1_pulse: {loops: -1}
-  nature_strikes_back_saucer_2_lit:
-    nature_saucer_2_pulse: {loops: -1}
-  nature_strikes_back_saucer_3_lit:
-    nature_saucer_3_pulse: {loops: -1}
-  nature_strikes_back_saucers_unlit:
-    nature_saucer_1_pulse: {action: stop}
-    nature_saucer_2_pulse: {action: stop}
-    nature_saucer_3_pulse: {action: stop}
+  nature_strikes_back_saucer_1_parking_available:
+    nature_strikes_back_saucer_1_parking_available_show: {loops: -1, priority: 100}
+  nature_strikes_back_saucer_1_parking_held:
+    nature_strikes_back_saucer_1_parking_held_show: {loops: -1, priority: 100}
+  nature_strikes_back_saucer_1_parking_objective:
+    nature_strikes_back_saucer_1_parking_objective_show: {loops: -1, priority: 100}
+  nature_strikes_back_saucer_1_parking_clear:
+    nature_strikes_back_saucer_1_parking_available_show: {action: stop}
+    nature_strikes_back_saucer_1_parking_held_show: {action: stop}
+    nature_strikes_back_saucer_1_parking_objective_show: {action: stop}
+  nature_strikes_back_saucer_2_parking_available:
+    nature_strikes_back_saucer_2_parking_available_show: {loops: -1, priority: 100}
+  nature_strikes_back_saucer_2_parking_held:
+    nature_strikes_back_saucer_2_parking_held_show: {loops: -1, priority: 100}
+  nature_strikes_back_saucer_2_parking_objective:
+    nature_strikes_back_saucer_2_parking_objective_show: {loops: -1, priority: 100}
+  nature_strikes_back_saucer_2_parking_clear:
+    nature_strikes_back_saucer_2_parking_available_show: {action: stop}
+    nature_strikes_back_saucer_2_parking_held_show: {action: stop}
+    nature_strikes_back_saucer_2_parking_objective_show: {action: stop}
+  nature_strikes_back_saucer_3_parking_available:
+    nature_strikes_back_saucer_3_parking_available_show: {loops: -1, priority: 100}
+  nature_strikes_back_saucer_3_parking_held:
+    nature_strikes_back_saucer_3_parking_held_show: {loops: -1, priority: 100}
+  nature_strikes_back_saucer_3_parking_objective:
+    nature_strikes_back_saucer_3_parking_objective_show: {loops: -1, priority: 100}
+  nature_strikes_back_saucer_3_parking_clear:
+    nature_strikes_back_saucer_3_parking_available_show: {action: stop}
+    nature_strikes_back_saucer_3_parking_held_show: {action: stop}
+    nature_strikes_back_saucer_3_parking_objective_show: {action: stop}
 
 light_player:
+  nature_strikes_back_saucer_1_parking_off:
+    l_1_hole_l: off
+    l_1_hole_r: off
+  nature_strikes_back_saucer_2_parking_off:
+    l_2_hole_l: off
+    l_2_hole_r: off
+  nature_strikes_back_saucer_3_parking_off:
+    l_3_hole_l: off
+    l_3_hole_r: off
   mode_nature_strikes_back_started:
     gi: 303040
 
@@ -205,32 +239,6 @@ light_player:
   nature_strikes_back_stage_stable:
     l_star: off
     l_star2: off
-
-  nature_strikes_back_saucers_unlit:
-    l_1_hole_l: off
-    l_1_hole_r: off
-    l_2_hole_l: off
-    l_2_hole_r: off
-    l_3_hole_l: off
-    l_3_hole_r: off
-  nature_strikes_back_saucer_1_parked:
-    l_1_hole_l: 400000
-    l_1_hole_r: 400000
-  nature_strikes_back_saucer_2_parked:
-    l_2_hole_l: 400000
-    l_2_hole_r: 400000
-  nature_strikes_back_saucer_3_parked:
-    l_3_hole_l: 400000
-    l_3_hole_r: 400000
-  nature_strikes_back_saucer_1_released:
-    l_1_hole_l: off
-    l_1_hole_r: off
-  nature_strikes_back_saucer_2_released:
-    l_2_hole_l: off
-    l_2_hole_r: off
-  nature_strikes_back_saucer_3_released:
-    l_3_hole_l: off
-    l_3_hole_r: off
 
   nature_strikes_back_web_left_collected:
     l_left_web_target: FFFFFF
@@ -286,21 +294,45 @@ shows:
     - duration: 500ms
       lights: {l_star: 404040, l_star2: 404040}
 
-  nature_saucer_1_pulse:
-    - duration: 400ms
-      lights: {l_1_hole_l: red, l_1_hole_r: red}
-    - duration: 400ms
-      lights: {l_1_hole_l: 400000, l_1_hole_r: 400000}
-  nature_saucer_2_pulse:
-    - duration: 400ms
-      lights: {l_2_hole_l: red, l_2_hole_r: red}
-    - duration: 400ms
-      lights: {l_2_hole_l: 400000, l_2_hole_r: 400000}
-  nature_saucer_3_pulse:
-    - duration: 400ms
-      lights: {l_3_hole_l: red, l_3_hole_r: red}
-    - duration: 400ms
-      lights: {l_3_hole_l: 400000, l_3_hole_r: 400000}
+  nature_strikes_back_saucer_1_parking_available_show:
+    - duration: 750ms
+      lights: {l_1_hole_l: FF0000-f750ms, l_1_hole_r: FF0000-f750ms}
+    - duration: 750ms
+      lights: {l_1_hole_l: 400000-f750ms, l_1_hole_r: 400000-f750ms}
+  nature_strikes_back_saucer_1_parking_held_show:
+    - duration: 1s
+      lights: {l_1_hole_l: BF0000, l_1_hole_r: BF0000}
+  nature_strikes_back_saucer_1_parking_objective_show:
+    - duration: 200ms
+      lights: {l_1_hole_l: FFFFFF, l_1_hole_r: FFFFFF}
+    - duration: 200ms
+      lights: {l_1_hole_l: off, l_1_hole_r: off}
+  nature_strikes_back_saucer_2_parking_available_show:
+    - duration: 750ms
+      lights: {l_2_hole_l: FF0000-f750ms, l_2_hole_r: FF0000-f750ms}
+    - duration: 750ms
+      lights: {l_2_hole_l: 400000-f750ms, l_2_hole_r: 400000-f750ms}
+  nature_strikes_back_saucer_2_parking_held_show:
+    - duration: 1s
+      lights: {l_2_hole_l: BF0000, l_2_hole_r: BF0000}
+  nature_strikes_back_saucer_2_parking_objective_show:
+    - duration: 200ms
+      lights: {l_2_hole_l: FFFFFF, l_2_hole_r: FFFFFF}
+    - duration: 200ms
+      lights: {l_2_hole_l: off, l_2_hole_r: off}
+  nature_strikes_back_saucer_3_parking_available_show:
+    - duration: 750ms
+      lights: {l_3_hole_l: FF0000-f750ms, l_3_hole_r: FF0000-f750ms}
+    - duration: 750ms
+      lights: {l_3_hole_l: 400000-f750ms, l_3_hole_r: 400000-f750ms}
+  nature_strikes_back_saucer_3_parking_held_show:
+    - duration: 1s
+      lights: {l_3_hole_l: BF0000, l_3_hole_r: BF0000}
+  nature_strikes_back_saucer_3_parking_objective_show:
+    - duration: 200ms
+      lights: {l_3_hole_l: FFFFFF, l_3_hole_r: FFFFFF}
+    - duration: 200ms
+      lights: {l_3_hole_l: off, l_3_hole_r: off}
 
   nature_zone_upper_left_cyan: &cyan_ul
     - duration: 500ms

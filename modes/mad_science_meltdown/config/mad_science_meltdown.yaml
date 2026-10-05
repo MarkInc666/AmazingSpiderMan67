@@ -45,7 +45,6 @@ event_player:
     - enable_daily_bugle_mystery
     - daily_bugle_restore_state
     - rooftop_diverter_close
-    - clear_saucers
     - drop_target_bank_dt_bank_left_reset
     - drop_target_bank_dt_bank_right_reset
     - mad_science_meltdown_clear_all_lights
@@ -111,6 +110,27 @@ coil_player:
     c_right_bank_drop_5: {action: pulse}
 
 show_player:
+  mad_science_meltdown_saucer_1_parking_available:
+    mad_science_meltdown_saucer_1_parking_available_show: {loops: -1, priority: 100}
+  mad_science_meltdown_saucer_1_parking_held:
+    mad_science_meltdown_saucer_1_parking_held_show: {loops: -1, priority: 100}
+  mad_science_meltdown_saucer_1_parking_clear:
+    mad_science_meltdown_saucer_1_parking_available_show: {action: stop}
+    mad_science_meltdown_saucer_1_parking_held_show: {action: stop}
+  mad_science_meltdown_saucer_2_parking_available:
+    mad_science_meltdown_saucer_2_parking_available_show: {loops: -1, priority: 100}
+  mad_science_meltdown_saucer_2_parking_held:
+    mad_science_meltdown_saucer_2_parking_held_show: {loops: -1, priority: 100}
+  mad_science_meltdown_saucer_2_parking_clear:
+    mad_science_meltdown_saucer_2_parking_available_show: {action: stop}
+    mad_science_meltdown_saucer_2_parking_held_show: {action: stop}
+  mad_science_meltdown_saucer_3_parking_available:
+    mad_science_meltdown_saucer_3_parking_available_show: {loops: -1, priority: 100}
+  mad_science_meltdown_saucer_3_parking_held:
+    mad_science_meltdown_saucer_3_parking_held_show: {loops: -1, priority: 100}
+  mad_science_meltdown_saucer_3_parking_clear:
+    mad_science_meltdown_saucer_3_parking_available_show: {action: stop}
+    mad_science_meltdown_saucer_3_parking_held_show: {action: stop}
   mad_science_meltdown_base_lights_start:
     mad_science_meltdown_left_bank_pulse: {loops: -1, priority: 830}
     mad_science_meltdown_spinner_cooling_pulse: {loops: -1, priority: 830}
@@ -320,6 +340,12 @@ show_player:
     shared_center_web_chase: {action: stop}
 
   mad_science_meltdown_clear_all_lights:
+    mad_science_meltdown_saucer_1_parking_available_show: {action: stop}
+    mad_science_meltdown_saucer_1_parking_held_show: {action: stop}
+    mad_science_meltdown_saucer_2_parking_available_show: {action: stop}
+    mad_science_meltdown_saucer_2_parking_held_show: {action: stop}
+    mad_science_meltdown_saucer_3_parking_available_show: {action: stop}
+    mad_science_meltdown_saucer_3_parking_held_show: {action: stop}
     mad_science_meltdown_left_bank_pulse: {action: stop}
     mad_science_meltdown_spinner_cooling_pulse: {action: stop}
     mad_science_meltdown_upper_targets_pulse: {action: stop}
@@ -340,6 +366,15 @@ show_player:
     shared_final_vuk_chase: {action: stop}
 
 light_player:
+  mad_science_meltdown_saucer_1_parking_off:
+    l_1_hole_l: off
+    l_1_hole_r: off
+  mad_science_meltdown_saucer_2_parking_off:
+    l_2_hole_l: off
+    l_2_hole_r: off
+  mad_science_meltdown_saucer_3_parking_off:
+    l_3_hole_l: off
+    l_3_hole_r: off
   mode_mad_science_meltdown_started:
     gi: "303040"
   mode_mad_science_meltdown_stopping:
@@ -360,17 +395,32 @@ light_player:
     l_2_hole_r: off
     l_3_hole_l: off
     l_3_hole_r: off
-  mad_science_meltdown_saucer_1_parked_light:
-    l_1_hole_l: red
-    l_1_hole_r: red
-  mad_science_meltdown_saucer_2_parked_light:
-    l_2_hole_l: red
-    l_2_hole_r: red
-  mad_science_meltdown_saucer_3_parked_light:
-    l_3_hole_l: red
-    l_3_hole_r: red
 
 shows:
+  mad_science_meltdown_saucer_1_parking_available_show:
+    - duration: 750ms
+      lights: {l_1_hole_l: FF0000-f750ms, l_1_hole_r: FF0000-f750ms}
+    - duration: 750ms
+      lights: {l_1_hole_l: 400000-f750ms, l_1_hole_r: 400000-f750ms}
+  mad_science_meltdown_saucer_1_parking_held_show:
+    - duration: 1s
+      lights: {l_1_hole_l: BF0000, l_1_hole_r: BF0000}
+  mad_science_meltdown_saucer_2_parking_available_show:
+    - duration: 750ms
+      lights: {l_2_hole_l: FF0000-f750ms, l_2_hole_r: FF0000-f750ms}
+    - duration: 750ms
+      lights: {l_2_hole_l: 400000-f750ms, l_2_hole_r: 400000-f750ms}
+  mad_science_meltdown_saucer_2_parking_held_show:
+    - duration: 1s
+      lights: {l_2_hole_l: BF0000, l_2_hole_r: BF0000}
+  mad_science_meltdown_saucer_3_parking_available_show:
+    - duration: 750ms
+      lights: {l_3_hole_l: FF0000-f750ms, l_3_hole_r: FF0000-f750ms}
+    - duration: 750ms
+      lights: {l_3_hole_l: 400000-f750ms, l_3_hole_r: 400000-f750ms}
+  mad_science_meltdown_saucer_3_parking_held_show:
+    - duration: 1s
+      lights: {l_3_hole_l: BF0000, l_3_hole_r: BF0000}
   mad_science_meltdown_left_bank_pulse:
     - duration: 500ms
       lights: {l_gi_3bank: "FF3030"}

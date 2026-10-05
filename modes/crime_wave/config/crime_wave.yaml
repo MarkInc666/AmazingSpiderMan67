@@ -99,6 +99,15 @@ widget_player:
       action: remove
 
 light_player:
+  crime_wave_saucer_1_parking_off:
+    l_1_hole_l: off
+    l_1_hole_r: off
+  crime_wave_saucer_2_parking_off:
+    l_2_hole_l: off
+    l_2_hole_r: off
+  crime_wave_saucer_3_parking_off:
+    l_3_hole_l: off
+    l_3_hole_r: off
   mode_crime_wave_started:
     gi: EFA0A0
   crime_wave_gi_restore:
@@ -168,19 +177,36 @@ show_player:
     crime_wave_enforcers_active: {action: stop}
     crime_wave_enforcers_warning: {loops: -1}
 
-  # Doctor Cool / saucer targets: white is deliberately brighter than red.
-  crime_wave_area_doctor_cool_available:
-    crime_wave_doctor_cool_active: {action: stop}
-    crime_wave_doctor_cool_warning: {action: stop}
-    crime_wave_doctor_cool_available: {loops: -1}
-  crime_wave_area_doctor_cool_active:
-    crime_wave_doctor_cool_available: {action: stop}
-    crime_wave_doctor_cool_warning: {action: stop}
-    crime_wave_doctor_cool_active: {loops: -1}
-  crime_wave_area_doctor_cool_warning:
-    crime_wave_doctor_cool_available: {action: stop}
-    crime_wave_doctor_cool_active: {action: stop}
-    crime_wave_doctor_cool_warning: {loops: -1}
+  crime_wave_saucer_1_parking_available:
+    crime_wave_saucer_1_parking_available_show: {loops: -1, priority: 100}
+  crime_wave_saucer_1_parking_held:
+    crime_wave_saucer_1_parking_held_show: {loops: -1, priority: 100}
+  crime_wave_saucer_1_parking_objective:
+    crime_wave_saucer_1_parking_objective_show: {loops: -1, priority: 100}
+  crime_wave_saucer_1_parking_clear:
+    crime_wave_saucer_1_parking_available_show: {action: stop}
+    crime_wave_saucer_1_parking_held_show: {action: stop}
+    crime_wave_saucer_1_parking_objective_show: {action: stop}
+  crime_wave_saucer_2_parking_available:
+    crime_wave_saucer_2_parking_available_show: {loops: -1, priority: 100}
+  crime_wave_saucer_2_parking_held:
+    crime_wave_saucer_2_parking_held_show: {loops: -1, priority: 100}
+  crime_wave_saucer_2_parking_objective:
+    crime_wave_saucer_2_parking_objective_show: {loops: -1, priority: 100}
+  crime_wave_saucer_2_parking_clear:
+    crime_wave_saucer_2_parking_available_show: {action: stop}
+    crime_wave_saucer_2_parking_held_show: {action: stop}
+    crime_wave_saucer_2_parking_objective_show: {action: stop}
+  crime_wave_saucer_3_parking_available:
+    crime_wave_saucer_3_parking_available_show: {loops: -1, priority: 100}
+  crime_wave_saucer_3_parking_held:
+    crime_wave_saucer_3_parking_held_show: {loops: -1, priority: 100}
+  crime_wave_saucer_3_parking_objective:
+    crime_wave_saucer_3_parking_objective_show: {loops: -1, priority: 100}
+  crime_wave_saucer_3_parking_clear:
+    crime_wave_saucer_3_parking_available_show: {action: stop}
+    crime_wave_saucer_3_parking_held_show: {action: stop}
+    crime_wave_saucer_3_parking_objective_show: {action: stop}
 
   crime_wave_super_on:
     crime_wave_super_web_flash: {loops: -1}
@@ -200,9 +226,6 @@ show_player:
     crime_wave_enforcers_available: {action: stop}
     crime_wave_enforcers_active: {action: stop}
     crime_wave_enforcers_warning: {action: stop}
-    crime_wave_doctor_cool_available: {action: stop}
-    crime_wave_doctor_cool_active: {action: stop}
-    crime_wave_doctor_cool_warning: {action: stop}
 
   crime_wave_clear_lights:
     crime_wave_plotter_available: {action: stop}
@@ -217,10 +240,16 @@ show_player:
     crime_wave_enforcers_available: {action: stop}
     crime_wave_enforcers_active: {action: stop}
     crime_wave_enforcers_warning: {action: stop}
-    crime_wave_doctor_cool_available: {action: stop}
-    crime_wave_doctor_cool_active: {action: stop}
-    crime_wave_doctor_cool_warning: {action: stop}
     crime_wave_super_web_flash: {action: stop}
+    crime_wave_saucer_1_parking_available_show: {action: stop}
+    crime_wave_saucer_1_parking_held_show: {action: stop}
+    crime_wave_saucer_1_parking_objective_show: {action: stop}
+    crime_wave_saucer_2_parking_available_show: {action: stop}
+    crime_wave_saucer_2_parking_held_show: {action: stop}
+    crime_wave_saucer_2_parking_objective_show: {action: stop}
+    crime_wave_saucer_3_parking_available_show: {action: stop}
+    crime_wave_saucer_3_parking_held_show: {action: stop}
+    crime_wave_saucer_3_parking_objective_show: {action: stop}
 
 shows:
   crime_wave_plotter_available:
@@ -399,19 +428,45 @@ shows:
     - duration: 250ms
       lights: {l_gi_3bank: off, l_3bankbonus: off, l_left_special: off, l_left_multibonus: off}
 
-  crime_wave_doctor_cool_available:
-    - duration: 500ms
-      lights: {l_1_hole_l: white, l_1_hole_r: white, l_2_hole_l: white, l_2_hole_r: white, l_3_hole_l: white, l_3_hole_r: white}
-    - duration: 500ms
-      lights: {l_1_hole_l: 404040, l_1_hole_r: 404040, l_2_hole_l: 404040, l_2_hole_r: 404040, l_3_hole_l: 404040, l_3_hole_r: 404040}
-  crime_wave_doctor_cool_active:
+  crime_wave_saucer_1_parking_available_show:
+    - duration: 750ms
+      lights: {l_1_hole_l: FF0000-f750ms, l_1_hole_r: FF0000-f750ms}
+    - duration: 750ms
+      lights: {l_1_hole_l: 400000-f750ms, l_1_hole_r: 400000-f750ms}
+  crime_wave_saucer_1_parking_held_show:
     - duration: 1s
-      lights: {l_1_hole_l: white, l_1_hole_r: white, l_2_hole_l: white, l_2_hole_r: white, l_3_hole_l: white, l_3_hole_r: white}
-  crime_wave_doctor_cool_warning:
-    - duration: 250ms
-      lights: {l_1_hole_l: white, l_1_hole_r: white, l_2_hole_l: white, l_2_hole_r: white, l_3_hole_l: white, l_3_hole_r: white}
-    - duration: 250ms
-      lights: {l_1_hole_l: off, l_1_hole_r: off, l_2_hole_l: off, l_2_hole_r: off, l_3_hole_l: off, l_3_hole_r: off}
+      lights: {l_1_hole_l: BF0000, l_1_hole_r: BF0000}
+  crime_wave_saucer_1_parking_objective_show:
+    - duration: 200ms
+      lights: {l_1_hole_l: FFFFFF, l_1_hole_r: FFFFFF}
+    - duration: 200ms
+      lights: {l_1_hole_l: off, l_1_hole_r: off}
+  crime_wave_saucer_2_parking_available_show:
+    - duration: 750ms
+      lights: {l_2_hole_l: FF0000-f750ms, l_2_hole_r: FF0000-f750ms}
+    - duration: 750ms
+      lights: {l_2_hole_l: 400000-f750ms, l_2_hole_r: 400000-f750ms}
+  crime_wave_saucer_2_parking_held_show:
+    - duration: 1s
+      lights: {l_2_hole_l: BF0000, l_2_hole_r: BF0000}
+  crime_wave_saucer_2_parking_objective_show:
+    - duration: 200ms
+      lights: {l_2_hole_l: FFFFFF, l_2_hole_r: FFFFFF}
+    - duration: 200ms
+      lights: {l_2_hole_l: off, l_2_hole_r: off}
+  crime_wave_saucer_3_parking_available_show:
+    - duration: 750ms
+      lights: {l_3_hole_l: FF0000-f750ms, l_3_hole_r: FF0000-f750ms}
+    - duration: 750ms
+      lights: {l_3_hole_l: 400000-f750ms, l_3_hole_r: 400000-f750ms}
+  crime_wave_saucer_3_parking_held_show:
+    - duration: 1s
+      lights: {l_3_hole_l: BF0000, l_3_hole_r: BF0000}
+  crime_wave_saucer_3_parking_objective_show:
+    - duration: 200ms
+      lights: {l_3_hole_l: FFFFFF, l_3_hole_r: FFFFFF}
+    - duration: 200ms
+      lights: {l_3_hole_l: off, l_3_hole_r: off}
 
   crime_wave_super_web_flash:
     - duration: 250ms

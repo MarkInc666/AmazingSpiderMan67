@@ -139,27 +139,15 @@ widget_player:
 
 
 light_player:
-  sinister_surge_saucer_hold_started{saucer=="saucer_1"}:
-    l_1_hole_l: white
-    l_1_hole_r: white
-  sinister_surge_saucer_released{saucer=="saucer_1"}:
+  sinister_surge_saucer_1_parking_off:
     l_1_hole_l: off
     l_1_hole_r: off
-
-  sinister_surge_saucer_hold_started{saucer=="saucer_2"}:
-    l_2_hole_l: white
-    l_2_hole_r: white
-  sinister_surge_saucer_released{saucer=="saucer_2"}:
+  sinister_surge_saucer_2_parking_off:
     l_2_hole_l: off
     l_2_hole_r: off
-
-  sinister_surge_saucer_hold_started{saucer=="saucer_3"}:
-    l_3_hole_l: white
-    l_3_hole_r: white
-  sinister_surge_saucer_released{saucer=="saucer_3"}:
+  sinister_surge_saucer_3_parking_off:
     l_3_hole_l: off
     l_3_hole_r: off
-
   mode_sinister_surge_stopping:
     l_1_hole_l: off
     l_1_hole_r: off
@@ -169,6 +157,36 @@ light_player:
     l_3_hole_r: off
 
 show_player:
+  sinister_surge_saucer_1_parking_clear:
+    sinister_surge_saucer_1_parking_available_show: {action: stop}
+    sinister_surge_saucer_1_parking_held_show: {action: stop}
+    sinister_surge_saucer_1_parking_objective_show: {action: stop}
+  sinister_surge_saucer_1_parking_available:
+    sinister_surge_saucer_1_parking_available_show: {loops: -1, priority: 100}
+  sinister_surge_saucer_1_parking_held:
+    sinister_surge_saucer_1_parking_held_show: {loops: -1, priority: 100}
+  sinister_surge_saucer_1_parking_objective:
+    sinister_surge_saucer_1_parking_objective_show: {loops: -1, priority: 100}
+  sinister_surge_saucer_2_parking_clear:
+    sinister_surge_saucer_2_parking_available_show: {action: stop}
+    sinister_surge_saucer_2_parking_held_show: {action: stop}
+    sinister_surge_saucer_2_parking_objective_show: {action: stop}
+  sinister_surge_saucer_2_parking_available:
+    sinister_surge_saucer_2_parking_available_show: {loops: -1, priority: 100}
+  sinister_surge_saucer_2_parking_held:
+    sinister_surge_saucer_2_parking_held_show: {loops: -1, priority: 100}
+  sinister_surge_saucer_2_parking_objective:
+    sinister_surge_saucer_2_parking_objective_show: {loops: -1, priority: 100}
+  sinister_surge_saucer_3_parking_clear:
+    sinister_surge_saucer_3_parking_available_show: {action: stop}
+    sinister_surge_saucer_3_parking_held_show: {action: stop}
+    sinister_surge_saucer_3_parking_objective_show: {action: stop}
+  sinister_surge_saucer_3_parking_available:
+    sinister_surge_saucer_3_parking_available_show: {loops: -1, priority: 100}
+  sinister_surge_saucer_3_parking_held:
+    sinister_surge_saucer_3_parking_held_show: {loops: -1, priority: 100}
+  sinister_surge_saucer_3_parking_objective:
+    sinister_surge_saucer_3_parking_objective_show: {loops: -1, priority: 100}
 
   sinister_surge_clear_area_lights:
     sinister_surge_sandman_bank_gi_show:
@@ -220,8 +238,6 @@ show_player:
     sinister_surge_electro_left_bank_show:
       action: stop
     sinister_surge_electro_right_bank_show:
-      action: stop
-    sinister_surge_goblin_saucers_show:
       action: stop
     sinister_surge_goblin_left_web_show:
       action: stop
@@ -352,22 +368,16 @@ show_player:
       action: stop
 
   sinister_surge_area_goblin_lit:
-    sinister_surge_goblin_saucers_show:
-      loops: -1
     sinister_surge_goblin_gi_safe_show:
       action: stop
     sinister_surge_goblin_gi_unsafe_show:
       loops: -1
   sinister_surge_goblin_ready:
-    sinister_surge_goblin_saucers_show:
-      loops: -1
     sinister_surge_goblin_gi_safe_show:
       action: stop
     sinister_surge_goblin_gi_unsafe_show:
       loops: -1
   sinister_surge_goblin_attempt_started:
-    sinister_surge_goblin_saucers_show:
-      loops: -1
     sinister_surge_goblin_gi_unsafe_show:
       action: stop
     sinister_surge_goblin_gi_safe_show:
@@ -393,8 +403,6 @@ show_player:
     sinister_surge_goblin_right_bank_show:
       action: stop
   sinister_surge_goblin_clear:
-    sinister_surge_goblin_saucers_show:
-      action: stop
     sinister_surge_goblin_gi_unsafe_show:
       action: stop
     sinister_surge_goblin_gi_safe_show:
@@ -523,8 +531,6 @@ show_player:
       action: stop
     sinister_surge_electro_right_bank_show:
       action: stop
-    sinister_surge_goblin_saucers_show:
-      action: stop
     sinister_surge_goblin_left_web_show:
       action: stop
     sinister_surge_goblin_center_web_show:
@@ -551,6 +557,75 @@ show_player:
       action: stop
 
 shows:
+  sinister_surge_saucer_1_parking_available_show:
+    - duration: 750ms
+      lights:
+        l_1_hole_l: {color: "FF0000", fade: 750ms}
+        l_1_hole_r: {color: "FF0000", fade: 750ms}
+    - duration: 750ms
+      lights:
+        l_1_hole_l: {color: "400000", fade: 750ms}
+        l_1_hole_r: {color: "400000", fade: 750ms}
+  sinister_surge_saucer_1_parking_held_show:
+    - duration: 1s
+      lights:
+        l_1_hole_l: "BF0000"
+        l_1_hole_r: "BF0000"
+  sinister_surge_saucer_1_parking_objective_show:
+    - duration: 200ms
+      lights:
+        l_1_hole_l: "FFFFFF"
+        l_1_hole_r: "FFFFFF"
+    - duration: 200ms
+      lights:
+        l_1_hole_l: "off"
+        l_1_hole_r: "off"
+  sinister_surge_saucer_2_parking_available_show:
+    - duration: 750ms
+      lights:
+        l_2_hole_l: {color: "FF0000", fade: 750ms}
+        l_2_hole_r: {color: "FF0000", fade: 750ms}
+    - duration: 750ms
+      lights:
+        l_2_hole_l: {color: "400000", fade: 750ms}
+        l_2_hole_r: {color: "400000", fade: 750ms}
+  sinister_surge_saucer_2_parking_held_show:
+    - duration: 1s
+      lights:
+        l_2_hole_l: "BF0000"
+        l_2_hole_r: "BF0000"
+  sinister_surge_saucer_2_parking_objective_show:
+    - duration: 200ms
+      lights:
+        l_2_hole_l: "FFFFFF"
+        l_2_hole_r: "FFFFFF"
+    - duration: 200ms
+      lights:
+        l_2_hole_l: "off"
+        l_2_hole_r: "off"
+  sinister_surge_saucer_3_parking_available_show:
+    - duration: 750ms
+      lights:
+        l_3_hole_l: {color: "FF0000", fade: 750ms}
+        l_3_hole_r: {color: "FF0000", fade: 750ms}
+    - duration: 750ms
+      lights:
+        l_3_hole_l: {color: "400000", fade: 750ms}
+        l_3_hole_r: {color: "400000", fade: 750ms}
+  sinister_surge_saucer_3_parking_held_show:
+    - duration: 1s
+      lights:
+        l_3_hole_l: "BF0000"
+        l_3_hole_r: "BF0000"
+  sinister_surge_saucer_3_parking_objective_show:
+    - duration: 200ms
+      lights:
+        l_3_hole_l: "FFFFFF"
+        l_3_hole_r: "FFFFFF"
+    - duration: 200ms
+      lights:
+        l_3_hole_l: "off"
+        l_3_hole_r: "off"
 
   sinister_surge_pops_lit_show:
     - duration: 500ms
@@ -1158,24 +1233,6 @@ shows:
         l_5bank_5: blue
         l_gi_5bank_upper: blue
         l_gi_5bank_lower: blue
-
-  sinister_surge_goblin_saucers_show:
-    - duration: 500ms
-      lights:
-        l_1_hole_l: {color: red, fade: 500ms}
-        l_1_hole_r: {color: red, fade: 500ms}
-        l_2_hole_l: {color: red, fade: 500ms}
-        l_2_hole_r: {color: red, fade: 500ms}
-        l_3_hole_l: {color: red, fade: 500ms}
-        l_3_hole_r: {color: red, fade: 500ms}
-    - duration: 500ms
-      lights:
-        l_1_hole_l: {color: off, fade: 500ms}
-        l_1_hole_r: {color: off, fade: 500ms}
-        l_2_hole_l: {color: off, fade: 500ms}
-        l_2_hole_r: {color: off, fade: 500ms}
-        l_3_hole_l: {color: off, fade: 500ms}
-        l_3_hole_r: {color: off, fade: 500ms}
 
   sinister_surge_goblin_gi_unsafe_show:
     - duration: -1

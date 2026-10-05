@@ -69,6 +69,9 @@ class CrimeWave(Mode):
         self.max_areas_lit = 0
         self.gate_open = False
         self.held_saucers = set()
+        self.parking_order = []
+        self.saucer_available_after = {}
+        self.saucer_light_states = {}
         self.jackpots = 0
         self.super_jackpots = 0
         self.mode_points = 0
@@ -90,6 +93,7 @@ class CrimeWave(Mode):
         self.add_mode_event_handler("crime_wave_phantom_hit", self._area_hit, area="phantom")
         self.add_mode_event_handler("crime_wave_enforcers_hit", self._area_hit, area="enforcers")
         self.add_mode_event_handler("crime_wave_saucer_hit", self._saucer_hit)
+        self.add_mode_event_handler("ball_drain", self._ball_drain)
         self.add_mode_event_handler("crime_wave_upper_exit_hit", self._upper_exit_hit)
         self.add_mode_event_handler("crime_wave_center_exit_hit", self._center_exit_hit)
         self.add_mode_event_handler("crime_wave_vuk_hit", self._vuk_hit)
@@ -110,11 +114,13 @@ class CrimeWave(Mode):
             self.machine.events.post(f"crime_wave_area_{area}_available")
         self._update_status()
         self.machine.events.post("crime_wave_start_multiball")
+        self._update_saucer_lights()
+        self._schedule_parking_guard()
 
     def mode_stop(self, **kwargs):
+        self.mode_done = True
         self.delay.clear()
-        for saucer in tuple(self.held_saucers):
-            self._release_saucer(saucer)
+        self._release_all_saucers()
         self.super_active = False
         self.roof_visit_active = False
         self.vuk_display_active = False
@@ -140,6 +146,7 @@ class CrimeWave(Mode):
         self.max_areas_lit = max(self.max_areas_lit, len(self.lit_areas))
         self._reset_area_timer(area)
         self.machine.events.post(f"crime_wave_area_{area}_active")
+        self._update_saucer_lights()
 
         if newly_lit:
             self.machine.events.post(
@@ -174,6 +181,7 @@ class CrimeWave(Mode):
         if self.mode_done or area not in self.lit_areas:
             return
         self.warning_areas.add(area)
+        self._update_saucer_lights()
         self.machine.events.post(f"crime_wave_area_{area}_warning")
 
     def _area_expired(self, area, **kwargs):
@@ -181,6 +189,7 @@ class CrimeWave(Mode):
             return
         self.lit_areas.remove(area)
         self.warning_areas.discard(area)
+        self._update_saucer_lights()
         self.machine.events.post(f"crime_wave_area_{area}_available")
         self.machine.events.post(
             "show_mode_message",
@@ -192,29 +201,84 @@ class CrimeWave(Mode):
         self._update_status()
 
     def _saucer_hit(self, saucer, **kwargs):
+        saucer = int(saucer)
+        if saucer in self.held_saucers or time.monotonic() < self.saucer_available_after.get(saucer, 0):
+            return
         if self.mode_done:
-            self.machine.events.post(self.SAUCER_EJECT_EVENTS[saucer])
+            self._release_saucer(saucer)
             return
         self._area_hit("doctor_cool")
-        self.held_saucers.add(saucer)
-        self.delay.remove(f"crime_wave_saucer_{saucer}")
-        self.delay.add(
-            name=f"crime_wave_saucer_{saucer}",
-            ms=self.SAUCER_HOLD_MS,
-            callback=self._release_saucer,
-            saucer=saucer,
-        )
-        self._refresh_vuk_display_if_active()
-        if self._balls_in_play() - len(self.held_saucers) <= 0:
+        if self._can_park_ball():
+            self.held_saucers.add(saucer)
+            self.parking_order.append(saucer)
+            self.delay.reset(
+                name=f"crime_wave_saucer_{saucer}",
+                ms=self.SAUCER_HOLD_MS,
+                callback=self._release_saucer,
+                saucer=saucer,
+            )
+        else:
             self._release_saucer(saucer)
+        self._refresh_vuk_display_if_active()
+        self._update_saucer_lights()
 
-    def _release_saucer(self, saucer, **kwargs):
+    def _release_saucer(self, saucer, delay_ms=0, **kwargs):
         self.delay.remove(f"crime_wave_saucer_{saucer}")
-        was_held = saucer in self.held_saucers
         self.held_saucers.discard(saucer)
-        if was_held:
-            self._refresh_vuk_display_if_active()
-        self.machine.events.post(self.SAUCER_EJECT_EVENTS[saucer])
+        if saucer in self.parking_order:
+            self.parking_order.remove(saucer)
+        self.saucer_available_after[saucer] = time.monotonic() + (delay_ms + 750) / 1000
+        self.machine.events.post("request_saucer_eject", saucer_number=saucer, delay_ms=delay_ms)
+        self._refresh_vuk_display_if_active()
+        self._update_saucer_lights()
+
+    def _release_all_saucers(self):
+        for index, saucer in enumerate(list(self.parking_order)):
+            self._release_saucer(saucer, delay_ms=index * 300)
+
+    def _can_park_ball(self):
+        return not self.mode_done and len(self.held_saucers) < 3 and self._balls_in_play() - len(self.held_saucers) >= 2
+
+    def _ball_drain(self, **kwargs):
+        if not self.mode_done:
+            # Run after the drain relay updates the game count and applies saves.
+            self.delay.reset(name="crime_wave_drain_parking_check", ms=1, callback=self._check_loose_balls)
+
+    def _check_loose_balls(self):
+        if self.mode_done:
+            return
+        if self.parking_order and self._balls_in_play() - len(self.held_saucers) <= 0:
+            self._release_saucer(self.parking_order[0])
+        self._update_saucer_lights()
+
+    def _schedule_parking_guard(self):
+        if not self.mode_done:
+            self.delay.reset(name="crime_wave_parking_guard", ms=250, callback=self._parking_guard)
+
+    def _parking_guard(self):
+        self._check_loose_balls()
+        self._schedule_parking_guard()
+
+    def _update_saucer_lights(self):
+        objective = "doctor_cool" not in self.lit_areas or "doctor_cool" in self.warning_areas
+        now = time.monotonic()
+        for saucer in (1, 2, 3):
+            if self.mode_done:
+                state = "off"
+            elif saucer in self.held_saucers:
+                state = "held"
+            elif now < self.saucer_available_after.get(saucer, 0):
+                state = "off"
+            elif objective:
+                state = "objective"
+            elif self._can_park_ball():
+                state = "available"
+            else:
+                state = "off"
+            if self.saucer_light_states.get(saucer) != state:
+                self.machine.events.post(f"crime_wave_saucer_{saucer}_parking_clear")
+                self.machine.events.post(f"crime_wave_saucer_{saucer}_parking_{state}")
+                self.saucer_light_states[saucer] = state
 
     def _vuk_hit(self, **kwargs):
         """Award the VUK value, show live roof rewards, then kick toward the roof."""
@@ -273,6 +337,9 @@ class CrimeWave(Mode):
 
     def _collect_roof_reward(self, exit_name):
         value = self._roof_value(exit_name)
+        matching_saucer = self.EXIT_SAUCER[exit_name]
+        if matching_saucer in self.held_saucers:
+            self._release_saucer(matching_saucer)
         self.roof_visit_active = False
         self.jackpots += 1
         self._score(value)
@@ -420,7 +487,6 @@ class CrimeWave(Mode):
         )
 
     def _balls_in_play(self):
-        player = self.machine.game.player if self.machine.game else None
-        if not player:
+        if not self.machine.game:
             return 0
-        return int(player["balls_in_play"] or 0)
+        return int(self.machine.game.balls_in_play or 0)

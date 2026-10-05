@@ -51,11 +51,17 @@ CYCLE 4 — STABILIZE / SUPER
 
 SAUCER PARKING
 - All three saucers can park balls during every stage whether or not they are lit.
-- Maximum hold = 20 seconds.
-- Only one loose/active ball is required on the playfield; all other balls may be parked.
-- If parking would leave zero loose balls, release one parked saucer immediately.
-- The mode continuously guards this condition so a drain while balls are parked cannot
-  leave the playfield with no playable ball.
+- Each saucer has a 20-second hold timer. Occupied-switch hits intentionally
+  remain active: they refresh that timer and may collect a newly qualified
+  saucer award. Original arrival order remains unchanged.
+- Up to three balls may be parked, provided at least one remains loose.
+- If parking would leave zero loose balls, release the oldest parked ball.
+- A check after each drain applies game-count/ball-save results. A 250ms
+  continuous guard also checks for oldest-ball recovery.
+- Mode end releases parked balls in arrival order, staggered by 300ms.
+- Available empty saucers slowly pulse red. Qualified empty saucers flash
+  white. Held saucers show solid 75% red (BF0000), overriding qualifications.
+  Unavailable ordinary empty spots are off.
 
 LIGHTING
 - Build Charge: lower spinner + rooftop upper-spinner GI cue pulse.
@@ -63,3 +69,9 @@ LIGHTING
 - Thaw City: six zones use cyan pulse / purple pulse / warm yellow solid.
 - Star pulses during Blotto stage.
 - Stable City: all six zones warm yellow and shared final VUK chase runs.
+
+2026-10-05 consistency update:
+- Stage 1 qualifications now persist through Snowman, Thaw and Stable stages.
+  Collecting any lit saucer clears all qualifications; the next cycle also
+  clears them. The 5-ball cap and 3,000,000 cap award are unchanged.
+- Python stub checks passed. MPF/GMC and machine verification remain pending.

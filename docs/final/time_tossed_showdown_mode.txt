@@ -58,10 +58,14 @@ Saucer parking
 - All three saucers may park balls in every phase.
 - Maximum hold is 15 seconds per saucer ball.
 - At least one ball must remain free on the playfield.
-- If a new hold would leave no free ball, eject the oldest parked saucer ball first.
+- If a new hold or drain would leave no free ball, release the oldest parked ball first. A check after the drain relay and a 250ms continuous guard maintain this rule.
+- A fresh saucer arrival collects any active Spider-Men/Vine objective before parking. An occupied saucer that goes inactive then active counts as a new hit and can collect its current objective. It does not add a second parked ball, change arrival order, or refresh the original hold timer.
+- Parking persists across phase changes with the original 15-second timers. A rotated/qualified objective on an occupied saucer can be collected by a new inactive-to-active hit.
+- Mode-end releases are oldest first at 300ms intervals, including direct stops. Brief eject clearance prevents recapture/duplicate awards from the departing ball.
 
 Lighting
+- Saucers use the common wizard states in all phases: slow red pulse when parking is available, solid 75% red (BF0000) when held, flashing white for an empty Spider-Men/Vine objective, otherwise off. Held overrides objectives. Other empty parking spots remain available while another ball can park and leave one loose.
 - Rooftop: shared rooftop chase while gate is open; upper targets/upper spinner use a yellow setup pulse for the first 12 flips.
-- Spider-Men: reuse the standalone red rotating-position language.
-- Master Vine: reuse the standalone green shot language.
+- Spider-Men: preserve rotating-position rules and red Star/A/B cues; saucer objectives use flashing white.
+- Master Vine: preserve green shot language elsewhere; saucer objectives use flashing white.
 - Master Technician: reuse the standalone cool-blue/white spinner/bank language; Star is the add-a-ball indicator.

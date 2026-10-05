@@ -1,0 +1,21 @@
+SINISTER SURGE PARKING PATCH — October 5, 2026
+Based on ASM67_2026_10_05_12am.zip.
+
+Merge this ZIP into the project, replacing matching files. It changes only
+Sinister Surge and its documentation/workbook entry. The earlier wizard
+intro/summary patch can remain installed; these files do not overlap it.
+
+Parking: up to 3 held with 1 loose, independent 20s timers; Goblin capture 10s.
+Entering Goblin releases existing parked balls, staggered 300ms apart.
+An ongoing free-ball watchdog releases the oldest held ball if necessary.
+A+B can add a ball from 2 or 3 balls in play; cap 4; Victory Laps unchanged.
+
+Lights: slow red pulse available, solid 75% red held, flashing white objective.
+Other empty spots stay lit while another ball can safely park. Occupied lamps
+always show held. No new player variables or assets required.
+
+Validation: Python stub tests cover parking capacity, independent timers,
+Goblin isolation/timeouts, oldest-ball recovery, staggered release, lighting
+state precedence, A+B limits, YAML parsing and left/right lamp consistency.
+Not yet verified on MPF/GMC or the physical machine. Machine testing should
+cover 4-ball parking, drain recovery, Goblin transition and lamp brightness.
