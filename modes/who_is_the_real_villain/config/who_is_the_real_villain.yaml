@@ -192,8 +192,6 @@ show_player:
   who_is_the_real_villain_cameo_rubbers_right_flash:
     real_villain_rubber_right_flash: {loops: -1, priority: 120}
 
-  who_is_the_real_villain_saucers_off:
-
   who_is_the_real_villain_desperado_start:
     real_villain_desperado_gi_pulse: {loops: -1}
     real_villain_upper_spinner_pulse: {loops: -1}

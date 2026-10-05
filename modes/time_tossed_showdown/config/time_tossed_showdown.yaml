@@ -124,7 +124,6 @@ show_player:
     time_tossed_roof_targets_pulse: {action: stop}
 
   # Spider-Men uses the same red pulsing visual language as standalone.
-  time_tossed_showdown_spider_saucer_2_lit:
   time_tossed_showdown_spider_star_lit:
     time_tossed_spider_star_pulse: {loops: -1, priority: 840}
   time_tossed_showdown_spider_upper_a_lit:

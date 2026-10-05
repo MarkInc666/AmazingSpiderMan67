@@ -656,6 +656,12 @@ class TheWebTightens(Mode):
             return 0
         return int(self.machine.game.balls_in_play or 0)
 
+    def _add_ball_if_below_cap(self):
+        # MPF's total includes balls held in the VUK/saucers and balls being served.
+        if self.mode_done or self._balls_in_play() >= 5:
+            return
+        self.machine.events.post("the_web_tightens_add_a_ball")
+
     def _playable_loose_balls(self):
         held = len(self.held_saucers)
         vuk = 1 if self.vuk_locked else 0
@@ -1060,7 +1066,7 @@ class TheWebTightens(Mode):
         self.metal_saved.clear()
         self.metal_destroyed.clear()
         self.metal_attacked.clear()
-        self.machine.events.post("the_web_tightens_add_a_ball")
+        self._add_ball_if_below_cap()
         self.machine.events.post("the_web_tightens_metal_all_safe")
         self.machine.events.post(
             "show_mode_message_long",
@@ -1346,7 +1352,7 @@ class TheWebTightens(Mode):
     def _start_harley(self):
         self.harley_completed.clear()
         self.harley_star_ready = False
-        self.machine.events.post("the_web_tightens_add_a_ball")
+        self._add_ball_if_below_cap()
         self.machine.events.post("the_web_tightens_harley_zones_reset")
         self.machine.events.post(
             "show_mode_message_long",
