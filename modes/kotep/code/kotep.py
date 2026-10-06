@@ -53,7 +53,7 @@ class Kotep(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
-        self.reset_active_mode_summary(stat_count=3)
+        self.reset_active_mode_summary(stat_count=2)
         self.delay = DelayManager(self.machine)
         self.mode_done = False
         self.completion_pending = False

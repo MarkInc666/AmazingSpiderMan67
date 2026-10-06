@@ -81,6 +81,7 @@ class InvasionFromEverywhere(Mode):
 
         self.atlantean_visit = 0
         self.atlantean_hits = 0
+        self.total_rooftop_hits = 0
         self.atlantean_goal = 1
         self.atlantean_jackpot = 0
 
@@ -91,6 +92,7 @@ class InvasionFromEverywhere(Mode):
         player["active_mode_points"] = 0
         player["active_mode_hits"] = 0
         player["active_mode_major_hits"] = 0
+        player["active_mode_stat_1"] = 0
         player["invasion_from_everywhere_vuk_hold_active"] = 0
 
         self._register_handlers()
@@ -557,6 +559,8 @@ class InvasionFromEverywhere(Mode):
         if self.mode_done or self.phase != "atlantean":
             return
         self.atlantean_hits += 1
+        self.total_rooftop_hits += 1
+        self.machine.game.player["active_mode_stat_1"] = self.total_rooftop_hits
         self._score(self.ATLANTEAN_TARGET_SCORE)
         if self.atlantean_hits < self.atlantean_goal:
             self._show_message(

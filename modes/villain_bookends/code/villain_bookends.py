@@ -39,153 +39,118 @@ class VillainBookends(Mode):
     }
 
     VILLAINS = {
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Build Rage with pop bumper hits.
-        #   intro_2: Cash Berserk jackpots at the B rollover.
-        #   intro_3: Bigger rage means bigger jackpots.
-        #   stat_1_label: BEST JACKPOT
         'rhino': {
             'title': 'RHINO BASH',
-            'intro_1': 'POPS BUILD RAGE VALUE',
-            'intro_2': 'SWITCHES ADD TO JACKPOT',
+            'intro_1': 'HIT THE POPS TO BUILD RAGE',
+            'intro_2': 'OTHER SHOTS BUILD THE JACKPOT',
             'intro_3': 'COLLECT AT A OR B BEFORE OVERLOAD',
-            'summary_title_complete': 'RHINO BASH DEFEATED',
-            'summary_title_failed': 'RHINO BASH ESCAPED',
-            'stat_1_label': 'Biggest Jackpot',
+            'summary_title_complete': 'RHINO BASH COMPLETED',
+            'summary_title_failed': 'RHINO BASH ENDED',
+            'stat_1_label': 'BIGGEST JACKPOT',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'BEST RAGE',
+            'stat_2_label': 'HIGHEST RAGE',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'rhino_state',
             'song': 'play_song_22',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Shoot the flashing drop target.
-        #   intro_2: Hit drops in sequence for bigger value.
-        #   intro_3: Complete the run before Sandman reforms.
         'sandman': {
             'title': 'SHIFTING SANDS',
-            'intro_1': 'HIT THE FLASHING DROP',
-            'intro_2': 'CONSECUTIVE HITS SCORE BIGGER',
-            'intro_3': 'CLEAR THREE BANKS TO DEFEAT SANDMAN',
-            'summary_title_complete': 'SHIFTING SANDS DEFEATED',
-            'summary_title_failed': 'SHIFTING SANDS ESCAPED',
-            'stat_1_label': 'DROPS HIT',
+            'intro_1': 'HIT THE FLASHING DROP TARGET',
+            'intro_2': 'CONSECUTIVE HITS INCREASE THE AWARD',
+            'intro_3': 'COMPLETE THE RIGHT DROP BANK',
+            'summary_title_complete': 'SHIFTING SANDS COMPLETED',
+            'summary_title_failed': 'SHIFTING SANDS ENDED',
+            'stat_1_label': 'DROP TARGETS HIT',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'BEST RUN',
+            'stat_2_label': 'BEST STREAK',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'sandman_state',
             'song': 'play_song_80',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Get to the rooftop.
-        #   intro_2: Hit upper targets to raise spinner value.
-        #   intro_3: Spin fast before the targets decay.
-        #   stat_2_label: BONUS BANKED
         'vulture': {
             'title': 'VULTURE SKY ATTACK',
             'intro_1': 'REACH THE ROOFTOP',
-            'intro_2': 'UPPER TARGETS BUILD SPINNER VALUE',
+            'intro_2': 'HIT UPPER TARGETS TO BUILD SPINNER VALUE',
             'intro_3': 'SPIN BEFORE THE TARGETS DIM',
-            'summary_title_complete': 'VULTURE SKY ATTACK DEFEATED',
-            'summary_title_failed': 'VULTURE SKY ATTACK ESCAPED',
+            'summary_title_complete': 'VULTURE SKY ATTACK COMPLETED',
+            'summary_title_failed': 'VULTURE SKY ATTACK ENDED',
             'stat_1_label': 'SPINS',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'BANKED',
+            'stat_2_label': 'BONUS BANKED',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'vulture_state',
             'song': 'play_song_10',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Create the antidote at the star rollover.
-        #   intro_2: Deliver it to the lit web targets.
-        #   intro_3: Move fast before the serum value drains.
         'lizard': {
             'title': 'ANTIDOTE HURRY UP',
-            'intro_1': 'HIT BOTH POPS TO BUILD THE SERUM',
-            'intro_2': 'DELIVER AT LEFT WEB BEFORE VALUE DECAYS',
-            'intro_3': 'STAR ARMS 10X DURING DELIVERY',
-            'summary_title_complete': 'ANTIDOTE HURRY UP CURED',
-            'summary_title_failed': 'ANTIDOTE HURRY UP ESCAPED',
+            'intro_1': 'HIT BOTH POPS TO BUILD THE ANTIDOTE',
+            'intro_2': 'DELIVER AT THE LEFT WEB BEFORE THE VALUE DROPS',
+            'intro_3': 'HIT STAR FOR 10X SCORING',
+            'summary_title_complete': 'ANTIDOTE HURRY UP COMPLETED',
+            'summary_title_failed': 'ANTIDOTE HURRY UP ENDED',
             'stat_1_label': 'DELIVERIES',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'BEST VALUE',
+            'stat_2_label': 'BEST DELIVERY',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'lizard_state',
             'song': 'play_song_89',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Follow the moving spark.
-        #   intro_2: Hit each charged shot before time runs out.
-        #   intro_3: The final spark awards Super Jackpot.
         'electro': {
             'title': 'ELECTRO POWER SURGE',
             'intro_1': 'FOLLOW THE MOVING SPARK',
-            'intro_2': 'HIT EACH LIT SHOT BEFORE IT MOVES',
-            'intro_3': 'FINAL SPARK IS THE SUPER JACKPOT',
-            'summary_title_complete': 'ELECTRO POWER SURGE DEFEATED',
-            'summary_title_failed': 'ELECTRO POWER SURGE ESCAPED',
+            'intro_2': 'HIT THE LIT SHOT BEFORE THE SPARK MOVES',
+            'intro_3': 'COLLECT THE FINAL SPARK FOR A SUPER JACKPOT',
+            'summary_title_complete': 'ELECTRO POWER SURGE COMPLETED',
+            'summary_title_failed': 'ELECTRO POWER SURGE ENDED',
             'stat_1_label': 'BEST SPARK',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'SUPER JP',
+            'stat_2_label': 'SUPER JACKPOT',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'electro_state',
             'song': 'play_song_23',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Goblin attacks in chaos multiball.
-        #   intro_2: Flashing shots build value. Solid shots cash in.
-        #   intro_3: Saucers can rest the battle and bank bonus.
-        #   stat_2_label: BONUS BANKED
         'goblin': {
             'title': 'GOBLIN CHAOS',
-            'intro_1': 'CHAOS MULTIBALL',
-            'intro_2': 'SAUCERS BANK CHAOS AND START SAFE PLAY',
-            'intro_3': 'FLASHING BUILDS — SOLID REDUCES',
-            'summary_title_complete': 'GOBLIN CHAOS DEFEATED',
-            'summary_title_failed': 'GOBLIN CHAOS ESCAPED',
+            'intro_1': 'TWO-BALL CHAOS MULTIBALL',
+            'intro_2': 'SHOOT SAUCERS TO BANK CHAOS AND START SAFE PLAY',
+            'intro_3': 'FLASHING SHOTS BUILD CHAOS — SOLID SHOTS REDUCE IT',
+            'summary_title_complete': 'GOBLIN CHAOS COMPLETED',
+            'summary_title_failed': 'GOBLIN CHAOS ENDED',
             'stat_1_label': 'ATTACK TOTAL',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'CHAOS SCORED',
+            'stat_2_label': 'CHAOS BANKED',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'goblin_state',
             'song': 'play_song_7',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Lock tentacle arms with rollovers.
-        #   intro_2: Shoot web targets for jackpots.
-        #   intro_3: Spinner increases the multiplier.
         'doc_ock': {
             'title': 'DOC OCK LOCKDOWN',
-            'intro_1': 'LANES AND LEFT BANK LOCK ARMS',
-            'intro_2': 'WEB SHOTS SCORE JACKPOTS',
-            'intro_3': 'SPINNERS BOOST THE MULTIPLIER',
-            'summary_title_complete': 'DOC OCK LOCKDOWN DEFEATED',
-            'summary_title_failed': 'DOC OCK LOCKDOWN ESCAPED',
-            'stat_1_label': 'ARMS LOCKED',
+            'intro_1': 'IN/OUTLANES OR LEFT BANK TO LOCK ARMS',
+            'intro_2': 'SHOOT WEB TARGETS TO COLLECT JACKPOTS',
+            'intro_3': 'SPIN THE SPINNERS TO BOOST THE MULTIPLIER',
+            'summary_title_complete': 'DOC OCK LOCKDOWN COMPLETED',
+            'summary_title_failed': 'DOC OCK LOCKDOWN ENDED',
+            'stat_1_label': 'MOST ARMS LOCKED',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'JACKPOTS',
+            'stat_2_label': 'JACKPOTS COLLECTED',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'doc_ock_state',
             'song': 'play_song_18',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Find the real Mysterio.
-        #   intro_2: Wrong shots lower the jackpot value.
-        #   intro_3: Use clues to find the Super shot.
         'mysterio': {
             'title': 'MYSTERIO ILLUSION',
             'intro_1': 'FIND THE REAL MYSTERIO',
-            'intro_2': 'CLUES POINT LEFT, RIGHT OR UPPER',
-            'intro_3': 'WRONG GUESSES REDUCE THE SUPER',
-            'summary_title_complete': 'MYSTERIO ILLUSION DEFEATED',
-            'summary_title_failed': 'MYSTERIO ILLUSION ESCAPED',
+            'intro_2': 'USE CLUES TO SEARCH LEFT, RIGHT OR UPPER',
+            'intro_3': 'WRONG GUESSES REDUCE THE SUPER JACKPOT',
+            'summary_title_complete': 'MYSTERIO REVEALED',
+            'summary_title_failed': 'MYSTERIO ILLUSION ENDED',
             'stat_1_label': 'CLUES USED',
             'stat_1_var': 'active_mode_stat_1',
             'stat_2_label': 'SUPER JACKPOT',
@@ -194,95 +159,74 @@ class VillainBookends(Mode):
             'state_var': 'mysterio_state',
             'song': 'play_song_63',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Build Venom with the upper spinner.
-        #   intro_2: Choose your exit to stage the attack.
-        #   intro_3: Hit the staged drop before time runs out.
         'scorpion': {
             'title': "SCORPION'S STING",
-            'intro_1': 'ROOFTOP SPINS BUILD STINGER JACKPOT',
-            'intro_2': 'ROOF EXITS STAGE DROPS OR POPS',
-            'intro_3': 'HIT THE STAGED SHOT FOR THE STING',
-            'summary_title_complete': "SCORPION'S STING DEFEATED",
-            'summary_title_failed': "SCORPION'S STING ESCAPED",
-            'stat_1_label': 'STINGS',
+            'intro_1': 'ROOFTOP SPINS BUILD THE STINGER JACKPOT',
+            'intro_2': 'ROOF EXITS LIGHT DROP TARGETS OR POPS',
+            'intro_3': 'HIT THE LIT SHOT TO COLLECT THE STING',
+            'summary_title_complete': "SCORPION'S STING COMPLETED",
+            'summary_title_failed': "SCORPION'S STING ENDED",
+            'stat_1_label': 'STINGS COLLECTED',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'BIGGEST JP',
+            'stat_2_label': 'BIGGEST JACKPOT',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'scorpion_state',
             'song': 'play_song_72',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Parafino's wax traps the city.
-        #   intro_2: Build zone jackpots with drops and pops.
-        #   intro_3: Cash saucers. Three hits lights add-a-ball.
         'parafino': {
             'title': "PARAFINO'S WAX INFERNO",
-            'intro_1': 'HIT DROPS AND POPS TO HEAT ZONES',
-            'intro_2': 'SAUCERS COLLECT ZONE JACKPOTS',
-            'intro_3': 'THREE ZONE HITS LIGHT ADD-A-BALL',
-            'summary_title_complete': "PARAFINO'S WAX INFERNO DEFEATED",
-            'summary_title_failed': "PARAFINO'S WAX INFERNO ESCAPED",
+            'intro_1': 'HIT DROPS AND POPS TO HEAT THE ZONES',
+            'intro_2': 'SHOOT SAUCERS TO COLLECT ZONE JACKPOTS',
+            'intro_3': 'THREE HITS IN A ZONE LIGHTS ADD-A-BALL',
+            'summary_title_complete': "PARAFINO'S WAX INFERNO COMPLETED",
+            'summary_title_failed': "PARAFINO'S WAX INFERNO ENDED",
             'stat_1_label': 'ZONE HITS',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'JACKPOTS',
+            'stat_2_label': 'JACKPOTS COLLECTED',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'parafino_state',
             'song': 'play_song_19',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Hit upper targets to wake the three heads.
-        #   intro_2: Lit saucers collect jackpots.
-        #   intro_3: The matching saucer scores double.
         'cerberus': {
             'title': 'CERBERUS TRIPLE THREAT',
-            'intro_1': 'DROPS LIGHT MATCHING SAUCERS',
-            'intro_2': 'UPPER TARGETS LIGHT THEM AT 2X',
-            'intro_3': 'COLLECT THREE JACKPOTS TO DEFEAT',
-            'summary_title_complete': 'CERBERUS TRIPLE THREAT DEFEATED',
-            'summary_title_failed': 'CERBERUS TRIPLE THREAT ESCAPED',
-            'stat_1_label': 'TARGETS',
+            'intro_1': 'LEFT DROPS LIGHT MATCHING SAUCER JACKPOTS',
+            'intro_2': 'UPPER TARGETS LIGHT MATCHING JACKPOTS AT 2X',
+            'intro_3': 'SPIN THE UPPER SPINNER TO BUILD JACKPOT VALUE',
+            'summary_title_complete': 'CERBERUS TRIPLE THREAT COMPLETED',
+            'summary_title_failed': 'CERBERUS TRIPLE THREAT ENDED',
+            'stat_1_label': 'TARGETS HIT',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'JACKPOTS',
+            'stat_2_label': 'JACKPOTS COLLECTED',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'cerberus_state',
             'song': 'play_song_29',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Multiball erupts across the playfield.
-        #   intro_2: Spinners build the Vulcan Jackpot.
-        #   intro_3: Right drops collect. Upper targets add balls.
-        #   stat_2_label: BONUS BANKED
         'vulcan': {
             'title': "VULCAN'S FURY",
-            'intro_1': 'ERUPTION MULTIBALL',
-            'intro_2': 'UPPER TARGETS BUILD DROP VALUE',
-            'intro_3': 'TARGET ADDS BALLS AFTER DROP BANK',
-            'summary_title_complete': "VULCAN'S FURY DEFEATED",
-            'summary_title_failed': "VULCAN'S FURY ESCAPED",
-            'stat_1_label': 'JACKPOTS',
+            'intro_1': 'TWO-BALL ERUPTION MULTIBALL',
+            'intro_2': 'UPPER TARGETS BUILD DROP TARGET JACKPOTS',
+            'intro_3': 'RIGHT BANK, THEN UPPER TARGETS TO ADD A BALL',
+            'summary_title_complete': "VULCAN'S FURY COMPLETED",
+            'summary_title_failed': "VULCAN'S FURY ENDED",
+            'stat_1_label': 'JACKPOTS COLLECTED',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'BANKED',
+            'stat_2_label': 'BONUS BANKED',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'vulcan_state',
             'song': 'play_song_64',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Diana takes aim with Trubble's arrows.
-        #   intro_2: Use the post-release timed shot.
-        #   intro_3: Hit the arrow target before time runs out.
         'diana': {
             'title': "DIANA'S ROOFTOP HUNT",
-            'intro_1': 'FLIPPERS USE ARROWS',
-            'intro_2': 'UPPER SPINNER ADDS ARROWS',
-            'intro_3': 'EITHER EXIT STARTS THE DROP HUNT',
-            'summary_title_complete': "DIANA'S ROOFTOP HUNT DEFEATED",
-            'summary_title_failed': "DIANA'S ROOFTOP HUNT ESCAPED",
-            'stat_1_label': 'HITS',
+            'intro_1': 'FLIPPER PRESSES USE ARROWS',
+            'intro_2': 'SPIN THE UPPER SPINNER TO ADD ARROWS',
+            'intro_3': 'EITHER ROOF EXIT STARTS THE DROP TARGET HUNT',
+            'summary_title_complete': "DIANA'S ROOFTOP HUNT COMPLETED",
+            'summary_title_failed': "DIANA'S ROOFTOP HUNT ENDED",
+            'stat_1_label': 'TOTAL HITS',
             'stat_1_var': 'active_mode_stat_1',
             'stat_2_label': 'BULLSEYES',
             'stat_2_var': 'active_mode_stat_2',
@@ -290,224 +234,226 @@ class VillainBookends(Mode):
             'state_var': 'diana_state',
             'song': 'play_song_30',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: The center web target is the Cyclops Eye.
-        #   intro_2: You have limited flips. Drops add flips.
-        #   intro_3: Hit the Eye for remaining flips x 100K.
         'cyclops': {
             'title': 'EYE OF THE CYCLOPS',
-            'intro_1': 'FLIPPERS USE LIMITED FLIPS',
-            'intro_2': 'DROPS ADD 3 — RUBBERS ADD 1',
-            'intro_3': 'CENTER WEB SCORES 100,000 PER FLIP LEFT',
-            'summary_title_complete': 'EYE OF THE CYCLOPS DEFEATED',
-            'summary_title_failed': 'EYE OF THE CYCLOPS ESCAPED',
-            'stat_1_label': 'BEST JP',
+            'intro_1': 'LIMITED FLIPS',
+            'intro_2': 'DROPS ADD FLIPS',
+            'intro_3': 'CENTER WEB FOR 100K PER REMAINING FLIP',
+            'summary_title_complete': 'EYE OF THE CYCLOPS COMPLETED',
+            'summary_title_failed': 'EYE OF THE CYCLOPS ENDED',
+            'stat_1_label': 'FLIPS JACKPOT',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'FLIPS LEFT',
+            'stat_2_label': '',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'cyclops_state',
             'song': 'play_song_55',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Drop targets build the Centaur Jackpot.
-        #   intro_2: Four drops open the gate to the roof.
-        #   intro_3: Exit left and hit the staged rubber shot.
-        #   stat_1_label: DROPS DOWN
         'centaur': {
             'title': 'CHARGE OF THE CENTAUR',
-            'intro_1': 'DROPS BUILD CENTAUR JACKPOT',
+            'intro_1': 'DROPS BUILD THE CENTAUR JACKPOT',
             'intro_2': 'FOUR DROPS OPEN THE ROOFTOP',
-            'intro_3': 'EXIT LEFT THEN HIT THE RIGHT RUBBER',
-            'summary_title_complete': 'CHARGE OF THE CENTAUR TRAPPED',
-            'summary_title_failed': 'CHARGE OF THE CENTAUR ESCAPED',
-            'stat_1_label': 'DROPS DOWN',
+            'intro_3': 'EXIT LEFT, THEN HIT THE RIGHT RUBBER',
+            'summary_title_complete': 'CHARGE OF THE CENTAUR COMPLETED',
+            'summary_title_failed': 'CHARGE OF THE CENTAUR ENDED',
+            'stat_1_label': 'DROP TARGETS DOWN',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'BEST JP',
+            'stat_2_label': 'BIGGEST JACKPOT',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'centaur_state',
             'song': 'play_song_31',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Skymaster Brothers are framing Spider-Man.
-        #   intro_2: Hit paired wall-crawler shots before they move.
-        #   intro_3: Clear both flies to stop the frame-up.
-        #   stat_2_label: MAJOR HITS
         'fly_twins': {
             'title': 'DOUBLE TROUBLE',
-            'intro_1': 'ROOFTOP MULTIBALL',
+            'intro_1': 'TWO-BALL ROOFTOP MULTIBALL',
             'intro_2': 'UPPER TARGETS LIGHT SAUCER JACKPOTS',
-            'intro_3': 'SPINNER BUILDS — CATCH BOTH FOR SUPER',
-            'summary_title_complete': 'DOUBLE TROUBLE CAUGHT',
-            'summary_title_failed': 'DOUBLE TROUBLE ESCAPED',
-            'stat_1_label': 'ROUNDS',
+            'intro_3': 'UPPER SPINNER BUILDS VALUE — CATCH BOTH TWINS FOR SUPER',
+            'summary_title_complete': 'DOUBLE TROUBLE COMPLETED',
+            'summary_title_failed': 'DOUBLE TROUBLE ENDED',
+            'stat_1_label': 'SUPER JACKPOTS',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'JACKPOTS',
+            'stat_2_label': 'JACKPOTS COLLECTED',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'fly_twins_state',
             'song': 'play_song_32',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   title: FIFTH AVENUE PHANTOM
-        #   intro_1: Drop the right bank to reveal the Phantom.
-        #   intro_2: Catch him while the hidden shot is lit.
-        #   intro_3: Early catches score bigger jackpots.
-        #   summary_title_complete: PHANTOM CAPTURED
         'fifth_avenue_phantom': {
             'title': 'FIND THE PHANTOM',
-            'intro_1': 'RIGHT DROPS REVEAL PHANTOM LOCATION',
-            'intro_2': 'HIT IT BEFORE TIME RUNS OUT',
-            'intro_3': 'MORE DROPS ADD TIME BUT REDUCE VALUE',
-            'summary_title_complete': 'FIND THE PHANTOM CAUGHT',
-            'summary_title_failed': 'FIND THE PHANTOM VANISHED',
-            'stat_1_label': 'JACKPOTS',
+            'intro_1': 'RIGHT DROPS REVEAL THE PHANTOM',
+            'intro_2': 'HIT THE REVEALED SHOT BEFORE TIME RUNS OUT',
+            'intro_3': 'MORE DROPS ADD TIME BUT REDUCE JACKPOT VALUE',
+            'summary_title_complete': 'FIND THE PHANTOM COMPLETED',
+            'summary_title_failed': 'FIND THE PHANTOM ENDED',
+            'stat_1_label': 'JACKPOTS COLLECTED',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'BEST JP',
+            'stat_2_label': 'BIGGEST JACKPOT',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'fifth_avenue_phantom_state',
             'song': 'play_song_60',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Work the crime zones: drops, pops, and right bank.
-        #   intro_2: Zone hits light upper-target jackpots.
-        #   intro_3: Collect all three, then hit OX at center web.
-        #   summary_title_complete: THE GANG IS BROKEN
         'enforcers': {
             'title': 'THE ENFORCERS',
             'intro_1': 'DROPS AND POPS LIGHT UPPER JACKPOTS',
-            'intro_2': 'COLLECT ALL THREE THEN HIT CENTER WEB',
-            'intro_3': 'UPPER SPINNER BUILDS THE OX SUPER',
-            'summary_title_complete': 'THE ENFORCERS: GANG BROKEN',
-            'summary_title_failed': 'THE ENFORCERS: OX GOT AWAY',
-            'stat_1_label': 'UPPER JPS',
+            'intro_2': 'COLLECT AND SPIN TO BUILD UP OX',
+            'intro_3': 'SUPER OX AT CENTER WEB',
+            'summary_title_complete': 'THE ENFORCERS COMPLETED',
+            'summary_title_failed': 'THE ENFORCERS ENDED',
+            'stat_1_label': 'UPPER JACKPOTS COLLECTED',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'OX SUPER',
+            'stat_2_label': 'OX SUPER VALUE',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'enforcers_state',
             'song': 'play_song_39',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Hit drops to build the Diamond Jackpot.
-        #   intro_2: Complete the 5-bank to start saucer chase.
-        #   intro_3: Star rollover lights all saucers briefly.
-        #   stat_2_label: BONUS BANKED
         'doctor_cool': {
             'title': 'DIAMOND HEIST',
-            'intro_1': 'DROP TARGETS BUILD DIAMOND JACKPOT',
-            'intro_2': 'COMPLETE DROPS TO ADD DIAMONDS',
-            'intro_3': 'STAR FREEZES LIT SAUCERS FOR COLLECT',
-            'summary_title_complete': 'DIAMOND HEIST DEFEATED',
-            'summary_title_failed': 'DIAMOND HEIST: DIAMONDS SMUGGLED AWAY',
-            'stat_1_label': 'SHIPMENTS',
+            'intro_1': 'DROPS BUILD THE DIAMOND JACKPOT',
+            'intro_2': 'COMPLETE RIGHT BANK TO EXPAND LIT SAUCERS',
+            'intro_3': 'STAR FREEZES THE CHASE — COLLECT AT A LIT SAUCER',
+            'summary_title_complete': 'DIAMOND HEIST COMPLETED',
+            'summary_title_failed': 'DIAMOND HEIST ENDED',
+            'stat_1_label': 'JACKPOTS COLLECTED',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'DIAMONDS',
+            'stat_2_label': 'DIAMOND BONUS BANKED',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'doctor_cool_state',
             'song': 'play_song_56',
         },
         'harley_clivendon': {
-            'title': "CLIVENDON'S ROOFTOP RAMPAGE", 'intro_1': 'LOCK A BALL DURING MULTIBALL', 'intro_2': 'LIGHT AREAS TO BUILD JACKPOT', 'intro_3': 'COLLECT JACKPOT AT DAILY BUGLE',
-            'summary_title_complete': "CLIVENDON'S ROOFTOP RAMPAGE MODE COMPLETE", 'summary_title_failed': "CLIVENDON'S ROOFTOP RAMPAGE MODE COMPLETE",
-            'stat_1_label': 'VUK JACKPOTS', 'stat_1_var': 'active_mode_stat_1', 'stat_2_label': 'BONUS BANKED', 'stat_2_var': 'active_mode_stat_2',
-            'points_var': 'active_mode_points', 'state_var': 'harley_clivendon_state', 'song': 'play_song_51',
+            'title': "CLIVENDON'S ROOFTOP RAMPAGE",
+            'intro_1': 'LOCK A BALL IN A SAUCER DURING MULTIBALL',
+            'intro_2': 'LIGHT FOUR OR MORE AREAS TO BUILD THE JACKPOT',
+            'intro_3': 'COLLECT AT THE DAILY BUGLE VUK',
+            'summary_title_complete': "CLIVENDON'S ROOFTOP RAMPAGE COMPLETED",
+            'summary_title_failed': "CLIVENDON'S ROOFTOP RAMPAGE ENDED",
+            'stat_1_label': 'VUK JACKPOTS COLLECTED',
+            'stat_1_var': 'active_mode_stat_1',
+            'stat_2_label': 'BONUS BANKED',
+            'stat_2_var': 'active_mode_stat_2',
+            'points_var': 'active_mode_points',
+            'state_var': 'harley_clivendon_state',
+            'song': 'play_song_51',
         },
         'conquistador': {
-            'title': "CONQUISTADOR'S CONQUEST", 'intro_1': 'HIT ANY LEFT DROP TO OPEN ROOFTOP', 'intro_2': 'SPIN TO LOCATE, TARGETS BUILD', 'intro_3': 'FOUNTAIN JACKPOT AT CENTER WEB',
-            'summary_title_complete': "CONQUISTADOR'S CONQUEST COMPLETE", 'summary_title_failed': "CONQUISTADOR'S CONQUEST COMPLETE",
-            'stat_1_label': 'FOUNTAIN JACKPOTS', 'stat_1_var': 'active_mode_stat_1', 'stat_2_label': 'SPEED BONUS', 'stat_2_var': 'active_mode_stat_2',
-            'points_var': 'active_mode_points', 'state_var': 'conquistador_state', 'song': 'play_song_54',
+            'title': "CONQUISTADOR'S CONQUEST",
+            'intro_1': 'HIT ANY LEFT DROP TO OPEN THE ROOFTOP',
+            'intro_2': 'SPIN TO FIND THE FOUNTAIN — UPPER TARGETS BUILD VALUE',
+            'intro_3': 'COLLECT THE FOUNTAIN JACKPOT AT CENTER WEB',
+            'summary_title_complete': "CONQUISTADOR'S CONQUEST COMPLETED",
+            'summary_title_failed': "CONQUISTADOR'S CONQUEST ENDED",
+            'stat_1_label': 'FOUNTAIN JACKPOT POINTS',
+            'stat_1_var': 'active_mode_stat_1',
+            'stat_2_label': 'SPEED BONUS',
+            'stat_2_var': 'active_mode_stat_2',
+            'points_var': 'active_mode_points',
+            'state_var': 'conquistador_state',
+            'song': 'play_song_54',
         },
         'spider_slayer': {
-            'title': 'SPIDER-SLAYER', 'intro_1': 'HIT 15 LIT SHOTS TO EXPOSE IT', 'intro_2': 'COLLECT JACKPOT AT DAILY BUGLE', 'intro_3': 'BEFORE TIME EXPIRES',
-            'summary_title_complete': 'SPIDER-SLAYER MODE COMPLETE', 'summary_title_failed': 'SPIDER-SLAYER MODE COMPLETE',
-            'stat_1_label': 'SLAYER JACKPOT', 'stat_1_var': 'active_mode_stat_1', 'stat_2_label': 'HUNT TIME', 'stat_2_var': 'active_mode_stat_2',
-            'points_var': 'active_mode_points', 'state_var': 'spider_slayer_state', 'song': 'play_song_84',
+            'title': 'SPIDER-SLAYER',
+            'intro_1': 'HIT 15 LIT SHOTS TO EXPOSE THE SLAYER',
+            'intro_2': 'COLLECT THE JACKPOT AT THE DAILY BUGLE VUK',
+            'intro_3': 'COLLECT QUICKLY — JACKPOT VALUE DROPS',
+            'summary_title_complete': 'SPIDER-SLAYER COMPLETED',
+            'summary_title_failed': 'SPIDER-SLAYER ENDED',
+            'stat_1_label': 'SLAYER JACKPOT',
+            'stat_1_var': 'active_mode_stat_1',
+            'stat_2_label': 'HUNT TIME',
+            'stat_2_var': 'active_mode_stat_2',
+            'points_var': 'active_mode_points',
+            'state_var': 'spider_slayer_state',
+            'song': 'play_song_84',
         },
         'metal_eating_robot': {
-            'title': 'METAL-EATING ROBOT', 'intro_1': 'ZONE ATTACKS EVERY 5 SECONDS', 'intro_2': 'HIT FLASHING ZONES TO SAVE THEM', 'intro_3': 'SAVE 4 BEFORE 3 ARE DESTROYED',
-            'summary_title_complete': 'METAL-EATING ROBOT MODE COMPLETE', 'summary_title_failed': 'METAL-EATING ROBOT MODE COMPLETE',
-            'stat_1_label': 'ZONES SAVED', 'stat_1_var': 'active_mode_stat_1', 'stat_2_label': 'ZONES DESTROYED', 'stat_2_var': 'active_mode_stat_2',
-            'points_var': 'active_mode_points', 'state_var': 'metal_eating_robot_state', 'song': 'play_song_88',
+            'title': 'METAL-EATING ROBOT',
+            'intro_1': 'THE ROBOT ATTACKS PLAYFIELD ZONES',
+            'intro_2': 'HIT FLASHING ZONES TO SAVE THEM',
+            'intro_3': 'SAVE FOUR AND CLEAR ALL ACTIVE ATTACKS',
+            'summary_title_complete': 'METAL-EATING ROBOT COMPLETED',
+            'summary_title_failed': 'METAL-EATING ROBOT ENDED',
+            'stat_1_label': 'ZONES SAVED',
+            'stat_1_var': 'active_mode_stat_1',
+            'stat_2_label': 'ZONES DESTROYED',
+            'stat_2_var': 'active_mode_stat_2',
+            'points_var': 'active_mode_points',
+            'state_var': 'metal_eating_robot_state',
+            'song': 'play_song_88',
         },
         'fiddler': {
-            'title': 'FIDDLER SAYS', 'intro_1': 'SHOOT A SAUCER TO WATCH THE PATTERN', 'intro_2': 'REPEAT THE NOTES IN ORDER', 'intro_3': '3 WRONG PATTERNS ENDS THE MODE',
-            'summary_title_complete': 'FIDDLER SAYS MODE COMPLETE', 'summary_title_failed': 'FIDDLER SAYS MODE COMPLETE',
-            'stat_1_label': 'PATTERNS', 'stat_1_var': 'active_mode_stat_1', 'stat_2_label': 'NOTES HIT', 'stat_2_var': 'active_mode_stat_2',
-            'points_var': 'active_mode_points', 'state_var': 'fiddler_state', 'completion_var': 'active_mode_completed', 'song': 'play_song_25',
+            'title': 'FIDDLER SAYS',
+            'intro_1': 'SHOOT A SAUCER TO WATCH THE PATTERN',
+            'intro_2': 'REPEAT THE NOTES IN ORDER',
+            'intro_3': 'THREE FAILED PATTERNS END THE MODE',
+            'summary_title_complete': 'FIDDLER SAYS COMPLETED',
+            'summary_title_failed': 'FIDDLER SAYS ENDED',
+            'stat_1_label': 'PATTERNS COMPLETED',
+            'stat_1_var': 'active_mode_stat_1',
+            'stat_2_label': 'CORRECT NOTES HIT',
+            'stat_2_var': 'active_mode_stat_2',
+            'points_var': 'active_mode_points',
+            'state_var': 'fiddler_state',
+            'completion_var': 'active_mode_completed',
+            'song': 'play_song_25',
         },
         'pardo': {
             'title': "PARDO'S PROWL",
-            'intro_1': 'GUESS THE SECRET SHOT',
-            'intro_2': 'SPINNER REVEALS THE RIGHT ONE',
-            'intro_3': 'LESS POINTS FOR 2ND GUESSES',
-            'summary_title_complete': "PARDO'S PROWL MODE COMPLETE",
-            'summary_title_failed': "PARDO'S PROWL MODE COMPLETE",
-            'stat_1_label': '1ST-GUESS JACKPOTS',
+            'intro_1': 'FIND THE SECRET SHOT',
+            'intro_2': 'SPINNER BRIEFLY REVEALS THE CORRECT SHOT',
+            'intro_3': 'A WRONG GUESS REDUCES JACKPOT VALUE',
+            'summary_title_complete': "PARDO'S PROWL COMPLETED",
+            'summary_title_failed': "PARDO'S PROWL ENDED",
+            'stat_1_label': 'FIRST-GUESS JACKPOTS',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': '2ND-GUESS JACKPOTS',
+            'stat_2_label': 'SECOND-GUESS JACKPOTS',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'pardo_state',
             'completion_var': 'active_mode_completed',
             'song': 'play_song_53',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Two-ball multiball: the saucers hide fake rubies.
-        #   intro_2: Lock a saucer ball to open the roof and reveal the real ruby.
-        #   intro_3: Collect three Ruby Jackpots, then the fourth reveal is Super.
         'fakir': {
             'title': "FAKIR'S RUBY REVEAL",
-            'intro_1': 'MULTIBALL RUBY HEIST',
-            'intro_2': 'SAUCERS REVEAL UPPER RUBIES',
-            'intro_3': 'SPINNERS BUILD RUBY JACKPOTS',
-            'summary_title_complete': "FAKIR'S RUBY REVEAL MODE COMPLETE",
-            'summary_title_failed': "FAKIR'S RUBY REVEAL MODE COMPLETE",
-            'stat_1_label': 'RUBIES',
+            'intro_1': 'TWO-BALL RUBY MULTIBALL',
+            'intro_2': 'SAUCERS REVEAL RUBIES AT UPPER TARGETS',
+            'intro_3': 'SPINNERS BUILD VALUE — THREE RUBIES LIGHT SUPER',
+            'summary_title_complete': "FAKIR'S RUBY REVEAL COMPLETED",
+            'summary_title_failed': "FAKIR'S RUBY REVEAL ENDED",
+            'stat_1_label': 'RUBIES COLLECTED',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'SUPERS',
+            'stat_2_label': 'SUPER JACKPOTS COLLECTED',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'fakir_state',
             'song': 'play_song_34',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: The Kotep summons strange magic.
-        #   intro_2: Hit the lit mystic shots to break the spell.
-        #   intro_3: Complete the pattern before the curse spreads.
-        #   stat_2_label: MAJOR HITS
         'kotep': {
             'title': "KOTEP'S SCARLET CURSE",
-            'intro_1': 'DEMONS APPEAR EVERY 4 SECONDS',
-            'intro_2': 'DESTROY 4 FLASHING DEMONS',
-            'intro_3': 'COLLECT SCEPTER SUPER AT DAILY BUGLE',
-            'summary_title_complete': "KOTEP'S SCARLET CURSE MODE COMPLETE",
-            'summary_title_failed': "KOTEP'S SCARLET CURSE MODE COMPLETE",
-            'stat_1_label': 'DEMONS',
+            'intro_1': 'DEMONS APPEAR EVERY FOUR SECONDS',
+            'intro_2': 'HIT FLASHING SHOTS TO DESTROY FOUR DEMONS',
+            'intro_3': 'COLLECT THE SCEPTER SUPER AT THE DAILY BUGLE VUK',
+            'summary_title_complete': "KOTEP'S SCARLET CURSE COMPLETED",
+            'summary_title_failed': "KOTEP'S SCARLET CURSE ENDED",
+            'stat_1_label': 'DEMONS DESTROYED',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'SUPERS',
+            'stat_2_label': '',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'kotep_state',
             'completion_var': 'active_mode_completed',
             'song': 'play_song_35',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: The Super Swami bends minds across the city.
-        #   intro_2: Follow the moving shot and break his control.
-        #   intro_3: Complete the sequence to stop the trance.
-        #   stat_2_label: BONUS BANKED
         'super_swami': {
             'title': "SUPER SWAMI'S SPELL",
             'intro_1': 'NEW YORK HAS GONE DARK',
-            'intro_2': 'HIT EACH OF THE 6 CITY AREAS',
-            'intro_3': 'RESTORE THEM BEFORE TIME EXPIRES',
-            'summary_title_complete': "SUPER SWAMI'S SPELL MODE COMPLETE",
-            'summary_title_failed': "SUPER SWAMI'S SPELL MODE COMPLETE",
+            'intro_2': 'HIT ALL SIX CITY AREAS TO RESTORE POWER',
+            'intro_3': 'RESTORE EACH AREA BEFORE ITS TIMER EXPIRES',
+            'summary_title_complete': "SUPER SWAMI'S SPELL COMPLETED",
+            'summary_title_failed': "SUPER SWAMI'S SPELL ENDED",
             'stat_1_label': 'AREAS RESTORED',
             'stat_1_var': 'active_mode_stat_1',
             'stat_2_label': 'BONUS BANKED',
@@ -516,39 +462,29 @@ class VillainBookends(Mode):
             'state_var': 'super_swami_state',
             'song': 'play_song_73',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Frog Ghosts slip through the Fifth Dimension.
-        #   intro_2: Hit the haunted shots before they move.
-        #   intro_3: Clear the ghosts and seal the rift.
-        #   stat_2_label: MAJOR HITS
         'infinata': {
             'title': 'INFINITE INFINATA',
             'intro_1': 'HIT FLASHING SHOTS TO BANISH CREATURES',
-            'intro_2': 'CLEAR 3 CREATURE AREAS',
-            'intro_3': 'COLLECT SUPER AT ANY SAUCER',
-            'summary_title_complete': 'INFINITE INFINATA MODE COMPLETE',
-            'summary_title_failed': 'INFINITE INFINATA MODE COMPLETE',
+            'intro_2': 'CLEAR THREE AREAS TO LIGHT THE SUPER',
+            'intro_3': 'COLLECT THE SUPER AT ANY SAUCER',
+            'summary_title_complete': 'INFINITE INFINATA COMPLETED',
+            'summary_title_failed': 'INFINITE INFINATA ENDED',
             'stat_1_label': 'AREAS CLEARED',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'SUPERS',
+            'stat_2_label': '',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'infinata_state',
             'song': 'play_song_24',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Noah Boddy vanishes from sight.
-        #   intro_2: Use upper clues to find the hidden target.
-        #   intro_3: Hit the true drop before he disappears.
-        #   stat_1_label: UPPER HITS
         'noah_boddy': {
             'title': 'NOBODY IN SIGHT',
-            'intro_1': 'REACH ROOFTOP TO BEGIN THE SEARCH',
-            'intro_2': 'UPPER TARGETS REVEAL THE SECRET DROP',
-            'intro_3': 'HIT DROP FOR SPINNER JACKPOT',
-            'summary_title_complete': 'NOBODY IN SIGHT MODE COMPLETE',
-            'summary_title_failed': 'NOBODY IN SIGHT MODE COMPLETE',
-            'stat_1_label': 'SPINNER SPINS',
+            'intro_1': 'UPPER TARGETS REVEAL THE SECRET DROP',
+            'intro_2': 'UPPER SPINNER BUILDS THE JACKPOT',
+            'intro_3': 'HIT THE LAST STANDING DROP BEFORE TIME EXPIRES',
+            'summary_title_complete': 'NOBODY IN SIGHT COMPLETED',
+            'summary_title_failed': 'NOBODY IN SIGHT ENDED',
+            'stat_1_label': 'UPPER SPINNER SPINS',
             'stat_1_var': 'active_mode_stat_1',
             'stat_2_label': 'BONUS BANKED',
             'stat_2_var': 'active_mode_stat_2',
@@ -556,99 +492,73 @@ class VillainBookends(Mode):
             'state_var': 'noah_boddy_state',
             'song': 'play_song_36',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Magnetic force pulls shots around the city.
-        #   intro_2: Use the spinner to stabilize the field.
-        #   intro_3: Cash the lit shot before it moves.
-        #   stat_2_label: MAJOR HITS
         'dr_magneto': {
             'title': "MAGNETO'S MAGNETIC MAYHEM",
             'intro_1': 'SLINGS AND INLANES LIGHT A AND B',
-            'intro_2': 'COLLECT A AND B THEN HIT MATCHING POPS',
-            'intro_3': 'BOTH POPS LIGHT CENTER WEB SUPER',
-            'summary_title_complete': "MAGNETO'S MAGNETIC MAYHEM MODE COMPLETE",
-            'summary_title_failed': "MAGNETO'S MAGNETIC MAYHEM MODE COMPLETE",
-            'stat_1_label': 'CIRCUIT SHOTS',
+            'intro_2': 'COLLECT LIT A AND B, THEN HIT THE FLASHING POPS',
+            'intro_3': 'COMPLETE BOTH POPS TO LIGHT CENTER WEB SUPER',
+            'summary_title_complete': "MAGNETO'S MAGNETIC MAYHEM COMPLETED",
+            'summary_title_failed': "MAGNETO'S MAGNETIC MAYHEM ENDED",
+            'stat_1_label': 'CIRCUIT SHOTS COLLECTED',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'SUPERS',
+            'stat_2_label': '',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'dr_magneto_state',
             'song': 'play_song_27',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   title: PROFESSOR PRETORIUS
-        #   intro_1: Pretorius is shrinking the city.
-        #   intro_2: Solve the shot puzzle before the ray fires.
-        #   intro_3: Beat the sequence and restore the landmark.
-        #   stat_2_label: MAJOR HITS
         'professor_pretorius': {
             'title': "PRETORIUS'S PERILOUS EXPERIMENT",
-            'intro_1': 'HIT POPS AND DROPS TO RUN THE REACTOR',
-            'intro_2': 'SPINNER COOLS IT BEFORE OVERHEAT',
-            'intro_3': '4 STATIONS LIGHT DAILY BUGLE SUPER',
-            'summary_title_complete': "PRETORIUS'S PERILOUS EXPERIMENT MODE COMPLETE",
-            'summary_title_failed': "PRETORIUS'S PERILOUS EXPERIMENT MODE COMPLETE",
+            'intro_1': 'HIT POPS AND DROPS TO COMPLETE REACTOR STATIONS',
+            'intro_2': 'SPIN TO COOL THE REACTOR BEFORE IT OVERHEATS',
+            'intro_3': 'COMPLETE FOUR STATIONS TO LIGHT THE VUK SUPER',
+            'summary_title_complete': "PRETORIUS'S PERILOUS EXPERIMENT COMPLETED",
+            'summary_title_failed': "PRETORIUS'S PERILOUS EXPERIMENT ENDED",
             'stat_1_label': 'REACTOR HITS',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'SUPERS',
+            'stat_2_label': '',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'professor_pretorius_state',
             'song': 'play_song_28',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Doctor Dumpty has a fragile plan.
-        #   intro_2: Build value without cracking the sequence.
-        #   intro_3: Wrong shots break the egg.
         'doctor_dumpty': {
             'title': "DUMPTY'S GREAT FALL",
             'intro_1': 'LEFT DROPS REVEAL LAUGHING GAS',
-            'intro_2': 'CLEAR 3 GAS AREAS TO OPEN ROOFTOP',
-            'intro_3': 'SPINNER BUILDS — UPPER TARGETS POP BALLOONS',
-            'summary_title_complete': "DUMPTY'S GREAT FALL MODE COMPLETE",
-            'summary_title_failed': "DUMPTY'S GREAT FALL MODE COMPLETE",
+            'intro_2': 'CLEAR THREE GAS AREAS TO OPEN THE ROOFTOP',
+            'intro_3': 'UPPER SPINNER BUILDS VALUE — UPPER TARGETS POP BALLOONS',
+            'summary_title_complete': "DUMPTY'S GREAT FALL COMPLETED",
+            'summary_title_failed': "DUMPTY'S GREAT FALL ENDED",
             'stat_1_label': 'BALLOONS POPPED',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'MISSES',
+            'stat_2_label': '',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'doctor_dumpty_state',
             'song': 'play_song_37',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Von Schlick has slicked the playfield.
-        #   intro_2: Control the sequence before shots slip away.
-        #   intro_3: Finish the pattern to end the oil scheme.
-        #   stat_2_label: MAJOR HITS
         'dr_von_schlick': {
             'title': 'SLIPPERY SCHLICK',
-            'intro_1': 'HIT THE ROAMING GREEN SHOTS',
-            'intro_2': '5 SHOTS OPENS THE REACTOR',
-            'intro_3': 'FLOOD REACTOR AT DAILY BUGLE FOR SUPER',
-            'summary_title_complete': 'SLIPPERY SCHLICK MODE COMPLETE',
-            'summary_title_failed': 'SLIPPERY SCHLICK MODE COMPLETE',
-            'stat_1_label': 'OIL PELLETS',
+            'intro_1': 'HIT THE ROAMING GREEN OIL SHOTS',
+            'intro_2': 'COLLECT FIVE OIL PELLETS TO OPEN THE REACTOR',
+            'intro_3': 'SHOOT THE DAILY BUGLE VUK TO FLOOD THE REACTOR',
+            'summary_title_complete': 'SLIPPERY SCHLICK COMPLETED',
+            'summary_title_failed': 'SLIPPERY SCHLICK ENDED',
+            'stat_1_label': 'OIL PELLETS COLLECTED',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'SUPERS',
+            'stat_2_label': '',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'dr_von_schlick_state',
             'song': 'play_song_8',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   title: CLIVE AND BLOTTO
-        #   intro_1: Clive unleashes the shape-changing Blotto.
-        #   intro_2: Hit containment shots before it spreads.
-        #   intro_3: Trap the creature and stop the rampage.
-        #   stat_2_label: BONUS BANKED
         'clive_blotto': {
             'title': 'BLOTTO TAKEOVER',
-            'intro_1': 'BLOTTO METER IS ON THE RISE',
-            'intro_2': 'SPINNERS LOWER THE METER',
-            'intro_3': 'CLEAR INFECTED AREAS — EMPTY METER WINS',
-            'summary_title_complete': 'BLOTTO TAKEOVER MODE COMPLETE',
-            'summary_title_failed': 'BLOTTO TAKEOVER MODE COMPLETE',
+            'intro_1': 'THE BLOTTO KEEPS SPREADING',
+            'intro_2': 'SPINNERS SLOW THE SPREAD',
+            'intro_3': 'CLEAR ALL AREAS',
+            'summary_title_complete': 'BLOTTO TAKEOVER COMPLETED',
+            'summary_title_failed': 'BLOTTO TAKEOVER ENDED',
             'stat_1_label': 'AREAS CLEARED',
             'stat_1_var': 'active_mode_stat_1',
             'stat_2_label': 'BLOTTO ATTACKS',
@@ -657,99 +567,74 @@ class VillainBookends(Mode):
             'state_var': 'clive_blotto_state',
             'song': 'play_song_57',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Dr. Zap chains electricity across shots.
-        #   intro_2: Follow the lit charge pattern.
-        #   intro_3: Break the circuit before it overloads.
-        #   stat_2_label: MAJOR HITS
         'dr_zapp': {
             'title': 'ZAPP ATTACK',
-            'intro_1': 'HIT A TARGET IN EACH BANK',
-            'intro_2': 'UPPER TARGETS MULTIPLY THE FLASHES',
-            'intro_3': 'UPPER SPINNER COLLECTS SPINS',
-            'summary_title_complete': 'ZAPP ATTACK MODE COMPLETE',
-            'summary_title_failed': 'ZAPP ATTACK MODE COMPLETE',
+            'intro_1': 'HIT A DROP IN EACH BANK TO OPEN THE ROOFTOP',
+            'intro_2': 'SPIN TO COLLECT FLASHES',
+            'intro_3': 'UPPER TARGETS INCREASE FLASH RATE',
+            'summary_title_complete': 'ZAPP ATTACK COMPLETED',
+            'summary_title_failed': 'ZAPP ATTACK ENDED',
             'stat_1_label': 'CAMERA FLASHES',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'SPINNER SPINS',
+            'stat_2_label': 'UPPER SPINNER SPINS',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'dr_zapp_state',
             'song': 'play_song_38',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Bolton and Boomer hide their robberies inside a violent storm.
-        #   intro_2: Follow the thunder and stop the next strike.
-        #   intro_3: Break up the scheme before the storm passes.
-        #   stat_2_label: MAJOR HITS
         'bolton_boomer': {
             'title': 'DOUBLE CROSS',
             'intro_1': 'MULTIBALL TARGET ATTACK',
-            'intro_2': 'HIT LIT TARGET THEN LOCK A SAUCER',
-            'intro_3': 'COLLECT SUPER AT DAILY BUGLE',
-            'summary_title_complete': 'DOUBLE CROSS MODE COMPLETE',
-            'summary_title_failed': 'DOUBLE CROSS MODE COMPLETE',
-            'stat_1_label': 'SUPERS',
+            'intro_2': 'HIT THE LIT TARGET, THEN LOCK A BALL IN A SAUCER',
+            'intro_3': 'COLLECT THE SUPER AT THE DAILY BUGLE VUK',
+            'summary_title_complete': 'DOUBLE CROSS COMPLETED',
+            'summary_title_failed': 'DOUBLE CROSS ENDED',
+            'stat_1_label': 'SUPER JACKPOTS COLLECTED',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'BIGGEST SUPER',
+            'stat_2_label': 'BIGGEST SUPER JACKPOT',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'bolton_boomer_state',
             'song': 'play_song_94',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: The Snowman is freezing the city.
-        #   intro_2: Thaw frozen shots with spinner and targets.
-        #   intro_3: Break the freeze before time runs out.
-        #   stat_2_label: MAJOR HITS
         'snowman': {
             'title': "SNOWMAN'S COLD SNAP",
-            'intro_1': 'CONNECT LEFT AND CENTER WEBS',
-            'intro_2': 'HIT LOWER SPINNER TO DEFEAT SNOWMAN',
+            'intro_1': 'HIT LEFT AND CENTER WEBS BEFORE TIME EXPIRES',
+            'intro_2': 'SPIN THE LOWER SPINNER TO ZAP SNOWMAN',
             'intro_3': 'KEEP SPINNING FOR BONUS POINTS',
-            'summary_title_complete': "SNOWMAN'S COLD SNAP MODE COMPLETE",
-            'summary_title_failed': "SNOWMAN'S COLD SNAP MODE COMPLETE",
+            'summary_title_complete': "SNOWMAN'S COLD SNAP COMPLETED",
+            'summary_title_failed': "SNOWMAN'S COLD SNAP ENDED",
             'stat_1_label': 'BONUS SPINS',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'BIGGEST SPIN',
+            'stat_2_label': 'BIGGEST SPIN VALUE',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'snowman_state',
             'song': 'play_song_2',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: The Plutonians blocks the city in frozen chaos.
-        #   intro_2: Hit thaw shots to open scoring.
-        #   intro_3: Collect the jackpot before everything freezes.
-        #   stat_2_label: MAJOR HITS
         'plutonians': {
             'title': 'PLUTONIAN DEEP FREEZE',
-            'intro_1': 'THAW ALL SIX FROZEN AREAS',
-            'intro_2': 'UPPER TARGETS DISABLE THE FREEZE RAY',
-            'intro_3': 'KEEP THEM THAWED TO WIN',
-            'summary_title_complete': 'PLUTONIAN DEEP FREEZE MODE COMPLETE',
-            'summary_title_failed': 'PLUTONIAN DEEP FREEZE MODE COMPLETE',
+            'intro_1': 'HIT FROZEN AREAS TO THAW THEM',
+            'intro_2': 'UPPER TARGETS TEMPORARILY DISABLE THE FREEZE RAY',
+            'intro_3': 'THAW ALL SIX AREAS AT ONCE',
+            'summary_title_complete': 'PLUTONIAN DEEP FREEZE COMPLETED',
+            'summary_title_failed': 'PLUTONIAN DEEP FREEZE ENDED',
             'stat_1_label': 'TOTAL THAWS',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'RAY BLOCKS',
+            'stat_2_label': 'FREEZE RAY BLOCKS',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'plutonians_state',
             'song': 'play_song_47',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Dr. Manta traps the city beneath the waves.
-        #   intro_2: Escape saucer traps with lit rescue shots.
-        #   intro_3: Collect the jackpot before he dives again.
-        #   stat_2_label: MAJOR HITS
         'dr_manta': {
             'title': "MANTA'S DEEP-SEA MENACE",
-            'intro_1': 'LOCK BALL 1 AT DAILY BUGLE',
-            'intro_2': 'LOCK BALL 2 IN ANY SAUCER',
-            'intro_3': 'SPINNERS BUILD UPPER TARGET JACKPOTS',
-            'summary_title_complete': "MANTA'S DEEP-SEA MENACE MODE COMPLETE",
-            'summary_title_failed': "MANTA'S DEEP-SEA MENACE MODE COMPLETE",
-            'stat_1_label': 'JACKPOTS',
+            'intro_1': 'LOCK THE FIRST BALL AT THE DAILY BUGLE VUK',
+            'intro_2': 'LOCK THE SECOND BALL IN ANY SAUCER',
+            'intro_3': 'SPINNERS BUILD VALUE — UPPER TARGETS COLLECT JACKPOTS',
+            'summary_title_complete': "MANTA'S DEEP-SEA MENACE COMPLETED",
+            'summary_title_failed': "MANTA'S DEEP-SEA MENACE ENDED",
+            'stat_1_label': 'JACKPOTS COLLECTED',
             'stat_1_var': 'active_mode_stat_1',
             'stat_2_label': 'BIGGEST JACKPOT',
             'stat_2_var': 'active_mode_stat_2',
@@ -759,12 +644,12 @@ class VillainBookends(Mode):
         },
         'doctor_atlantean': {
             'title': 'HIGHER GROUND',
-            'intro_1': 'WATER LEVEL IS ON THE RISE',
-            'intro_2': 'UPPER TARGETS LOWER, EXITS RAISE IT',
-            'intro_3': 'REACH ZERO TO WIN',
-            'summary_title_complete': 'HIGHER GROUND MODE COMPLETE',
-            'summary_title_failed': 'HIGHER GROUND MODE COMPLETE',
-            'stat_1_label': 'CONTROL JACKPOTS',
+            'intro_1': 'THE WATER LEVEL KEEPS RISING',
+            'intro_2': 'UPPER TARGETS LOWER THE WATER — ROOF EXITS RAISE IT',
+            'intro_3': 'LOWER THE WATER LEVEL TO ZERO',
+            'summary_title_complete': 'HIGHER GROUND COMPLETED',
+            'summary_title_failed': 'HIGHER GROUND ENDED',
+            'stat_1_label': 'CONTROL PANEL JACKPOTS',
             'stat_1_var': 'active_mode_stat_1',
             'stat_2_label': 'SPINNER SPINS',
             'stat_2_var': 'active_mode_stat_2',
@@ -772,19 +657,14 @@ class VillainBookends(Mode):
             'state_var': 'doctor_atlantean_state',
             'song': 'play_song_62',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Desperado attacks from above the clouds.
-        #   intro_2: Find the moving flight path.
-        #   intro_3: Hit the lit shots and ground his aircraft.
-        #   stat_2_label: MAJOR HITS
         'desperado': {
             'title': "DESPERADO'S LAST STAND",
-            'intro_1': 'HIT 5 UNIQUE RIGHT DROP TARGETS',
+            'intro_1': 'HIT ALL FIVE UNIQUE RIGHT DROP TARGETS',
             'intro_2': 'EACH ROUND ALLOWS ONE MORE SHOT',
-            'intro_3': 'LEFT BANK ADDS 10 SECONDS',
-            'summary_title_complete': "DESPERADO'S LAST STAND MODE COMPLETE",
-            'summary_title_failed': "DESPERADO'S LAST STAND MODE COMPLETE",
-            'stat_1_label': 'BANK HITS',
+            'intro_3': 'COMPLETE THE LEFT BANK TO ADD TEN SECONDS',
+            'summary_title_complete': "DESPERADO'S LAST STAND COMPLETED",
+            'summary_title_failed': "DESPERADO'S LAST STAND ENDED",
+            'stat_1_label': 'RIGHT BANK HITS',
             'stat_1_var': 'active_mode_stat_1',
             'stat_2_label': 'OUTLAWS CAUGHT',
             'stat_2_var': 'active_mode_stat_2',
@@ -794,34 +674,29 @@ class VillainBookends(Mode):
         },
         'devargas': {
             'title': 'CITY OF GOLD',
-            'intro_1': '20 GOLD SHOTS WILL APPEAR',
+            'intro_1': 'TWENTY GOLD SHOTS WILL APPEAR',
             'intro_2': 'HIT PULSING SHOTS BEFORE THEY EXPIRE',
-            'intro_3': 'FASTER HITS SCORE MORE GOLD',
-            'summary_title_complete': 'CITY OF GOLD MODE COMPLETE',
-            'summary_title_failed': 'CITY OF GOLD MODE COMPLETE',
-            'stat_1_label': 'GOLD SHOTS',
+            'intro_3': 'FASTER HITS COLLECT MORE GOLD',
+            'summary_title_complete': 'CITY OF GOLD COMPLETED',
+            'summary_title_failed': 'CITY OF GOLD ENDED',
+            'stat_1_label': 'GOLD SHOTS COLLECTED',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'GOLD BANKED',
+            'stat_2_label': 'GOLD BONUS BANKED',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'devargas_state',
             'song': 'play_song_46',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Molemen strike from the ice.
-        #   intro_2: Hit rescue shots before the freeze spreads.
-        #   intro_3: Finish the sequence and escape the trap.
-        #   stat_2_label: MAJOR HITS
         'molemen': {
             'title': 'UNDERGROUND UPRISING',
-            'intro_1': 'MULTIBALL MOLEMEN ATTACK',
+            'intro_1': 'TWO-BALL MOLEMEN MULTIBALL',
             'intro_2': 'POPS AND CENTER WEB LIGHT SAUCER JACKPOTS',
-            'intro_3': 'MORE HITS LIGHTS ADD-A-BALL',
-            'summary_title_complete': 'UNDERGROUND UPRISING MODE COMPLETE',
-            'summary_title_failed': 'UNDERGROUND UPRISING MODE COMPLETE',
+            'intro_3': 'MORE HITS LIGHT ADD-A-BALL AT THE SAUCERS',
+            'summary_title_complete': 'UNDERGROUND UPRISING COMPLETED',
+            'summary_title_failed': 'UNDERGROUND UPRISING ENDED',
             'stat_1_label': 'BIGGEST JACKPOT',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'JACKPOTS',
+            'stat_2_label': 'JACKPOTS COLLECTED',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'molemen_state',
@@ -831,10 +706,10 @@ class VillainBookends(Mode):
             'title': 'IMPOSTOR SYNDROME',
             'intro_1': 'HIT THE LIT SHOT',
             'intro_2': 'HIT ITS MIRROR BEFORE TIME EXPIRES',
-            'intro_3': 'COMPLETE ALL PAIRS FOR WEB SUPER',
-            'summary_title_complete': 'IMPOSTOR SYNDROME MODE COMPLETE',
-            'summary_title_failed': 'IMPOSTOR SYNDROME MODE COMPLETE',
-            'stat_1_label': 'JACKPOTS',
+            'intro_3': 'COMPLETE THE FINAL WEB PAIR FOR THE SUPER',
+            'summary_title_complete': 'IMPOSTOR SYNDROME COMPLETED',
+            'summary_title_failed': 'IMPOSTOR SYNDROME ENDED',
+            'stat_1_label': 'JACKPOTS COLLECTED',
             'stat_1_var': 'active_mode_stat_1',
             'stat_2_label': 'BIGGEST JACKPOT',
             'stat_2_var': 'active_mode_stat_2',
@@ -844,14 +719,14 @@ class VillainBookends(Mode):
         },
         'brutus': {
             'title': 'BRUTUS BANK BUSTER',
-            'intro_1': 'HIT RIGHT DROP TO LURE BRUTUS',
+            'intro_1': 'HIT A RIGHT DROP TO LURE BRUTUS',
             'intro_2': 'SHOOT ANY SAUCER BEFORE HE RETURNS',
-            'intro_3': 'COLLECT 3 ARTWORK JACKPOTS',
-            'summary_title_complete': 'BRUTUS BANK BUSTER MODE COMPLETE',
-            'summary_title_failed': 'BRUTUS BANK BUSTER MODE COMPLETE',
-            'stat_1_label': 'ARTWORK JACKPOTS',
+            'intro_3': "DON'T HIT THE LEFT BANK",
+            'summary_title_complete': 'BRUTUS BANK BUSTER COMPLETED',
+            'summary_title_failed': 'BRUTUS BANK BUSTER ENDED',
+            'stat_1_label': 'ARTWORK JACKPOTS COLLECTED',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'BIGGEST JACKPOT',
+            'stat_2_label': '',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'brutus_state',
@@ -859,12 +734,12 @@ class VillainBookends(Mode):
         },
         'igor': {
             'title': "IGOR'S CHOICE",
-            'intro_1': 'HIT FLASHING GREEN SHOTS',
+            'intro_1': 'HIT FLASHING GREEN SHOTS FOR JACKPOTS',
             'intro_2': 'AVOID SOLID RED SHOTS',
-            'intro_3': '5 BAD SHOTS ENDS THE MODE',
-            'summary_title_complete': "IGOR'S CHOICE MODE COMPLETE",
-            'summary_title_failed': "IGOR'S CHOICE MODE COMPLETE",
-            'stat_1_label': 'JACKPOTS',
+            'intro_3': 'FIVE BAD SHOTS END THE MODE',
+            'summary_title_complete': "IGOR'S CHOICE COMPLETED",
+            'summary_title_failed': "IGOR'S CHOICE ENDED",
+            'stat_1_label': 'JACKPOTS COLLECTED',
             'stat_1_var': 'active_mode_stat_1',
             'stat_2_label': 'BIGGEST JACKPOT',
             'stat_2_var': 'active_mode_stat_2',
@@ -872,62 +747,44 @@ class VillainBookends(Mode):
             'state_var': 'igor_state',
             'song': 'play_song_43',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Skymaster crawls across the city walls.
-        #   intro_2: Track the moving shot and cut him off.
-        #   intro_3: Catch him before he slips away.
-        #   stat_2_label: MAJOR HITS
         'skymaster': {
             'title': 'AERIAL AMBUSH',
-            'intro_1': 'DROP ALL 8 TARGETS IN ORDER',
-            'intro_2': 'UPPER SPINNER DROPS THE NEXT',
-            'intro_3': 'WRONG TARGET RESETS ITS BANK',
-            'summary_title_complete': 'AERIAL AMBUSH MODE COMPLETE',
-            'summary_title_failed': 'AERIAL AMBUSH MODE COMPLETE',
-            'stat_1_label': 'TARGETS',
+            'intro_1': 'DROP ALL EIGHT TARGETS IN ORDER',
+            'intro_2': 'UPPER SPINNER DROPS THE NEXT TARGET',
+            'intro_3': 'COMPLETE THE SEQUENCE TO LIGHT CENTER WEB SUPER',
+            'summary_title_complete': 'AERIAL AMBUSH COMPLETED',
+            'summary_title_failed': 'AERIAL AMBUSH ENDED',
+            'stat_1_label': 'TARGETS COMPLETED',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'WEB SUPERS',
+            'stat_2_label': 'WEB SUPERS COLLECTED',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'skymaster_state',
             'completion_var': 'skymaster_defeated',
             'song': 'play_song_9',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Conner's Reptiles are loose in the city.
-        #   intro_2: Hit pops to light Rampage Jackpots.
-        #   intro_3: Collect the Super Jackpot at the saucer.
-        #   stat_2_label: BONUS BANKED
         'conners_reptiles': {
             'title': 'REPTILE RAMPAGE',
             'intro_1': 'POPS REVEAL RAMPAGE JACKPOTS',
-            'intro_2': 'COLLECT ALL 7 RAMPAGE JACKPOTS',
-            'intro_3': 'SHOOT VUK FOR SWAMP SUPER',
-            'summary_title_complete': 'REPTILE RAMPAGE MODE COMPLETE',
-            'summary_title_failed': 'REPTILE RAMPAGE MODE COMPLETE',
-            'stat_1_label': 'RAMPAGE JACKPOTS',
+            'intro_2': 'COLLECT ALL SEVEN',
+            'intro_3': 'SHOOT THE DAILY BUGLE FOR THE SWAMP SUPER',
+            'summary_title_complete': 'REPTILE RAMPAGE COMPLETED',
+            'summary_title_failed': 'REPTILE RAMPAGE ENDED',
+            'stat_1_label': 'RAMPAGE JACKPOTS COLLECTED',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'SWAMP BONUS',
+            'stat_2_label': 'SWAMP BONUS BANKED',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'conners_reptiles_state',
             'song': 'play_song_87',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   title: PHANTOM FROM THE DEPTHS OF TIME
-        #   intro_1: The Phantom rises from another age.
-        #   intro_2: Follow the time-tossed shots.
-        #   intro_3: Complete the sequence before he fades away.
-        #   summary_title_complete: PHANTOM DEFEATED
-        #   summary_title_failed: PHANTOM ESCAPED
-        #   stat_2_label: MAJOR HITS
         'sir_galahad': {
             'title': 'KNIGHT MUST FALL',
-            'intro_1': 'ENTER ROOFTOP AND CHOOSE AN EXIT',
-            'intro_2': 'EXIT LIGHTS OPPOSITE DROP BANK',
-            'intro_3': 'AIM FOR CENTER BEFORE GALAHAD CHARGES',
-            'summary_title_complete': 'KNIGHT MUST FALL MODE COMPLETE',
-            'summary_title_failed': 'KNIGHT MUST FALL MODE COMPLETE',
+            'intro_1': 'ENTER THE ROOFTOP AND CHOOSE AN EXIT',
+            'intro_2': 'THE EXIT LIGHTS THE OPPOSITE DROP BANK',
+            'intro_3': "HIT THE BANK'S CENTER TARGET BEFORE GALAHAD CHARGES",
+            'summary_title_complete': 'KNIGHT MUST FALL COMPLETED',
+            'summary_title_failed': 'KNIGHT MUST FALL ENDED',
             'stat_1_label': 'JOUST HITS',
             'stat_1_var': 'active_mode_stat_1',
             'stat_2_label': 'BULLSEYES',
@@ -938,14 +795,14 @@ class VillainBookends(Mode):
         },
         'master_vine': {
             'title': 'THE TANGLED WEB',
-            'intro_1': 'ENTER ROOFTOP TO START EACH WAVE',
+            'intro_1': 'ENTER THE ROOFTOP TO START EACH WAVE',
             'intro_2': 'UPPER SPINNER LIGHTS VINE JACKPOTS',
-            'intro_3': 'COLLECT LIT SHOTS — CLEAR 3 WAVES',
-            'summary_title_complete': 'THE TANGLED WEB MODE COMPLETE',
-            'summary_title_failed': 'THE TANGLED WEB MODE COMPLETE',
-            'stat_1_label': 'VINE JACKPOTS',
+            'intro_3': 'COLLECT THE LIT SHOTS TO CLEAR THREE WAVES',
+            'summary_title_complete': 'THE TANGLED WEB COMPLETED',
+            'summary_title_failed': 'THE TANGLED WEB ENDED',
+            'stat_1_label': 'VINE JACKPOTS COLLECTED',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'WAVES',
+            'stat_2_label': 'WAVES COMPLETED',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'master_vine_state',
@@ -954,11 +811,11 @@ class VillainBookends(Mode):
         'master_technician': {
             'title': "MASTER TECHNICIAN'S SHUTDOWN",
             'intro_1': 'DROPS BUILD SPINNER VALUE',
-            'intro_2': 'STOP AT 7 AND SHOOT SPINNER',
-            'intro_3': 'ALL 8 DOWN COSTS 10 SECONDS',
-            'summary_title_complete': "MASTER TECHNICIAN'S SHUTDOWN MODE COMPLETE",
-            'summary_title_failed': "MASTER TECHNICIAN'S SHUTDOWN MODE COMPLETE",
-            'stat_1_label': 'SPINNER HITS',
+            'intro_2': 'STOP AT SEVEN AND SPIN TO SCORE',
+            'intro_3': 'ALL EIGHT DOWN COSTS TEN SECONDS',
+            'summary_title_complete': "MASTER TECHNICIAN'S SHUTDOWN COMPLETED",
+            'summary_title_failed': "MASTER TECHNICIAN'S SHUTDOWN ENDED",
+            'stat_1_label': 'SPINNER SPINS',
             'stat_1_var': 'active_mode_stat_1',
             'stat_2_label': 'SHORT CIRCUITS',
             'stat_2_var': 'active_mode_stat_2',
@@ -968,12 +825,12 @@ class VillainBookends(Mode):
         },
         'spider_men': {
             'title': 'SPIDERS FROM MARS',
-            'intro_1': 'LIGHT THE SHOTS TO ALIGN THE RAY',
-            'intro_2': 'FLIPPERS ROTATE THE LIGHTS',
-            'intro_3': 'LIGHT ALL 6 BEFORE TIME EXPIRES',
-            'summary_title_complete': 'SPIDERS FROM MARS MODE COMPLETE',
-            'summary_title_failed': 'SPIDERS FROM MARS MODE COMPLETE',
-            'stat_1_label': 'JACKPOTS',
+            'intro_1': 'HIT SHOTS TO ALIGN THE RAY',
+            'intro_2': 'FLIPPERS ROTATE THE ALIGNED LIGHTS',
+            'intro_3': 'ALIGN ALL SIX BEFORE TIME EXPIRES',
+            'summary_title_complete': 'SPIDERS FROM MARS COMPLETED',
+            'summary_title_failed': 'SPIDERS FROM MARS ENDED',
+            'stat_1_label': 'ALIGNMENT JACKPOTS',
             'stat_1_var': 'active_mode_stat_1',
             'stat_2_label': 'FINE ADJUSTMENTS',
             'stat_2_var': 'active_mode_stat_2',
@@ -981,96 +838,76 @@ class VillainBookends(Mode):
             'state_var': 'spider_men_state',
             'song': 'play_song_33',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: The Baron Von Rantenraven commands the final attack.
-        #   intro_2: Hit invasion shots in order.
-        #   intro_3: Stop the command signal before it completes.
-        #   stat_2_label: MAJOR HITS
         'von_rantenraven': {
             'title': 'SKY HARBOR ATTACK',
-            'intro_1': 'SAUCER OPENS THE ROOF',
+            'intro_1': 'SHOOT ANY SAUCER TO OPEN THE ROOFTOP',
             'intro_2': 'TEN FLIPS TO HIT THREE TARGETS',
-            'intro_3': 'THIRD TARGET SCORES THE SUPER',
-            'summary_title_complete': 'SKY HARBOR ATTACK MODE COMPLETE',
-            'summary_title_failed': 'SKY HARBOR ATTACK MODE COMPLETE',
-            'stat_1_label': 'JACKPOTS',
+            'intro_3': 'ALL THREE SCORES UNUSED FLIPS SUPER',
+            'summary_title_complete': 'SKY HARBOR ATTACK COMPLETED',
+            'summary_title_failed': 'SKY HARBOR ATTACK ENDED',
+            'stat_1_label': 'JACKPOTS COLLECTED',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'FLIPS LEFT',
+            'stat_2_label': 'FLIPS REMAINING',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'von_rantenraven_state',
             'song': 'play_song_52',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Chapter 1 mini-wizard multiball.
-        #   intro_2: Collect surge jackpots and survive.
-        #   intro_3: Chapter case files raise the values.
         'sinister_surge': {
             'title': 'SINISTER SURGE',
-            'intro_1': 'MULTIBALL VILLAIN BATTLE',
-            'intro_2': 'CLEAR EACH VILLAIN STAGE',
-            'intro_3': 'FOR DAILY BUGLE JACKPOTS',
-            'summary_title_complete': 'SINISTER SURGE CLEARED',
-            'summary_title_failed': 'SINISTER SURGE LOST',
-            'stat_1_label': 'AREAS CLEARED',
+            'intro_1': 'TWO-BALL VILLAIN MULTIBALL',
+            'intro_2': 'CLEAR VILLAIN STAGES FOR DAILY BUGLE JACKPOTS',
+            'intro_3': 'CLEAR ALL FIVE TO START VICTORY LAPS',
+            'summary_title_complete': 'SINISTER SURGE COMPLETED',
+            'summary_title_failed': 'SINISTER SURGE ENDED',
+            'stat_1_label': 'VILLAIN STAGES CLEARED',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'JACKPOTS',
+            'stat_2_label': 'DAILY BUGLE JACKPOTS COLLECTED',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'sinister_surge_state',
             'song': 'play_song_71',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Chapter 2 mini-wizard multiball.
-        #   intro_2: Escape the masterminds while multiball runs.
-        #   intro_3: Chapter case files raise the values.
         'mastermind_trap': {
             'title': 'MASTERMIND TRAP',
-            'intro_1': 'MULTIBALL VILLAIN BATTLE',
-            'intro_2': 'CLEAR THREE COMBINED VILLAIN STAGES',
-            'intro_3': 'EITHER WEB COLLECTS THE TIMED SUPER',
-            'summary_title_complete': 'MASTERMIND TRAP CLEARED',
-            'summary_title_failed': 'MASTERMIND TRAP LOST',
+            'intro_1': 'TWO-BALL VILLAIN MULTIBALL',
+            'intro_2': 'PLAY THROUGH THREE COMBINED VILLAIN STAGES',
+            'intro_3': 'EITHER WEB COLLECTS SUPER — VALUE DROPS QUICKLY',
+            'summary_title_complete': 'MASTERMIND TRAP COMPLETED',
+            'summary_title_failed': 'MASTERMIND TRAP ENDED',
             'stat_1_label': 'SCORING HITS',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'JACKPOTS',
+            'stat_2_label': 'JACKPOTS COLLECTED',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'mastermind_trap_state',
             'song': 'play_song_58',
         },
-        # Trubble Unleashed is a looping scoring multiball. Left drops open the
-        # roof; VUK entry selects Diana/Centaur while Cerberus/Vulcan/Cyclops
-        # remain available throughout. The wizard ends only when multiball ends.
         'trubble_unleashed': {
             'title': 'TRUBBLE UNLEASHED',
-            'intro_1': 'MULTIBALL VILLAIN BATTLE',
-            'intro_2': 'LEFT DROPS OPEN DIANA OR CENTAUR',
-            'intro_3': 'UPPER TARGETS LIGHT SAUCERS / ADD-A-BALL',
-            'summary_title_complete': 'TRUBBLE UNLEASHED',
-            'summary_title_failed': 'TRUBBLE UNLEASHED',
-            'stat_1_label': 'JACKPOTS',
+            'intro_1': 'LEFT DROPS OPEN DIANA OR CENTAUR',
+            'intro_2': 'UPPER TARGETS LIGHT SAUCER JACKPOTS',
+            'intro_3': 'ALL THREE UPPER TARGETS LIGHT RIGHT EXIT ADD-A-BALL',
+            'summary_title_complete': 'TRUBBLE UNLEASHED COMPLETED',
+            'summary_title_failed': 'TRUBBLE UNLEASHED ENDED',
+            'stat_1_label': 'JACKPOTS COLLECTED',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'SUPERS',
+            'stat_2_label': 'CYCLOPS JACKPOTS',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'trubble_unleashed_state',
             'song': 'play_song_92',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Decode the Plotter’s scheme.
-        #   intro_2: Build headlines and cash Daily Bugle supers.
-        #   intro_3: Chapter case files raise the values.
         'plotter': {
             'title': 'THE MASTER PLAN',
             'intro_1': 'POPS BUILD RUMORS',
             'intro_2': 'LOWER SPINNER LIGHTS A SAUCER',
-            'intro_3': '3 SAUCER SCHEMES OPENS VUK SUPER',
-            'summary_title_complete': 'THE MASTER PLAN EXPOSED',
-            'summary_title_failed': 'THE MASTER PLAN ESCAPED',
-            'stat_1_label': 'RUMORS',
+            'intro_3': 'THREE SAUCER JACKPOTS LIGHT THE VUK SUPER',
+            'summary_title_complete': 'THE MASTER PLAN COMPLETED',
+            'summary_title_failed': 'THE MASTER PLAN ENDED',
+            'stat_1_label': 'RUMORS COLLECTED',
             'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'SCHEMES',
+            'stat_2_label': 'SAUCER JACKPOTS',
             'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'plotter_state',
@@ -1078,158 +915,134 @@ class VillainBookends(Mode):
         },
         'crime_wave': {
             'title': 'CRIME WAVE',
-            'intro_1': 'MULTIBALL CRIME WAVE',
-            'intro_2': 'LIGHT 3 AREAS TO OPEN THE ROOFTOP',
-            'intro_3': 'VUK OR UPPER EXIT SCORES JACKPOT',
-            'summary_title_complete': 'CRIME WAVE STOPPED',
-            'summary_title_failed': 'CRIME WAVE CONTINUES',
+            'intro_1': 'LIGHT THREE AREAS TO OPEN THE ROOFTOP',
+            'intro_2': 'ROOF EXITS COLLECT JACKPOTS — MORE AREAS BUILD VALUE',
+            'intro_3': 'COLLECT WITH ALL FIVE LIT TO LIGHT A WEB SUPER',
+            'summary_title_complete': 'CRIME WAVE COMPLETED',
+            'summary_title_failed': 'CRIME WAVE ENDED',
             'stat_1_label': 'MOST AREAS LIT',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'JACKPOTS',
+            'stat_2_label': 'JACKPOTS COLLECTED',
             'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'crime_wave_state',
             'song': 'play_song_68',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Chapter 7 mini-wizard multiball.
-        #   intro_2: Break the curse during multiball.
-        #   intro_3: Chapter case files raise the values.
-
         'the_web_tightens': {
             'title': 'THE WEB TIGHTENS',
-            'intro_1': 'Two-ball multiball. Lock one at the Daily Bugle.',
-            'intro_2': 'Saucers start five villain phases.',
-            'intro_3': 'Phase wins build a rooftop Super Jackpot.',
-            'summary_title_complete': 'THE WEB BROKEN',
-            'summary_title_failed': 'THE WEB TIGHTENS',
-            'stat_1_label': 'PHASES WON', 'stat_1_var': 'active_mode_stat_1',
-            'stat_2_label': 'SUPERS', 'stat_2_var': 'active_mode_stat_2',
-            'points_var': 'active_mode_points', 'state_var': 'the_web_tightens_state', 'song': 'play_song_85',
+            'intro_1': 'LOCK A BALL AT THE DAILY BUGLE DURING MULTIBALL',
+            'intro_2': 'SAUCERS START FIVE VILLAIN PHASES',
+            'intro_3': 'PHASE WINS BUILD THE ROOFTOP SUPER JACKPOT',
+            'summary_title_complete': 'THE WEB TIGHTENS COMPLETED',
+            'summary_title_failed': 'THE WEB TIGHTENS ENDED',
+            'stat_1_label': 'PHASES WON',
+            'stat_1_var': 'active_mode_stat_1',
+            'stat_2_label': 'SUPER JACKPOTS COLLECTED',
+            'stat_2_var': 'active_mode_stat_2',
+            'points_var': 'active_mode_points',
+            'state_var': 'the_web_tightens_state',
+            'song': 'play_song_85',
         },
         'fifth_dimension_curse': {
             'title': 'FIFTH DIMENSION CURSE',
-            'intro_1': 'CITY ZONE MULTIBALL',
-            'intro_2': 'KEEP ZONES BRIGHT - DAILY BUGLE JACKPOTS',
-            'intro_3': 'SAUCERS LIGHT RUBIES - SPINNER LIGHTS ADD-A-BALL',
-            'summary_title_complete': 'FIFTH DIMENSION COMPLETE',
-            'summary_title_failed': 'FIFTH DIMENSION COMPLETE',
-            'stat_1_label': 'JACKPOTS',
+            'intro_1': 'KEEP ZONES LIT TO BUILD DAILY BUGLE JACKPOTS',
+            'intro_2': 'PARK BALLS IN SAUCERS FOR UPPER RUBY JACKPOTS',
+            'intro_3': 'SPINNER LIGHTS ADD-A-BALL — HIT THE FLASHING ROLLOVER',
+            'summary_title_complete': 'FIFTH DIMENSION CURSE COMPLETED',
+            'summary_title_failed': 'FIFTH DIMENSION CURSE ENDED',
+            'stat_1_label': 'JACKPOTS COLLECTED',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'ADD-A-BALLS',
-            'stat_2_var': 'active_mode_major_hits',
+            'stat_2_label': 'RUBIES COLLECTED',
+            'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'fifth_dimension_curse_state',
             'song': 'play_song_48',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Chapter 6 mini-wizard multiball.
-        #   intro_2: Keep the lab under control.
-        #   intro_3: Chapter case files raise the values.
         'mad_science_meltdown': {
             'title': 'MAD SCIENCE MELTDOWN',
-            'intro_1': 'Lab meltdown MB.',
-            'intro_2': 'Control experiments.',
-            'intro_3': 'Case files boost value.',
-            'summary_title_complete': 'MELTDOWN STOPPED',
-            'summary_title_failed': 'MELTDOWN SPREADS',
-            'stat_1_label': 'HITS',
-            'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'STATE',
-            'stat_2_var': 'mad_science_meltdown_state',
+            'intro_1': 'LEFT DROPS RELEASE GAS — LOWER SPINNER COOLS IT',
+            'intro_2': 'HIT GREEN GAS ZONES TO COLLECT JACKPOTS',
+            'intro_3': 'UPPER TARGETS REVEAL NOAH — HIT THE LAST RIGHT DROP',
+            'summary_title_complete': 'MAD SCIENCE MELTDOWN COMPLETED',
+            'summary_title_failed': 'MAD SCIENCE MELTDOWN ENDED',
+            'stat_1_label': 'GAS JACKPOTS COLLECTED',
+            'stat_1_var': 'active_mode_stat_1',
+            'stat_2_label': 'NOAH JACKPOTS COLLECTED',
+            'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'mad_science_meltdown_state',
             'song': 'play_song_3',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: Chapter 7 mini-wizard multiball.
-        #   intro_2: Contain the elemental chaos.
-        #   intro_3: Chapter case files raise the values.
         'nature_strikes_back': {
             'title': 'NATURE STRIKES BACK',
-            'intro_1': 'SPIN TO CHARGE - UPPER TARGETS LIGHT SAUCERS',
-            'intro_2': 'CONNECT WEBS - THAW ALL 6 CITY ZONES',
-            'intro_3': 'STABILIZE CITY - DAILY BUGLE SUPER',
-            'summary_title_complete': 'NATURE CONTAINED',
-            'summary_title_failed': 'NATURE BREAKS LOOSE',
-            'stat_1_label': 'SUPERS',
+            'intro_1': 'SPIN TO CHARGE — UPPER TARGETS LIGHT SAUCER ADD-A-BALL',
+            'intro_2': 'CONNECT BOTH WEBS, THEN THAW ALL SIX ZONES',
+            'intro_3': 'STAR CLEARS BLOCKS — STABILIZE THE CITY FOR DAILY BUGLE SUPER',
+            'summary_title_complete': 'NATURE STRIKES BACK COMPLETED',
+            'summary_title_failed': 'NATURE STRIKES BACK ENDED',
+            'stat_1_label': 'SUPER JACKPOTS COLLECTED',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'ADD-A-BALLS',
-            'stat_2_var': 'active_mode_major_hits',
+            'stat_2_label': 'AREAS THAWED',
+            'stat_2_var': 'active_mode_stat_2',
             'points_var': 'active_mode_points',
             'state_var': 'nature_strikes_back_state',
             'song': 'play_song_66',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   title: INVASION FROM EVERYWHERE
-        #   intro_1: Chapter 8 mini-wizard multiball.
-        #   intro_2: Fight the lost-world invaders.
-        #   intro_3: Chapter case files raise the values.
         'invasion_from_everywhere': {
             'title': 'LOST WORLD INVASION',
-            'intro_1': 'Invasion multiball.',
-            'intro_2': 'Stop the invasion from everywhere.',
-            'intro_3': 'Case files boost value.',
-            'summary_title_complete': 'INVASION STOPPED',
-            'summary_title_failed': 'INVASION CONTINUES',
-            'stat_1_label': 'HITS',
-            'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'STATE',
-            'stat_2_var': 'invasion_from_everywhere_state',
+            'intro_1': 'LOCK A BALL AT THE DAILY BUGLE',
+            'intro_2': 'COMPLETE VILLAIN PHASES TO LAUNCH THE ROOFTOP ATTACK',
+            'intro_3': 'UPPER SPINNER BUILDS VALUE — UPPER TARGETS COLLECT JACKPOT',
+            'summary_title_complete': 'LOST WORLD INVASION COMPLETED',
+            'summary_title_failed': 'LOST WORLD INVASION ENDED',
+            'stat_1_label': 'ROOFTOP TARGET HITS',
+            'stat_1_var': 'active_mode_stat_1',
+            'stat_2_label': 'ATLANTEAN JACKPOTS COLLECTED',
+            'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'invasion_from_everywhere_state',
             'song': 'play_song_96',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   title: WHO IS THE REAL VILLAIN?
-        #   intro_1: Chapter 9 mini-wizard multiball.
-        #   intro_2: Unmask the chaos while multiball runs.
-        #   intro_3: Chapter case files raise the values.
         'who_is_the_real_villain': {
             'title': 'REAL VILLAIN?',
-            'intro_1': 'Unmask the villain.',
-            'intro_2': 'Hit chaos shots.',
-            'intro_3': 'Case files boost value.',
-            'summary_title_complete': 'VILLAIN REVEALED',
-            'summary_title_failed': 'VILLAIN VANISHED',
-            'stat_1_label': 'HITS',
+            'intro_1': 'HIT BOTH POPS — SAUCER REVEALS THE REAL SHOT',
+            'intro_2': 'COMPLETE CAMEO, DESPERADO AND BRUTUS',
+            'intro_3': 'SHOOT THE DAILY BUGLE FOR THE TIMED SUPER',
+            'summary_title_complete': 'REAL VILLAIN? COMPLETED',
+            'summary_title_failed': 'REAL VILLAIN? ENDED',
+            'stat_1_label': 'CYCLES COMPLETED',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'STATE',
-            'stat_2_var': 'who_is_the_real_villain_state',
+            'stat_2_label': 'SUPER JACKPOTS COLLECTED',
+            'stat_2_var': 'active_mode_major_hits',
             'points_var': 'active_mode_points',
             'state_var': 'who_is_the_real_villain_state',
             'song': 'play_song_49',
         },
         'time_tossed_showdown': {
             'title': 'TIME-TOSSED SHOWDOWN',
-            'intro_1': 'Three eras collide in multiball.',
-            'intro_2': 'Build the future on the rooftop.',
-            'intro_3': 'Your exit chooses the next battle.',
-            'summary_title_complete': 'TIME SURVIVED',
-            'summary_title_failed': 'TIME SURVIVED',
-            'stat_1_label': 'JACKPOTS',
+            'intro_1': 'THREE ERAS COLLIDE IN MULTIBALL',
+            'intro_2': '12 FLIPS TO BUILD YOUR NEXT BATTLE',
+            'intro_3': 'YOUR ROOFTOP EXIT CHOOSES THE VILLAIN',
+            'summary_title_complete': 'TIME-TOSSED SHOWDOWN COMPLETED',
+            'summary_title_failed': 'TIME-TOSSED SHOWDOWN ENDED',
+            'stat_1_label': 'JACKPOTS COLLECTED',
             'stat_1_var': 'active_mode_hits',
-            'stat_2_label': 'PHASES',
+            'stat_2_label': 'PHASES COMPLETED',
             'stat_2_var': 'active_mode_stat_1',
             'points_var': 'active_mode_points',
             'state_var': 'time_tossed_showdown_state',
             'song': 'play_song_50',
         },
-        # ORIGINAL DISPLAY TEXT:
-        #   intro_1: The citywide battle reaches its peak.
-        #   intro_2: Clear areas and collect Daily Bugle jackpots.
-        #   intro_3: Finish the final battle to save the city.
-        #   stat_1_label: AREAS CLEARED
         'final_showdown': {
             'title': 'KINGPIN',
-            'intro_1': 'Kingpin controls the city.',
-            'intro_2': 'Break his criminal empire.',
-            'intro_3': 'Defeat Kingpin in multiball.',
-            'summary_title_complete': 'KINGPIN DEFEATED',
-            'summary_title_failed': 'KINGPIN RULES',
-            'stat_1_label': 'AREAS',
+            'intro_1': "CLEAR FIVE PHASES TO BREAK KINGPIN'S EMPIRE",
+            'intro_2': 'LOWER SPINNER SELECTS THE NEXT PHASE',
+            'intro_3': 'CLEAR ALL FIVE, THEN SHOOT THE DAILY BUGLE',
+            'summary_title_complete': 'KINGPIN COMPLETED',
+            'summary_title_failed': 'KINGPIN ENDED',
+            'stat_1_label': 'PHASES COMPLETED',
             'stat_1_var': 'final_showdown_areas_cleared',
-            'stat_2_label': 'JACKPOTS',
+            'stat_2_label': 'JACKPOTS COLLECTED',
             'stat_2_var': 'final_showdown_jackpots',
             'points_var': 'active_mode_points',
             'state_var': 'final_showdown_state',
@@ -1506,7 +1319,7 @@ class VillainBookends(Mode):
             self._set_machine_var("villain_bookend_line_2", f"{stat_2_label}: {self._format_summary_value(stat_2)}")
         else:
             self._set_machine_var("villain_bookend_line_2", "")
-        self._set_machine_var("villain_bookend_line_3", f"POINTS: {points:,}")
+        self._set_machine_var("villain_bookend_line_3", f"TOTAL MODE POINTS: {points:,}")
         # Do not advertise or accept the double-flipper speedup until the
         # summary has been visible for at least two seconds. This gives the
         # final award callout/SFX a guaranteed minimum presentation window.

@@ -82,6 +82,8 @@ class MadScienceMeltdown(Mode):
         self._set("active_mode_points", 0)
         self._set("active_mode_hits", 0)
         self._set("active_mode_major_hits", 0)
+        self._set("active_mode_stat_1", 0)
+        self._set("active_mode_stat_2", 0)
 
         for target in self.LEFT_DROPS:
             self.add_mode_event_handler(
@@ -756,6 +758,8 @@ class MadScienceMeltdown(Mode):
         self._set("active_mode_points", self.mode_points)
         self._set("active_mode_hits", self.gas_jackpots + self.noah_jackpots)
         self._set("active_mode_major_hits", self.noah_jackpots)
+        self._set("active_mode_stat_1", self.gas_jackpots)
+        self._set("active_mode_stat_2", self.noah_jackpots)
         self._set(f"{self.MODE_KEY}_case_file_bonus", self.case_file_bonus)
         self._set(f"{self.MODE_KEY}_jackpot_value", self._noah_unmultiplied_value())
         self._set(f"{self.MODE_KEY}_gas_jackpots", self.gas_jackpots)

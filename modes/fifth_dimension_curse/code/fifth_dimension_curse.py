@@ -84,6 +84,7 @@ class FifthDimensionCurse(Mode):
         self.add_a_ball_target = None
         self.add_a_balls_awarded = 0
         self.jackpots_collected = 0
+        self.rubies_collected = 0
         self._vuk_collect_lockout_until = 0.0
         self.parked_saucers = set()
         self.parking_order = []
@@ -99,6 +100,7 @@ class FifthDimensionCurse(Mode):
         player["active_mode_points"] = 0
         player["active_mode_hits"] = 0
         player["active_mode_major_hits"] = 0
+        player["active_mode_stat_2"] = 0
 
         for zone, switches in self.ZONE_SWITCHES.items():
             for switch in switches:
@@ -273,6 +275,8 @@ class FifthDimensionCurse(Mode):
         value = self.RUBY_SUPER_BASE_VALUE + self.case_file_bonus
         self._score(value)
         self.jackpots_collected += 1
+        self.rubies_collected += 1
+        self.machine.game.player["active_mode_stat_2"] = self.rubies_collected
         self.machine.game.player["active_mode_hits"] = self.jackpots_collected
         self.machine.events.post(
             "show_mode_jackpot",

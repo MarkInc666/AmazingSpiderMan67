@@ -281,7 +281,7 @@ class FlyTwins(CaseFileMixin, Mode):
     def _sync_vars(self):
         player = self.machine.game.player
         player["active_mode_points"] = self.mode_points
-        player["active_mode_stat_1"] = self.rounds_completed
+        player["active_mode_stat_1"] = self.super_jackpots
         player["active_mode_stat_2"] = self.jackpots_collected
         player["fly_twins_rounds_completed"] = self.rounds_completed
         player["fly_twins_jackpots"] = self.jackpots_collected

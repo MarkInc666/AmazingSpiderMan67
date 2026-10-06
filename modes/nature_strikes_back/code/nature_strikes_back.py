@@ -98,6 +98,7 @@ class NatureStrikesBack(Mode):
         self.saucer_light_states = {}
         self.add_a_balls = 0
         self.supers = 0
+        self.areas_thawed = 0
 
         player = self.machine.game.player
         self.case_file_bonus = int(player["mini_wizard_case_file_bonus"] or 0)
@@ -106,6 +107,7 @@ class NatureStrikesBack(Mode):
         player["active_mode_points"] = 0
         player["active_mode_hits"] = 0
         player["active_mode_major_hits"] = 0
+        player["active_mode_stat_2"] = 0
 
         self.add_mode_event_handler("s_web_spinner_active", self._spinner_hit)
         self.add_mode_event_handler("s_trispinner_opto_active", self._spinner_hit)
@@ -393,6 +395,8 @@ class NatureStrikesBack(Mode):
         if zone in self.blocked_zones or zone in self.thawed_zones:
             return
         self.thawed_zones.add(zone)
+        self.areas_thawed += 1
+        self.machine.game.player["active_mode_stat_2"] = self.areas_thawed
         value = self.ZONE_BASE + self.case_file_bonus
         self._score(value)
         self.machine.events.post(f"nature_strikes_back_zone_{zone}_thawed")
