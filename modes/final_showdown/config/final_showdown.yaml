@@ -265,6 +265,19 @@ light_player:
     l_gi_a: off
 
 show_player:
+  # Keep the roof-entry route visible for every gate-open path in this wizard.
+  # A separate show key prevents phase-specific chase stops from clearing it.
+  rooftop_diverter_open:
+    shared_final_vuk_chase:
+      key: final_showdown_gate_route_chase
+      loops: -1
+      priority: 1250
+      show_tokens: {color: "FF4040"}
+  rooftop_diverter_close:
+    shared_final_vuk_chase:
+      key: final_showdown_gate_route_chase
+      action: stop
+
   final_showdown_parking_saucers_on:
     final_showdown_parking_saucer_1_pulse: {action: play, loops: -1, priority: 1060}
     final_showdown_parking_saucer_2_pulse: {action: play, loops: -1, priority: 1060}

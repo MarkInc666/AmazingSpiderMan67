@@ -52,6 +52,19 @@ event_player:
     - rooftop_diverter_close
 
 show_player:
+  # Keep the roof-entry route visible for every gate-open path in this wizard.
+  # A separate show key prevents phase-specific chase stops from clearing it.
+  rooftop_diverter_open:
+    shared_final_vuk_chase:
+      key: who_is_the_real_villain_gate_route_chase
+      loops: -1
+      priority: 900
+      show_tokens: {color: "FFD040"}
+  rooftop_diverter_close:
+    shared_final_vuk_chase:
+      key: who_is_the_real_villain_gate_route_chase
+      action: stop
+
   mode_who_is_the_real_villain_stopping:
     real_villain_saucer_1_parking_available_show: {action: stop}
     real_villain_saucer_1_parking_held_show: {action: stop}

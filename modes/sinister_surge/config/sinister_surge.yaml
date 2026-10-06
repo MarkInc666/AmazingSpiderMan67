@@ -157,6 +157,19 @@ light_player:
     l_3_hole_r: off
 
 show_player:
+  # Keep the roof-entry route visible for every gate-open path in this wizard.
+  # A separate show key prevents phase-specific chase stops from clearing it.
+  rooftop_diverter_open:
+    shared_final_vuk_chase:
+      key: sinister_surge_gate_route_chase
+      loops: -1
+      priority: 900
+      show_tokens: {color: "FFD040"}
+  rooftop_diverter_close:
+    shared_final_vuk_chase:
+      key: sinister_surge_gate_route_chase
+      action: stop
+
   sinister_surge_saucer_1_parking_clear:
     sinister_surge_saucer_1_parking_available_show: {action: stop}
     sinister_surge_saucer_1_parking_held_show: {action: stop}

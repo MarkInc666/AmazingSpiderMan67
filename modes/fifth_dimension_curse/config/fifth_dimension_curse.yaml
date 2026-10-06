@@ -302,6 +302,19 @@ light_player:
     l_upper_right: FF4444
 
 show_player:
+  # Keep the roof-entry route visible for every gate-open path in this wizard.
+  # A separate show key prevents phase-specific chase stops from clearing it.
+  rooftop_diverter_open:
+    shared_final_vuk_chase:
+      key: fifth_dimension_curse_gate_route_chase
+      loops: -1
+      priority: 900
+      show_tokens: {color: "FFD040"}
+  rooftop_diverter_close:
+    shared_final_vuk_chase:
+      key: fifth_dimension_curse_gate_route_chase
+      action: stop
+
   fifth_dimension_curse_saucer_1_parking_available:
     fifth_dimension_curse_saucer_1_parking_available_show: {loops: -1, priority: 100}
   fifth_dimension_curse_saucer_1_parking_held:

@@ -120,6 +120,19 @@ light_player:
     gi: E0E0E0
 
 show_player:
+  # Keep the roof-entry route visible for every gate-open path in this wizard.
+  # A separate show key prevents phase-specific chase stops from clearing it.
+  rooftop_diverter_open:
+    shared_final_vuk_chase:
+      key: crime_wave_gate_route_chase
+      loops: -1
+      priority: 900
+      show_tokens: {color: "FFD040"}
+  rooftop_diverter_close:
+    shared_final_vuk_chase:
+      key: crime_wave_gate_route_chase
+      action: stop
+
   # Plotter / pops: cyan. Pulse = available, solid = captured,
   # fast flash = under 5 seconds remaining.
   crime_wave_area_plotter_available:

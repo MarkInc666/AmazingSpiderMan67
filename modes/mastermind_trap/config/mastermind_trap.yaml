@@ -86,6 +86,19 @@ event_player:
   drop_target_bank_dt_bank_right_down: drop_target_bank_dt_bank_right_reset
 
 show_player:
+  # Keep the roof-entry route visible for every gate-open path in this wizard.
+  # A separate show key prevents phase-specific chase stops from clearing it.
+  rooftop_diverter_open:
+    shared_final_vuk_chase:
+      key: mastermind_trap_gate_route_chase
+      loops: -1
+      priority: 900
+      show_tokens: {color: "FFD040"}
+  rooftop_diverter_close:
+    shared_final_vuk_chase:
+      key: mastermind_trap_gate_route_chase
+      action: stop
+
   mastermind_trap_saucer_1_parking_clear:
     mastermind_trap_saucer_1_parking_available_show: {action: stop}
     mastermind_trap_saucer_1_parking_held_show: {action: stop}

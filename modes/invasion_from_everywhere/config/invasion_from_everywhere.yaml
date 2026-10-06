@@ -64,6 +64,19 @@ event_player:
     - rooftop_diverter_close
 
 show_player:
+  # Keep the roof-entry route visible for every gate-open path in this wizard.
+  # A separate show key prevents phase-specific chase stops from clearing it.
+  rooftop_diverter_open:
+    shared_final_vuk_chase:
+      key: invasion_from_everywhere_gate_route_chase
+      loops: -1
+      priority: 900
+      show_tokens: {color: "FFD040"}
+  rooftop_diverter_close:
+    shared_final_vuk_chase:
+      key: invasion_from_everywhere_gate_route_chase
+      action: stop
+
   invasion_saucer_1_parking_available:
     invasion_saucer_1_parking_available_show: {loops: -1, priority: 100}
   invasion_saucer_1_parking_held:

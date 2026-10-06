@@ -110,6 +110,19 @@ coil_player:
     c_right_bank_drop_5: {action: pulse}
 
 show_player:
+  # Keep the roof-entry route visible for every gate-open path in this wizard.
+  # A separate show key prevents phase-specific chase stops from clearing it.
+  rooftop_diverter_open:
+    shared_final_vuk_chase:
+      key: mad_science_meltdown_gate_route_chase
+      loops: -1
+      priority: 900
+      show_tokens: {color: "FFD040"}
+  rooftop_diverter_close:
+    shared_final_vuk_chase:
+      key: mad_science_meltdown_gate_route_chase
+      action: stop
+
   mad_science_meltdown_saucer_1_parking_available:
     mad_science_meltdown_saucer_1_parking_available_show: {loops: -1, priority: 100}
   mad_science_meltdown_saucer_1_parking_held:
