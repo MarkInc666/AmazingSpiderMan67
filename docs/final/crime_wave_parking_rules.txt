@@ -2,7 +2,7 @@ CRIME WAVE — PARKING RULES
 
 Starts with 3-ball multiball. Up to 3 saucers may hold balls, provided 1
 ball remains loose. Normally 2 can park with the 3-ball start.
-Independent 15-second holds. Occupied switch chatter does not score, refresh
+Independent 12-second holds. Occupied switch chatter does not score, refresh
 Doctor Cool, or restart parking timers.
 On each drain, check after the game count and ball saves update. Release the
 oldest parked ball if none remain loose. A 250ms guard also checks continuously.

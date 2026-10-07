@@ -152,7 +152,7 @@ class TheWebTightens(Mode):
         "s_upper_target_right",
     }
 
-    SAUCER_HOLD_MS = 20_000
+    SAUCER_HOLD_MS = 12_000
     PHASE_ANNOUNCE_MS = 2_000
     SUPER_GATE_VERIFY_MS = 1000
     SUPER_GATE_MAX_ATTEMPTS = 2

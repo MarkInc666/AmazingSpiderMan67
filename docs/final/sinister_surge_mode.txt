@@ -70,7 +70,7 @@ GREEN GOBLIN
 SAUCER PARKING
 - Up to three balls may park, provided at least one ball remains loose.
 - Capacity: 1 ball in play = 0 parked; 2 = 1; 3 = 2; 4 = 3.
-- Each ordinary parked ball has its own 20-second timer, including additional
+- Each ordinary parked ball has its own 12-second timer, including additional
   parking during an active Goblin challenge. Parking does not pause stage timers.
 - A 250ms watchdog releases the oldest parked ball if no loose ball remains.
 - If that safety release is Goblin's challenge ball, reset the attempt.

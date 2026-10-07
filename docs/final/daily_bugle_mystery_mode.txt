@@ -84,3 +84,7 @@ Audio routing
   `sm_i_wonder_what_mr_jameson`, `sm_lets_get_to_the_daily_bugle`,
   `sm_these_photos_will_make_front_page`, `jj_wheres_that_parker_kid`, and
   `sm_i_better_collect_my_reward`.
+
+2026-10-07 audio update: the news_views_start newspaper sting ducks the music bus by 70%, with 0.1-second attack and 0.5-second release. Ducking follows the sting playback when daily_bugle_award_widget_show fires. Machine listening test pending.
+
+2026-10-07 slingshot audio update: all four daily_bugle_ab_callout slots (impostor_1 through impostor_4) duck music by 70%, with 0.1-second attack and 0.5-second release. Includes the earlier newspaper-sting ducking change. Machine listening test pending.

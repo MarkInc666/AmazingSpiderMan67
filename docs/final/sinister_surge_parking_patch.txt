@@ -5,7 +5,7 @@ Merge this ZIP into the project, replacing matching files. It changes only
 Sinister Surge and its documentation/workbook entry. The earlier wizard
 intro/summary patch can remain installed; these files do not overlap it.
 
-Parking: up to 3 held with 1 loose, independent 20s timers; Goblin capture 10s.
+Parking: up to 3 held with 1 loose, independent 12s timers; Goblin capture 10s.
 Entering Goblin releases existing parked balls, staggered 300ms apart.
 An ongoing free-ball watchdog releases the oldest held ball if necessary.
 A+B can add a ball from 2 or 3 balls in play; cap 4; Victory Laps unchanged.

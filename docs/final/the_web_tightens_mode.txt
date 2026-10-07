@@ -167,7 +167,7 @@ PHYSICAL / MACHINE TEST ITEMS
   replaced by the smaller phase-status widget.
 
 2026-10-05 parking consistency update:
-- Ordinary saucer holds have independent 20-second timers. The deliberate VUK
+- Ordinary saucer holds have independent 12-second timers. The deliberate VUK
   cycle lock remains controlled by the mode and is not ordinary saucer parking.
 - Capacity is at most 3 saucers and always subtracts the VUK-held ball.
 - Fiddler GET READY/WATCH may temporarily hold the last loose ball; release
@@ -187,3 +187,5 @@ PHYSICAL / MACHINE TEST ITEMS
   Ordinary available parking slowly pulses red. Held overrides objectives
   with solid 75% red (BF0000). Unavailable ordinary spots are off.
 - MPF/GMC and physical-machine verification remain pending.
+
+2026-10-07 timing update: opening multiball ball save is 20 seconds.

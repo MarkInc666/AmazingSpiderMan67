@@ -18,7 +18,7 @@ class NatureStrikesBack(Mode):
          VUK for the Super Jackpot, then begin the next harder cycle.
 
     Saucers remain available for parking throughout the wizard. A parked ball is
-    held for 20 seconds after its latest saucer hit, but is released if parking would
+    held for 12 seconds after its latest saucer hit, but is released if parking would
     leave no loose ball on the playfield.
     """
 
@@ -27,7 +27,7 @@ class NatureStrikesBack(Mode):
 
     START_BALLS = 3
     MAX_BALLS = 5
-    SAUCER_HOLD_MS = 20_000
+    SAUCER_HOLD_MS = 12_000
 
     SPIN_VALUE = 100_000
     WEB_FIRST_BASE = 500_000

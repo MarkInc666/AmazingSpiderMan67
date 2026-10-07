@@ -56,11 +56,11 @@ Master Technician phase
 
 Saucer parking
 - All three saucers may park balls in every phase.
-- Maximum hold is 15 seconds per saucer ball.
+- Maximum hold is 12 seconds per saucer ball.
 - At least one ball must remain free on the playfield.
 - If a new hold or drain would leave no free ball, release the oldest parked ball first. A check after the drain relay and a 250ms continuous guard maintain this rule.
 - A fresh saucer arrival collects any active Spider-Men/Vine objective before parking. An occupied saucer that goes inactive then active counts as a new hit and can collect its current objective. It does not add a second parked ball, change arrival order, or refresh the original hold timer.
-- Parking persists across phase changes with the original 15-second timers. A rotated/qualified objective on an occupied saucer can be collected by a new inactive-to-active hit.
+- Parking persists across phase changes with the original 12-second timers. A rotated/qualified objective on an occupied saucer can be collected by a new inactive-to-active hit.
 - Mode-end releases are oldest first at 300ms intervals, including direct stops. Brief eject clearance prevents recapture/duplicate awards from the departing ball.
 
 Lighting

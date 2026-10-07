@@ -12,7 +12,7 @@ class InvasionFromEverywhere(Mode):
       -> LOAD VUK -> DeVargas -> Atlantean -> repeat.
 
     The mode starts 3-ball multiball, caps at four balls, and ends as soon as
-    the multiball collapses to one ball. Saucers may park balls for 20 seconds,
+    the multiball collapses to one ball. Saucers may park balls for 12 seconds,
     while the VUK intentionally holds its ball for the entire lower-playfield
     phase until that phase's lock condition launches it to the rooftop.
     """
@@ -22,7 +22,7 @@ class InvasionFromEverywhere(Mode):
 
     START_BALLS = 3
     MAX_BALLS = 4
-    SAUCER_HOLD_MS = 20_000
+    SAUCER_HOLD_MS = 12_000
 
     IGOR_GOOD_SCORE = 500_000
     IGOR_BAD_SCORE = 50_000

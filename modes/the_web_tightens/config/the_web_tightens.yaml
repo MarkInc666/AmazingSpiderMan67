@@ -14,7 +14,7 @@ multiballs:
   the_web_tightens_multiball:
     ball_count: 2
     ball_count_type: total
-    shoot_again: 15s
+    shoot_again: 20s
     start_events: the_web_tightens_start_multiball
     add_a_ball_events:
       - the_web_tightens_add_a_ball

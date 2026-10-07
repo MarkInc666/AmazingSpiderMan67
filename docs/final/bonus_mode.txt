@@ -71,3 +71,6 @@ After the final total finishes its center hold, the retiring player receives a f
 YOU'VE REACHED THE END / KINGPIN DEFEATED / FINAL SCORE. Bonus keeps its wait
 queue until this screen completes, so another player or attract cannot start
 underneath it.
+
+2026-10-07 left-bank lane spotting:
+Completing the left 3-bank retains its existing +2 bonus-count / 5,000-point award and spots one random unlit inlane/outlane rollover. Spotting the fourth lane lights a random web target for the bonus multiplier and banks one outlane save, using the normal completion path. No extra rollover points are awarded for a spotted lane. If all four lanes are already lit, the bank spots nothing and does not award another save until the lanes reset. Machine test pending.

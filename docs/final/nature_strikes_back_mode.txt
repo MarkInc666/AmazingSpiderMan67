@@ -51,7 +51,7 @@ CYCLE 4 — STABILIZE / SUPER
 
 SAUCER PARKING
 - All three saucers can park balls during every stage whether or not they are lit.
-- Each saucer has a 20-second hold timer. Occupied-switch hits intentionally
+- Each saucer has a 12-second hold timer. Occupied-switch hits intentionally
   remain active: they refresh that timer and may collect a newly qualified
   saucer award. Original arrival order remains unchanged.
 - Up to three balls may be parked, provided at least one remains loose.

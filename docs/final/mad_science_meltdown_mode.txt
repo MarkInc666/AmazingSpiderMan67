@@ -75,7 +75,7 @@ Saucer containment - Dr. Von Schlick
   loose and playable.
 - Up to three balls may be parked, keeping at least one loose. With the
   normal 3-ball start, at most two park; with 4 balls, all three may park.
-- Independent 20-second holds. Occupied-switch hits do not restart timers.
+- Independent 12-second holds. Occupied-switch hits do not restart timers.
 - Noah multiplier by parked-ball count:
   - 0 parked: 1X
   - 1 parked: 2X

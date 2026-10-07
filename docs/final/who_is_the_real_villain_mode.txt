@@ -5,9 +5,9 @@ OVERVIEW
 - Repeating 2-ball wizard multiball.
 - Opening ball save: 20 seconds.
 - The mode repeats Cameo -> Desperado -> Brutus -> VUK Super until multiball ends.
-- Saucers are normal wizard parking spots (20-second maximum hold) whenever they are not active Cameo/Brutus objectives.
+- Saucers are normal wizard parking spots (12-second maximum hold) whenever they are not active Cameo/Brutus objectives.
 - Park up to 3 saucer balls while retaining at least one loose ball (2-ball start permits 1 parked; 4-ball cap permits 3).
-- Each parked ball has an independent 20-second watchdog. Oldest arrival releases first when needed, including a check after each drain and a 250ms continuous guard.
+- Each parked ball has an independent 12-second watchdog. Oldest arrival releases first when needed, including a check after each drain and a 250ms continuous guard.
 - Available empty spots pulse slowly red. Held spots are solid 75% red (BF0000). Active empty Cameo/Brutus objectives flash white; held takes precedence. Other available spots remain lit when capacity permits.
 - Multi-ball releases are oldest first, staggered by 300ms. Balls waiting for a scheduled live release remain counted as held. Brief eject clearance prevents switch chatter from collecting or reparking that same ball.
 - Case Files do not provide helper powers in wizard modes. Every Jackpot/major award worth 500K or more adds 20K x Chapter 10 Case Files collected. Smaller awards do not receive the Case File adder.

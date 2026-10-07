@@ -23,7 +23,7 @@ class TimeTossedShowdown(Mode):
 
     ROOFTOP_SETUP_FLIPS = 12
     MAX_BALLS = 4
-    SAUCER_HOLD_MS = 15_000
+    SAUCER_HOLD_MS = 12_000
 
     VINE_VALUE = 100_000
     VINE_MAX_SPINNER_SPINS = 20

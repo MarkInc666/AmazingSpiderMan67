@@ -27,7 +27,7 @@ GAMEPLAY SUMMARY
 - Zones remain bright for 5 seconds, flicker, and return to dim after 8 seconds.
 - Entering the VUK with active zones collects a Curse Jackpot based on the number of active zones plus the chapter Case File bonus.
 - Entering the VUK with no active zones scores no Curse Jackpot and uses the same 1.5-second release.
-- Any saucer may park its ball while at least one other ball remains loose. With four balls in play, all three saucers may be occupied. Each ordinary hold has an independent 20-second timer. Held switch hits do not restart it.
+- Any saucer may park its ball while at least one other ball remains loose. With four balls in play, all three saucers may be occupied. Each ordinary hold has an independent 12-second timer. Held switch hits do not restart it.
 - Saucer 1 maps to the left upper target, Saucer 2 to center, and Saucer 3 to right.
 - After a VUK Zone Jackpot, occupied saucers not already awaiting Ruby release light their matching upper targets for Ruby Super Jackpots.
 - Each Ruby Super Jackpot scores 1,000,000 plus the chapter Case File bonus.

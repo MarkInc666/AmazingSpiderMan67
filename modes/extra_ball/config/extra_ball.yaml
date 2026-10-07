@@ -271,7 +271,13 @@ show_player:
       loops: -1
       priority: 95
 
-  consume_outlane_add_a_ball:
+  # Follow the updated bank count, so spending one save cannot hide others.
+  player_outlane_add_a_ball_available{value > 0 and current_player.multiball_autoplunge_active == 0}:
+    outlane_add_a_ball_available_show:
+      loops: -1
+      priority: 95
+
+  player_outlane_add_a_ball_available{value == 0}:
     outlane_add_a_ball_available_show:
       action: stop
 

@@ -28,7 +28,7 @@ class MastermindTrap(Mode):
     DISPLAY_NAME = "Mastermind Trap"
 
     MAX_BALLS = 4
-    SAUCER_HOLD_MS = 20_000
+    SAUCER_HOLD_MS = 12_000
     PARA_ATTEMPTS_REQUIRED = 3
     PARA_JACKPOT = 500_000
     PARA_MATCH_MULTIPLIER = 3

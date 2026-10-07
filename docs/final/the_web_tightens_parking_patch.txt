@@ -1,6 +1,6 @@
 THE WEB TIGHTENS PARKING PATCH — October 5, 2026
 Merge these files into the project, replacing matching paths. Keep prior patches.
-20s ordinary holds, oldest-ball safety, one retained between ordinary phases,
+12s ordinary holds, oldest-ball safety, one retained between ordinary phases,
 300ms mode-end release staggering and common individual lighting.
 Fiddler presentation and controlled Super feed/release are preserved.
 Workbook includes cumulative notes for the first five wizard parking patches.

@@ -63,7 +63,7 @@ class BonusLanes(Mode):
         self.add_mode_event_handler("bonus_left_web_request", self.left_web_hit)
         self.add_mode_event_handler("bonus_center_web_timeout", self.center_web_timeout)
         self.add_mode_event_handler("bonus_left_web_timeout", self.left_web_timeout)
-        self.add_mode_event_handler("bonus_left_bank_complete", self.add_bonus_count, amount=2)
+        self.add_mode_event_handler("bonus_left_bank_complete", self.left_bank_complete)
         self.add_mode_event_handler("bonus_right_bank_complete", self.add_bonus_count, amount=3)
         self.add_mode_event_handler("custom_bonus_base_tick", self.update_bonus_lights)
         self.add_mode_event_handler("bonus_lights_dim", self.dim_bonus_lights)
@@ -114,6 +114,19 @@ class BonusLanes(Mode):
         self.refresh_lane_lights()
         self.machine.events.post("bonus_lane_lit_sfx")
 
+        self._check_lanes_complete()
+
+    def left_bank_complete(self, **kwargs):
+        self.add_bonus_count(amount=2)
+        unlit_lanes = [i for i, lit in enumerate(self.completed) if not lit]
+        if not unlit_lanes:
+            return
+        self.completed[random.choice(unlit_lanes)] = True
+        self.refresh_lane_lights()
+        self.machine.events.post("bonus_lane_lit_sfx")
+        self._check_lanes_complete()
+
+    def _check_lanes_complete(self):
         if all(self.completed):
             self.light_random_web()
             # Grant an outlane add-a-ball when all lanes complete

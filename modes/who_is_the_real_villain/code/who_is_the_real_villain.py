@@ -30,7 +30,7 @@ class WhoIsTheRealVillain(Mode):
     adds a ball up to four balls in play (15s add-a-ball save); at the four-ball
     cap it awards 500K + the Chapter 10 case-file bonus instead.
 
-    Saucers park balls for up to 20 seconds whenever they are not active Cameo
+    Saucers park balls for up to 12 seconds whenever they are not active Cameo
     or Brutus objective shots. At least one loose ball is always kept in play.
     """
 
@@ -38,7 +38,7 @@ class WhoIsTheRealVillain(Mode):
     DISPLAY_NAME = "WHO IS THE REAL VILLAIN?"
 
     MAX_BALLS = 4
-    SAUCER_HOLD_MS = 20_000
+    SAUCER_HOLD_MS = 12_000
     SAUCER_EJECT_MS = 500
     BANK_RESET_MS = 350
 

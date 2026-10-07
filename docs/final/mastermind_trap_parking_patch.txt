@@ -3,7 +3,7 @@ Merge into the machine project, replacing matching files.
 Based on ASM67_2026_10_05_12am.zip, plus the Sinister Surge workbook note update.
 
 Phase 1 and Mysterio: up to 3 parked, keeping 1 loose. Doc: none. Super: max 1.
-All holds have independent 20-second timers. Oldest-ball free-ball recovery,
+All holds have independent 12-second timers. Oldest-ball free-ball recovery,
 staggered releases and common saucer lighting are included. No new player vars.
 
 The workbook includes BOTH Sinister Surge and Mastermind parking notes, so it

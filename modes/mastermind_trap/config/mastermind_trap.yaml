@@ -18,7 +18,7 @@ multiballs:
   mastermind_trap_multiball:
     ball_count: 2
     ball_count_type: total
-    shoot_again: 18s
+    shoot_again: 20s
     start_events: mastermind_trap_start_multiball
     add_a_ball_events:
       - mastermind_trap_add_a_ball

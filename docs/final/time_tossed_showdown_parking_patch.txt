@@ -3,7 +3,7 @@ TIME-TOSSED SHOWDOWN PARKING PATCH — 2026-10-05
 Apply these five files over ASM67_2026_10_05_12am with earlier wizard patches retained.
 Includes cumulative workbook notes through Chapter 11.
 
-15-second holds retained by explicit request. Up to 3 parked with 1 loose. Oldest drain recovery after relay, 250ms continuous guard, common saucer lighting, and 300ms mode-end releases.
+12-second parking holds. Up to 3 parked with 1 loose. Oldest drain recovery after relay, 250ms continuous guard, common saucer lighting, and 300ms mode-end releases.
 Saucer objectives and parking share one hit handler. Occupied inactive-to-active hits can collect newly rotated/qualified objectives. They do not duplicate a parked ball or change its original timer/arrival order. Parking timers continue across phases.
 Rooftop selection/build, Spider-Men rotation, Vine qualification, Technician awards, ball saves and 4-ball cap retained. Other modes retain their existing timers.
 

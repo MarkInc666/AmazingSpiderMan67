@@ -53,7 +53,7 @@ class SinisterSurge(Mode):
     10 second ball save when ball added.
 
     Saucers score 50K.
-    If more than 1 ball is active, one saucer may hold one ball for 20s.
+    If more than 1 ball is active, one saucer may hold one ball for 12s.
     Any additional saucer ejects normally while a ball is already parked.
     Green Goblin overrides the normal rest with its 10s safe-time hold.
     If only 1 ball remains, saucers eject immediately.
@@ -75,7 +75,7 @@ class SinisterSurge(Mode):
     SAUCER_SCORE = 50_000
     JACKPOT_BASE = 100_000
     SUPER_JACKPOT_BASE = 1_000_000
-    SAUCER_HOLD_MS = 20_000
+    SAUCER_HOLD_MS = 12_000
     GOBLIN_HOLD_MS = 10_000
     ELECTRO_MOVE_MS = 4_000
     RHINO_BERSERK_MS = 10_000

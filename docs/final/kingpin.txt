@@ -54,7 +54,7 @@ When A+B is complete:
 - If already at 4 balls, the qualification remains banked until a ball is lost.
 - After an add-a-ball is collected, A+B resets and can be completed again.
 
-During recap phases, surplus balls may park in a saucer for 20 seconds before
+During recap phases, surplus balls may park in a saucer for 12 seconds before
 being ejected. Reveal & Collect overrides normal saucer parking while its saucer
 awards are active.
 

@@ -26,7 +26,7 @@ class FinalShowdown(Mode):
     }
 
     MAX_BALLS = 4
-    SAUCER_HOLD_MS = 20_000
+    SAUCER_HOLD_MS = 12_000
     ADDED_BALL_PENDING_MS = 2_000
     FINAL_VICTORY_HOLD_MS = 8_000
 
