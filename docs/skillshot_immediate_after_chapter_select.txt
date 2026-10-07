@@ -1,0 +1,11 @@
+ASM67 — immediate skill shot after comic selection
+
+Copy modes/base/config/base.yaml over the existing file, then restart MPF. Keep all other previously supplied patches.
+
+Selecting a comic chapter now posts chapter_select_confirmed immediately, rather than waiting two seconds. This starts the existing skillshot mode, including its message, flashing selected shot and flipper navigation. The chapter-selected confirmation overlay is removed, allowing the skillshot display to appear immediately. The main-game slide is still restored when the selection is made.
+
+The current skillshot mode has no countdown/expiration timer. It stays available until a skillshot target is hit or one of the existing miss switches is hit. Its ticking audio is a sound effect, not a countdown. Scoring and shot-selection rules are unchanged.
+
+The default ball-save timer already starts from s_plunger_inactive, when the ball leaves the shooter lane. This patch leaves that trigger and duration unchanged.
+
+Checked: YAML parses; the only configuration changes are immediate chapter_select_confirmed and removal of the confirmation overlay. Machine/display testing remains: select with both flippers while the ball is parked and confirm immediate message/light; wait before plunging and confirm skill shot remains available; plunge to select and confirm no two-second delay.

@@ -236,6 +236,9 @@ class TestModeSelect(Mode):
 
     def _start_pressed(self, **kwargs):
         """Launch the highlighted test without using the shooter-lane switch."""
+        base = self.machine.modes.get("base")
+        if not self.machine.game or (base and getattr(base, "_game_abort_requested", False)):
+            return
         p = self.machine.game.player
         index = int(p["test_mode_select_index"])
         _, _, kind, _, _ = self.CATALOG[index]

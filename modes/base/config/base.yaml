@@ -82,7 +82,8 @@ event_player:
     - play_chapter_select_music
 
   chapter_select_selected:
-    - chapter_select_confirmed|2s
+    # Ready the skill shot immediately after the comic is selected.
+    - chapter_select_confirmed
 
   chapter_select_confirmed:
     - play_chapter_base_music
@@ -290,9 +291,7 @@ widget_player:
       action: remove
       key: chapter_select_transition
     chapter_selected_confirmation:
-      action: play
-      priority: 2200
-      expire: 2s
+      action: remove
 
   # Attach the left chapter/status panel only after GMC has actually made
   # main_game the active slide.  Playing it on mode_base_started races the
@@ -517,8 +516,8 @@ slide_player:
       action: remove
 
   # The initial main-game slide was intentionally suppressed while the comic
-  # carousel owned the display. Restore it behind the two-second selection
-  # confirmation once a chapter has been chosen.
+  # carousel owned the display. Restore it immediately for the skill shot
+  # once a chapter has been chosen.
   chapter_select_selected:
     main_game:
       action: play

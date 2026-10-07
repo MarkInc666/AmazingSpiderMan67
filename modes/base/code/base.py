@@ -22,6 +22,7 @@ class Base(Mode):
     REMINDER_DELAY_NAME = "mode_message_reminder"
     REMINDER_INTERVAL_MS = 9000
     TERMINAL_AWARD_MESSAGE_SECONDS = 2.0
+    GAME_ABORT_LEFT_HOLD_MS = 3001
 
     TERMINAL_AWARD_EVENTS = (
         "villain_summary_delay_for_final_award",
@@ -105,6 +106,13 @@ class Base(Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self._game_abort_requested = False
+        self.add_mode_event_handler(
+            "s_startbutton_active", self._abort_game_start_pressed, priority=100000
+        )
+        self.add_mode_event_handler(
+            "player_add_request", self._allow_player_add_without_abort, priority=100000
+        )
         self._terminal_award_message_deadline = 0.0
         for event in self.MESSAGE_EVENTS:
             self.add_mode_event_handler(
@@ -170,6 +178,34 @@ class Base(Mode):
         self._ball_end_display_lock = False
         self._clear_mode_message_vars()
         self._clear_mode_status_vars()
+
+    def _game_abort_chord_active(self):
+        switch = self.machine.switches.get("s_left_flipper")
+        return bool(switch and self.machine.switch_controller.is_active(
+            switch, ms=self.GAME_ABORT_LEFT_HOLD_MS
+        ))
+
+    def _allow_player_add_without_abort(self, **kwargs):
+        # START's tagged add-player event can arrive before its raw switch event.
+        return not (self._game_abort_requested or self._game_abort_chord_active())
+
+    def _abort_game_start_pressed(self, **kwargs):
+        game = self.machine.game
+        if not game or self._game_abort_requested or not self._game_abort_chord_active():
+            return
+        self._game_abort_requested = True
+        player = game.player
+        if player and int(player["test_mode_session"] or 0) == 1:
+            player["test_mode_exit_requested"] = 1
+            player["test_mode_waiting_for_ball_return"] = 0
+            player["test_mode_autoplunge_pending"] = 0
+            player["test_mode_autolaunch_allowed"] = 0
+            player["multiball_autoplunge_active"] = 0
+            self.machine.variables.set_machine_var("test_mode_session_requested", 0)
+            self.machine.variables.set_machine_var("chapter_progression_test_unlock_all", 0)
+            self.machine.events.post("test_mode_ball_loop_disable")
+            self.machine.events.post("test_mode_exit_selected")
+        self.machine.events.post("end_game")
 
     def _maybe_play_outlane_drain_callout(self, **kwargs):
         """Play a drain quote only for an unsaved single-ball outlane drain."""

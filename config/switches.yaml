@@ -42,6 +42,7 @@ switches:
 
 # leaf next to !
   s_leaf_next_to_1:
+    tags: playfield_active
   # 19
     number: 3208-1
 
@@ -50,31 +51,33 @@ switches:
     number: 3208-2
 
   s_web_target_mid:
+    tags: playfield_active
   # 1B
     number: 3208-3
   s_saucer_1:
   # 1E
     number: 3208-6
-    tags: saucer_1
+    tags: saucer_1, playfield_active
     platform_settings:    
         debounce_open: 30
         debounce_close: 30
   s_saucer_2:
   # 1D  
     number: 3208-5
-    tags: saucer_2
+    tags: saucer_2, playfield_active
     platform_settings:    
         debounce_open: 30
         debounce_close: 30
   s_saucer_3:
   # 1C  
     number: 3208-4
-    tags: saucer_3
+    tags: saucer_3, playfield_active
     platform_settings:    
         debounce_open: 30
         debounce_close: 30
 #VUK switch         
   s_vuk_switch:
+    tags: playfield_active
   # 1F
     number: 3208-7
 
@@ -82,29 +85,36 @@ switches:
 # 20
 #    number: 3208-8
   s_upper_entrance_opto:
+    tags: playfield_active
   # 23
     number: 3208-11
     type: NC
   s_upper_exit_left_opto:
+    tags: playfield_active
   # 21
     number: 3208-9
     type: NC
   s_upper_exit_right_opto:
+    tags: playfield_active
   # 24
     number: 3208-12
     type: NC
   s_trispinner_opto:
+    tags: playfield_active
   # 22
     number: 3208-10
     type: NC
 
   s_upper_target_left:
+    tags: playfield_active
   # 25
     number: 3208-13
   s_upper_target_center:
+    tags: playfield_active
   # 26
     number: 3208-14
   s_upper_target_right:
+    tags: playfield_active
   # 27
     number: 3208-15
 
@@ -112,6 +122,7 @@ switches:
 # 29  not used?
 
   s_right_drops_top_rubber:
+    tags: playfield_active
 # 2A 
     number: 3208-18
 
@@ -119,28 +130,36 @@ switches:
 
 
   s_star_rollover:
+    tags: playfield_active
   # 2E
     number: 3208-22
   s_inlane_a:
+    tags: playfield_active
   # 2D
     number: 3208-21
   s_inlane_b:
+    tags: playfield_active
   # 2C
     number: 3208-20
   s_above_star:
+    tags: playfield_active
   # 2F
     number: 3208-23
     
   s_web_spinner:
+    tags: playfield_active
   # 30
     number: 3208-24
   s_above_spinner:
+    tags: playfield_active
   # 31
     number: 3208-25
   s_inlane_m_l:
+    tags: playfield_active
   # 32
     number: 3208-26
   s_web_target_left:
+    tags: playfield_active
   # 33
     number: 3208-27
 # 34 not used?
@@ -149,9 +168,11 @@ switches:
     number: 3208-29
     type: NC
   s_inlane_l:
+    tags: playfield_active
   # 36
     number: 3208-30
   s_outlane_l:
+    tags: playfield_active
   # 37
     number: 3208-31
 
@@ -159,6 +180,7 @@ switches:
 
 #mid playfield  1616mid
   s_left_drops_rubber:
+    tags: playfield_active
   # 3C
     number: 1616mid-4
   s_left_drops_1:
@@ -171,9 +193,11 @@ switches:
   # 3F
     number: 1616mid-7
   s_left_drops_top_left_rubber:
+    tags: playfield_active
   # 3B
     number: 1616mid-3
   s_left_drops_top_right_rubber:
+    tags: playfield_active
   # 3A
     number: 1616mid-2
   s_pop_right:
@@ -183,6 +207,7 @@ switches:
   # 38
     number: 1616mid-0
   s_right_drops_rubber:
+    tags: playfield_active
   # 42
     number: 1616mid-10
   s_right_drops_1:
@@ -201,9 +226,11 @@ switches:
   # 43
     number: 1616mid-11
   s_inlane_m_r:
+    tags: playfield_active
   # 40
     number: 1616mid-8
   s_mid_right_rubber:
+    tags: playfield_active
   # 41
     number: 1616mid-9
 
@@ -249,9 +276,11 @@ switches:
 #    number: 1616bot-8
 
   s_outlane_r:
+    tags: playfield_active
   # 51
     number: 1616bot-9
   s_inlane_r:
+    tags: playfield_active
   # 52
     number: 1616bot-10
   s_sling_r:

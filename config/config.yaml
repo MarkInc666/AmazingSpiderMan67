@@ -60,6 +60,12 @@ playfields:
   playfield:    
     default_source_device: bd_plunger
     tags: default
+    enable_ball_search: true
+    ball_search_timeout: 20s
+    ball_search_interval: 500ms
+    # Combine shooter-lane and flipper-cradle blocking in the persistent ball_search mode.
+    ball_search_block_events: asm67_ball_search_block
+    ball_search_unblock_events: asm67_ball_search_unblock
 
 machine:
   balls_installed: 6
@@ -71,6 +77,7 @@ game:
 
 
 modes:
+  - ball_search
   - attract
   - player_retirement
   - base

@@ -1,0 +1,5 @@
+GAME ABORT SHORTCUT — October 7, 2026
+While a game is running, hold the left flipper continuously for more than 3 seconds, then press Start while still holding it. This ends the entire game, including all players, via the existing end_game event.
+The shortcut works in normal play and test sessions, including the test selector. Test-session loop and relaunch flags are cleared before ending. The abort chord cannot add a player or launch a highlighted test.
+Releasing the flipper resets the qualifying hold. Start pressed before the hold qualifies keeps its normal behavior; holding Start early does not arm a delayed abort.
+Merge matching paths into the project root. Python and behavior checks passed; machine testing pending.

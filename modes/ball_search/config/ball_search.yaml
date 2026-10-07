@@ -1,0 +1,9 @@
+#config_version=6
+
+mode:
+  code: ball_search_support.BallSearchSupport
+  start_events: machine_reset_phase_3
+  stop_events: []
+  game_mode: false
+  stop_on_ball_end: false
+  priority: 10000

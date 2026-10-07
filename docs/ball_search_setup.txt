@@ -1,0 +1,20 @@
+ASM67 ball search patch — based on ASM67_2026_10_07_1am.zip
+
+Copy config/config.yaml and config/switches.yaml into the existing config folder. Copy modes/ball_search into the existing modes folder. Preserve all other previously supplied patches. Restart MPF.
+
+This replaces the earlier root-code-folder patch. The new config removes custom_code and adds ball_search to the modes list. If you installed the earlier patch, delete only code/ball_search_support.py; the root code folder and its __init__.py may be removed if they contain nothing else. Do not move the old Python file manually: use this converted mode file.
+
+Automatic search is enabled with a 20-second inactivity timeout. Ordinary ball-contact switches now have playfield_active tags; device-managed bumpers, slings and drop targets retain their native activity reporting. Shooter-lane, cabinet, EOS and diverter-position switches are not playfield activity.
+
+Stage 1: normal MPF device search.
+Stage 2: normal MPF device search plus the VUK through up_kick.
+Stage 3: normal MPF device search plus the VUK and all three saucers.
+Existing MPF repetition counts remain 3 / 3 / 4. Search callbacks are spaced 500ms apart; MPF retains its default 5-second wait between iterations. Existing pulse strengths/durations are unchanged. Existing MPF failure handling remains unchanged.
+
+BallSearchSupport._stage_changed listens for all three phase events and logs each stage/iteration. The custom ejects are registered with MPF's sequential search iterator, avoiding simultaneous kicks.
+
+When s_plunger is active, the entire search is blocked/stopped. Flipper-cradle release cannot override this block. When the shooter clears and no flipper is cradled, MPF starts a fresh 20-second timer if it believes a ball is on the playfield. Flipper-cradle blocking is retained. The mode starts on machine_reset_phase_3 and stays active through tilt, ball end, and game end. It is not a game mode and has no automatic stop events.
+
+Intentional VUK holds retain the existing up_kick conditions. Final Showdown ownership and villain-summary saucer holds remain protected. Search pulses saucers even with their switches inactive, to recover a ball that is not registering its switch.
+
+Bench checks: playfield hit resets the 20-second timer; shooter occupancy suppresses every search stage; clearing shooter resumes after a fresh timeout; cradle release with shooter occupied stays blocked; phase 2 pulses VUK; phase 3 staggers three saucers; intentional holds remain protected. Hardware timing/pulses still require a machine test.
