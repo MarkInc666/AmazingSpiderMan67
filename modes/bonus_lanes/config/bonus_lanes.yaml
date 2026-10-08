@@ -47,30 +47,64 @@ sound_player:
     sm_hit_the_center_web:
       action: play
       bus: voice
-
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
   #almost bonus x
   bonus_left_web_lit:
     sm_hit_the_left_web:
       action: play
       bus: voice
-
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
   #bonus X
   bonus_left_web_collected_2x:
     sm_2x:
       action: play
       bus: voice
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
   bonus_left_web_collected_3x:
     sm_3x:
       action: play
       bus: voice
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
   bonus_left_web_collected_4x:
     sm_4x:
       action: play
       bus: voice
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
   bonus_left_web_collected_5x:
     sm_5x:
       action: play
       bus: voice
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
   bonus_left_web_collected_max:
     hb_bounce_2:
       action: play

@@ -344,10 +344,22 @@ class DailyBugleMystery(Mode):
         if not self.daily_bugle_enabled:
             return
 
-        if not self.mystery_ab_ready:
+        case_file_setup = (
+            not self._progression_award_blocked()
+            and self._has_uncollected_case_file()
+        )
+        if not self.mystery_ab_ready and not case_file_setup:
             return
 
-        instruction_key, instruction_text = self._post_rooftop_instruction(exit_side="left")
+        # Left exit sets up the lower right-bank shot; Bugle instructions and
+        # voice callouts belong to the right exit.
+        instruction_key = "case_files" if case_file_setup else None
+        instruction_text = "HIT DROPS FOR CASE FILES" if case_file_setup else None
+        if case_file_setup:
+            self.machine.events.post(
+                "show_mode_message_long",
+                message_mode_title="HIT DROPS FOR CASE FILES",
+            )
         self._start_left_exit_hold(instruction_key=instruction_key, instruction_text=instruction_text)
 
     def rooftop_right_exit(self, **kwargs):

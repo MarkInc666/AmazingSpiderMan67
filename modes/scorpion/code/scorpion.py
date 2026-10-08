@@ -39,6 +39,10 @@ class Scorpion(CaseFileMixin, Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.post_hold_active = False
+        self.add_mode_event_handler("daily_bugle_left_exit_hold_cancel", self._release_staged_post)
+        self.add_mode_event_handler("flipper_cancel", self._release_staged_post)
+        self.add_mode_event_handler("timer_timer_up_post_hold_complete", self._staged_post_dropped)
         self.reset_active_mode_summary(stat_count=3)
 
         self.delay = DelayManager(self.machine)
@@ -106,7 +110,26 @@ class Scorpion(CaseFileMixin, Mode):
         )
         self._update_mode_status()
 
+    def _hold_staged_post(self):
+        self.post_hold_active = True
+        self.machine.events.post("enable_up_post_event")
+        self.delay.reset(name="staged_right_bank_post_release", ms=8000,
+                         callback=self._release_staged_post)
+
+    def _staged_post_dropped(self, **kwargs):
+        self.post_hold_active = False
+        self.delay.remove("staged_right_bank_post_release")
+
+    def _release_staged_post(self, **kwargs):
+        self.delay.remove("staged_right_bank_post_release")
+        if not getattr(self, "post_hold_active", False):
+            return
+        self.post_hold_active = False
+        self.machine.events.post("drop_the_up_post")
+        self.machine.events.post("timer_timer_up_post_hold_complete")
+
     def mode_stop(self, **kwargs):
+        self._release_staged_post()
         for name in (
             "scorpion_prepare_left_bank_after_reset",
             "scorpion_prepare_right_bank_after_reset",
@@ -212,6 +235,8 @@ class Scorpion(CaseFileMixin, Mode):
         self.machine.events.post("scorpion_sting_lights_off")
         self.state = "sting"
         self.active_target_side = side
+        if side == "right":
+            self._hold_staged_post()
         self.seconds_left = self.sting_seconds
         self.rubber_awarded = False
 
@@ -363,6 +388,7 @@ class Scorpion(CaseFileMixin, Mode):
 
         self.rubber_enabled = False
         self.delay.remove("scorpion_enable_rubber")
+        self._release_staged_post()
         self.state = "awarding"
         self.delay.remove("scorpion_sting_tick")
         self.machine.events.post("scorpion_sting_lights_off")

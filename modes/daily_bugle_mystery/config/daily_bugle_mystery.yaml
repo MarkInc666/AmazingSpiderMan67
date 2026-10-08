@@ -198,9 +198,9 @@ sound_player:
       bus: voice
       ducking:
         bus: music
-        attenuation: 0.7
+        attenuation: 0.5
         attack: 0.1
-        release: 0.5
+        release: 0.3
         release_point: 0.0
 
   daily_bugle_ab_callout_2:
@@ -209,9 +209,9 @@ sound_player:
       bus: voice
       ducking:
         bus: music
-        attenuation: 0.7
+        attenuation: 0.5
         attack: 0.1
-        release: 0.5
+        release: 0.3
         release_point: 0.0
 
   daily_bugle_ab_callout_3:
@@ -220,9 +220,9 @@ sound_player:
       bus: voice
       ducking:
         bus: music
-        attenuation: 0.7
+        attenuation: 0.5
         attack: 0.1
-        release: 0.5
+        release: 0.3
         release_point: 0.0
 
   daily_bugle_ab_callout_4:
@@ -231,9 +231,9 @@ sound_player:
       bus: voice
       ducking:
         bus: music
-        attenuation: 0.7
+        attenuation: 0.5
         attack: 0.1
-        release: 0.5
+        release: 0.3
         release_point: 0.0
 
   daily_bugle_a_complete{current_player.daily_bugle_b_hit == 0}:
@@ -255,21 +255,45 @@ sound_player:
     sm_i_better_take_some_photos:
       action: play
       bus: voice
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
 
   daily_bugle_rooftop_instruction_more_pics:
     sm_i_better_take_some_photos:
       action: play
       bus: voice
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
 
   daily_bugle_rooftop_instruction_bring_pics:
     sm_i_hope_mr_jameson_likes:
       action: play
       bus: voice
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
 
   daily_bugle_rooftop_instruction_villain_ready:
     sm_i_wonder_what_mr_jameson:
       action: play
       bus: voice
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
 
   daily_bugle_left_exit_hold_cancelled:
     zip_out:
@@ -280,81 +304,177 @@ sound_player:
     sm_i_hope_mr_jameson_likes:
       action: play
       bus: voice
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
 
   daily_bugle_mystery_ready_callout_2:
     sm_i_wonder_what_mr_jameson:
       action: play
       bus: voice
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
 
   daily_bugle_mystery_ready_callout_3:
     sm_lets_get_to_the_daily_bugle:
       action: play
       bus: voice
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
 
   daily_bugle_mystery_ready_callout_4:
     sm_these_photos_will_make_front_page:
       action: play
       bus: voice
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
 
   daily_bugle_mystery_ready_callout_5:
     jj_wheres_that_parker_kid:
       action: play
       bus: voice
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
 
   daily_bugle_mystery_ready_callout_6:
     sm_i_better_collect_my_reward:
       action: play
       bus: voice
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
 
   mystery_award_ball_save:
     sm_a_safety_net:
       action: play
       bus: voice
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
 
   mystery_award_start_super_spinner:
     sm_super_spinner:
       action: play
       bus: voice
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
 
   mystery_award_advance_bonus_multiplier:
     sm_a_bigger_reward:
       action: play
       bus: voice
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
 
   mystery_award_collect_bonus:
     sm_oh_i_love_bonus_points:
       action: play
       bus: voice
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
 
   mystery_award_hold_bonus:
     sm_ill_keep_these:
       action: play
       bus: voice
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
 
   mystery_award_start_super_pops:
     sm_super_pops:
       action: play
       bus: voice
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
 
   mystery_award_million_points:
     sm_a_million_points:
       action: play
       bus: voice
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
 
   mystery_award_villain_start_ready:
     sm_objective_spotted:
       action: play
       bus: voice
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
 
   mystery_award_start_next_villain:
     sm_objective_spotted:
       action: play
       bus: voice
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
 
   say_sm_tingle:
     sm_my_spidey_senses_are_starting_to_tingle:
       action: play
       bus: voice
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
 
   s_trispinner_opto_active:
     short_click:

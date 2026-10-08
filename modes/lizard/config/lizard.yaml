@@ -44,28 +44,52 @@ sound_player:
     sm_i_have_to_hurry:
       action: play
       bus: voice
-
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
   lizard_serum_collected_2:
     sm_I_need_to_get_this_to_the_lizard_man:
       action: play
       bus: voice
-
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
   lizard_serum_collected_3:
     sm_I_need_to_deliver:
       action: play
       bus: voice
-
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
   lizard_light_serum_location{current_player.lizard_deliveries == 0}:
     sm_i_need_to_get_the_antidote:
       action: play
       bus: voice
-
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
   lizard_light_serum_location{current_player.lizard_deliveries > 0}:
     sm_i_need_to_get_more_antidote:
       action: play
       bus: voice
-
-
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
 event_player:
   drop_target_bank_dt_bank_left_down:
     - drop_target_bank_dt_bank_left_reset

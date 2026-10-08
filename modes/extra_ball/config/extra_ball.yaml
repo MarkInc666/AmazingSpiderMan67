@@ -52,7 +52,12 @@ sound_player:
     phew2:
       action: play
       bus: voice
-
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
   increase_outlane_add_a_ball:
     hb_bounce_2:
       action: play
@@ -62,27 +67,52 @@ sound_player:
     sm_extra_ball:
       action: play
       bus: voice
-
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
   mystery_extra_ball_direct_award{current_player.daily_bugle_vuk_hold_active != 1}:
     sm_extra_ball:
       action: play
       bus: voice
-
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
   daily_bugle_extra_ball_presentation_start:
     sm_extra_ball:
       action: play
       bus: voice
-
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
   mystery_extra_ball_lit:
     sm_extra_ball_is_lit: 
       action: play
       bus: voice
-
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
   mystery_right_extra_ball_lit:
     sm_extra_ball_is_lit: 
       action: play
       bus: voice
-
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
 event_player:
  
   #directly from bugle

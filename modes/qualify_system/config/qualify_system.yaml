@@ -37,6 +37,7 @@ show_player:
   villain_qualify_star_on:
     villain_qualification_star:
       key: villain_qualification_star
+      priority: 10
   villain_qualify_star_off:
     villain_qualification_star:
       action: stop
@@ -196,11 +197,61 @@ show_player:
         hole_right: l_3_hole_r
 
 shows:
+  # Qualification guidance shares the existing star on/off lifecycle.
+  # White preserves the star lenses; bank GI and rooftop targets pulse blue.
   villain_qualification_star:
-    - duration: -1
+    - duration: 600ms
       lights:
-        l_star: white
-        l_star2: white
+        l_star:
+          color: "white"
+          fade: 600ms
+        l_star2:
+          color: "white"
+          fade: 600ms
+        l_gi_3bank:
+          color: "4080FF"
+          fade: 600ms
+        l_upper_left:
+          color: "4080FF"
+          fade: 600ms
+        l_upper_middle:
+          color: "4080FF"
+          fade: 600ms
+        l_upper_right:
+          color: "4080FF"
+          fade: 600ms
+        l_gi_5bank_lower:
+          color: "4080FF"
+          fade: 600ms
+        l_gi_5bank_upper:
+          color: "4080FF"
+          fade: 600ms
+    - duration: 600ms
+      lights:
+        l_star:
+          color: "404040"
+          fade: 600ms
+        l_star2:
+          color: "404040"
+          fade: 600ms
+        l_gi_3bank:
+          color: "204080"
+          fade: 600ms
+        l_upper_left:
+          color: "204080"
+          fade: 600ms
+        l_upper_middle:
+          color: "204080"
+          fade: 600ms
+        l_upper_right:
+          color: "204080"
+          fade: 600ms
+        l_gi_5bank_lower:
+          color: "204080"
+          fade: 600ms
+        l_gi_5bank_upper:
+          color: "204080"
+          fade: 600ms
 
   # Final Showdown start: all three lower saucers flash together. The numbered
   # inserts have green lenses and the hole lamps have red lenses, so white is

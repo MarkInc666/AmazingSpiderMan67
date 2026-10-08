@@ -59,3 +59,9 @@ sound_player:
     sm_congratulations_fine_shooting:
       action: play
       bus: voice
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0

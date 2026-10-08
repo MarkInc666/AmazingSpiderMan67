@@ -191,27 +191,52 @@ sound_player:
     jj_its_about_time_you_showed_up:
       action: play
       bus: voice
-
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
   player_added_callout_2:
     mg_you_screamed_mr_jameson:
       action: play
       bus: voice
-
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
   player_added_callout_3:
     jj_what_kept_you_parker:
       action: play
       bus: voice
-
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
   player_added_callout_4:
     jj_oh_there_you_are_parker:
       action: play
       bus: voice
-
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
   player_added_callout_5:
     sm_welcome_to_my_parlor:
       action: play
       bus: voice
-
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
   default_spinner_hit:
     rope_1:
       action: play
@@ -221,17 +246,32 @@ sound_player:
     jj_end_of_the_line:
       action: play
       bus: voice
-
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
   outlane_drain_callout_2:
     jj_spiderman_caught:
       action: play
       bus: voice
-
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
   outlane_drain_callout_3:
     sm_it_hasnt_been_much_fun:
       action: play
       bus: voice
-
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
   secondary_switch_hit:
     hb_blip_1:
       action: play
@@ -552,5 +592,4 @@ light_player:
       color: E0E0E0        
   s_upper_exit_right_opto_active:
     gi:
-      color: E0E0E0        
-      
+      color: E0E0E0

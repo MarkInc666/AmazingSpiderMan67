@@ -38,7 +38,12 @@ sound_player:
     phew2:
       action: play
       bus: voice
-
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
 widget_player:
   mode_goblin_started:
     goblin:

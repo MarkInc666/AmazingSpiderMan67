@@ -38,23 +38,42 @@ sound_player:
     sm_my_spidey_sense_left:
       action: play
       bus: voice
-
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
   mysterio_spidey_sense_right:
     sm_my_spidey_sense_right:
       action: play
       bus: voice
-
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
   mysterio_spidey_sense_upper:
     sm_my_spidey_sense_rooftop:
       action: play
       bus: voice
-
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
   mysterio_non_clue_shot:
     sm_he_must_be_around_here_somewhere:
       action: play
       bus: voice
-
-
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
 event_player:
   mode_mysterio_started:
     - reset_drops

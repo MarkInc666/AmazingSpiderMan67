@@ -62,7 +62,12 @@ sound_player:
     sm_i_need_to_hit_flashing_drops:
       action: play
       bus: voice
-
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
 widget_player:
   mode_sandman_started:
     sandman:

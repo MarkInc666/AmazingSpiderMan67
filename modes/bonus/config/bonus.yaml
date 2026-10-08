@@ -176,7 +176,12 @@ sound_player:
     sm_ill_keep_these:
       action: play
       bus: voice
-
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
   asm_hold_bonus_awarded:
     achieve:
       action: play

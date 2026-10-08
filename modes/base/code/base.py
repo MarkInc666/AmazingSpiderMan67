@@ -178,6 +178,44 @@ class Base(Mode):
         self._ball_end_display_lock = False
         self._clear_mode_message_vars()
         self._clear_mode_status_vars()
+        self.add_mode_event_handler("s_plunger_active", self._start_plunge_reminder)
+        self.add_mode_event_handler("s_plunger_inactive", self._stop_plunge_reminder)
+        for event in ("ball_will_end", "ball_ending", "ball_ended"):
+            self.add_mode_event_handler(event, self._stop_plunge_reminder, priority=10000)
+        self._start_plunge_reminder()
+
+    def mode_stop(self, **kwargs):
+        self._stop_plunge_reminder()
+        super().mode_stop(**kwargs)
+
+    def _plunge_reminder_ready(self):
+        game = self.machine.game
+        switch = self.machine.switches.get("s_plunger")
+        return bool(
+            game and game.player and switch
+            and not getattr(self, "_ball_end_display_lock", False)
+            and self.machine.switch_controller.is_active(switch)
+        )
+
+    def _start_plunge_reminder(self, **kwargs):
+        self.delay.remove("plunge_ball_reminder")
+        if self._plunge_reminder_ready():
+            self.delay.reset(ms=9000, callback=self._show_plunge_reminder,
+                             name="plunge_ball_reminder")
+
+    def _stop_plunge_reminder(self, **kwargs):
+        self.delay.remove("plunge_ball_reminder")
+
+    def _show_plunge_reminder(self, **kwargs):
+        if not self._plunge_reminder_ready():
+            return
+        self.machine.events.post(
+            "show_mode_message",
+            message_mode_title=f"PLAYER {self.machine.game.player.number}",
+            message_mode_subtitle="PLUNGE THE BALL",
+        )
+        self.delay.reset(ms=9000, callback=self._show_plunge_reminder,
+                         name="plunge_ball_reminder")
 
     def _game_abort_chord_active(self):
         switch = self.machine.switches.get("s_left_flipper")

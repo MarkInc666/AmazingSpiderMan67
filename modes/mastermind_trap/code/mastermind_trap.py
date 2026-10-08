@@ -72,6 +72,10 @@ class MastermindTrap(Mode):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self.post_hold_active = False
+        self.add_mode_event_handler("daily_bugle_left_exit_hold_cancel", self._release_staged_post)
+        self.add_mode_event_handler("flipper_cancel", self._release_staged_post)
+        self.add_mode_event_handler("timer_timer_up_post_hold_complete", self._staged_post_dropped)
         self.mode_done = False
         self.phase = "para_scorpion"
         self.cycle = 1
@@ -116,7 +120,26 @@ class MastermindTrap(Mode):
         self._start_para_scorpion()
         self._schedule_parking_guard()
 
+    def _hold_staged_post(self):
+        self.post_hold_active = True
+        self.machine.events.post("enable_up_post_event")
+        self.delay.reset(name="staged_right_bank_post_release", ms=8000,
+                         callback=self._release_staged_post)
+
+    def _staged_post_dropped(self, **kwargs):
+        self.post_hold_active = False
+        self.delay.remove("staged_right_bank_post_release")
+
+    def _release_staged_post(self, **kwargs):
+        self.delay.remove("staged_right_bank_post_release")
+        if not getattr(self, "post_hold_active", False):
+            return
+        self.post_hold_active = False
+        self.machine.events.post("drop_the_up_post")
+        self.machine.events.post("timer_timer_up_post_hold_complete")
+
     def mode_stop(self, **kwargs):
+        self._release_staged_post()
         self.mode_done = True
         self._clear_delays()
         self._release_all_saucers()
@@ -258,6 +281,7 @@ class MastermindTrap(Mode):
                 callback=self._prepare_para_left_bank,
             )
         elif self.staged_area == "right_bank":
+            self._hold_staged_post()
             self.staged_target = random.randint(1, 5)
             self.machine.coils["c_right_bank_reset"].pulse()
             self.delay.reset(
@@ -297,6 +321,7 @@ class MastermindTrap(Mode):
         if area in ("left_bank", "right_bank"):
             if not self.staged_target_ready or target != self.staged_target:
                 return False
+        self._release_staged_post()
         value = self.PARA_JACKPOT * self.staged_multiplier
         self._score(value, major=True)
         self.para_attempts += 1
@@ -341,6 +366,7 @@ class MastermindTrap(Mode):
     # Phase 2: Lizard + Mysterio
     # ------------------------------------------------------------------
     def _start_lizard_mysterio(self):
+        self._release_staged_post()
         if self.mode_done:
             return
         self.phase = "lizard_mysterio"
@@ -438,6 +464,7 @@ class MastermindTrap(Mode):
     # Phase 3: Doctor Octopus
     # ------------------------------------------------------------------
     def _start_doc_ock(self):
+        self._release_staged_post()
         if self.mode_done:
             return
         self.phase = "doc_ock"
@@ -552,6 +579,7 @@ class MastermindTrap(Mode):
     # Super and cycle restart
     # ------------------------------------------------------------------
     def _start_super(self):
+        self._release_staged_post()
         if self.mode_done:
             return
         self.phase = "super"
@@ -750,6 +778,7 @@ class MastermindTrap(Mode):
     def _complete_mode(self, **kwargs):
         if self.mode_done:
             return
+        self._release_staged_post()
         self.mode_done = True
         self._set(f"{self.MODE_KEY}_state", 2)
         self.machine.events.post(f"{self.MODE_KEY}_mode_complete")

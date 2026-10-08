@@ -364,36 +364,82 @@ sound_player:
     player_1_is_up:
       action: play
       bus: voice
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
   ball_started{player == 2 and is_extra_ball == False}:
     player_2_is_up:
       action: play
       bus: voice
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
   ball_started{player == 3 and is_extra_ball == False}:
     player_3_is_up:
       action: play
       bus: voice
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
   ball_started{player == 4 and is_extra_ball == False}:
     player_4_is_up:
       action: play
       bus: voice
-
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
   ball_started{player == 1 and is_extra_ball == True}:
     player_1_shoot_again:
       action: play
       bus: voice
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
   ball_started{player == 2 and is_extra_ball == True}:
     player_2_shoot_again:
       action: play
       bus: voice
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
   ball_started{player == 3 and is_extra_ball == True}:
     player_3_shoot_again:
       action: play
       bus: voice
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
   ball_started{player == 4 and is_extra_ball == True}:
     player_4_shoot_again:
       action: play
       bus: voice
-
+      ducking:
+        bus: music
+        attenuation: 0.5
+        attack: 0.1
+        release: 0.3
+        release_point: 0.0
 ball_saves:
 
   mystery_ball_save:
