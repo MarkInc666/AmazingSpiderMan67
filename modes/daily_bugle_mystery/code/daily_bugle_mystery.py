@@ -591,9 +591,12 @@ class DailyBugleMystery(Mode):
         # Store orders on this game, not this ball-scoped mode. All players
         # read the same order, with independent persistent player cursors.
         game = self.machine.game
-        if not hasattr(game, "asm67_mystery_bags"):
-            game.asm67_mystery_bags = []
-        bags = game.asm67_mystery_bags
+        # MPF Game does not allow arbitrary attributes. Keep the shared bag
+        # on this persistent mode instance and reset it for each new game.
+        if getattr(self, "_mystery_bag_game", None) is not game:
+            self._mystery_bag_game = game
+            self._mystery_bags = []
+        bags = self._mystery_bags
         while len(bags) <= generation:
             bag = list(self.PLACEHOLDER_AWARDS)
             random.shuffle(bag)

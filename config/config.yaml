@@ -306,17 +306,7 @@ coil_player:
     c_up_post:
       action: disable
 
-  kickout_saucer_1:
-    c_saucer_1:
-      action: pulse
-
-  kickout_saucer_2:
-    c_saucer_2:
-      action: pulse
-
-  kickout_saucer_3:
-    c_saucer_3:
-      action: pulse
+  # Saucer kickouts are handled by BallSearchSupport with switch verification.
 
   up_kick{current_player.dr_manta_vuk_hold_active != 1 and current_player.invasion_from_everywhere_vuk_hold_active != 1 and current_player.daily_bugle_vuk_hold_active != 1 and current_player.extra_ball_vuk_hold_active != 1 and current_player.custom_bonus_vuk_hold_active != 1 and current_player.mystery_vuk_intro_hold_active != 1 and current_player.villain_summary_vuk_hold_active != 1}:
     c_vuk_to_upper:

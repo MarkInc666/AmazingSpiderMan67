@@ -1,4 +1,4 @@
-ASM67 ball search patch — based on ASM67_2026_10_07_1am.zip
+ASM67 saucer reliability patch — based on ASM67_2026_10_08_5pm.zip
 
 Copy config/config.yaml and config/switches.yaml into the existing config folder. Copy modes/ball_search into the existing modes folder. Preserve all other previously supplied patches. Restart MPF.
 
@@ -6,8 +6,8 @@ This replaces the earlier root-code-folder patch. The new config removes custom_
 
 Automatic search is enabled with a 20-second inactivity timeout. Ordinary ball-contact switches now have playfield_active tags; device-managed bumpers, slings and drop targets retain their native activity reporting. Shooter-lane, cabinet, EOS and diverter-position switches are not playfield activity.
 
-Stage 1: normal MPF device search.
-Stage 2: normal MPF device search plus the VUK through up_kick.
+Stage 1: normal MPF device search plus all three custom saucers.
+Stage 2: normal MPF device search plus all three saucers and the VUK through up_kick.
 Stage 3: normal MPF device search plus the VUK and all three saucers.
 Existing MPF repetition counts remain 3 / 3 / 4. Search callbacks are spaced 500ms apart; MPF retains its default 5-second wait between iterations. Existing pulse strengths/durations are unchanged. Existing MPF failure handling remains unchanged.
 
@@ -17,4 +17,8 @@ When s_plunger is active, the entire search is blocked/stopped. Flipper-cradle r
 
 Intentional VUK holds retain the existing up_kick conditions. Final Showdown ownership and villain-summary saucer holds remain protected. Search pulses saucers even with their switches inactive, to recover a ball that is not registering its switch.
 
-Bench checks: playfield hit resets the 20-second timer; shooter occupancy suppresses every search stage; clearing shooter resumes after a fresh timeout; cradle release with shooter occupied stays blocked; phase 2 pulses VUK; phase 3 staggers three saucers; intentional holds remain protected. Hardware timing/pulses still require a machine test.
+Bench checks: playfield hit resets the 20-second timer; shooter occupancy suppresses every search stage; clearing shooter resumes after a fresh timeout; cradle release with shooter occupied stays blocked; phase 2 pulses VUK; phase 1 staggers three saucers; intentional holds remain protected. Hardware timing/pulses still require a machine test.
+
+October 8 saucer reliability update (5pm checkpoint): replace config/config.yaml and modes/ball_search/code/ball_search_support.py together. The persistent mode now owns kickout_saucer_1/2/3; their former coil_player entries are removed to prevent double pulses. All existing gameplay kickout events retain their names. Each kickout checks its switch 250ms after the configured pulse completes (including PSU wait); an occupied saucer gets at most three total attempts. Duplicate requests during verification are ignored. Switch release cancels that saucer's pending check. Shared-eject cancellation and summary holds cancel pending retries. Retries only pulse the coil and do not repost scoring/collection events. After three failures a warning is logged; later independent recovery requests may try again. Ball search still pulses an empty-registering saucer once; it retries only if its switch is active at verification. VUK behavior and coil strengths are unchanged. Attract start-block recovery direct coil pulses remain unchanged.
+
+Validation: Python syntax compilation and isolated mocked behavior checks passed. MPF 0.80 runtime and on-machine testing are still required. Test all three saucers, a failed eject, switch release before verification, summary holds, and phase-1 ball search. This patch does not include or overwrite the separate Daily Bugle Mystery and Aunt May lunchbox Python fixes.

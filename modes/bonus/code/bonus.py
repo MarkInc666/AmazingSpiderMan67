@@ -342,6 +342,15 @@ class Bonus(MpfBonus):
         self._mode_index = 0
 
         if not self._mode_entries:
+            # A consolation only when there is genuinely nothing to pay.
+            # Carried Held Bonus and remaining-ball cashout are real awards.
+            if (self._final_total == 0
+                    and self._carried_held_bonus == 0
+                    and int(self._player["final_wizard_remaining_ball_bonus"] or 0) == 0):
+                self._player["score"] += 3000
+                self._final_total += 3000
+                self._show_bonus_entry("consolation", "AUNT MAY'S LUNCHBOX", 3000)
+                self.machine.events.post("asm_bonus_consolation_awarded", value=3000)
             self._schedule_bonus_step(
                 name="asm_bonus_finalize_no_modes",
                 ms=self.MODE_PAGE_DELAY_MS,
