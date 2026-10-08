@@ -1,5 +1,8 @@
 #config_version=6
 player_vars:
+  mystery_bag_cursor:
+    initial_value: 0
+    value_type: int
   chapter_current_key:
     initial_value: ""
     value_type: str

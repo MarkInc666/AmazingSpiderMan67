@@ -59,7 +59,6 @@ class DailyBugleMystery(Mode):
         "mystery_award_hold_bonus",
         "mystery_award_start_super_pops",
         "mystery_award_million_points",
-        "mystery_award_villain_start_ready",
         "mystery_award_start_next_villain",
         "mystery_award_random_case_file",
     ]
@@ -567,56 +566,56 @@ class DailyBugleMystery(Mode):
 
         self.machine.events.post("rooftop_diverter_close")
 
+    def _mystery_award_eligible(self, award_event):
+        player = self.machine.game.player
+        if award_event == "mystery_award_start_next_villain":
+            return self._can_start_next_villain_award()
+        if award_event == "mystery_award_random_case_file":
+            return self._can_random_case_file_award()
+        if award_event == "mystery_award_hold_bonus":
+            return self._safe_int(player["hold_bonus"], 0) == 0
+        if award_event == "mystery_award_advance_bonus_multiplier":
+            return self._safe_int(player["bonus_multiplier"], 1) < self.MAX_BONUS_MULTIPLIER
+        if award_event == "mystery_award_collect_bonus":
+            return self._safe_int(player["bonus_multiplier"], 1) > 2
+        feature = {
+            "mystery_award_start_super_spinner": "super_spinner",
+            "mystery_award_start_super_pops": "super_pops",
+        }.get(award_event)
+        if feature:
+            mode = self.machine.modes.get(feature)
+            return not (mode and mode.active)
+        return True
+
+    def _shared_mystery_bag(self, generation):
+        # Store orders on this game, not this ball-scoped mode. All players
+        # read the same order, with independent persistent player cursors.
+        game = self.machine.game
+        if not hasattr(game, "asm67_mystery_bags"):
+            game.asm67_mystery_bags = []
+        bags = game.asm67_mystery_bags
+        while len(bags) <= generation:
+            bag = list(self.PLACEHOLDER_AWARDS)
+            random.shuffle(bag)
+            if bags and bag[0] == bags[-1][-1]:
+                bag[0], bag[1] = bag[1], bag[0]
+            bags.append(bag)
+        return bags[generation]
+
     def award_pseudo_random_mystery(self):
         player = self.machine.game.player
-        valid_awards = list(self.PLACEHOLDER_AWARDS)
-
-        # Try a handful of times to avoid awards that are not currently useful.
-        for _ in range(20):
-            award_event = random.choice(valid_awards)
-
-            if award_event == "mystery_award_villain_start_ready":
-                # READY VILLAIN should max the three start saucers, but only
-                # while normal villain progression is actually available. Do
-                # not award it during wizard-ready, chapter-select, villain
-                # select, or active-mode states.
-                if self._can_ready_villain_award():
-                    self._post_mystery_award(award_event)
-                    return
-
-            elif award_event == "mystery_award_start_next_villain":
-                # START NEXT VILLAIN bypasses saucers entirely. Only choose it
-                # when there is at least one unplayed villain in the current
-                # chapter and no progression flow is already active.
-                if self._can_start_next_villain_award():
-                    self._post_mystery_award(award_event)
-                    return
-
-            elif award_event == "mystery_award_hold_bonus":
-                hold_bonus = player["hold_bonus"]
-                if hold_bonus == 0:
-                    self._post_mystery_award(award_event)
-                    return
-
-            elif award_event == "mystery_award_advance_bonus_multiplier":
-                # Bonus X cannot advance beyond the game's 5X cap. Do not
-                # select the award at all when it would have no effect.
-                if self._safe_int(player["bonus_multiplier"], 1) < self.MAX_BONUS_MULTIPLIER:
-                    self._post_mystery_award(award_event)
-                    return
-
-            elif award_event == "mystery_award_random_case_file":
-                # Case Files owns the actual random selection and collection.
-                # Only offer this while Case Files are available and a file remains.
-                if self._can_random_case_file_award():
-                    self._post_mystery_award(award_event)
-                    return
-
-            else:
+        size = len(self.PLACEHOLDER_AWARDS)
+        cursor = max(0, self._safe_int(player["mystery_bag_cursor"], 0))
+        # Consume skipped entries for this player. A guaranteed eligible
+        # points award keeps each draw bounded even when progression is locked.
+        for _ in range(size * 2):
+            generation, index = divmod(cursor, size)
+            award_event = self._shared_mystery_bag(generation)[index]
+            cursor += 1
+            player["mystery_bag_cursor"] = cursor
+            if self._mystery_award_eligible(award_event):
                 self._post_mystery_award(award_event)
                 return
-
-        # Safe fallback if every random choice was filtered out.
         self._post_mystery_award("mystery_award_million_points")
 
     def _post_mystery_award(self, award_event):
