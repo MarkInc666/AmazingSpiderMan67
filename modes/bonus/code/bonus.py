@@ -349,7 +349,7 @@ class Bonus(MpfBonus):
                     and int(self._player["final_wizard_remaining_ball_bonus"] or 0) == 0):
                 self._player["score"] += 3000
                 self._final_total += 3000
-                self._show_bonus_entry("consolation", "AUNT MAY'S LUNCHBOX", 3000)
+                self._show_bonus_entry("consolation", "AUNT MAY'S PITY", 3000)
                 self.machine.events.post("asm_bonus_consolation_awarded", value=3000)
             self._schedule_bonus_step(
                 name="asm_bonus_finalize_no_modes",
