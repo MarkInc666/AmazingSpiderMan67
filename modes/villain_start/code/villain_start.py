@@ -24,6 +24,7 @@ class VillainStart(Mode):
         self.add_mode_event_handler("saucer_1_hit", self._saucer_hit, saucer="saucer_1")
         self.add_mode_event_handler("saucer_2_hit", self._saucer_hit, saucer="saucer_2")
         self.add_mode_event_handler("saucer_3_hit", self._saucer_hit, saucer="saucer_3")
+        self.add_mode_event_handler("skillshot_awarded", self._skillshot_awarded)
         self.add_mode_event_handler("villain_started_set", self._villain_started)
         self.add_mode_event_handler("villain_mode_started", self._villain_started)
         self.add_mode_event_handler("villain_mode_ended", self._villain_mode_ended)
@@ -64,7 +65,23 @@ class VillainStart(Mode):
         self.machine.game.player["villain_current_name"] = ""
         self.machine.game.player["villain_mode_running_name"] = ""
 
-    def _saucer_hit(self, saucer=None, **kwargs):
+    SKILLSHOT_SAUCERS = {
+        "saucer_left": "saucer_1",
+        "saucer_center": "saucer_2",
+        "saucer_right": "saucer_3",
+    }
+
+    def _skillshot_awarded(self, shot=None, **kwargs):
+        saucer = self.SKILLSHOT_SAUCERS.get(shot)
+        if not saucer or self.machine.game.player["villain_mode_running"] == 1:
+            return
+        qualify = self.machine.modes.get("qualify_system")
+        if qualify and qualify.qualify_logic_active and not qualify._qualify_blocked():
+            qualify._advance_saucer_state(saucer=saucer, source="skillshot")
+            qualify._restore_state()
+        self._saucer_hit(saucer=saucer, skillshot_award=True)
+
+    def _saucer_hit(self, saucer=None, skillshot_award=False, **kwargs):
         if saucer not in self.SAUCERS:
             return
         if self.machine.game.player["villain_mode_running"] == 1:
@@ -83,14 +100,24 @@ class VillainStart(Mode):
                 self.machine.events.post("villain_saucer_ignored_start_locked", saucer=saucer)
                 return
 
+        # The same switch also posts a normal saucer hit. Let the successful
+        # skill shot advance its count first, regardless of event queue order.
+        skillshot = self.machine.modes.get("skillshot")
+        if not skillshot_award and skillshot and skillshot.active:
+            target = skillshot.SHOTS[skillshot.current_index]["key"]
+            pending_or_awarded = (
+                skillshot.skillshot_active
+                or self.machine.game.player["skillshot_collected_value"] > 0
+            )
+            if pending_or_awarded and self.SKILLSHOT_SAUCERS.get(target) == saucer:
+                return
+
         state = self._safe_int(self.machine.game.player[f"{saucer}_state"], 0)
 
         if self._safe_int(self.machine.game.player["chapter_mini_wizard_ready"], 0) == 1:
-            # A chapter mini-wizard is started from the Daily Bugle VUK, not
-            # from the lower saucers. Do not take the normal villain-start lock
-            # here: that lock sets villain_mode_running=1 while progression
-            # correctly refuses to start a villain, leaving the game in a fake
-            # running state that blocks drop resets and later saucer handling.
+            # Progression starts the ready wizard from any saucer. Let it
+            # claim the start directly rather than taking the villain-select
+            # lock, which would make the wizard request appear blocked.
             self.machine.events.post(
                 "villain_progression_request_start",
                 saucer=saucer,

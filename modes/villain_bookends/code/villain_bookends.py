@@ -9,6 +9,7 @@ class VillainBookends(Mode):
     SUMMARY_MS = 6000
     WIZARD_INTRO_MS = 6000
     WIZARD_SUMMARY_MS = 7000
+    CHAPTER_BONUS_MS = 6000
     COMIC_SUMMARY_MS = 3000
     COMIC_SUMMARY_VILLAINS = {
         "sinister_surge": 1,
@@ -1235,6 +1236,10 @@ class VillainBookends(Mode):
             self.warning_log("Unknown villain summary requested: %s", villain)
             return
 
+        # Repeated completion events cannot restart an already-paid cash-out.
+        if self.current_villain == villain and self.current_stage in ("chapter_bonus", "comic_summary"):
+            return
+
         # Successful villain endings use the last gameplay-message timestamp,
         # so every final message gets a full two seconds without adding a
         # second blind delay to modes (such as Centaur) that already wait.
@@ -1444,6 +1449,51 @@ class VillainBookends(Mode):
         """Reassert after the widget exists so GMC conditionals see a change."""
         self._set_player_comic_key(chapter_number)
 
+    def _cash_out_wizard_bonus(self):
+        """Pay the entire bonus bank once before showing its fixed snapshot."""
+        player = self.machine.game.player
+        bonus = self.machine.modes["bonus"]
+        count = max(0, min(75, int(player["bonus_count"] or 0)))
+        multiplier = max(1, min(5, int(player["bonus_multiplier"] or 1)))
+        regular = count * 1000 * multiplier
+        mode_values = [(name, label, max(0, int(player[name] or 0)))
+                       for name, label, _consume in bonus.MODE_BONUS_ENTRIES]
+        banked = sum(value for _name, _label, value in mode_values)
+        held = max(0, int(player["held_bonus"] or 0))
+        remaining = 0
+        if self.current_villain == "final_showdown":
+            if int(player["final_wizard_remaining_balls"] or 0) > 0:
+                remaining = max(0, int(player["final_wizard_remaining_ball_bonus"] or 0))
+            player["final_wizard_remaining_balls"] = 0
+            player["final_wizard_remaining_ball_bonus"] = 0
+        total = regular + banked + held + remaining
+
+        # Consume the snapshot before any display/physical-release events.
+        # HOLD BONUS is spent here; it cannot bank another copy of this payout.
+        player["bonus_count"] = 0
+        player["bonus_multiplier"] = 1
+        player["held_bonus"] = 0
+        player["hold_bonus"] = 0
+        for name, _label, _value in mode_values:
+            player[name] = 0
+        player["score"] += total
+        self.machine.events.post("bonus_lanes_cashout_reset")
+
+        chapter = self.current_comic_chapter
+        title = f"CHAPTER {chapter} BONUS" if chapter else "FINAL WIZARD BONUS"
+        details = [f"{label}: {value:,}" for _name, label, value in mode_values if value]
+        self._set_machine_var("wizard_bonus_title", title)
+        self._set_machine_var("wizard_bonus_regular", f"REGULAR BONUS ({multiplier}X): {regular:,}")
+        self._set_machine_var("wizard_bonus_modes", f"MODE BONUSES: {banked:,}")
+        self._set_machine_var("wizard_bonus_held", f"HELD BONUS: {held:,}")
+        self._set_machine_var("wizard_bonus_remaining", f"UNUSED BALLS: {remaining:,}" if remaining else "")
+        self._set_machine_var("wizard_bonus_details", "\n".join(details) if details else "NO BANKED MODE BONUSES")
+        self._set_machine_var("wizard_bonus_total", f"{total:,}")
+        self._set_machine_var("wizard_bonus_score", f"PLAYER {player.number} SCORE: {int(player['score']):,}")
+        self.machine.events.post("wizard_chapter_bonus_show", total=total)
+        self.machine.events.post("wizard_bonus_cashout_awarded", total=total, regular=regular,
+                                 mode_bonus=banked, held=held, remaining=remaining)
+
     def _finish_current_bookend(self):
         if not self.current_stage:
             return
@@ -1454,14 +1504,26 @@ class VillainBookends(Mode):
         starting_saucer = None
         starting_vuk = False
 
-        # A chapter wizard gets a seven-second chapter summary followed
-        # by a three-second fixed-cover Comic COLLECTED screen. Progression and
-        # the caller's done_event are held until both bookends have completed.
-        if stage == "summary" and villain in self.COMIC_SUMMARY_VILLAINS:
+        # Keep the existing transition-ball hold until summary, cash-out,
+        # and Comic Collected have all finished. The cash-out is atomic.
+        if stage == "summary" and self._is_wizard(villain):
+            self.current_stage = "chapter_bonus"
+            self.machine.events.post("villain_bookend_summary_hide")
+            self._cash_out_wizard_bonus()
+            self.delay.reset(name="villain_bookend_done", ms=self.CHAPTER_BONUS_MS,
+                             callback=self._finish_current_bookend)
+            return
+
+        if stage == "chapter_bonus":
+            self.machine.events.post("wizard_chapter_bonus_hide")
+            if villain not in self.COMIC_SUMMARY_VILLAINS:
+                stage = "summary_paid"
+
+        if stage == "chapter_bonus" and villain in self.COMIC_SUMMARY_VILLAINS:
             chapter_number = self.current_comic_chapter or self.COMIC_SUMMARY_VILLAINS[villain]
             self.machine.events.post("villain_bookend_summary_hide")
-            # The seven-second chapter summary is now finished, but the
-            # three-second Comic COLLECTED cover has not started yet. Chapter
+            # The score summary and full bonus cash-out are now finished, but
+            # the three-second Comic COLLECTED cover has not started yet. Chapter
             # wizard physical-ball cleanup belongs at this boundary; the
             # caller's normal done_event intentionally remains deferred until
             # after the Comic screen so progression timing is unchanged.
@@ -1508,7 +1570,7 @@ class VillainBookends(Mode):
             self.machine.events.post(data["song"])
             self.machine.events.post("villain_bookend_intro_hide")
             self.machine.events.post("villain_bookend_intro_done", villain=villain)
-        elif stage in ("summary", "comic_summary"):
+        elif stage in ("summary", "summary_paid", "comic_summary"):
             self.machine.game.player["villain_mode_in_summary"] = False
             self.machine.events.post("reset_villain_locate")
             self.machine.events.post("reset_daily_bugle_state")

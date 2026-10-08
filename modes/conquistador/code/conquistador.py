@@ -49,7 +49,7 @@ class Conquistador(CaseFileMixin, Mode):
 
         self.mode_done = False
         self.phase = "left_bank"
-        self.seconds_left = self.MORE_TIME_SECONDS if self.has_case_file("more_time") else self.NORMAL_SECONDS
+        self.seconds_left = 0  # Opening left-drop phase is untimed.
         self.spins = 0
         self.target_hits = 0
         self.mode_points = 0
@@ -85,8 +85,7 @@ class Conquistador(CaseFileMixin, Mode):
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("drop_target_bank_dt_bank_left_reset")
         self.machine.events.post("conquistador_left_bank_phase")
-        self._show_status("HIT LEFT DROP TO OPEN GATE", self.seconds_left)
-        self._schedule_tick()
+        self._show_status("HIT LEFT DROP TO OPEN GATE")
 
     def _vuk_hit(self, **kwargs):
         """Return a neutral VUK ball while Daily Bugle is disabled."""
@@ -114,7 +113,6 @@ class Conquistador(CaseFileMixin, Mode):
     def _start_spinner_phase(self):
         if self._done() or self.phase != "left_bank":
             return
-        self._award_speed_bonus()
         self._stop_tick()
         self.phase = "spinner"
         self.machine.events.post("drop_target_bank_dt_bank_left_reset")
@@ -160,14 +158,14 @@ class Conquistador(CaseFileMixin, Mode):
         add_value = self.BIGGER_TARGET_ADD if self.has_case_file("bigger_jackpots") else self.TARGET_ADD
         self.jackpot_value += add_value * increments
         self.machine.events.post("conquistador_jackpot_increased", value=self.jackpot_value)
-        if self.phase in ("left_bank", "fountain"):
+        if self.phase == "fountain":
             self.seconds_left = self.MORE_TIME_SECONDS if self.has_case_file("more_time") else self.NORMAL_SECONDS
             self._schedule_tick()
             self.machine.events.post("conquistador_timer_reset", seconds=self.seconds_left)
         if self.phase == "fountain":
             self._show_status("TARGETS INCREASE JP", self.seconds_left)
         elif self.phase == "left_bank":
-            self._show_status("HIT LEFT DROP TO OPEN GATE", self.seconds_left)
+            self._show_status("HIT LEFT DROP TO OPEN GATE")
         self._sync_vars()
 
     def _center_web_hit(self, **kwargs):
@@ -224,7 +222,7 @@ class Conquistador(CaseFileMixin, Mode):
         self.delay.add(name="conquistador_timer_tick", ms=1000, callback=self._timer_tick)
 
     def _timer_tick(self):
-        if self._done() or self.phase not in ("left_bank", "fountain", "extra_sip"):
+        if self._done() or self.phase not in ("fountain", "extra_sip"):
             return
         self.seconds_left -= 1
         self._sync_vars()

@@ -1,0 +1,19 @@
+#config_version=6
+
+mode:
+  code: game_over.GameOver
+  start_events: game_started
+  stop_events: game_ended
+  game_mode: false
+  stop_on_ball_end: false
+  priority: 400
+
+widget_player:
+  asm_game_over_show:
+    game_over:
+      action: play
+      key: game_over
+  asm_game_over_hide:
+    game_over:
+      action: remove
+      key: game_over

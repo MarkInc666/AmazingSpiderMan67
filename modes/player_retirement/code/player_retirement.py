@@ -15,6 +15,8 @@ class PlayerRetirement(Mode):
 
     def mode_start(self, **kwargs):
         del kwargs
+        self._final_summary_bonus_queue = None
+        self.add_mode_event_handler("ball_ending", self._wait_for_final_bonus, priority=200000)
         self.add_mode_event_handler(
             "final_showdown_mode_complete",
             self._retire_current_player,
@@ -119,11 +121,25 @@ class PlayerRetirement(Mode):
             player=player.number,
         )
 
+    def _wait_for_final_bonus(self, queue, **kwargs):
+        """Keep MPF from stopping bookends/rotating players during cash-out."""
+        bookends = self.machine.modes.get("villain_bookends")
+        if (bookends and bookends.active
+                and bookends.current_villain == "final_showdown"
+                and bookends.current_stage in ("summary", "chapter_bonus")):
+            queue.wait()
+            self._final_summary_bonus_queue = queue
+
     def _final_summary_finished(self, **kwargs):
         del kwargs
         game = self.machine.game
         if not game or not game.player or not self._is_retired(game.player):
             return
+
+        if self._final_summary_bonus_queue is not None:
+            queue = self._final_summary_bonus_queue
+            self._final_summary_bonus_queue = None
+            queue.clear()
 
         # Reassert the terminal state in case a summary/bookend event restored
         # anything while the ball was still on the playfield.

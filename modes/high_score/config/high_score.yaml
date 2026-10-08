@@ -1,5 +1,8 @@
 #config_version=6
 
+mode:
+  priority: 500
+
 high_score:
   _overwrite: true
   enter_initials_timeout: 60s
@@ -33,7 +36,7 @@ high_score:
       - KKK: 1000
 
 event_player:
-  mode_high_score_started:
+  high_score_enter_initials:
     - start_gi_highscore
     - play_music_song_6
     - play_congrats

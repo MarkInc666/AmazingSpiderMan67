@@ -146,10 +146,10 @@ class VillainProgression(Mode):
     # number of chapter Comics already collected (a Comic is collected once its
     # mini-wizard attempt ends, whether the wizard was won or lost).
     CHAPTER_UNLOCK_TIERS = (
-        (0, (1, 2)),
-        (1, (3, 4, 5)),
-        (2, (6, 7, 8)),
-        (3, (9, 10, 11)),
+        (0, (1, 2, 3)),
+        (1, (4, 5, 6)),
+        (2, (7, 8, 9)),
+        (3, (10, 11)),
     )
     FINAL_WIZARD_COMICS_REQUIRED = 4
 
@@ -289,6 +289,7 @@ class VillainProgression(Mode):
         self.mini_wizard_gate_open_cycle_active = False
         self.mini_wizard_gate_open_attempts = 0
         self.summary_held_saucers = set()
+        self._wizard_guidance_key = None
         self.mystery_vuk_hold_until_intro_done = False
         self.mystery_vuk_hold_villain = ""
 
@@ -391,6 +392,9 @@ class VillainProgression(Mode):
         # chapter selection, Case Files, Daily Bugle, villain-start and skill
         # shot modes cannot race the test selector on the original ball_started.
         self.machine.events.post("normal_game_ball_started")
+        # Base owns the repeating message and starts on the event above.
+        self.delay.reset(name="wizard_ready_guidance_restore", ms=100,
+                         callback=self._refresh_wizard_ready_guidance)
 
         # Chapter Select starts automatically from config.yaml when needed;
         # the Start button remains reserved for normal start/add-player behavior.
@@ -526,6 +530,8 @@ class VillainProgression(Mode):
         # Do not make progression decisions while stopping at ball_ending.
         # Anything still PLAYING will be resolved on the next mode_start.
         self.villain_progression_logic_active = False
+        self.delay.remove("wizard_ready_guidance_restore")
+        self._stop_wizard_ready_guidance()
         self.mini_wizard_gate_open_pending = False
         self.mini_wizard_gate_open_cycle_active = False
         self.delay.remove("mini_wizard_ready_gate_open")
@@ -758,6 +764,11 @@ class VillainProgression(Mode):
         # While waiting for comic/chapter selection at the shooter lane, do not
         # reopen the completed chapter's wizard or advance start logic.
         if self._safe_int(player["chapter_select_needed"], 0) == 1:
+            player["chapter_mini_wizard_ready"] = 0
+            player["mini_wizard_daily_bugle_ready"] = 0
+            return
+
+        if mini_playing:
             player["chapter_mini_wizard_ready"] = 0
             player["mini_wizard_daily_bugle_ready"] = 0
             return
@@ -1320,10 +1331,11 @@ class VillainProgression(Mode):
         self.machine.events.post(
             "show_mode_message_long",
             message_mode_title="KINGPIN ENCOUNTER",
-            message_mode_subtitle="SHOOT ANY SAUCER TO START",
+            message_mode_subtitle="SHOOT DAILY BUGLE OR ANY SAUCER",
             reminder=True,
         )
         self.machine.events.post("final_wizard_saucers_ready")
+        self._refresh_wizard_ready_guidance()
 
     def _request_vuk_eject(self, delay_ms=None, **kwargs):
         """Schedule a VUK release from this persistent progression mode."""
@@ -1685,10 +1697,7 @@ class VillainProgression(Mode):
             return
 
         if self._safe_int(self.machine.game.player["chapter_mini_wizard_ready"], 0) == 1:
-            self.machine.events.post("villain_saucer_ignored_mini_wizard_ready", saucer=saucer, source=source)
-            self.machine.events.post("villain_mini_wizard_shoot_vuk", saucer=saucer, source=source)
-            self.machine.events.post("clear_saucers_delayed")
-            self.machine.events.post("reset_drops")
+            self._start_ready_mini_wizard(source="saucer", saucer=saucer)
             return
 
         if state <= 0:
@@ -1774,10 +1783,10 @@ class VillainProgression(Mode):
         """Derive Comic collection and chapter availability from campaign state.
 
         Normal progression is deterministic:
-          0 Comics -> Chapters 1-2
-          1 Comic  -> + Chapters 3-5
-          2 Comics -> + Chapters 6-8
-          3 Comics -> + Chapters 9-11
+          0 Comics -> Chapters 1-3
+          1 Comic  -> Chapters 1-6
+          2 Comics -> Chapters 1-9
+          3 Comics -> Chapters 1-11
 
         The test override exposes all uncollected chapters but never changes
         collection state, so it cannot by itself qualify the Final Wizard.
@@ -2314,6 +2323,60 @@ class VillainProgression(Mode):
     def _check_chapter_complete(self):
         self._sync_chapter_ready_flags(post_events=True)
 
+    def _mini_wizard_start_ready(self):
+        player = self.machine.game.player if self.machine.game else None
+        if not player:
+            return False
+        return (
+            self._safe_int(player["chapter_mini_wizard_ready"], 0) == 1
+            and self._safe_int(player["mini_wizard_daily_bugle_ready"], 0) == 1
+            and all(self._safe_int(player[name], 0) == 0 for name in (
+                "villain_mode_running", "villain_mode_in_summary", "villain_select_active",
+                "chapter_select_needed", "chapter_select_active", "final_wizard_ready",
+                "final_wizard_completed"))
+        )
+
+    def _final_wizard_start_ready(self):
+        player = self.machine.game.player if self.machine.game else None
+        return bool(player) and (
+            self._safe_int(player["final_wizard_ready"], 0) == 1
+            and all(self._safe_int(player[name], 0) == 0 for name in (
+                "villain_mode_running", "villain_mode_in_summary", "villain_select_active",
+                "chapter_select_needed", "chapter_select_active", "final_wizard_completed"))
+        )
+
+    def _stop_wizard_ready_guidance(self):
+        self.machine.events.post("mini_wizard_ready_saucers_off")
+        if getattr(self, "_wizard_guidance_key", None):
+            self.machine.events.post("cancel_mode_message_reminder")
+        self._wizard_guidance_key = None
+
+    def _refresh_wizard_ready_guidance(self, **kwargs):
+        final_ready = self._final_wizard_start_ready()
+        if not final_ready and not self._mini_wizard_start_ready():
+            self._stop_wizard_ready_guidance()
+            return
+        chapter = self._get_current_chapter()
+        if not final_ready and not chapter:
+            self._stop_wizard_ready_guidance()
+            return
+        self.machine.events.post("mini_wizard_ready_saucers_on")
+        base = self.machine.modes.get("base")
+        if not base or not base.active:
+            return
+        key = self.FINAL_WIZARD_KEY if final_ready else chapter["mini_wizard_key"]
+        if getattr(self, "_wizard_guidance_key", None) != key:
+            self._wizard_guidance_key = key
+            if final_ready:
+                self.machine.events.post("final_vuk_chase_start")
+                self._schedule_mini_wizard_gate_open(reason="final_wizard_ready")
+            self.machine.events.post(
+                "show_mode_message_long",
+                message_mode_title="KINGPIN ENCOUNTER" if final_ready else "WIZARD READY",
+                message_mode_subtitle="SHOOT DAILY BUGLE OR ANY SAUCER",
+                reminder=True,
+            )
+
     def _mini_wizard_ready_at_daily_bugle(self, post_restore=True, **kwargs):
         if self._safe_int(self.machine.game.player["chapter_mini_wizard_ready"], 0) != 1:
             return
@@ -2343,16 +2406,40 @@ class VillainProgression(Mode):
             self._restore_state()
 
     def _daily_bugle_hit(self, **kwargs):
-        player = self.machine.game.player
-        if self._safe_int(player["mini_wizard_daily_bugle_ready"], 0) != 1:
+        if self._final_wizard_start_ready():
+            self._hold_mystery_vuk_for_intro(self.FINAL_WIZARD_KEY)
+            self._start_final_wizard()
             return
+        self._start_ready_mini_wizard(source="daily_bugle")
+
+    def _start_ready_mini_wizard(self, source="daily_bugle", saucer=None):
+        if not self._mini_wizard_start_ready():
+            return
+        if source == "saucer" and saucer not in ("saucer_1", "saucer_2", "saucer_3"):
+            return
+        player = self.machine.game.player
         chapter = self._get_current_chapter()
         if not chapter:
             return
         mini_key = chapter["mini_wizard_key"]
+        self._stop_wizard_ready_guidance()
+        self._cancel_pending_saucer_ejects()
         self.machine.events.post("final_vuk_chase_stop")
+        self.machine.events.post("clear_villain_saucer_lights")
+        self.machine.events.post("skillshot_clear_lit_shot")
+        self.delay.remove("mini_wizard_ready_gate_open")
+        self.delay.remove("mini_wizard_ready_gate_verify")
+        self.mini_wizard_gate_open_pending = False
+        self.mini_wizard_gate_open_cycle_active = False
+        player["chapter_mini_wizard_ready"] = 0
         player["mini_wizard_daily_bugle_ready"] = 0
-        player["mini_wizard_vuk_hold_active"] = 1
+        # A saucer start holds the saucer through the intro, not an empty VUK.
+        # VUK-lock wizards handle a missing VUK ball with their normal load step.
+        player["mini_wizard_vuk_hold_active"] = 1 if source == "daily_bugle" or self._vuk_is_occupied() else 0
+        self.machine.events.post("disable_daily_bugle_mystery")
+        if player["mini_wizard_vuk_hold_active"] == 1:
+            self.machine.events.post("daily_bugle_cancel_vuk_delay_eject")
+            self.machine.events.post("cancel_vuk_eject_request")
         player["mini_wizard_current_key"] = mini_key
         player[f"{mini_key}_state"] = self.PLAYING
         player["villain_mode_running"] = 1
@@ -2363,6 +2450,8 @@ class VillainProgression(Mode):
         self.machine.events.post("case_files_clear_lights")
         self.machine.events.post(
             "chapter_mini_wizard_starting",
+            source=source,
+            saucer=saucer,
             chapter=chapter["key"],
             chapter_name=chapter["name"],
             mini_wizard_key=mini_key,
@@ -2528,7 +2617,7 @@ class VillainProgression(Mode):
             self.machine.events.post(
                 "show_mode_message_long",
                 message_mode_title="KINGPIN ENCOUNTER",
-                message_mode_subtitle="SHOOT ANY SAUCER TO START",
+                message_mode_subtitle="SHOOT DAILY BUGLE OR ANY SAUCER",
                 reminder=True,
             )
             # The comic-wizard completion flow disabled controls while its
@@ -2565,6 +2654,13 @@ class VillainProgression(Mode):
         if self._safe_int(self.machine.game.player["final_wizard_ready"], 0) != 1:
             return
         self.machine.game.player["final_wizard_ready"] = 0
+        self._stop_wizard_ready_guidance()
+        self._cancel_pending_saucer_ejects()
+        self.delay.remove("mini_wizard_ready_gate_open")
+        self.delay.remove("mini_wizard_ready_gate_verify")
+        self.mini_wizard_gate_open_pending = False
+        self.mini_wizard_gate_open_cycle_active = False
+        self.machine.events.post("disable_daily_bugle_mystery")
         self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post("hide_mode_message")
         self.machine.events.post("final_wizard_saucers_clear")
@@ -2625,6 +2721,7 @@ class VillainProgression(Mode):
             mini_wizard_case_file_bonus=self.machine.game.player["mini_wizard_case_file_bonus"],
             mini_wizard_jackpot_value=self.machine.game.player["mini_wizard_jackpot_value"],
         )
+        self._refresh_wizard_ready_guidance()
         self.machine.events.post("villain_chapter_status_changed")
 
     def _check_chapter_widget_vars(self):

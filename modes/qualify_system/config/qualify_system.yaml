@@ -34,6 +34,14 @@ event_player:
     - saucer_star_upgrade_hit
 
 show_player:
+  villain_qualify_star_on:
+    villain_qualification_star:
+      key: villain_qualification_star
+  villain_qualify_star_off:
+    villain_qualification_star:
+      action: stop
+      key: villain_qualification_star
+
   clear_villain_saucer_lights:
     saucer_cluster_state_0:
       action: stop
@@ -188,6 +196,12 @@ show_player:
         hole_right: l_3_hole_r
 
 shows:
+  villain_qualification_star:
+    - duration: -1
+      lights:
+        l_star: white
+        l_star2: white
+
   # Final Showdown start: all three lower saucers flash together. The numbered
   # inserts have green lenses and the hole lamps have red lenses, so white is
   # used here for maximum physical visibility through the existing lenses.

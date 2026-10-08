@@ -85,6 +85,7 @@ modes:
   - music_control
   - service
   - high_score
+  - game_over
   - tilt
   - bonus
   - bonus_lanes

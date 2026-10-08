@@ -81,6 +81,20 @@ class Bonus(MpfBonus):
         self._bonus_final_animation_active = False
         self._pending_bonus_delay = None
 
+        # Final Showdown has already paid and consumed the entire bank after
+        # its summary. Keep the normal queued retirement ending screen, without
+        # replaying an empty bonus count. Any newly earned points still count.
+        cashout_empty = (
+            int(self._player["final_wizard_completed"] or 0) == 1
+            and int(self._player["bonus_count"] or 0) == 0
+            and int(self._player["held_bonus"] or 0) == 0
+            and int(self._player["final_wizard_remaining_ball_bonus"] or 0) == 0
+            and all(int(self._player[name] or 0) == 0 for name, _label, _consume in self.MODE_BONUS_ENTRIES)
+        )
+        if cashout_empty:
+            self._finish_bonus()
+            return
+
         # The stock MPF Bonus mode normally installs this handler. ASM67 owns
         # the bonus sequence, so install the same two-flipper speed-up hook
         # here and apply it to the custom delay chain below.

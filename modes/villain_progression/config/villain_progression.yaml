@@ -21,3 +21,58 @@ ball_saves:
     disable_events:
       - test_mode_ball_loop_disable
       - mode_villain_progression_stopping
+
+# Readiness owns only the hole lamps; white respects their red lenses.
+show_player:
+  mini_wizard_ready_saucers_on:
+    mini_wizard_saucer_ready_pulse:
+      key: mini_wizard_ready_saucers
+      loops: -1
+      priority: 340
+  mini_wizard_ready_saucers_off:
+    mini_wizard_saucer_ready_pulse:
+      key: mini_wizard_ready_saucers
+      action: stop
+
+shows:
+  mini_wizard_saucer_ready_pulse:
+    - duration: 500ms
+      lights:
+        l_1_hole_l:
+          color: "white"
+          fade: 500ms
+        l_1_hole_r:
+          color: "white"
+          fade: 500ms
+        l_2_hole_l:
+          color: "white"
+          fade: 500ms
+        l_2_hole_r:
+          color: "white"
+          fade: 500ms
+        l_3_hole_l:
+          color: "white"
+          fade: 500ms
+        l_3_hole_r:
+          color: "white"
+          fade: 500ms
+    - duration: 500ms
+      lights:
+        l_1_hole_l:
+          color: "404040"
+          fade: 500ms
+        l_1_hole_r:
+          color: "404040"
+          fade: 500ms
+        l_2_hole_l:
+          color: "404040"
+          fade: 500ms
+        l_2_hole_r:
+          color: "404040"
+          fade: 500ms
+        l_3_hole_l:
+          color: "404040"
+          fade: 500ms
+        l_3_hole_r:
+          color: "404040"
+          fade: 500ms

@@ -48,6 +48,11 @@ widget_player:
 
 
 sound_player:
+  consume_outlane_add_a_ball:
+    phew2:
+      action: play
+      bus: voice
+
   increase_outlane_add_a_ball:
     hb_bounce_2:
       action: play
@@ -128,10 +133,12 @@ event_player:
     show_ball_saved_widget:
       save_type: safety_net
 
-  ball_save_outlane_add_a_ball_save_saving_ball:
-    outlane_add_a_ball_pending_plunger:
+  consume_outlane_add_a_ball:
     show_ball_saved_widget:
       save_type: outlane
+
+  ball_save_outlane_add_a_ball_save_saving_ball:
+    outlane_add_a_ball_pending_plunger:
 
   ball_save_chapter_select_ball_save_saving_ball:
     saved_ball_pending_plunger:
@@ -345,14 +352,27 @@ show_player:
 
 shows:
   outlane_add_a_ball_available_show:
-    - duration: 500ms
+    # Brief double flash, then release the inserts to their lane-state shows.
+    - duration: 100ms
+      lights:
+        l_left_outlane: off
+        l_right_outlane: off
+    - duration: 100ms
       lights:
         l_left_outlane: white
         l_right_outlane: white
-    - duration: 500ms
+    - duration: 100ms
       lights:
-        l_left_outlane: 2060C0
-        l_right_outlane: 2060C0
+        l_left_outlane: off
+        l_right_outlane: off
+    - duration: 100ms
+      lights:
+        l_left_outlane: white
+        l_right_outlane: white
+    - duration: 1600ms
+      lights:
+        l_left_outlane: stop
+        l_right_outlane: stop
 
   shoot_again_fast_flash:
     - duration: 250ms

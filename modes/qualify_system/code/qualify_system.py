@@ -23,6 +23,7 @@ class QualifySystem(Mode):
 
     def mode_stop(self, **kwargs):
         self.qualify_logic_active = False
+        self._stop_star_light()
         super().mode_stop(**kwargs)
 
     def _add_handlers(self):
@@ -51,6 +52,12 @@ class QualifySystem(Mode):
         )
         self.add_mode_event_handler("chapter_mini_wizard_completed", self._reset_after_villain)
         self.add_mode_event_handler("qualify_system_restore_state", self._restore_state)
+        self.add_mode_event_handler("villain_chapter_status_changed", self._restore_star_light)
+        self.add_mode_event_handler("clear_villain_saucer_lights", self._stop_star_light)
+        self.add_mode_event_handler("mode_chapter_select_started", self._stop_star_light)
+
+    def _stop_star_light(self, **kwargs):
+        self.machine.events.post("villain_qualify_star_off")
 
     def _ball_started_restore(self, **kwargs):
         self._reset_drop_cycle()
@@ -69,8 +76,14 @@ class QualifySystem(Mode):
             return True
         if self._safe_int(player["final_wizard_completed"], 0) == 1:
             return True
+        if any(self._safe_int(player[name], 0) == 1 for name in
+               ("villain_select_active", "chapter_select_needed", "chapter_select_active")):
+            return True
         return False
 
+    def _restore_star_light(self, **kwargs):
+        enabled = self.qualify_logic_active and not self._qualify_blocked()
+        self.machine.events.post("villain_qualify_star_on" if enabled else "villain_qualify_star_off")
 
     def _mystery_award_villain_start_ready(self, **kwargs):
         """Daily Bugle READY VILLAIN: max all three saucers once per player."""
@@ -272,10 +285,6 @@ class QualifySystem(Mode):
             self.machine.events.post("villain_star_ignored_mode_running")
             return
 
-        if not all(self.machine.game.player[f"{s}_state"] >= 1 for s in self.SAUCERS):
-            self.machine.events.post("saucer_star_not_ready")
-            return
-
         advanced = False
         for saucer in self.SAUCERS:
             state_var = f"{saucer}_state"
@@ -313,6 +322,8 @@ class QualifySystem(Mode):
     def _restore_state(self, **kwargs):
         if not self.qualify_logic_active:
             return
+
+        self._restore_star_light()
 
         # A player who completed the Final Wizard is waiting only for the
         # remaining ball to drain into bonus. Never restore villain qualifying

@@ -21,6 +21,19 @@ event_player:
 
 
 widget_player:
+  wizard_chapter_bonus_show:
+    wizard_chapter_bonus:
+      action: play
+      key: wizard_chapter_bonus
+  wizard_chapter_bonus_hide:
+    wizard_chapter_bonus:
+      action: remove
+      key: wizard_chapter_bonus
+  mode_villain_bookends_stopping:
+    wizard_chapter_bonus:
+      action: remove
+      key: wizard_chapter_bonus
+
   villain_bookend_intro_show:
     villain_intro:
       action: play
@@ -398,3 +411,9 @@ shows:
         insert_band_7: "404040"
         band_8: "404040"
         insert_band_8: "404040"
+
+sound_player:
+  wizard_bonus_cashout_awarded:
+    hb_bounce_2:
+      action: play
+      bus: effects

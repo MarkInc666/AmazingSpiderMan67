@@ -45,6 +45,7 @@ class BonusLanes(Mode):
         self.left_web_lit = False
         self.machine.game.player["bonus_lights_dimmed"] = 0
 
+        self.add_mode_event_handler("bonus_lanes_cashout_reset", self.cashout_reset)
         self.add_mode_event_handler("bonus_lanes_start", self.blane_start)
         self.add_mode_event_handler("bonus_count_add", self.add_bonus_count)
         self.add_mode_event_handler("bonus_lanes_rotate_left", self.rotate_left)
@@ -69,6 +70,16 @@ class BonusLanes(Mode):
         self.add_mode_event_handler("bonus_lights_dim", self.dim_bonus_lights)
         self.add_mode_event_handler("bonus_lights_restore", self.restore_bonus_lights)
 
+
+    def cashout_reset(self, **kwargs):
+        self.completed = [False, False, False, False]
+        self.center_web_lit = False
+        self.left_web_lit = False
+        self.machine.game.player["bonus_lights_dimmed"] = 0
+        self.machine.events.post("bonus_center_web_timeout")
+        self.machine.events.post("bonus_left_web_timeout")
+        self.refresh_lane_lights()
+        self.update_bonus_lights()
 
     def blane_start(self, **kwargs):
         self.refresh_lane_lights()

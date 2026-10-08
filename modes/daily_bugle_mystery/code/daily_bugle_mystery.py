@@ -455,9 +455,12 @@ class DailyBugleMystery(Mode):
             return
 
         player = self.machine.game.player
-        if player["mini_wizard_daily_bugle_ready"] == 1 or player["mini_wizard_vuk_hold_active"] == 1:
-            # Progression owns this VUK hit. Leave the ball held until the
-            # mini-wizard bookend intro finishes or the player skips it.
+        if (player["mini_wizard_daily_bugle_ready"] == 1
+                or player["mini_wizard_vuk_hold_active"] == 1
+                or player["final_wizard_ready"] == 1
+                or player["mystery_vuk_intro_hold_active"] == 1):
+            # Progression owns this VUK hit. Leave the ball held until its
+            # wizard/villain bookend intro finishes or the player skips it.
             return
 
         # The physical VUK switch can chatter/re-close while the same ball is

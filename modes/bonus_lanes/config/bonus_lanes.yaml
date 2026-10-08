@@ -137,6 +137,8 @@ timers:
         action: restart
       - event: bonus_center_web_collected
         action: stop
+      - event: bonus_lanes_cashout_reset
+        action: stop
       - event: ball_ended
         action: stop
 
@@ -150,10 +152,16 @@ timers:
         action: restart
       - event: bonus_left_web_collected
         action: stop
+      - event: bonus_lanes_cashout_reset
+        action: stop
       - event: ball_ended
         action: stop
 
 show_player:
+  bonus_lanes_cashout_reset:
+    bonus_lane_show:
+      action: stop
+
   bonus_show_lanes:
   #shut off the lanes
     bonus_lane_1_solid:

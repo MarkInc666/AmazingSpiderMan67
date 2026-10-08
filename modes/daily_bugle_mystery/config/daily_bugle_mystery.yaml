@@ -188,6 +188,7 @@ sound_player:
         attenuation: 0.7
         attack: 0.1
         release: 0.5
+        release_point: 0.0
 
   # Four randomized callout slots. They intentionally use the current line as
   # a placeholder until four replacement recordings are available.
@@ -200,6 +201,7 @@ sound_player:
         attenuation: 0.7
         attack: 0.1
         release: 0.5
+        release_point: 0.0
 
   daily_bugle_ab_callout_2:
     impostor_2:
@@ -210,6 +212,7 @@ sound_player:
         attenuation: 0.7
         attack: 0.1
         release: 0.5
+        release_point: 0.0
 
   daily_bugle_ab_callout_3:
     impostor_3:
@@ -220,6 +223,7 @@ sound_player:
         attenuation: 0.7
         attack: 0.1
         release: 0.5
+        release_point: 0.0
 
   daily_bugle_ab_callout_4:
     impostor_4:
@@ -230,6 +234,7 @@ sound_player:
         attenuation: 0.7
         attack: 0.1
         release: 0.5
+        release_point: 0.0
 
   daily_bugle_a_complete{current_player.daily_bugle_b_hit == 0}:
     hub_create_gem:
