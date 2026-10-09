@@ -79,10 +79,10 @@ class Lizard(CaseFileMixin, Mode):
         self.add_mode_event_handler("s_inlane_a_active", self.a_rollover)
         self.add_mode_event_handler("s_inlane_m_r_active", self.a_rollover)
 
-        # B rollovers. The left B can also substitute for the web with Shot Assist.
+        # B rollovers retain their normal A/B build behavior.
         self.add_mode_event_handler("s_inlane_b_active", self.b_rollover)
         self.add_mode_event_handler("s_inlane_m_l_active", self.b_rollover)
-        self.add_mode_event_handler("s_inlane_m_l_active", self.delivery_request, target="shot_assist")
+        self.add_mode_event_handler("s_web_target_mid_active", self.delivery_request, target="shot_assist")
 
         # Main-playfield spinner only. The upper trispinner is intentionally excluded.
         self.add_mode_event_handler("s_web_spinner_active", self.delivery_request, target="shot_assist")
@@ -100,7 +100,7 @@ class Lizard(CaseFileMixin, Mode):
             ("bigger_jackpots", "SERUM STARTS AT 1.5 MILLION"),
             ("more_time", "20 SECONDS AND SLOWER VALUE DECAY"),
             ("safety_net", "FIRST EXPIRED SERUM IS SAVED"),
-            ("shot_assist", "MAIN SPINNER OR LEFT B DELIVERS SERUM"),
+            ("shot_assist", "MAIN SPINNER OR CENTER WEB DELIVERS SERUM"),
         ])
 
         # Lizard owns the gate for the full mode so the star remains reachable.
@@ -112,12 +112,10 @@ class Lizard(CaseFileMixin, Mode):
             "show_mode_message",
             message_mode_title="BUILD THE SERUM",
             message_mode_subtitle="HIT BOTH POP BUMPERS",
-            reminder=True,
         )
         self._update_status()
 
     def mode_stop(self, **kwargs):
-        self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post("hide_mode_status")
         self._stop_delivery_timers()
         self.clear_active_case_file_helpers()
@@ -278,7 +276,6 @@ class Lizard(CaseFileMixin, Mode):
                 "show_mode_message",
                 message_mode_title="SERUM COMPONENT FOUND",
                 message_mode_subtitle="HIT THE OTHER POP",
-            reminder=True,
             )
             self._update_status()
             return
@@ -292,13 +289,7 @@ class Lizard(CaseFileMixin, Mode):
         player["lizard_serum_ready"] = 1
         self._star_10x_armed = False
 
-        subtitle = "HIT STAR FOR 10X - DELIVER TO LEFT WEB"
-        self.machine.events.post(
-            "show_mode_message",
-            message_mode_title="SERUM READY",
-            message_mode_subtitle=subtitle,
-            reminder=True,
-        )
+        subtitle = "LEFT WEB / SPINNER / CENTER WEB" if self.has_case_file("shot_assist") else "DELIVER TO LEFT WEB"
         self.machine.events.post(
             "show_mode_countdown",
             message_mode_title="SERUM READY",
@@ -323,7 +314,6 @@ class Lizard(CaseFileMixin, Mode):
             "show_mode_message",
             message_mode_title="10X DELIVERY ARMED",
             message_mode_subtitle="DELIVER TO LEFT WEB",
-            reminder=True,
         )
         self._update_status()
 
@@ -495,7 +485,6 @@ class Lizard(CaseFileMixin, Mode):
             "show_mode_message",
             message_mode_title="BUILD ANOTHER SERUM",
             message_mode_subtitle="HIT BOTH POP BUMPERS",
-            reminder=True,
             reminder=True,
         )
 
