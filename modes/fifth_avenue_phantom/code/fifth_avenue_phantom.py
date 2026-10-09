@@ -184,6 +184,10 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
         self.machine.events.post("clear_saucers")
         self.machine.events.post("drop_target_bank_dt_bank_right_reset")
         self.machine.events.post("fifth_avenue_phantom_started")
+        self.machine.events.post("cancel_mode_message_reminder")
+        for event in ("show_mode_message", "show_mode_message_long", "show_mode_jackpot", "show_mode_countdown"):
+            self.add_mode_event_handler(event, self._reset_objective_reminder)
+        self._reset_objective_reminder()
         self.machine.events.post(
             "show_mode_message_long",
             message_mode_title="REVEAL THE PHANTOM",
@@ -191,7 +195,29 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
         )
         self._start_new_round()
 
+    def _reset_objective_reminder(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
+        if not self.mode_done:
+            self.delay.reset(name="villain_objective_reminder", ms=9000,
+                             callback=self._show_objective_reminder)
+
+    def _show_objective_reminder(self):
+        if self.mode_done:
+            return
+        if self.phase not in ("build", "reveal"):
+            self._reset_objective_reminder()
+            return
+        if self.phase == "reveal":
+            title, instruction = "PHANTOM REVEALED", "HIT " + self.LOCATION_LABELS[self.current_location]
+        else:
+            title, instruction = "REVEAL THE PHANTOM", "RIGHT DROPS REVEAL PHANTOM"
+        self.machine.events.post("show_mode_message", message_mode_title=title,
+                                 message_mode_subtitle=instruction)
+        self._reset_objective_reminder()
+
     def mode_stop(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
+        self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post("hide_mode_status")
         self.delay.remove("fifth_avenue_phantom_timer_tick")
         self.delay.remove("fifth_avenue_phantom_next_round")

@@ -109,6 +109,10 @@ class BoltonBoomer(CaseFileMixin, Mode):
             message_mode_title="THUNDER RUMBLE",
             message_mode_subtitle="HIT THE LIT TARGET",
         )
+        self.machine.events.post("cancel_mode_message_reminder")
+        for event in ("show_mode_message", "show_mode_message_long", "show_mode_jackpot", "show_mode_countdown"):
+            self.add_mode_event_handler(event, self._reset_objective_reminder)
+        self._reset_objective_reminder()
 
     def _start_target_stage(self):
         if self.mode_done:
@@ -325,7 +329,32 @@ class BoltonBoomer(CaseFileMixin, Mode):
         self.machine.events.post("update_mode_status", mode_status_title=title, mode_status_value=value)
         self._sync_vars()
 
+    def _reset_objective_reminder(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
+        if not self.mode_done:
+            self.delay.reset(name="villain_objective_reminder", ms=9000,
+                             callback=self._show_objective_reminder)
+
+    def _show_objective_reminder(self):
+        if self.mode_done:
+            return
+        title = "BOLTON AND BOOMER"
+        if self.phase == "target":
+            instruction = "HIT THE LIT TARGET"
+        elif self.phase == "capture":
+            instruction = "CAPTURE A BALL IN ANY SAUCER"
+        elif self.phase == "super":
+            instruction = "SHOOT DAILY BUGLE FOR SUPER"
+        else:
+            self._reset_objective_reminder()
+            return
+        self.machine.events.post("show_mode_message", message_mode_title=title,
+                                 message_mode_subtitle=instruction)
+        self._reset_objective_reminder()
+
     def mode_stop(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
+        self.machine.events.post("cancel_mode_message_reminder")
         self._cancel_super_delays()
         self.delay.remove("bolton_boomer_next_round")
         self.machine.events.post("bolton_boomer_clear_lights")

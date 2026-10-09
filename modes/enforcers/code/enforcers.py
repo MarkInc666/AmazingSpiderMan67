@@ -84,19 +84,45 @@ class Enforcers(Mode, CaseFileMixin):
         self._apply_case_file_effects()
         self._add_handlers()
 
+        self.machine.events.post("cancel_mode_message_reminder")
+        for event in ("show_mode_message", "show_mode_message_long", "show_mode_jackpot", "show_mode_countdown"):
+            self.add_mode_event_handler(event, self._reset_objective_reminder)
+        self._reset_objective_reminder()
         self.machine.events.post("enforcers_started")
         self.machine.events.post("enforcers_clear_all_lights")
         self.machine.events.post("enforcers_clear_upper_shows")
         self.machine.events.post("enforcers_clear_saucers")
         self.machine.events.post("enforcers_build_phase_started")
-        self.machine.events.post("show_mode_message_long", message_mode_title="BREAK THE GANG", message_mode_subtitle="BUILD THREE ZONES")
+        self.machine.events.post("show_mode_message_long", message_mode_title="BREAK THE GANG", message_mode_subtitle="HIT LEFT DROPS, POPS OR RIGHT DROPS")
         self.machine.events.post(
             "enforcers_base_jackpot_set",
             value=self.base_jackpot,
             value_str=self._format_score(self.base_jackpot),
         )
 
+    def _reset_objective_reminder(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
+        if not (self.mode_done):
+            self.delay.reset(name="villain_objective_reminder", ms=9000,
+                             callback=self._show_objective_reminder)
+
+    def _show_objective_reminder(self):
+        if self.mode_done:
+            return
+        if self.ox_lit:
+            instruction = "HIT CENTER WEB FOR SUPER OX"
+        else:
+            labels = {"left": "LEFT", "pops": "CENTER", "right": "RIGHT"}
+            lit = [labels[z] for z in self.ZONES if self.upper_lit[z] and not self.upper_collected[z]]
+            instruction = ("HIT UPPER " + " / ".join(lit) + " TARGETS" if lit
+                           else "HIT LEFT DROPS, POPS OR RIGHT DROPS")
+        self.machine.events.post("show_mode_message", message_mode_title="THE ENFORCERS",
+                                 message_mode_subtitle=instruction)
+        self._reset_objective_reminder()
+
     def mode_stop(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
+        self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post("hide_mode_status")
         self.clear_active_case_file_helpers()
         self.machine.events.post("enforcers_clear_all_lights")
@@ -146,8 +172,10 @@ class Enforcers(Mode, CaseFileMixin):
         previous_multiplier = self.zone_multiplier[zone]
         self.zone_multiplier[zone] = self._multiplier_for_hits(self.zone_hits[zone])
 
+        newly_lit = False
         if self.zone_hits[zone] >= self.required_hits_to_light:
             if not self.upper_lit[zone]:
+                newly_lit = True
                 self.upper_lit[zone] = True
                 self._upper_target_lit(zone)
             elif self.zone_multiplier[zone] != previous_multiplier:
@@ -163,7 +191,8 @@ class Enforcers(Mode, CaseFileMixin):
             jackpot=self._current_zone_jackpot(zone),
             jackpot_str=self._format_score(self._current_zone_jackpot(zone)),
         )
-        self.machine.events.post("show_mode_message", message_mode_title="ZONE HIT", message_mode_subtitle=self.ZONE_NAMES[zone], message_mode_value=self._current_zone_jackpot(zone))
+        if not newly_lit:
+            self.machine.events.post("show_mode_message", message_mode_title="ZONE HIT", message_mode_subtitle=self.ZONE_NAMES[zone], message_mode_value=self._current_zone_jackpot(zone))
 
     def _upper_target_lit(self, zone):
         self._update_upper_flash(zone)
@@ -184,7 +213,8 @@ class Enforcers(Mode, CaseFileMixin):
             jackpot=self._current_zone_jackpot(zone),
             jackpot_str=self._format_score(self._current_zone_jackpot(zone)),
         )
-        self.machine.events.post("show_mode_message", message_mode_title="UPPER JACKPOT LIT", message_mode_subtitle=self.ZONE_NAMES[zone], message_mode_value=self._current_zone_jackpot(zone))
+        target = {"left": "LEFT", "pops": "CENTER", "right": "RIGHT"}[zone]
+        instruction = f"HIT UPPER {target} TARGET"
 
         if self.has_case_file("more_jackpots") and not self.saucer_bonus_collected[zone]:
             self.saucer_bonus_lit[zone] = True
@@ -194,7 +224,11 @@ class Enforcers(Mode, CaseFileMixin):
                 zone=zone,
                 zone_name=self.ZONE_NAMES[zone],
             )
-            self.machine.events.post("show_mode_message", message_mode_title="SAUCER BONUS LIT", message_mode_subtitle=self.ZONE_NAMES[zone])
+            saucer = {"left": 1, "pops": 2, "right": 3}[zone]
+            instruction += f" - SAUCER {saucer} BONUS LIT"
+        self.machine.events.post("show_mode_message", message_mode_title="UPPER JACKPOT LIT",
+                                 message_mode_subtitle=instruction,
+                                 message_mode_value=self._current_zone_jackpot(zone))
 
     def _update_upper_flash(self, zone):
         self.machine.events.post(f"enforcers_stop_{zone}_upper_flash")

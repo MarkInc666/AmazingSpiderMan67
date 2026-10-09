@@ -195,7 +195,7 @@ class CharlesCameo(CaseFileMixin, Mode):
             value=value,
         )
         self._light_current_shot()
-        self._show_message("CAMEO COPIED IT", f"HIT {self.SIDE_LABELS[self.mirror_side]}", value=value)
+        self._show_message("CAMEO COPIED IT", f"HIT {self.SIDE_LABELS[self.mirror_side]}", reminder=True)
         self._update_status()
         self._sync_vars()
         self._schedule_tick()
@@ -240,6 +240,7 @@ class CharlesCameo(CaseFileMixin, Mode):
             self.machine.events.post("rooftop_diverter_close")
 
         self.stage_index += 1
+        self.machine.events.post("cancel_mode_message_reminder")
         self.phase = "transition"
         self.delay.reset(
             name="charles_cameo_next_stage",
@@ -280,6 +281,7 @@ class CharlesCameo(CaseFileMixin, Mode):
 
         self.machine.events.post("charles_cameo_mirror_expired", stage=self.stage)
         self._show_message("CAMEO ESCAPED", "RESTARTING THIS PAIR")
+        self.machine.events.post("cancel_mode_message_reminder")
         self.phase = "transition"
         self.machine.events.post("charles_cameo_clear_shots")
         self.delay.reset(
@@ -300,6 +302,7 @@ class CharlesCameo(CaseFileMixin, Mode):
     def _complete_mode(self):
         if self.mode_done:
             return
+        self.machine.events.post("cancel_mode_message_reminder")
         self.mode_done = True
         self._stop_timer()
         self.machine.game.player[f"{self.MODE_KEY}_state"] = 2
@@ -309,6 +312,7 @@ class CharlesCameo(CaseFileMixin, Mode):
     def _ball_ending(self, **kwargs):
         if self.mode_done:
             return
+        self.machine.events.post("cancel_mode_message_reminder")
         self.mode_done = True
         self._stop_timer()
         self._sync_vars()

@@ -124,11 +124,37 @@ class SpiderMen(CaseFileMixin, Mode):
         self._update_status()
         self._show_message(
             "ALIGN THE HOMEWORLD RAY",
-            "FLIPPERS ROTATE THE LIGHTS",
-            reminder=True,
+            "HIT PULSING SHOTS - FLIPPERS ROTATE LIGHTS",
+            reminder=False,
         )
+        self.machine.events.post("cancel_mode_message_reminder")
+        for event in ("show_mode_message", "show_mode_message_long", "show_mode_jackpot", "show_mode_countdown"):
+            self.add_mode_event_handler(event, self._reset_objective_reminder)
+        self._reset_objective_reminder()
+
+    def _reset_objective_reminder(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
+        if not self.mode_done:
+            self.delay.reset(name="villain_objective_reminder", ms=9000,
+                             callback=self._show_objective_reminder)
+
+    def _show_objective_reminder(self):
+        if self.mode_done:
+            return
+        title = "ALIGN THE HOMEWORLD RAY"
+        if self.phase == "alignment":
+            instruction = "HIT PULSING SHOTS - FLIPPERS ROTATE LIGHTS"
+        elif self.phase == "super":
+            instruction = "HIT CENTER WEB FOR SUPER"
+        else:
+            return
+        self.machine.events.post("show_mode_message", message_mode_title=title,
+                                 message_mode_subtitle=instruction)
+        self._reset_objective_reminder()
 
     def mode_stop(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
+        self.machine.events.post("cancel_mode_message_reminder")
         self.delay.remove("spider_men_proton_tick")
         self.delay.remove("spider_men_super_tick")
         self.delay.remove("spider_men_final_message")
@@ -292,7 +318,7 @@ class SpiderMen(CaseFileMixin, Mode):
                 "CENTER WEB",
                 self.seconds_left,
                 value=self.SUPER_VALUE,
-                reminder=True,
+                reminder=False,
             )
             self._update_status()
             self.delay.reset(

@@ -35,6 +35,10 @@ sound_player:
       bus: effects
 
 event_player:
+  # Use the same double-flipper event as intro speedup.
+  flipper_cancel:
+    - centaur_post_hold_cancel
+
   s_left_drops_1_active: centaur_drop_left_1_hit
   s_left_drops_2_active: centaur_drop_left_2_hit
   s_left_drops_3_active: centaur_drop_left_3_hit
@@ -66,12 +70,6 @@ event_player:
   s_saucer_3_active: clear_saucers
 
   # Same early release pattern as Daily Bugle: both flippers held/tapped while post is holding.
-  s_left_flipper_active{device.switches.s_right_flipper.state == 1}:
-  - centaur_post_hold_cancel
-
-  s_right_flipper_active{device.switches.s_left_flipper.state == 1}:
-  - centaur_post_hold_cancel
-
   mode_centaur_started:
   - disable_daily_bugle_mystery
   - clear_saucers

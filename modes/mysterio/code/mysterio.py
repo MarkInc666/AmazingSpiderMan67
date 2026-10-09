@@ -300,19 +300,14 @@ class Mysterio(CaseFileMixin, Mode):
         self.machine.events.post("mysterio_score_wrong_shot")
         self._award_points(self.WRONG_SCORE)
 
-        if protected:
-            self.machine.events.post(
-                "show_mode_message",
-                message_mode_title="MYSTERIO FOOLED!",
-                message_mode_subtitle="SUPER VALUE PROTECTED",
-            )
-        else:
-            self.machine.events.post(
-                "show_mode_message",
-                message_mode_title="HE MUST BE HERE SOMEWHERE",
-                message_mode_value=self.WRONG_SCORE,
-            )
-            self.reduce_super(self.wrong_deduct)
+        if not protected:
+            self.reduce_super(self.wrong_deduct, show_message=False)
+        self.machine.events.post(
+            "show_mode_message",
+            message_mode_title="HMMM?",
+            message_mode_subtitle="SUPER VALUE PROTECTED" if protected else "HE MUST BE HERE SOMEWHERE",
+            message_mode_value=self.WRONG_SCORE,
+        )
 
         self._disable_shot(shot)
         self._update_mode_status()
@@ -322,22 +317,15 @@ class Mysterio(CaseFileMixin, Mode):
         self.machine.events.post("mysterio_score_wrong_shot")
         self._award_points(self.WRONG_SCORE)
 
+        if not protected:
+            self.reduce_super(self.wrong_deduct, show_message=False)
         self.machine.events.post(
             "show_mode_message",
-            message_mode_title="CLUE FOUND",
-            message_mode_subtitle=f"SPIDEY SENSE: {shot.hint.upper()}",
+            message_mode_title={"left": "LEFT!", "right": "RIGHT!", "upper": "UPPER!"}.get(shot.hint, "HMMM?"),
+            message_mode_subtitle="SUPER VALUE PROTECTED" if protected else "SPIDEY SENSE",
             message_mode_value=self.WRONG_SCORE,
         )
         self._post_hint_audio(shot.hint)
-
-        if protected:
-            self.machine.events.post(
-                "show_mode_message",
-                message_mode_title="MYSTERIO FOOLED!",
-                message_mode_subtitle="SUPER VALUE PROTECTED",
-            )
-        else:
-            self.reduce_super(self.wrong_deduct)
 
         self._disable_shot(shot)
         self._update_mode_status()
@@ -363,15 +351,16 @@ class Mysterio(CaseFileMixin, Mode):
     def _release_saucers(self):
         self.machine.events.post("clear_saucers_delayed")
 
-    def reduce_super(self, amount):
+    def reduce_super(self, amount, show_message=True):
         self.super_value = max(self.SUPER_FLOOR, self.super_value - int(amount))
         self.machine.game.player["mysterio_super_value"] = self.super_value
         self.machine.events.post("mysterio_super_changed")
-        self.machine.events.post(
-            "show_mode_message",
-            message_mode_title="SUPER NOW",
-            message_mode_value=self.super_value,
-        )
+        if show_message:
+            self.machine.events.post(
+                "show_mode_message",
+                message_mode_title="SUPER NOW",
+                message_mode_value=self.super_value,
+            )
 
     def collect_super(self, shot):
         if self.mode_done or self.mode_finishing:

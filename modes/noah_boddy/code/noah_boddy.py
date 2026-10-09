@@ -161,6 +161,10 @@ class NoahBoddy(CaseFileMixin, Mode):
         self.machine.events.post("noah_boddy_find_started")
         self.machine.events.post("noah_boddy_get_to_upper")
         self._show_mode_message("FIND THE NOAH BODDY", "GET TO THE ROOF")
+        self.machine.events.post("cancel_mode_message_reminder")
+        for event in ("show_mode_message", "show_mode_message_long", "show_mode_jackpot", "show_mode_countdown"):
+            self.add_mode_event_handler(event, self._reset_objective_reminder)
+        self._reset_objective_reminder()
 
 
     def _show_mode_message(self, title, subtitle="", value="", seconds="", reminder=False):
@@ -195,7 +199,31 @@ class NoahBoddy(CaseFileMixin, Mode):
             message_mode_seconds=seconds,
         )
 
+    def _reset_objective_reminder(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
+        if not self._in_summary_or_done():
+            self.delay.reset(name="villain_objective_reminder", ms=9000,
+                             callback=self._show_objective_reminder)
+
+    def _show_objective_reminder(self):
+        if self._in_summary_or_done():
+            return
+        if self.phase in ("get_to_upper", "return_to_upper"):
+            title, instruction = "SEARCH FOR NOAH BODDY", "RETURN TO ROOF" if self.phase == "return_to_upper" else "GET TO THE ROOF"
+        elif self.phase == "revealing":
+            title, instruction = "SEARCHING", "HIT UPPER TARGETS TO SEARCH"
+        elif self.phase == "hurryup":
+            title, instruction = "SECRET TARGET FOUND", "HIT " + self.TARGET_LABELS[self.secret_target]
+        else:
+            self._reset_objective_reminder()
+            return
+        self.machine.events.post("show_mode_message", message_mode_title=title,
+                                 message_mode_subtitle=instruction)
+        self._reset_objective_reminder()
+
     def mode_stop(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
+        self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post("hide_mode_status")
         self.machine.events.post("noah_boddy_vuk_chase_stop")
         self.delay.remove("noah_boddy_hurryup_tick")

@@ -129,8 +129,30 @@ class Cerberus(CaseFileMixin, Mode):
         self.machine.events.post("cerberus_startup_complete")
         self.machine.events.post("show_mode_message_long", message_mode_title="THREE HEADS", message_mode_subtitle="HIT DROPS OR UPPER TARGETS")
         self._refresh_lights()
+        self.machine.events.post("cancel_mode_message_reminder")
+        self.objective_reminder_step = 0
+        for event in ("show_mode_message", "show_mode_message_long", "show_mode_jackpot", "show_mode_countdown"):
+            self.add_mode_event_handler(event, self._reset_objective_reminder)
+        self._reset_objective_reminder()
+
+    def _reset_objective_reminder(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
+        if not self.mode_done:
+            self.delay.reset(name="villain_objective_reminder", ms=9000,
+                             callback=self._show_objective_reminder)
+
+    def _show_objective_reminder(self):
+        if self.mode_done:
+            return
+        title = "THREE HEADS"
+        instruction = "LIT SAUCERS" if any(self.saucer_jackpot_lit.values()) else "HIT DROPS OR UPPER TARGETS"
+        self.machine.events.post("show_mode_message", message_mode_title=title,
+                                 message_mode_subtitle=instruction)
+        self._reset_objective_reminder()
 
     def mode_stop(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
+        self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post("hide_mode_status")
         self.delay.remove("cerberus_mode_timer")
         self.clear_active_case_file_helpers()
@@ -177,7 +199,7 @@ class Cerberus(CaseFileMixin, Mode):
         self.machine.events.post(
             "show_mode_message",
             message_mode_title="SAUCER LIT",
-            message_mode_subtitle=f"SAUCER {matching_saucer} - 1X",
+            message_mode_subtitle="LIT SAUCERS",
         )
 
     def _upper_target_hit(self, target=None, **kwargs):
@@ -200,7 +222,7 @@ class Cerberus(CaseFileMixin, Mode):
         self._refresh_lights()
         self._update_gate_state()
         self.machine.events.post("cerberus_target_hit", target=target)
-        self.machine.events.post("show_mode_message", message_mode_title="HEAD STUNNED", message_mode_subtitle=f"SAUCER {target} - 2X")
+        self.machine.events.post("show_mode_message", message_mode_title="HEAD STUNNED", message_mode_subtitle="LIT SAUCERS")
 
     def _spinner_hit(self, **kwargs):
         if self._in_summary_or_done():

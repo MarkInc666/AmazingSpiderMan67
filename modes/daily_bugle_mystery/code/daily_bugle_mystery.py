@@ -122,6 +122,8 @@ class DailyBugleMystery(Mode):
 
         self.daily_bugle_enabled = True
         self.left_exit_hold_active = False
+        self.roof_visit_active = False
+        self.roof_villain_start_armed = False
         self.current_mystery_award_event = ""
         self._pending_mystery_award_text = ""
         self.machine.game.player["daily_bugle_vuk_hold_active"] = 0
@@ -133,6 +135,7 @@ class DailyBugleMystery(Mode):
 
     def mode_stop(self, **kwargs):
         self.daily_bugle_enabled = False
+        self._clear_roof_start()
         if self.machine.game:
             self.machine.game.player["daily_bugle_vuk_hold_active"] = 0
         self.delay.remove("daily_bugle_widget_update_deferred")
@@ -145,6 +148,11 @@ class DailyBugleMystery(Mode):
         super().mode_stop(**kwargs)
 
     def _add_handlers(self):
+        self.add_mode_event_handler("s_upper_entrance_opto_active", self._roof_start_entry)
+        self.add_mode_event_handler("s_inlane_m_l_active", self._roof_start_inlane)
+        for event in ("ball_will_end", "ball_ending", "tilt", "slam_tilt",
+                      "villain_mode_started", "villain_select_started", "mode_chapter_select_started"):
+            self.add_mode_event_handler(event, self._clear_roof_start)
         self.add_mode_event_handler("daily_bugle_a_hit", self.a_rollover_hit)
         self.add_mode_event_handler("daily_bugle_b_hit", self.b_rollover_hit)
         self.add_mode_event_handler("daily_bugle_sling_swap_request", self.sling_swap_ab)
@@ -187,6 +195,7 @@ class DailyBugleMystery(Mode):
         # or Mystery progress. Villain/wizard modes may disable the feature
         # temporarily and the existing state should resume afterward.
         self.daily_bugle_enabled = False
+        self._clear_roof_start()
         self._cancel_vuk_delay_eject()
         self.machine.events.post("daily_bugle_mystery_stop_all")
         self.update_player_vars()
@@ -339,8 +348,37 @@ class DailyBugleMystery(Mode):
 
         self._post_widget_update()
 
+    def _clear_roof_start(self, **kwargs):
+        self.roof_visit_active = False
+        self.roof_villain_start_armed = False
+        self.delay.remove("roof_villain_start_expire")
+
+    def _roof_start_entry(self, **kwargs):
+        self._clear_roof_start()
+        self.roof_visit_active = self.daily_bugle_enabled and not self._progression_award_blocked()
+
+    def _roof_start_inlane(self, **kwargs):
+        if not self.roof_villain_start_armed:
+            return
+        ready = self.daily_bugle_enabled and self._can_start_next_villain_award() and not self._has_uncollected_case_file()
+        self._clear_roof_start()
+        if ready:
+            self.machine.events.post("villain_rooftop_start_request")
+
     def rooftop_left_exit(self, **kwargs):
         if not self.daily_bugle_enabled:
+            return
+
+        visited = self.roof_visit_active
+        self.roof_visit_active = False
+        if visited and self._can_start_next_villain_award() and not self._has_uncollected_case_file():
+            self.roof_villain_start_armed = True
+            self.delay.reset(name="roof_villain_start_expire", ms=20000,
+                             callback=self._clear_roof_start)
+            self._start_left_exit_hold(instruction_key="villain_start",
+                                       instruction_text="MIDDLE B INLANE STARTS VILLAIN")
+            self.machine.events.post("show_mode_message_long",
+                                     message_mode_title="MIDDLE B INLANE STARTS VILLAIN")
             return
 
         case_file_setup = (
@@ -362,6 +400,7 @@ class DailyBugleMystery(Mode):
         self._start_left_exit_hold(instruction_key=instruction_key, instruction_text=instruction_text)
 
     def rooftop_right_exit(self, **kwargs):
+        self._clear_roof_start()
         if not self.daily_bugle_enabled:
             return
 

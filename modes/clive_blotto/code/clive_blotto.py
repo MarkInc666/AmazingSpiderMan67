@@ -171,8 +171,8 @@ class CliveBlotto(CaseFileMixin, Mode):
         self.machine.events.post(
             "show_mode_message",
             message_mode_title="SPIRIT-SCOPE CONTAINMENT",
-            message_mode_subtitle="DRAIN METER - CLEAR BLOTTO",
-            message_mode_value="75%",
+            message_mode_subtitle="SPINNERS SLOW THE SPREAD - CLEAR INFECTED AREAS",
+            message_mode_value="",
             reminder=True,
         )
         self._schedule_growth()

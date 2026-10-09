@@ -105,8 +105,38 @@ class DoctorDumpty(CaseFileMixin, Mode):
         self.machine.events.post("doctor_dumpty_gas_phase_started")
         self.machine.events.post("show_mode_message_long", message_mode_title="CLEAR THE LAUGHING GAS", message_mode_subtitle="HIT LEFT DROPS TO FIND IT")
         self._update_status()
+        self.machine.events.post("cancel_mode_message_reminder")
+        for event in ("show_mode_message", "show_mode_message_long", "show_mode_jackpot", "show_mode_countdown"):
+            self.add_mode_event_handler(event, self._reset_objective_reminder)
+        self._reset_objective_reminder()
+
+    def _reset_objective_reminder(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
+        if not self.mode_done:
+            self.delay.reset(name="villain_objective_reminder", ms=9000,
+                             callback=self._show_objective_reminder)
+
+    def _show_objective_reminder(self):
+        if self.mode_done:
+            return
+        if self.phase == "roof":
+            title, instruction = "POP THE BALLOONS", "HIT UPPER TARGETS"
+        elif self.phase == "get_to_roof":
+            title, instruction = "GAS CLEARED", "GET TO THE ROOFTOP"
+        elif self.phase == "gas":
+            lit = self.revealed_gas - self.cleared_gas
+            title = "CLEAR THE LAUGHING GAS"
+            instruction = "HIT LIT GAS SHOTS" if lit else "HIT LEFT DROPS TO FIND IT"
+        else:
+            self._reset_objective_reminder()
+            return
+        self.machine.events.post("show_mode_message", message_mode_title=title,
+                                 message_mode_subtitle=instruction)
+        self._reset_objective_reminder()
 
     def mode_stop(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
+        self.machine.events.post("cancel_mode_message_reminder")
         self.delay.remove("doctor_dumpty_roof_tick")
         self.machine.events.post("hide_mode_status")
         self.machine.events.post("doctor_dumpty_all_lights_off")

@@ -112,10 +112,12 @@ class Lizard(CaseFileMixin, Mode):
             "show_mode_message",
             message_mode_title="BUILD THE SERUM",
             message_mode_subtitle="HIT BOTH POP BUMPERS",
+            reminder=True,
         )
         self._update_status()
 
     def mode_stop(self, **kwargs):
+        self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post("hide_mode_status")
         self._stop_delivery_timers()
         self.clear_active_case_file_helpers()
@@ -276,6 +278,7 @@ class Lizard(CaseFileMixin, Mode):
                 "show_mode_message",
                 message_mode_title="SERUM COMPONENT FOUND",
                 message_mode_subtitle="HIT THE OTHER POP",
+            reminder=True,
             )
             self._update_status()
             return
@@ -289,7 +292,13 @@ class Lizard(CaseFileMixin, Mode):
         player["lizard_serum_ready"] = 1
         self._star_10x_armed = False
 
-        subtitle = "LEFT WEB / SPINNER / LEFT B" if self.has_case_file("shot_assist") else "DELIVER TO LEFT WEB"
+        subtitle = "HIT STAR FOR 10X - DELIVER TO LEFT WEB"
+        self.machine.events.post(
+            "show_mode_message",
+            message_mode_title="SERUM READY",
+            message_mode_subtitle=subtitle,
+            reminder=True,
+        )
         self.machine.events.post(
             "show_mode_countdown",
             message_mode_title="SERUM READY",
@@ -314,6 +323,7 @@ class Lizard(CaseFileMixin, Mode):
             "show_mode_message",
             message_mode_title="10X DELIVERY ARMED",
             message_mode_subtitle="DELIVER TO LEFT WEB",
+            reminder=True,
         )
         self._update_status()
 
@@ -485,6 +495,7 @@ class Lizard(CaseFileMixin, Mode):
             "show_mode_message",
             message_mode_title="BUILD ANOTHER SERUM",
             message_mode_subtitle="HIT BOTH POP BUMPERS",
+            reminder=True,
             reminder=True,
         )
 

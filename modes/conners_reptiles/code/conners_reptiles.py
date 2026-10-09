@@ -147,11 +147,37 @@ class ConnersReptiles(CaseFileMixin, Mode):
         self._show_message(
             "SWAMP RAMPAGE",
             "HIT POPS TO REVEAL JACKPOTS",
-            reminder=True,
+            reminder=False,
         )
         self._sync_vars()
+        self.machine.events.post("cancel_mode_message_reminder")
+        for event in ("show_mode_message", "show_mode_message_long", "show_mode_jackpot", "show_mode_countdown"):
+            self.add_mode_event_handler(event, self._reset_objective_reminder)
+        self._reset_objective_reminder()
+
+    def _reset_objective_reminder(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
+        if not self.mode_done:
+            self.delay.reset(name="villain_objective_reminder", ms=9000,
+                             callback=self._show_objective_reminder)
+
+    def _show_objective_reminder(self):
+        if self.mode_done:
+            return
+        title = "CONNERS' REPTILES"
+        if self.super_lit:
+            instruction = "SHOOT DAILY BUGLE FOR SWAMP SUPER"
+        elif self.lit_shots:
+            instruction = "COLLECT LIT JACKPOTS - POPS REVEAL MORE"
+        else:
+            instruction = "HIT POPS TO REVEAL JACKPOTS"
+        self.machine.events.post("show_mode_message", message_mode_title=title,
+                                 message_mode_subtitle=instruction)
+        self._reset_objective_reminder()
 
     def mode_stop(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
+        self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post("hide_mode_status")
         self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post("conners_reptiles_clear_all_lights")
@@ -269,7 +295,7 @@ class ConnersReptiles(CaseFileMixin, Mode):
             "SWAMP SUPER READY",
             "SHOOT THE VUK",
             value=self.SUPER_VALUE,
-            reminder=True,
+            reminder=False,
         )
 
     def _vuk_hit(self, **kwargs):

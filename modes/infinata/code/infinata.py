@@ -119,7 +119,8 @@ class Infinata(CaseFileMixin, Mode):
         else:
             self._close_roof_gate_if_requested()
         self.machine.events.post(f"infinata_light_{self.active_area}")
-        self._show_message("BANISH THE CREATURES", self.active_area.replace("_", " ").upper(), reminder=True)
+        if self.phase != "super":
+            self._show_message("BANISH THE CREATURES", self.active_area.replace("_", " ").upper(), reminder=True)
         self._sync_vars()
 
     def _area_hit(self, area=None, switch=None, **kwargs):
@@ -192,6 +193,8 @@ class Infinata(CaseFileMixin, Mode):
             return
         if self.completed_areas < len(self.selected_areas):
             self._light_next_area()
+        if self.phase == "super":
+            self._show_countdown()
 
     def _start_super_phase(self):
         self.phase = "super"
@@ -229,6 +232,7 @@ class Infinata(CaseFileMixin, Mode):
         subtitle = "SHOOT ANY SAUCER"
         if self.active_area:
             subtitle = f"OPTIONAL {self.active_area.replace('_', ' ').upper()} - OR SAUCER"
+        self._show_message("INFINATA SUPER", subtitle, reminder=True)
         self.machine.events.post("show_mode_countdown", message_mode_title="INFINATA SUPER", message_mode_subtitle=subtitle, message_mode_value="", message_mode_seconds=self.super_seconds_left)
 
 
@@ -259,6 +263,7 @@ class Infinata(CaseFileMixin, Mode):
     def _complete_mode(self, **kwargs):
         if self.mode_done:
             return
+        self.machine.events.post("cancel_mode_message_reminder")
         self.mode_done = True
         self.machine.game.player["infinata_state"] = 2
         self._sync_vars()
@@ -267,6 +272,7 @@ class Infinata(CaseFileMixin, Mode):
     def _fail_mode(self, **kwargs):
         if self.mode_done:
             return
+        self.machine.events.post("cancel_mode_message_reminder")
         self.mode_done = True
         self.machine.game.player["infinata_state"] = 2
         self._sync_vars()

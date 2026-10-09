@@ -127,7 +127,7 @@ class Goblin(CaseFileMixin, Mode):
         self.machine.events.post(
             "show_mode_message_long",
             message_mode_title="CHAOS MULTIBALL",
-            message_mode_subtitle="HIT SAUCER TO BANK BONUS",
+            message_mode_subtitle="REST IN SAUCERS TO COLLECT BONUS",
         )
         self.start_unsafe_phase()
 
@@ -164,6 +164,8 @@ class Goblin(CaseFileMixin, Mode):
             return
         self.hold_active = False
         self.release_pending = False
+        self.unsafe_reminder_index = 0
+        self.delay.reset(name="goblin_objective_reminder", ms=9000, callback=self._show_objective_reminder)
         self.machine.game.player["goblin_hold_active"] = 0
         self.safe_seconds_remaining = 0
         self.safe_hit_count = 0
@@ -178,6 +180,7 @@ class Goblin(CaseFileMixin, Mode):
         self._update_mode_status()
 
     def start_safe_phase(self, saucer):
+        self.delay.reset(name="goblin_objective_reminder", ms=9000, callback=self._show_objective_reminder)
         self.hold_active = True
         self.release_pending = False
         self.held_saucer = saucer
@@ -203,7 +206,7 @@ class Goblin(CaseFileMixin, Mode):
             ms=2_000,
             callback=self._show_temp,
             title="SAFE JACKPOTS",
-            subtitle="HIT ALL 6",
+            subtitle="HIT FLASHING TARGETS",
         )
 
     def safe_tick(self, **kwargs):
@@ -454,6 +457,20 @@ class Goblin(CaseFileMixin, Mode):
     # Messages / status
     # ------------------------------------------------------------------
 
+    def _show_objective_reminder(self):
+        if self.mode_finishing:
+            return
+        if not self.release_pending:
+            if self.hold_active:
+                instruction = "HIT FLASHING TARGETS"
+            else:
+                instructions = ("REST IN SAUCERS TO COLLECT BONUS", "AVOID LIT SHOTS")
+                instruction = instructions[self.unsafe_reminder_index % 2]
+                self.unsafe_reminder_index += 1
+            self._show_temp("CHAOS MULTIBALL", instruction)
+        self.delay.reset(name="goblin_objective_reminder", ms=9000,
+                         callback=self._show_objective_reminder)
+
     def _show_temp(self, title, subtitle="", value=""):
         self.machine.events.post(
             "goblin_show_temp_message",
@@ -535,6 +552,7 @@ class Goblin(CaseFileMixin, Mode):
 
     def clear_all_delays(self):
         for name in (
+            "goblin_objective_reminder",
             "goblin_safe_tick",
             "goblin_safe_prompt",
             "goblin_temp_followup",

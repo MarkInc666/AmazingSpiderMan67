@@ -124,8 +124,38 @@ class Fakir(CaseFileMixin, Mode):
         self._sync_player_vars("SHOOT SAUCERS", "FAKE RUBIES")
         self.machine.events.post("fakir_startup_complete")
         self._show_saucers_available()
+        self.machine.events.post("cancel_mode_message_reminder")
+        for event in ("show_mode_message", "show_mode_message_long", "show_mode_jackpot", "show_mode_countdown"):
+            self.add_mode_event_handler(event, self._reset_objective_reminder)
+        self._reset_objective_reminder()
+
+    def _reset_objective_reminder(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
+        if not self._inactive():
+            self.delay.reset(name="villain_objective_reminder", ms=9000,
+                             callback=self._show_objective_reminder)
+
+    def _show_objective_reminder(self):
+        if self._inactive():
+            return
+        if self.release_pending_saucer is not None:
+            self._reset_objective_reminder()
+            return
+        if self.ruby_active:
+            title = "SUPER RUBY" if self.current_award_is_super else "REAL RUBY"
+            target = "ANY UPPER TARGET" if self.shot_assist_active else self.TARGET_NAMES[self.current_target]
+            instruction = "HIT " + target if self.ruby_timer_started else "GET TO THE ROOF"
+        elif self.super_qualified and not self.super_collected:
+            title, instruction = "SUPER READY", "SHOOT A SAUCER TO REVEAL SUPER RUBY"
+        else:
+            title, instruction = "FAKIR'S RUBY REVEAL", "SHOOT A SAUCER TO REVEAL RUBY"
+        self.machine.events.post("show_mode_message", message_mode_title=title,
+                                 message_mode_subtitle=instruction)
+        self._reset_objective_reminder()
 
     def mode_stop(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
+        self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post("hide_mode_status")
         self.delay.remove("fakir_ruby_timer")
         self.delay.remove("fakir_ruby_timer_tick")

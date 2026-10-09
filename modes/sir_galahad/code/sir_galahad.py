@@ -255,6 +255,7 @@ class SirGalahad(CaseFileMixin, Mode):
             round=self.round_number,
             seconds=self.seconds_left,
         )
+        self._show_message(f"{self.active_bank.upper()} BANK", "AIM FOR CENTER", reminder=True)
         self.machine.events.post(
             "show_mode_countdown",
             message_mode_title=f"{self.active_bank.upper()} BANK",

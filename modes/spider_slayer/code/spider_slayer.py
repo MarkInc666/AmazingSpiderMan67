@@ -170,7 +170,7 @@ class SpiderSlayer(CaseFileMixin, Mode):
         if self.has_case_file("safety_net"):
             self.machine.events.post("spider_slayer_enable_safety_net")
 
-        self._show_message("SLAYER EXPOSED", "SHOOT THE DAILY BUGLE", self.slayers_jackpot)
+        self._show_message("SLAYER EXPOSED", "SHOOT THE DAILY BUGLE", reminder=True)
         self.jackpot_seconds_left = self.jackpot_seconds
         self._sync_vars()
         self._update_status()
@@ -190,6 +190,7 @@ class SpiderSlayer(CaseFileMixin, Mode):
             self.delay.add(name="spider_slayer_decay", ms=1000, callback=self._decay_tick)
 
     def _expire_jackpot(self):
+        self.machine.events.post("cancel_mode_message_reminder")
         self.phase = "expired"
         self.slayers_jackpot = 0
         self.collected_jackpot = 0
@@ -217,6 +218,7 @@ class SpiderSlayer(CaseFileMixin, Mode):
         self.machine.events.post("spider_slayer_vuk_chase_stop")
         self.collected_jackpot = self.slayers_jackpot
         self._score(self.collected_jackpot)
+        self.machine.events.post("cancel_mode_message_reminder")
         self.mode_done = True
         self.machine.game.player["spider_slayer_state"] = 2
         self._sync_vars()
@@ -229,6 +231,7 @@ class SpiderSlayer(CaseFileMixin, Mode):
     def _ball_ending(self, **kwargs):
         if self.mode_done:
             return
+        self.machine.events.post("cancel_mode_message_reminder")
         self.mode_done = True
         self._sync_vars()
         self.machine.events.post("show_mode_message", message_mode_title="SLAYER ESCAPED", message_mode_subtitle="THE HUNT IS OVER")
@@ -264,12 +267,13 @@ class SpiderSlayer(CaseFileMixin, Mode):
             value = "LIT SHOTS STILL SCORE"
         self.machine.events.post("update_mode_status", mode_status_title=title, mode_status_value=value)
 
-    def _show_message(self, title, subtitle="", value=""):
+    def _show_message(self, title, subtitle="", value="", reminder=False):
         self.machine.events.post(
             "show_mode_message",
             message_mode_title=title,
             message_mode_subtitle=subtitle,
             message_mode_value=value,
+            reminder=reminder,
         )
 
     def mode_stop(self, **kwargs):

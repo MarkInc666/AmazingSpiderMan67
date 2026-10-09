@@ -99,15 +99,45 @@ class Plotter(CaseFileMixin, Mode):
         self.add_mode_event_handler("ball_ending", self._ball_ending)
 
         self.machine.events.post("rooftop_diverter_close")
+        self.machine.events.post("cancel_mode_message_reminder")
+        for event in ("show_mode_message", "show_mode_message_long", "show_mode_jackpot", "show_mode_countdown"):
+            self.add_mode_event_handler(event, self._reset_objective_reminder)
+        self._reset_objective_reminder()
         self.machine.events.post(
             "show_mode_message",
             message_mode_title="THE PLOTTER",
             message_mode_subtitle="POPS BUILD RUMORS",
-            reminder=True,
+            reminder=False,
         )
         self._update_status()
 
+    def _reset_objective_reminder(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
+        if not self.mode_done:
+            self.delay.reset(name="villain_objective_reminder", ms=9000,
+                             callback=self._show_objective_reminder)
+
+    def _show_objective_reminder(self):
+        if self.mode_done:
+            return
+        if self.vuk_pending:
+            self._reset_objective_reminder()
+            return
+        if self.vuk_lit:
+            title, instruction = "THE PLOTTER EXPOSED", "SHOOT DAILY BUGLE"
+        elif self.lit_saucers:
+            title, instruction = "SAUCER LIT", "COLLECT THE RED SAUCER"
+        elif self.rumors >= self.RUMORS_TO_LIGHT_SAUCER:
+            title, instruction = "SPINNER READY", "SHOOT THE YELLOW LOWER SPINNER"
+        else:
+            title, instruction = "BUILD RUMORS", "HIT POPS"
+        self.machine.events.post("show_mode_message", message_mode_title=title,
+                                 message_mode_subtitle=instruction)
+        self._reset_objective_reminder()
+
     def mode_stop(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
+        self.machine.events.post("cancel_mode_message_reminder")
         self._cleanup_mode_display_and_delays()
         self.machine.events.post("plotter_clear_lights")
         self.machine.events.post("plotter_vuk_chase_stop")

@@ -110,10 +110,33 @@ class DrMagneto(CaseFileMixin, Mode):
         self.machine.events.post("clear_saucers_delayed")
         if self.has_case_file("safety_net"):
             self.machine.events.post("start_case_file_ball_save")
-        self._show_message("DR. MAGNETO", "SLINGS AND INLANES LIGHT A / B", reminder=True)
+        self.machine.events.post("cancel_mode_message_reminder")
+        for event in ("show_mode_message", "show_mode_message_long", "show_mode_jackpot", "show_mode_countdown"):
+            self.add_mode_event_handler(event, self._reset_objective_reminder)
+        self._reset_objective_reminder()
+        self._show_message("DR. MAGNETO", "SLINGS AND INLANES LIGHT A / B")
         self._update_status()
 
+    def _reset_objective_reminder(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
+        if not self.mode_done and self.phase in ("circuits", "super"):
+            self.delay.reset(name="villain_objective_reminder", ms=9000,
+                             callback=self._show_objective_reminder)
+
+    def _show_objective_reminder(self):
+        if self.mode_done or self.phase not in ("circuits", "super"):
+            return
+        if self.phase == "super":
+            instruction = "HIT CENTER WEB"
+        else:
+            lit = [side.upper() for side, state in self.pop_state.items() if state == "flashing"]
+            instruction = ("HIT " + " / ".join(lit) + " POP" if lit
+                           else "SLINGS AND INLANES LIGHT A / B")
+        self._show_message("DR. MAGNETO", instruction)
+        self._reset_objective_reminder()
+
     def mode_stop(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
         self._clear_delays()
         self.machine.events.post("dr_magneto_clear_all")
         self.machine.events.post("rooftop_diverter_close")

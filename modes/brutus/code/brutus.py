@@ -189,7 +189,7 @@ class Brutus(CaseFileMixin, Mode):
             seconds=self.seconds_left,
         )
         title = "SHOT ASSIST — BRUTUS LURED" if assisted else "BRUTUS LURED AWAY"
-        self._show_message(title, "SHOOT ANY SAUCER", value=self.seconds_left)
+        self._show_message(title, "SHOOT ANY SAUCER", reminder=True)
         self._update_status()
         self._sync_vars()
         self._schedule_window_tick()
@@ -223,6 +223,7 @@ class Brutus(CaseFileMixin, Mode):
         self.jackpots += 1
         self.biggest_jackpot = max(self.biggest_jackpot, value)
         self._stop_window_timer()
+        self.machine.events.post("cancel_mode_message_reminder")
         self.phase = "transition"
         self.machine.events.post("brutus_clear_shots")
         self.machine.events.post("drop_target_bank_dt_bank_right_reset")
@@ -247,6 +248,7 @@ class Brutus(CaseFileMixin, Mode):
         self._sync_vars()
 
         if terminal_saucer:
+            self.machine.events.post("cancel_mode_message_reminder")
             self.mode_done = True
             self.machine.game.player[f"{self.MODE_KEY}_state"] = 2
             self.delay.reset(
@@ -284,6 +286,7 @@ class Brutus(CaseFileMixin, Mode):
 
     def _end_window(self, title, subtitle):
         self._stop_window_timer()
+        self.machine.events.post("cancel_mode_message_reminder")
         self.phase = "transition"
         self.machine.events.post("brutus_clear_shots")
         self.machine.events.post("drop_target_bank_dt_bank_right_reset")
@@ -305,6 +308,7 @@ class Brutus(CaseFileMixin, Mode):
     def _ball_ending(self, **kwargs):
         if self.mode_done:
             return
+        self.machine.events.post("cancel_mode_message_reminder")
         self.mode_done = True
         self._stop_window_timer()
         self._sync_vars()

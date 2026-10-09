@@ -25,6 +25,10 @@ widget_player:
       action: remove
 
 event_player:
+  # Use the same double-flipper event as intro speedup.
+  flipper_cancel:
+    - sir_galahad_post_hold_cancel
+
   # Once the ball reaches the rooftop, replace the route prompt with the two
   # available exit choices and pulse both upper-exit GI lamps.
   s_upper_entrance_opto_active: sir_galahad_upper_entered
@@ -58,11 +62,6 @@ event_player:
 
   # Standard both-flipper early release. The joust timer still begins only
   # after the post is commanded down.
-  s_left_flipper_active{device.switches.s_right_flipper.state == 1}:
-    - sir_galahad_post_hold_cancel
-  s_right_flipper_active{device.switches.s_left_flipper.state == 1}:
-    - sir_galahad_post_hold_cancel
-
   mode_sir_galahad_started:
     - disable_daily_bugle_mystery
     - clear_saucers_delayed

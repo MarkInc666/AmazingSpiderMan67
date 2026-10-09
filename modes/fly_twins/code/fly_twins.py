@@ -101,9 +101,36 @@ class FlyTwins(CaseFileMixin, Mode):
         self.machine.events.post("fly_twins_upper_access_needed")
         self.machine.events.post("fly_twins_start_more_time_multiball" if self.has_case_file("more_time") else "fly_twins_start_multiball")
         self._sync_vars()
-        self._show_mode_message("THE FLY TWINS", "GET TO THE ROOF")
+        self._show_mode_message("THE FLY TWINS", "LITE SAUCERS WITH UPPER TARGETS")
+        self.machine.events.post("cancel_mode_message_reminder")
+        self.objective_reminder_step = 0
+        for event in ("show_mode_message", "show_mode_message_long", "show_mode_jackpot", "show_mode_countdown"):
+            self.add_mode_event_handler(event, self._reset_objective_reminder)
+        self._reset_objective_reminder()
+
+    def _reset_objective_reminder(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
+        if not self.mode_done:
+            self.delay.reset(name="villain_objective_reminder", ms=9000,
+                             callback=self._show_objective_reminder)
+
+    def _show_objective_reminder(self):
+        if self.mode_done:
+            return
+        title = self._round_name()
+        if self.lit_saucers:
+            self.objective_reminder_step += 1
+            instruction = ("COLLECT JACKPOTS IN LIT SAUCERS" if self.objective_reminder_step % 2
+                           else "UPPER SPINNER BUILDS JACKPOTS")
+        else:
+            instruction = "LITE SAUCERS WITH UPPER TARGETS"
+        self.machine.events.post("show_mode_message", message_mode_title=title,
+                                 message_mode_subtitle=instruction)
+        self._reset_objective_reminder()
 
     def mode_stop(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
+        self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post("hide_mode_status")
         self.clear_active_case_file_helpers()
         self.machine.events.post("fly_twins_clear_all_lights")
@@ -197,7 +224,7 @@ class FlyTwins(CaseFileMixin, Mode):
             lit_saucers=len(self.lit_saucers),
             multiplier=self._current_multiplier(),
         )
-        self._show_mode_message("SAUCER LIT", self._round_name(), f"{self._current_multiplier()}X")
+        self._show_mode_message("SAUCER LIT", "COLLECT JACKPOTS IN LIT SAUCERS", f"{self._current_multiplier()}X")
 
     def _light_saucer_for_target(self, target):
         self.upper_targets_hit.add(target)

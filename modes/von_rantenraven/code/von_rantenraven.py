@@ -186,7 +186,7 @@ class VonRantenraven(CaseFileMixin, Mode):
         self.machine.events.post("von_rantenraven_saucers_off")
         self.machine.events.post("von_rantenraven_roof_attempt_started", flips=self.flips_remaining)
         self._light_targets_for_attempt()
-        self._show_message("SKY HARBOR", f"{self.flips_remaining} FLIPS")
+        self._show_message("SKY HARBOR", "HIT THE 3 TARGETS WITH REMAINING FLIPS", reminder=True)
 
     def _upper_flipper_pressed(self, **kwargs):
         if self.mode_done or not self.roof_attempt_active:

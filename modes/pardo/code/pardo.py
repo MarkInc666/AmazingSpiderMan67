@@ -112,8 +112,33 @@ class Pardo(CaseFileMixin, Mode):
         self.machine.events.post("pardo_startup_complete")
         self.machine.events.post("show_mode_message_long", message_mode_title="PARDO", message_mode_subtitle="BREAK THE HYPNOSIS")
         self._start_next_round()
+        self.machine.events.post("cancel_mode_message_reminder")
+        for event in ("show_mode_message", "show_mode_message_long", "show_mode_jackpot", "show_mode_countdown"):
+            self.add_mode_event_handler(event, self._reset_objective_reminder)
+        self._reset_objective_reminder()
+
+    def _reset_objective_reminder(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
+        if not self._inactive():
+            self.delay.reset(name="villain_objective_reminder", ms=9000,
+                             callback=self._show_objective_reminder)
+
+    def _show_objective_reminder(self):
+        if self._inactive():
+            return
+        if self.round_awarding:
+            self._reset_objective_reminder()
+            return
+        title = "HYPNOSIS REEL"
+        instruction = ("HIT THE REVEALED SHOT - SPIN TO SEE IT AGAIN" if self.round_revealed
+                       else "SPIN TO REVEAL")
+        self.machine.events.post("show_mode_message", message_mode_title=title,
+                                 message_mode_subtitle=instruction)
+        self._reset_objective_reminder()
 
     def mode_stop(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
+        self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post("hide_mode_status")
         self.delay.remove("pardo_hide_reveal")
         self.delay.remove("pardo_reveal_flash")
@@ -160,6 +185,7 @@ class Pardo(CaseFileMixin, Mode):
             return
 
         self.round_number += 1
+        self.round_revealed = False
         self.current_groups = random.sample(self.SHOT_GROUPS, 3)
         self.correct_group = random.choice(self.current_groups)
         self.wrong_this_round = 0
@@ -185,6 +211,7 @@ class Pardo(CaseFileMixin, Mode):
         if self._inactive() or group not in self.current_groups:
             return
 
+        self.round_revealed = True
         all_good = self.first_round_all_good and self.round_number == 1
         is_correct = all_good or group == self.correct_group
 

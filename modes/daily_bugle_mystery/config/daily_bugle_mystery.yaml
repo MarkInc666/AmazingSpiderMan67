@@ -9,6 +9,10 @@ mode:
   priority: 300
 
 event_player:
+  # Use the same double-flipper event as intro speedup.
+  flipper_cancel:
+    - daily_bugle_left_exit_hold_cancel
+
   # daily_bugle_widget_update is consumed directly by the MPFVariable and
   # MPFConditional nodes inside daily_bugle_ready.tscn. Do not remove/re-add
   # the parent MPFWidget for a data refresh; that creates a teardown race when
@@ -50,12 +54,6 @@ event_player:
     - daily_bugle_rooftop_right_exit
 
   # Holding both flippers while the post is holding the ball drops it early.
-  s_left_flipper_active{device.switches.s_right_flipper.state == 1}:
-    - daily_bugle_left_exit_hold_cancel
-
-  s_right_flipper_active{device.switches.s_left_flipper.state == 1}:
-    - daily_bugle_left_exit_hold_cancel
-
   # VUK collects mystery when ready
   s_vuk_switch_active:
     - daily_bugle_vuk_collect_request

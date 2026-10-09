@@ -134,11 +134,39 @@ class MasterVine(CaseFileMixin, Mode):
         self.machine.events.post("rooftop_diverter_open")
         self.machine.events.post("clear_saucers_delayed")
         self._show_message(
-            "VINE INVASION", "GET TO THE ROOF", value="3 WAVES", reminder=True
+            "VINE INVASION", "GET TO THE ROOF", value="3 WAVES", reminder=False
         )
         self._update_status()
+        self.machine.events.post("cancel_mode_message_reminder")
+        for event in ("show_mode_message", "show_mode_message_long", "show_mode_jackpot", "show_mode_countdown"):
+            self.add_mode_event_handler(event, self._reset_objective_reminder)
+        self._reset_objective_reminder()
+
+    def _reset_objective_reminder(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
+        if not self.mode_done:
+            self.delay.reset(name="villain_objective_reminder", ms=9000,
+                             callback=self._show_objective_reminder)
+
+    def _show_objective_reminder(self):
+        if self.mode_done:
+            return
+        if self.phase in ("waiting_for_upper", "awaiting_return"):
+            title, instruction = "VINE INVASION", "GET TO THE ROOF"
+        elif self.phase == "attempt_active":
+            lit = self.programmed_shots - self.collected_shots
+            title = "VINE WAVE"
+            instruction = "HIT LIT LOWER SHOTS FOR JACKPOTS" if lit else "SPIN TO SPREAD THE VINES"
+        else:
+            self._reset_objective_reminder()
+            return
+        self.machine.events.post("show_mode_message", message_mode_title=title,
+                                 message_mode_subtitle=instruction)
+        self._reset_objective_reminder()
 
     def mode_stop(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
+        self.machine.events.post("cancel_mode_message_reminder")
         self._clear_delays()
         self.machine.events.post("daily_bugle_cancel_vuk_delay_eject")
         self.machine.events.post("master_vine_all_lights_off")
@@ -199,7 +227,7 @@ class MasterVine(CaseFileMixin, Mode):
             f"VINE WAVE {self.attempt}",
             "SPIN TO SPREAD THE VINES",
             value=f"{self.seconds_left} SECONDS",
-            reminder=True,
+            reminder=False,
         )
         self._update_status()
         self._schedule_attempt_tick()
@@ -378,7 +406,7 @@ class MasterVine(CaseFileMixin, Mode):
             f"WAVE {self.attempt} COMPLETE",
             "RETURN TO THE ROOF",
             value=f"{self.ATTEMPTS - self.attempt} WAVES LEFT",
-            reminder=True,
+            reminder=False,
         )
         self._update_status()
 

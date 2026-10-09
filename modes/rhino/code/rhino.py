@@ -97,6 +97,7 @@ class RhinoBash(CaseFileMixin, Mode):
         self.add_mode_event_handler("rhino_start", self.start_rh)
         self.add_mode_event_handler("rhino_pop_hit", self.pop_hit)
         self.add_mode_event_handler("rhino_smash_hit", self.smash_hit)
+        self.add_mode_event_handler("rhino_jackpot_build", self.build_jackpot)
         for shot, required_stage in self.A_B_COLLECT_STAGES.items():
             self.add_mode_event_handler(
                 f"rhino_jackpot_collect_{shot}",
@@ -184,6 +185,12 @@ class RhinoBash(CaseFileMixin, Mode):
         self.check_rage_stage()
         self.update_player_vars()
 
+    def build_jackpot(self, **kwargs):
+        if self.mode_done:
+            return
+        self.jackpot_value += self.add_value
+        self.update_player_vars()
+
     def smash_hit(self, **kwargs):
         del kwargs
         if self.mode_done:
@@ -191,7 +198,6 @@ class RhinoBash(CaseFileMixin, Mode):
 
         self.award_score(self.SMASH_SCORE)
         self.active_mode_points += self.SMASH_SCORE
-        self.jackpot_value += self.add_value
         self._show_message("JACKPOT BUILDS", f"+{self.add_value:,} FROM SMASH", value=self.jackpot_value)
         self.update_player_vars()
 
@@ -245,7 +251,10 @@ class RhinoBash(CaseFileMixin, Mode):
                 f"RAGE {stage}",
                 f"SMASHES ADD +{self.add_value:,} - HIT POPS FOR MORE RAGE",
                 value=self.jackpot_value,
+                reminder=True,
             )
+        else:
+            self._show_message("RHINO BERSERK!", "HIT ANY A/B TO ESCAPE", reminder=True)
         self.post_rage_show()
         self.update_player_vars()
 
@@ -258,7 +267,7 @@ class RhinoBash(CaseFileMixin, Mode):
         self.berserk_running = True
         self._show_message(
             "RHINO BERSERK!",
-            "ESCAPE THROUGH ANY A/B",
+            "HIT ANY A/B TO ESCAPE",
             value=self.jackpot_value,
             seconds=int(self.berserk_time_ms() / 1000),
             event="show_mode_countdown",
@@ -304,6 +313,7 @@ class RhinoBash(CaseFileMixin, Mode):
             "BUILD RAGE AGAIN",
             "HIT POPS",
             value=self.jackpot_value,
+            reminder=True,
         )
 
     def complete_mode(self):

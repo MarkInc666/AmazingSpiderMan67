@@ -136,10 +136,38 @@ class ProfessorPretorius(CaseFileMixin, Mode):
         self._update_temperature_lights()
         if self.has_case_file("safety_net"):
             self.machine.events.post("start_case_file_ball_save")
-        self._show_message("PRETORIUS REACTOR", "COMPLETE FOUR EXPERIMENTS", reminder=True)
+        self.machine.events.post("cancel_mode_message_reminder")
+        for event in ("show_mode_message", "show_mode_message_long", "show_mode_jackpot", "show_mode_countdown"):
+            self.add_mode_event_handler(event, self._reset_objective_reminder)
+        self._reset_objective_reminder()
+        self._show_objective_reminder()
         self._update_status()
 
+    def _reset_objective_reminder(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
+        if not (self.mode_done):
+            self.delay.reset(name="villain_objective_reminder", ms=9000,
+                             callback=self._show_objective_reminder)
+
+    def _show_objective_reminder(self):
+        if self.mode_done:
+            return
+        if self.grace_active:
+            title, instruction = "REACTOR OVERHEATING", "COOL WITH SPINNER"
+        elif self.phase == "super":
+            title, instruction = "REACTOR SUPER READY", "SHOOT THE DAILY BUGLE"
+        else:
+            names = {"left_pop": "LEFT POP", "right_pop": "RIGHT POP",
+                     "left_bank": "LEFT DROPS", "right_bank": "RIGHT DROPS"}
+            remaining = [names[station] for station, complete in self.station_complete.items() if not complete]
+            title = "COMPLETE THE EXPERIMENTS"
+            instruction = "HIT " + " / ".join(remaining)
+        self._show_message(title, instruction)
+        self._reset_objective_reminder()
+
     def mode_stop(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
+        self.machine.events.post("cancel_mode_message_reminder")
         self._clear_delays()
         self.machine.events.post("daily_bugle_cancel_vuk_delay_eject")
         self.machine.events.post("professor_pretorius_clear_all")
@@ -239,7 +267,7 @@ class ProfessorPretorius(CaseFileMixin, Mode):
 
         if self.reactor_hits >= self.TOTAL_REACTOR_HITS and self.phase == "reactor":
             self._qualify_super()
-        else:
+        elif not self.grace_active:
             self._show_message(
                 "REACTOR HIT",
                 label,
@@ -298,7 +326,7 @@ class ProfessorPretorius(CaseFileMixin, Mode):
         self._show_message(
             "REACTOR OVERHEATING",
             f"COOL WITH SPINNER - {self.overheat_seconds_remaining} SECONDS",
-            reminder=True,
+            reminder=False,
         )
         self._update_status()
 
@@ -350,7 +378,7 @@ class ProfessorPretorius(CaseFileMixin, Mode):
             "REACTOR SUPER READY",
             f"SHOOT THE VUK - {self.super_seconds_remaining} SECONDS",
             value=self.SUPER_VALUE,
-            reminder=True,
+            reminder=False,
         )
         self._update_status()
         self._sync_vars()

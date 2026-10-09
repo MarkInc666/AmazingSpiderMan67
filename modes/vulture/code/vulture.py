@@ -189,8 +189,8 @@ class Vulture(CaseFileMixin, Mode):
         self.show_targets()
         if all_red_before_hit:
             self.award_add_a_ball()
-        elif all(stage == 2 for stage in self.stages.values()):
-            self._show_message("ADD-A-BALL READY", "HIT ANY UPPER TARGET")
+        elif not self.add_a_ball_awarded and all(stage == 2 for stage in self.stages.values()):
+            self._show_message("ADD-A-BALL READY", "HIT ANY UPPER TARGET TO ADD A BALL", reminder=True)
             self.machine.events.post("vulture_add_a_ball_ready")
         self.update_player_vars()
 
@@ -202,6 +202,7 @@ class Vulture(CaseFileMixin, Mode):
         self.machine.events.post("start_vulture_add_a_ball")
         self.machine.events.post("vulture_add_a_ball")
         self.add_a_ball_awarded = True
+        self._show_message("SKY ATTACK", "SPIN TO COLLECT VULTURE BONUS", reminder=True)
 
     def spinner_hit(self, **kwargs):
         if not self.started:
@@ -245,6 +246,8 @@ class Vulture(CaseFileMixin, Mode):
         self.stages[target] = 1
         self.machine.events.post(f"vulture_show_{target}_yellow")
         self._show_message("TARGET DIMMED", f"{target.upper()} TARGET  20K")
+        if not self.add_a_ball_awarded:
+            self._show_message("SKY ATTACK", "HIT UPPER TARGETS", reminder=True)
         self.update_player_vars()
 
     def show_targets(self, **kwargs):

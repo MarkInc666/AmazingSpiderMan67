@@ -126,6 +126,7 @@ class Diana(CaseFileMixin, Mode):
             ("shot_assist", "FIRST HIT DROPS A TARGET"),
         ])
 
+        self.add_mode_event_handler("flipper_cancel", self._post_hold_cancel)
         self.add_mode_event_handler("s_left_flipper_active", self._flipper_pressed, side="left")
         self.add_mode_event_handler("s_right_flipper_active", self._flipper_pressed, side="right")
         self.add_mode_event_handler("diana_upper_spinner_hit", self._upper_spinner_hit)
@@ -215,7 +216,7 @@ class Diana(CaseFileMixin, Mode):
                 self.delay.remove("diana_post_flipper_left")
                 self.delay.remove("diana_post_flipper_right")
                 self.pending_post_flippers.clear()
-                self._post_hold_cancel()
+                # Intro speedup owns the shared double-flipper release timing.
                 return
 
             self.delay.add(
@@ -231,6 +232,8 @@ class Diana(CaseFileMixin, Mode):
     def _resolve_post_flipper_press(self, side):
         self.pending_post_flippers.discard(side)
         if self._done_or_summary() or not self.post_hold_active:
+            return
+        if self._opposite_flipper_is_active(side):
             return
         self._spend_arrow()
 

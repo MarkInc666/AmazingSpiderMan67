@@ -104,10 +104,16 @@ class HarleyClivendon(CaseFileMixin, Mode):
         self.machine.events.post("harley_area_lights_clear")
         self.machine.events.post("show_mode_message_long", message_mode_title="HYPNOTIC HOLD", message_mode_subtitle="LOCK A BALL - LIGHT 4 AREAS")
         self._sync()
+        self.machine.events.post("cancel_mode_message_reminder")
+        self.objective_reminder_step = 0
+        for event in ("show_mode_message", "show_mode_message_long", "show_mode_jackpot", "show_mode_countdown"):
+            self.add_mode_event_handler(event, self._reset_objective_reminder)
+        self._reset_objective_reminder()
 
     def _area_hit(self, area=None, **kwargs):
         if self.mode_done or self.held_saucer is None or area in self.lit_areas:
             return
+        was_ready = len(self.lit_areas) >= self.MIN_JACKPOT_AREAS
         self.lit_areas.add(area)
         self._score(self.AREA_SCORE)
         self.machine.events.post(f"harley_area_{area}_lit")
@@ -121,6 +127,9 @@ class HarleyClivendon(CaseFileMixin, Mode):
                 self.machine.events.post(f"harley_area_{assisted}_lit")
                 self.machine.events.post("show_mode_message", message_mode_title="SHOT ASSIST", message_mode_subtitle=assisted.replace("_", " ").upper())
             self.shot_assist_used = True
+        if not was_ready and len(self.lit_areas) >= self.MIN_JACKPOT_AREAS:
+            self.machine.events.post("show_mode_message_long", message_mode_title="HARLEY JACKPOT READY",
+                                     message_mode_subtitle="SHOOT DAILY BUGLE FOR JACKPOT")
         self._sync()
 
     def _saucer_hit(self, saucer=None, **kwargs):
@@ -147,7 +156,7 @@ class HarleyClivendon(CaseFileMixin, Mode):
         self.machine.events.post("harley_area_build_started")
         for area in self.lit_areas:
             self.machine.events.post(f"harley_area_{area}_lit")
-        self.machine.events.post("show_mode_message_long", message_mode_title="BALL CAPTURED", message_mode_subtitle="LIGHT PLAYFIELD AREAS", message_mode_value=self.SAUCER_SCORE)
+        self.machine.events.post("show_mode_message_long", message_mode_title="BALL CAPTURED", message_mode_subtitle="LIGHT 4 PLAYFIELD AREAS", message_mode_value=self.SAUCER_SCORE)
         self._sync()
 
     def _vuk_hit(self, **kwargs):
@@ -286,7 +295,29 @@ class HarleyClivendon(CaseFileMixin, Mode):
         elif not self.waiting_for_upper_entry:
             self._close_rooftop_gate()
 
+    def _reset_objective_reminder(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
+        if not self.mode_done:
+            self.delay.reset(name="villain_objective_reminder", ms=9000,
+                             callback=self._show_objective_reminder)
+
+    def _show_objective_reminder(self):
+        if self.mode_done:
+            return
+        title = "HYPNOTIC HOLD"
+        if self.held_saucer is None:
+            instruction = "LOCK A BALL IN A SAUCER"
+        elif len(self.lit_areas) >= self.MIN_JACKPOT_AREAS:
+            instruction = "SHOOT DAILY BUGLE FOR JACKPOT"
+        else:
+            instruction = "LIGHT 4 PLAYFIELD AREAS"
+        self.machine.events.post("show_mode_message", message_mode_title=title,
+                                 message_mode_subtitle=instruction)
+        self._reset_objective_reminder()
+
     def mode_stop(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
+        self.machine.events.post("cancel_mode_message_reminder")
         self.delay.remove("harley_gate_close_fallback")
         self.delay.remove("harley_accept_next_lock")
         self.machine.events.post("hide_mode_status")

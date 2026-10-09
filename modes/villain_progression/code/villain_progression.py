@@ -1024,6 +1024,7 @@ class VillainProgression(Mode):
         self.add_mode_event_handler("villain_progression_request_start", self._request_start)
         self.add_mode_event_handler("villain_progression_request_choices", self._post_available_choices)
         self.add_mode_event_handler("villain_progression_start_default", self._start_default_villain)
+        self.add_mode_event_handler("villain_rooftop_start_request", self._rooftop_start_villain)
         self.add_mode_event_handler("mystery_award_start_next_villain", self._mystery_start_next_villain)
         self.add_mode_event_handler("villain_progression_start_selected", self._start_selected_villain)
         self.add_mode_event_handler("villain_select_choice_made", self._start_selected_villain)
@@ -1931,6 +1932,24 @@ class VillainProgression(Mode):
             self.machine.events.post("villain_start_request_failed", reason="no_villains_available")
             return
         self._start_villain(available[0])
+
+    def _rooftop_start_villain(self, **kwargs):
+        player = self.machine.game.player if self.machine.game else None
+        if not player:
+            return
+        blocked = ("villain_mode_running", "villain_mode_in_summary", "villain_select_active",
+                   "chapter_mini_wizard_ready", "mini_wizard_daily_bugle_ready",
+                   "mini_wizard_vuk_hold_active", "final_wizard_ready", "final_wizard_completed",
+                   "chapter_select_needed", "chapter_select_active")
+        if any(self._safe_int(player[name], 0) == 1 for name in blocked):
+            return
+        if any(self._safe_int(player[f"case_file_{key}_collected"], 0) != 1 for key in
+               ("more_jackpots", "more_time", "bigger_jackpots", "safety_net", "shot_assist")):
+            return
+        available = self._get_available_villains()
+        if not available:
+            return
+        self._request_start(state=len(available), max_choices=len(available), source="roof_left_middle_b")
 
     def _mystery_start_next_villain(self, **kwargs):
         """Immediately start the next unplayed villain when Mystery awards it."""

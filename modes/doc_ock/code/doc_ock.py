@@ -110,6 +110,10 @@ class doc_ock(CaseFileMixin, Mode):
 
         self.update_player_vars()
         self._close_rooftop_gate(restore_available=True)
+        self.machine.events.post("cancel_mode_message_reminder")
+        for event in ("show_mode_message", "show_mode_message_long", "show_mode_jackpot", "show_mode_countdown"):
+            self.add_mode_event_handler(event, self._reset_objective_reminder)
+        self._reset_objective_reminder()
         self.machine.events.post("doc_ock_startup_complete")
         self.machine.events.post(
             "show_mode_message_long",
@@ -117,7 +121,26 @@ class doc_ock(CaseFileMixin, Mode):
             message_mode_subtitle="LOCK THE ARMS - COLLECT WEB JACKPOTS",
         )
 
+    def _reset_objective_reminder(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
+        if not (not self._rules_active()):
+            self.delay.reset(name="villain_objective_reminder", ms=9000,
+                             callback=self._show_objective_reminder)
+
+    def _show_objective_reminder(self):
+        if not self._rules_active():
+            return
+        if self.jackpot_lit and sum(self.locked_arms) > 0:
+            instruction = "HIT WEB TARGETS FOR JACKPOTS"
+        else:
+            instruction = "SPIN OR HIT INLANES TO RELIGHT WEB JACKPOTS"
+        self.machine.events.post("show_mode_message", message_mode_title="DOCTOR OCTOPUS",
+                                 message_mode_subtitle=instruction + " - LEFT BANK LOCKS ARMS")
+        self._reset_objective_reminder()
+
     def mode_stop(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
+        self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post("hide_mode_status")
         if hasattr(self, "delay"):
             for name in (

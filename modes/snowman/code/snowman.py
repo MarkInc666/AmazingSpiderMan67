@@ -72,8 +72,38 @@ class Snowman(CaseFileMixin, Mode):
 
         self.machine.events.post("snowman_idle_phase")
         self._show_status("HIT EITHER WEB")
+        self.machine.events.post("cancel_mode_message_reminder")
+        for event in ("show_mode_message", "show_mode_message_long", "show_mode_jackpot", "show_mode_countdown"):
+            self.add_mode_event_handler(event, self._reset_objective_reminder)
+        self._reset_objective_reminder()
+
+    def _reset_objective_reminder(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
+        if not self.mode_done:
+            self.delay.reset(name="villain_objective_reminder", ms=9000,
+                             callback=self._show_objective_reminder)
+
+    def _show_objective_reminder(self):
+        if self.mode_done:
+            return
+        title = "SNOWMAN"
+        if self.phase == "idle":
+            instruction = "HIT EITHER WEB"
+        elif self.phase == "wire":
+            instruction = "HIT " + ("CENTER WEB" if self.required_web == "center" else "LEFT WEB")
+        elif self.phase == "spinner_ready":
+            instruction = "SPIN MAIN SPINNER TO DEFEAT SNOWMAN"
+        elif self.phase == "spins":
+            instruction = "SPIN MAIN SPINNER FOR BONUS"
+        else:
+            return
+        self.machine.events.post("show_mode_message", message_mode_title=title,
+                                 message_mode_subtitle=instruction)
+        self._reset_objective_reminder()
 
     def mode_stop(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
+        self.machine.events.post("cancel_mode_message_reminder")
         self._stop_timer()
         self.machine.events.post("snowman_clear_all")
         self.machine.events.post("snowman_disable_safety_net")
@@ -138,8 +168,8 @@ class Snowman(CaseFileMixin, Mode):
         self.machine.events.post("snowman_spinner_ready")
         if self.has_case_file("safety_net"):
             self.machine.events.post("snowman_enable_safety_net")
-        self._show_message("WIRE COMPLETE", "SPIN TO DEFEAT SNOWMAN", value)
-        self._show_status("SPIN TO DEFEAT SNOWMAN")
+        self._show_message("WIRE COMPLETE", "SPIN MAIN SPINNER TO DEFEAT SNOWMAN", value)
+        self._show_status("SPIN MAIN SPINNER TO DEFEAT SNOWMAN")
         self._sync_vars()
 
     def _spinner_hit(self, **kwargs):

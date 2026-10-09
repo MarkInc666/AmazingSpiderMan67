@@ -150,9 +150,10 @@ class Vulcan(CaseFileMixin, Mode):
             self.machine.events.post("vulcan_left_bank_disabled")
         self.machine.events.post("vulcan_start_multiball")
         self.machine.events.post("vulcan_mode_intro")
-        self._show_mode_message("VOLCANO UNLEASHED", "DROPS SCORE - UPPER TARGETS BUILD")
+        self._show_mode_message("VOLCANO UNLEASHED", "DROPS SCORE - UPPER TARGETS BUILD", reminder=True)
 
     def mode_stop(self, **kwargs):
+        self.machine.events.post("cancel_mode_message_reminder")
         self.delay.remove("vulcan_post_hold_release")
         if self.post_hold_active:
             self.machine.events.post("timer_timer_up_post_hold_complete")
@@ -233,7 +234,7 @@ class Vulcan(CaseFileMixin, Mode):
         if not self.add_a_ball_qualified:
             self.add_a_ball_qualified = True
             self.machine.events.post("vulcan_add_a_ball_qualified")
-            self._show_mode_message("ADD-A-BALL READY", "HIT ANY UPPER TARGET")
+            self._show_mode_message("ADD-A-BALL READY", "HIT ANY UPPER TARGET TO ADD A BALL", reminder=True)
 
     def _upper_playfield_entered(self, **kwargs):
         if self._done():
@@ -272,6 +273,7 @@ class Vulcan(CaseFileMixin, Mode):
             self.machine.events.post("vulcan_add_a_ball")
             self.machine.events.post("vulcan_add_a_ball_awarded")
             self.machine.events.post("vulcan_add_a_ball_unqualified")
+            self._show_mode_message("VOLCANO UNLEASHED", "DROPS SCORE - UPPER TARGETS BUILD", reminder=True)
             self._show_mode_message("ADD-A-BALL", "VULCAN ERUPTS AGAIN")
 
         self._sync_vars()

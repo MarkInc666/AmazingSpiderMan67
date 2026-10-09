@@ -204,6 +204,7 @@ class Scorpion(CaseFileMixin, Mode):
             message_mode_title="STING READY",
             message_mode_subtitle="SPIN TO BUILD OR CHOOSE AN EXIT",
             message_mode_value=self._display_jackpot_value(),
+            reminder=True,
         )
         self._update_mode_status()
 
@@ -274,6 +275,17 @@ class Scorpion(CaseFileMixin, Mode):
                 callback=self._enable_rubber,
             )
 
+        self.machine.events.post("cancel_mode_message_reminder")
+        instruction = (
+            f"HIT {side.upper()} DROP {self.required_target}"
+            if side in ("left", "right") else "HIT THE RIGHT POP"
+        )
+        self.machine.events.post(
+            "show_mode_message_long",
+            message_mode_title="STING SHOT",
+            message_mode_subtitle=instruction,
+            message_mode_value=self._display_jackpot_value(),
+        )
         self._update_mode_status()
         self.delay.reset(
             name="scorpion_sting_tick",

@@ -200,7 +200,7 @@ class DrManta(CaseFileMixin, Mode):
         self._set_vuk_hold(False)
         self._eject_vuk(500)
         self.delay.reset(name="dr_manta_attack_tick", ms=1000, callback=self._attack_tick)
-        self._show_message("MOUNTAIN MONSTER", f"{self.attack_seconds_remaining} SECONDS", value=self.saucer_value)
+        self._show_message("MOUNTAIN MONSTER", "HIT UPPER TARGETS FOR JACKPOTS", value=self.saucer_value, reminder=True)
         self._update_status()
 
     def _spinner_hit(self, **kwargs):
@@ -264,6 +264,7 @@ class DrManta(CaseFileMixin, Mode):
         if self.mode_done or self.phase != "attack":
             return
 
+        self.machine.events.post("cancel_mode_message_reminder")
         self.phase = "drain_wait"
         self.attack_seconds_remaining = 0
         self.machine.events.post("dr_manta_attack_expired")
@@ -329,6 +330,7 @@ class DrManta(CaseFileMixin, Mode):
         if self.mode_done:
             return
 
+        self.machine.events.post("cancel_mode_message_reminder")
         self.mode_done = True
         self.delay.remove("dr_manta_attack_tick")
         player = self.machine.game.player

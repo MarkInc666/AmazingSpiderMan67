@@ -77,6 +77,10 @@ class DoctorCool(Mode, CaseFileMixin):
         self.machine.events.post("doctor_cool_started")
         self.machine.events.post("doctor_cool_clear_lights")
         self.machine.events.post("doctor_cool_build_phase_started")
+        self.machine.events.post("cancel_mode_message_reminder")
+        for event in ("show_mode_message", "show_mode_message_long", "show_mode_jackpot", "show_mode_countdown"):
+            self.add_mode_event_handler(event, self._reset_objective_reminder)
+        self._reset_objective_reminder()
         self.machine.events.post("show_mode_message_long", message_mode_title="DOCTOR COOL", message_mode_subtitle="BUILD FROZEN DIAMONDS")
         self.machine.events.post(
             "doctor_cool_jackpot_changed",
@@ -84,7 +88,28 @@ class DoctorCool(Mode, CaseFileMixin):
             value_str=self._format_score(self.jackpot_value),
         )
 
+    def _reset_objective_reminder(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
+        if not self.mode_done:
+            self.delay.reset(name="villain_objective_reminder", ms=9000,
+                             callback=self._show_objective_reminder)
+
+    def _show_objective_reminder(self):
+        if self.mode_done:
+            return
+        if self.saucer_upgrade_armed:
+            title, instruction = "SAUCER UPGRADE READY", "HIT A RIGHT DROP AFTER RESET"
+        elif self.saucer_chase_active:
+            title, instruction = "FROZEN SHIPMENT", "SHOOT THE LIT SAUCER"
+        else:
+            title, instruction = "BUILD FROZEN DIAMONDS", "HIT A RIGHT DROP"
+        self.machine.events.post("show_mode_message", message_mode_title=title,
+                                 message_mode_subtitle=instruction)
+        self._reset_objective_reminder()
+
     def mode_stop(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
+        self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post("hide_mode_status")
         self.delay.remove("doctor_cool_saucer_cycle")
         self.delay.remove("doctor_cool_star_freeze")

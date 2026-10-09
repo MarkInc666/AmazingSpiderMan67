@@ -69,8 +69,41 @@ class DrZapp(CaseFileMixin, Mode):
         if self.has_case_file("safety_net"):
             self.machine.events.post("dr_zapp_enable_start_safety_net")
         self._show_status("HIT EACH DROP BANK")
+        self.machine.events.post("cancel_mode_message_reminder")
+        for event in ("show_mode_message", "show_mode_message_long", "show_mode_jackpot", "show_mode_countdown"):
+            self.add_mode_event_handler(event, self._reset_objective_reminder)
+        self._reset_objective_reminder()
+
+    def _reset_objective_reminder(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
+        if not self.mode_done:
+            self.delay.reset(name="villain_objective_reminder", ms=9000,
+                             callback=self._show_objective_reminder)
+
+    def _show_objective_reminder(self):
+        if self.mode_done:
+            return
+        title = "ZAPP ATTACK"
+        if self.phase == "qualify":
+            if self.left_bank_qualified:
+                instruction = "HIT RIGHT DROPS TO OPEN ROOF"
+            elif self.right_bank_qualified:
+                instruction = "HIT LEFT DROPS TO OPEN ROOF"
+            else:
+                instruction = "HIT EACH DROP BANK TO OPEN ROOF"
+        elif self.phase == "roof":
+            instruction = "SPIN UPPER SPINNER - UPPER TARGETS INCREASE FLASH RATE"
+        elif self.phase == "bonus":
+            instruction = "SPIN UPPER SPINNER FOR BONUS"
+        else:
+            return
+        self.machine.events.post("show_mode_message", message_mode_title=title,
+                                 message_mode_subtitle=instruction)
+        self._reset_objective_reminder()
 
     def mode_stop(self, **kwargs):
+        self.delay.remove("villain_objective_reminder")
+        self.machine.events.post("cancel_mode_message_reminder")
         self.delay.remove("dr_zapp_bonus_tick")
         self.machine.events.post("dr_zapp_clear_all")
         self.machine.events.post("dr_zapp_disable_start_safety_net")

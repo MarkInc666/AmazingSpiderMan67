@@ -399,6 +399,7 @@ class Centaur(CaseFileMixin, Mode):
             jackpot=self._current_jackpot_value(),
             attempt=self.final_attempt,
         )
+        self._show_mode_message("HIT RIGHT RUBBER", "ONE SHOT ONLY", reminder=True)
         self._show_mode_countdown("HIT RIGHT RUBBER", self.final_seconds_left, "ONE SHOT ONLY")
         self._sync_vars()
         self._schedule_final_tick()
@@ -573,6 +574,7 @@ class Centaur(CaseFileMixin, Mode):
         if self.mode_done or self.phase == "finishing":
             return
 
+        self.machine.events.post("cancel_mode_message_reminder")
         self.phase = "finishing"
         self.delay.add(
             name="centaur_final_message",

@@ -37,6 +37,10 @@ widget_player:
     trubble_unleashed: {action: remove}
 
 event_player:
+  # Use the same double-flipper event as intro speedup.
+  flipper_cancel:
+    - trubble_unleashed_post_hold_cancel
+
   mode_trubble_unleashed_started:
     - trubble_unleashed_setup
   mode_trubble_unleashed_stopping:
@@ -83,11 +87,6 @@ event_player:
   s_web_target_mid_active: trubble_unleashed_cyclops_hit
   s_left_flipper_active: trubble_unleashed_flipper
   s_right_flipper_active: trubble_unleashed_flipper
-  s_left_flipper_active{device.switches.s_right_flipper.state == 1}:
-    - trubble_unleashed_post_hold_cancel
-  s_right_flipper_active{device.switches.s_left_flipper.state == 1}:
-    - trubble_unleashed_post_hold_cancel
-
 coil_player:
   trubble_unleashed_drop_right_target_1:
     c_right_bank_drop_1: {action: pulse}
