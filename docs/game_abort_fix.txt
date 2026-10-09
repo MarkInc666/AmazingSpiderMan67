@@ -1,0 +1,24 @@
+ASM67 game abort fix
+
+Replace both included Python files and restart MPF.
+During a game, hold LEFT flipper continuously for at least 3 seconds, then
+press Start while still holding LEFT. Ordinary Start still adds a player
+when allowed. Service entry remains both flippers 5 seconds + Start in attract.
+
+Abort now belongs to the existing PlayerRetirement whole-game controller,
+not the per-ball base mode. Its player_add_request handler both vetoes the
+new player and requests abort, covering either raw/tagged Start event order.
+The base abort flag remains for existing test-harness guards. Test-mode loop
+cleanup is preserved. Uses the existing MPF end_game flow, including normal
+ball-ending/bonus processing; it is not a forced immediate mode reset.
+
+Based on October 9 12AM checkpoint. Compatible with the service-controls and
+October 9 gameplay patches; none of their changed files are overwritten.
+Isolated tests: normal player add, 3-second threshold, both event orders,
+duplicate suppression, test cleanup, base inactive. Python syntax passed.
+Full runtime and physical cabinet test remain unconfirmed.
+
+Uploaded log 2026-10-09-00-56-41: player-add attempts held LEFT for
+1.442, 2.697, and 2.074 seconds before Start (below threshold). A later
+3.875-second attempt occurred during the base-mode transition between balls.
+Hold duration is evaluated at the Start PRESS, not after holding Start.

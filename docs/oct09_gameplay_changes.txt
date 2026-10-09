@@ -1,0 +1,11 @@
+Based on ASM67_2026_10_09_12am.zip. Copy all included files over their matching project paths and restart MPF.
+
+1. Each new player starts with one Daily Bugle picture; initial text matches. Existing balances carry normally across balls. A+B is still required for Mystery.
+2. Doc Ock: unlit breakout shots (three saucers, star, A/B inlanes) add +1 to the existing jackpot multiplier without relighting a breakout or changing existing switch scoring. Lit breakouts retain 50,000 and arm release.
+3. Bonus hurry-up step delay increased from 50ms to 100ms (half the previous speed). Existing immediate hurry-up trigger and final-total timing are unchanged.
+4. Scorpion: center-pop award and consolation/Shot Assist awards add the spinner-built amount (current jackpot minus the attempt base), then apply Bigger Jackpots. Target award already included the build and stays unchanged. Center-pop base remains 250,000; consolation bases remain 200,000/300,000/400,000/500,000.
+5. Parafino: bottom status keeps the existing zone multipliers. Normal saucer collects explicitly calculate zone hits x base (100,000; Bigger 150,000) and use the final amount for scoring, popup, last/biggest jackpot tracking, and collection event. Extra collect with zero hits retains the previous final award. No second multiplication is applied. Example: 4 hits x 100,000 = 400,000 scored and displayed.
+
+6. Ball-start gate: after progression recovery, close unless Mystery is ready or a chapter/final wizard is ready. Mystery requires A+B and enough pictures. Mystery-ready opens the gate for that player; wizard-ready uses its existing opening flow. Uses rooftop_diverter events only.
+
+Validation: all changed Python/YAML parsed successfully; isolated scoring, readiness, Doc Ock and status checks passed. On-machine testing required, including both players' initial picture, later-ball balances, each unlit/lit Doc shot, bonus speed-up, Scorpion spinner builds on all routes, Parafino scored popup and Bigger/extra collects, and gate across player changes/wizard readiness.

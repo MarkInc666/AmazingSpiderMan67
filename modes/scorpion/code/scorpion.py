@@ -380,7 +380,8 @@ class Scorpion(CaseFileMixin, Mode):
 
     def _award_for_attempt(self, values):
         index = min(self.attempts_used, len(values) - 1)
-        return int(values[index] * self.bigger_multiplier)
+        spinner_build = max(0, self.jackpot_value - self._base_jackpot_for_attempt())
+        return int((values[index] + spinner_build) * self.bigger_multiplier)
 
     def _resolve_attempt(self, result):
         if self.mode_done or self.state != "sting":
@@ -394,9 +395,9 @@ class Scorpion(CaseFileMixin, Mode):
         self.machine.events.post("scorpion_sting_lights_off")
         if result in ("target", "pop"):
             if result == "pop":
-                # Middle route is intentionally a lower fixed award. It does
-                # not inherit the attempt escalation or spinner-built value.
-                value = int(self.MIDDLE_POP_AWARD * self.bigger_multiplier)
+                # Preserve the center route's base award and include spinner build.
+                spinner_build = max(0, self.jackpot_value - self._base_jackpot_for_attempt())
+                value = int((self.MIDDLE_POP_AWARD + spinner_build) * self.bigger_multiplier)
                 title = "CENTER STING"
             else:
                 value = self._display_jackpot_value()

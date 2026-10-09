@@ -357,6 +357,7 @@ class VillainProgression(Mode):
             self._post_global_cleanup_events(reason="startup_recovery")
 
         self._recalculate_progression_from_states(post_events=True)
+        self._sync_ball_start_gate()
 
         self._add_handlers()
         self._try_pending_mini_wizard_gate_open()
@@ -408,6 +409,21 @@ class VillainProgression(Mode):
                 "start_mode_chapter_select",
                 chapter=self.machine.game.player["selected_chapter"],
             ),
+        )
+
+    def _sync_ball_start_gate(self):
+        """Restore this player's gate after progression readiness is recovered."""
+        player = self.machine.game.player
+        if (self._safe_int(player["chapter_mini_wizard_ready"], 0) == 1
+                or self._safe_int(player["final_wizard_ready"], 0) == 1):
+            return  # Existing wizard-ready flow owns the open request.
+        mystery_ready = (
+            self._safe_int(player["daily_bugle_ab_ready"], 0) == 1
+            and self._safe_int(player["daily_bugle_pictures_taken"], 0)
+            >= max(1, self._safe_int(player["daily_bugle_pictures_needed"], 1))
+        )
+        self.machine.events.post(
+            "rooftop_diverter_open" if mystery_ready else "rooftop_diverter_close"
         )
 
     def _schedule_mini_wizard_gate_open(self, reason=""):

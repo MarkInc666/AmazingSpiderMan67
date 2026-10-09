@@ -1,0 +1,33 @@
+ASM67 cabinet service controls
+
+Install all included files into the project, preserving folders. Restart MPF
+and Godot. Based on ASM67_2026_10_09_12am; no prior gameplay patch files are
+replaced except the unchanged-base attract harness with service entry added.
+
+ENTRY (attract only)
+Hold both flipper buttons continuously for at least 5 seconds. While still
+holding them, press Start. Release all three buttons before navigating.
+The entry Start release is consumed and does not request a game.
+
+SERVICE
+Left/right flipper releases navigate. Start release selects.
+Hold both flippers for 1 second to go back. At the top menu this exits service.
+Alternatively select the Exit tab and press Start.
+
+LED TEST
+Open Utilities and choose the light test. Left/right select a light; Start
+cycles the test color. Check l_pop_2_13 at playfield-2-28 and its neighbors.
+Both flippers held for 1 second leave the test. Native MPF service exit resets
+the machine and returns to attract.
+
+IMPLEMENTATION
+Uses MPF 0.80's stock service backend and GMC service pages. The local service
+mode overrides only cabinet key handling, and the local slide script maps the
+three buttons to the existing page controls. Addon files are not modified.
+Existing attract test-harness flipper codes remain available.
+
+VALIDATION
+Python AST and YAML parsing passed. Isolated method tests cover the 5-second
+threshold, ordinary Start, interrupted hold, entry release suppression, menu
+navigation/select, and suppression of both-flipper chord releases.
+Full MPF/Godot runtime and physical LED test remain unconfirmed.

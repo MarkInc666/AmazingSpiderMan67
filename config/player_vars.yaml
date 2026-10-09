@@ -779,7 +779,7 @@ player_vars:
     initial_value: 0
     value_type: int
   daily_bugle_pictures_taken_text:
-    initial_value: "PICTURES TAKEN: 0\nNEXT MYSTERY: 1"
+    initial_value: "PICTURES TAKEN: 1\nNEXT MYSTERY: 1"
     value_type: str
   daily_bugle_award_text:
     initial_value: ""
@@ -791,7 +791,7 @@ player_vars:
     initial_value: ""
     value_type: str
   daily_bugle_pictures_taken:
-    initial_value: 0
+    initial_value: 1
     value_type: int
   daily_bugle_pictures_needed:
     initial_value: 1

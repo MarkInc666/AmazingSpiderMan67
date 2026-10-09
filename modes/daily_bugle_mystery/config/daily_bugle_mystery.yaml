@@ -185,7 +185,7 @@ sound_player:
       bus: effects
       ducking:
         bus: music
-        attenuation: 0.7
+        attenuation: 0.1
         attack: 0.1
         release: 0.5
         release_point: 0.0

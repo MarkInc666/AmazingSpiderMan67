@@ -1,0 +1,6 @@
+#config_version=6
+mode:
+  code: cabinet_service.CabinetService
+
+mode_settings:
+  esc_events: asm_service_back

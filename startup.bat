@@ -15,6 +15,6 @@ timeout /t 5 /nobreak >nul
 
 echo Starting MPF...
 where mpf
-call mpf -t
+call mpf -tv
 
 pause

@@ -12,9 +12,17 @@ class PlayerRetirement(Mode):
     """
 
     RETIRED_VAR = "final_wizard_completed"
+    GAME_ABORT_LEFT_HOLD_MS = 3000
 
     def mode_start(self, **kwargs):
         del kwargs
+        self._game_abort_requested = False
+        self.add_mode_event_handler(
+            "s_startbutton_active", self._abort_game_start_pressed, priority=100000
+        )
+        self.add_mode_event_handler(
+            "player_add_request", self._allow_player_add_without_abort, priority=100000
+        )
         self._final_summary_bonus_queue = None
         self.add_mode_event_handler("ball_ending", self._wait_for_final_bonus, priority=200000)
         self.add_mode_event_handler(
@@ -54,6 +62,43 @@ class PlayerRetirement(Mode):
             self._restore_player_count_for_game_end,
             priority=100000,
         )
+
+    def _game_abort_chord_active(self):
+        switch = self.machine.switches.get("s_left_flipper")
+        return bool(switch and self.machine.switch_controller.is_active(
+            switch, ms=self.GAME_ABORT_LEFT_HOLD_MS
+        ))
+
+    def _allow_player_add_without_abort(self, **kwargs):
+        # START's tagged add-player event can arrive before its raw switch event.
+        if self._game_abort_requested:
+            return False
+        if self._game_abort_chord_active():
+            self._abort_game_start_pressed()
+            return False
+        return True
+
+    def _abort_game_start_pressed(self, **kwargs):
+        game = self.machine.game
+        if not game or self._game_abort_requested or not self._game_abort_chord_active():
+            return
+        self._game_abort_requested = True
+        base = self.machine.modes.get("base")
+        if base:
+            base._game_abort_requested = True
+        self.info_log("Game abort requested: left flipper held at least 3 seconds + Start")
+        player = game.player
+        if player and int(player["test_mode_session"] or 0) == 1:
+            player["test_mode_exit_requested"] = 1
+            player["test_mode_waiting_for_ball_return"] = 0
+            player["test_mode_autoplunge_pending"] = 0
+            player["test_mode_autolaunch_allowed"] = 0
+            player["multiball_autoplunge_active"] = 0
+            self.machine.variables.set_machine_var("test_mode_session_requested", 0)
+            self.machine.variables.set_machine_var("chapter_progression_test_unlock_all", 0)
+            self.machine.events.post("test_mode_ball_loop_disable")
+            self.machine.events.post("test_mode_exit_selected")
+        self.machine.events.post("end_game")
 
     @staticmethod
     def _safe_int(value, default=0):

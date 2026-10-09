@@ -363,7 +363,12 @@ class Parafino(CaseFileMixin, Mode):
         if player[data["lit_var"]] != 1:
             return
 
-        value = player[data["value_var"]]
+        # Normal collects derive the final award from the zone multiplier.
+        # More Jackpots retains that final value for its zero-hit extra collect.
+        hits = int(player[data["hits_var"]])
+        value = (hits * self.zone_build_value if hits > 0
+                 else int(player[data["value_var"]]))
+        player[data["value_var"]] = value
         player[data["lit_var"]] = 0
 
         self._score(value)

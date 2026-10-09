@@ -364,7 +364,19 @@ class doc_ock(CaseFileMixin, Mode):
         self.update_player_vars()
 
     def breakout_hit(self, breakout, **kwargs):
-        if not self._rules_active() or breakout not in self.active_breakouts:
+        if not self._rules_active():
+            return
+        if breakout not in self.active_breakouts:
+            # Retain normal switch scoring while unlit top shots build +1X.
+            self.doc_ock_jackpot_spinner_multi += 1
+            self.update_player_vars()
+            self.machine.events.post(
+                "doc_ock_unlit_shot_multiplier_increased",
+                breakout=breakout, multiplier=self.doc_ock_jackpot_spinner_multi,
+            )
+            self._cancel_spinner_messages()
+            self.delay.reset(name=self.SPINNER_SETTLE_DELAY_NAME, ms=1000,
+                             callback=self._show_spinner_multiplier)
             return
         self.active_breakouts.remove(breakout)
         self.machine.events.post(f"doc_ock_breakout_{breakout}_collected")

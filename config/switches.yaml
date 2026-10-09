@@ -291,15 +291,15 @@ switches:
         debounce_open: 10
         debounce_close: 10
         
-#  s_EOS_r_m:
+  s_EOS_r_m:
 # 54
-#    number: 1616bot-12
-#  s_EOS_r_l:
+    number: 1616bot-12
+  s_EOS_r_l:
 # 55
-#    number: 1616bot-13
-#  s_EOS_l_l:
+    number: 1616bot-13
+  s_EOS_l_l:
 # 56
-#    number: 1616bot-14
+    number: 1616bot-14
 
   s_sling_l:
   # 57

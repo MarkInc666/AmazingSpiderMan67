@@ -13,10 +13,44 @@ class AttractHarness(Attract):
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
+        self._service_hold_started = None
+        self._service_start_consumed = False
         self._test_code_buffer = []
         self._test_code_started_at = 0.0
         self.add_mode_event_handler("s_left_flipper_active", self._test_code_left)
         self.add_mode_event_handler("s_right_flipper_active", self._test_code_right)
+        for side in ("left", "right"):
+            for state in ("active", "inactive"):
+                self.add_mode_event_handler(
+                    f"s_{side}_flipper_{state}", self._service_flippers_changed)
+        self._service_flippers_changed()
+
+    def _both_flippers(self):
+        return all(self.machine.switches[name].state for name in
+                   ("s_left_flipper", "s_right_flipper"))
+
+    def _service_flippers_changed(self, **kwargs):
+        if self._both_flippers():
+            if self._service_hold_started is None:
+                self._service_hold_started = self.machine.clock.get_time()
+        else:
+            self._service_hold_started = None
+
+    def start_button_pressed(self):
+        self._service_start_consumed = (
+            self._both_flippers() and self._service_hold_started is not None
+            and self.machine.clock.get_time() - self._service_hold_started >= 5.0
+        )
+        if self._service_start_consumed:
+            self.machine.events.post("asm_service_enter")
+        else:
+            super().start_button_pressed()
+
+    def start_button_released(self, **kwargs):
+        if self._service_start_consumed:
+            self._service_start_consumed = False
+            return
+        super().start_button_released(**kwargs)
 
     def _test_code_left(self, **kwargs):
         del kwargs

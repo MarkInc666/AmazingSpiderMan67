@@ -17,8 +17,16 @@ class BallSearchSupport(Mode):
                 f"ASM67 saucer {number}"
             )
 
+        # Last callback bounds attract recovery after the configured final pass.
+        self.search.register(1004, self._attract_search_end_of_pass, "ASM67 attract limit")
+
     def mode_start(self, **kwargs):
         self._cradled = False
+        self._attract_search_exhausted = False
+        self.add_mode_event_handler("ball_search_started", self._arm_attract_search_timeout)
+        self.add_mode_event_handler("mode_attract_started", self._new_attract_search)
+        self.add_mode_event_handler("request_to_start_game", self._retry_attract_search, priority=100000)
+        self.add_mode_event_handler("game_started", self._new_attract_search)
         self._saucer_attempts = {}
         for number in ("1", "2", "3"):
             self.add_mode_event_handler(
@@ -56,7 +64,7 @@ class BallSearchSupport(Mode):
         self._sync_block()
 
     def _sync_block(self, **kwargs):
-        if self._shooter_occupied() or self._cradled:
+        if self._shooter_occupied() or self._cradled or self._attract_search_exhausted:
             self.search.block()
         elif self.search.blocked:
             # MPF enables only when a ball is on the playfield; unblocking
@@ -72,7 +80,7 @@ class BallSearchSupport(Mode):
     def _can_search(self):
         if not self.active:
             return False
-        if self._shooter_occupied() or self._cradled:
+        if self._shooter_occupied() or self._cradled or self._attract_search_exhausted:
             self.search.block()
             return False
         return self.search.started
@@ -141,3 +149,38 @@ class BallSearchSupport(Mode):
 
     def mode_stop(self, **kwargs):
         self._cancel_saucer_retries()
+
+    def _new_attract_search(self, **kwargs):
+        self.delay.remove("attract_search_limit")
+        self.delay.remove("attract_search_timeout")
+        self._attract_search_exhausted = False
+        self._sync_block()
+
+    def _retry_attract_search(self, **kwargs):
+        # Do not override MPF's decision about whether enough balls are home.
+        if self._attract_search_exhausted:
+            self._new_attract_search()
+
+    def _attract_search_end_of_pass(self, phase, iteration):
+        if self.machine.game or not self._can_search():
+            return False
+        final_iterations = 4  # Current ASM67 phase repetition counts: 3 / 3 / 4
+        if phase == 3 and iteration >= final_iterations:
+            # Let the last saucer pulse and its verification finish first.
+            self.delay.reset(name="attract_search_limit", ms=350,
+                             callback=self._stop_exhausted_attract_search)
+            return True
+        return False
+
+    def _stop_exhausted_attract_search(self):
+        if self.machine.game:
+            return
+        self._attract_search_exhausted = True
+        self._cancel_saucer_retries()
+        self.search.block()
+        self.warning_log("Attract ball search finished; waiting for balls or another Start press")
+
+    def _arm_attract_search_timeout(self, **kwargs):
+        if not self.machine.game and not self.delay.check("attract_search_timeout"):
+            self.delay.add(name="attract_search_timeout", ms=120000,
+                           callback=self._stop_exhausted_attract_search)
