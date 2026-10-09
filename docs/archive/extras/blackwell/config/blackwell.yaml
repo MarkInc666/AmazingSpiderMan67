@@ -266,6 +266,7 @@ shows:
         l_pop_2_10: yellow
         l_pop_2_11: yellow
         l_pop_2_12: yellow
+        l_pop_2_13: yellow
     - duration: 120ms
       lights:
         l_pop_1_1: blue
@@ -292,6 +293,7 @@ shows:
         l_pop_2_10: blue
         l_pop_2_11: blue
         l_pop_2_12: blue
+        l_pop_2_13: blue
 
   blackwell_jackpot_collected_show:
     - duration: 200ms

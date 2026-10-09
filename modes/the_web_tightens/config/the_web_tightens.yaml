@@ -195,6 +195,7 @@ light_player:
     l_pop_2_10: 40FF40
     l_pop_2_11: 40FF40
     l_pop_2_12: 40FF40
+    l_pop_2_13: 40FF40
   the_web_tightens_fiddler_right_pop_dim:
     l_pop_2_1: 208020
     l_pop_2_2: 208020
@@ -208,6 +209,7 @@ light_player:
     l_pop_2_10: 208020
     l_pop_2_11: 208020
     l_pop_2_12: 208020
+    l_pop_2_13: 208020
   the_web_tightens_fiddler_right_pop_off:
     l_pop_2_1: off
     l_pop_2_2: off
@@ -221,6 +223,7 @@ light_player:
     l_pop_2_10: off
     l_pop_2_11: off
     l_pop_2_12: off
+    l_pop_2_13: off
   the_web_tightens_fiddler_right_bank_solid:
     l_gi_5bank_lower: 40FF40
     l_gi_5bank_upper: 40FF40
@@ -247,6 +250,7 @@ light_player:
     l_pop_2_10: off
     l_pop_2_11: off
     l_pop_2_12: off
+    l_pop_2_13: off
 
   # Conquistador: left bank -> lower spinner x3 -> 14s center web.
   the_web_tightens_conquistador_bank:
@@ -312,6 +316,7 @@ light_player:
     l_pop_2_10: FF2020
     l_pop_2_11: FF2020
     l_pop_2_12: FF2020
+    l_pop_2_13: FF2020
   the_web_tightens_slayer_right_pop_off:
     l_pop_2_1: 404040
     l_pop_2_2: 404040
@@ -325,6 +330,7 @@ light_player:
     l_pop_2_10: 404040
     l_pop_2_11: 404040
     l_pop_2_12: 404040
+    l_pop_2_13: 404040
   the_web_tightens_slayer_left_bank_on: {l_gi_3bank: FF2020}
   the_web_tightens_slayer_left_bank_off: {l_gi_3bank: 404040}
   the_web_tightens_slayer_right_bank_on:
@@ -526,6 +532,7 @@ light_player:
     l_pop_2_10: stop
     l_pop_2_11: stop
     l_pop_2_12: stop
+    l_pop_2_13: stop
     l_upper_left: stop
     l_upper_middle: stop
     l_upper_right: stop
@@ -580,6 +587,7 @@ light_player:
     l_pop_2_10: stop
     l_pop_2_11: stop
     l_pop_2_12: stop
+    l_pop_2_13: stop
     l_upper_left: stop
     l_upper_middle: stop
     l_upper_right: stop

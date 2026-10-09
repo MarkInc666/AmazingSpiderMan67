@@ -94,6 +94,7 @@ light_player:
     l_pop_2_10: off
     l_pop_2_11: off
     l_pop_2_12: off
+    l_pop_2_13: off
     l_5bank_1: off
     l_5bank_2: off
     l_5bank_3: off
@@ -128,6 +129,7 @@ light_player:
     l_pop_2_10: off
     l_pop_2_11: off
     l_pop_2_12: off
+    l_pop_2_13: off
     l_5bank_1: off
     l_5bank_2: off
     l_5bank_3: off
@@ -273,6 +275,7 @@ shows:
       l_pop_2_10: green
       l_pop_2_11: green
       l_pop_2_12: green
+      l_pop_2_13: green
   - duration: 250ms
     lights:
       l_pop_2_1: off
@@ -287,6 +290,7 @@ shows:
       l_pop_2_10: off
       l_pop_2_11: off
       l_pop_2_12: off
+      l_pop_2_13: off
 
   dr_von_schlick_right_drops_flash:
   - duration: 250ms

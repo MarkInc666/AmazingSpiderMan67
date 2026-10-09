@@ -175,6 +175,7 @@ light_player:
     l_pop_2_10: yellow
     l_pop_2_11: yellow
     l_pop_2_12: yellow
+    l_pop_2_13: yellow
   kotep_unlight_right_pop:
     l_pop_2_1: 401010
     l_pop_2_2: 401010
@@ -188,6 +189,7 @@ light_player:
     l_pop_2_10: 401010
     l_pop_2_11: 401010
     l_pop_2_12: 401010
+    l_pop_2_13: 401010
   kotep_dim_right_pop:
     l_pop_2_1: 401010
     l_pop_2_2: 401010
@@ -201,6 +203,7 @@ light_player:
     l_pop_2_10: 401010
     l_pop_2_11: 401010
     l_pop_2_12: 401010
+    l_pop_2_13: 401010
 
   kotep_clear_demon_lights:
     l_left_web_target: off
@@ -232,6 +235,7 @@ light_player:
     l_pop_2_10: 401010
     l_pop_2_11: 401010
     l_pop_2_12: 401010
+    l_pop_2_13: 401010
 
   kotep_scepter_lit:
     l_gi_ramp: yellow

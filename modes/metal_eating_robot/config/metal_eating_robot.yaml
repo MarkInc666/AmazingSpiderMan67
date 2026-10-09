@@ -144,6 +144,7 @@ light_player:
     l_pop_2_10: off
     l_pop_2_11: off
     l_pop_2_12: off
+    l_pop_2_13: off
     l_mid_web_target: off
     l_gi_mid_spider: off
   metal_zone_saucers_destroyed:
@@ -598,6 +599,7 @@ shows:
         l_pop_2_10: white
         l_pop_2_11: white
         l_pop_2_12: white
+        l_pop_2_13: white
         l_mid_web_target: white
         l_gi_mid_spider: orange
     - duration: 250ms
@@ -626,6 +628,7 @@ shows:
         l_pop_2_10: off
         l_pop_2_11: off
         l_pop_2_12: off
+        l_pop_2_13: off
         l_mid_web_target: off
         l_gi_mid_spider: off
   metal_center_saved_show:
@@ -655,6 +658,7 @@ shows:
         l_pop_2_10: green
         l_pop_2_11: green
         l_pop_2_12: green
+        l_pop_2_13: green
         l_mid_web_target: green
         l_gi_mid_spider: 00BF00
   metal_center_repeat_show:
@@ -684,6 +688,7 @@ shows:
         l_pop_2_10: white
         l_pop_2_11: white
         l_pop_2_12: white
+        l_pop_2_13: white
         l_mid_web_target: white
         l_gi_mid_spider: 00BF00
     - duration: 600ms
@@ -712,6 +717,7 @@ shows:
         l_pop_2_10: off
         l_pop_2_11: off
         l_pop_2_12: off
+        l_pop_2_13: off
         l_mid_web_target: off
         l_gi_mid_spider: off
   metal_saucers_attack_show:

@@ -204,6 +204,7 @@ shows:
       l_pop_2_10: green
       l_pop_2_11: green
       l_pop_2_12: green
+      l_pop_2_13: green
   - duration: 400ms
     lights:
       l_pop_2_1: off
@@ -218,6 +219,7 @@ shows:
       l_pop_2_10: off
       l_pop_2_11: off
       l_pop_2_12: off
+      l_pop_2_13: off
 
   professor_pretorius_right_pop_solid:
   - duration: 1s
@@ -234,6 +236,7 @@ shows:
       l_pop_2_10: green
       l_pop_2_11: green
       l_pop_2_12: green
+      l_pop_2_13: green
 
   professor_pretorius_left_bank_available:
   - duration: 400ms

@@ -97,6 +97,7 @@ light_player:
     l_pop_2_10: off
     l_pop_2_11: off
     l_pop_2_12: off
+    l_pop_2_13: off
 
   # Hidden state: all current choices look the same.
   miss_trubble_hidden_left_web:
@@ -144,6 +145,7 @@ light_player:
     l_pop_2_10: white
     l_pop_2_11: white
     l_pop_2_12: white
+    l_pop_2_13: white
 
   # Correct reveal: bright green.
   miss_trubble_reveal_good_left_web:
@@ -191,6 +193,7 @@ light_player:
     l_pop_2_10: green
     l_pop_2_11: green
     l_pop_2_12: green
+    l_pop_2_13: green
 
   # Wrong reveal: dim red.
   miss_trubble_reveal_bad_left_web:
@@ -238,6 +241,7 @@ light_player:
     l_pop_2_10: 800000
     l_pop_2_11: 800000
     l_pop_2_12: 800000
+    l_pop_2_13: 800000
 
   # Brief hit confirmation. Python immediately starts the next round after this.
   miss_trubble_correct_shot:

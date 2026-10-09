@@ -127,6 +127,7 @@ light_player:
     l_pop_2_10: off
     l_pop_2_11: off
     l_pop_2_12: off
+    l_pop_2_13: off
 
   # Hidden state is handled by looping shows below so every currently
   # available choice flashes identically until the spinner reveal.
@@ -174,6 +175,7 @@ light_player:
     l_pop_2_10: green
     l_pop_2_11: green
     l_pop_2_12: green
+    l_pop_2_13: green
 
   pardo_reveal_good_off_left_web:
     l_left_web_target: off
@@ -217,6 +219,7 @@ light_player:
     l_pop_2_10: off
     l_pop_2_11: off
     l_pop_2_12: off
+    l_pop_2_13: off
 
   # Wrong choices turn off. Red is intentionally avoided because the two
   # drop-bank indicators have green physical lenses.
@@ -262,6 +265,7 @@ light_player:
     l_pop_2_10: off
     l_pop_2_11: off
     l_pop_2_12: off
+    l_pop_2_13: off
 
   # Brief hit confirmation. Python immediately starts the next round after this.
   pardo_correct_shot:
@@ -453,6 +457,7 @@ shows:
       l_pop_2_10: green
       l_pop_2_11: green
       l_pop_2_12: green
+      l_pop_2_13: green
   - duration: 250ms
     lights:
       l_pop_2_1: off
@@ -467,6 +472,7 @@ shows:
       l_pop_2_10: off
       l_pop_2_11: off
       l_pop_2_12: off
+      l_pop_2_13: off
 
 sound_player:
   play_mode_jackpot:

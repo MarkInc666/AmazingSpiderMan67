@@ -173,6 +173,7 @@ shows:
       l_pop_2_10: "00FF00"
       l_pop_2_11: "00FF00"
       l_pop_2_12: "00FF00"
+      l_pop_2_13: "00FF00"
   - duration: 500ms
     lights:
       l_pop_1_1: "004000"
@@ -199,6 +200,7 @@ shows:
       l_pop_2_10: "004000"
       l_pop_2_11: "004000"
       l_pop_2_12: "004000"
+      l_pop_2_13: "004000"
 
   # The lower playfield spinner is the only spinner used by this mode.
   plotter_spinner_show:

@@ -301,6 +301,7 @@ shows:
         l_pop_2_10: F0F060
         l_pop_2_11: F0F060
         l_pop_2_12: F0F060
+        l_pop_2_13: F0F060
     - duration: 500ms
       lights:
         l_pop_2_1: "303000"
@@ -315,6 +316,7 @@ shows:
         l_pop_2_10: "303000"
         l_pop_2_11: "303000"
         l_pop_2_12: "303000"
+        l_pop_2_13: "303000"
 
   devargas_left_bank_pulse:
     - duration: 500ms

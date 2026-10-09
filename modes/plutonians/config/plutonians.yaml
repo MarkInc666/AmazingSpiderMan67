@@ -147,6 +147,7 @@ light_player:
     l_pop_2_10: 4080F0
     l_pop_2_11: 4080F0
     l_pop_2_12: 4080F0
+    l_pop_2_13: 4080F0
 
   # Upper left
   plutonians_thaw_upper_left:
@@ -176,6 +177,7 @@ light_player:
     l_pop_2_1: F0D040
     l_pop_2_11: F0D040
     l_pop_2_12: F0D040
+    l_pop_2_13: F0D040
   plutonians_freeze_upper_right:
     l_gi_a: 4080F0
     l_gi_ab: 4080F0
@@ -187,6 +189,7 @@ light_player:
     l_pop_2_1: 4080F0
     l_pop_2_11: 4080F0
     l_pop_2_12: 4080F0
+    l_pop_2_13: 4080F0
 
   # Middle left
   plutonians_thaw_middle_left:
@@ -309,6 +312,7 @@ light_player:
     l_pop_2_10: stop
     l_pop_2_11: stop
     l_pop_2_12: stop
+    l_pop_2_13: stop
 
 shows:
   plutonians_targets_red_pulse:

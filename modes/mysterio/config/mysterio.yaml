@@ -328,6 +328,7 @@ shows:
         l_pop_2_10: yellow
         l_pop_2_11: yellow
         l_pop_2_12: yellow
+        l_pop_2_13: yellow
     - duration: 120ms
       lights:
         l_pop_2_1: blue
@@ -342,6 +343,7 @@ shows:
         l_pop_2_10: blue
         l_pop_2_11: blue
         l_pop_2_12: blue
+        l_pop_2_13: blue
 
   mysterio_lite_left_drops_show:
     - duration: 120ms
@@ -450,6 +452,7 @@ shows:
         l_pop_2_10: white
         l_pop_2_11: white
         l_pop_2_12: white
+        l_pop_2_13: white
     - duration: 120ms
       lights:
         l_pop_2_1: off
@@ -464,6 +467,7 @@ shows:
         l_pop_2_10: off
         l_pop_2_11: off
         l_pop_2_12: off
+        l_pop_2_13: off
 
   mysterio_super_flash_left_drops_show:
     - duration: 120ms

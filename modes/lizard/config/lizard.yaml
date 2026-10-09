@@ -361,6 +361,7 @@ shows:
         l_pop_2_10: purple
         l_pop_2_11: purple
         l_pop_2_12: purple
+        l_pop_2_13: purple
     - duration: 400ms
       lights:
         l_pop_2_1: off
@@ -375,6 +376,7 @@ shows:
         l_pop_2_10: off
         l_pop_2_11: off
         l_pop_2_12: off
+        l_pop_2_13: off
 
   lizard_left_pop_collected_show:
     - duration: 1s
@@ -407,6 +409,7 @@ shows:
         l_pop_2_10: purple
         l_pop_2_11: purple
         l_pop_2_12: purple
+        l_pop_2_13: purple
 
   lizard_star_10x_available_show:
     - duration: 250ms

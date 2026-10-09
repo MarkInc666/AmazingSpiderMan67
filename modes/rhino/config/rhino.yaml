@@ -218,6 +218,7 @@ shows:
         l_pop_2_10: yellow
         l_pop_2_11: yellow
         l_pop_2_12: yellow
+        l_pop_2_13: yellow
     - duration: 500ms
       lights:
         gi: FFD000
@@ -249,6 +250,7 @@ shows:
         l_pop_2_10: '404000'
         l_pop_2_11: '404000'
         l_pop_2_12: '404000'
+        l_pop_2_13: '404000'
 
   # Rage A/B progression:
   #   Rage 1: none earned
@@ -290,6 +292,7 @@ shows:
         l_pop_2_10: off
         l_pop_2_11: yellow
         l_pop_2_12: off
+        l_pop_2_13: off
 
   rhino_rage_2:
     - duration: 800ms
@@ -325,6 +328,7 @@ shows:
         l_pop_2_10: yellow
         l_pop_2_11: yellow
         l_pop_2_12: yellow
+        l_pop_2_13: yellow
     - duration: 800ms
       lights:
         gi: FF9A00
@@ -358,6 +362,7 @@ shows:
         l_pop_2_10: yellow
         l_pop_2_11: yellow
         l_pop_2_12: yellow
+        l_pop_2_13: yellow
 
   rhino_rage_3:
     - duration: 600ms
@@ -395,6 +400,7 @@ shows:
         l_pop_2_10: orange
         l_pop_2_11: orange
         l_pop_2_12: orange
+        l_pop_2_13: orange
     - duration: 600ms
       lights:
         gi: FF6500
@@ -430,6 +436,7 @@ shows:
         l_pop_2_10: orange
         l_pop_2_11: orange
         l_pop_2_12: orange
+        l_pop_2_13: orange
 
   rhino_rage_4:
     - duration: 400ms
@@ -469,6 +476,7 @@ shows:
         l_pop_2_10: orange
         l_pop_2_11: orange
         l_pop_2_12: orange
+        l_pop_2_13: orange
     - duration: 400ms
       lights:
         gi: FF1800
@@ -506,6 +514,7 @@ shows:
         l_pop_2_10: F09010
         l_pop_2_11: F09010
         l_pop_2_12: F09010
+        l_pop_2_13: F09010
 
   rhino_rage_5:
     - duration: 200ms
@@ -547,6 +556,7 @@ shows:
         l_pop_2_10: red
         l_pop_2_11: red
         l_pop_2_12: red
+        l_pop_2_13: red
     - duration: 200ms
       lights:
         gi: FF2000
@@ -586,6 +596,7 @@ shows:
         l_pop_2_10: FF3000
         l_pop_2_11: FF3000
         l_pop_2_12: FF3000
+        l_pop_2_13: FF3000
 
   rhino_berserk_gi:
     - duration: 250ms
@@ -648,6 +659,7 @@ shows:
         l_pop_2_10: off
         l_pop_2_11: off
         l_pop_2_12: off
+        l_pop_2_13: off
     - duration: 400ms
       lights:
         gi: red

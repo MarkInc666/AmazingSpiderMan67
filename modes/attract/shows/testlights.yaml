@@ -52,6 +52,7 @@
     l_pop_2_10: F0F0F0
     l_pop_2_11: F0F0F0
     l_pop_2_12: F0F0F0    
+    l_pop_2_13: F0F0F0    
     l_extraball: F0F0F0
     l_3bankbonus: F0F0F0
     l_left_special: F0F0F0
@@ -158,6 +159,7 @@
     l_pop_2_10: 50F050
     l_pop_2_11: 50F050
     l_pop_2_12: 50F050    
+    l_pop_2_13: 50F050    
     l_extraball: 50F050
     l_3bankbonus: 50F050
     l_left_special: 50F050
@@ -265,6 +267,7 @@
     l_pop_2_10: 5050F0
     l_pop_2_11: 5050F0
     l_pop_2_12: 5050F0    
+    l_pop_2_13: 5050F0    
     l_extraball: 5050F0
     l_3bankbonus: 5050F0
     l_left_special: 5050F0
@@ -372,6 +375,7 @@
     l_pop_2_10: F05050
     l_pop_2_11: F05050
     l_pop_2_12: F05050    
+    l_pop_2_13: F05050    
     l_extraball: F05050
     l_3bankbonus: F05050
     l_left_special: F05050

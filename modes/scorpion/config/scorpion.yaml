@@ -283,6 +283,7 @@ shows:
         l_pop_2_10: green
         l_pop_2_11: green
         l_pop_2_12: green
+        l_pop_2_13: green
 
   scorpion_right_sting_target_1_show:
     - duration: 250ms

@@ -292,6 +292,7 @@ shows:
         l_pop_2_10: cyan
         l_pop_2_11: cyan
         l_pop_2_12: cyan
+        l_pop_2_13: cyan
     - duration: 500ms
       lights:
         l_pop_1_1: 204040
@@ -318,6 +319,7 @@ shows:
         l_pop_2_10: 204040
         l_pop_2_11: 204040
         l_pop_2_12: 204040
+        l_pop_2_13: 204040
   crime_wave_plotter_active:
     - duration: 1s
       lights:
@@ -345,6 +347,7 @@ shows:
         l_pop_2_10: cyan
         l_pop_2_11: cyan
         l_pop_2_12: cyan
+        l_pop_2_13: cyan
   crime_wave_plotter_warning:
     - duration: 250ms
       lights:
@@ -372,6 +375,7 @@ shows:
         l_pop_2_10: cyan
         l_pop_2_11: cyan
         l_pop_2_12: cyan
+        l_pop_2_13: cyan
     - duration: 250ms
       lights:
         l_pop_1_1: off
@@ -398,6 +402,7 @@ shows:
         l_pop_2_10: off
         l_pop_2_11: off
         l_pop_2_12: off
+        l_pop_2_13: off
 
   crime_wave_fly_twins_available:
     - duration: 500ms

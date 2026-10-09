@@ -155,6 +155,7 @@ light_player:
     l_pop_2_10: off
     l_pop_2_11: off
     l_pop_2_12: off
+    l_pop_2_13: off
 
   # Solid-red defense shots.
   igor_bad_right_bank:
@@ -194,6 +195,7 @@ light_player:
     l_pop_2_10: red
     l_pop_2_11: red
     l_pop_2_12: red
+    l_pop_2_13: red
 
 
 shows:
@@ -223,6 +225,7 @@ shows:
         l_pop_2_10: green
         l_pop_2_11: green
         l_pop_2_12: green
+        l_pop_2_13: green
     - duration: 250ms
       lights:
         l_pop_2_1: off
@@ -237,6 +240,7 @@ shows:
         l_pop_2_10: off
         l_pop_2_11: off
         l_pop_2_12: off
+        l_pop_2_13: off
 
   igor_good_spinner_show:
     - duration: 250ms

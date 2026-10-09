@@ -115,6 +115,7 @@ light_player:
     l_pop_2_10: 40FF40
     l_pop_2_11: 40FF40
     l_pop_2_12: 40FF40
+    l_pop_2_13: 40FF40
   fiddler_right_pop_dim:
     l_pop_2_1: 208020
     l_pop_2_2: 208020
@@ -128,6 +129,7 @@ light_player:
     l_pop_2_10: 208020
     l_pop_2_11: 208020
     l_pop_2_12: 208020
+    l_pop_2_13: 208020
   fiddler_right_pop_off:
     l_pop_2_1: off
     l_pop_2_2: off
@@ -141,6 +143,7 @@ light_player:
     l_pop_2_10: off
     l_pop_2_11: off
     l_pop_2_12: off
+    l_pop_2_13: off
 
   fiddler_right_bank_solid:
     l_gi_5bank_lower: 40FF40
@@ -169,6 +172,7 @@ light_player:
     l_pop_2_10: off
     l_pop_2_11: off
     l_pop_2_12: off
+    l_pop_2_13: off
 
 shows:
   fiddler_saucer_ready_pulse:

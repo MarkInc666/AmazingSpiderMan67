@@ -271,6 +271,7 @@ light_player:
     l_pop_2_10: "00BF00"
     l_pop_2_11: "00BF00"
     l_pop_2_12: "00BF00"
+    l_pop_2_13: "00BF00"
 
   infinata_web_left_complete:
     l_left_web_target: "00BF00"
@@ -302,6 +303,7 @@ light_player:
     l_pop_2_10: 6030A0
     l_pop_2_11: 6030A0
     l_pop_2_12: 6030A0
+    l_pop_2_13: 6030A0
   infinata_unlight_left_drops:
     l_gi_3bank: 6030A0
     l_3bankbonus: off
@@ -346,6 +348,7 @@ light_player:
     l_pop_2_10: 6030A0
     l_pop_2_11: 6030A0
     l_pop_2_12: 6030A0
+    l_pop_2_13: 6030A0
     l_gi_3bank: 6030A0
     l_3bankbonus: off
     l_gi_5bank_lower: 6030A0
@@ -381,6 +384,7 @@ light_player:
     l_pop_2_10: off
     l_pop_2_11: off
     l_pop_2_12: off
+    l_pop_2_13: off
     l_gi_3bank: off
     l_3bankbonus: off
     l_gi_5bank_lower: off
@@ -480,6 +484,7 @@ shows:
         l_pop_2_10: green
         l_pop_2_11: green
         l_pop_2_12: green
+        l_pop_2_13: green
     - duration: 300ms
       lights:
         l_pop_2_1: off
@@ -494,6 +499,7 @@ shows:
         l_pop_2_10: off
         l_pop_2_11: off
         l_pop_2_12: off
+        l_pop_2_13: off
 
   infinata_web_left_flash_show:
     - duration: 300ms

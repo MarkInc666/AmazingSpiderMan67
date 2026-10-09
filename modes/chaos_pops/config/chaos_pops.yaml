@@ -74,6 +74,7 @@ shows:
         l_pop_2_10: red
         l_pop_2_11: red
         l_pop_2_12: red
+        l_pop_2_13: red
     - duration: 100ms
       lights:
         l_pop_1_1: white
@@ -100,3 +101,4 @@ shows:
         l_pop_2_10: white
         l_pop_2_11: white
         l_pop_2_12: white
+        l_pop_2_13: white

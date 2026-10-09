@@ -240,6 +240,7 @@ light_player:
     l_pop_2_10: off
     l_pop_2_11: off
     l_pop_2_12: off
+    l_pop_2_13: off
 
   master_vine_attempt_expired:
     l_gi_a: off
@@ -285,6 +286,7 @@ light_player:
     l_pop_2_10: off
     l_pop_2_11: off
     l_pop_2_12: off
+    l_pop_2_13: off
     l_3bankbonus: off
     l_5bank_1: off
     l_5bank_2: off
@@ -341,6 +343,7 @@ light_player:
     l_pop_2_10: "103010"
     l_pop_2_11: "103010"
     l_pop_2_12: "103010"
+    l_pop_2_13: "103010"
   master_vine_saucer_1_collected: {l_1_hole_l: "400000", l_1_hole_r: "400000"}
   master_vine_saucer_2_collected: {l_2_hole_l: "400000", l_2_hole_r: "400000"}
   master_vine_saucer_3_collected: {l_3_hole_l: "400000", l_3_hole_r: "400000"}
@@ -415,6 +418,7 @@ shows:
         l_pop_2_10: 60F060
         l_pop_2_11: 60F060
         l_pop_2_12: 60F060
+        l_pop_2_13: 60F060
     - duration: 500ms
       lights: *vine_right_pop_dim
   master_vine_saucer_1_pulse:

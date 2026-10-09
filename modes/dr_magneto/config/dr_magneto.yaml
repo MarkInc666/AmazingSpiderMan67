@@ -289,6 +289,7 @@ shows:
         l_pop_2_10: 4060FF
         l_pop_2_11: 4060FF
         l_pop_2_12: 4060FF
+        l_pop_2_13: 4060FF
     - duration: 300ms
       lights:
         l_pop_2_1: off
@@ -303,6 +304,7 @@ shows:
         l_pop_2_10: off
         l_pop_2_11: off
         l_pop_2_12: off
+        l_pop_2_13: off
 
   dr_magneto_right_pop_solid:
     - duration: 1s
@@ -319,6 +321,7 @@ shows:
         l_pop_2_10: 4060FF
         l_pop_2_11: 4060FF
         l_pop_2_12: 4060FF
+        l_pop_2_13: 4060FF
 
   dr_magneto_center_web_chase:
     - duration: 250ms

@@ -230,6 +230,7 @@ light_player:
     l_pop_2_10: off
     l_pop_2_11: off
     l_pop_2_12: off
+    l_pop_2_13: off
     l_3bankbonus: off
     l_5bank_1: off
     l_5bank_2: off
@@ -275,6 +276,7 @@ light_player:
     l_pop_2_10: "40F040"
     l_pop_2_11: "40F040"
     l_pop_2_12: "40F040"
+    l_pop_2_13: "40F040"
   time_tossed_showdown_vine_left_drop_1_lit: {l_3bankbonus: white}
   time_tossed_showdown_vine_left_drop_2_lit: {l_3bankbonus: white}
   time_tossed_showdown_vine_left_drop_3_lit: {l_3bankbonus: white}

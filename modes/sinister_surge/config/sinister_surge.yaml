@@ -667,6 +667,7 @@ shows:
         l_pop_2_10: orange
         l_pop_2_11: orange
         l_pop_2_12: orange
+        l_pop_2_13: orange
     - duration: 500ms
       lights:
         l_pop_1_1: F09010
@@ -693,6 +694,7 @@ shows:
         l_pop_2_10: F09010
         l_pop_2_11: F09010
         l_pop_2_12: F09010
+        l_pop_2_13: F09010
 
   sinister_surge_spinner_lit_show:
     - duration: 200ms
@@ -784,6 +786,7 @@ shows:
         l_pop_2_10: yellow
         l_pop_2_11: yellow
         l_pop_2_12: yellow
+        l_pop_2_13: yellow
     - duration: 900ms
       lights:
         l_pop_1_1: off
@@ -810,6 +813,7 @@ shows:
         l_pop_2_10: off
         l_pop_2_11: off
         l_pop_2_12: off
+        l_pop_2_13: off
 
   sinister_surge_rhino_rage_1_show:
     - duration: 800ms
@@ -838,6 +842,7 @@ shows:
         l_pop_2_10: orange
         l_pop_2_11: orange
         l_pop_2_12: orange
+        l_pop_2_13: orange
     - duration: 800ms
       lights:
         l_pop_1_1: off
@@ -864,6 +869,7 @@ shows:
         l_pop_2_10: off
         l_pop_2_11: off
         l_pop_2_12: off
+        l_pop_2_13: off
 
   sinister_surge_rhino_rage_2_show:
     - duration: 650ms
@@ -892,6 +898,7 @@ shows:
         l_pop_2_10: F07020
         l_pop_2_11: F07020
         l_pop_2_12: F07020
+        l_pop_2_13: F07020
     - duration: 650ms
       lights:
         l_pop_1_1: off
@@ -918,6 +925,7 @@ shows:
         l_pop_2_10: off
         l_pop_2_11: off
         l_pop_2_12: off
+        l_pop_2_13: off
 
   sinister_surge_rhino_rage_3_show:
     - duration: 500ms
@@ -946,6 +954,7 @@ shows:
         l_pop_2_10: F05020
         l_pop_2_11: F05020
         l_pop_2_12: F05020
+        l_pop_2_13: F05020
     - duration: 500ms
       lights:
         l_pop_1_1: off
@@ -972,6 +981,7 @@ shows:
         l_pop_2_10: off
         l_pop_2_11: off
         l_pop_2_12: off
+        l_pop_2_13: off
 
   sinister_surge_rhino_rage_4_show:
     - duration: 350ms
@@ -1000,6 +1010,7 @@ shows:
         l_pop_2_10: F03010
         l_pop_2_11: F03010
         l_pop_2_12: F03010
+        l_pop_2_13: F03010
     - duration: 350ms
       lights:
         l_pop_1_1: off
@@ -1026,6 +1037,7 @@ shows:
         l_pop_2_10: off
         l_pop_2_11: off
         l_pop_2_12: off
+        l_pop_2_13: off
 
   sinister_surge_rhino_rage_5_show:
     - duration: 180ms
@@ -1054,6 +1066,7 @@ shows:
         l_pop_2_10: red
         l_pop_2_11: red
         l_pop_2_12: red
+        l_pop_2_13: red
     - duration: 180ms
       lights:
         l_pop_1_1: off
@@ -1080,6 +1093,7 @@ shows:
         l_pop_2_10: off
         l_pop_2_11: off
         l_pop_2_12: off
+        l_pop_2_13: off
 
   sinister_surge_vulture_targets_show:
     - duration: 250ms
@@ -1202,6 +1216,7 @@ shows:
         l_pop_2_10: yellow
         l_pop_2_11: yellow
         l_pop_2_12: yellow
+        l_pop_2_13: yellow
     - duration: 150ms
       lights:
         l_pop_2_1: off
@@ -1216,6 +1231,7 @@ shows:
         l_pop_2_10: off
         l_pop_2_11: off
         l_pop_2_12: off
+        l_pop_2_13: off
 
   sinister_surge_electro_left_bank_show:
     - duration: 120ms

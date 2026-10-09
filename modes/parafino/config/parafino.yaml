@@ -220,6 +220,7 @@ shows:
         l_pop_2_10: red
         l_pop_2_11: red
         l_pop_2_12: red
+        l_pop_2_13: red
     - duration: 500ms
       lights:
         l_gi_3bank: off
@@ -249,6 +250,7 @@ shows:
         l_pop_2_10: off
         l_pop_2_11: off
         l_pop_2_12: off
+        l_pop_2_13: off
 
   parafino_left_jackpot_show:  
     - duration: 250ms

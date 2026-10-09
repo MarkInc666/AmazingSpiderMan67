@@ -222,6 +222,10 @@ lights:
   l_pop_2_12:
     number: playfield-2-27
     tags: gi, swami_area_upper_right, band_6
+    #white
+  l_pop_2_13:
+    number: playfield-2-28
+    tags: gi, swami_area_upper_right, band_6
     #white    
 
   l_extraball:

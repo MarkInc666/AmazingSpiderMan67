@@ -81,6 +81,7 @@ light_player:
     l_pop_2_10: 404040
     l_pop_2_11: 404040
     l_pop_2_12: 404040
+    l_pop_2_13: 404040
     l_pop_2_2: 404040
     l_pop_2_3: 404040
     l_pop_2_4: 404040
@@ -114,6 +115,7 @@ light_player:
     l_pop_2_1: FFFFFF
     l_pop_2_11: FFFFFF
     l_pop_2_12: FFFFFF
+    l_pop_2_13: FFFFFF
   super_swami_dim_upper_right:
     l_gi_a: 404040
     l_gi_ab: 404040
@@ -125,6 +127,7 @@ light_player:
     l_pop_2_1: 404040
     l_pop_2_11: 404040
     l_pop_2_12: 404040
+    l_pop_2_13: 404040
   super_swami_restore_middle_left:
     l_gi_3bank: FFFFFF
     l_gi_left_lower: FFFFFF
@@ -232,6 +235,7 @@ light_player:
     l_pop_2_10: E0E0E0
     l_pop_2_11: E0E0E0
     l_pop_2_12: E0E0E0
+    l_pop_2_13: E0E0E0
     l_pop_2_2: E0E0E0
     l_pop_2_3: E0E0E0
     l_pop_2_4: E0E0E0

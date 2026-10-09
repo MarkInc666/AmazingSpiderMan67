@@ -157,6 +157,7 @@ shows:
         l_pop_2_10: white
         l_pop_2_11: white
         l_pop_2_12: white
+        l_pop_2_13: white
     - duration: 500ms
       lights:
         l_pop_2_1: off
@@ -171,6 +172,7 @@ shows:
         l_pop_2_10: off
         l_pop_2_11: off
         l_pop_2_12: off
+        l_pop_2_13: off
 
   molemen_saucer_1_jackpot_show:
     - duration: 500ms

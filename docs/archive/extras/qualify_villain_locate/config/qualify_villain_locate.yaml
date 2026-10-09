@@ -288,6 +288,7 @@ shows:
         l_pop_2_10: red
         l_pop_2_11: red
         l_pop_2_12: red
+        l_pop_2_13: red
 
   villain_select_sandman_show:
     - duration: 250ms
@@ -382,6 +383,7 @@ shows:
         l_pop_2_10: blue
         l_pop_2_11: blue
         l_pop_2_12: blue
+        l_pop_2_13: blue
 
   villain_select_lizard_show:
     - duration: 250ms

@@ -87,6 +87,7 @@ light_player:
     l_pop_2_1: 303030
     l_pop_2_11: 303030
     l_pop_2_12: 303030
+    l_pop_2_13: 303030
     l_gi_3bank: 303030
     l_gi_left_lower: 303030
     l_gi_left_upper: 303030
@@ -142,6 +143,7 @@ light_player:
     l_pop_2_1: FFFFFF
     l_pop_2_11: FFFFFF
     l_pop_2_12: FFFFFF
+    l_pop_2_13: FFFFFF
   fifth_dimension_curse_zone_upper_right_dim:
     l_gi_a: 303030
     l_gi_ab: 303030
@@ -153,6 +155,7 @@ light_player:
     l_pop_2_1: 303030
     l_pop_2_11: 303030
     l_pop_2_12: 303030
+    l_pop_2_13: 303030
   fifth_dimension_curse_zone_middle_left_bright:
     l_gi_3bank: FFFFFF
     l_gi_left_lower: FFFFFF
@@ -238,6 +241,7 @@ light_player:
     l_pop_2_1: E0E0E0
     l_pop_2_11: E0E0E0
     l_pop_2_12: E0E0E0
+    l_pop_2_13: E0E0E0
     l_gi_3bank: E0E0E0
     l_gi_left_lower: E0E0E0
     l_gi_left_upper: E0E0E0
@@ -553,6 +557,7 @@ shows:
         l_pop_2_1: FFFFFF
         l_pop_2_11: FFFFFF
         l_pop_2_12: FFFFFF
+        l_pop_2_13: FFFFFF
     - duration: 250ms
       lights:
         l_gi_a: 303030
@@ -565,6 +570,7 @@ shows:
         l_pop_2_1: 303030
         l_pop_2_11: 303030
         l_pop_2_12: 303030
+        l_pop_2_13: 303030
   fifth_dimension_curse_middle_left_flicker:
     - duration: 250ms
       lights:

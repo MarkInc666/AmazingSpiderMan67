@@ -173,6 +173,7 @@ shows:
         l_pop_2_10: 60F060
         l_pop_2_11: 60F060
         l_pop_2_12: 60F060
+        l_pop_2_13: 60F060
     - duration: 450ms
       lights:
         l_pop_1_1: off
@@ -199,6 +200,7 @@ shows:
         l_pop_2_10: off
         l_pop_2_11: off
         l_pop_2_12: off
+        l_pop_2_13: off
 
   conners_reptiles_upper_a_pulse:
     - duration: 450ms

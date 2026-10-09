@@ -193,6 +193,7 @@ shows:
         l_pop_2_10: A040FF
         l_pop_2_11: A040FF
         l_pop_2_12: A040FF
+        l_pop_2_13: A040FF
 
 sound_player:
   play_mode_jackpot:

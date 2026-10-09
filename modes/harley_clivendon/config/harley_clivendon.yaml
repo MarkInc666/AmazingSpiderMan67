@@ -312,6 +312,7 @@ shows:
       l_pop_2_10: 808080
       l_pop_2_11: 808080
       l_pop_2_12: 808080
+      l_pop_2_13: 808080
   - duration: 700ms
     lights:
       l_pop_2_1: off
@@ -326,6 +327,7 @@ shows:
       l_pop_2_10: off
       l_pop_2_11: off
       l_pop_2_12: off
+      l_pop_2_13: off
   harley_right_pop_lit_show:
   - duration: -1
     lights:
@@ -341,6 +343,7 @@ shows:
       l_pop_2_10: blue
       l_pop_2_11: blue
       l_pop_2_12: blue
+      l_pop_2_13: blue
   harley_left_bank_available_show:
   - duration: 700ms
     lights:

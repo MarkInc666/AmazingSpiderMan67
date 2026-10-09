@@ -293,6 +293,7 @@ light_player:
     l_pop_2_10: off
     l_pop_2_11: off
     l_pop_2_12: off
+    l_pop_2_13: off
 
   invasion_igor_bad_right_bank: {l_gi_5bank_lower: red, l_gi_5bank_upper: red}
   invasion_igor_bad_left_bank: {l_gi_3bank: red}
@@ -325,6 +326,7 @@ light_player:
     l_pop_2_10: red
     l_pop_2_11: red
     l_pop_2_12: red
+    l_pop_2_13: red
 
 
 shows:
@@ -387,6 +389,7 @@ shows:
         l_pop_2_10: green
         l_pop_2_11: green
         l_pop_2_12: green
+        l_pop_2_13: green
     - duration: 250ms
       lights:
         l_pop_2_1: off
@@ -401,6 +404,7 @@ shows:
         l_pop_2_10: off
         l_pop_2_11: off
         l_pop_2_12: off
+        l_pop_2_13: off
   invasion_igor_good_spinner_show:
     - duration: 250ms
       lights: {l_spinner: green}
@@ -424,9 +428,9 @@ shows:
       lights: {l_mid_web_target: off}
   invasion_molemen_right_area_show:
     - duration: 500ms
-      lights: {l_pop_2_1: white, l_pop_2_2: white, l_pop_2_3: white, l_pop_2_4: white, l_pop_2_5: white, l_pop_2_6: white, l_pop_2_7: white, l_pop_2_8: white, l_pop_2_9: white, l_pop_2_10: white, l_pop_2_11: white, l_pop_2_12: white}
+      lights: {l_pop_2_1: white, l_pop_2_2: white, l_pop_2_3: white, l_pop_2_4: white, l_pop_2_5: white, l_pop_2_6: white, l_pop_2_7: white, l_pop_2_8: white, l_pop_2_9: white, l_pop_2_10: white, l_pop_2_11: white, l_pop_2_12: white, l_pop_2_13: white}
     - duration: 500ms
-      lights: {l_pop_2_1: off, l_pop_2_2: off, l_pop_2_3: off, l_pop_2_4: off, l_pop_2_5: off, l_pop_2_6: off, l_pop_2_7: off, l_pop_2_8: off, l_pop_2_9: off, l_pop_2_10: off, l_pop_2_11: off, l_pop_2_12: off}
+      lights: {l_pop_2_1: off, l_pop_2_2: off, l_pop_2_3: off, l_pop_2_4: off, l_pop_2_5: off, l_pop_2_6: off, l_pop_2_7: off, l_pop_2_8: off, l_pop_2_9: off, l_pop_2_10: off, l_pop_2_11: off, l_pop_2_12: off, l_pop_2_13: off}
 
   invasion_devargas_5_show:
     - duration: 300ms

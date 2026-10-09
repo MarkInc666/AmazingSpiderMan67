@@ -545,6 +545,7 @@ shows:
         l_pop_2_10: (bright)
         l_pop_2_11: (bright)
         l_pop_2_12: (bright)
+        l_pop_2_13: (bright)
     - duration: 500ms
       lights:
         l_pop_2_1: (dim)
@@ -559,6 +560,7 @@ shows:
         l_pop_2_10: (dim)
         l_pop_2_11: (dim)
         l_pop_2_12: (dim)
+        l_pop_2_13: (dim)
 
   mad_science_meltdown_gas_left_sling_pulse:
     - duration: 500ms

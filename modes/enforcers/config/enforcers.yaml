@@ -311,6 +311,7 @@ light_player:
     l_pop_2_10: off
     l_pop_2_11: off
     l_pop_2_12: off
+    l_pop_2_13: off
     l_upper_left: off
     l_upper_middle: off
     l_upper_right: off
@@ -359,6 +360,7 @@ shows:
         l_pop_2_10: FFFF30
         l_pop_2_11: FFFF30
         l_pop_2_12: FFFF30
+        l_pop_2_13: FFFF30
     - duration: 200ms
       lights:
         l_gi_3bank: FF9F30
@@ -388,6 +390,7 @@ shows:
         l_pop_2_10: FF9F30
         l_pop_2_11: FF9F30
         l_pop_2_12: FF9F30
+        l_pop_2_13: FF9F30
     - duration: 200ms
       lights:
         l_gi_3bank: FF3030
@@ -417,6 +420,7 @@ shows:
         l_pop_2_10: FF3030
         l_pop_2_11: FF3030
         l_pop_2_12: FF3030
+        l_pop_2_13: FF3030
     - duration: 200ms
       lights:
         l_gi_3bank: FF9F30
@@ -446,6 +450,7 @@ shows:
         l_pop_2_10: FF9F30
         l_pop_2_11: FF9F30
         l_pop_2_12: FF9F30
+        l_pop_2_13: FF9F30
     - duration: 200ms
       lights:
         l_gi_3bank: FFFF30
@@ -475,6 +480,7 @@ shows:
         l_pop_2_10: FFFF30
         l_pop_2_11: FFFF30
         l_pop_2_12: FFFF30
+        l_pop_2_13: FFFF30
 
   enforcers_upper_left_flash_1x:
     - duration: 1000ms

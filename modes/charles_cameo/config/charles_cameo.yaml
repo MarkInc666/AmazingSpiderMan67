@@ -280,6 +280,7 @@ shows:
       l_pop_2_10: F0D060
       l_pop_2_11: F0D060
       l_pop_2_12: F0D060
+      l_pop_2_13: F0D060
   - duration: 500ms
     lights:
       l_pop_2_1: "302810"
@@ -294,6 +295,7 @@ shows:
       l_pop_2_10: "302810"
       l_pop_2_11: "302810"
       l_pop_2_12: "302810"
+      l_pop_2_13: "302810"
 
   charles_cameo_left_bank_pulse:
   - duration: 500ms

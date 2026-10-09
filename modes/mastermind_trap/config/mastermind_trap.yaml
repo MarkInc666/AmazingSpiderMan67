@@ -315,6 +315,7 @@ shows:
         l_pop_2_10: purple
         l_pop_2_11: purple
         l_pop_2_12: purple
+        l_pop_2_13: purple
     - duration: 500ms
       lights:
         l_pop_1_1: off
@@ -341,6 +342,7 @@ shows:
         l_pop_2_10: off
         l_pop_2_11: off
         l_pop_2_12: off
+        l_pop_2_13: off
 
   mastermind_delivery_left_web:
     - duration: 300ms
