@@ -1054,6 +1054,8 @@ class VillainBookends(Mode):
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
 
+        self._drain_summary_queue = None
+        self._drain_summary_waiting = False
         self.current_stage = None
         self.current_done_event = None
         self.current_villain = None
@@ -1069,6 +1071,9 @@ class VillainBookends(Mode):
         self.pending_terminal_summary_request = None
         self.last_gameplay_message_time = 0.0
 
+        # Run before this mode's ball_ending stop and before Bonus (priority 500).
+        self.add_mode_event_handler("ball_ending", self._drain_summary_before_bonus, priority=100000)
+        self.add_mode_event_handler("tilt", self._cancel_drain_summary)
         self.add_mode_event_handler("villain_bookend_intro_request", self._intro_request)
         self.add_mode_event_handler("villain_bookend_summary_request", self._summary_request)
         self.add_mode_event_handler("flipper_cancel", self._skip_current_bookend)
@@ -1085,6 +1090,73 @@ class VillainBookends(Mode):
         self.add_mode_event_handler("show_mode_message", self._record_gameplay_message)
         self.add_mode_event_handler("show_mode_message_long", self._record_gameplay_message)
         self.add_mode_event_handler("show_mode_jackpot", self._record_gameplay_message)
+
+    def _drain_summary_before_bonus(self, queue, **kwargs):
+        """Pause ball teardown for an ordinary villain's final score summary."""
+        game = self.machine.game
+        if not game or getattr(game, "tilted", False):
+            return
+        player = game.player
+        if int(player["tilted"] or 0) or int(player["test_mode_exit_requested"] or 0):
+            return
+        villain = self.current_villain or player["villain_current_key"]
+        if villain not in self.VILLAINS or self._is_wizard(villain):
+            return
+        if not (player["villain_mode_running"] or player["villain_mode_in_summary"]):
+            return
+        if self._drain_summary_waiting:
+            return
+        self._drain_summary_waiting = True
+        self._drain_summary_queue = queue
+        queue.wait()
+        # The rest of ball_ending is paused, including global control shutdown.
+        self.machine.events.post("cmd_flippers_disable")
+        self.machine.events.post("cmd_autofire_coils_disable")
+        self.delay.reset(name="drain_summary_timeout", ms=10000,
+                         callback=self._complete_drain_summary)
+        if self.current_stage == "summary" and self.current_villain == villain:
+            # Keep the existing timer and skip unlock; never restart the summary.
+            return
+        self.delay.remove("villain_bookend_done")
+        self.delay.remove("villain_terminal_award_summary_delay")
+        self.pending_terminal_summary_request = None
+        self.terminal_award_summary_deadline = 0.0
+        self.machine.events.post("villain_bookend_intro_hide")
+        self.delay.reset(name="drain_summary_show", ms=100,
+                         callback=self._show_drain_summary, villain=villain)
+
+    def _show_drain_summary(self, villain):
+        if self._drain_summary_waiting:
+            self._summary_request(villain=villain, allow_skip=True,
+                                  done_event="villain_drain_summary_done")
+
+    def _cancel_drain_summary(self, **kwargs):
+        if self._drain_summary_waiting:
+            self._complete_drain_summary()
+
+    def _complete_drain_summary(self):
+        if not self._drain_summary_waiting:
+            return
+        queue = self._drain_summary_queue
+        villain = self.current_villain
+        self._drain_summary_waiting = False
+        self._drain_summary_queue = None
+        for name in ("drain_summary_timeout", "drain_summary_show", "villain_bookend_done",
+                     "villain_summary_skip_unlock", "villain_terminal_award_summary_delay"):
+            self.delay.remove(name)
+        self.machine.events.post("villain_bookend_intro_hide")
+        self.machine.events.post("villain_bookend_summary_hide")
+        self.machine.game.player["villain_mode_in_summary"] = False
+        self.current_stage = None
+        self.current_villain = None
+        self.current_done_event = None
+        self.current_summary_can_skip = False
+        self.current_summary_skip_unlocked = False
+        self.pending_terminal_summary_request = None
+        # Do not invoke live-play summary completion: that can start a wizard
+        # or chapter transition. Existing next-ball recovery handles progression.
+        self.machine.events.post("villain_drain_summary_done", villain=villain)
+        queue.clear()
 
     def _record_gameplay_message(self, **kwargs):
         """Remember when the active villain last presented a player message."""
@@ -1495,6 +1567,9 @@ class VillainBookends(Mode):
                                  mode_bonus=banked, held=held, remaining=remaining)
 
     def _finish_current_bookend(self):
+        if self._drain_summary_waiting:
+            self._complete_drain_summary()
+            return
         if not self.current_stage:
             return
 
