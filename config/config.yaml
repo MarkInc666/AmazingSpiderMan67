@@ -32,7 +32,7 @@ fast:
         led_fade_time: 100ms
     port: auto
     baud: 921600
-    debug: False
+    debug: false
 
 virtual_platform_start_active_switches:
   - s_trough1
@@ -433,7 +433,7 @@ sound_player:
 ball_saves:
 
   mystery_ball_save:
-    active_time: 10s
+    active_time: 20s
     hurry_up_time: 3s
     grace_period: 2s
     enable_events:
@@ -441,7 +441,7 @@ ball_saves:
 
 
   default_ball_save:
-    active_time: 16s
+    active_time: 22s
     hurry_up_time: 3s
     grace_period: 2s
     balls_to_save: -1
@@ -452,7 +452,7 @@ ball_saves:
 
 
   case_file_ball_save:
-    active_time: 10s
+    active_time: 20s
     hurry_up_time: 3s
     grace_period: 2s
     enable_events:

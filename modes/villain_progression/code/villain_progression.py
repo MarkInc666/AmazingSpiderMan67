@@ -155,11 +155,16 @@ class VillainProgression(Mode):
     # number of chapter Comics already collected (a Comic is collected once its
     # mini-wizard attempt ends, whether the wizard was won or lost).
     CHAPTER_UNLOCK_TIERS = (
-        (0, (1, 2, 3)),
-        (1, (4, 5, 6)),
+        (0, (1, 2, 3, 4, 5, 6)),
         (2, (7, 8, 9)),
         (3, (10, 11)),
     )
+#    CHAPTER_UNLOCK_TIERS = (
+#        (0, (1, 2, 3)),
+#        (1, (4, 5, 6)),
+#        (2, (7, 8, 9)),
+#        (3, (10, 11)),
+#    )
     FINAL_WIZARD_COMICS_REQUIRED = 4
 
     VILLAINS = {
