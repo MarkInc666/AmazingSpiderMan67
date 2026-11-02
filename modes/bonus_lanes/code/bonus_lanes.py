@@ -40,9 +40,12 @@ class BonusLanes(Mode):
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
 
-        self.completed = [False, False, False, False]
-        self.center_web_lit = False
-        self.left_web_lit = False
+        player = self.machine.game.player
+        lane_mask = int(player["bonus_lane_mask"]) & 15
+        self.completed = [bool(lane_mask & (1 << index)) for index in range(4)]
+        web_ready = int(player["bonus_lane_web_ready"]) if all(self.completed) else 0
+        self.center_web_lit = web_ready == 1
+        self.left_web_lit = web_ready == 2
         self.machine.game.player["bonus_lights_dimmed"] = 0
 
         self.add_mode_event_handler("bonus_lanes_cashout_reset", self.cashout_reset)
@@ -83,6 +86,15 @@ class BonusLanes(Mode):
 
     def blane_start(self, **kwargs):
         self.refresh_lane_lights()
+        # Restore an earned web opportunity with its normal ten-second timer.
+        # Do not replay lane completion or award another outlane add-a-ball.
+        if all(self.completed):
+            if self.center_web_lit:
+                self.machine.events.post("bonus_center_web_lit")
+            elif self.left_web_lit:
+                self.machine.events.post("bonus_left_web_lit")
+            else:
+                self.light_random_web()
 
     def add_bonus_count(self, amount=None, **kwargs):
 
@@ -155,6 +167,7 @@ class BonusLanes(Mode):
             self.center_web_lit = False
             self.machine.events.post("bonus_left_web_lit")
 
+        self._save_lane_state()
         self.machine.events.post("bonus_show_lanes")
 
     def center_web_hit(self, **kwargs):
@@ -212,7 +225,18 @@ class BonusLanes(Mode):
         self.completed = [False, False, False, False]
         self.refresh_lane_lights()
 
+    def _save_lane_state(self):
+        """Keep progress on the current player, including flipper rotation."""
+        player = self.machine.game.player
+        player["bonus_lane_mask"] = sum(
+            1 << index for index, lit in enumerate(self.completed) if lit
+        )
+        player["bonus_lane_web_ready"] = (
+            1 if self.center_web_lit else 2 if self.left_web_lit else 0
+        )
+
     def refresh_lane_lights(self):
+        self._save_lane_state()
         for lane in [1, 2, 3, 4]:
             if self.completed[lane - 1]:
                 self.machine.events.post(f"bonus_lane_{lane}_solid")

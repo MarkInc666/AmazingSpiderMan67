@@ -39,6 +39,7 @@ class QualifySystem(Mode):
 
         self.add_mode_event_handler("drop_target_bank_dt_bank_left_down", self._bank_completed)
         self.add_mode_event_handler("saucer_star_upgrade_hit", self._star_hit)
+        self.add_mode_event_handler("skillshot_awarded", self._skillshot_awarded)
         self.add_mode_event_handler("mystery_award_villain_start_ready", self._mystery_award_villain_start_ready)
         self.add_mode_event_handler("villain_intel_bank_completed", self._villain_intel_bank_completed)
 
@@ -276,6 +277,17 @@ class QualifySystem(Mode):
     def _reset_drop_cycle(self):
         for saucer in self.SAUCERS:
             self.machine.game.player[f"{saucer}_drop_hit_this_cycle"] = 0
+
+    def _skillshot_awarded(self, shot=None, **kwargs):
+        if shot != "star" or not self.qualify_logic_active or self._qualify_blocked():
+            return
+        for saucer in self.SAUCERS:
+            self.machine.game.player[f"{saucer}_state"] = self.MAX_SAUCER_STATE
+            self.machine.events.post(
+                "saucer_state_advanced", saucer=saucer,
+                state=self.MAX_SAUCER_STATE, source="skillshot_star",
+            )
+        self._restore_state()
 
     def _star_hit(self, **kwargs):
         if not self.qualify_logic_active:

@@ -148,6 +148,7 @@ class DailyBugleMystery(Mode):
         super().mode_stop(**kwargs)
 
     def _add_handlers(self):
+        self.add_mode_event_handler("skillshot_awarded", self._skillshot_awarded)
         self.add_mode_event_handler("s_upper_entrance_opto_active", self._roof_start_entry)
         self.add_mode_event_handler("s_inlane_m_l_active", self._roof_start_inlane)
         for event in ("ball_will_end", "ball_ending", "tilt", "slam_tilt",
@@ -275,6 +276,20 @@ class DailyBugleMystery(Mode):
         return self._safe_int(
             self.machine.game.player["villain_mode_running"], 0
         ) == 1
+
+    def _skillshot_awarded(self, shot=None, **kwargs):
+        if shot not in ("upper_a", "upper_b"):
+            return
+        if not self.daily_bugle_enabled or self._villain_ab_progress_paused():
+            return
+        self.a_hit = True
+        self.b_hit = True
+        self.mystery_ab_ready = True
+        self.rooftop_photos = max(self.rooftop_photos, self._current_picture_cost())
+        self.mystery_ready = True
+        self.update_player_vars()
+        self._post_rooftop_gate_open(reason="skillshot")
+        self._restore_lights_and_widgets()
 
     def check_ab_complete(self):
         if not self.a_hit or not self.b_hit:
@@ -623,12 +638,24 @@ class DailyBugleMystery(Mode):
             return self._can_start_next_villain_award()
         if award_event == "mystery_award_random_case_file":
             return self._can_random_case_file_award()
-        if award_event == "mystery_award_hold_bonus":
-            return self._safe_int(player["hold_bonus"], 0) == 0
+        if award_event in ("mystery_award_hold_bonus", "mystery_award_collect_bonus"):
+            # bonus_count is the base bonus in 1,000-point units. Require
+            # more than 10K before applying the multiplier or banked bonuses.
+            bonus_eligible = (
+                self._safe_int(player["bonus_multiplier"], 1) > 2
+                and self._safe_int(player["bonus_count"], 0) > 10
+            )
+            return bonus_eligible and (
+                award_event != "mystery_award_hold_bonus"
+                or self._safe_int(player["hold_bonus"], 0) == 0
+            )
         if award_event == "mystery_award_advance_bonus_multiplier":
             return self._safe_int(player["bonus_multiplier"], 1) < self.MAX_BONUS_MULTIPLIER
-        if award_event == "mystery_award_collect_bonus":
-            return self._safe_int(player["bonus_multiplier"], 1) > 2
+        if award_event in (
+            "mystery_award_start_super_spinner", "mystery_award_start_super_pops",
+            "mystery_award_million_points",
+        ) and self._has_uncollected_case_file():
+            return False
         feature = {
             "mystery_award_start_super_spinner": "super_spinner",
             "mystery_award_start_super_pops": "super_pops",
@@ -660,8 +687,8 @@ class DailyBugleMystery(Mode):
         player = self.machine.game.player
         size = len(self.PLACEHOLDER_AWARDS)
         cursor = max(0, self._safe_int(player["mystery_bag_cursor"], 0))
-        # Consume skipped entries for this player. A guaranteed eligible
-        # points award keeps each draw bounded even when progression is locked.
+        # Consume skipped entries for this player. Ball Save remains eligible
+        # even when Case Files or progression block the other awards.
         for _ in range(size * 2):
             generation, index = divmod(cursor, size)
             award_event = self._shared_mystery_bag(generation)[index]
@@ -670,7 +697,7 @@ class DailyBugleMystery(Mode):
             if self._mystery_award_eligible(award_event):
                 self._post_mystery_award(award_event)
                 return
-        self._post_mystery_award("mystery_award_million_points")
+        self._post_mystery_award("mystery_award_ball_save")
 
     def _post_mystery_award(self, award_event):
         """Start the newspaper now, then apply its selected award at 3s."""

@@ -54,6 +54,7 @@ class SkillShot(Mode):
 
         self.skillshot_active = True
         self.skillshot_moved = False
+        self.saucer_start_handled = False
 
         self.machine.game.player["skillshot_collected_value"] = 0
 
@@ -109,6 +110,19 @@ class SkillShot(Mode):
 
         self.machine.events.post("skillshot_clear_lit_shot")
 
+        progression = self.machine.modes.get("villain_progression")
+        player = self.machine.game.player
+        available = (
+            progression and progression._get_available_villains()
+            and not any(player[name] == 1 for name in (
+                "villain_mode_running", "chapter_mini_wizard_ready",
+                "final_wizard_ready", "final_wizard_completed",
+            ))
+        )
+        self.machine.events.post(
+            "skillshot_saucers_ready" if available else "skillshot_saucers_clear"
+        )
+
         lit_event = self.SHOTS[self.current_index]["lit_event"]
         self.machine.events.post(lit_event)
     
@@ -117,6 +131,10 @@ class SkillShot(Mode):
             return
 
         self.skillshot_active = False
+        is_saucer = shot_key in ("saucer_left", "saucer_center", "saucer_right")
+        # Claim this switch before posting result events. The normal saucer
+        # event may arrive either before or after the skill-shot event.
+        self.saucer_start_handled = is_saucer
 
         lit_key = self.SHOTS[self.current_index]["key"]
 
@@ -128,6 +146,13 @@ class SkillShot(Mode):
                 "skillshot_missed",
                 hit=shot_key,
                 lit=lit_key
+            )
+
+        if is_saucer:
+            self.machine.events.post(
+                "skillshot_saucer_start_request",
+                shot=shot_key,
+                selected=shot_key == lit_key,
             )
 
     def skillshot_switch_hit_disable(self, **kwargs):

@@ -1,0 +1,51 @@
+Skill-shot rewards, lighting and lane carryover
+Based on ASM67_2026_11_01_11pm(1).zip.
+
+INSTALL
+Extract into the project root, overwrite included files, and restart MPF.
+This cumulative patch includes the earlier skill-shot lighting and lane-carryover
+changes; it replaces ASM67_skillshot_and_lane_carryover_patch.zip.
+
+SKILL-SHOT REWARDS
+During the active skill-shot attempt:
+- Any saucer starts the next unplayed villain in the current chapter, even if
+  that saucer is unqualified. An unselected saucer ends the skill shot as a miss.
+- The selected saucer offers every unplayed villain remaining in that chapter.
+  With only one remaining, that villain starts directly.
+- A successful lit star maxes all three saucers to state 5.
+- A successful lit upper A or B sets both Bugle letters complete and banks enough
+  pictures for the current Mystery cost, making the Daily Bugle ready to collect.
+- Existing skill-shot point awards and the unmoved-shot multiplier are retained.
+- Existing ready-wizard routing takes precedence over ordinary villain starts.
+
+LIGHTING
+While ordinary villains remain available, all saucer hole lamps pulse red slowly.
+A selected saucer also flashes its numbered insert for full villain choice.
+The star and all A/B lamps remain dark unless they are the selected skill shot.
+The three numbered inserts are dark except for the selected saucer.
+Temporary lighting releases on success, miss, or skill-shot mode stop. Existing
+underlying qualification and Daily Bugle shows then become visible in their
+current state. Normal saucer qualification after skill shot is unchanged.
+
+LANE CARRYOVER (from previous patch)
+Each player's exact four-lane inlane/outlane pattern carries between balls,
+including flipper rotation. New players/games start clear. If four lanes were
+completed, the same earned web opportunity returns with a fresh ten-second
+timer, without another lane-completion/outlane add-a-ball award. Existing web
+collection, timeout and wizard cashout resets still clear the lanes. Regular
+bonus count and multiplier behavior is unchanged.
+
+VALIDATION
+72 stubbed reward/routing scenarios passed, exercising actual changed Python
+methods: all saucer/selection combinations with normal saucer events before,
+between or after skill-shot result dispatch, one through five unplayed villains,
+lit/missed star and A/B rewards, wizard precedence and guidance availability.
+Earlier checks covered all 16 lane patterns, rotation and player separation.
+Python and YAML parsed. Actual MPF/GMC and machine behavior remains unconfirmed.
+
+MACHINE CHECK
+Try an unlit saucer at zero qualification: next villain should start. Try the
+selected saucer with several unplayed villains: all remaining chapter choices
+should appear. Try the lit star: every saucer should reach maximum qualification.
+Try lit A and lit B: Daily Bugle Mystery should be ready without further photos.
+Confirm a saucer hit never causes both a default start and a selection start.

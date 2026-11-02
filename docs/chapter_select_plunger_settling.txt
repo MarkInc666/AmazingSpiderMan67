@@ -1,0 +1,20 @@
+Chapter select: plunger settling
+
+Extract into the project root and overwrite the included files. Restart MPF.
+Apply alongside the previous skill-shot and lane-carryover patch.
+
+Manual plunge selection now requires one continuous second on s_plunger,
+followed by 100 milliseconds continuously off the switch. A landing bounce
+before the settling time cannot confirm selection. A return to the switch
+cancels a pending confirmation and starts the settling period again.
+
+A ball already on the switch when chapter select starts must also settle.
+An empty plunger lane cannot confirm from an inactive event alone. Arming
+does not select automatically. Flipper navigation and both-flipper selection
+remain available immediately. All pending plunger timers are removed on stop.
+Timing constants in chapter_select.py: PLUNGER_SETTLE_MS and PLUNGER_RELEASE_MS.
+
+Validation: actual chapter-selection methods passed stubbed scheduler checks
+for repeated landing bounce, 999/1000ms settling, 99/100ms release, release
+bounce, parked/empty startup, flipper selection and stop cancellation.
+Python/YAML parsed. Physical-machine testing remains unconfirmed.

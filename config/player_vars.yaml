@@ -1,5 +1,12 @@
 #config_version=6
 player_vars:
+  # Inlane/outlane progress carries between this player's balls.
+  bonus_lane_mask:
+    initial_value: 0
+    value_type: int
+  bonus_lane_web_ready:
+    initial_value: 0
+    value_type: int
   mystery_bag_cursor:
     initial_value: 0
     value_type: int

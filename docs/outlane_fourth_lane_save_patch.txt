@@ -1,0 +1,19 @@
+Outlane drain completing the four lanes
+
+Extract into the project root, overwrite base.yaml, and restart MPF.
+Apply after the previous patches. Includes the one-outlane-save-per-ball grant
+from the opening-protection patch; retain its config.yaml for the 25s timer.
+
+Either outlane now queues check_outlane_save with a 1ms delay. This lets the
+Bonus Lanes switch events finish and grant the fourth-lane save before the
+bank is checked. The newly earned save can therefore protect the same drain.
+
+With zero banked saves: earn one, consume it to save this ball, zero remain.
+With one banked save: earn one, consume one to save this ball, one remains.
+Timed-save and multiball guards are checked after lane completion; while either
+is active the newly earned outlane save stays banked instead of being consumed.
+
+Validation: YAML parsed and both outlane delay mappings and shared guards
+verified. Eighteen stubbed fourth-lane/accounting cases passed across both
+outlanes, zero/one/two existing saves, timed protection and multiball.
+Actual MPF event integration and machine testing remain unconfirmed.

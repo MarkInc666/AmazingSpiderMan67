@@ -4,6 +4,9 @@ from mpf.core.mode import Mode
 class ChapterSelect(Mode):
     """Comic-book chapter carousel shown at controlled shooter-lane stops."""
 
+    PLUNGER_SETTLE_MS = 1000
+    PLUNGER_RELEASE_MS = 100
+
     CHAPTERS = [
         (1, 'SINISTER SURGE'),
         (2, 'MASTERMIND TRAP'),
@@ -35,6 +38,7 @@ class ChapterSelect(Mode):
         self.right_flipper_active = self._switch_active("s_right_flipper")
         self.clean_flipper_release_seen = not self.left_flipper_active and not self.right_flipper_active
         self.both_flippers_armed = False
+        self.plunger_select_armed = False
 
         self.add_mode_event_handler("chapter_carousel_next", self.move_next)
         self.add_mode_event_handler("chapter_carousel_previous", self.move_previous)
@@ -43,6 +47,11 @@ class ChapterSelect(Mode):
         self.add_mode_event_handler("s_left_flipper_inactive", self._left_flipper_inactive)
         self.add_mode_event_handler("s_right_flipper_active", self._right_flipper_active)
         self.add_mode_event_handler("s_right_flipper_inactive", self._right_flipper_inactive)
+        self.add_mode_event_handler("s_plunger_active", self._plunger_active)
+        self.add_mode_event_handler("s_plunger_inactive", self._plunger_inactive)
+        # The ball may already be parked when the carousel starts.
+        if self._switch_active("s_plunger"):
+            self._plunger_active()
         self.machine.events.post("case_files_clear_lights")
         if self.clean_flipper_release_seen:
             self.machine.events.post("chapter_select_flipper_select_ready")
@@ -51,10 +60,39 @@ class ChapterSelect(Mode):
         self._publish_view()
 
     def mode_stop(self, **kwargs):
+        self.plunger_select_armed = False
+        self.delay.remove("chapter_select_plunger_settle")
+        self.delay.remove("chapter_select_plunger_release")
         if self.machine.game:
             self.machine.game.player["chapter_select_active"] = 0
         self.machine.events.post("chapter_select_stopped")
         super().mode_stop(**kwargs)
+
+    def _plunger_active(self, **kwargs):
+        self.delay.remove("chapter_select_plunger_release")
+        self.plunger_select_armed = False
+        if not self.selection_made:
+            self.delay.reset(
+                name="chapter_select_plunger_settle", ms=self.PLUNGER_SETTLE_MS,
+                callback=self._arm_plunger_select,
+            )
+
+    def _arm_plunger_select(self):
+        if not self.selection_made and self._switch_active("s_plunger"):
+            self.plunger_select_armed = True
+
+    def _plunger_inactive(self, **kwargs):
+        self.delay.remove("chapter_select_plunger_settle")
+        if self.plunger_select_armed and not self.selection_made:
+            self.delay.reset(
+                name="chapter_select_plunger_release", ms=self.PLUNGER_RELEASE_MS,
+                callback=self._confirm_plunger_select,
+            )
+        self.plunger_select_armed = False
+
+    def _confirm_plunger_select(self):
+        if not self.selection_made and not self._switch_active("s_plunger"):
+            self.select_current(source="plunger")
 
     def _left_flipper_active(self, **kwargs):
         self.left_flipper_active = True

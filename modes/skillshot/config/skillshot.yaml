@@ -85,6 +85,36 @@ sound_player:
 
 show_player:
 
+  # Cover normal guidance without stopping its shows or changing earned state.
+  # Mode priority 500 beats Daily Bugle (300) and qualification (115 + 10).
+  # The selected shot runs one priority higher than this off layer.
+  mode_skillshot_started:
+    skillshot_unselected_off:
+      key: skillshot_unselected_mask
+      priority: -1
+
+  # Release normal lighting as soon as the attempt resolves, before the
+  # two-second result display finishes. Navigation only clears the lit show.
+  skillshot_awarded:
+    skillshot_unselected_mask:
+      action: stop
+    skillshot_saucer_guidance:
+      action: stop
+
+  skillshot_missed:
+    skillshot_unselected_mask:
+      action: stop
+    skillshot_saucer_guidance:
+      action: stop
+
+  skillshot_saucers_ready:
+    skillshot_saucer_slow_red:
+      key: skillshot_saucer_guidance
+
+  skillshot_saucers_clear:
+    skillshot_saucer_guidance:
+      action: stop
+
   skillshot_clear_lit_shot:
     skillshot_lit_show:
       action: stop
@@ -128,10 +158,47 @@ show_player:
   mode_skillshot_stopping:
     skillshot_lit_show:
       action: stop
+    skillshot_unselected_mask:
+      action: stop
+    skillshot_saucer_guidance:
+      action: stop
 
 
 
 shows:
+  # Red hole lamps advertise any-saucer starts. The selected saucer also
+  # flashes its numbered insert to advertise the full villain choice.
+  skillshot_saucer_slow_red:
+  - duration: 1s
+    lights:
+      l_1_hole_l: {color: FF0000, fade: 1s}
+      l_1_hole_r: {color: FF0000, fade: 1s}
+      l_2_hole_l: {color: FF0000, fade: 1s}
+      l_2_hole_r: {color: FF0000, fade: 1s}
+      l_3_hole_l: {color: FF0000, fade: 1s}
+      l_3_hole_r: {color: FF0000, fade: 1s}
+  - duration: 1s
+    lights:
+      l_1_hole_l: {color: "400000", fade: 1s}
+      l_1_hole_r: {color: "400000", fade: 1s}
+      l_2_hole_l: {color: "400000", fade: 1s}
+      l_2_hole_r: {color: "400000", fade: 1s}
+      l_3_hole_l: {color: "400000", fade: 1s}
+      l_3_hole_r: {color: "400000", fade: 1s}
+
+  skillshot_unselected_off:
+  - duration: -1
+    lights:
+      l_1: off
+      l_2: off
+      l_3: off
+      l_star: off
+      l_star2: off
+      l_a_rollover: off
+      l_b_rollover: off
+      l_right_a: off
+      l_left_b: off
+
   flash_skillshot:
   - duration: 500ms
     lights:

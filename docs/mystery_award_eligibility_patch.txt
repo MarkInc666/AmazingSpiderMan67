@@ -1,0 +1,24 @@
+Mystery award eligibility
+
+Extract into the project root, overwrite the included Daily Bugle script,
+and restart MPF. Includes the previous lit A/B skill-shot Mystery-ready change.
+Apply alongside the previous skill-shot/lane and chapter-select patches.
+
+Collect Bonus and Hold Bonus both require a multiplier of 3x or higher AND
+more than 10,000 base bonus points (bonus_count > 10, before multiplying).
+Exactly 10,000 does not qualify. Mode bonus banks do not count toward this
+threshold. Hold Bonus additionally requires that hold_bonus is not already set.
+
+Super Spinner, Super Pops and 1,000,000 points require all five collected
+Case File flags for the current qualification cycle. Spinner and Pops also
+remain ineligible if their respective feature mode is already running.
+
+Ineligible awards are skipped in the existing shuffled bag. The bounded
+fallback now awards Ball Save, so it cannot bypass the Case File rule by
+awarding 1,000,000 points. Extra Ball milestones remain unchanged.
+
+Validation: 260 eligibility checks passed across multiplier/bonus/held-bonus
+boundaries, every five-Case-File combination and active/inactive super modes.
+A deliberately restricted bag confirmed the Ball Save fallback. The previous
+72 skill-shot routing/reward checks still pass. Python parsed.
+MPF/GMC and physical-machine testing remain unconfirmed.

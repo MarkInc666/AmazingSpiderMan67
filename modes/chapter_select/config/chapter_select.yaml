@@ -23,10 +23,8 @@ event_player:
   # Flipper navigation and both-flipper select are handled in Python so the
   # mode can require a clean release-before-hold-before-release selection.
 
-  # Manual plunge also confirms the centered comic. If the centered comic is
-  # LOCKED or COLLECTED, ChapterSelect defaults to the next AVAILABLE comic.
-  s_plunger_inactive:
-    - chapter_carousel_select
+  # Python confirms a manual plunge only after one second of stable plunger
+  # switch occupancy and 100ms of stable release, rejecting landing bounce.
 
 sound_player:
   chapter_select_move_next_sound:
