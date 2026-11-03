@@ -149,7 +149,7 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
             ("more_jackpots", "6TH PHANTOM ROUND"),
             ("bigger_jackpots", "PHANTOM VALUES IMPROVED"),
             ("more_time", "REVEALS EXTENDED 2s"),
-            ("safety_net", "PHANTOM BALL SAVE ACTIVE"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST EXPIRED REVEAL AWARDED"),
         ])
 
@@ -178,8 +178,6 @@ class FifthAvenuePhantom(CaseFileMixin, Mode):
         self.add_mode_event_handler("fifth_avenue_phantom_complete_request", self._complete_mode)
         self.add_mode_event_handler("fifth_avenue_phantom_fail_request", self._complete_mode)
 
-        if self.has_case_file("safety_net"):
-            self.machine.events.post("start_case_file_ball_save")
 
         self.machine.events.post("clear_saucers")
         self.machine.events.post("drop_target_bank_dt_bank_right_reset")

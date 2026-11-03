@@ -27,7 +27,7 @@ class SinisterSurge(Mode):
 
     A+B Daily Bugle mystery disabled during wizard mode.
 
-    Start 2-ball multiball with 20s ball save.
+    Start 2-ball multiball with 30s ball save.
 
     One random unfinished Chapter 1 villain stage is active at a time:
     - Rhino: 5 pop hits build Rage. At Berserk, any A/B safely locks 1x

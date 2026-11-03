@@ -87,7 +87,7 @@ class SpiderMen(CaseFileMixin, Mode):
             ("more_jackpots", "SIX JACKPOTS LIGHT 500K CENTER WEB SUPER"),
             ("bigger_jackpots", "ALIGNMENT JACKPOTS WORTH 150K"),
             ("more_time", "PROTON TIMER EXTENDED TO 60 SECONDS"),
-            ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST JACKPOT ALIGNS AN EXTRA POSITION"),
         ])
 
@@ -116,8 +116,6 @@ class SpiderMen(CaseFileMixin, Mode):
             "spider_men_fail_request", self._begin_failure
         )
 
-        if self.has_case_file("safety_net"):
-            self.machine.events.post("start_case_file_ball_save")
 
         self.machine.events.post("spider_men_startup_complete")
         self._refresh_lights()

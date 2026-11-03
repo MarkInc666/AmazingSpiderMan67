@@ -56,7 +56,7 @@ class Vulture(CaseFileMixin, Mode):
             ("more_jackpots", "ALL-RED SPINNER +100K"),
             ("bigger_jackpots", "SPINNER VALUES DOUBLED"),
             ("more_time", "TARGET LIGHTS EXTENDED TO 12s"),
-            ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST TARGET LIGHTS ALL"),
         ])
 
@@ -123,8 +123,6 @@ class Vulture(CaseFileMixin, Mode):
         if self.has_case_file("bigger_jackpots"):
             self.stage_values = {stage: value * 2 for stage, value in self.stage_values.items()}
 
-        if self.has_case_file("safety_net"):
-            self.machine.events.post("start_case_file_ball_save")
 
     def upper_entered(self, **kwargs):
         if self.mode_done:

@@ -73,14 +73,12 @@ class SuperSwami(CaseFileMixin, Mode):
         self.machine.events.post("drop_target_bank_dt_bank_right_reset")
         for area_name in self.AREA_SWITCHES:
             self._schedule_area_flicker(area_name)
-        if self.has_case_file("safety_net"):
-            self.machine.events.post("start_case_file_ball_save")
 
         self.publish_active_case_file_helpers([
             ("more_jackpots", "BLACKOUT JACKPOT AT VUK"),
             ("bigger_jackpots", "RESTORE VALUES START AT 200K"),
             ("more_time", "50 SECOND CITY TIMER"),
-            ("safety_net", "BALL SAVE ACTIVE"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST AREA SPOTS ANOTHER"),
         ])
         self.machine.events.post("show_mode_message", message_mode_title="RESTORE NEW YORK", message_mode_subtitle=f"6 AREAS - {self.seconds_left} SECONDS", reminder=True)

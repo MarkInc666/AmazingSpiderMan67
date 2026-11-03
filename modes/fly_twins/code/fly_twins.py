@@ -144,7 +144,7 @@ class FlyTwins(CaseFileMixin, Mode):
             ("more_jackpots", "+1X SAUCER MULTIPLIER"),
             ("bigger_jackpots", "300K BASE / +50K PER SPIN"),
             ("more_time", "LONGER MULTIBALL SAVE"),
-            ("safety_net", "ONE OUTLANE SAVE"),
+            ("safety_net", '30s OPENING SAVE / ONE OUTLANE SAVE'),
             ("shot_assist", "ONE UPPER HIT LIGHTS ALL"),
         ])
 

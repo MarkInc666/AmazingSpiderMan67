@@ -69,7 +69,7 @@ class HarleyClivendon(CaseFileMixin, Mode):
             ("more_jackpots", "TWO AREAS STAY LIT"),
             ("bigger_jackpots", "150K PER AREA"),
             ("more_time", "25 SECOND OPENING SAVE"),
-            ("safety_net", "BALL SAVE AFTER FIRST JACKPOT"),
+            ("safety_net", '30s OPENING SAVE / BALL SAVE AFTER FIRST JACKPOT'),
             ("shot_assist", "FIRST AREA SPOTS ANOTHER"),
         ])
 

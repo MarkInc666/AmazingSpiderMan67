@@ -2,7 +2,7 @@ from mpf.core.mode import Mode
 from modes.common.case_file_mixin import CaseFileMixin
 
 
-class DoctorCool(Mode, CaseFileMixin):
+class DoctorCool(CaseFileMixin, Mode):
     """Doctor Cool villain mode.
 
     Build the frozen-diamond jackpot with both drop banks. Any right drop starts
@@ -137,12 +137,10 @@ class DoctorCool(Mode, CaseFileMixin):
             ("more_jackpots", "4TH FROZEN SHIPMENT ADDED"),
             ("bigger_jackpots", "FROZEN DIAMOND VALUES INCREASED"),
             ("more_time", "STAR FREEZE 15 SECONDS"),
-            ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST WRONG SAUCER COUNTS"),
         ])
 
-        if self.has_case_file("safety_net"):
-            self.machine.events.post("start_case_file_ball_save")
 
     def _drop_hit(self, bank, **kwargs):
         if self.mode_done:

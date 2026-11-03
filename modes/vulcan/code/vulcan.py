@@ -106,7 +106,7 @@ class Vulcan(CaseFileMixin, Mode):
             ("more_jackpots", "LEFT 3-BANK ADDS JACKPOTS"),
             ("bigger_jackpots", "JACKPOTS START AT 150K"),
             ("more_time", "UPPER-LEFT POST HOLDS 12s"),
-            ("safety_net", "20 SECOND MULTIBALL BALL SAVE"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST RIGHT DROP ADDS TWO DROPS"),
         ])
 

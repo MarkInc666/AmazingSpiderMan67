@@ -103,7 +103,7 @@ class ProfessorPretorius(CaseFileMixin, Mode):
             ("more_jackpots", "ALL FIVE RIGHT DROPS SCORE"),
             ("bigger_jackpots", "REACTOR HITS WORTH 150K"),
             ("more_time", "OVERHEAT 8s / REACTOR SUPER 20s"),
-            ("safety_net", "10 SECOND OPENING BALL SAVE"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST LEFT DROP ADDS A RANDOM DROP"),
         ])
 
@@ -134,8 +134,6 @@ class ProfessorPretorius(CaseFileMixin, Mode):
         self.machine.events.post("professor_pretorius_clear_all")
         self.machine.events.post("professor_pretorius_stations_available")
         self._update_temperature_lights()
-        if self.has_case_file("safety_net"):
-            self.machine.events.post("start_case_file_ball_save")
         self.machine.events.post("cancel_mode_message_reminder")
         for event in ("show_mode_message", "show_mode_message_long", "show_mode_jackpot", "show_mode_countdown"):
             self.add_mode_event_handler(event, self._reset_objective_reminder)

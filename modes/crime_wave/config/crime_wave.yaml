@@ -14,7 +14,7 @@ multiballs:
   crime_wave_multiball:
     ball_count: 3
     ball_count_type: total
-    shoot_again: 20s
+    shoot_again: 30s
     start_events: crime_wave_start_multiball
     stop_events:
       - stop_mode_crime_wave

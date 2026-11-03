@@ -106,7 +106,7 @@ class ConnersReptiles(CaseFileMixin, Mode):
             ("more_jackpots", "STAR JACKPOT ADDED"),
             ("bigger_jackpots", "RAMPAGE JACKPOTS 150K"),
             ("more_time", "OPENING SAVE EXTENDED TO 20s"),
-            ("safety_net", "10s OPENING BALL SAVE"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST POP COUNTS TWICE"),
         ])
 

@@ -177,14 +177,12 @@ class Plutonians(CaseFileMixin, Mode):
         self.machine.events.post("plutonians_all_areas_frozen")
         self.machine.events.post("plutonians_ray_active")
 
-        if self.has_case_file("safety_net"):
-            self.machine.events.post("start_case_file_ball_save")
 
         self.publish_active_case_file_helpers([
             ("more_jackpots", "500K JACKPOT ONCE PER ROOF ENTRY"),
             ("bigger_jackpots", "THAWS 150K - CONTROL 1.5M"),
             ("more_time", "FREEZE BLOCKED FOR 25 SECONDS"),
-            ("safety_net", "10 SECOND BALL SAVE"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST THAW ALSO THAWS ANOTHER AREA"),
         ])
 

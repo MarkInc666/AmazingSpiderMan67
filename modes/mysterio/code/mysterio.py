@@ -70,12 +70,10 @@ class Mysterio(CaseFileMixin, Mode):
             ("more_jackpots", "FIRST WRONG SHOT PROTECTED"),
             ("bigger_jackpots", "1.5M SUPER JACKPOT"),
             ("more_time", "SUPER PENALTY REDUCED"),
-            ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "ONE FALSE SHOT REMOVED"),
         ])
 
-        if self.has_case_file("safety_net"):
-            self.machine.events.post("start_case_file_ball_save")
 
         # Seven distinct shot groups: five clues, one false shot, one hidden Super.
         # Neither playfield spinner participates in Mysterio.

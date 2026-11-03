@@ -125,7 +125,7 @@ class NoahBoddy(CaseFileMixin, Mode):
             ("more_jackpots", "UPPER REVEALS SCORE MORE"),
             ("bigger_jackpots", "NOAH BODDY JACKPOT 2X"),
             ("more_time", "HURRY-UP EXTENDED TO 24s"),
-            ("safety_net", "SECRET TARGET BALL SAVE"),
+            ("safety_net", '30s OPENING SAVE / SECRET TARGET BALL SAVE'),
             ("shot_assist", "BANK RUBBER SCORES SECRET TARGET"),
         ])
 

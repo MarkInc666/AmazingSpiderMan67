@@ -3,6 +3,9 @@ class CaseFileMixin:
 
     VILLAIN_START_BASE = 100_000
     VILLAIN_START_PER_CASE_FILE = 50_000
+    OPENING_RELEASE_SWITCHES = (
+        "s_saucer_1", "s_saucer_2", "s_saucer_3", "s_vuk_switch", "s_plunger",
+    )
 
     CASE_FILE_KEYS = (
         "more_jackpots",
@@ -141,6 +144,49 @@ class CaseFileMixin:
         player["active_mode_points"] = self.villain_start_bonus
         player["active_mode_stat_1"] = 0
         player["active_mode_stat_2"] = 0
+        self._prepare_opening_ball_save()
+
+    def _prepare_opening_ball_save(self):
+        """Every villain gets 20s; Safety Net extends the opening to 30s."""
+        self.machine.game.player["villain_opening_save_seconds"] = (
+            30 if self.get_case_file_bonuses()["safety_net"] else 20
+        )
+        self._opening_save_enabled = False
+        self._opening_save_waiting_for_release = False
+        self.add_mode_event_handler(
+            f"mode_{self.name}_started", self._enable_opening_ball_save,
+        )
+        for switch in self.OPENING_RELEASE_SWITCHES:
+            self.add_mode_event_handler(
+                f"{switch}_inactive", self._start_opening_ball_save_timer,
+            )
+
+    def _enable_opening_ball_save(self, **kwargs):
+        if self._opening_save_enabled:
+            return
+        self._opening_save_enabled = True
+        self._opening_save_waiting_for_release = True
+        self.machine.events.post("villain_opening_ball_save_enable")
+        # Selection and bookend intros finish before mode_start. If the mode
+        # still holds a starting ball, arm protection but wait to count time.
+        held = any(
+            self.machine.switches.get(name) is not None
+            and self.machine.switches[name].state == 1
+            for name in self.OPENING_RELEASE_SWITCHES
+        )
+        if not held:
+            self._start_opening_ball_save_timer()
+
+    def _start_opening_ball_save_timer(self, **kwargs):
+        if not self._opening_save_waiting_for_release:
+            return
+        self._opening_save_waiting_for_release = False
+        self.machine.events.post("villain_opening_ball_save_timer_start")
+
+    def mode_stop(self, **kwargs):
+        self._opening_save_waiting_for_release = False
+        self.machine.events.post("villain_opening_ball_save_disable")
+        super().mode_stop(**kwargs)
 
     def publish_active_mode_summary(self, points, stat_1=0, stat_2=0, stat_count=None):
         """Publish local mode totals into the shared summary/display slots."""

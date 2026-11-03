@@ -12,7 +12,7 @@ multiballs:
   nature_strikes_back_multiball:
     ball_count: 3
     ball_count_type: total
-    shoot_again: 20s
+    shoot_again: 30s
     start_events: nature_strikes_back_start_multiball
     add_a_ball_events:
       - nature_strikes_back_add_a_ball

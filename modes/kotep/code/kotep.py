@@ -102,11 +102,9 @@ class Kotep(CaseFileMixin, Mode):
             ("more_jackpots", "5TH DEMON WORTH 500K DURING SCEPTER TIMER"),
             ("bigger_jackpots", "BIGGER DEMON JACKPOTS AND 1.5M SUPER"),
             ("more_time", "SCEPTER TIMER EXTENDED TO 30 SECONDS"),
-            ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST DEMON ALSO DESTROYS THE NEXT DEMON"),
         ])
-        if self.has_case_file("safety_net"):
-            self.machine.events.post("start_case_file_ball_save")
 
         for shot in self.DEMON_SHOTS:
             self.add_mode_event_handler(

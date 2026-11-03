@@ -130,7 +130,7 @@ class DrManta(CaseFileMixin, Mode):
             ("more_jackpots", "SPINNERS ADD 75K TO JACKPOT"),
             ("bigger_jackpots", "150K VUK / 200K SAUCER / 200K JP"),
             ("more_time", "28 SECOND ATTACK"),
-            ("safety_net", "25 SECOND SECOND-BALL SAVE"),
+            ("safety_net", '30s OPENING SAVE / 25s SECOND-BALL SAVE'),
             ("shot_assist", "MATCHED UPPER TARGET SCORES 3X ONCE"),
         ])
 

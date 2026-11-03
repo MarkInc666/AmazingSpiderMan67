@@ -88,7 +88,7 @@ class DrMagneto(CaseFileMixin, Mode):
             ("more_jackpots", "NEW OBJECTIVES LIGHT STAR FOR 250K"),
             ("bigger_jackpots", "150K ROLLOVERS / 750K SUPER"),
             ("more_time", "10 SECOND CIRCUITS / 20 SECOND SUPER"),
-            ("safety_net", "10 SECOND OPENING BALL SAVE"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST QUALIFIER LIGHTS A AND B"),
         ])
 
@@ -108,8 +108,6 @@ class DrMagneto(CaseFileMixin, Mode):
         self.machine.events.post("dr_magneto_right_qualifier_ready")
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("clear_saucers_delayed")
-        if self.has_case_file("safety_net"):
-            self.machine.events.post("start_case_file_ball_save")
         self.machine.events.post("cancel_mode_message_reminder")
         for event in ("show_mode_message", "show_mode_message_long", "show_mode_jackpot", "show_mode_countdown"):
             self.add_mode_event_handler(event, self._reset_objective_reminder)

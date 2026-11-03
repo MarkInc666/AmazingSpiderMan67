@@ -95,7 +95,7 @@ class Pardo(CaseFileMixin, Mode):
             ("more_jackpots", "TWO EXTRA HYPNOSIS ROUNDS"),
             ("bigger_jackpots", "BIGGER HYPNOSIS JACKPOTS"),
             ("more_time", "LONGER SPINNER REVEAL"),
-            ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST ROUND ALL GOOD"),
         ])
 
@@ -162,8 +162,6 @@ class Pardo(CaseFileMixin, Mode):
         if self.has_case_file("more_time"):
             self.reveal_ms = self.MORE_TIME_REVEAL_MS
 
-        if self.has_case_file("safety_net"):
-            self.machine.events.post("start_case_file_ball_save")
 
         if self.has_case_file("shot_assist"):
             self.first_round_all_good = True

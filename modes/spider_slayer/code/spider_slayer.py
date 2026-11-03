@@ -91,7 +91,7 @@ class SpiderSlayer(CaseFileMixin, Mode):
             ("more_jackpots", "SECOND SHOT STAYS AT FULL VALUE"),
             ("bigger_jackpots", "BIGGER SHOTS / 2.5M JACKPOT"),
             ("more_time", "25 SECOND SLAYER JACKPOT"),
-            ("safety_net", "10 SECOND SAVE AT DAILY BUGLE"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST SHOT SCORES AND COUNTS TWICE"),
         ])
 

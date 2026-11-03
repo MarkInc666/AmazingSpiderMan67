@@ -80,7 +80,7 @@ class Brutus(CaseFileMixin, Mode):
             ("more_jackpots", "FOUR ARTWORK JACKPOTS AVAILABLE"),
             ("bigger_jackpots", "ARTWORK JACKPOTS SCORE 400K"),
             ("more_time", "BRUTUS STAYS AWAY FOR 20 SECONDS"),
-            ("safety_net", "10 SECOND BALL SAVE"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "OPENING RIGHT BANK DROPS AFTER 2 SECONDS"),
         ])
 
@@ -106,8 +106,6 @@ class Brutus(CaseFileMixin, Mode):
         self.machine.events.post("drop_target_bank_dt_bank_left_reset")
         self.machine.events.post("drop_target_bank_dt_bank_right_reset")
 
-        if self.has_case_file("safety_net"):
-            self.machine.events.post("start_case_file_ball_save")
 
         self._begin_guarded_round()
 

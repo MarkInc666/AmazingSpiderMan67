@@ -135,7 +135,7 @@ class Parafino(CaseFileMixin, Mode):
             ("more_jackpots", "SAUCERS HOLD VALUE FOR EXTRA COLLECT"),
             ("bigger_jackpots", "ZONE HITS BUILD 150K"),
             ("more_time", "FASTER MELTDOWN: 2 HITS FOR ADD-A-BALL"),
-            ("safety_net", "10 SECOND SAFETY NET AFTER MULTIBALL SAVE"),
+            ("safety_net", '30s OPENING SAVE / 20 SECOND SAFETY NET AFTER MULTIBALL SAVE'),
             ("shot_assist", "FIRST ZONE HITS COUNT DOUBLE"),
         ])
 

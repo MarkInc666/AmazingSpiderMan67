@@ -90,7 +90,7 @@ class RhinoBash(CaseFileMixin, Mode):
             ("more_jackpots", "EXTRA RHINO JACKPOT AVAILABLE"),
             ("bigger_jackpots", "+200K TO EVERY RHINO JACKPOT"),
             ("more_time", "BERSERK TIMER EXTENDED 5s"),
-            ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "ONE BERSERK CRASH SAVE"),
         ])
 
@@ -156,8 +156,6 @@ class RhinoBash(CaseFileMixin, Mode):
         if self.has_case_file("more_time"):
             self.bonus_mode_time = 5000
 
-        if self.has_case_file("safety_net"):
-            self.machine.events.post("start_case_file_ball_save")
 
         if self.has_case_file("shot_assist"):
             self.shot_assist_available = True

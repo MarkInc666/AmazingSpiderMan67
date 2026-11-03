@@ -2,7 +2,7 @@ from mpf.core.mode import Mode
 from modes.common.case_file_mixin import CaseFileMixin
 
 
-class Desperado(Mode, CaseFileMixin):
+class Desperado(CaseFileMixin, Mode):
     """Timed right-bank pursuit repurposed from the former Kingpin rules.
 
     Complete all five unique right-bank targets before time expires.
@@ -88,7 +88,7 @@ class Desperado(Mode, CaseFileMixin):
             ("more_jackpots", "EXTRA SHOWDOWN JACKPOT"),
             ("bigger_jackpots", "250K NEW TARGETS"),
             ("more_time", "70 SECOND PURSUIT"),
-            ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "ROUND 2 SPOTS EXTRA TARGET"),
         ])
         if self.has_case_file("more_time"):
@@ -98,8 +98,6 @@ class Desperado(Mode, CaseFileMixin):
             self.duplicate_target_value = self.BIGGER_DUPLICATE_TARGET_VALUE
         if self.has_case_file("more_jackpots"):
             self.extra_round_qualified = True
-        if self.has_case_file("safety_net"):
-            self.machine.events.post("start_case_file_ball_save")
 
     def _reset_shared_vars(self):
         player = self.machine.game.player

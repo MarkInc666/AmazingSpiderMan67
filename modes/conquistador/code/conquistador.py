@@ -69,7 +69,7 @@ class Conquistador(CaseFileMixin, Mode):
             ("more_jackpots", "TAKE ANOTHER SIP"),
             ("bigger_jackpots", "400K BASE / 150K TARGETS"),
             ("more_time", "30 SECOND TIMERS"),
-            ("safety_net", "10 SECOND SAVE AT FOUNTAIN"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST TARGET COUNTS TWICE"),
         ])
 

@@ -85,7 +85,7 @@ class DoctorAtlantean(CaseFileMixin, Mode):
             ("more_jackpots", "THREE TARGETS LIGHT A 100K SPINNER JACKPOT"),
             ("bigger_jackpots", "CONTROL PANEL JACKPOTS WORTH 125K"),
             ("more_time", "WATER TIMERS EXTENDED TO 30 SECONDS"),
-            ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST UNLIT TARGET COUNTS AS LIT"),
         ])
 
@@ -120,8 +120,6 @@ class DoctorAtlantean(CaseFileMixin, Mode):
             "doctor_atlantean_fail_request", self._fail_mode
         )
 
-        if self.has_case_file("safety_net"):
-            self.machine.events.post("start_case_file_ball_save")
 
         self.machine.events.post("doctor_atlantean_water_base_orange")
         self.machine.events.post("doctor_atlantean_all_targets_off")

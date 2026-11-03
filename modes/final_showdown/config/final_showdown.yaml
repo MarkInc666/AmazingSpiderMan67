@@ -45,7 +45,7 @@ multiballs:
   final_showdown_multiball:
     ball_count: 2
     ball_count_type: total
-    shoot_again: 20s
+    shoot_again: 30s
     start_events: final_showdown_start_multiball
     add_a_ball_events:
       - final_showdown_add_a_ball

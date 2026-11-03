@@ -50,7 +50,7 @@ class Goblin(CaseFileMixin, Mode):
             ("more_jackpots", "SAFE SHOTS SCORE 150K"),
             ("bigger_jackpots", "SAFE SHOTS ADD 150K TO CHAOS"),
             ("more_time", "15 SECOND SAFE PHASE"),
-            ("safety_net", "BALL SAVE AFTER FIRST RELEASE"),
+            ("safety_net", '30s OPENING SAVE / BALL SAVE AFTER FIRST RELEASE'),
             ("shot_assist", "FIRST SAFE HIT AWARDS ANOTHER"),
         ])
 

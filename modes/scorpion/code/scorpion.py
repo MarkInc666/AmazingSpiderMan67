@@ -79,11 +79,9 @@ class Scorpion(CaseFileMixin, Mode):
             ("more_jackpots", "EXTRA STING ATTEMPT AVAILABLE"),
             ("bigger_jackpots", "STING AWARDS BOOSTED"),
             ("more_time", "12 SECOND STING WINDOW"),
-            ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST RUBBER PAYS FULL BASE VALUE"),
         ])
-        if self.has_case_file("safety_net"):
-            self.machine.events.post("start_case_file_ball_save")
 
         self.add_mode_event_handler("scorpion_spinner_hit", self.spinner_hit)
         self.add_mode_event_handler("scorpion_upper_entered", self.upper_entered)

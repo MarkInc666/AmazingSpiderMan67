@@ -106,7 +106,7 @@ class Fakir(CaseFileMixin, Mode):
             ("more_jackpots", "FIRST POST-SUPER RUBY IS 2X"),
             ("bigger_jackpots", "BIGGER RUBY JACKPOTS"),
             ("more_time", "LONGER REAL RUBY TIMER"),
-            ("safety_net", "BALL SAVE AFTER FIRST SAUCER KICKOUT"),
+            ("safety_net", '30s OPENING SAVE / BALL SAVE AFTER FIRST SAUCER KICKOUT'),
             ("shot_assist", "FIRST REVEAL LIGHTS ALL UPPER TARGETS"),
         ])
 

@@ -142,12 +142,10 @@ class Fiddler(CaseFileMixin, Mode):
             ("more_jackpots", "FOURTH FAILED ROUND ALLOWED"),
             ("bigger_jackpots", "CORRECT NOTES WORTH 300,000"),
             ("more_time", "25 SECOND BALL SAVE ACTIVE"),
-            ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST WRONG NOTE IS FORGIVEN"),
         ])
 
-        if self.has_case_file("safety_net"):
-            self.machine.events.post("start_case_file_ball_save")
         if self.has_case_file("more_time"):
             self.machine.events.post("start_fiddler_more_time_ball_save")
 

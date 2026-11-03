@@ -74,7 +74,7 @@ class Sandman(CaseFileMixin, Mode):
             ("more_jackpots", "EXTRA SANDMAN BANK AVAILABLE"),
             ("bigger_jackpots", "FLASHING TARGETS SCORE MORE"),
             ("more_time", "TARGET SHIFT SLOWED"),
-            ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST TARGET SPOTTED"),
         ])
 
@@ -144,8 +144,6 @@ class Sandman(CaseFileMixin, Mode):
         if self.has_case_file("more_time"):
             self.move_interval_ms = 5000
 
-        if self.has_case_file("safety_net"):
-            self.machine.events.post("start_case_file_ball_save")
 
         if self.has_case_file("shot_assist"):
             self.shot_assist = True

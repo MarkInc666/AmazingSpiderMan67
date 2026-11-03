@@ -79,12 +79,10 @@ class DoctorDumpty(CaseFileMixin, Mode):
             ("more_jackpots", "REVEAL AND CLEAR ALL 5 GAS AREAS"),
             ("bigger_jackpots", "BIGGER DROP / GAS / BALLOON JACKPOTS"),
             ("more_time", "20 SECONDS ON THE ROOF"),
-            ("safety_net", "BALL SAVE ACTIVE"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "CLEAR AN EXTRA GAS AREA OR DOUBLE FIRST BALLOON HIT"),
         ])
 
-        if self.has_case_file("safety_net"):
-            self.machine.events.post("start_case_file_ball_save")
 
         for drop_num in (1, 2, 3):
             self.add_mode_event_handler(f"doctor_dumpty_left_drop_{drop_num}", self._left_drop_hit, drop_num=drop_num)

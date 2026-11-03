@@ -81,11 +81,9 @@ class Plotter(CaseFileMixin, Mode):
             ("more_jackpots", "BACK PAGE SHOT AFTER VUK"),
             ("bigger_jackpots", "POPS, SPINNER AND SCHEMES SCORE 2X"),
             ("more_time", "VUK TIMER EXTENDED TO 30 SECONDS"),
-            ("safety_net", "BALL SAVE ACTIVE"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST UNLIT SAUCER COLLECTS A LIT SAUCER"),
         ])
-        if self.has_case_file("safety_net"):
-            self.machine.events.post("start_case_file_ball_save")
 
         self.add_mode_event_handler("plotter_pop_hit", self._pop_hit)
         self.add_mode_event_handler("plotter_spinner_hit", self._spinner_hit)

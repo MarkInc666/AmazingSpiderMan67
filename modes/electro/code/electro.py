@@ -77,7 +77,7 @@ class Electro(CaseFileMixin, Mode):
             ("more_jackpots", "EXTRA SPARK JACKPOT AVAILABLE"),
             ("bigger_jackpots", "SPARK JACKPOTS BOOSTED"),
             ("more_time", "SPARK VALUE DRAINS SLOWER"),
-            ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST SPARK HELD LONGER"),
         ])
         self._show_message("POWER SURGE", "HIT THE LIT SPARK", reminder=True)
@@ -174,8 +174,6 @@ class Electro(CaseFileMixin, Mode):
         if self.has_case_file("more_time"):
             self.case_file_slow_value_drain = True
 
-        if self.has_case_file("safety_net"):
-            self.machine.events.post("start_case_file_ball_save")
 
         if self.has_case_file("shot_assist"):
             self.case_file_shot_assist_available = True

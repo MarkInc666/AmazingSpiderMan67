@@ -108,7 +108,7 @@ class SirGalahad(CaseFileMixin, Mode):
             ("more_jackpots", "FOURTH JOUST ROUND ADDED"),
             ("bigger_jackpots", "JOUST JACKPOTS BOOSTED"),
             ("more_time", "12 SECOND JOUST WINDOWS"),
-            ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST DROP SCORES CENTER VALUE"),
         ])
 
@@ -140,8 +140,6 @@ class SirGalahad(CaseFileMixin, Mode):
 
         self.machine.events.post("sir_galahad_setup")
         self.machine.events.post("rooftop_diverter_open")
-        if self.has_case_file("safety_net"):
-            self.machine.events.post("start_case_file_ball_save")
 
         self.machine.events.post("sir_galahad_roof_ready")
         self._show_message("KNIGHT MUST FALL", "ENTER THE ROOFTOP", reminder=True)

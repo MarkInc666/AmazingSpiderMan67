@@ -49,7 +49,7 @@ class DrZapp(CaseFileMixin, Mode):
             ("more_jackpots", "10 SECOND BONUS SPINS"),
             ("bigger_jackpots", "150K BANKS / 75K TARGETS AND SPINS"),
             ("more_time", "15 SECOND SAVE ON FIRST ROOF ENTRY"),
-            ("safety_net", "10 SECOND SAVE AT MODE START"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST UPPER TARGET AWARDS ANOTHER"),
         ])
 

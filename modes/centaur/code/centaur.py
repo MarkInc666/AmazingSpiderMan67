@@ -103,7 +103,7 @@ class Centaur(CaseFileMixin, Mode):
             ("more_jackpots", "12s ROOF RE-ENTRY FOR SECOND CHANCE"),
             ("bigger_jackpots", "CENTAUR JACKPOT 2X"),
             ("more_time", "FINAL TIMER EXTENDED TO 12s"),
-            ("safety_net", "10 SECOND BALL SAVE ON FINAL SHOT"),
+            ("safety_net", '30s OPENING SAVE / 20 SECOND BALL SAVE ON FINAL SHOT'),
             ("shot_assist", "RIGHT DROPS SCORE JACKPOT"),
         ])
 

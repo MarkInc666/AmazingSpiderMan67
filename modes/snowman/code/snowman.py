@@ -60,7 +60,7 @@ class Snowman(CaseFileMixin, Mode):
             ("more_jackpots", "SPIN VALUE +25K EACH SPIN"),
             ("bigger_jackpots", "150K / 350K / 150K"),
             ("more_time", "20 SECOND WIRE / 16 SECOND SPINS"),
-            ("safety_net", "10 SECOND SAVE AT SPINNER"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "STARTING WEB CAN COMPLETE WIRE"),
         ])
 

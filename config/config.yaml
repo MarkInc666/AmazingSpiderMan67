@@ -432,6 +432,21 @@ sound_player:
         release_point: 0.0
 ball_saves:
 
+  villain_opening_ball_save:
+    active_time: (current_player.villain_opening_save_seconds)
+    hurry_up_time: 3s
+    grace_period: 2s
+    balls_to_save: -1
+    auto_launch: true
+    enable_events: villain_opening_ball_save_enable
+    timer_start_events: villain_opening_ball_save_timer_start
+    disable_events:
+      - villain_opening_ball_save_disable
+      - ball_will_end
+      - ball_ending
+      - tilt
+      - slam_tilt
+
   mystery_ball_save:
     active_time: 20s
     hurry_up_time: 3s
@@ -441,7 +456,7 @@ ball_saves:
 
 
   default_ball_save:
-    active_time: 22s
+    active_time: 25s
     hurry_up_time: 3s
     grace_period: 2s
     balls_to_save: -1

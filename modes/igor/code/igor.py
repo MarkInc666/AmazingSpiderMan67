@@ -122,7 +122,7 @@ class Igor(CaseFileMixin, Mode):
             ("more_jackpots", "7 BAD SHOTS BEFORE IGOR WINS"),
             ("bigger_jackpots", "JACKPOTS GROW BY 50K"),
             ("more_time", "BALL SAVE EXTENDED TO 20 SECONDS"),
-            ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST BAD SHOT BECOMES A JACKPOT"),
         ])
 

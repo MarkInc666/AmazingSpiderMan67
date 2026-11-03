@@ -19,6 +19,7 @@ class BoltonBoomer(CaseFileMixin, Mode):
     SUPER_CAP = 1_500_000
     NORMAL_SUPER_SECONDS = 20
     MORE_TIME_SUPER_SECONDS = 30
+
     NORMAL_OPENING_SAVE = 15
     SAFETY_NET_OPENING_SAVE = 25
 
@@ -95,7 +96,7 @@ class BoltonBoomer(CaseFileMixin, Mode):
             ("more_jackpots", "SUPERS GROW 100K TO 1.5M"),
             ("bigger_jackpots", "150K TARGET / LOCK - 750K SUPER"),
             ("more_time", "30 SECOND TIMED SUPERS"),
-            ("safety_net", "25 SECOND OPENING SAVE"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST TIMED SUPER AUTO-COLLECTS AT 10"),
         ])
 

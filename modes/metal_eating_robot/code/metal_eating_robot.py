@@ -99,7 +99,7 @@ class MetalEatingRobot(CaseFileMixin, Mode):
             ("more_jackpots", f"SAVED ZONES RELIGHT FOR {self.repeat_value:,}"),
             ("bigger_jackpots", f"ZONE SAVES SCORE {self.save_value:,}"),
             ("more_time", f"ZONE TIMERS LAST {self.zone_timer_ms // 1000} SECONDS"),
-            ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "HELP ARRIVES AT 2 SECONDS"),
         ])
 
@@ -125,8 +125,6 @@ class MetalEatingRobot(CaseFileMixin, Mode):
         self.machine.events.post("reset_drops")
         self.machine.events.post("clear_saucers_delayed")
         self.machine.events.post("rooftop_diverter_close")
-        if self.has_case_file("safety_net"):
-            self.machine.events.post("start_case_file_ball_save")
 
         self.machine.events.post("metal_all_zones_safe")
         self._show_message("ZONES UNDER ATTACK", "SAVE 4 - LOSE 3")

@@ -151,14 +151,12 @@ class CliveBlotto(CaseFileMixin, Mode):
         self.add_mode_event_handler("clive_blotto_infect_middle_right", self._start_right_pop_pulse)
         self.add_mode_event_handler("clive_blotto_clear_middle_right", self._stop_right_pop_pulse)
 
-        if self.has_case_file("safety_net"):
-            self.machine.events.post("start_case_file_ball_save")
 
         self.publish_active_case_file_helpers([
             ("more_jackpots", "FIRST CLEAR IN EACH AREA AWARDS BLOTTO JACKPOT"),
             ("bigger_jackpots", "BIGGER SPINNER, CLEAR, AND FINAL VALUES"),
             ("more_time", "METER RISES EVERY 3 SECONDS"),
-            ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST CLEAR WITH 2+ INFECTED CLEARS ANOTHER"),
         ])
 

@@ -106,7 +106,7 @@ class Cyclops(CaseFileMixin, Mode):
             ("more_jackpots", "SECOND EYE - 20 SECOND WINDOW"),
             ("bigger_jackpots", "EYE JACKPOT 150K PER FLIP"),
             ("more_time", "START WITH 30 FLIPS"),
-            ("safety_net", "10 SECOND BALL SAVE"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST DROP ADDS TWO RIGHT DROPS"),
         ])
 

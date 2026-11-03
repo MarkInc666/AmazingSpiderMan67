@@ -81,7 +81,7 @@ class doc_ock(CaseFileMixin, Mode):
             ("more_jackpots", "2 SAFE JACKPOTS"),
             ("bigger_jackpots", "BIGGER DOC OCK JACKPOTS"),
             ("more_time", "ARM RELEASE DELAYED"),
-            ("safety_net", "10 SECOND BALL SAVE"),
+            ("safety_net", '30s OPENING SAVE / 20 SECOND BALL SAVE'),
             ("shot_assist", "+10X SHOT ASSIST"),
         ])
 

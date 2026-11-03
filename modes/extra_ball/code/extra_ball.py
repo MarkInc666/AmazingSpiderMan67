@@ -32,8 +32,9 @@ class ExtraBall(Mode):
 
 
     def _register_standard_ball_save_handlers(self):
-        """Track the three shared non-multiball ball-save devices."""
-        for name in ("default_ball_save", "mystery_ball_save", "case_file_ball_save"):
+        """Track shared non-multiball ball-save devices."""
+        for name in ("default_ball_save", "mystery_ball_save", "case_file_ball_save",
+                     "villain_opening_ball_save"):
             self.add_mode_event_handler(
                 f"ball_save_{name}_enabled",
                 self._ball_save_started,

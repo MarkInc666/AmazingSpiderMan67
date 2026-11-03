@@ -102,7 +102,7 @@ class DrVonSchlick(CaseFileMixin, Mode):
             ),
             ("bigger_jackpots", "FIRST FIVE OIL PELLETS WORTH 150K"),
             ("more_time", "SUPER TIMER EXTENDED TO 30 SECONDS"),
-            ("safety_net", "BALL SAVE STARTS WITH SUPER"),
+            ("safety_net", '30s OPENING SAVE / BALL SAVE STARTS WITH SUPER'),
             ("shot_assist", "FIRST PELLET COUNTS TWICE"),
         ])
 

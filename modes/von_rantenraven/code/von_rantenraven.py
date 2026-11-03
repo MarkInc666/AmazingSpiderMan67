@@ -112,7 +112,7 @@ class VonRantenraven(CaseFileMixin, Mode):
             ("more_jackpots", "REPEAT TARGETS SCORE 500K"),
             ("bigger_jackpots", "ROOF JACKPOTS BOOSTED"),
             ("more_time", "15 ROOF FLIPS"),
-            ("safety_net", "BALL SAVE AT MODE START"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST JP ALSO SPOTS ANOTHER"),
         ])
 
@@ -124,8 +124,6 @@ class VonRantenraven(CaseFileMixin, Mode):
         self.machine.events.post("drop_target_bank_dt_bank_left_reset")
         self.machine.events.post("drop_target_bank_dt_bank_right_reset")
 
-        if self.has_case_file("safety_net"):
-            self.machine.events.post("start_case_file_ball_save")
 
         self._show_message("SAUCERS OPEN GATE", "HIT ANY SAUCER", reminder=True)
         self._update_mode_status()

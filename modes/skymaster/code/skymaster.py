@@ -119,7 +119,7 @@ class Skymaster(CaseFileMixin, Mode):
             ("more_jackpots", "LEFT WEB ADDS A SECOND SUPER"),
             ("bigger_jackpots", "DROPS 150K - WEB SUPERS 750K"),
             ("more_time", "WEB SUPER WINDOW EXTENDED TO 25s"),
-            ("safety_net", "10 SECOND OPENING BALL SAVE"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST UPPER SPIN DROPS TWO TARGETS"),
         ])
 
@@ -135,8 +135,6 @@ class Skymaster(CaseFileMixin, Mode):
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("skymaster_reset_left_bank")
         self.machine.events.post("skymaster_reset_right_bank")
-        if self.has_case_file("safety_net"):
-            self.machine.events.post("start_case_file_ball_save")
 
         self._show_message(
             "DROP TARGETS IN ORDER",

@@ -2,7 +2,7 @@ from mpf.core.mode import Mode
 from modes.common.case_file_mixin import CaseFileMixin
 
 
-class Enforcers(Mode, CaseFileMixin):
+class Enforcers(CaseFileMixin, Mode):
     """The Enforcers villain mode.
 
     Three crime-wave zones build upper target jackpots:
@@ -155,12 +155,10 @@ class Enforcers(Mode, CaseFileMixin):
             ("more_jackpots", "SAUCER BONUS JACKPOTS LIT"),
             ("bigger_jackpots", "BASE JACKPOT 150K"),
             ("more_time", "OX BALL SAVE READY"),
-            ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST HIT LIGHTS JACKPOTS"),
         ])
 
-        if self.has_case_file("safety_net"):
-            self.machine.events.post("start_case_file_ball_save")
 
     def _zone_hit(self, zone, **kwargs):
         if self.mode_done or self.ox_lit or self.upper_collected[zone]:

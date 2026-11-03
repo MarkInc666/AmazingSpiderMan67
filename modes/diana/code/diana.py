@@ -122,7 +122,7 @@ class Diana(CaseFileMixin, Mode):
             ("more_jackpots", "RUBBER SHOTS 100K"),
             ("bigger_jackpots", "BULLSEYES BOOSTED"),
             ("more_time", "30 ARROWS / 18 SECOND HUNTS"),
-            ("safety_net", "10 ARROW SAFETY NET"),
+            ("safety_net", '30s OPENING SAVE / 10 ARROW SAFETY NET'),
             ("shot_assist", "FIRST HIT DROPS A TARGET"),
         ])
 

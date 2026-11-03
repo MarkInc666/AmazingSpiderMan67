@@ -96,7 +96,7 @@ class Molemen(CaseFileMixin, Mode):
             ("more_jackpots", "POP ADD-A-BALL IN 2 HITS"),
             ("bigger_jackpots", "BIGGER AREA AND SAUCER JACKPOTS"),
             ("more_time", "15 SECOND SAVE AFTER ADD-A-BALL"),
-            ("safety_net", "25 SECOND OPENING SAVE"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "LEFT WEB ALSO COUNTS AS CENTER WEB"),
         ])
 

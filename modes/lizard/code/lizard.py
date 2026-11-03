@@ -99,7 +99,7 @@ class Lizard(CaseFileMixin, Mode):
             ("more_jackpots", "THIRD SERUM DELIVERY ATTEMPT"),
             ("bigger_jackpots", "SERUM STARTS AT 1.5 MILLION"),
             ("more_time", "20 SECONDS AND SLOWER VALUE DECAY"),
-            ("safety_net", "FIRST EXPIRED SERUM IS SAVED"),
+            ("safety_net", '30s OPENING SAVE / FIRST EXPIRED SERUM IS SAVED'),
             ("shot_assist", "MAIN SPINNER OR CENTER WEB DELIVERS SERUM"),
         ])
 

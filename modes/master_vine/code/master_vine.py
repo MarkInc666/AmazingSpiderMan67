@@ -123,7 +123,7 @@ class MasterVine(CaseFileMixin, Mode):
             ("more_jackpots", "FIRST SPIN OF EACH WAVE LIGHTS 3 SHOTS"),
             ("bigger_jackpots", "VINE JACKPOTS WORTH 75K"),
             ("more_time", "EACH VINE WAVE LASTS 40 SECONDS"),
-            ("safety_net", "10 SECOND SAVE ON FIRST UPPER ENTRY"),
+            ("safety_net", '30s OPENING SAVE / 20 SECOND SAVE ON FIRST UPPER ENTRY'),
             ("shot_assist", "FIRST JACKPOT COLLECTS A SECOND"),
         ])
 

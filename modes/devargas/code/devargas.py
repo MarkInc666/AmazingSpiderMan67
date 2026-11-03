@@ -127,7 +127,7 @@ class DeVargas(CaseFileMixin, Mode):
             ("more_jackpots", "25 GOLD OPPORTUNITIES"),
             ("bigger_jackpots", "GOLD WORTH 200K / 175K / 150K"),
             ("more_time", "GOLD WINDOWS LAST 5s / 4s / 4s"),
-            ("safety_net", "10 SECOND OPENING SAVE"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST EXPIRED GOLD AUTO-COLLECTS"),
         ])
 

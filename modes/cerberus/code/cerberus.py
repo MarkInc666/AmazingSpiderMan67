@@ -79,7 +79,7 @@ class Cerberus(CaseFileMixin, Mode):
             ("more_jackpots", "EACH SAUCER STAYS LIT ONCE"),
             ("bigger_jackpots", "BIGGER CERBERUS JACKPOTS"),
             ("more_time", "CERBERUS TIMER EXTENDED"),
-            ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "BEST JACKPOT FROM ANY SAUCER"),
         ])
 
@@ -171,8 +171,6 @@ class Cerberus(CaseFileMixin, Mode):
         if self.has_case_file("more_time"):
             self.base_timer_seconds = self.MORE_TIME_TIMER_SECONDS
 
-        if self.has_case_file("safety_net"):
-            self.machine.events.post("start_case_file_ball_save")
 
     def _left_drop_hit(self, drop=None, **kwargs):
         if self._in_summary_or_done():

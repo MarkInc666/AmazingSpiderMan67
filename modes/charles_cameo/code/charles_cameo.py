@@ -98,7 +98,7 @@ class CharlesCameo(CaseFileMixin, Mode):
             ("more_jackpots", "UPPER-TARGET PAIR ADDED FIRST"),
             ("bigger_jackpots", "75K SOURCES / 300K JACKPOTS"),
             ("more_time", "15 SECOND MIRROR WINDOWS"),
-            ("safety_net", "10 SECOND BALL SAVE"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST EXPIRED MIRROR AUTO-COLLECTS"),
         ])
 
@@ -122,8 +122,6 @@ class CharlesCameo(CaseFileMixin, Mode):
         self.machine.events.post("charles_cameo_clear_all")
         self.machine.events.post("clear_saucers_delayed")
 
-        if self.has_case_file("safety_net"):
-            self.machine.events.post("start_case_file_ball_save")
 
         self._start_stage(new_side=True)
 

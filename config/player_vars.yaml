@@ -1,5 +1,8 @@
 #config_version=6
 player_vars:
+  villain_opening_save_seconds:
+    initial_value: 20
+    value_type: int
   # Inlane/outlane progress carries between this player's balls.
   bonus_lane_mask:
     initial_value: 0

@@ -75,11 +75,9 @@ class Infinata(CaseFileMixin, Mode):
             ("more_jackpots", "4TH GREEN AREA AVAILABLE DURING SUPER"),
             ("bigger_jackpots", "BIGGER AREA AWARDS AND 1.5M SUPER"),
             ("more_time", "SUPER TIMER EXTENDED TO 30 SECONDS"),
-            ("safety_net", "10 SECOND BALL SAVE ACTIVE"),
+            ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST HIT AWARDS TWO AREAS"),
         ])
-        if self.has_case_file("safety_net"):
-            self.machine.events.post("start_case_file_ball_save")
 
         for area in self.AREAS:
             self.add_mode_event_handler(f"infinata_{area}_hit", self._area_hit, area=area)

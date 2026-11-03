@@ -85,7 +85,7 @@ class MasterTechnician(CaseFileMixin, Mode):
             ("more_jackpots", "WEB TARGETS SCORE 50K WHILE SPINNER IS LIT"),
             ("bigger_jackpots", "SPINNER BUILDS 75K PER DOWN TARGET"),
             ("more_time", "MODE TIMER EXTENDED TO 75s"),
-            ("safety_net", "FIRST SHORT CIRCUIT HAS NO TIME PENALTY"),
+            ("safety_net", '30s OPENING SAVE / FIRST SHORT CIRCUIT HAS NO TIME PENALTY'),
             ("shot_assist", "FIRST INLANE CAN DROP TWO SAFE TARGETS"),
         ])
 
