@@ -47,7 +47,7 @@ class Vulture(CaseFileMixin, Mode):
 
         self.vulture_spins = 0
         self.vulture_banked_bonus = 0
-        self.active_mode_points = 0
+        self.active_mode_points = self.villain_start_bonus
 
         self.case_files = self.get_case_file_bonuses()
         self._apply_case_file_bonuses()

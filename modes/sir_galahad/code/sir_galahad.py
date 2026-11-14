@@ -95,7 +95,7 @@ class SirGalahad(CaseFileMixin, Mode):
         self.programmatic_drops = set()
         self.drops_down = set()
         self.shot_assist_available = self.has_case_file("shot_assist")
-        self.mode_points = 0
+        self.mode_points = self.villain_start_bonus
         self.target_hits = 0
         self.bullseyes = 0
 

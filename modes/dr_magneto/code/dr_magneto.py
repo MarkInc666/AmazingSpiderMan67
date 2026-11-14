@@ -57,7 +57,7 @@ class DrMagneto(CaseFileMixin, Mode):
         self.case_files = self.get_case_file_bonuses()
         self.mode_done = False
         self.phase = "circuits"
-        self.mode_points = 0
+        self.mode_points = self.villain_start_bonus
         self.rollovers_collected = 0
         self.pops_completed = 0
         self.super_jackpots = 0

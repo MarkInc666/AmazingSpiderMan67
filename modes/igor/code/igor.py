@@ -94,7 +94,7 @@ class Igor(CaseFileMixin, Mode):
         self.current_set = None
         self.jackpots = 0
         self.bad_shots = 0
-        self.mode_points = 0
+        self.mode_points = self.villain_start_bonus
         self.biggest_jackpot = 0
         self.next_jackpot = self.STARTING_JACKPOT
         self.shot_assist_available = False

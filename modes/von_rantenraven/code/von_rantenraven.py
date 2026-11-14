@@ -86,11 +86,11 @@ class VonRantenraven(CaseFileMixin, Mode):
         self.targets_hit = set()
         self.rooftop_jackpots = 0
         self.jackpot_hits = 0
-        self.mode_points = 0
+        self.mode_points = self.villain_start_bonus
         self.shot_assist_used = False
 
         player = self.machine.game.player
-        player["active_mode_points"] = 0
+        player["active_mode_points"] = self.villain_start_bonus
         player["active_mode_stat_1"] = 0
         player["active_mode_stat_2"] = 0
         player[f"{self.MODE_KEY}_state"] = 1

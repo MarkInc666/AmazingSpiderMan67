@@ -72,7 +72,7 @@ class doc_ock(CaseFileMixin, Mode):
         self.jackpots_collected = 0
         self.active_breakouts = set()
         self.doc_ock_max_arms_locked = 2
-        self.active_mode_points = 0
+        self.active_mode_points = self.villain_start_bonus
         self.safety_net_used = False
         self.rooftop_gate_open = False
 

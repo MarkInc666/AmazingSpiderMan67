@@ -138,7 +138,7 @@ class Molemen(CaseFileMixin, Mode):
 
     def _reset_player_vars(self):
         player = self.machine.game.player
-        player["active_mode_points"] = 0
+        player["active_mode_points"] = self.villain_start_bonus
         player["molemen_state"] = 1
         player["active_mode_stat_1"] = self.biggest_jackpot
         player["active_mode_stat_2"] = self.jackpots_collected

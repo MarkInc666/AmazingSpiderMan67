@@ -108,7 +108,7 @@ class Plutonians(CaseFileMixin, Mode):
         self.reset_active_mode_summary(stat_count=3)
         self.mode_done = False
         self.thawed = set()
-        self.mode_points = 0
+        self.mode_points = self.villain_start_bonus
         self.total_thaws = 0
         self.freeze_ray_blockers = 0
 
@@ -146,7 +146,7 @@ class Plutonians(CaseFileMixin, Mode):
         self.ray_seconds = self.FREEZE_CYCLE_SECONDS
 
         player = self.machine.game.player
-        player["active_mode_points"] = 0
+        player["active_mode_points"] = self.villain_start_bonus
         player["active_mode_stat_1"] = 0
         player["active_mode_stat_2"] = 0
         player[f"{self.MODE_KEY}_state"] = 1

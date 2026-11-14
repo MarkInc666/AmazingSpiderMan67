@@ -62,7 +62,7 @@ class SpiderSlayer(CaseFileMixin, Mode):
         self.active_shots = set()
         self.shot_hits = {shot: 0 for shot in self.SHOTS}
         self.hits = 0
-        self.mode_points = 0
+        self.mode_points = self.villain_start_bonus
         self.hunt_started_at = None
         self.hunt_completed = False
         self.hunt_time_tenths = 0

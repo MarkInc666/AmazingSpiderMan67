@@ -94,7 +94,7 @@ class CliveBlotto(CaseFileMixin, Mode):
         self.infected = set()
         self.cleared_count = 0
         self.attack_count = 0
-        self.mode_points = 0
+        self.mode_points = self.villain_start_bonus
         self.right_pop_pulse_active = False
         self.right_pop_pulse_on = False
         self.more_jackpots_collected = set()
@@ -129,7 +129,7 @@ class CliveBlotto(CaseFileMixin, Mode):
 
         player = self.machine.game.player
         player[f"{self.MODE_KEY}_state"] = 1
-        player["active_mode_points"] = 0
+        player["active_mode_points"] = self.villain_start_bonus
         player["active_mode_stat_1"] = 0
         player["active_mode_stat_2"] = 0
 

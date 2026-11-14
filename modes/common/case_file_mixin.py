@@ -153,13 +153,15 @@ class CaseFileMixin:
         )
         self._opening_save_enabled = False
         self._opening_save_waiting_for_release = False
-        self.add_mode_event_handler(
-            f"mode_{self.name}_started", self._enable_opening_ball_save,
-        )
         for switch in self.OPENING_RELEASE_SWITCHES:
             self.add_mode_event_handler(
                 f"{switch}_inactive", self._start_opening_ball_save_timer,
             )
+        # MPF posts mode_<name>_started BEFORE calling mode_start().
+        # Registering a handler for that event here misses it, leaving the
+        # opening save disabled. Arm it directly once the release handlers
+        # and player-specific duration are ready.
+        self._enable_opening_ball_save()
 
     def _enable_opening_ball_save(self, **kwargs):
         if self._opening_save_enabled:

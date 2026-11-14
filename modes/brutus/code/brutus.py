@@ -68,7 +68,7 @@ class Brutus(CaseFileMixin, Mode):
         self.jackpots = 0
         self.blocked_saucers = 0
         self.biggest_jackpot = 0
-        self.mode_points = 0
+        self.mode_points = self.villain_start_bonus
         self.shot_assist_used = False
 
         player = self.machine.game.player
