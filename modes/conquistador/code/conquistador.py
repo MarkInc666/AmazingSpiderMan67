@@ -177,6 +177,9 @@ class Conquistador(CaseFileMixin, Mode):
             self._collect_second_jackpot()
 
     def _collect_first_jackpot(self):
+        # Lock collection immediately so repeated web hits cannot score twice
+        # during the two-second jackpot display.
+        self.phase = "first_jackpot_collected"
         self._stop_tick()
         self._award_speed_bonus()
         value = self.jackpot_value
@@ -207,6 +210,8 @@ class Conquistador(CaseFileMixin, Mode):
         self._schedule_tick()
 
     def _collect_second_jackpot(self):
+        # Prevent another collect while the second jackpot display is holding.
+        self.phase = "second_jackpot_collected"
         self._stop_tick()
         self._award_speed_bonus()
         value = self.locked_extra_jackpot

@@ -242,7 +242,9 @@ class MasterVine(CaseFileMixin, Mode):
         self.seconds_left = self.attempt_seconds
         self._schedule_attempt_tick()
 
-        shots_to_light = 1
+        # Spread more vines with successive spinner pulses within each wave:
+        # 1, 2, 3, then 4 on every subsequent pulse.
+        shots_to_light = min(self.spinner_hits_this_attempt, 4)
         if (
             self.has_case_file("more_jackpots")
             and self.spinner_hits_this_attempt == 1

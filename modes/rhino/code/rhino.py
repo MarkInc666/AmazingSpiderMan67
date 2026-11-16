@@ -8,7 +8,7 @@ class RhinoBash(CaseFileMixin, Mode):
     MAX_JACKPOTS_DEFAULT = 5
     BASE_VALUES = [200000, 300000, 400000, 500000, 600000, 700000]
     BIGGER_JACKPOT_ADD = 200000
-    BERSERK_TIME_MS = 10000
+    BERSERK_TIME_MS = 20000
 
     # One pop advances one Rage level.  The cycle begins at Rage 0, so the
     # five pop hits map directly to Rage 1-5.

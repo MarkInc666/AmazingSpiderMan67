@@ -32,8 +32,10 @@ event_player:
   s_sling_r_active: dr_magneto_right_qualifier_hit
   s_inlane_r_active: dr_magneto_right_qualifier_hit
 
-  # Middle rollovers: A is the right-hand switch, B is the left-hand switch.
+  # Either A rollover (upper or middle right) advances A; either B (upper or middle left) advances B.
+  s_inlane_a_active: dr_magneto_a_rollover_hit
   s_inlane_m_r_active: dr_magneto_a_rollover_hit
+  s_inlane_b_active: dr_magneto_b_rollover_hit
   s_inlane_m_l_active: dr_magneto_b_rollover_hit
 
   s_pop_left_active: dr_magneto_left_pop_hit
@@ -215,17 +217,21 @@ shows:
     - duration: 300ms
       lights:
         l_right_a: yellow
+        l_a_rollover: yellow
     - duration: 300ms
       lights:
         l_right_a: off
+        l_a_rollover: off
 
   dr_magneto_b_pulse:
     - duration: 300ms
       lights:
         l_left_b: yellow
+        l_b_rollover: yellow
     - duration: 300ms
       lights:
         l_left_b: off
+        l_b_rollover: off
 
   dr_magneto_left_pop_pulse:
     - duration: 300ms

@@ -22,7 +22,7 @@ class CharlesCameo(CaseFileMixin, Mode):
     TRANSITION_MS = 1_000
 
     NORMAL_STAGES = ("pops", "drops", "ab", "webs")
-    MORE_JACKPOTS_STAGES = ("upper", "pops", "drops", "ab", "webs")
+    MORE_JACKPOTS_STAGES = ("pops", "drops", "ab", "upper", "webs")
 
     STAGE_SIDES = {
         "upper": ("left", "right"),
@@ -95,7 +95,7 @@ class CharlesCameo(CaseFileMixin, Mode):
 
         self.publish_case_file_bonus_events(self.MODE_KEY)
         self.publish_active_case_file_helpers([
-            ("more_jackpots", "UPPER-TARGET PAIR ADDED FIRST"),
+            ("more_jackpots", "UPPER-TARGET PAIR BEFORE WEB SUPER"),
             ("bigger_jackpots", "75K SOURCES / 300K JACKPOTS"),
             ("more_time", "15 SECOND MIRROR WINDOWS"),
             ("safety_net", '30 SECOND OPENING BALL SAVE'),

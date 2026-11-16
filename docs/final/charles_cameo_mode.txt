@@ -33,7 +33,8 @@ SHOT DEFINITIONS
 
 CASE FILES
 
-- More Jackpots: insert a left/right upper-target pair before Pops. Cameo opens
+- More Jackpots: insert a left/right upper-target pair after A + B and before
+  the Web Super. Cameo opens
   the rooftop gate for this stage and closes it after the mirrored Jackpot.
 - Bigger Jackpots: source shots score 75K and ordinary mirrored Jackpots score
   300K. The Web Super remains fixed at 1M.

@@ -2,7 +2,7 @@
 
 # Charles Cameo — Double Identity.
 # Complete mirrored pairs in order: Pops, Drops, A+B, then the two web targets
-# for a 1M Super. More Jackpots inserts left/right upper targets first.
+# for a 1M Super. More Jackpots inserts left/right upper targets before the Web Super.
 
 mode:
   start_events: start_mode_charles_cameo

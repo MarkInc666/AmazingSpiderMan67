@@ -46,8 +46,8 @@ Bigger Jackpots adds 200K to every base value.
 
 ## Berserk
 
-- Reaching Rage 5 starts a 10-second collect timer.
-- More Time extends every Berserk timer to 15 seconds.
+- Reaching Rage 5 starts a 20-second collect timer.
+- More Time extends every Berserk timer to 25 seconds.
 - Smash switches continue adding 150K during Berserk.
 - Missing the collect ends the mode.
 - Shot Assist automatically awards one missed Berserk jackpot, once per mode.

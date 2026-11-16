@@ -167,7 +167,7 @@ shots:
 
 timers:
   electro_shot_timer:
-    start_value: 5
+    start_value: 7
     end_value: 0
     direction: down
     tick_interval: 1s
@@ -180,7 +180,7 @@ timers:
         action: stop
 
   electro_shot_assist_timer:
-    start_value: 8
+    start_value: 10
     end_value: 0
     direction: down
     tick_interval: 1s
@@ -193,7 +193,7 @@ timers:
         action: stop
 
   electro_upper_shot_timer:
-    start_value: 10
+    start_value: 12
     end_value: 0
     direction: down
     tick_interval: 1s
@@ -206,7 +206,7 @@ timers:
         action: stop
 
   electro_upper_shot_assist_timer:
-    start_value: 13
+    start_value: 15
     end_value: 0
     direction: down
     tick_interval: 1s
@@ -219,7 +219,7 @@ timers:
         action: stop
 
   electro_super_timer:
-    start_value: 10
+    start_value: 14
     end_value: 0
     direction: down
     tick_interval: 1s
@@ -232,7 +232,7 @@ timers:
         action: stop
 
   electro_upper_super_timer:
-    start_value: 15
+    start_value: 19
     end_value: 0
     direction: down
     tick_interval: 1s

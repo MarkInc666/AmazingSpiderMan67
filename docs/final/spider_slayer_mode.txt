@@ -3,12 +3,12 @@ SPIDER-SLAYER — HUNT MODE
 Build phase
 - One random shot category starts lit.
 - Successful lit shots add another lit category; earlier lit shots remain active.
-- Each logical category has its own repeat-value ladder: 50,000, 25,000,
-  10,000, then 5,000 for every later hit.
-- Bigger Jackpots changes that ladder to 75,000, 50,000, 25,000, then 10,000.
+- Each logical category has its own repeat-value ladder: 100,000, 50,000,
+  20,000, then 10,000 for every later hit.
+- Bigger Jackpots changes that ladder to 150,000, 100,000, 50,000, then 20,000.
 - More Jackpots preserves the full first-hit value on the second hit: normal
-  becomes 50,000 / 50,000 / 10,000 / 5,000; with Bigger Jackpots it becomes
-  75,000 / 75,000 / 25,000 / 10,000.
+  becomes 100,000 / 100,000 / 20,000 / 10,000; with Bigger Jackpots it becomes
+  150,000 / 150,000 / 50,000 / 20,000.
 - Hunt Time begins on the first successful lit shot and stops on the fifteenth.
 - Shot Assist makes the first successful shot count as two of the fifteen hits,
   lights two additional categories, and awards both that category's first- and
@@ -18,14 +18,18 @@ Build phase
 
 Slayer Jackpot
 - The fifteenth successful shot opens the rooftop gate and lights the Daily Bugle VUK.
-- Base Slayer Jackpot is 2,000,000 and falls by 100,000 per second to a
-  100,000 floor while its timer remains active.
-- Bigger Jackpots starts it at 2,500,000.
-- The VUK is available for 20 seconds, or 25 seconds with More Time. When time
-  expires, the jackpot becomes zero, its chase stops, and the rooftop gate closes.
+- Base Slayer Jackpot is 2,000,000; Bigger Jackpots starts at 2,500,000.
+- The jackpot declines every second toward a 100,000 floor. Its decay is
+  spread across the first 20 seconds (25 with More Time), leaving a final
+  10-second collection window at 100,000.
+- Total jackpot opportunity is 30 seconds, or 35 seconds with More Time.
+- When the jackpot first reaches 100,000, a ten-second LAST CHANCE countdown
+  begins. Collecting the VUK during this countdown still awards 100,000.
+- When the ten-second countdown expires, Spider-Slayer escapes and the mode
+  ends with an uncollected (zero) jackpot. The rooftop gate closes.
 - Safety Net starts a ten-second, one-ball save when the VUK lights.
-- Lit hunt categories continue scoring from their individual repeat ladders during
-  and after the VUK countdown.
+- Lit hunt categories continue scoring from their individual repeat ladders
+  until the VUK is collected or the final countdown ends.
 - The display shows both the falling jackpot and seconds remaining.
 - Collecting the VUK destroys the Spider-Slayer and ends the mode.
 

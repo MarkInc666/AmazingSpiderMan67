@@ -1,14 +1,14 @@
 THE CONQUISTADOR — FIND THE FOUNTAIN
 
-Stage 1: hit any single left 3-bank drop before the 20-second timer expires. The hit scores 50K in addition to normal switch scoring, immediately awards 50K per second remaining, opens the rooftop gate, resets the bank, and changes GI from green to yellow. Full-bank completion is not required.
+Stage 1 (untimed): hit any single left 3-bank drop. The hit scores 50K in addition to normal switch scoring, opens the rooftop gate, resets the bank, and changes GI from green to yellow. Full-bank completion is not required. There is no opening-stage timeout or speed bonus.
 
 Stage 2: spin the upper spinner three times. The display shows 3 SPINS NEEDED when the stage starts, then updates to 2 SPINS NEEDED and 1 SPIN NEEDED as spins are collected. Every spin scores 50K in addition to normal switch scoring. Upper targets add to the Fountain Jackpot at any time. The third spin closes the gate, lights center web, changes GI to blue, and starts the Fountain timer.
 
 Fountain Jackpot: 300K + 100K per upper-target hit, with no cap. Bigger Jackpots changes this to 400K + 150K per hit. The first target hit counts twice with Shot Assist. Center web collects the jackpot and awards 50K per second remaining.
 
-More Time gives 30 seconds for both main timers. Safety Net starts a 10-second ball save when the Fountain becomes ready. With More Jackpots, the first Fountain collect shows FOUNTAIN JACKPOT for two seconds, then TAKE ANOTHER SIP begins a 10-second second-collect window at the same locked value. The second collect also awards 50K per second remaining.
+The Fountain timer is 20 seconds normally, or 30 seconds with More Time. Two distinct ball saves are retained: the shared villain opening ball save (20 seconds, or 30 seconds with Safety Net, starting when the held ball releases) and a separate 10-second Safety Net ball save when the Fountain becomes ready. With More Jackpots, the first Fountain collect shows FOUNTAIN JACKPOT for two seconds, then TAKE ANOTHER SIP begins a 10-second second-collect window at the same locked value. The second collect also awards 50K per second remaining. Each jackpot can be collected only once, even if the center web is hit again during its two-second display delay.
 
-Failure messages: FOUNTAIN NOT FOUND for either main timer; WASTED YOUTH for the missed extra-sip window.
+Failure messages: FOUNTAIN NOT FOUND when the Fountain timer expires; WASTED YOUTH for the missed extra-sip window.
 
 Summary: MODE SCORE, FOUNTAIN JP, SPEED BONUS.
 

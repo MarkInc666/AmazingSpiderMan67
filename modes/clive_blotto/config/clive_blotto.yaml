@@ -50,80 +50,7 @@ light_player:
   clive_blotto_meter_medium: {}
   clive_blotto_meter_high: {}
 
-  # Infected areas pulse purple in their physical GI region.
-  clive_blotto_infect_upper_left:
-    l_gi_ramp:
-      color: A040FF
-      fade: 250ms
-    l_gi_top_1:
-      color: A040FF
-      fade: 250ms
-    l_gi_top_2:
-      color: A040FF
-      fade: 250ms
-  clive_blotto_infect_upper_right:
-    l_gi_a:
-      color: A040FF
-      fade: 250ms
-    l_gi_ab:
-      color: A040FF
-      fade: 250ms
-    l_gi_bright:
-      color: A040FF
-      fade: 250ms
-    l_gi_mid_spider:
-      color: A040FF
-      fade: 250ms
-    l_gi_top_3:
-      color: A040FF
-      fade: 250ms
-    l_gi_top_4:
-      color: A040FF
-      fade: 250ms
-    l_gi_upflip:
-      color: A040FF
-      fade: 250ms
-  clive_blotto_infect_middle_left:
-    l_gi_3bank:
-      color: A040FF
-      fade: 250ms
-    l_gi_left_lower:
-      color: A040FF
-      fade: 250ms
-    l_gi_left_upper:
-      color: A040FF
-      fade: 250ms
-    l_gi_left_upper_flipper:
-      color: A040FF
-      fade: 250ms
-    l_gi_spinner:
-      color: A040FF
-      fade: 250ms
-  clive_blotto_infect_middle_right:
-    l_gi_5bank_lower:
-      color: A040FF
-      fade: 250ms
-    l_gi_5bank_upper:
-      color: A040FF
-      fade: 250ms
-    l_gi_right_lower_triangle:
-      color: A040FF
-      fade: 250ms
-  clive_blotto_infect_lower_left:
-    l_gi_left_sling_lower:
-      color: A040FF
-      fade: 250ms
-    l_gi_left_sling_upper:
-      color: A040FF
-      fade: 250ms
-  clive_blotto_infect_lower_right:
-    l_gi_right_return:
-      color: A040FF
-      fade: 250ms
-    l_gi_right_sling:
-      color: A040FF
-      fade: 250ms
-
+  # Infection overlays are looping shows; clearing an area stops its overlay.
   # Cleared areas return to the mode's dark violet base.
   clive_blotto_clear_upper_left:
     l_gi_ramp: 241038
@@ -154,10 +81,6 @@ light_player:
     l_gi_right_return: 241038
     l_gi_right_sling: 241038
 
-  clive_blotto_meter_full_flash:
-    gi: FFFFFF
-  clive_blotto_area_clear_flash:
-    gi: FFFFFF
   clive_blotto_completion_lights:
     gi: 40FF40
   clive_blotto_restore_all_lights:
@@ -165,34 +88,333 @@ light_player:
     l_spinner: off
 
 show_player:
-  # Only overlay the right-pop ring while the middle-right area is infected.
-  # When this overlay is stopped, the ring falls back to the mode-wide GI color.
+  clive_blotto_infect_upper_left:
+    clive_blotto_infected_upper_left:
+      action: play
+      loops: -1
+      priority: 500
+  clive_blotto_clear_upper_left:
+    clive_blotto_infected_upper_left: {action: stop}
+  clive_blotto_infect_upper_right:
+    clive_blotto_infected_upper_right:
+      action: play
+      loops: -1
+      priority: 500
+  clive_blotto_clear_upper_right:
+    clive_blotto_infected_upper_right: {action: stop}
+  clive_blotto_infect_middle_left:
+    clive_blotto_infected_middle_left:
+      action: play
+      loops: -1
+      priority: 500
+  clive_blotto_clear_middle_left:
+    clive_blotto_infected_middle_left: {action: stop}
+  clive_blotto_infect_middle_right:
+    clive_blotto_infected_middle_right:
+      action: play
+      loops: -1
+      priority: 500
+  clive_blotto_clear_middle_right:
+    clive_blotto_infected_middle_right: {action: stop}
+  clive_blotto_infect_lower_left:
+    clive_blotto_infected_lower_left:
+      action: play
+      loops: -1
+      priority: 500
+  clive_blotto_clear_lower_left:
+    clive_blotto_infected_lower_left: {action: stop}
+  clive_blotto_infect_lower_right:
+    clive_blotto_infected_lower_right:
+      action: play
+      loops: -1
+      priority: 500
+  clive_blotto_clear_lower_right:
+    clive_blotto_infected_lower_right: {action: stop}
+  clive_blotto_meter_full_flash:
+    clive_blotto_spread_flash:
+      action: play
+      priority: 700
+  clive_blotto_area_clear_flash:
+    clive_blotto_clear_flash:
+      action: play
+      priority: 700
   clive_blotto_right_pop_pulse_on:
     clive_blotto_right_pop_infected:
       loops: -1
       priority: 500
   clive_blotto_right_pop_pulse_off:
     clive_blotto_right_pop_infected: {action: stop}
+  clive_blotto_completion_lights:
+    clive_blotto_infected_upper_left: {action: stop}
+    clive_blotto_infected_upper_right: {action: stop}
+    clive_blotto_infected_middle_left: {action: stop}
+    clive_blotto_infected_middle_right: {action: stop}
+    clive_blotto_infected_lower_left: {action: stop}
+    clive_blotto_infected_lower_right: {action: stop}
+    clive_blotto_right_pop_infected: {action: stop}
   mode_clive_blotto_stopping:
+    clive_blotto_infected_upper_left: {action: stop}
+    clive_blotto_infected_upper_right: {action: stop}
+    clive_blotto_infected_middle_left: {action: stop}
+    clive_blotto_infected_middle_right: {action: stop}
+    clive_blotto_infected_lower_left: {action: stop}
+    clive_blotto_infected_lower_right: {action: stop}
     clive_blotto_right_pop_infected: {action: stop}
 
 shows:
-  clive_blotto_right_pop_infected:
-    - duration: 1s
+  clive_blotto_infected_upper_left:
+    - duration: 650ms
       lights:
-        l_pop_2_1: A040FF
-        l_pop_2_2: A040FF
-        l_pop_2_3: A040FF
-        l_pop_2_4: A040FF
-        l_pop_2_5: A040FF
-        l_pop_2_6: A040FF
-        l_pop_2_7: A040FF
-        l_pop_2_8: A040FF
-        l_pop_2_9: A040FF
-        l_pop_2_10: A040FF
-        l_pop_2_11: A040FF
-        l_pop_2_12: A040FF
-        l_pop_2_13: A040FF
+        l_gi_ramp:
+          color: F040F0
+          fade: 650ms
+        l_gi_top_1:
+          color: F040F0
+          fade: 650ms
+        l_gi_top_2:
+          color: F040F0
+          fade: 650ms
+    - duration: 650ms
+      lights:
+        l_gi_ramp:
+          color: 241038
+          fade: 650ms
+        l_gi_top_1:
+          color: 241038
+          fade: 650ms
+        l_gi_top_2:
+          color: 241038
+          fade: 650ms
+  clive_blotto_infected_upper_right:
+    - duration: 650ms
+      lights:
+        l_gi_a:
+          color: F040F0
+          fade: 650ms
+        l_gi_ab:
+          color: F040F0
+          fade: 650ms
+        l_gi_bright:
+          color: F040F0
+          fade: 650ms
+        l_gi_mid_spider:
+          color: F040F0
+          fade: 650ms
+        l_gi_top_3:
+          color: F040F0
+          fade: 650ms
+        l_gi_top_4:
+          color: F040F0
+          fade: 650ms
+        l_gi_upflip:
+          color: F040F0
+          fade: 650ms
+    - duration: 650ms
+      lights:
+        l_gi_a:
+          color: 241038
+          fade: 650ms
+        l_gi_ab:
+          color: 241038
+          fade: 650ms
+        l_gi_bright:
+          color: 241038
+          fade: 650ms
+        l_gi_mid_spider:
+          color: 241038
+          fade: 650ms
+        l_gi_top_3:
+          color: 241038
+          fade: 650ms
+        l_gi_top_4:
+          color: 241038
+          fade: 650ms
+        l_gi_upflip:
+          color: 241038
+          fade: 650ms
+  clive_blotto_infected_middle_left:
+    - duration: 650ms
+      lights:
+        l_gi_3bank:
+          color: F040F0
+          fade: 650ms
+        l_gi_left_lower:
+          color: F040F0
+          fade: 650ms
+        l_gi_left_upper:
+          color: F040F0
+          fade: 650ms
+        l_gi_left_upper_flipper:
+          color: F040F0
+          fade: 650ms
+        l_gi_spinner:
+          color: F040F0
+          fade: 650ms
+    - duration: 650ms
+      lights:
+        l_gi_3bank:
+          color: 241038
+          fade: 650ms
+        l_gi_left_lower:
+          color: 241038
+          fade: 650ms
+        l_gi_left_upper:
+          color: 241038
+          fade: 650ms
+        l_gi_left_upper_flipper:
+          color: 241038
+          fade: 650ms
+        l_gi_spinner:
+          color: 241038
+          fade: 650ms
+  clive_blotto_infected_middle_right:
+    - duration: 650ms
+      lights:
+        l_gi_5bank_lower:
+          color: F040F0
+          fade: 650ms
+        l_gi_5bank_upper:
+          color: F040F0
+          fade: 650ms
+        l_gi_right_lower_triangle:
+          color: F040F0
+          fade: 650ms
+    - duration: 650ms
+      lights:
+        l_gi_5bank_lower:
+          color: 241038
+          fade: 650ms
+        l_gi_5bank_upper:
+          color: 241038
+          fade: 650ms
+        l_gi_right_lower_triangle:
+          color: 241038
+          fade: 650ms
+  clive_blotto_infected_lower_left:
+    - duration: 650ms
+      lights:
+        l_gi_left_sling_lower:
+          color: F040F0
+          fade: 650ms
+        l_gi_left_sling_upper:
+          color: F040F0
+          fade: 650ms
+    - duration: 650ms
+      lights:
+        l_gi_left_sling_lower:
+          color: 241038
+          fade: 650ms
+        l_gi_left_sling_upper:
+          color: 241038
+          fade: 650ms
+  clive_blotto_infected_lower_right:
+    - duration: 650ms
+      lights:
+        l_gi_right_return:
+          color: F040F0
+          fade: 650ms
+        l_gi_right_sling:
+          color: F040F0
+          fade: 650ms
+    - duration: 650ms
+      lights:
+        l_gi_right_return:
+          color: 241038
+          fade: 650ms
+        l_gi_right_sling:
+          color: 241038
+          fade: 650ms
+  clive_blotto_spread_flash:
+    - duration: 200ms
+      lights:
+        gi: FFFFFF
+  clive_blotto_clear_flash:
+    - duration: 250ms
+      lights:
+        gi: 40FF40
+  clive_blotto_right_pop_infected:
+    - duration: 650ms
+      lights:
+        l_pop_2_1:
+          color: F040F0
+          fade: 650ms
+        l_pop_2_2:
+          color: F040F0
+          fade: 650ms
+        l_pop_2_3:
+          color: F040F0
+          fade: 650ms
+        l_pop_2_4:
+          color: F040F0
+          fade: 650ms
+        l_pop_2_5:
+          color: F040F0
+          fade: 650ms
+        l_pop_2_6:
+          color: F040F0
+          fade: 650ms
+        l_pop_2_7:
+          color: F040F0
+          fade: 650ms
+        l_pop_2_8:
+          color: F040F0
+          fade: 650ms
+        l_pop_2_9:
+          color: F040F0
+          fade: 650ms
+        l_pop_2_10:
+          color: F040F0
+          fade: 650ms
+        l_pop_2_11:
+          color: F040F0
+          fade: 650ms
+        l_pop_2_12:
+          color: F040F0
+          fade: 650ms
+        l_pop_2_13:
+          color: F040F0
+          fade: 650ms
+    - duration: 650ms
+      lights:
+        l_pop_2_1:
+          color: 241038
+          fade: 650ms
+        l_pop_2_2:
+          color: 241038
+          fade: 650ms
+        l_pop_2_3:
+          color: 241038
+          fade: 650ms
+        l_pop_2_4:
+          color: 241038
+          fade: 650ms
+        l_pop_2_5:
+          color: 241038
+          fade: 650ms
+        l_pop_2_6:
+          color: 241038
+          fade: 650ms
+        l_pop_2_7:
+          color: 241038
+          fade: 650ms
+        l_pop_2_8:
+          color: 241038
+          fade: 650ms
+        l_pop_2_9:
+          color: 241038
+          fade: 650ms
+        l_pop_2_10:
+          color: 241038
+          fade: 650ms
+        l_pop_2_11:
+          color: 241038
+          fade: 650ms
+        l_pop_2_12:
+          color: 241038
+          fade: 650ms
+        l_pop_2_13:
+          color: 241038
+          fade: 650ms
 
 sound_player:
   play_mode_jackpot:

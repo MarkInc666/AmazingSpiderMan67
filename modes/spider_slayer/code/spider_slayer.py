@@ -11,16 +11,17 @@ class SpiderSlayer(CaseFileMixin, Mode):
     DISPLAY_NAME = "Spider-Slayer"
 
     REQUIRED_HITS = 15
-    NORMAL_SHOT_VALUES = (50_000, 25_000, 10_000, 5_000)
-    MORE_JACKPOTS_SHOT_VALUES = (50_000, 50_000, 10_000, 5_000)
-    BIGGER_SHOT_VALUES = (75_000, 50_000, 25_000, 10_000)
-    BIGGER_MORE_JACKPOTS_SHOT_VALUES = (75_000, 75_000, 25_000, 10_000)
+    NORMAL_SHOT_VALUES = (100_000, 50_000, 20_000, 10_000)
+    MORE_JACKPOTS_SHOT_VALUES = (100_000, 100_000, 20_000, 10_000)
+    BIGGER_SHOT_VALUES = (150_000, 100_000, 50_000, 20_000)
+    BIGGER_MORE_JACKPOTS_SHOT_VALUES = (150_000, 150_000, 50_000, 20_000)
     BASE_JACKPOT = 2_000_000
     BIGGER_JACKPOT = 2_500_000
     JACKPOT_DECAY = 100_000
     MIN_JACKPOT = 100_000
-    JACKPOT_SECONDS = 20
-    MORE_TIME_JACKPOT_SECONDS = 25
+    JACKPOT_SECONDS = 30
+    MORE_TIME_JACKPOT_SECONDS = 35
+    MIN_JACKPOT_END_SECONDS = 10
     VUK_EJECT_DELAY_MS = 1_500
 
     SHOTS = (
@@ -80,6 +81,9 @@ class SpiderSlayer(CaseFileMixin, Mode):
             self.shot_values = self.NORMAL_SHOT_VALUES
         self.jackpot_seconds = self.MORE_TIME_JACKPOT_SECONDS if self.has_case_file("more_time") else self.JACKPOT_SECONDS
         self.jackpot_seconds_left = 0
+        self.jackpot_decay_elapsed = 0
+        self.jackpot_start_value = self.slayers_jackpot
+        self.jackpot_at_floor = False
         self.shot_assist_used = False
 
         player = self.machine.game.player
@@ -90,7 +94,7 @@ class SpiderSlayer(CaseFileMixin, Mode):
         self.publish_active_case_file_helpers([
             ("more_jackpots", "SECOND SHOT STAYS AT FULL VALUE"),
             ("bigger_jackpots", "BIGGER SHOTS / 2.5M JACKPOT"),
-            ("more_time", "25 SECOND SLAYER JACKPOT"),
+            ("more_time", "35 SECOND SLAYER JACKPOT"),
             ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST SHOT SCORES AND COUNTS TWICE"),
         ])
@@ -172,6 +176,9 @@ class SpiderSlayer(CaseFileMixin, Mode):
 
         self._show_message("SLAYER EXPOSED", "SHOOT THE DAILY BUGLE", reminder=True)
         self.jackpot_seconds_left = self.jackpot_seconds
+        self.jackpot_decay_elapsed = 0
+        self.jackpot_start_value = self.slayers_jackpot
+        self.jackpot_at_floor = False
         self._sync_vars()
         self._update_status()
         self.delay.add(name="spider_slayer_decay", ms=1000, callback=self._decay_tick)
@@ -179,28 +186,51 @@ class SpiderSlayer(CaseFileMixin, Mode):
     def _decay_tick(self):
         if self.mode_done or self.phase != "jackpot":
             return
-        self.jackpot_seconds_left = max(0, self.jackpot_seconds_left - 1)
-        self.slayers_jackpot = max(self.MIN_JACKPOT, self.slayers_jackpot - self.JACKPOT_DECAY)
-        self.machine.events.post("spider_slayer_jackpot_changed", value=self.slayers_jackpot)
+
+        if self.jackpot_at_floor:
+            # Once the jackpot reaches 100K, the player gets ten final
+            # seconds to collect it before Spider-Slayer escapes.
+            self.jackpot_seconds_left = max(0, self.jackpot_seconds_left - 1)
+            if self.jackpot_seconds_left == 0:
+                self._expire_jackpot()
+                return
+        else:
+            # Spread the decline across the requested jackpot window,
+            # reserving the last ten seconds at the 100K minimum.
+            self.jackpot_decay_elapsed += 1
+            decay_seconds = self.jackpot_seconds - self.MIN_JACKPOT_END_SECONDS
+            total_drop = self.jackpot_start_value - self.MIN_JACKPOT
+            dropped = (total_drop * self.jackpot_decay_elapsed + decay_seconds - 1) // decay_seconds
+            self.slayers_jackpot = max(self.MIN_JACKPOT, self.jackpot_start_value - dropped)
+            self.machine.events.post("spider_slayer_jackpot_changed", value=self.slayers_jackpot)
+            if self.slayers_jackpot == self.MIN_JACKPOT:
+                self.jackpot_at_floor = True
+                self.jackpot_seconds_left = self.MIN_JACKPOT_END_SECONDS
+                self._show_message("LAST CHANCE", "10 SECONDS TO STOP THE SLAYER")
+            else:
+                self.jackpot_seconds_left = self.jackpot_seconds - self.jackpot_decay_elapsed
+
         self._sync_vars()
         self._update_status()
-        if self.jackpot_seconds_left <= 0:
-            self._expire_jackpot()
-        else:
-            self.delay.add(name="spider_slayer_decay", ms=1000, callback=self._decay_tick)
+        self.delay.add(name="spider_slayer_decay", ms=1000, callback=self._decay_tick)
 
     def _expire_jackpot(self):
+        if self.mode_done or self.phase != "jackpot":
+            return
+        self.delay.remove("spider_slayer_decay")
         self.machine.events.post("cancel_mode_message_reminder")
         self.phase = "expired"
+        self.mode_done = True
         self.slayers_jackpot = 0
         self.collected_jackpot = 0
+        self.machine.game.player["spider_slayer_state"] = 2
         self.machine.events.post("spider_slayer_vuk_chase_stop")
         self.machine.events.post("spider_slayer_jackpot_expired")
         self.machine.events.post("spider_slayer_disable_safety_net")
         self.machine.events.post("rooftop_diverter_close")
         self._show_message("SLAYER ESCAPED", "JACKPOT EXPIRED")
         self._sync_vars()
-        self._update_status()
+        self.machine.events.post("spider_slayer_mode_complete")
 
     def _vuk_hit(self, **kwargs):
         if self.mode_done:
