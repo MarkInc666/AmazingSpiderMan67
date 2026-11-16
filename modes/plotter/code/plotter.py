@@ -19,7 +19,7 @@ class Plotter(CaseFileMixin, Mode):
     VUK_SECONDS = 20
     MORE_TIME_VUK_SECONDS = 30
     JACKPOT_DISPLAY_MS = 2_000
-    RUMORS_TO_LIGHT_SAUCER = 2
+    RUMORS_TO_LIGHT_SAUCER = 1
     BIGGER_JACKPOTS_MULTIPLIER = 2
 
     def _post_mode_jackpot_sfx_if_needed(

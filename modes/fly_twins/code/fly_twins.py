@@ -251,6 +251,10 @@ class FlyTwins(CaseFileMixin, Mode):
         self.last_award = award
         self.jackpots_collected += 1
 
+        # Only the collected saucer is consumed. Other qualified saucers
+        # remain lit and available in the next capture / Super round.
+        self.lit_saucers.remove(saucer)
+
         if self.round_number == self.SUPER_ROUND:
             self.super_jackpots += 1
             self._score(award)
@@ -281,11 +285,22 @@ class FlyTwins(CaseFileMixin, Mode):
         self._reset_round_progress()
 
     def _reset_round_progress(self):
-        self.upper_targets_hit.clear()
-        self.lit_saucers.clear()
+        # Keep uncollected saucers qualified across rounds. The round-reset
+        # event clears all lamp/shows, so restore the retained qualifications.
+        retained_targets = {
+            target for target, saucer in self.UPPER_TARGETS.items()
+            if saucer in self.lit_saucers
+        }
+        self.upper_targets_hit = retained_targets
         self.machine.events.post("fly_twins_round_reset")
         self.machine.events.post("fly_twins_round_started", round=self.round_number)
         self.machine.events.post("fly_twins_upper_access_needed")
+        for target in self.UPPER_TARGETS:
+            if target in retained_targets:
+                self.machine.events.post(f"fly_twins_upper_{target}_complete")
+                self.machine.events.post(f"fly_twins_{self.UPPER_TARGETS[target]}_lit")
+        if len(self.upper_targets_hit) >= len(self.UPPER_TARGETS):
+            self.machine.events.post("fly_twins_upper_access_complete")
         self._sync_vars()
 
     def _multiball_ended(self, **kwargs):

@@ -8,8 +8,8 @@ STATUS
 
 CORE LOOP
 - Pop hits build Rumors and score 25,000.
-- Two Rumors make the lower playfield spinner ready.
-- The lower spinner consumes two Rumors, scores 50,000, and lights one random
+- One Rumor makes the lower playfield spinner ready.
+- The lower spinner consumes one Rumor, scores 50,000, and lights one random
   saucer.
 - The upper spinner is not used by this mode.
 - Drop targets are not Plotter scoring/objective shots; completing either lower
@@ -44,8 +44,8 @@ CASE FILES
 
 LIGHTING
 - Base GI remains amber throughout the mode.
-- With fewer than two Rumors available, both pop-bumper lamp rings pulse green.
-- With two or more Rumors and an available saucer, the lower spinner insert
+- With no Rumors available, both pop-bumper lamp rings pulse green.
+- With one or more Rumors and an available saucer, the lower spinner insert
   flashes yellow. The upper spinner is never lit for Plotter.
 - Each lit saucer flashes its two physical red side inserts. Multiple lit
   saucers can flash at the same time.
@@ -62,7 +62,7 @@ LIGHTING
 
 MESSAGES AND STATUS
 - Start: POPS BUILD RUMORS.
-- Second available Rumor: SPINNER READY / SHOOT THE YELLOW LOWER SPINNER.
+- First available Rumor: SPINNER READY / SHOOT THE YELLOW LOWER SPINNER.
 - Spinner attempted too early: NEED RUMORS / HIT POPS.
 - Spinner collection: SAUCER LIT / COLLECT THE RED SAUCER.
 - Lit saucer: PLOTTER JACKPOT plus scheme progress toward three.
