@@ -8,10 +8,11 @@ CORE FLOW
 - Each reactor hit raises temperature by 1; spinner hits cool it by 1.
 - GI communicates temperature from green at TEMP 0 through yellow/orange to red
   at TEMP 5, while also pulsing faster as the reactor gets hotter.
-- At TEMP 5, an overheat grace starts: 4 seconds normally or 8 seconds with
+  The pulse low colours stay bright enough for ball visibility.
+- At TEMP 5, an overheat grace starts: 7 seconds normally or 11 seconds with
   More Time. The persistent status counts down the remaining grace time.
 - Completing all four stations opens rooftop access and lights the VUK for the
-  500,000 Reactor Super.
+  1,000,000 Reactor Super (1,500,000 with Bigger Jackpots).
 - Reactor Super is timed: 15 seconds normally or 20 seconds with More Time.
   Its remaining time is shown in the persistent mode status. Expiry fails the
   mode if the VUK Super is not collected.
@@ -23,8 +24,8 @@ CORE FLOW
 
 CASE FILES
 - More Jackpots: all five right-bank targets score reactor hits.
-- Bigger Jackpots: reactor hits score 150,000.
-- More Time: extends overheat grace from 4 to 8 seconds and Reactor Super from
+- Bigger Jackpots: reactor hits score 150,000; Reactor Super scores 1,500,000.
+- More Time: extends overheat grace from 7 to 11 seconds and Reactor Super from
   15 to 20 seconds.
 - Safety Net: starts a 10-second opening ball save.
 - Shot Assist: the first left drop adds one random remaining left drop.

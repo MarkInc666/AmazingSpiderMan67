@@ -282,27 +282,27 @@ shows:
   - duration: 500ms
     lights: {gi: 80F040}
   - duration: 500ms
-    lights: {gi: "203C10"}
+    lights: {gi: "609030"}
   professor_pretorius_temp_2:
   - duration: 400ms
     lights: {gi: F0E040}
   - duration: 400ms
-    lights: {gi: "3C3810"}
+    lights: {gi: "908830"}
   professor_pretorius_temp_3:
   - duration: 300ms
     lights: {gi: F0A040}
   - duration: 300ms
-    lights: {gi: "3C2810"}
+    lights: {gi: "906030"}
   professor_pretorius_temp_4:
   - duration: 200ms
     lights: {gi: F06040}
   - duration: 200ms
-    lights: {gi: "3C1810"}
+    lights: {gi: "903C30"}
   professor_pretorius_temp_5:
   - duration: 100ms
     lights: {gi: F04040}
   - duration: 100ms
-    lights: {gi: "3C1010"}
+    lights: {gi: "902828"}
 
   professor_pretorius_spinner_flash:
   - duration: 200ms

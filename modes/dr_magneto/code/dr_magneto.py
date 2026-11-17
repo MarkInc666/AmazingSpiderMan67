@@ -10,20 +10,20 @@ class DrMagneto(CaseFileMixin, Mode):
     MODE_KEY = "dr_magneto"
     DISPLAY_NAME = "DR. MAGNETO"
 
-    ROLLOVER_VALUE = 100_000
-    BIGGER_ROLLOVER_VALUE = 150_000
-    POP_VALUE = 250_000
+    ROLLOVER_VALUE = 125_000
+    BIGGER_ROLLOVER_VALUE = 175_000
+    POP_VALUE = 300_000
     STAR_VALUE = 250_000
-    SUPER_VALUE = 500_000
-    BIGGER_SUPER_VALUE = 750_000
+    SUPER_VALUE = 1_000_000
+    BIGGER_SUPER_VALUE = 1_500_000
 
-    OBJECTIVE_SECONDS = 8
-    MORE_TIME_OBJECTIVE_SECONDS = 10
+    OBJECTIVE_SECONDS = 12
+    MORE_TIME_OBJECTIVE_SECONDS = 15
     STAR_SECONDS = 6
-    SUPER_SECONDS = 16
-    MORE_TIME_SUPER_SECONDS = 20
-    OBJECTIVE_FAST_AFTER_MS = 4_000
-    SUPER_CHASE_FAST_AFTER_MS = 8_000
+    SUPER_SECONDS = 24
+    MORE_TIME_SUPER_SECONDS = 30
+    OBJECTIVE_FAST_AFTER_MS = 6_000
+    SUPER_CHASE_FAST_AFTER_MS = 12_000
 
     POP_FOR_ROLLOVER = {"a": "left", "b": "right"}
 
@@ -86,8 +86,8 @@ class DrMagneto(CaseFileMixin, Mode):
         self.publish_case_file_bonus_events(self.MODE_KEY)
         self.publish_active_case_file_helpers([
             ("more_jackpots", "NEW OBJECTIVES LIGHT STAR FOR 250K"),
-            ("bigger_jackpots", "150K ROLLOVERS / 750K SUPER"),
-            ("more_time", "10 SECOND CIRCUITS / 20 SECOND SUPER"),
+            ("bigger_jackpots", "175K ROLLOVERS / 1.5M SUPER"),
+            ("more_time", "15 SECOND CIRCUITS / 30 SECOND SUPER"),
             ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST QUALIFIER LIGHTS A AND B"),
         ])
@@ -167,7 +167,7 @@ class DrMagneto(CaseFileMixin, Mode):
 
     def _light_rollover(self, rollover, light_star=True):
         pop_side = self.POP_FOR_ROLLOVER[rollover]
-        if self.pop_state[pop_side] == "solid":
+        if self.pop_state[pop_side] != "off":
             return False
 
         timer_name = f"dr_magneto_{rollover}_timeout"
@@ -292,8 +292,11 @@ class DrMagneto(CaseFileMixin, Mode):
         self.side_seconds_left[side] = 0
         self.delay.remove(f"dr_magneto_{side}_pop_fast_delay")
         self.machine.events.post(f"dr_magneto_{side}_pop_expired")
-        self.machine.events.post(f"dr_magneto_{side}_qualifier_ready")
-        self._show_message("POP CIRCUIT LOST", f"RELIGHT {side.upper()} POP")
+        # A missed pop backs this circuit up one step, to its rollover,
+        # instead of erasing the rollover progress and requiring a qualifier.
+        rollover = "a" if side == "left" else "b"
+        self._light_rollover(rollover)
+        self._show_message("POP CIRCUIT LOST", f"HIT {rollover.upper()} TO RELIGHT {side.upper()} POP")
         self._update_status()
         self._sync_vars()
 

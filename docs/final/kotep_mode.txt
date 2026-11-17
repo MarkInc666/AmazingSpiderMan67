@@ -15,9 +15,13 @@ CORE GAMEPLAY
 - If the timer expires, Kotep escapes. The summary now distinguishes this result from a successful defeat.
 
 LIGHTING
-- The demon phase uses dim dark-red background GI.
-- Every active demon flashes yellow independently at 300ms on and 300ms dim/off.
-- A destroyed demon immediately returns to the dim background state.
+- The demon phase uses bright muted red GI (#A04040), chosen for visibility on physical LEDs.
+- Active demon targets flash bright yellow (#FFFF40) independently at 300ms on and 300ms background/off.
+- Regional GI used for drop-bank and pop-bumper demon areas alternates between #A04040 and #FFFF40.
+- When a demon is destroyed, its regional GI returns to solid #A04040 instead of turning off.
+- Dedicated left/center web-target inserts still turn off when no longer lit; they are not regional GI.
+- The rooftop ramp/VUK route remains golden yellow (#FFD040).
+- The successful Super produces white flashes with a return to base red (#A04040) between flashes.
 - During the scepter phase, the shared Master Vine route chase runs from the
   lower spinner through the ramp to the VUK. The old full-playfield red/off
   strobe is not used.

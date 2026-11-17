@@ -29,6 +29,7 @@ class DrVonSchlick(CaseFileMixin, Mode):
     BIGGER_MORE_JACKPOTS_PELLET_6_VALUE = 300_000
     BIGGER_MORE_JACKPOTS_PELLET_7_VALUE = 350_000
     SUPER_VALUE = 1_000_000
+    BIGGER_SUPER_VALUE = 1_500_000
     SUPER_SECONDS = 20
     MORE_TIME_SUPER_SECONDS = 30
     FLOOD_BANDS = 8
@@ -70,6 +71,10 @@ class DrVonSchlick(CaseFileMixin, Mode):
         self.super_seconds_left = 0
 
         self.case_files = self.get_case_file_bonuses()
+        self.super_value = (
+            self.BIGGER_SUPER_VALUE if self.has_case_file("bigger_jackpots")
+            else self.SUPER_VALUE
+        )
         self.pellet_value = (
             self.BIGGER_PELLET_VALUE
             if self.has_case_file("bigger_jackpots")
@@ -100,7 +105,7 @@ class DrVonSchlick(CaseFileMixin, Mode):
                 if self.has_case_file("bigger_jackpots")
                 else "EXTRA PELLETS WORTH 200K / 250K",
             ),
-            ("bigger_jackpots", "FIRST FIVE OIL PELLETS WORTH 150K"),
+            ("bigger_jackpots", "PELLETS 150K / SUPER JACKPOT 1.5M"),
             ("more_time", "SUPER TIMER EXTENDED TO 30 SECONDS"),
             ("safety_net", '30s OPENING SAVE / BALL SAVE STARTS WITH SUPER'),
             ("shot_assist", "FIRST PELLET COUNTS TWICE"),
@@ -242,7 +247,7 @@ class DrVonSchlick(CaseFileMixin, Mode):
         self.machine.events.post("dr_von_schlick_vuk_chase_start")
         if self.has_case_file("safety_net"):
             self.machine.events.post("start_case_file_ball_save")
-        self._show_message("REACTOR READY", "SHOOT VUK", self.SUPER_VALUE, self.super_seconds_left, reminder=True)
+        self._show_message("REACTOR READY", "SHOOT VUK", self.super_value, self.super_seconds_left, reminder=True)
         self.delay.add(name="dr_von_schlick_super_tick", ms=1000, callback=self._super_tick)
 
     def _super_tick(self):
@@ -252,7 +257,7 @@ class DrVonSchlick(CaseFileMixin, Mode):
         if self.super_seconds_left <= 0:
             self._fail_mode()
             return
-        self._show_message("REACTOR READY", "SHOOT VUK", self.SUPER_VALUE, self.super_seconds_left, reminder=True)
+        self._show_message("REACTOR READY", "SHOOT VUK", self.super_value, self.super_seconds_left, reminder=True)
         self.delay.add(name="dr_von_schlick_super_tick", ms=1000, callback=self._super_tick)
 
     def _vuk_hit(self, **kwargs):
@@ -273,7 +278,7 @@ class DrVonSchlick(CaseFileMixin, Mode):
         self.delay.remove("dr_von_schlick_move_shot")
         self.delay.remove("dr_von_schlick_super_tick")
         self.machine.events.post("dr_von_schlick_clear_shot_lights")
-        self._show_message("FLOOD THE REACTOR", "WATER RISING", self.SUPER_VALUE)
+        self._show_message("FLOOD THE REACTOR", "WATER RISING", self.super_value)
         for band in range(1, self.FLOOD_BANDS + 1):
             self.delay.add(
                 name=f"dr_von_schlick_flood_{band}",
@@ -286,13 +291,13 @@ class DrVonSchlick(CaseFileMixin, Mode):
             return
         self.machine.events.post(f"dr_von_schlick_flood_band_{band}")
         if band >= self.FLOOD_BANDS:
-            self._score(self.SUPER_VALUE)
+            self._score(self.super_value)
             self.super_jackpots = 1
             self.machine.events.post(
                 "show_mode_jackpot",
                 message_mode_title="REACTOR FLOODED",
                 message_mode_subtitle="SUPER JACKPOT",
-                message_mode_value=self.SUPER_VALUE,
+                message_mode_value=self.super_value,
             )
             self.machine.events.post("play_mode_super_jackpot")
             # Keep the flood-winning ball through the Jackpot presentation and

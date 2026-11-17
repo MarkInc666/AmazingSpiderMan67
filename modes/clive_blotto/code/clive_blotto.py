@@ -8,8 +8,8 @@ class CliveBlotto(CaseFileMixin, Mode):
     """Spirit-Scope Containment.
 
     Drain the rising Blotto Meter with either spinner while clearing infected
-    playfield areas. Clive is defeated when the meter is empty and no area is
-    infected. If all six areas become infected at once, Blotto overruns the city.
+    playfield areas. Clive is defeated after clearing at least one infected area,
+    with the meter empty and no areas currently infected. If all six areas become infected at once, Blotto overruns the city.
     """
 
     MODE_KEY = "clive_blotto"
@@ -344,8 +344,8 @@ class CliveBlotto(CaseFileMixin, Mode):
 
         self._publish_status()
 
-    def _check_completion(self):
-        if self.mode_done or self.meter != 0 or self.infected:
+    def _check_completion(self, force=False):
+        if self.mode_done or (not force and (self.cleared_count < 1 or self.meter != 0 or self.infected)):
             return False
         self._score(self.completion_score)
         self.mode_done = True
@@ -370,7 +370,8 @@ class CliveBlotto(CaseFileMixin, Mode):
             return
         self.meter = 0
         self.infected.clear()
-        self._check_completion()
+        # Service/test completion can still bypass normal victory requirements.
+        self._check_completion(force=True)
 
     def _fail_mode(self, reason="BLOTTO OVERRUN", **kwargs):
         if self.mode_done:

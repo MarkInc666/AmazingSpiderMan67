@@ -20,6 +20,7 @@ class Fakir(CaseFileMixin, Mode):
     SPINNER_ADD = 25_000
     SAUCER_LOCK_SCORE = 25_000
     NORMAL_RUBY_TIMER_MS = 10_000
+    HELD_SAUCER_INACTIVITY_MS = 10_000
     MORE_TIME_RUBY_TIMER_MS = 15_000
     SAUCER_EJECT_SAFETY_NET_MS = 650
     EXTRA_SAUCER_EJECT_MS = 350
@@ -74,6 +75,7 @@ class Fakir(CaseFileMixin, Mode):
         self.delay = DelayManager(self.machine)
         self.mode_done = False
         self.ruby_active = False
+        self.held_saucer_watchdog_cancelled = False
         self.ruby_timer_started = False
         self.ruby_seconds_remaining = 0
         self.locked_saucer = None
@@ -115,11 +117,19 @@ class Fakir(CaseFileMixin, Mode):
         self.add_mode_event_handler("fakir_saucer_3_hit", self._saucer_hit, saucer=3)
         self.add_mode_event_handler("fakir_spinner_hit", self._spinner_hit)
         self.add_mode_event_handler("fakir_upper_entered", self._upper_entered)
+        self.add_mode_event_handler("fakir_vuk_entered", self._vuk_entered)
         self.add_mode_event_handler("fakir_upper_left_hit", self._upper_target_hit, target="left")
         self.add_mode_event_handler("fakir_upper_center_hit", self._upper_target_hit, target="center")
         self.add_mode_event_handler("fakir_upper_right_hit", self._upper_target_hit, target="right")
         self.add_mode_event_handler("fakir_ruby_timer_expired_request", self._ruby_timer_expired)
         self.add_mode_event_handler("fakir_multiball_ended", self._multiball_ended)
+
+        # Reset the saucer-trap watchdog on *any* physical switch activation.
+        # Mode event handlers are removed automatically when Fakir stops.
+        for switch in self.machine.switches.values():
+            self.add_mode_event_handler(
+                f"{switch.name}_active", self._held_saucer_switch_activity,
+            )
 
         self._sync_player_vars("SHOOT SAUCERS", "FAKE RUBIES")
         self.machine.events.post("fakir_startup_complete")
@@ -159,6 +169,7 @@ class Fakir(CaseFileMixin, Mode):
         self.machine.events.post("hide_mode_status")
         self.delay.remove("fakir_ruby_timer")
         self.delay.remove("fakir_ruby_timer_tick")
+        self.delay.remove("fakir_held_saucer_inactivity")
         self.delay.remove("fakir_restore_base_gi")
         self.delay.remove("fakir_safety_net_after_kickout")
         self.delay.remove("fakir_finish_ruby_release")
@@ -222,7 +233,9 @@ class Fakir(CaseFileMixin, Mode):
         self.shot_assist_active = self.shot_assist_available
         self.shot_assist_available = False
         self.ruby_active = True
+        self.held_saucer_watchdog_cancelled = False
         self.ruby_timer_started = False
+        self._reset_held_saucer_inactivity()
 
         self._score(self.SAUCER_LOCK_SCORE)
         self._sync_player_vars(title, self.TARGET_NAMES[self.current_target])
@@ -233,6 +246,42 @@ class Fakir(CaseFileMixin, Mode):
         self.machine.events.post("fakir_vuk_chase_start")
         self.machine.events.post("show_mode_message", message_mode_title="FAKE RUBY!", message_mode_subtitle=f"{self.TARGET_NAMES[self.current_target]}", message_mode_value=self.current_jackpot_value)
         self._light_current_target()
+
+    def _reset_held_saucer_inactivity(self):
+        if (not self._inactive() and self.ruby_active
+                and self.locked_saucer is not None
+                and not self.held_saucer_watchdog_cancelled):
+            self.delay.reset(
+                name="fakir_held_saucer_inactivity",
+                ms=self.HELD_SAUCER_INACTIVITY_MS,
+                callback=self._held_saucer_inactivity_expired,
+            )
+
+    def _held_saucer_switch_activity(self, **kwargs):
+        # The normal Ruby timer remains independent. Physical switch activity
+        # only postpones the release that protects against a trapped second ball.
+        self._reset_held_saucer_inactivity()
+
+    def _vuk_entered(self, **kwargs):
+        # The live ball has reached the Daily Bugle; this is no longer an
+        # inactivity/trapped-ball situation. Do not restart the watchdog on
+        # subsequent switch activity during the same Ruby attempt.
+        if self._inactive() or not self.ruby_active:
+            return
+        self.held_saucer_watchdog_cancelled = True
+        self.delay.remove("fakir_held_saucer_inactivity")
+
+    def _held_saucer_inactivity_expired(self, **kwargs):
+        if self._inactive() or not self.ruby_active or self.locked_saucer is None:
+            return
+        self.delay.remove("fakir_ruby_timer")
+        self.delay.remove("fakir_ruby_timer_tick")
+        self.machine.events.post(
+            "show_mode_message",
+            message_mode_title="SAUCER RELEASED",
+            message_mode_subtitle="NO SWITCH ACTIVITY",
+        )
+        self._end_ruby_attempt(release_saucer=True, jackpot_collected=False)
 
     def _upper_entered(self, **kwargs):
         """Start the Ruby timer only once the live ball reaches the roof."""
@@ -346,6 +395,7 @@ class Fakir(CaseFileMixin, Mode):
         self._end_ruby_attempt(release_saucer=True, jackpot_collected=False)
 
     def _end_ruby_attempt(self, release_saucer=True, jackpot_collected=False):
+        self.delay.remove("fakir_held_saucer_inactivity")
         self.machine.events.post("fakir_all_targets_off")
         self.machine.events.post("fakir_vuk_chase_stop")
         self.machine.events.post("rooftop_diverter_close")
@@ -461,6 +511,7 @@ class Fakir(CaseFileMixin, Mode):
             return
         self.mode_done = True
         self.delay.remove("fakir_ruby_timer")
+        self.delay.remove("fakir_held_saucer_inactivity")
         self.machine.game.player["fakir_state"] = 2
         self._release_locked_saucer()
         self.machine.events.post("fakir_all_lights_off")

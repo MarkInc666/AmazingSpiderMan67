@@ -89,156 +89,156 @@ show_player:
       action: stop
 light_player:
   kotep_gi_red:
-    gi: 401010
+    gi: A04040
 
   kotep_light_left_web:
-    l_left_web_target: yellow
+    l_left_web_target: FFFF40
   kotep_unlight_left_web:
     l_left_web_target: off
   kotep_dim_left_web:
     l_left_web_target: off
 
   kotep_light_center_web:
-    l_mid_web_target: yellow
+    l_mid_web_target: FFFF40
   kotep_unlight_center_web:
     l_mid_web_target: off
   kotep_dim_center_web:
     l_mid_web_target: off
 
   kotep_light_left_drops:
-    l_gi_3bank: yellow
+    l_gi_3bank: FFFF40
   kotep_unlight_left_drops:
-    l_gi_3bank: 401010
+    l_gi_3bank: A04040
   kotep_dim_left_drops:
-    l_gi_3bank: 401010
+    l_gi_3bank: A04040
 
   kotep_light_right_drops:
-    l_gi_5bank_lower: yellow
-    l_gi_5bank_upper: yellow
+    l_gi_5bank_lower: FFFF40
+    l_gi_5bank_upper: FFFF40
   kotep_unlight_right_drops:
-    l_gi_5bank_lower: 401010
-    l_gi_5bank_upper: 401010
+    l_gi_5bank_lower: A04040
+    l_gi_5bank_upper: A04040
   kotep_dim_right_drops:
-    l_gi_5bank_lower: 401010
-    l_gi_5bank_upper: 401010
+    l_gi_5bank_lower: A04040
+    l_gi_5bank_upper: A04040
 
   kotep_light_left_pop:
-    l_pop_1_1: yellow
-    l_pop_1_2: yellow
-    l_pop_1_3: yellow
-    l_pop_1_4: yellow
-    l_pop_1_5: yellow
-    l_pop_1_6: yellow
-    l_pop_1_7: yellow
-    l_pop_1_8: yellow
-    l_pop_1_9: yellow
-    l_pop_1_10: yellow
-    l_pop_1_11: yellow
-    l_pop_1_12: yellow
+    l_pop_1_1: FFFF40
+    l_pop_1_2: FFFF40
+    l_pop_1_3: FFFF40
+    l_pop_1_4: FFFF40
+    l_pop_1_5: FFFF40
+    l_pop_1_6: FFFF40
+    l_pop_1_7: FFFF40
+    l_pop_1_8: FFFF40
+    l_pop_1_9: FFFF40
+    l_pop_1_10: FFFF40
+    l_pop_1_11: FFFF40
+    l_pop_1_12: FFFF40
   kotep_unlight_left_pop:
-    l_pop_1_1: 401010
-    l_pop_1_2: 401010
-    l_pop_1_3: 401010
-    l_pop_1_4: 401010
-    l_pop_1_5: 401010
-    l_pop_1_6: 401010
-    l_pop_1_7: 401010
-    l_pop_1_8: 401010
-    l_pop_1_9: 401010
-    l_pop_1_10: 401010
-    l_pop_1_11: 401010
-    l_pop_1_12: 401010
+    l_pop_1_1: A04040
+    l_pop_1_2: A04040
+    l_pop_1_3: A04040
+    l_pop_1_4: A04040
+    l_pop_1_5: A04040
+    l_pop_1_6: A04040
+    l_pop_1_7: A04040
+    l_pop_1_8: A04040
+    l_pop_1_9: A04040
+    l_pop_1_10: A04040
+    l_pop_1_11: A04040
+    l_pop_1_12: A04040
   kotep_dim_left_pop:
-    l_pop_1_1: 401010
-    l_pop_1_2: 401010
-    l_pop_1_3: 401010
-    l_pop_1_4: 401010
-    l_pop_1_5: 401010
-    l_pop_1_6: 401010
-    l_pop_1_7: 401010
-    l_pop_1_8: 401010
-    l_pop_1_9: 401010
-    l_pop_1_10: 401010
-    l_pop_1_11: 401010
-    l_pop_1_12: 401010
+    l_pop_1_1: A04040
+    l_pop_1_2: A04040
+    l_pop_1_3: A04040
+    l_pop_1_4: A04040
+    l_pop_1_5: A04040
+    l_pop_1_6: A04040
+    l_pop_1_7: A04040
+    l_pop_1_8: A04040
+    l_pop_1_9: A04040
+    l_pop_1_10: A04040
+    l_pop_1_11: A04040
+    l_pop_1_12: A04040
 
   kotep_light_right_pop:
-    l_pop_2_1: yellow
-    l_pop_2_2: yellow
-    l_pop_2_3: yellow
-    l_pop_2_4: yellow
-    l_pop_2_5: yellow
-    l_pop_2_6: yellow
-    l_pop_2_7: yellow
-    l_pop_2_8: yellow
-    l_pop_2_9: yellow
-    l_pop_2_10: yellow
-    l_pop_2_11: yellow
-    l_pop_2_12: yellow
-    l_pop_2_13: yellow
+    l_pop_2_1: FFFF40
+    l_pop_2_2: FFFF40
+    l_pop_2_3: FFFF40
+    l_pop_2_4: FFFF40
+    l_pop_2_5: FFFF40
+    l_pop_2_6: FFFF40
+    l_pop_2_7: FFFF40
+    l_pop_2_8: FFFF40
+    l_pop_2_9: FFFF40
+    l_pop_2_10: FFFF40
+    l_pop_2_11: FFFF40
+    l_pop_2_12: FFFF40
+    l_pop_2_13: FFFF40
   kotep_unlight_right_pop:
-    l_pop_2_1: 401010
-    l_pop_2_2: 401010
-    l_pop_2_3: 401010
-    l_pop_2_4: 401010
-    l_pop_2_5: 401010
-    l_pop_2_6: 401010
-    l_pop_2_7: 401010
-    l_pop_2_8: 401010
-    l_pop_2_9: 401010
-    l_pop_2_10: 401010
-    l_pop_2_11: 401010
-    l_pop_2_12: 401010
-    l_pop_2_13: 401010
+    l_pop_2_1: A04040
+    l_pop_2_2: A04040
+    l_pop_2_3: A04040
+    l_pop_2_4: A04040
+    l_pop_2_5: A04040
+    l_pop_2_6: A04040
+    l_pop_2_7: A04040
+    l_pop_2_8: A04040
+    l_pop_2_9: A04040
+    l_pop_2_10: A04040
+    l_pop_2_11: A04040
+    l_pop_2_12: A04040
+    l_pop_2_13: A04040
   kotep_dim_right_pop:
-    l_pop_2_1: 401010
-    l_pop_2_2: 401010
-    l_pop_2_3: 401010
-    l_pop_2_4: 401010
-    l_pop_2_5: 401010
-    l_pop_2_6: 401010
-    l_pop_2_7: 401010
-    l_pop_2_8: 401010
-    l_pop_2_9: 401010
-    l_pop_2_10: 401010
-    l_pop_2_11: 401010
-    l_pop_2_12: 401010
-    l_pop_2_13: 401010
+    l_pop_2_1: A04040
+    l_pop_2_2: A04040
+    l_pop_2_3: A04040
+    l_pop_2_4: A04040
+    l_pop_2_5: A04040
+    l_pop_2_6: A04040
+    l_pop_2_7: A04040
+    l_pop_2_8: A04040
+    l_pop_2_9: A04040
+    l_pop_2_10: A04040
+    l_pop_2_11: A04040
+    l_pop_2_12: A04040
+    l_pop_2_13: A04040
 
   kotep_clear_demon_lights:
     l_left_web_target: off
     l_mid_web_target: off
-    l_gi_3bank: 401010
-    l_gi_5bank_lower: 401010
-    l_gi_5bank_upper: 401010
-    l_pop_1_1: 401010
-    l_pop_1_2: 401010
-    l_pop_1_3: 401010
-    l_pop_1_4: 401010
-    l_pop_1_5: 401010
-    l_pop_1_6: 401010
-    l_pop_1_7: 401010
-    l_pop_1_8: 401010
-    l_pop_1_9: 401010
-    l_pop_1_10: 401010
-    l_pop_1_11: 401010
-    l_pop_1_12: 401010
-    l_pop_2_1: 401010
-    l_pop_2_2: 401010
-    l_pop_2_3: 401010
-    l_pop_2_4: 401010
-    l_pop_2_5: 401010
-    l_pop_2_6: 401010
-    l_pop_2_7: 401010
-    l_pop_2_8: 401010
-    l_pop_2_9: 401010
-    l_pop_2_10: 401010
-    l_pop_2_11: 401010
-    l_pop_2_12: 401010
-    l_pop_2_13: 401010
+    l_gi_3bank: A04040
+    l_gi_5bank_lower: A04040
+    l_gi_5bank_upper: A04040
+    l_pop_1_1: A04040
+    l_pop_1_2: A04040
+    l_pop_1_3: A04040
+    l_pop_1_4: A04040
+    l_pop_1_5: A04040
+    l_pop_1_6: A04040
+    l_pop_1_7: A04040
+    l_pop_1_8: A04040
+    l_pop_1_9: A04040
+    l_pop_1_10: A04040
+    l_pop_1_11: A04040
+    l_pop_1_12: A04040
+    l_pop_2_1: A04040
+    l_pop_2_2: A04040
+    l_pop_2_3: A04040
+    l_pop_2_4: A04040
+    l_pop_2_5: A04040
+    l_pop_2_6: A04040
+    l_pop_2_7: A04040
+    l_pop_2_8: A04040
+    l_pop_2_9: A04040
+    l_pop_2_10: A04040
+    l_pop_2_11: A04040
+    l_pop_2_12: A04040
+    l_pop_2_13: A04040
 
   kotep_scepter_lit:
-    l_gi_ramp: yellow
+    l_gi_ramp: FFD040
 
   kotep_clear_lights:
     gi: E0E0E0
@@ -250,23 +250,23 @@ shows:
   kotep_scepter_ramp_flash:
   - duration: 300ms
     lights:
-      l_gi_ramp: yellow
+      l_gi_ramp: FFD040
   - duration: 300ms
     lights:
-      l_gi_ramp: 401010
+      l_gi_ramp: A04040
   kotep_super_burst:
   - duration: 150ms
     lights:
       gi: white
   - duration: 150ms
     lights:
-      gi: 401010
+      gi: A04040
   - duration: 150ms
     lights:
       gi: white
   - duration: 150ms
     lights:
-      gi: 401010
+      gi: A04040
 
 sound_player:
   play_mode_jackpot:

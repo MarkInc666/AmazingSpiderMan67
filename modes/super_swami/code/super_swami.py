@@ -9,13 +9,15 @@ class SuperSwami(CaseFileMixin, Mode):
     DISPLAY_NAME = "Super Swami"
     BASE_TIME = 40
     MORE_TIME_TIME = 50
-    BASE_VALUE = 100_000
-    BIGGER_BASE_VALUE = 200_000
-    VALUE_STEP = 50_000
-    MORE_JACKPOTS_VALUE = 500_000
+    BASE_VALUE = 150_000
+    BIGGER_BASE_VALUE = 250_000
+    VALUE_STEP = 75_000
+    MORE_JACKPOTS_VALUE = 750_000
+    BIGGER_MORE_JACKPOTS_VALUE = 1_000_000
+    BLACKOUT_JACKPOT_TIME = 15
     FLICKER_MIN_MS = 2_000
     FLICKER_MAX_MS = 5_000
-    FLICKER_DURATION_MS = 100
+    FLICKER_DURATION_MS = 200
 
     AREA_SWITCHES = {
         "upper_left": ['s_leaf_next_to_1', 's_saucer_1', 's_saucer_2', 's_saucer_3', 's_upper_entrance_opto', 's_upper_exit_left_opto'],
@@ -75,8 +77,8 @@ class SuperSwami(CaseFileMixin, Mode):
             self._schedule_area_flicker(area_name)
 
         self.publish_active_case_file_helpers([
-            ("more_jackpots", "BLACKOUT JACKPOT AT VUK"),
-            ("bigger_jackpots", "RESTORE VALUES START AT 200K"),
+            ("more_jackpots", "750K BLACKOUT JACKPOT AT VUK"),
+            ("bigger_jackpots", "RESTORE VALUES START AT 250K"),
             ("more_time", "50 SECOND CITY TIMER"),
             ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST AREA SPOTS ANOTHER"),
@@ -110,7 +112,7 @@ class SuperSwami(CaseFileMixin, Mode):
         if self.shot_assist_available and len(self.restored) < 6:
             self.shot_assist_available = False
             other = next(name for name in self.AREA_SWITCHES if name not in self.restored)
-            self._restore_area(other, scored=False)
+            self._restore_area(other, scored=True)
             self.machine.events.post("show_mode_message", message_mode_title="SHOT ASSIST", message_mode_subtitle=f"{self.AREA_LABELS[other]} RESTORED")
         if (
             len(self.restored) >= len(self.AREA_SWITCHES)
@@ -149,7 +151,7 @@ class SuperSwami(CaseFileMixin, Mode):
     def _flicker_area(self, area=None, **kwargs):
         if self.mode_done or self.final_jackpot_lit or area in self.restored:
             return
-        self.machine.events.post(f"super_swami_restore_{area}")
+        self.machine.events.post(f"super_swami_flicker_{area}")
         self.delay.reset(
             name=f"super_swami_flicker_end_{area}",
             ms=self.FLICKER_DURATION_MS,
@@ -168,13 +170,16 @@ class SuperSwami(CaseFileMixin, Mode):
             return
         if self.has_case_file("more_jackpots"):
             self.final_jackpot_lit = True
+            self.seconds_left = self.BLACKOUT_JACKPOT_TIME
+            self.delay.reset(name="super_swami_tick", ms=1000, callback=self._timer_tick)
+            self.machine.events.post("super_swami_timer_changed", seconds=self.seconds_left)
             for area_name in self.AREA_SWITCHES:
                 self.delay.remove(f"super_swami_flicker_{area_name}")
                 self.delay.remove(f"super_swami_flicker_end_{area_name}")
             self.machine.events.post("rooftop_diverter_open")
             self.machine.events.post("super_swami_light_vuk")
             self.machine.events.post("super_swami_vuk_chase_start")
-            self.machine.events.post("show_mode_message", message_mode_title="BLACKOUT JACKPOT", message_mode_subtitle="SHOOT THE VUK", reminder=True)
+            self.machine.events.post("show_mode_message", message_mode_title="BLACKOUT JACKPOT", message_mode_subtitle="SHOOT VUK - 15 SECONDS", reminder=True)
             self._update_status()
         else:
             self._complete_mode()
@@ -191,9 +196,10 @@ class SuperSwami(CaseFileMixin, Mode):
             self.machine.events.post("request_vuk_eject", delay_ms=1_000)
             return
 
-        self._score(self.MORE_JACKPOTS_VALUE)
+        jackpot = (self.BIGGER_MORE_JACKPOTS_VALUE if self.has_case_file("bigger_jackpots") else self.MORE_JACKPOTS_VALUE)
+        self._score(jackpot)
         self.machine.events.post("super_swami_vuk_chase_stop")
-        self.machine.events.post("show_mode_message", message_mode_title="BLACKOUT JACKPOT", message_mode_subtitle="500K")
+        self.machine.events.post("show_mode_message", message_mode_title="BLACKOUT JACKPOT", message_mode_subtitle=f"{jackpot // 1000}K")
         self.machine.events.post("play_mode_jackpot")
         self.machine.events.post("villain_summary_hold_vuk_until_done")
         self._complete_mode()

@@ -17,13 +17,14 @@ class ProfessorPretorius(CaseFileMixin, Mode):
     REACTOR_HIT_VALUE = 100_000
     BIGGER_REACTOR_HIT_VALUE = 150_000
     COOLING_VALUE = 50_000
-    SUPER_VALUE = 500_000
+    SUPER_VALUE = 1_000_000
+    BIGGER_SUPER_VALUE = 1_500_000
     SUPER_TIME_MS = 15_000
     MORE_TIME_SUPER_MS = 20_000
 
     OVERHEAT_TEMPERATURE = 5
-    OVERHEAT_GRACE_MS = 4_000
-    MORE_TIME_GRACE_MS = 8_000
+    OVERHEAT_GRACE_MS = 7_000
+    MORE_TIME_GRACE_MS = 11_000
     SHOT_ASSIST_DELAY_MS = 200
 
     LEFT_DROP_TARGETS = (1, 2, 3)
@@ -83,6 +84,11 @@ class ProfessorPretorius(CaseFileMixin, Mode):
             if self.has_case_file("bigger_jackpots")
             else self.REACTOR_HIT_VALUE
         )
+        self.super_value = (
+            self.BIGGER_SUPER_VALUE
+            if self.has_case_file("bigger_jackpots")
+            else self.SUPER_VALUE
+        )
         self.overheat_grace_ms = (
             self.MORE_TIME_GRACE_MS
             if self.has_case_file("more_time")
@@ -102,7 +108,7 @@ class ProfessorPretorius(CaseFileMixin, Mode):
         self.publish_active_case_file_helpers([
             ("more_jackpots", "ALL FIVE RIGHT DROPS SCORE"),
             ("bigger_jackpots", "REACTOR HITS WORTH 150K"),
-            ("more_time", "OVERHEAT 8s / REACTOR SUPER 20s"),
+            ("more_time", "OVERHEAT 11s / REACTOR SUPER 20s"),
             ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST LEFT DROP ADDS A RANDOM DROP"),
         ])
@@ -407,9 +413,9 @@ class ProfessorPretorius(CaseFileMixin, Mode):
 
         self.super_jackpots = 1
         self.machine.events.post("professor_pretorius_vuk_chase_stop")
-        self._score(self.SUPER_VALUE)
-        self.machine.events.post("professor_pretorius_super_collected", value=self.SUPER_VALUE)
-        self._show_jackpot("REACTOR SUPER", self.SUPER_VALUE)
+        self._score(self.super_value)
+        self.machine.events.post("professor_pretorius_super_collected", value=self.super_value)
+        self._show_jackpot("REACTOR SUPER", self.super_value)
         self.machine.events.post("villain_summary_hold_vuk_until_done")
         self._complete_mode()
 

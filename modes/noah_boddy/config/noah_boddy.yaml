@@ -184,83 +184,83 @@ shows:
   noah_boddy_roof_search_show:
   - duration: 250ms
     lights:
-      l_upper_left: yellow
-      l_upper_middle: yellow
-      l_upper_right: yellow
-      l_gi_a: yellow
+      l_upper_left: F0F040
+      l_upper_middle: F0F040
+      l_upper_right: F0F040
+      l_gi_a: F0F040
   - duration: 250ms
     lights:
-      l_upper_left: green
-      l_upper_middle: green
-      l_upper_right: green
-      l_gi_a: green
+      l_upper_left: 40FF80
+      l_upper_middle: 40FF80
+      l_upper_right: 40FF80
+      l_gi_a: 40FF80
 
   noah_boddy_lower_targets_search_show:
   - duration: 300ms
     lights:
-      l_3bankbonus: yellow
-      l_5bank_1: yellow
-      l_5bank_2: yellow
-      l_5bank_3: yellow
-      l_5bank_4: yellow
-      l_5bank_5: yellow
+      l_3bankbonus: F0F040
+      l_5bank_1: F0F040
+      l_5bank_2: F0F040
+      l_5bank_3: F0F040
+      l_5bank_4: F0F040
+      l_5bank_5: F0F040
   - duration: 300ms
     lights:
-      l_3bankbonus: off
-      l_5bank_1: off
-      l_5bank_2: off
-      l_5bank_3: off
-      l_5bank_4: off
-      l_5bank_5: off
+      l_3bankbonus: 8090A0
+      l_5bank_1: 8090A0
+      l_5bank_2: 8090A0
+      l_5bank_3: 8090A0
+      l_5bank_4: 8090A0
+      l_5bank_5: 8090A0
 
   noah_boddy_secret_left_show:
   - duration: 120ms
     lights:
-      l_3bankbonus: green
+      l_3bankbonus: 40FF80
   - duration: 120ms
     lights:
-      l_3bankbonus: yellow
+      l_3bankbonus: F0F040
 
   noah_boddy_secret_right_1_show:
   - duration: 120ms
     lights:
-      l_5bank_1: green
+      l_5bank_1: 40FF80
   - duration: 120ms
     lights:
-      l_5bank_1: off
+      l_5bank_1: F0F040
   noah_boddy_secret_right_2_show:
   - duration: 120ms
     lights:
-      l_5bank_2: green
+      l_5bank_2: 40FF80
   - duration: 120ms
     lights:
-      l_5bank_2: off
+      l_5bank_2: F0F040
   noah_boddy_secret_right_3_show:
   - duration: 120ms
     lights:
-      l_5bank_3: green
+      l_5bank_3: 40FF80
   - duration: 120ms
     lights:
-      l_5bank_3: off
+      l_5bank_3: F0F040
   noah_boddy_secret_right_4_show:
   - duration: 120ms
     lights:
-      l_5bank_4: green
+      l_5bank_4: 40FF80
   - duration: 120ms
     lights:
-      l_5bank_4: off
+      l_5bank_4: F0F040
   noah_boddy_secret_right_5_show:
   - duration: 120ms
     lights:
-      l_5bank_5: green
+      l_5bank_5: 40FF80
   - duration: 120ms
     lights:
-      l_5bank_5: off
+      l_5bank_5: F0F040
 
 light_player:
   # Full-playfield GI theme while this mode is active.
   mode_noah_boddy_started:
-    gi: 506070
+    gi: 8090A0
 
   mode_noah_boddy_stopping:
     gi: E0E0E0

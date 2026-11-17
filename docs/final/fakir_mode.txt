@@ -16,6 +16,13 @@ Core rules
 - A successful collect holds the saucer for 2 seconds before releasing it.
 - If the other live ball enters a different saucer while one ball is held, that
   second saucer ejects after 350ms without starting another Ruby attempt.
+- While a Ruby attempt holds a ball in a saucer, a separate 10-second inactivity
+  timer is restarted by any physical switch activation. If no switch fires for
+  10 seconds, the held ball ejects and that Ruby attempt resets. This safeguard
+  operates independently of the 10/15-second rooftop Ruby countdown.
+- A VUK hit cancels the inactivity safeguard for the remainder of that Ruby
+  attempt; later switch activity does not restart it. The VUK still ejects
+  normally, and the rooftop Ruby countdown is unchanged.
 
 Jackpot progression
 - Ruby Jackpot base: 250,000, or 400,000 with Bigger Jackpots.

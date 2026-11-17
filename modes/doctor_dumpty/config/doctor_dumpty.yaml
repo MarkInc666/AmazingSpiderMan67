@@ -150,7 +150,7 @@ shows:
         l_gi_3bank: blue
     - duration: 350ms
       lights:
-        l_gi_3bank: 202060
+        l_gi_3bank: 6060C0
 
   doctor_dumpty_left_bank_go:
     - duration: 1s

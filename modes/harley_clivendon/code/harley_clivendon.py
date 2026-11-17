@@ -11,8 +11,9 @@ class HarleyClivendon(CaseFileMixin, Mode):
     SAUCER_SCORE = 50_000
     BASE_JACKPOT_PER_AREA = 100_000
     BIGGER_JACKPOT_PER_AREA = 150_000
-    MIN_JACKPOT_AREAS = 4
+    MIN_JACKPOT_AREAS = 2
     SAFETY_NET_SECONDS = 10
+    SAUCER_HOLD_SECONDS = 20
     GATE_CLOSE_FALLBACK_MS = 5_000
     SAUCER_EJECT_EVENTS = {
         1: "delayed_kickout_saucer_1",
@@ -59,6 +60,7 @@ class HarleyClivendon(CaseFileMixin, Mode):
         self.biggest_jackpot = 0
         self.safety_net_used = False
         self.shot_assist_used = False
+        self.more_jackpots_next_lock = False
         self.rooftop_gate_open = False
         self.waiting_for_upper_entry = False
         self.jackpot_per_area = self.BIGGER_JACKPOT_PER_AREA if self.has_case_file("bigger_jackpots") else self.BASE_JACKPOT_PER_AREA
@@ -66,7 +68,7 @@ class HarleyClivendon(CaseFileMixin, Mode):
 
         self.publish_case_file_bonus_events(self.MODE_KEY)
         self.publish_active_case_file_helpers([
-            ("more_jackpots", "TWO AREAS STAY LIT"),
+            ("more_jackpots", "ONE BONUS AREA ON NEXT LOCK"),
             ("bigger_jackpots", "150K PER AREA"),
             ("more_time", "25 SECOND OPENING SAVE"),
             ("safety_net", '30s OPENING SAVE / BALL SAVE AFTER FIRST JACKPOT'),
@@ -102,7 +104,7 @@ class HarleyClivendon(CaseFileMixin, Mode):
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("harley_vuk_chase_stop")
         self.machine.events.post("harley_area_lights_clear")
-        self.machine.events.post("show_mode_message_long", message_mode_title="HYPNOTIC HOLD", message_mode_subtitle="LOCK A BALL - LIGHT 4 AREAS")
+        self.machine.events.post("show_mode_message_long", message_mode_title="HYPNOTIC HOLD", message_mode_subtitle="LOCK A BALL - LIGHT 2 AREAS")
         self._sync()
         self.machine.events.post("cancel_mode_message_reminder")
         self.objective_reminder_step = 0
@@ -140,8 +142,10 @@ class HarleyClivendon(CaseFileMixin, Mode):
                 self._eject_saucer(saucer, 750)
             return
         if self.held_saucer is not None:
-            # Ignore a repeat/bounce from the switch owned by the held ball.
-            # A different occupied saucer is not part of the controlled lock.
+            # Another saucer arrival buys a fresh 20-second lock window.
+            # The held saucer's own switch can also bounce; it is not safe to
+            # eject that saucer because the held ball is still in it.
+            self._restart_saucer_hold_timer()
             if saucer != self.held_saucer:
                 self._eject_saucer(saucer, 750)
             return
@@ -150,20 +154,30 @@ class HarleyClivendon(CaseFileMixin, Mode):
             return
         self.held_saucer = saucer
         self.lock_accepting = False
+        self._restart_saucer_hold_timer()
         self._score(self.SAUCER_SCORE)
         self.machine.events.post("harley_saucers_unavailable")
         self.machine.events.post(f"harley_saucer_{saucer}_held")
         self.machine.events.post("harley_area_build_started")
         for area in self.lit_areas:
             self.machine.events.post(f"harley_area_{area}_lit")
-        self.machine.events.post("show_mode_message_long", message_mode_title="BALL CAPTURED", message_mode_subtitle="LIGHT 4 PLAYFIELD AREAS", message_mode_value=self.SAUCER_SCORE)
+        if self.more_jackpots_next_lock:
+            # More Jackpots gives a head start AFTER the next lock, without
+            # carrying zones across a collected Super or making it instantly ready.
+            candidates = [area for area in self.AREAS if area not in self.lit_areas]
+            if candidates:
+                bonus_area = random.choice(candidates)
+                self.lit_areas.add(bonus_area)
+                self.machine.events.post(f"harley_area_{bonus_area}_lit")
+            self.more_jackpots_next_lock = False
+        self.machine.events.post("show_mode_message_long", message_mode_title="BALL CAPTURED", message_mode_subtitle="LIGHT 2 PLAYFIELD AREAS", message_mode_value=self.SAUCER_SCORE)
         self._sync()
 
     def _vuk_hit(self, **kwargs):
         if self.mode_done:
             self._eject_vuk()
             return
-        if self.held_saucer is None or len(self.lit_areas) < self.MIN_JACKPOT_AREAS:
+        if len(self.lit_areas) < self.MIN_JACKPOT_AREAS:
             self._eject_vuk()
             return
         value = len(self.lit_areas) * self.jackpot_per_area
@@ -190,10 +204,10 @@ class HarleyClivendon(CaseFileMixin, Mode):
             callback=self._finish_vuk_gate_passage,
         )
 
-        keep = set()
-        if self.has_case_file("more_jackpots"):
-            keep = set(random.sample(list(self.lit_areas), min(2, len(self.lit_areas))))
-        self.lit_areas = keep
+        # Progress survives every saucer release; only collecting the Super
+        # clears the qualified zones and begins a new build.
+        self.lit_areas.clear()
+        self.more_jackpots_next_lock = self.has_case_file("more_jackpots")
         self.machine.events.post("harley_area_lights_clear")
 
         self._release_held_saucer(1000)
@@ -204,6 +218,26 @@ class HarleyClivendon(CaseFileMixin, Mode):
             self.safety_net_used = True
             self.machine.events.post("start_case_file_ball_save")
             self.machine.events.post("harley_safety_net_started")
+        self._sync()
+
+    def _restart_saucer_hold_timer(self):
+        """Bound the continuous lock; restart when a second saucer is hit."""
+        self.delay.reset(
+            name="harley_saucer_hold_timeout",
+            ms=self.SAUCER_HOLD_SECONDS * 1000,
+            callback=self._saucer_hold_timed_out,
+        )
+
+    def _saucer_hold_timed_out(self):
+        if self.mode_done or self.held_saucer is None:
+            return
+        # A released ball cannot qualify new areas. Earned blue zones remain
+        # visible, and a qualified Super remains collectable with both balls free.
+        self._release_held_saucer()
+        self.machine.events.post("show_mode_message", message_mode_title="HOLD EXPIRED",
+                                 message_mode_subtitle="LOCK A BALL TO CONTINUE")
+        self.delay.reset(name="harley_accept_next_lock", ms=2200,
+                         callback=self._enable_next_lock)
         self._sync()
 
     def _enable_next_lock(self):
@@ -227,6 +261,12 @@ class HarleyClivendon(CaseFileMixin, Mode):
         if held is None:
             return False
         self.held_saucer = None
+        self.delay.remove("harley_saucer_hold_timeout")
+        self.machine.events.post("harley_area_lights_clear")
+        # Stop available-zone pulsing, but preserve qualified blue zones until
+        # the Super is actually collected.
+        for area in self.lit_areas:
+            self.machine.events.post(f"harley_area_{area}_lit")
         self.machine.events.post("harley_saucer_released", saucer=held)
         self._eject_saucer(held, delay_ms)
         return True
@@ -235,7 +275,7 @@ class HarleyClivendon(CaseFileMixin, Mode):
         self.machine.events.post("request_vuk_eject", delay_ms=delay_ms)
 
     def _vuk_ready(self):
-        return self.held_saucer is not None and len(self.lit_areas) >= self.MIN_JACKPOT_AREAS
+        return len(self.lit_areas) >= self.MIN_JACKPOT_AREAS
 
     def _open_rooftop_gate(self):
         if self.rooftop_gate_open:
@@ -266,6 +306,7 @@ class HarleyClivendon(CaseFileMixin, Mode):
             return
         self.mode_done = True
         self.delay.remove("harley_accept_next_lock")
+        self.delay.remove("harley_saucer_hold_timeout")
         self.delay.remove("harley_gate_close_fallback")
         self._release_held_saucer()
         self.machine.game.player["harley_clivendon_state"] = 2
@@ -284,9 +325,12 @@ class HarleyClivendon(CaseFileMixin, Mode):
         p["active_mode_stat_1"] = self.jackpots
         p["harley_biggest_jackpot"] = self.biggest_jackpot
         title = f"AREAS {len(self.lit_areas)}/8"
-        status = "LOCK A BALL"
-        if self.held_saucer is not None:
-            status = f"VUK JACKPOT {value:,}" if len(self.lit_areas) >= 4 else "LIGHT 4 AREAS"
+        if len(self.lit_areas) >= self.MIN_JACKPOT_AREAS:
+            status = f"VUK JACKPOT {value:,}"
+        elif self.held_saucer is not None:
+            status = "LIGHT 2 AREAS"
+        else:
+            status = "LOCK A BALL"
         self.machine.events.post("update_mode_status", mode_status_title=title, mode_status_value=status)
         ready = self._vuk_ready()
         self.machine.events.post("harley_vuk_ready" if ready else "harley_vuk_not_ready")
@@ -305,12 +349,12 @@ class HarleyClivendon(CaseFileMixin, Mode):
         if self.mode_done:
             return
         title = "HYPNOTIC HOLD"
-        if self.held_saucer is None:
-            instruction = "LOCK A BALL IN A SAUCER"
-        elif len(self.lit_areas) >= self.MIN_JACKPOT_AREAS:
+        if len(self.lit_areas) >= self.MIN_JACKPOT_AREAS:
             instruction = "SHOOT DAILY BUGLE FOR JACKPOT"
+        elif self.held_saucer is None:
+            instruction = "LOCK A BALL IN A SAUCER"
         else:
-            instruction = "LIGHT 4 PLAYFIELD AREAS"
+            instruction = "LIGHT 2 PLAYFIELD AREAS"
         self.machine.events.post("show_mode_message", message_mode_title=title,
                                  message_mode_subtitle=instruction)
         self._reset_objective_reminder()
@@ -320,6 +364,7 @@ class HarleyClivendon(CaseFileMixin, Mode):
         self.machine.events.post("cancel_mode_message_reminder")
         self.delay.remove("harley_gate_close_fallback")
         self.delay.remove("harley_accept_next_lock")
+        self.delay.remove("harley_saucer_hold_timeout")
         self.machine.events.post("hide_mode_status")
         self.machine.events.post("harley_mode_ended")
         self.clear_active_case_file_helpers()

@@ -15,7 +15,7 @@ Rules:
 - Upper target hits knock down non-secret lower drop targets.
 - Upper spinner builds the Noah Boddy Jackpot.
 - When only the secret target remains standing, a hurry-up starts.
-- The player has 16s, or 24s with More Time, to return lower and hit the secret target.
+- The player has 22s, or 30s with More Time, to return lower and hit the secret target.
 - If the hurry-up expires, the secret target drops and the mode fails.
 - If the player exits upper left/right before reveal, both banks reset but the
   reveal progress and hidden target are preserved. The player must return upper
@@ -26,7 +26,7 @@ Rules:
 Case Files:
 - More Jackpots: upper target reveal hits score more points.
 - Bigger Jackpot: Noah Boddy Jackpot is worth 2x.
-- More Time: hurry-up is 24s instead of 16s.
+- More Time: hurry-up is 30s instead of 22s.
 - Safety Net: starts case-file ball save when the secret target is revealed.
 - Shot Assist: rubber hit on the secret target bank collects the jackpot after reveal.
 """
@@ -41,8 +41,8 @@ class NoahBoddy(CaseFileMixin, Mode):
     UPPER_TARGET_SCORE = 25_000
     FALSE_DROP_SCORE = 100_000
     MORE_JACKPOTS_UPPER_TARGET_SCORE = 75_000
-    HURRYUP_SECONDS = 16
-    MORE_TIME_HURRYUP_SECONDS = 24
+    HURRYUP_SECONDS = 22
+    MORE_TIME_HURRYUP_SECONDS = 30
     DROP_REBUILD_START_MS = 700
     DROP_REBUILD_STAGGER_MS = 150
 
@@ -124,7 +124,7 @@ class NoahBoddy(CaseFileMixin, Mode):
         self.publish_active_case_file_helpers([
             ("more_jackpots", "UPPER REVEALS SCORE MORE"),
             ("bigger_jackpots", "NOAH BODDY JACKPOT 2X"),
-            ("more_time", "HURRY-UP EXTENDED TO 24s"),
+            ("more_time", "HURRY-UP EXTENDED TO 30s"),
             ("safety_net", '30s OPENING SAVE / SECRET TARGET BALL SAVE'),
             ("shot_assist", "BANK RUBBER SCORES SECRET TARGET"),
         ])

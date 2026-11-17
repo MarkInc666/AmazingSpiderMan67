@@ -30,14 +30,14 @@ Case Files
   2 seconds remaining.
 
 Lighting
-- Base mode GI is dim white (303030).
-- Attacked zones flash every 250ms. Fixed-color inserts use their native lens
-  colors and surrounding RGB GI flashes orange at 100% brightness.
-- Saved zones keep their native inserts solid. Surrounding RGB GI is solid
-  green at 75% brightness (00BF00).
-- A More Jackpots repeat opportunity pulses the saved zone at 600ms while
-  retaining the same 75% green GI level.
-- Destroyed zones are dark.
+- Base mode GI is steel blue-grey (808898).
+- Attacked zones alternate every 500ms between base grey-blue (808898) and
+  bright orange (FF6020). Fixed-colour inserts retain their existing flashes.
+- Saved zones keep their native inserts solid. Surrounding RGB GI stays solid
+  at 48966C (75% of the selected 60C890 saved-zone colour), with no pulse.
+- A More Jackpots repeat opportunity flashes the existing shot inserts at
+  600ms while the surrounding saved-zone GI remains solid 48966C.
+- Destroyed zone RGB GI remains solid 404858; non-GI inserts turn off.
 
 Summary
 - MODE SCORE
@@ -46,5 +46,4 @@ Summary
 
 Status
 - Gameplay reviewed and implemented.
-- Saved-zone 75% GI presentation is statically validated; machine testing is
-  still required.
+- Revised lighting scheme is statically validated; machine testing is still required.
