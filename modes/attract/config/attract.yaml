@@ -95,6 +95,7 @@ sound_player:
       action: play
       bus: music
       loops: 1
+      volume: 0.3
 
 
 show_player:

@@ -1566,8 +1566,13 @@ class VillainBookends(Mode):
         player["bonus_multiplier"] = 1
         player["held_bonus"] = 0
         player["hold_bonus"] = 0
-        for name, _label, _value in mode_values:
-            player[name] = 0
+        # Chapter wizard cash-outs pay a snapshot but do not consume persistent
+        # mode bonuses: they must continue to award on subsequent balls.
+        # Final Showdown ends this player's game, so consume its bank to avoid
+        # awarding it again during the queued end-of-ball bonus sequence.
+        if self.current_villain == "final_showdown":
+            for name, _label, _value in mode_values:
+                player[name] = 0
         player["score"] += total
         self.machine.events.post("bonus_lanes_cashout_reset")
 
