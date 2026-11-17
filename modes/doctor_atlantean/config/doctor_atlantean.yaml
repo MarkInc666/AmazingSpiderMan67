@@ -2,7 +2,7 @@
 
 # Doctor Atlantean - Up From Nowhere.
 # The mode begins with a four-second five-band sinking animation. Pulsing-green
-# upper targets lower the 0-8 water level; any rooftop exit raises it. The water
+# upper targets lower the 0-8 water level; rooftop exits do not raise it. The water
 # countdown resets on VUK entry and rooftop exit, not on target/spinner hits. Reaching level 0
 # raises Manhattan and wins; inactivity for a full countdown at level 8 loses.
 
@@ -140,42 +140,42 @@ light_player:
   # Horizontal water bands use shared physical-height tags from config/lights.yaml.
   # This keeps rising/falling effects geographically consistent across modes.
   doctor_atlantean_water_band_1_blue:
-    band_1: blue
+    band_1: "4080FF"
   doctor_atlantean_water_band_1_orange:
     band_1: orange
 
   doctor_atlantean_water_band_2_blue:
-    band_2: blue
+    band_2: "4080FF"
   doctor_atlantean_water_band_2_orange:
     band_2: orange
 
   doctor_atlantean_water_band_3_blue:
-    band_3: blue
+    band_3: "4080FF"
   doctor_atlantean_water_band_3_orange:
     band_3: orange
 
   doctor_atlantean_water_band_4_blue:
-    band_4: blue
+    band_4: "4080FF"
   doctor_atlantean_water_band_4_orange:
     band_4: orange
 
   doctor_atlantean_water_band_5_blue:
-    band_5: blue
+    band_5: "4080FF"
   doctor_atlantean_water_band_5_orange:
     band_5: orange
 
   doctor_atlantean_water_band_6_blue:
-    band_6: blue
+    band_6: "4080FF"
   doctor_atlantean_water_band_6_orange:
     band_6: orange
 
   doctor_atlantean_water_band_7_blue:
-    band_7: blue
+    band_7: "4080FF"
   doctor_atlantean_water_band_7_orange:
     band_7: orange
 
   doctor_atlantean_water_band_8_blue:
-    band_8: blue
+    band_8: "4080FF"
   doctor_atlantean_water_band_8_orange:
     band_8: orange
 
@@ -183,21 +183,21 @@ light_player:
 shows:
   doctor_atlantean_upper_left_pulse:
     - duration: 500ms
-      lights: {l_upper_left: "00FF00"}
+      lights: {l_upper_left: "40FF80"}
     - duration: 500ms
-      lights: {l_upper_left: "004000"}
+      lights: {l_upper_left: "40A060"}
 
   doctor_atlantean_upper_center_pulse:
     - duration: 500ms
-      lights: {l_upper_middle: "00FF00"}
+      lights: {l_upper_middle: "40FF80"}
     - duration: 500ms
-      lights: {l_upper_middle: "004000"}
+      lights: {l_upper_middle: "40A060"}
 
   doctor_atlantean_upper_right_pulse:
     - duration: 500ms
-      lights: {l_upper_right: "00FF00"}
+      lights: {l_upper_right: "40FF80"}
     - duration: 500ms
-      lights: {l_upper_right: "004000"}
+      lights: {l_upper_right: "40A060"}
 
   doctor_atlantean_upper_spinner_pulse:
     - duration: 500ms

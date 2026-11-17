@@ -77,7 +77,7 @@ event_player:
 
 light_player:
   mode_harley_clivendon_started:
-    gi: yellow
+    gi: 808080
   mode_harley_clivendon_stopping:
     gi: E0E0E0
 
@@ -234,8 +234,8 @@ shows:
       l_gi_left_sling_lower: 808080
   - duration: 700ms
     lights:
-      l_gi_left_sling_upper: off
-      l_gi_left_sling_lower: off
+      l_gi_left_sling_upper: C0C0C0
+      l_gi_left_sling_lower: C0C0C0
   harley_left_sling_lit_show:
   - duration: -1
     lights:
@@ -247,7 +247,7 @@ shows:
       l_gi_right_sling: 808080
   - duration: 700ms
     lights:
-      l_gi_right_sling: off
+      l_gi_right_sling: C0C0C0
   harley_right_sling_lit_show:
   - duration: -1
     lights:
@@ -269,18 +269,18 @@ shows:
       l_pop_1_12: 808080
   - duration: 700ms
     lights:
-      l_pop_1_1: off
-      l_pop_1_2: off
-      l_pop_1_3: off
-      l_pop_1_4: off
-      l_pop_1_5: off
-      l_pop_1_6: off
-      l_pop_1_7: off
-      l_pop_1_8: off
-      l_pop_1_9: off
-      l_pop_1_10: off
-      l_pop_1_11: off
-      l_pop_1_12: off
+      l_pop_1_1: C0C0C0
+      l_pop_1_2: C0C0C0
+      l_pop_1_3: C0C0C0
+      l_pop_1_4: C0C0C0
+      l_pop_1_5: C0C0C0
+      l_pop_1_6: C0C0C0
+      l_pop_1_7: C0C0C0
+      l_pop_1_8: C0C0C0
+      l_pop_1_9: C0C0C0
+      l_pop_1_10: C0C0C0
+      l_pop_1_11: C0C0C0
+      l_pop_1_12: C0C0C0
   harley_left_pop_lit_show:
   - duration: -1
     lights:
@@ -314,19 +314,19 @@ shows:
       l_pop_2_13: 808080
   - duration: 700ms
     lights:
-      l_pop_2_1: off
-      l_pop_2_2: off
-      l_pop_2_3: off
-      l_pop_2_4: off
-      l_pop_2_5: off
-      l_pop_2_6: off
-      l_pop_2_7: off
-      l_pop_2_8: off
-      l_pop_2_9: off
-      l_pop_2_10: off
-      l_pop_2_11: off
-      l_pop_2_12: off
-      l_pop_2_13: off
+      l_pop_2_1: C0C0C0
+      l_pop_2_2: C0C0C0
+      l_pop_2_3: C0C0C0
+      l_pop_2_4: C0C0C0
+      l_pop_2_5: C0C0C0
+      l_pop_2_6: C0C0C0
+      l_pop_2_7: C0C0C0
+      l_pop_2_8: C0C0C0
+      l_pop_2_9: C0C0C0
+      l_pop_2_10: C0C0C0
+      l_pop_2_11: C0C0C0
+      l_pop_2_12: C0C0C0
+      l_pop_2_13: C0C0C0
   harley_right_pop_lit_show:
   - duration: -1
     lights:
@@ -349,7 +349,7 @@ shows:
       l_3bankbonus: 808080
   - duration: 700ms
     lights:
-      l_3bankbonus: off
+      l_3bankbonus: C0C0C0
   harley_left_bank_lit_show:
   - duration: -1
     lights:
@@ -364,11 +364,11 @@ shows:
       l_5bank_5: 808080
   - duration: 700ms
     lights:
-      l_5bank_1: off
-      l_5bank_2: off
-      l_5bank_3: off
-      l_5bank_4: off
-      l_5bank_5: off
+      l_5bank_1: C0C0C0
+      l_5bank_2: C0C0C0
+      l_5bank_3: C0C0C0
+      l_5bank_4: C0C0C0
+      l_5bank_5: C0C0C0
   harley_right_bank_lit_show:
   - duration: -1
     lights:
@@ -383,7 +383,7 @@ shows:
       l_left_web_target: 808080
   - duration: 700ms
     lights:
-      l_left_web_target: off
+      l_left_web_target: C0C0C0
   harley_left_web_lit_show:
   - duration: -1
     lights:
@@ -394,7 +394,7 @@ shows:
       l_mid_web_target: 808080
   - duration: 700ms
     lights:
-      l_mid_web_target: off
+      l_mid_web_target: C0C0C0
   harley_center_web_lit_show:
   - duration: -1
     lights:

@@ -34,18 +34,18 @@ gold. Banks are not reset when selected; they reset normally when completed.
 TIMING AND OVERLAP
 Base opportunity timing:
 
-- Slow pulse: 4 seconds
-- Medium pulse: 3 seconds
-- Fast pulse: 3 seconds
-- Total availability: 10 seconds
+- Slow pulse: 5 seconds
+- Medium pulse: 4 seconds
+- Fast pulse: 4 seconds
+- Total availability: 13 seconds
 
-A new opportunity appears every 8 seconds. This produces a natural 2-second
+A new opportunity appears every 8 seconds. This produces a natural 5-second
 overlap without an artificial active-shot limit. Hitting an active shot removes
 that opportunity, immediately selects a replacement, and restarts the 8-second
 selection interval.
 
-More Time changes the timing to 5 seconds slow, 4 seconds medium, and 4 seconds
-fast. The selection interval remains 8 seconds, producing a 5-second overlap.
+More Time changes the timing to 6 seconds slow, 5 seconds medium, and 5 seconds
+fast. The selection interval remains 8 seconds, producing an 8-second overlap.
 
 SCORING AND BONUS BANK
 Base values:

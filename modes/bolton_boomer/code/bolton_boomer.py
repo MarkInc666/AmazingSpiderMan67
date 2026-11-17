@@ -19,6 +19,7 @@ class BoltonBoomer(CaseFileMixin, Mode):
     SUPER_CAP = 1_500_000
     NORMAL_SUPER_SECONDS = 20
     MORE_TIME_SUPER_SECONDS = 30
+    HELD_SAUCER_INACTIVITY_MS = 10_000
 
     NORMAL_OPENING_SAVE = 15
     SAFETY_NET_OPENING_SAVE = 25
@@ -82,6 +83,10 @@ class BoltonBoomer(CaseFileMixin, Mode):
             self.add_mode_event_handler(f"bolton_boomer_saucer_{saucer}", partial(self._saucer_hit, saucer=saucer))
         self.add_mode_event_handler("bolton_boomer_vuk_hit", self._vuk_hit)
         self.add_mode_event_handler("multiball_bolton_boomer_multiball_ended", self._multiball_ended)
+        # Track physical switch activity while a saucer ball is parked. Every
+        # activation restarts the 10-second inactivity release watchdog.
+        for switch in self.machine.switches.values():
+            self.add_mode_event_handler(f"{switch.name}_active", self._held_saucer_switch_activity)
 
         self.machine.events.post("disable_daily_bugle_mystery")
         self.machine.events.post("daily_bugle_cancel_vuk_delay_eject")
@@ -157,6 +162,7 @@ class BoltonBoomer(CaseFileMixin, Mode):
 
         self.held_saucer = saucer
         self.phase = "super"
+        self._reset_held_saucer_inactivity()
         self.super_number += 1
         self._score(self.saucer_value)
         self.current_super_value = self._next_super_value()
@@ -173,6 +179,33 @@ class BoltonBoomer(CaseFileMixin, Mode):
 
         if self.super_number > 1:
             self._start_super_timer()
+        self._update_status()
+
+    def _reset_held_saucer_inactivity(self, **kwargs):
+        if not self.mode_done and self.phase == "super" and self.held_saucer is not None:
+            self.delay.reset(
+                name="bolton_boomer_held_saucer_inactivity",
+                ms=self.HELD_SAUCER_INACTIVITY_MS,
+                callback=self._held_saucer_inactivity_expired,
+            )
+
+    def _held_saucer_switch_activity(self, **kwargs):
+        self._reset_held_saucer_inactivity()
+
+    def _held_saucer_inactivity_expired(self, **kwargs):
+        if self.mode_done or self.phase != "super" or self.held_saucer is None:
+            return
+        held = self.held_saucer
+        self.held_saucer = None
+        self.machine.events.post(f"bolton_boomer_saucer_{held}_released")
+        self._eject_saucer(held, 0)
+        # Keep the gate and VUK ready. A trapped-ball rescue must not forfeit
+        # the Super; the subsequent timed Supers keep their original deadline.
+        self.machine.events.post(
+            "show_mode_message",
+            message_mode_title="SAUCER RELEASED",
+            message_mode_subtitle="SUPER STILL READY - SHOOT VUK",
+        )
         self._update_status()
 
     def _start_super_timer(self):
@@ -205,7 +238,7 @@ class BoltonBoomer(CaseFileMixin, Mode):
         self._collect_super(vuk_ball_present=False)
 
     def _vuk_hit(self, **kwargs):
-        if self.mode_done or self.phase != "super" or self.held_saucer is None:
+        if self.mode_done or self.phase != "super":
             self._eject_vuk(750)
             return
         self._collect_super(vuk_ball_present=True)
@@ -214,6 +247,7 @@ class BoltonBoomer(CaseFileMixin, Mode):
         if self.mode_done or self.phase != "super":
             return
         self._cancel_super_delays()
+        self._cancel_held_saucer_inactivity()
         value = self.current_super_value
         self._score(value)
         self.super_jackpots += 1
@@ -237,7 +271,8 @@ class BoltonBoomer(CaseFileMixin, Mode):
         else:
             # Keep the same timing sequence even when Shot Assist spots the Super.
             self._eject_vuk(2000)
-        self._eject_saucer(held, 4000)
+        if held is not None:
+            self._eject_saucer(held, 4000)
         self.delay.reset(name="bolton_boomer_next_round", ms=4400, callback=self._start_target_stage)
         self._sync_vars()
 
@@ -245,6 +280,7 @@ class BoltonBoomer(CaseFileMixin, Mode):
         if self.mode_done or self.phase != "super":
             return
         self._cancel_super_delays()
+        self._cancel_held_saucer_inactivity()
         self.phase = "release"
         self.timer_seconds_remaining = 0
         self.machine.events.post("rooftop_diverter_close")
@@ -252,7 +288,8 @@ class BoltonBoomer(CaseFileMixin, Mode):
         self.machine.events.post("show_mode_message", message_mode_title="SUPER MISSED", message_mode_subtitle="FIND ANOTHER TARGET")
         held = self.held_saucer
         self.held_saucer = None
-        self._eject_saucer(held, 2000)
+        if held is not None:
+            self._eject_saucer(held, 2000)
         self.delay.reset(name="bolton_boomer_next_round", ms=2400, callback=self._start_target_stage)
         self._sync_vars()
 
@@ -272,6 +309,9 @@ class BoltonBoomer(CaseFileMixin, Mode):
     def _eject_vuk(self, delay_ms=0):
         self.machine.events.post("request_vuk_eject", delay_ms=delay_ms)
 
+    def _cancel_held_saucer_inactivity(self):
+        self.delay.remove("bolton_boomer_held_saucer_inactivity")
+
     def _cancel_super_delays(self):
         for name in ("bolton_boomer_super_tick", "bolton_boomer_shot_assist"):
             self.delay.remove(name)
@@ -281,6 +321,7 @@ class BoltonBoomer(CaseFileMixin, Mode):
             return
         self.mode_done = True
         self._cancel_super_delays()
+        self._cancel_held_saucer_inactivity()
         self.delay.remove("bolton_boomer_next_round")
         self.machine.game.player["bolton_boomer_state"] = 2
         if self.held_saucer is not None:
@@ -357,6 +398,7 @@ class BoltonBoomer(CaseFileMixin, Mode):
         self.delay.remove("villain_objective_reminder")
         self.machine.events.post("cancel_mode_message_reminder")
         self._cancel_super_delays()
+        self._cancel_held_saucer_inactivity()
         self.delay.remove("bolton_boomer_next_round")
         self.machine.events.post("bolton_boomer_clear_lights")
         self.machine.events.post("rooftop_diverter_close")

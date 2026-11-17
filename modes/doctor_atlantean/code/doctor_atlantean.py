@@ -15,8 +15,8 @@ class DoctorAtlantean(CaseFileMixin, Mode):
     NORMAL_TIMER_SECONDS = 20
     MORE_TIME_SECONDS = 30
 
-    LIT_TARGET_SCORE = 100_000
-    BIGGER_TARGET_SCORE = 125_000
+    LIT_TARGET_SCORE = 150_000
+    BIGGER_TARGET_SCORE = 200_000
     UNLIT_TARGET_SCORE = 25_000
     SPINNER_SCORE = 10_000
     MORE_JACKPOTS_SPINNER_SCORE = 100_000
@@ -83,7 +83,7 @@ class DoctorAtlantean(CaseFileMixin, Mode):
         self.publish_case_file_bonus_events(self.MODE_KEY)
         self.publish_active_case_file_helpers([
             ("more_jackpots", "THREE TARGETS LIGHT A 100K SPINNER JACKPOT"),
-            ("bigger_jackpots", "CONTROL PANEL JACKPOTS WORTH 125K"),
+            ("bigger_jackpots", "CONTROL PANEL JACKPOTS WORTH 200K"),
             ("more_time", "WATER TIMERS EXTENDED TO 30 SECONDS"),
             ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST UNLIT TARGET COUNTS AS LIT"),
@@ -294,10 +294,9 @@ class DoctorAtlantean(CaseFileMixin, Mode):
             return
         self.rooftop_exit_recorded = True
         self.rooftop_active = False
+        # Rooftop exits no longer increase water level. Keep exit scoring,
+        # exit detection, and the periodic rise countdown intact.
         self._score(self.EXIT_SCORE)
-        self._set_water_level(self.water_level + 1)
-        if self.mode_done:
-            return
         self.machine.events.post(
             "doctor_atlantean_upper_exit_scored",
             value=self.EXIT_SCORE,

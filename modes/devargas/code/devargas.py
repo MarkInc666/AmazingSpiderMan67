@@ -12,7 +12,7 @@ class DeVargas(CaseFileMixin, Mode):
     """Cloud City of Gold pure score attack.
 
     Twenty timed gold opportunities are drawn from thirteen repeatable shot
-    groups. Opportunities overlap naturally because each lasts ten seconds
+    groups. Opportunities overlap naturally because each lasts thirteen seconds
     while a new one appears every eight seconds. A successful hit immediately
     replaces only the collected opportunity and restarts the eight-second
     selection clock.
@@ -25,8 +25,8 @@ class DeVargas(CaseFileMixin, Mode):
     MORE_JACKPOTS_OPPORTUNITIES = 25
     NEXT_OPPORTUNITY_MS = 8_000
 
-    BASE_PHASE_MS = (4_000, 3_000, 3_000)
-    MORE_TIME_PHASE_MS = (5_000, 4_000, 4_000)
+    BASE_PHASE_MS = (5_000, 4_000, 4_000)
+    MORE_TIME_PHASE_MS = (6_000, 5_000, 5_000)
 
     BASE_VALUES = {
         "slow": 150_000,
@@ -126,7 +126,7 @@ class DeVargas(CaseFileMixin, Mode):
         self.publish_active_case_file_helpers([
             ("more_jackpots", "25 GOLD OPPORTUNITIES"),
             ("bigger_jackpots", "GOLD WORTH 200K / 175K / 150K"),
-            ("more_time", "GOLD WINDOWS LAST 5s / 4s / 4s"),
+            ("more_time", "GOLD WINDOWS LAST 6s / 5s / 5s"),
             ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST EXPIRED GOLD AUTO-COLLECTS"),
         ])

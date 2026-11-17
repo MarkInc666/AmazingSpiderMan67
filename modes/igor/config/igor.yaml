@@ -116,7 +116,7 @@ show_player:
 
 light_player:
   mode_igor_started:
-    gi: 8080D0
+    gi: 9090D0
 
   mode_igor_stopping:
     gi: E0E0E0
@@ -158,43 +158,43 @@ light_player:
 
   # Solid-red defense shots.
   igor_bad_right_bank:
-    l_gi_5bank_lower: red
-    l_gi_5bank_upper: red
+    l_gi_5bank_lower: FF4040
+    l_gi_5bank_upper: FF4040
   igor_bad_left_web:
-    l_left_web_target: red
+    l_left_web_target: FF4040
   igor_bad_left_bank:
-    l_gi_3bank: red
+    l_gi_3bank: FF4040
   igor_bad_center_web:
-    l_mid_web_target: red
+    l_mid_web_target: FF4040
   igor_bad_spinner:
-    l_spinner: red
+    l_spinner: FF4040
   igor_bad_left_pop:
-    l_pop_1_1: red
-    l_pop_1_2: red
-    l_pop_1_3: red
-    l_pop_1_4: red
-    l_pop_1_5: red
-    l_pop_1_6: red
-    l_pop_1_7: red
-    l_pop_1_8: red
-    l_pop_1_9: red
-    l_pop_1_10: red
-    l_pop_1_11: red
-    l_pop_1_12: red
+    l_pop_1_1: FF4040
+    l_pop_1_2: FF4040
+    l_pop_1_3: FF4040
+    l_pop_1_4: FF4040
+    l_pop_1_5: FF4040
+    l_pop_1_6: FF4040
+    l_pop_1_7: FF4040
+    l_pop_1_8: FF4040
+    l_pop_1_9: FF4040
+    l_pop_1_10: FF4040
+    l_pop_1_11: FF4040
+    l_pop_1_12: FF4040
   igor_bad_right_pop:
-    l_pop_2_1: red
-    l_pop_2_2: red
-    l_pop_2_3: red
-    l_pop_2_4: red
-    l_pop_2_5: red
-    l_pop_2_6: red
-    l_pop_2_7: red
-    l_pop_2_8: red
-    l_pop_2_9: red
-    l_pop_2_10: red
-    l_pop_2_11: red
-    l_pop_2_12: red
-    l_pop_2_13: red
+    l_pop_2_1: FF4040
+    l_pop_2_2: FF4040
+    l_pop_2_3: FF4040
+    l_pop_2_4: FF4040
+    l_pop_2_5: FF4040
+    l_pop_2_6: FF4040
+    l_pop_2_7: FF4040
+    l_pop_2_8: FF4040
+    l_pop_2_9: FF4040
+    l_pop_2_10: FF4040
+    l_pop_2_11: FF4040
+    l_pop_2_12: FF4040
+    l_pop_2_13: FF4040
 
 
 shows:
@@ -202,44 +202,44 @@ shows:
   igor_good_right_bank_show:
     - duration: 250ms
       lights:
-        l_gi_5bank_lower: green
-        l_gi_5bank_upper: green
+        l_gi_5bank_lower: 40FF80
+        l_gi_5bank_upper: 40FF80
     - duration: 250ms
       lights:
-        l_gi_5bank_lower: off
-        l_gi_5bank_upper: off
+        l_gi_5bank_lower: "608080"
+        l_gi_5bank_upper: "608080"
 
   igor_good_right_pop_show:
     - duration: 250ms
       lights:
-        l_pop_2_1: green
-        l_pop_2_2: green
-        l_pop_2_3: green
-        l_pop_2_4: green
-        l_pop_2_5: green
-        l_pop_2_6: green
-        l_pop_2_7: green
-        l_pop_2_8: green
-        l_pop_2_9: green
-        l_pop_2_10: green
-        l_pop_2_11: green
-        l_pop_2_12: green
-        l_pop_2_13: green
+        l_pop_2_1: 40FF80
+        l_pop_2_2: 40FF80
+        l_pop_2_3: 40FF80
+        l_pop_2_4: 40FF80
+        l_pop_2_5: 40FF80
+        l_pop_2_6: 40FF80
+        l_pop_2_7: 40FF80
+        l_pop_2_8: 40FF80
+        l_pop_2_9: 40FF80
+        l_pop_2_10: 40FF80
+        l_pop_2_11: 40FF80
+        l_pop_2_12: 40FF80
+        l_pop_2_13: 40FF80
     - duration: 250ms
       lights:
-        l_pop_2_1: off
-        l_pop_2_2: off
-        l_pop_2_3: off
-        l_pop_2_4: off
-        l_pop_2_5: off
-        l_pop_2_6: off
-        l_pop_2_7: off
-        l_pop_2_8: off
-        l_pop_2_9: off
-        l_pop_2_10: off
-        l_pop_2_11: off
-        l_pop_2_12: off
-        l_pop_2_13: off
+        l_pop_2_1: "608080"
+        l_pop_2_2: "608080"
+        l_pop_2_3: "608080"
+        l_pop_2_4: "608080"
+        l_pop_2_5: "608080"
+        l_pop_2_6: "608080"
+        l_pop_2_7: "608080"
+        l_pop_2_8: "608080"
+        l_pop_2_9: "608080"
+        l_pop_2_10: "608080"
+        l_pop_2_11: "608080"
+        l_pop_2_12: "608080"
+        l_pop_2_13: "608080"
 
   igor_good_spinner_show:
     - duration: 250ms
@@ -249,9 +249,9 @@ shows:
 
   igor_good_left_bank_show:
     - duration: 250ms
-      lights: {l_gi_3bank: green}
+      lights: {l_gi_3bank: 40FF80}
     - duration: 250ms
-      lights: {l_gi_3bank: off}
+      lights: {l_gi_3bank: "608080"}
 
 sound_player:
   igor_bad_shot_awarded:

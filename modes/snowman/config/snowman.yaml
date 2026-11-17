@@ -2,7 +2,8 @@
 
 # The Snowman coded rules:
 # - Web-to-opposite-web connection: 16s base / 20s More Time.
-# - First spinner spin defeats Snowman and starts 10s bonus spins / 16s More Time.
+# - First spinner spin defeats Snowman and starts 15s bonus spins / 20s More Time.
+# - After at least 5 total spins, bonus expiry opens the gate for a 15s, 500K VUK Super.
 # - Spins are unlimited until expiry; More Jackpots increases each following spin by 25K.
 # - Repeating the starting web resets the wire timer; Shot Assist can complete it once.
 
@@ -82,6 +83,14 @@ show_player:
   snowman_center_web_pulse:
     snowman_center_web_pulse: {loops: -1}
 
+  snowman_vuk_chase_start:
+    shared_final_vuk_chase:
+      loops: -1
+      priority: 340
+      show_tokens: {color: "A0D8F0"}
+  snowman_vuk_chase_stop:
+    shared_final_vuk_chase: {action: stop}
+
   snowman_wire_complete:
     snowman_deep_blue_gi: {action: stop}
     snowman_left_web_pulse: {action: stop}
@@ -100,6 +109,7 @@ show_player:
     snowman_white_flash: {loops: 1}
 
   snowman_clear_all:
+    shared_final_vuk_chase: {action: stop}
     snowman_idle_gi: {action: stop}
     snowman_deep_blue_gi: {action: stop}
     snowman_spinner_gi: {action: stop}
@@ -123,10 +133,10 @@ shows:
       lights: {gi: A0D8F0}
   snowman_deep_blue_gi:
     - duration: 1s
-      lights: {gi: 305090}
+      lights: {gi: 6088C0}
   snowman_spinner_gi:
     - duration: 1s
-      lights: {gi: 309090}
+      lights: {gi: 50B0B0}
   snowman_bonus_gi:
     - duration: 500ms
       lights: {gi: 4080C0}
@@ -139,20 +149,20 @@ shows:
       lights: {gi: 4080C0}
   snowman_left_web_pulse:
     - duration: 500ms
-      lights: {l_left_web_target: FF2020}
+      lights: {l_left_web_target: FF6060}
     - duration: 500ms
-      lights: {l_left_web_target: 401010}
+      lights: {l_left_web_target: A04040}
   snowman_center_web_pulse:
     - duration: 500ms
-      lights: {l_mid_web_target: FF2020}
+      lights: {l_mid_web_target: FF6060}
     - duration: 500ms
-      lights: {l_mid_web_target: 401010}
+      lights: {l_mid_web_target: A04040}
   snowman_left_web_solid:
     - duration: 1s
-      lights: {l_left_web_target: FF2020}
+      lights: {l_left_web_target: FF6060}
   snowman_center_web_solid:
     - duration: 1s
-      lights: {l_mid_web_target: FF2020}
+      lights: {l_mid_web_target: FF6060}
   snowman_spinner_flash:
     - duration: 250ms
       lights: {l_gi_spinner: 40FF80}

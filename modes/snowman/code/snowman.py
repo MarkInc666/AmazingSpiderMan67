@@ -6,9 +6,10 @@ Current coded rules:
 - Re-hitting the starting web scores 25K and resets the wire timer; Shot
   Assist lets that repeat hit complete the connection once.
 - The first lower-spinner spin defeats Snowman, scores the current spin value,
-  and starts a 10-second bonus-spin window (16 seconds with More Time).
+  and starts a 15-second bonus-spin window (20 seconds with More Time).
 - Every spin scores 100K (150K with Bigger). More Jackpots raises the value
   of each following spin by 25K. Zaps are unlimited until the timer expires.
+- Five total spins qualify a 500K VUK Super after bonus spins expire.
 - Safety Net starts a 10-second ball save when the spinner becomes ready.
 """
 
@@ -29,11 +30,14 @@ class Snowman(CaseFileMixin, Mode):
     SPIN_SCORE = 100_000
     BIGGER_SPIN_SCORE = 150_000
     MORE_JACKPOTS_STEP = 25_000
+    SUPER_SPINS_REQUIRED = 5
+    SUPER_VALUE = 500_000
+    SUPER_SECONDS = 15
 
     WIRE_SECONDS = 16
     MORE_TIME_WIRE_SECONDS = 20
-    SPIN_SECONDS = 10
-    MORE_TIME_SPIN_SECONDS = 16
+    SPIN_SECONDS = 15
+    MORE_TIME_SPIN_SECONDS = 20
 
     def mode_start(self, **kwargs):
         super().mode_start(**kwargs)
@@ -48,6 +52,7 @@ class Snowman(CaseFileMixin, Mode):
         self.seconds_left = 0
         self.mode_points = self.villain_start_bonus
         self.bonus_spins = 0
+        self.super_qualified = False
         self.current_spin_value = self._base_spin_value()
         self.biggest_spin = 0
 
@@ -59,7 +64,7 @@ class Snowman(CaseFileMixin, Mode):
         self.publish_active_case_file_helpers([
             ("more_jackpots", "SPIN VALUE +25K EACH SPIN"),
             ("bigger_jackpots", "150K / 350K / 150K"),
-            ("more_time", "20 SECOND WIRE / 16 SECOND SPINS"),
+            ("more_time", "20 SECOND WIRE / 20 SECOND SPINS"),
             ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "STARTING WEB CAN COMPLETE WIRE"),
         ])
@@ -67,6 +72,7 @@ class Snowman(CaseFileMixin, Mode):
         self.add_mode_event_handler("snowman_left_web_hit", self._web_hit, web="left")
         self.add_mode_event_handler("snowman_center_web_hit", self._web_hit, web="center")
         self.add_mode_event_handler("snowman_spinner_hit", self._spinner_hit)
+        self.add_mode_event_handler("s_vuk_switch_active", self._vuk_hit)
         self.add_mode_event_handler("snowman_complete_request", self._finish_mode)
         self.add_mode_event_handler("ball_ending", self._ball_ending)
 
@@ -95,6 +101,8 @@ class Snowman(CaseFileMixin, Mode):
             instruction = "SPIN MAIN SPINNER TO DEFEAT SNOWMAN"
         elif self.phase == "spins":
             instruction = "SPIN MAIN SPINNER FOR BONUS"
+        elif self.phase == "super":
+            instruction = "SHOOT DAILY BUGLE FOR 500K SUPER"
         else:
             return
         self.machine.events.post("show_mode_message", message_mode_title=title,
@@ -106,6 +114,8 @@ class Snowman(CaseFileMixin, Mode):
         self.machine.events.post("cancel_mode_message_reminder")
         self._stop_timer()
         self.machine.events.post("snowman_clear_all")
+        self.machine.events.post("snowman_vuk_chase_stop")
+        self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("snowman_disable_safety_net")
         self.machine.events.post("cancel_mode_message_reminder")
         self.machine.events.post("hide_mode_status")
@@ -166,6 +176,7 @@ class Snowman(CaseFileMixin, Mode):
         self.seconds_left = 0
         self.machine.events.post("snowman_wire_complete", value=value)
         self.machine.events.post("snowman_spinner_ready")
+        self.machine.events.post("snowman_vuk_chase_start")
         if self.has_case_file("safety_net"):
             self.machine.events.post("snowman_enable_safety_net")
         self._show_message("WIRE COMPLETE", "SPIN MAIN SPINNER TO DEFEAT SNOWMAN", value)
@@ -179,6 +190,8 @@ class Snowman(CaseFileMixin, Mode):
         value = self.current_spin_value
         self._score(value)
         self.bonus_spins += 1
+        if self.bonus_spins >= self.SUPER_SPINS_REQUIRED:
+            self.super_qualified = True
         self.biggest_spin = max(self.biggest_spin, value)
         self.machine.events.post("snowman_bonus_spin_scored", value=value, spins=self.bonus_spins)
 
@@ -199,22 +212,53 @@ class Snowman(CaseFileMixin, Mode):
             self._show_status("BONUS SPINS", self.seconds_left)
         self._sync_vars()
 
+    def _vuk_hit(self, **kwargs):
+        if self.mode_done:
+            return
+        if self.phase != "super":
+            # The lower spinner and VUK share a route; a premature VUK catch
+            # must never strand the ball while bonus spins are running.
+            self.machine.events.post("request_vuk_eject", delay_ms=1000)
+            return
+        self._score(self.SUPER_VALUE)
+        self.machine.events.post("snowman_super_collected", value=self.SUPER_VALUE)
+        self._show_message("SNOWMAN SUPER JACKPOT", "DAILY BUGLE", self.SUPER_VALUE)
+        self.machine.events.post("play_mode_jackpot")
+        self.machine.events.post("villain_summary_hold_vuk_until_done")
+        self._finish_mode()
+
+    def _bonus_finished(self):
+        if self.super_qualified:
+            self.phase = "super"
+            self.seconds_left = self.SUPER_SECONDS
+            self.machine.events.post("rooftop_diverter_open")
+            self.machine.events.post("snowman_super_ready")
+            self._show_message("SUPER JACKPOT READY", "SHOOT DAILY BUGLE - 500K")
+            self._show_status("SHOOT DAILY BUGLE FOR 500K", self.seconds_left)
+            self._sync_vars()
+            self._schedule_tick()
+        else:
+            self._finish_mode()
+
     def _schedule_tick(self):
         self.delay.remove("snowman_timer_tick")
         self.delay.add(name="snowman_timer_tick", ms=1000, callback=self._timer_tick)
 
     def _timer_tick(self):
-        if self.mode_done or self.phase not in ("wire", "spins"):
+        if self.mode_done or self.phase not in ("wire", "spins", "super"):
             return
         self.seconds_left -= 1
         self._sync_vars()
         if self.seconds_left <= 0:
             if self.phase == "wire":
                 self._wire_timeout()
+            elif self.phase == "spins":
+                self._bonus_finished()
             else:
                 self._finish_mode()
             return
-        self._show_status("RUN THE WIRE" if self.phase == "wire" else "BONUS SPINS", self.seconds_left)
+        label = "RUN THE WIRE" if self.phase == "wire" else ("BONUS SPINS" if self.phase == "spins" else "SHOOT DAILY BUGLE FOR 500K")
+        self._show_status(label, self.seconds_left)
         self._schedule_tick()
 
     def _wire_timeout(self):
@@ -234,6 +278,8 @@ class Snowman(CaseFileMixin, Mode):
             return
         self.mode_done = True
         self._stop_timer()
+        self.machine.events.post("snowman_vuk_chase_stop")
+        self.machine.events.post("rooftop_diverter_close")
         player = self.machine.game.player
         player["snowman_state"] = 2
         self._sync_vars()
@@ -245,8 +291,10 @@ class Snowman(CaseFileMixin, Mode):
             return
         self.mode_done = True
         self._stop_timer()
+        self.machine.events.post("snowman_vuk_chase_stop")
+        self.machine.events.post("rooftop_diverter_close")
         self._sync_vars()
-        if self.phase != "spins":
+        if self.phase not in ("spins", "super"):
             self._show_message("SNOWMAN ESCAPED", "THE WIRE WENT COLD")
 
     def _wire_seconds(self):

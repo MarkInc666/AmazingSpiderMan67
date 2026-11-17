@@ -10,7 +10,7 @@ CORE RULES
 
 ROOFTOP PHASE
 - The upper spinner is always active after rooftop access opens.
-- Each spinner spin scores 50,000, or 75,000 with Bigger Jackpots.
+- Each spinner spin awards 50,000 per camera flash generated, or 75,000 per flash with Bigger Jackpots. A spin worth 4 flashes awards 200,000 (300,000 with Bigger Jackpots).
 - Each spin adds one camera flash plus one additional flash for every unique upper target collected.
 - The three unique upper targets each score 50,000, or 75,000 with Bigger Jackpots.
 - Each unique upper target permanently adds +1 camera flash per spinner spin.
@@ -18,11 +18,11 @@ ROOFTOP PHASE
 - Doctor Zapp is defeated immediately at 25 or more camera flashes.
 
 CASE FILE HELPERS
-- Safety Net: 10-second ball save at mode start.
+- Safety Net: shared 30-second opening ball save; Zapp also has a separately configured 10-second start save.
 - More Time: 15-second ball save on the first upper-playfield entry only.
-- Bigger Jackpots: bank qualifications 150K; upper targets and spinner spins 75K.
+- Bigger Jackpots: bank qualifications 150K; upper targets 75K; spinner spins 75K per flash.
 - Shot Assist: the first unique upper target randomly awards another uncollected upper target, including its score and +1 flash-per-spin upgrade.
-- More Jackpots: after 25 flashes, keep the upper flipper enabled for a 10-second victory spinner window. Spins score normal points only and do not add flashes. At expiry, start the upper-flipper lockout and summary.
+- More Jackpots: after 25 flashes, keep the upper flipper enabled for a 10-second victory spinner window. Spins score at the earned flash multiplier (50K/75K per flash-equivalent), but do not add camera flashes. At expiry, start the upper-flipper lockout and summary.
 
 DEFEAT / FLIPPER HANDOFF
 - Without More Jackpots, reaching 25 flashes immediately requests a six-second upper-flipper lockout and completes the mode.
@@ -32,16 +32,16 @@ DEFEAT / FLIPPER HANDOFF
 - No additional defeat ball save is awarded.
 
 LIGHTING
-- Start GI dark blue.
-- Both bank GIs pulse blue. A qualified bank turns solid blue while the opposite,
+- Starting GI: steel blue 6070A0.
+- Available bank GIs pulse between 6070A0 and 90B0FF. A qualified bank becomes solid 90B0FF while the opposite,
   unqualified bank continues pulsing until its own first hit.
-- One-bank progress uses a blue GI pulse.
+- One-bank progress pulses main GI between 6070A0 and 7088C0.
 - Both banks qualified clears the bank-specific cues, changes GI to bright electric
-  blue, and opens rooftop access.
+  blue 5098FF, and opens rooftop access.
 - All upper-target lamps pulse white; collected and Shot Assist-awarded targets turn solid white.
 - First-time upper-target awards give a brief white GI flash.
 - Reaching 25 flashes gives a full white flash.
-- More Jackpots victory window pulses blue/white.
+- More Jackpots victory window pulses blue 5098FF / white.
 - Spinner hits retain the existing shared spinner GI flash; this mode adds no duplicate spinner flash.
 
 STATUS / MESSAGES

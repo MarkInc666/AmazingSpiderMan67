@@ -107,6 +107,12 @@ show_player:
     bolton_boomer_saucer_2_solid: {loops: -1}
   bolton_boomer_saucer_3_held:
     bolton_boomer_saucer_3_solid: {loops: -1}
+  bolton_boomer_saucer_1_released:
+    bolton_boomer_saucer_1_solid: {action: stop}
+  bolton_boomer_saucer_2_released:
+    bolton_boomer_saucer_2_solid: {action: stop}
+  bolton_boomer_saucer_3_released:
+    bolton_boomer_saucer_3_solid: {action: stop}
   bolton_boomer_vuk_ready:
     shared_final_vuk_chase:
       loops: -1
@@ -144,7 +150,7 @@ show_player:
 
 light_player:
   mode_bolton_boomer_started:
-    gi: 403010
+    gi: A09060
   mode_bolton_boomer_stopping:
     gi: E0E0E0
   bolton_boomer_clear_lights:
@@ -204,34 +210,34 @@ shows:
       lights: {l_mid_web_target: off}
   bolton_boomer_left_sling_pulse:
     - duration: 500ms
-      lights: {l_gi_left_sling_upper: yellow, l_gi_left_sling_lower: yellow}
+      lights: {l_gi_left_sling_upper: FFFF60, l_gi_left_sling_lower: FFFF60}
     - duration: 500ms
-      lights: {l_gi_left_sling_upper: off, l_gi_left_sling_lower: off}
+      lights: {l_gi_left_sling_upper: A09060, l_gi_left_sling_lower: A09060}
   bolton_boomer_right_sling_pulse:
     - duration: 500ms
-      lights: {l_gi_right_sling: yellow}
+      lights: {l_gi_right_sling: FFFF60}
     - duration: 500ms
-      lights: {l_gi_right_sling: off}
+      lights: {l_gi_right_sling: A09060}
   bolton_boomer_left_pop_pulse:
     - duration: 500ms
-      lights: {l_pop_1_1: yellow, l_pop_1_2: yellow, l_pop_1_3: yellow, l_pop_1_4: yellow, l_pop_1_5: yellow, l_pop_1_6: yellow, l_pop_1_7: yellow, l_pop_1_8: yellow, l_pop_1_9: yellow, l_pop_1_10: yellow, l_pop_1_11: yellow, l_pop_1_12: yellow}
+      lights: {l_pop_1_1: FFFF60, l_pop_1_2: FFFF60, l_pop_1_3: FFFF60, l_pop_1_4: FFFF60, l_pop_1_5: FFFF60, l_pop_1_6: FFFF60, l_pop_1_7: FFFF60, l_pop_1_8: FFFF60, l_pop_1_9: FFFF60, l_pop_1_10: FFFF60, l_pop_1_11: FFFF60, l_pop_1_12: FFFF60}
     - duration: 500ms
-      lights: {l_pop_1_1: off, l_pop_1_2: off, l_pop_1_3: off, l_pop_1_4: off, l_pop_1_5: off, l_pop_1_6: off, l_pop_1_7: off, l_pop_1_8: off, l_pop_1_9: off, l_pop_1_10: off, l_pop_1_11: off, l_pop_1_12: off}
+      lights: {l_pop_1_1: A09060, l_pop_1_2: A09060, l_pop_1_3: A09060, l_pop_1_4: A09060, l_pop_1_5: A09060, l_pop_1_6: A09060, l_pop_1_7: A09060, l_pop_1_8: A09060, l_pop_1_9: A09060, l_pop_1_10: A09060, l_pop_1_11: A09060, l_pop_1_12: A09060}
   bolton_boomer_right_pop_pulse:
     - duration: 500ms
-      lights: {l_pop_2_1: yellow, l_pop_2_2: yellow, l_pop_2_3: yellow, l_pop_2_4: yellow, l_pop_2_5: yellow, l_pop_2_6: yellow, l_pop_2_7: yellow, l_pop_2_8: yellow, l_pop_2_9: yellow, l_pop_2_10: yellow, l_pop_2_11: yellow, l_pop_2_12: yellow, l_pop_2_13: yellow}
+      lights: {l_pop_2_1: FFFF60, l_pop_2_2: FFFF60, l_pop_2_3: FFFF60, l_pop_2_4: FFFF60, l_pop_2_5: FFFF60, l_pop_2_6: FFFF60, l_pop_2_7: FFFF60, l_pop_2_8: FFFF60, l_pop_2_9: FFFF60, l_pop_2_10: FFFF60, l_pop_2_11: FFFF60, l_pop_2_12: FFFF60, l_pop_2_13: FFFF60}
     - duration: 500ms
-      lights: {l_pop_2_1: off, l_pop_2_2: off, l_pop_2_3: off, l_pop_2_4: off, l_pop_2_5: off, l_pop_2_6: off, l_pop_2_7: off, l_pop_2_8: off, l_pop_2_9: off, l_pop_2_10: off, l_pop_2_11: off, l_pop_2_12: off, l_pop_2_13: off}
+      lights: {l_pop_2_1: A09060, l_pop_2_2: A09060, l_pop_2_3: A09060, l_pop_2_4: A09060, l_pop_2_5: A09060, l_pop_2_6: A09060, l_pop_2_7: A09060, l_pop_2_8: A09060, l_pop_2_9: A09060, l_pop_2_10: A09060, l_pop_2_11: A09060, l_pop_2_12: A09060, l_pop_2_13: A09060}
   bolton_boomer_left_bank_pulse:
     - duration: 500ms
-      lights: {l_gi_3bank: yellow}
+      lights: {l_gi_3bank: FFFF60}
     - duration: 500ms
-      lights: {l_gi_3bank: off}
+      lights: {l_gi_3bank: A09060}
   bolton_boomer_right_bank_pulse:
     - duration: 500ms
-      lights: {l_gi_5bank_lower: yellow, l_gi_5bank_upper: yellow}
+      lights: {l_gi_5bank_lower: FFFF60, l_gi_5bank_upper: FFFF60}
     - duration: 500ms
-      lights: {l_gi_5bank_lower: off, l_gi_5bank_upper: off}
+      lights: {l_gi_5bank_lower: A09060, l_gi_5bank_upper: A09060}
   bolton_boomer_star_pulse:
     - duration: 500ms
       lights: {l_star: yellow, l_star2: yellow}
@@ -241,29 +247,29 @@ shows:
   bolton_boomer_saucers_pulse:
     - duration: 500ms
       lights:
-        l_1_hole_l: red
-        l_1_hole_r: red
-        l_2_hole_l: red
-        l_2_hole_r: red
-        l_3_hole_l: red
-        l_3_hole_r: red
+        l_1_hole_l: FF4040
+        l_1_hole_r: FF4040
+        l_2_hole_l: FF4040
+        l_2_hole_r: FF4040
+        l_3_hole_l: FF4040
+        l_3_hole_r: FF4040
     - duration: 500ms
       lights:
-        l_1_hole_l: 400000
-        l_1_hole_r: 400000
-        l_2_hole_l: 400000
-        l_2_hole_r: 400000
-        l_3_hole_l: 400000
-        l_3_hole_r: 400000
+        l_1_hole_l: C02020
+        l_1_hole_r: C02020
+        l_2_hole_l: C02020
+        l_2_hole_r: C02020
+        l_3_hole_l: C02020
+        l_3_hole_r: C02020
   bolton_boomer_saucer_1_solid:
     - duration: -1
-      lights: {l_1_hole_l: red, l_1_hole_r: red}
+      lights: {l_1_hole_l: FF4040, l_1_hole_r: FF4040}
   bolton_boomer_saucer_2_solid:
     - duration: -1
-      lights: {l_2_hole_l: red, l_2_hole_r: red}
+      lights: {l_2_hole_l: FF4040, l_2_hole_r: FF4040}
   bolton_boomer_saucer_3_solid:
     - duration: -1
-      lights: {l_3_hole_l: red, l_3_hole_r: red}
+      lights: {l_3_hole_l: FF4040, l_3_hole_r: FF4040}
       
       
 sound_player:

@@ -169,53 +169,53 @@ light_player:
 shows:
   dr_zapp_dark_blue_gi:
     - duration: 1s
-      lights: {gi: 183060}
+      lights: {gi: 6070A0}
   dr_zapp_one_bank_gi:
     - duration: 500ms
-      lights: {gi: 204080}
+      lights: {gi: 7088C0}
     - duration: 500ms
-      lights: {gi: 102040}
+      lights: {gi: 6070A0}
   dr_zapp_roof_gi:
     - duration: 1s
-      lights: {gi: 3090FF}
+      lights: {gi: 5098FF}
   dr_zapp_bonus_gi:
     - duration: 500ms
-      lights: {gi: 3090FF}
+      lights: {gi: 5098FF}
     - duration: 500ms
       lights: {gi: FFFFFF}
   dr_zapp_target_white_flash:
     - duration: 250ms
       lights: {gi: FFFFFF}
     - duration: 250ms
-      lights: {gi: 3090FF}
+      lights: {gi: 5098FF}
   dr_zapp_defeat_white_flash:
     - duration: 250ms
       lights: {gi: FFFFFF}
     - duration: 250ms
-      lights: {gi: 3090FF}
+      lights: {gi: 5098FF}
 
   dr_zapp_left_bank_pulse:
     - duration: 500ms
-      lights: {l_gi_3bank: 3080FF}
+      lights: {l_gi_3bank: 90B0FF}
     - duration: 500ms
-      lights: {l_gi_3bank: 102040}
+      lights: {l_gi_3bank: 6070A0}
   dr_zapp_right_bank_pulse:
     - duration: 500ms
       lights:
-        l_gi_5bank_lower: 3080FF
-        l_gi_5bank_upper: 3080FF
+        l_gi_5bank_lower: 90B0FF
+        l_gi_5bank_upper: 90B0FF
     - duration: 500ms
       lights:
-        l_gi_5bank_lower: 102040
-        l_gi_5bank_upper: 102040
+        l_gi_5bank_lower: 6070A0
+        l_gi_5bank_upper: 6070A0
   dr_zapp_left_bank_solid:
     - duration: 1s
-      lights: {l_gi_3bank: 3080FF}
+      lights: {l_gi_3bank: 90B0FF}
   dr_zapp_right_bank_solid:
     - duration: 1s
       lights:
-        l_gi_5bank_lower: 3080FF
-        l_gi_5bank_upper: 3080FF
+        l_gi_5bank_lower: 90B0FF
+        l_gi_5bank_upper: 90B0FF
 
   dr_zapp_upper_left_pulse:
     - duration: 500ms

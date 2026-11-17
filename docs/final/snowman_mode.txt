@@ -1,18 +1,31 @@
 THE SNOWMAN — FINAL MODE DESIGN
 ===============================
-CURRENT CODE REFERENCE — timings and behavior below match the implemented mode.
+CURRENT CODE REFERENCE — November 17, 2026
 
-- Either web starts for 100K (150K with Bigger Jackpots).
-- The opposite web must be hit within 16 seconds (20 with More Time) for
-  250K (350K with Bigger).
-- Re-hitting the starting web scores 25K and resets the full wire timer.
-- With Shot Assist, that repeated starting-web hit completes the wire.
-- Wire timeout resets the sequence and either web can restart it.
-- The first spinner spin defeats Snowman and starts a 10-second bonus-spin
-  window (16 seconds with More Time).
-- Bonus spins score 100K, or 150K with Bigger Jackpots.
-- More Jackpots raises each following spin by 25K.
-- Safety Net starts a 10-second ball save when the spinner lights.
-- Webs pulse red; a hit web becomes solid red. GI progresses pale blue, deep
-  blue, white flash, cold green-blue, then blue/white bonus pulse.
+- Either web starts the wire for 100K (150K Bigger Jackpots).
+- Hit the opposite web within 16 seconds (20 with More Time) for 250K
+  (350K Bigger Jackpots). Repeating the starting web scores 25K and
+  resets the timer; Shot Assist can complete the wire on that repeat.
+- When the wire is complete, the lower spinner lights and the shared
+  VUK-route chase starts. This chase remains on through bonus spins.
+- The first lower-spinner spin defeats Snowman and starts a 15-second
+  bonus-spin window (20 seconds with More Time).
+- Every spinner pulse scores 100K (150K Bigger Jackpots). More Jackpots
+  raises the value of each following spin by 25K. The first qualifying
+  spinner hit counts toward the five spins needed for the Super.
+- If at least FIVE total spinner hits have been collected by the end of
+  the bonus-spin timer, open the rooftop gate, retain the VUK chase and
+  light a 500K Super Jackpot at the Daily Bugle VUK for 15 seconds.
+- A VUK hit during that Super window scores 500K once and hands the ball
+  to the villain-summary VUK hold. If the Super window expires, the mode
+  completes without the Super. If fewer than five spins were collected,
+  the mode completes when the bonus spinner timer ends.
+- VUK hits before the Super phase eject normally and cannot score Super.
+- The rooftop gate is closed when the mode completes or stops.
+- Safety Net provides the existing separate 10-second ball save when
+  the spinner becomes ready, in addition to the shared opening save.
+- Lighting: idle GI A0D8F0; wire GI 6088C0; spinner-ready GI 50B0B0;
+  web indicators pulse between FF6060 and A04040; bonus GI alternates
+  4080C0 and D8F8FF. The shared VUK route chase runs from spinner-ready
+  until completion / failure / mode stop.
 - Summary: MODE SCORE / BONUS SPINS / BIGGEST SPIN.

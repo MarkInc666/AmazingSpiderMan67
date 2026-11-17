@@ -8,7 +8,7 @@ class Igor(CaseFileMixin, Mode):
     """Igor: an endless precision/avoidance score attack.
 
     Each authored set has one flashing-green Jackpot shot and nearby solid-red
-    defense shots. Any scored shot immediately chooses a different set. The
+    defense shots. Any scored shot clears the lights, then chooses a different set after 2 seconds. The
     mode ends on the fifth bad shot (seventh with More Jackpots) or ball drain.
     """
 
@@ -22,6 +22,7 @@ class Igor(CaseFileMixin, Mode):
     NORMAL_BAD_SHOT_LIMIT = 5
     MORE_JACKPOTS_BAD_SHOT_LIMIT = 7
     FINAL_MESSAGE_MS = 2_000
+    NEXT_SET_DELAY_MS = 2_000
 
     SHOT_SETS = {
         1: {
@@ -92,6 +93,7 @@ class Igor(CaseFileMixin, Mode):
 
         self.mode_done = False
         self.current_set = None
+        self.transition_pending = False
         self.jackpots = 0
         self.bad_shots = 0
         self.mode_points = self.villain_start_bonus
@@ -149,6 +151,7 @@ class Igor(CaseFileMixin, Mode):
 
     def mode_stop(self, **kwargs):
         self.delay.remove("igor_final_message")
+        self.delay.remove("igor_next_set")
         self.machine.events.post("igor_all_shot_lights_off")
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("hide_mode_status")
@@ -164,7 +167,7 @@ class Igor(CaseFileMixin, Mode):
         return 0
 
     def _shot_hit(self, group, **kwargs):
-        if self.mode_done or self.current_set is None:
+        if self.mode_done or self.transition_pending or self.current_set is None:
             return
 
         shot_set = self.SHOT_SETS[self.current_set]
@@ -184,7 +187,7 @@ class Igor(CaseFileMixin, Mode):
             return
 
         if not self.mode_done:
-            self._select_next_set()
+            self._queue_next_set()
 
     def _collect_jackpot(self, group, assisted=False):
         award = self.next_jackpot
@@ -233,6 +236,28 @@ class Igor(CaseFileMixin, Mode):
             value=self.BAD_SHOT_SCORE,
         )
 
+    def _queue_next_set(self):
+        """Leave a brief quiet interval between scored shot configurations.
+
+        Ignore hits during this interval so the next good/bad shot cannot be
+        collected before its lights are shown to the player.
+        """
+        if self.mode_done or self.transition_pending:
+            return
+        self.transition_pending = True
+        self.machine.events.post("igor_all_shot_lights_off")
+        self.delay.add(
+            name="igor_next_set",
+            ms=self.NEXT_SET_DELAY_MS,
+            callback=self._show_next_set,
+        )
+
+    def _show_next_set(self):
+        if self.mode_done:
+            return
+        self.transition_pending = False
+        self._select_next_set()
+
     def _select_next_set(self):
         choices = [
             set_number
@@ -262,6 +287,8 @@ class Igor(CaseFileMixin, Mode):
             return
 
         self.mode_done = True
+        self.transition_pending = False
+        self.delay.remove("igor_next_set")
         self.machine.events.post("igor_all_shot_lights_off")
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("hide_mode_status")
@@ -273,6 +300,8 @@ class Igor(CaseFileMixin, Mode):
     def _finish_mode(self, **kwargs):
         if not self.mode_done:
             self.mode_done = True
+        self.transition_pending = False
+        self.delay.remove("igor_next_set")
 
         player = self.machine.game.player
         player[f"{self.MODE_KEY}_state"] = 2

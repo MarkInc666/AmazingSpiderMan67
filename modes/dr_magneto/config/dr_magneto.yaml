@@ -188,7 +188,7 @@ show_player:
 
 light_player:
   mode_dr_magneto_started:
-    gi: 6030A0
+    gi: 9060C0
   mode_dr_magneto_stopping:
     gi: E0E0E0
 
@@ -196,28 +196,28 @@ shows:
   dr_magneto_left_qualifier_pulse:
     - duration: 300ms
       lights:
-        l_gi_left_sling_upper: C060FF
-        l_gi_left_sling_lower: C060FF
+        l_gi_left_sling_upper: D090FF
+        l_gi_left_sling_lower: D090FF
     - duration: 300ms
       lights:
-        l_gi_left_sling_upper: 6030A0
-        l_gi_left_sling_lower: 6030A0
+        l_gi_left_sling_upper: 9060C0
+        l_gi_left_sling_lower: 9060C0
 
   dr_magneto_right_qualifier_pulse:
     - duration: 300ms
       lights:
-        l_gi_right_sling: C060FF
-        l_gi_right_return: C060FF
+        l_gi_right_sling: D090FF
+        l_gi_right_return: D090FF
     - duration: 300ms
       lights:
-        l_gi_right_sling: 6030A0
-        l_gi_right_return: 6030A0
+        l_gi_right_sling: 9060C0
+        l_gi_right_return: 9060C0
 
   dr_magneto_a_pulse:
     - duration: 300ms
       lights:
-        l_right_a: yellow
-        l_a_rollover: yellow
+        l_right_a: FFFF40
+        l_a_rollover: FFFF40
     - duration: 300ms
       lights:
         l_right_a: off
@@ -226,8 +226,8 @@ shows:
   dr_magneto_b_pulse:
     - duration: 300ms
       lights:
-        l_left_b: yellow
-        l_b_rollover: yellow
+        l_left_b: FFFF40
+        l_b_rollover: FFFF40
     - duration: 300ms
       lights:
         l_left_b: off
@@ -236,97 +236,97 @@ shows:
   dr_magneto_left_pop_pulse:
     - duration: 300ms
       lights:
-        l_pop_1_1: 4060FF
-        l_pop_1_2: 4060FF
-        l_pop_1_3: 4060FF
-        l_pop_1_4: 4060FF
-        l_pop_1_5: 4060FF
-        l_pop_1_6: 4060FF
-        l_pop_1_7: 4060FF
-        l_pop_1_8: 4060FF
-        l_pop_1_9: 4060FF
-        l_pop_1_10: 4060FF
-        l_pop_1_11: 4060FF
-        l_pop_1_12: 4060FF
+        l_pop_1_1: 6080FF
+        l_pop_1_2: 6080FF
+        l_pop_1_3: 6080FF
+        l_pop_1_4: 6080FF
+        l_pop_1_5: 6080FF
+        l_pop_1_6: 6080FF
+        l_pop_1_7: 6080FF
+        l_pop_1_8: 6080FF
+        l_pop_1_9: 6080FF
+        l_pop_1_10: 6080FF
+        l_pop_1_11: 6080FF
+        l_pop_1_12: 6080FF
     - duration: 300ms
       lights:
-        l_pop_1_1: off
-        l_pop_1_2: off
-        l_pop_1_3: off
-        l_pop_1_4: off
-        l_pop_1_5: off
-        l_pop_1_6: off
-        l_pop_1_7: off
-        l_pop_1_8: off
-        l_pop_1_9: off
-        l_pop_1_10: off
-        l_pop_1_11: off
-        l_pop_1_12: off
+        l_pop_1_1: 9060C0
+        l_pop_1_2: 9060C0
+        l_pop_1_3: 9060C0
+        l_pop_1_4: 9060C0
+        l_pop_1_5: 9060C0
+        l_pop_1_6: 9060C0
+        l_pop_1_7: 9060C0
+        l_pop_1_8: 9060C0
+        l_pop_1_9: 9060C0
+        l_pop_1_10: 9060C0
+        l_pop_1_11: 9060C0
+        l_pop_1_12: 9060C0
 
   dr_magneto_left_pop_solid:
     - duration: 1s
       lights:
-        l_pop_1_1: 4060FF
-        l_pop_1_2: 4060FF
-        l_pop_1_3: 4060FF
-        l_pop_1_4: 4060FF
-        l_pop_1_5: 4060FF
-        l_pop_1_6: 4060FF
-        l_pop_1_7: 4060FF
-        l_pop_1_8: 4060FF
-        l_pop_1_9: 4060FF
-        l_pop_1_10: 4060FF
-        l_pop_1_11: 4060FF
-        l_pop_1_12: 4060FF
+        l_pop_1_1: 4060D0
+        l_pop_1_2: 4060D0
+        l_pop_1_3: 4060D0
+        l_pop_1_4: 4060D0
+        l_pop_1_5: 4060D0
+        l_pop_1_6: 4060D0
+        l_pop_1_7: 4060D0
+        l_pop_1_8: 4060D0
+        l_pop_1_9: 4060D0
+        l_pop_1_10: 4060D0
+        l_pop_1_11: 4060D0
+        l_pop_1_12: 4060D0
 
   dr_magneto_right_pop_pulse:
     - duration: 300ms
       lights:
-        l_pop_2_1: 4060FF
-        l_pop_2_2: 4060FF
-        l_pop_2_3: 4060FF
-        l_pop_2_4: 4060FF
-        l_pop_2_5: 4060FF
-        l_pop_2_6: 4060FF
-        l_pop_2_7: 4060FF
-        l_pop_2_8: 4060FF
-        l_pop_2_9: 4060FF
-        l_pop_2_10: 4060FF
-        l_pop_2_11: 4060FF
-        l_pop_2_12: 4060FF
-        l_pop_2_13: 4060FF
+        l_pop_2_1: 6080FF
+        l_pop_2_2: 6080FF
+        l_pop_2_3: 6080FF
+        l_pop_2_4: 6080FF
+        l_pop_2_5: 6080FF
+        l_pop_2_6: 6080FF
+        l_pop_2_7: 6080FF
+        l_pop_2_8: 6080FF
+        l_pop_2_9: 6080FF
+        l_pop_2_10: 6080FF
+        l_pop_2_11: 6080FF
+        l_pop_2_12: 6080FF
+        l_pop_2_13: 6080FF
     - duration: 300ms
       lights:
-        l_pop_2_1: off
-        l_pop_2_2: off
-        l_pop_2_3: off
-        l_pop_2_4: off
-        l_pop_2_5: off
-        l_pop_2_6: off
-        l_pop_2_7: off
-        l_pop_2_8: off
-        l_pop_2_9: off
-        l_pop_2_10: off
-        l_pop_2_11: off
-        l_pop_2_12: off
-        l_pop_2_13: off
+        l_pop_2_1: 9060C0
+        l_pop_2_2: 9060C0
+        l_pop_2_3: 9060C0
+        l_pop_2_4: 9060C0
+        l_pop_2_5: 9060C0
+        l_pop_2_6: 9060C0
+        l_pop_2_7: 9060C0
+        l_pop_2_8: 9060C0
+        l_pop_2_9: 9060C0
+        l_pop_2_10: 9060C0
+        l_pop_2_11: 9060C0
+        l_pop_2_12: 9060C0
+        l_pop_2_13: 9060C0
 
   dr_magneto_right_pop_solid:
     - duration: 1s
       lights:
-        l_pop_2_1: 4060FF
-        l_pop_2_2: 4060FF
-        l_pop_2_3: 4060FF
-        l_pop_2_4: 4060FF
-        l_pop_2_5: 4060FF
-        l_pop_2_6: 4060FF
-        l_pop_2_7: 4060FF
-        l_pop_2_8: 4060FF
-        l_pop_2_9: 4060FF
-        l_pop_2_10: 4060FF
-        l_pop_2_11: 4060FF
-        l_pop_2_12: 4060FF
-        l_pop_2_13: 4060FF
+        l_pop_2_1: 4060D0
+        l_pop_2_2: 4060D0
+        l_pop_2_3: 4060D0
+        l_pop_2_4: 4060D0
+        l_pop_2_5: 4060D0
+        l_pop_2_6: 4060D0
+        l_pop_2_7: 4060D0
+        l_pop_2_8: 4060D0
+        l_pop_2_9: 4060D0
+        l_pop_2_10: 4060D0
+        l_pop_2_11: 4060D0
+        l_pop_2_12: 4060D0
+        l_pop_2_13: 4060D0
 
   dr_magneto_center_web_chase:
     - duration: 250ms

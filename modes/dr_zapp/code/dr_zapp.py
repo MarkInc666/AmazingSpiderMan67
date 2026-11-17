@@ -47,7 +47,7 @@ class DrZapp(CaseFileMixin, Mode):
         self.publish_case_file_bonus_events(self.MODE_KEY)
         self.publish_active_case_file_helpers([
             ("more_jackpots", "10 SECOND BONUS SPINS"),
-            ("bigger_jackpots", "150K BANKS / 75K TARGETS AND SPINS"),
+            ("bigger_jackpots", "150K BANKS / 75K TARGETS AND PER FLASH"),
             ("more_time", "15 SECOND SAVE ON FIRST ROOF ENTRY"),
             ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST UPPER TARGET AWARDS ANOTHER"),
@@ -191,7 +191,10 @@ class DrZapp(CaseFileMixin, Mode):
         if self.mode_done or self.phase not in ("roof", "bonus"):
             return
 
-        value = self._spin_value()
+        # Every spin pays for the number of camera flashes it represents.
+        # Bonus spins retain the earned multiplier but do not add flashes.
+        flashes_added = 1 + len(self.collected_upper_targets)
+        value = self._spin_value() * flashes_added
         self._score(value)
         self.spinner_spins += 1
 
@@ -202,7 +205,6 @@ class DrZapp(CaseFileMixin, Mode):
             self._sync_vars()
             return
 
-        flashes_added = 1 + len(self.collected_upper_targets)
         self.camera_flashes += flashes_added
         self.machine.events.post(
             "dr_zapp_camera_flashes_added",

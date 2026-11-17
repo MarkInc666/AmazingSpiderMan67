@@ -11,17 +11,21 @@ Core loop
 - Capturing one ball scores 100K, or 150K with Bigger Jackpots.
 - The captured saucer stays solid red, the rooftop gate opens, and the VUK flashes green.
 - If the second ball enters any saucer, it is kicked out after one second; the original held ball remains.
+- While a ball is held, any physical switch activation restarts a 10-second inactivity watchdog.
+- After 10 seconds without switch activity, the held saucer ball is ejected for safety.
+- Safety ejection does NOT cancel the Super, close the rooftop gate, or restart the Super timer.
+  The VUK can collect the qualified Super with both balls free.
 - Shoot the VUK with the remaining ball to collect the Super Jackpot.
 
 Super sequence
 --------------
-- First Super is untimed.
-- Second and later Supers have 20 seconds, or 30 seconds with More Time.
+- First Super is untimed (and remains qualified if the inactivity watchdog releases the held ball).
+- Second and later Supers have 20 seconds, or 30 seconds with More Time, whether or not the held ball is released.
 - Super starts at 500K, or 750K with Bigger Jackpots.
 - More Jackpots adds 100K to each next collected Super, capped at 1.5M.
-- On collect: gate closes immediately, VUK kicks after two seconds, and the held saucer kicks two seconds later.
+- On collect: gate closes immediately, VUK kicks after two seconds, and any still-held saucer kicks two seconds later.
 - A new random target lights after both balls are released.
-- On timed miss: gate closes immediately, held saucer releases after two seconds, and the target stage restarts.
+- On timed miss: gate closes immediately, any still-held saucer releases after two seconds, and the target stage restarts.
 - Mode ends when multiball ends.
 
 Case Files
@@ -34,10 +38,10 @@ Case Files
 
 Presentation
 ------------
-- Lit random target: pulsing yellow.
-- Saucer capture ready: all saucers pulse red.
-- Held saucer: solid red.
-- VUK Super ready: flashing green.
+- Base GI: solid A09060; lit target: yellow FFFF60 (regional GI alternates with A09060).
+- Saucer capture ready: all saucers pulse FF4040/C02020.
+- Held saucer: solid FF4040.
+- VUK Super ready: A0A0F0 rooftop chase.
 - Timed status: SUPER IN X.
 
 Summary
