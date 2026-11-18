@@ -135,10 +135,12 @@ show_player:
   clive_blotto_meter_full_flash:
     clive_blotto_spread_flash:
       action: play
+      loops: 0
       priority: 700
   clive_blotto_area_clear_flash:
     clive_blotto_clear_flash:
       action: play
+      loops: 0
       priority: 700
   clive_blotto_right_pop_pulse_on:
     clive_blotto_right_pop_infected:
@@ -168,10 +170,16 @@ shows:
     - duration: 200ms
       lights:
         gi: FF00FF
+    - duration: 1ms
+      lights:
+        gi: stop
   clive_blotto_clear_flash:
     - duration: 250ms
       lights:
         gi: 40FF40
+    - duration: 1ms
+      lights:
+        gi: stop
   clive_blotto_infected_upper_left:
     # Pulse continuously between 50% and 100% magenta.
     - duration: 650ms
