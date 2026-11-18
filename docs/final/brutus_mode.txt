@@ -12,7 +12,7 @@ CORE LOOP
 1. Begin with all five right drops standing and all saucers guarded.
 2. Hit any right drop for 50K. The other four targets drop programmatically.
 3. All three saucers light for 15 seconds.
-4. Shoot any saucer for a 250K Artwork Jackpot.
+4. Shoot any saucer for a 350K Artwork Jackpot.
 5. Close the window, reset the right bank, and repeat.
 
 Three Artwork Jackpots defeat Brutus. The mode changes state before firing the
@@ -31,7 +31,7 @@ BRUTUS RETURNS
 CASE FILES
 
 - More Jackpots: require four Artwork Jackpots instead of three.
-- Bigger Jackpots: Artwork Jackpots score 400K instead of 250K.
+- Bigger Jackpots: Artwork Jackpots score 500K instead of 350K.
 - More Time: open saucer windows last 20 seconds instead of 15.
 - Safety Net: start the standard 10-second Case File ball save.
 - Shot Assist: two seconds after mode start, programmatically drop all five
@@ -50,5 +50,16 @@ SCORING SUMMARY
 
 Right-drop lure:                    50K
 Guarded saucer:                     25K
-Artwork Jackpot:                   250K
-Artwork Jackpot with Bigger:       400K
+Artwork Jackpot:                   350K
+Artwork Jackpot with Bigger:       500K
+
+LIGHTING (November 18 adjustment)
+
+- Base GI: solid C89050 (warm amber).
+- Guarded right 5-bank: pulse 00F000 / 408040 (green inserts).
+- Guarded saucer holes: solid 703030 behind red lenses.
+- Open saucers: pulse F00000 / 703030.
+- Left-bank danger GI: pulse F03010 / 904030.
+- Artwork Jackpot flash: FFFFFF / 703030 on saucer hole lamps.
+- Startup does not invoke brutus_clear_all, to avoid stopping the mode GI.
+  Full cleanup still occurs when the mode stops.

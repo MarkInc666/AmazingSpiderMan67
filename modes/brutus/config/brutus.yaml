@@ -101,7 +101,7 @@ light_player:
 shows:
   brutus_mode_gi:
     - duration: 1s
-      lights: {gi: B87838}
+      lights: {gi: C89050}
 
   # The five inserts are physically green.
   brutus_right_bank_pulse:
@@ -114,63 +114,63 @@ shows:
         l_5bank_5: "00F000"
     - duration: 500ms
       lights:
-        l_5bank_1: "003000"
-        l_5bank_2: "003000"
-        l_5bank_3: "003000"
-        l_5bank_4: "003000"
-        l_5bank_5: "003000"
+        l_5bank_1: "408040"
+        l_5bank_2: "408040"
+        l_5bank_3: "408040"
+        l_5bank_4: "408040"
+        l_5bank_5: "408040"
 
   # Dim red behind the red hole lenses means guarded, not collectible.
   brutus_saucers_guarded:
     - duration: 1s
       lights:
-        l_1_hole_l: "300000"
-        l_1_hole_r: "300000"
-        l_2_hole_l: "300000"
-        l_2_hole_r: "300000"
-        l_3_hole_l: "300000"
-        l_3_hole_r: "300000"
+        l_1_hole_l: "703030"
+        l_1_hole_r: "703030"
+        l_2_hole_l: "703030"
+        l_2_hole_r: "703030"
+        l_3_hole_l: "703030"
+        l_3_hole_r: "703030"
 
   # Left-bank GI is RGB-capable and marks the shot that ends the opening.
   brutus_left_bank_danger:
     - duration: 250ms
       lights: {l_gi_3bank: F03010}
     - duration: 250ms
-      lights: {l_gi_3bank: "301000"}
+      lights: {l_gi_3bank: "904030"}
 
   # Physical saucer-hole lamps indicate that all three saucers are valid jackpots.
   brutus_saucers_jackpot:
     - duration: 250ms
       lights:
-        l_1_hole_l: F00000
-        l_1_hole_r: F00000
-        l_2_hole_l: F00000
-        l_2_hole_r: F00000
-        l_3_hole_l: F00000
-        l_3_hole_r: F00000
+        l_1_hole_l: FFFFFF
+        l_1_hole_r: FFFFFF
+        l_2_hole_l: FFFFFF
+        l_2_hole_r: FFFFFF
+        l_3_hole_l: FFFFFF
+        l_3_hole_r: FFFFFF
     - duration: 250ms
       lights:
-        l_1_hole_l: "300000"
-        l_1_hole_r: "300000"
-        l_2_hole_l: "300000"
-        l_2_hole_r: "300000"
-        l_3_hole_l: "300000"
-        l_3_hole_r: "300000"
+        l_1_hole_l: "703030"
+        l_1_hole_r: "703030"
+        l_2_hole_l: "703030"
+        l_2_hole_r: "703030"
+        l_3_hole_l: "703030"
+        l_3_hole_r: "703030"
 
   brutus_jackpot_flash:
     - duration: 125ms
       lights:
-        l_1_hole_l: F00000
-        l_1_hole_r: F00000
-        l_2_hole_l: F00000
-        l_2_hole_r: F00000
-        l_3_hole_l: F00000
-        l_3_hole_r: F00000
+        l_1_hole_l: FFFFFF
+        l_1_hole_r: FFFFFF
+        l_2_hole_l: FFFFFF
+        l_2_hole_r: FFFFFF
+        l_3_hole_l: FFFFFF
+        l_3_hole_r: FFFFFF
     - duration: 125ms
       lights:
-        l_1_hole_l: "000000"
-        l_1_hole_r: "000000"
-        l_2_hole_l: "000000"
-        l_2_hole_r: "000000"
-        l_3_hole_l: "000000"
-        l_3_hole_r: "000000"
+        l_1_hole_l: "703030"
+        l_1_hole_r: "703030"
+        l_2_hole_l: "703030"
+        l_2_hole_r: "703030"
+        l_3_hole_l: "703030"
+        l_3_hole_r: "703030"

@@ -6,9 +6,9 @@ bank resets. Each later round allows one additional hit, up to five hits.
 
 New unique targets score 200K. Previously completed targets score 50K and
 still consume one of the round's allowed hits. Completing the left 3-bank adds
-10 seconds and resets that bank.
+10 seconds (up to a maximum of 90 seconds remaining) and resets that bank.
 
-Incomplete right-bank inserts pulse bright/dim green through their physical
+Incomplete right-bank inserts pulse 00FF00/408040 green through their physical
 green lenses. Completed targets remain solid green across later bank resets.
 The status display shows the round, seconds remaining, unique targets found,
 and hits used in the current round.
@@ -18,11 +18,17 @@ Daily Bugle VUK is immediately ejected.
 
 CASE FILES
 - More Jackpots: after all five unique targets, reset the bank for one 500K
-  Showdown Jackpot on any right drop.
-- Bigger Jackpots: new targets score 250K and repeats score 75K.
+  Showdown Jackpot on any right drop (500K normal / 750K with Bigger Jackpots).
+- Bigger Jackpots: new targets score 250K, repeats score 75K, and the optional Showdown scores 750K.
 - More Time: start with 70 seconds.
 - Safety Net: start the 10-second Case File ball save.
 - Shot Assist: the first right-bank hit in round 2 spots another unique target.
+
+VICTORY AWARD
+Defeating Desperado awards an additional 500K completion bonus, whether
+the mode ends after finding five unique outlaws or after collecting the
+optional Showdown Jackpot. The bonus is awarded once and included in the
+mode score and summary.
 
 SUMMARY
 MODE SCORE, BANK HITS, OUTLAWS.

@@ -126,27 +126,27 @@ shows:
     - duration: 250ms
       lights: {l_5bank_1: green}
     - duration: 250ms
-      lights: {l_5bank_1: "003000"}
+      lights: {l_5bank_1: "408040"}
   desperado_right_drop_2_available_show:
     - duration: 250ms
       lights: {l_5bank_2: green}
     - duration: 250ms
-      lights: {l_5bank_2: "003000"}
+      lights: {l_5bank_2: "408040"}
   desperado_right_drop_3_available_show:
     - duration: 250ms
       lights: {l_5bank_3: green}
     - duration: 250ms
-      lights: {l_5bank_3: "003000"}
+      lights: {l_5bank_3: "408040"}
   desperado_right_drop_4_available_show:
     - duration: 250ms
       lights: {l_5bank_4: green}
     - duration: 250ms
-      lights: {l_5bank_4: "003000"}
+      lights: {l_5bank_4: "408040"}
   desperado_right_drop_5_available_show:
     - duration: 250ms
       lights: {l_5bank_5: green}
     - duration: 250ms
-      lights: {l_5bank_5: "003000"}
+      lights: {l_5bank_5: "408040"}
   desperado_left_bank_time_show:
     - duration: 400ms
       lights: {l_3bankbonus: blue}

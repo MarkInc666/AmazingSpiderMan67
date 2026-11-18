@@ -10,8 +10,8 @@ class Brutus(CaseFileMixin, Mode):
 
     LURE_SCORE = 50_000
     BLOCKED_SAUCER_SCORE = 25_000
-    JACKPOT_SCORE = 250_000
-    BIGGER_JACKPOT_SCORE = 400_000
+    JACKPOT_SCORE = 350_000
+    BIGGER_JACKPOT_SCORE = 500_000
 
     JACKPOTS_TO_COMPLETE = 3
     MORE_JACKPOTS_TO_COMPLETE = 4
@@ -78,7 +78,7 @@ class Brutus(CaseFileMixin, Mode):
         self.publish_case_file_bonus_events(self.MODE_KEY)
         self.publish_active_case_file_helpers([
             ("more_jackpots", "FOUR ARTWORK JACKPOTS AVAILABLE"),
-            ("bigger_jackpots", "ARTWORK JACKPOTS SCORE 400K"),
+            ("bigger_jackpots", "ARTWORK JACKPOTS SCORE 500K"),
             ("more_time", "BRUTUS STAYS AWAY FOR 20 SECONDS"),
             ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "OPENING RIGHT BANK DROPS AFTER 2 SECONDS"),
@@ -100,7 +100,9 @@ class Brutus(CaseFileMixin, Mode):
 
         self.machine.events.post("disable_daily_bugle_mystery")
         self.machine.events.post("daily_bugle_cancel_vuk_delay_eject")
-        self.machine.events.post("brutus_clear_all")
+        # Preserve brutus_mode_gi started by mode_brutus_started.
+        # Full light/show cleanup belongs to mode_stop().
+        self.machine.events.post("brutus_clear_shots")
         self.machine.events.post("rooftop_diverter_close")
         self.machine.events.post("clear_saucers_delayed")
         self.machine.events.post("drop_target_bank_dt_bank_left_reset")
