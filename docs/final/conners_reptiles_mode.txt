@@ -24,7 +24,7 @@ Scoring and completion
 
 - Each revealed Jackpot scores 100,000.
 - Collecting all required Jackpot objectives opens the rooftop gate using
-  rooftop_diverter_open and lights the VUK for an untimed 500,000 Super.
+  rooftop_diverter_open and lights the VUK for an untimed 1,000,000 Super (1,500,000 with Bigger Jackpots).
 - Only collecting the VUK Super defeats Conner's Reptiles and sets the mode state
   to completed. Starting the mode or reaching the Super does not mark completion.
 - The Super is held in the VUK until the villain summary is finished.
@@ -39,7 +39,7 @@ Case Files
 
 - More Jackpots: adds the star rollover as an eighth required Jackpot objective.
 - Bigger Jackpots: each revealed Jackpot scores 150,000 instead of 100,000.
-  Pop scoring, Swamp Bonus contributions, and the 500,000 VUK Super do not change.
+  Pop scoring, Swamp Bonus contributions, and the VUK Super increases from 1,000,000 to 1,500,000.
 - More Time: when Safety Net is active, extends its opening ball save from 10 to
   20 seconds.
 - Safety Net: 10-second opening ball save.
@@ -48,7 +48,8 @@ Case Files
 
 Lighting
 
-- Both complete pop-bumper lamp rings pulse green for the full mode to identify
+- Base GI is solid swamp green 80B060. Both complete pop-bumper lamp rings
+  pulse between 80B060 and 60F060 throughout the mode to identify
   the shots that reveal Jackpot objectives.
 - Revealed rollovers pulse yellow, web targets pulse white, and the grouped saucers
   and optional star pulse red to match their physical lenses.
@@ -56,3 +57,10 @@ Lighting
 - When the Super is ready, the Jackpot objective lights clear and the shared
   Master Vine route chase runs from the lower spinner through the ramp to the
   VUK. It stops immediately on the VUK hit or mode cleanup.
+
+Ball-save review note (November 18, 2026)
+
+- Shared villain opening ball save is 20 seconds, or 30 with Safety Net.
+- The mode also enables an additional 10-second save with Safety Net,
+  extended to 20 seconds when More Time is present. These overlap the
+  shared opening save and need MPF machine testing before altering them.

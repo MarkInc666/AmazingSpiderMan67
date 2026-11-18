@@ -14,7 +14,8 @@ class ConnersReptiles(CaseFileMixin, Mode):
     SWAMP_BONUS_PER_POP = 50_000
     JACKPOT_VALUE = 100_000
     BIGGER_JACKPOT_VALUE = 150_000
-    SUPER_VALUE = 500_000
+    SUPER_VALUE = 1_000_000
+    BIGGER_SUPER_VALUE = 1_500_000
 
     UPPER_A_SHOT = "upper_a"
     UPPER_B_SHOT = "upper_b"
@@ -95,6 +96,9 @@ class ConnersReptiles(CaseFileMixin, Mode):
         if self.more_jackpots_active:
             self.required_shots.append(self.STAR_SHOT)
         self.required_jackpots = len(self.required_shots)
+        self.super_value = (
+            self.BIGGER_SUPER_VALUE if self.bigger_jackpots_active else self.SUPER_VALUE
+        )
         self.jackpot_value = (
             self.BIGGER_JACKPOT_VALUE
             if self.bigger_jackpots_active
@@ -294,7 +298,7 @@ class ConnersReptiles(CaseFileMixin, Mode):
         self._show_message(
             "SWAMP SUPER READY",
             "SHOOT THE VUK",
-            value=self.SUPER_VALUE,
+            value=self.super_value,
             reminder=False,
         )
 
@@ -309,9 +313,9 @@ class ConnersReptiles(CaseFileMixin, Mode):
         self.super_lit = False
         self.machine.events.post("conners_reptiles_vuk_chase_stop")
         self.super_collected = True
-        self._score(self.SUPER_VALUE)
-        self.machine.events.post("conners_reptiles_super_jackpot_collected", value=self.SUPER_VALUE)
-        self._show_jackpot("SWAMP RAMPAGE SUPER", self.SUPER_VALUE)
+        self._score(self.super_value)
+        self.machine.events.post("conners_reptiles_super_jackpot_collected", value=self.super_value)
+        self._show_jackpot("SWAMP RAMPAGE SUPER", self.super_value)
         self.machine.events.post("villain_summary_hold_vuk_until_done")
         self._complete_mode()
 
@@ -342,7 +346,7 @@ class ConnersReptiles(CaseFileMixin, Mode):
         player["conners_reptiles_pop_hits"] = self.pop_hits
         player["conners_reptiles_rampage_level"] = len(self.revealed_shots)
         player["conners_reptiles_current_jackpot"] = self.jackpot_value
-        player["conners_reptiles_super_jackpot"] = self.SUPER_VALUE
+        player["conners_reptiles_super_jackpot"] = self.super_value
         player["active_mode_stat_1"] = self.jackpots_collected
         player["active_mode_stat_2"] = player["swamp_bonus"]
         player["conners_reptiles_jackpots_required"] = self.required_jackpots
@@ -354,7 +358,7 @@ class ConnersReptiles(CaseFileMixin, Mode):
     def _update_mode_status(self):
         player = self.machine.game.player
         if self.super_lit:
-            title = "SWAMP SUPER 500,000"
+            title = f"SWAMP SUPER {self.super_value:,}"
             value = "SHOOT THE VUK"
         else:
             title = f"JACKPOTS {self.jackpots_collected}/{self.required_jackpots}"

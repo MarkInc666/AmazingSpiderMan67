@@ -38,7 +38,7 @@ Core rules
 Super round
 -----------
 - Completing all eight drops lights the center web for a 20-second Super
-  Jackpot worth 500,000 points.
+  Jackpot worth 1,000,000 points.
 - Collecting the center-web Super defeats Skymaster.
 - If the center Super expires, the mode ends unsuccessfully. There is no
   second attempt.
@@ -47,9 +47,9 @@ Super round
 Case Files
 ----------
 - More Jackpots: the left web is also lit during the same Super window for a
-  second 500,000-point Super Jackpot. Center and left can each be collected
+  second 1,000,000-point Super Jackpot. Center and left can each be collected
   once. Center is still required to defeat Skymaster.
-- Bigger Jackpots: correct drops score 150,000; each web Super scores 750,000.
+- Bigger Jackpots: correct drops score 150,000; each web Super scores 1,500,000.
 - More Time: the Super window is 25 seconds instead of 20.
 - Safety Net: starts the standard 10-second Case File ball save when the mode
   begins.

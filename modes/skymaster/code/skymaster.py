@@ -11,8 +11,8 @@ class Skymaster(CaseFileMixin, Mode):
 
     DROP_SCORE = 100_000
     BIGGER_DROP_SCORE = 150_000
-    SUPER_VALUE = 500_000
-    BIGGER_SUPER_VALUE = 750_000
+    SUPER_VALUE = 1_000_000
+    BIGGER_SUPER_VALUE = 1_500_000
     SUPER_SECONDS = 20
     MORE_TIME_SUPER_SECONDS = 25
 
@@ -117,7 +117,7 @@ class Skymaster(CaseFileMixin, Mode):
         self.publish_case_file_bonus_events(self.MODE_KEY)
         self.publish_active_case_file_helpers([
             ("more_jackpots", "LEFT WEB ADDS A SECOND SUPER"),
-            ("bigger_jackpots", "DROPS 150K - WEB SUPERS 750K"),
+            ("bigger_jackpots", "DROPS 150K - WEB SUPERS 1.5M"),
             ("more_time", "WEB SUPER WINDOW EXTENDED TO 25s"),
             ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST UPPER SPIN DROPS TWO TARGETS"),

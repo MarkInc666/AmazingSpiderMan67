@@ -82,7 +82,7 @@ event_player:
 
 light_player:
   mode_conners_reptiles_started:
-    gi: 408020
+    gi: 80B060
   mode_conners_reptiles_stopping:
     gi: E0E0E0
 
@@ -176,31 +176,31 @@ shows:
         l_pop_2_13: 60F060
     - duration: 450ms
       lights:
-        l_pop_1_1: off
-        l_pop_1_2: off
-        l_pop_1_3: off
-        l_pop_1_4: off
-        l_pop_1_5: off
-        l_pop_1_6: off
-        l_pop_1_7: off
-        l_pop_1_8: off
-        l_pop_1_9: off
-        l_pop_1_10: off
-        l_pop_1_11: off
-        l_pop_1_12: off
-        l_pop_2_1: off
-        l_pop_2_2: off
-        l_pop_2_3: off
-        l_pop_2_4: off
-        l_pop_2_5: off
-        l_pop_2_6: off
-        l_pop_2_7: off
-        l_pop_2_8: off
-        l_pop_2_9: off
-        l_pop_2_10: off
-        l_pop_2_11: off
-        l_pop_2_12: off
-        l_pop_2_13: off
+        l_pop_1_1: 80B060
+        l_pop_1_2: 80B060
+        l_pop_1_3: 80B060
+        l_pop_1_4: 80B060
+        l_pop_1_5: 80B060
+        l_pop_1_6: 80B060
+        l_pop_1_7: 80B060
+        l_pop_1_8: 80B060
+        l_pop_1_9: 80B060
+        l_pop_1_10: 80B060
+        l_pop_1_11: 80B060
+        l_pop_1_12: 80B060
+        l_pop_2_1: 80B060
+        l_pop_2_2: 80B060
+        l_pop_2_3: 80B060
+        l_pop_2_4: 80B060
+        l_pop_2_5: 80B060
+        l_pop_2_6: 80B060
+        l_pop_2_7: 80B060
+        l_pop_2_8: 80B060
+        l_pop_2_9: 80B060
+        l_pop_2_10: 80B060
+        l_pop_2_11: 80B060
+        l_pop_2_12: 80B060
+        l_pop_2_13: 80B060
 
   conners_reptiles_upper_a_pulse:
     - duration: 450ms

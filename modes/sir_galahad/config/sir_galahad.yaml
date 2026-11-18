@@ -126,12 +126,12 @@ shows:
   sir_galahad_rooftop_exit_choice_show:
     - duration: 300ms
       lights:
-        l_gi_left_upper: A0D0FF
-        l_gi_a: A0D0FF
+        l_gi_left_upper: B0D8FF
+        l_gi_a: B0D8FF
     - duration: 300ms
       lights:
-        l_gi_left_upper: 305080
-        l_gi_a: 305080
+        l_gi_left_upper: 7088B0
+        l_gi_a: 7088B0
 
   # Five-bank value tiers: center, adjacent, then outer targets. The physical
   # inserts are green, so brightness/speed rather than incompatible colors
@@ -139,52 +139,52 @@ shows:
   sir_galahad_right_bank_show:
     - duration: 200ms
       lights:
-        l_5bank_1: "004000"
-        l_5bank_2: "009000"
-        l_5bank_3: "00FF00"
-        l_5bank_4: "009000"
-        l_5bank_5: "004000"
-        l_gi_5bank_lower: A0D0FF
-        l_gi_5bank_upper: A0D0FF
+        l_5bank_1: "408050"
+        l_5bank_2: "40B060"
+        l_5bank_3: "40FF80"
+        l_5bank_4: "40B060"
+        l_5bank_5: "408050"
+        l_gi_5bank_lower: B0D8FF
+        l_gi_5bank_upper: B0D8FF
     - duration: 200ms
       lights:
-        l_5bank_1: "002000"
-        l_5bank_2: "004800"
-        l_5bank_3: "006000"
-        l_5bank_4: "004800"
-        l_5bank_5: "002000"
-        l_gi_5bank_lower: off
-        l_gi_5bank_upper: off
+        l_5bank_1: "306040"
+        l_5bank_2: "307848"
+        l_5bank_3: "309858"
+        l_5bank_4: "307848"
+        l_5bank_5: "306040"
+        l_gi_5bank_lower: 7088B0
+        l_gi_5bank_upper: 7088B0
     - duration: 200ms
       lights:
-        l_5bank_1: "004000"
-        l_5bank_2: "009000"
-        l_5bank_3: "00FF00"
-        l_5bank_4: "009000"
-        l_5bank_5: "004000"
-        l_gi_5bank_lower: A0D0FF
-        l_gi_5bank_upper: A0D0FF
+        l_5bank_1: "408050"
+        l_5bank_2: "40B060"
+        l_5bank_3: "40FF80"
+        l_5bank_4: "40B060"
+        l_5bank_5: "408050"
+        l_gi_5bank_lower: B0D8FF
+        l_gi_5bank_upper: B0D8FF
     - duration: 200ms
       lights:
-        l_5bank_1: off
-        l_5bank_2: "004800"
-        l_5bank_3: "006000"
-        l_5bank_4: "004800"
-        l_5bank_5: off
-        l_gi_5bank_lower: off
-        l_gi_5bank_upper: off
+        l_5bank_1: "306040"
+        l_5bank_2: "307848"
+        l_5bank_3: "309858"
+        l_5bank_4: "307848"
+        l_5bank_5: "306040"
+        l_gi_5bank_lower: 7088B0
+        l_gi_5bank_upper: 7088B0
 
   # The left three-bank has one green insert. It and the left-bank GI flash to
   # mark the active accuracy shot; the display supplies AIM FOR CENTER guidance.
   sir_galahad_left_bank_show:
     - duration: 250ms
       lights:
-        l_3bankbonus: "00FF00"
-        l_gi_3bank: A0D0FF
+        l_3bankbonus: "40FF80"
+        l_gi_3bank: B0D8FF
     - duration: 250ms
       lights:
-        l_3bankbonus: off
-        l_gi_3bank: off
+        l_3bankbonus: "307848"
+        l_gi_3bank: 7088B0
 
   sir_galahad_collapse_gi_show:
     - duration: 250ms
@@ -194,13 +194,13 @@ shows:
         l_gi_5bank_upper: FFFFFF
     - duration: 250ms
       lights:
-        l_gi_3bank: 305080
-        l_gi_5bank_lower: 305080
-        l_gi_5bank_upper: 305080
+        l_gi_3bank: 7088B0
+        l_gi_5bank_lower: 7088B0
+        l_gi_5bank_upper: 7088B0
 
 light_player:
   mode_sir_galahad_started:
-    gi: 305080
+    gi: 7088B0
 
   mode_sir_galahad_stopping:
     gi: E0E0E0
