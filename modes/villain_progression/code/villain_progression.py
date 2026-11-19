@@ -1329,6 +1329,30 @@ class VillainProgression(Mode):
             )
             return
 
+        # MPF may notify this last-ball save even when a different ball save
+        # actually claimed the drain. A zero-ball notification is not evidence
+        # that the tested villain lost its last ball.
+        saved_balls = self._safe_int(kwargs.get("balls"), 0)
+        if saved_balls <= 0:
+            self.debug_log(
+                "TEST MODE: ignoring loop save with no balls saved for %s",
+                current_key,
+            )
+            return
+
+        # The harness loop save is an unlimited fallback. While the villain's
+        # opening save (including Safety Net and its grace period) is enabled,
+        # an intercepted drain must not fail the test attempt. Use the actual
+        # MPF ball-save state rather than our own timer estimate.
+        if current_key in self.VILLAINS:
+            opening_save = self.machine.ball_saves.get("villain_opening_ball_save")
+            if opening_save is not None and opening_save.enabled:
+                self.debug_log(
+                    "TEST MODE: saved drain during opening save; continuing %s",
+                    current_key,
+                )
+                return
+
         if current_key in self.VILLAINS:
             self._villain_mode_finished(villain_key=current_key, completed=False)
         elif self._is_mini_wizard_key(current_key):

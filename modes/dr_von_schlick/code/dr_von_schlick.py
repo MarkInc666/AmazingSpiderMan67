@@ -19,7 +19,7 @@ class DrVonSchlick(CaseFileMixin, Mode):
         "right_drops",
     )
 
-    SHOT_SECONDS = 4
+    SHOT_SECONDS = 5
     PELLETS_TO_SUPER = 5
     MORE_JACKPOTS_PELLETS = 7
     BASE_PELLET_VALUE = 100_000

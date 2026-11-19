@@ -82,6 +82,7 @@ light_player:
     l_pop_1_11: off
     l_pop_1_12: off
     l_mid_web_target: off
+    l_gi_mid_spider: D08080
     l_pop_2_1: off
     l_pop_2_2: off
     l_pop_2_3: off
@@ -117,6 +118,7 @@ light_player:
     l_pop_1_11: off
     l_pop_1_12: off
     l_mid_web_target: off
+    l_gi_mid_spider: D08080
     l_pop_2_1: off
     l_pop_2_2: off
     l_pop_2_3: off
@@ -254,11 +256,11 @@ shows:
   - duration: 250ms
     lights:
       l_mid_web_target: green
-      l_gi_spinner: green
+      l_gi_mid_spider: 00FF00
   - duration: 250ms
     lights:
       l_mid_web_target: off
-      l_gi_spinner: off
+      l_gi_mid_spider: D08080
 
   dr_von_schlick_right_pop_flash:
   - duration: 250ms

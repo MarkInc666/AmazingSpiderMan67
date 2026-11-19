@@ -11,14 +11,15 @@ class SpiderMen(CaseFileMixin, Mode):
     MODE_KEY = "spider_men"
     DISPLAY_NAME = "The Spider-Men"
 
-    NORMAL_TIMER_SECONDS = 40
-    MORE_TIME_SECONDS = 60
-    SUPER_SECONDS = 10
+    NORMAL_TIMER_SECONDS = 20
+    MORE_TIME_SECONDS = 30
+    SUPER_SECONDS = 20
 
-    ALIGNMENT_VALUE = 100_000
-    BIGGER_ALIGNMENT_VALUE = 150_000
-    FINE_ADJUSTMENT_VALUE = 25_000
-    SUPER_VALUE = 500_000
+    ALIGNMENT_VALUE = 250_000
+    BIGGER_ALIGNMENT_VALUE = 375_000
+    FINE_ADJUSTMENT_VALUE = 50_000
+    SUPER_VALUE = 1_000_000
+    BIGGER_SUPER_VALUE = 1_500_000
     FINAL_MESSAGE_MS = 2_000
 
     SHOTS = (
@@ -77,6 +78,11 @@ class SpiderMen(CaseFileMixin, Mode):
             else self.ALIGNMENT_VALUE
         )
         self.shot_assist_available = self.has_case_file("shot_assist")
+        self.super_value = (
+            self.BIGGER_SUPER_VALUE
+            if self.has_case_file("bigger_jackpots")
+            else self.SUPER_VALUE
+        )
 
         player = self.machine.game.player
         player[f"{self.MODE_KEY}_state"] = 1
@@ -84,9 +90,9 @@ class SpiderMen(CaseFileMixin, Mode):
 
         self.publish_case_file_bonus_events(self.MODE_KEY)
         self.publish_active_case_file_helpers([
-            ("more_jackpots", "SIX JACKPOTS LIGHT 500K CENTER WEB SUPER"),
-            ("bigger_jackpots", "ALIGNMENT JACKPOTS WORTH 150K"),
-            ("more_time", "PROTON TIMER EXTENDED TO 60 SECONDS"),
+            ("more_jackpots", "SIX JACKPOTS LIGHT CENTER WEB SUPER"),
+            ("bigger_jackpots", "ALIGNMENT JACKPOTS WORTH 375K"),
+            ("more_time", "SHOT TIMER 30 SECONDS - RESETS ON HITS"),
             ("safety_net", '30 SECOND OPENING BALL SAVE'),
             ("shot_assist", "FIRST JACKPOT ALIGNS AN EXTRA POSITION"),
         ])
@@ -181,6 +187,9 @@ class SpiderMen(CaseFileMixin, Mode):
 
         if self.aligned[index]:
             self._score(self.FINE_ADJUSTMENT_VALUE)
+            # A fine adjustment is still a target hit and refreshes the clock.
+            if self.seconds_left > 0:
+                self._start_proton_timer()
             self.fine_adjustments += 1
             self._sync_vars()
             self.machine.events.post(
@@ -196,11 +205,7 @@ class SpiderMen(CaseFileMixin, Mode):
             )
             return
 
-        first_jackpot = self.jackpots == 0
         self._award_alignment(index)
-
-        if first_jackpot:
-            self._start_proton_timer()
 
         if self.shot_assist_available and not self.mode_done:
             self.shot_assist_available = False
@@ -235,15 +240,24 @@ class SpiderMen(CaseFileMixin, Mode):
                 and not self.has_case_file("more_jackpots")
             )
             if terminal_saucer:
-                self.machine.events.post("villain_summary_hold_saucer_until_done")
+                # Hold only the terminal saucer; the shared delayed-eject path
+                # respects this hold until the villain summary finishes.
+                self.machine.events.post(
+                    "villain_summary_hold_saucer_until_done",
+                    saucer_number=self.SHOTS[index]["key"],
+                )
             self._alignment_complete()
+        else:
+            # First successful alignment starts the timer. Every subsequent
+            # target hit (completed or uncompleted) gives a fresh full window.
+            self._start_proton_timer()
 
     def _award_alignment(self, index, assisted=False):
         self.aligned[index] = True
         self.jackpots += 1
         value = self.alignment_value
         if self.jackpots == len(self.SHOTS):
-            value *= 2
+            value *= 2  # 500K normal / 750K Bigger Jackpots
 
         self._score(value)
         self.machine.events.post(
@@ -268,6 +282,7 @@ class SpiderMen(CaseFileMixin, Mode):
         return value
 
     def _start_proton_timer(self):
+        """Start or refresh the inactivity clock after a six-position hit."""
         self.seconds_left = self.timer_seconds
         self.machine.events.post(
             "spider_men_proton_timer_started", seconds=self.seconds_left
@@ -277,6 +292,7 @@ class SpiderMen(CaseFileMixin, Mode):
             ms=1000,
             callback=self._proton_tick,
         )
+        self._update_status()
 
     def _proton_tick(self):
         if self.mode_done or self.phase != "alignment":
@@ -308,14 +324,14 @@ class SpiderMen(CaseFileMixin, Mode):
             self.seconds_left = self.SUPER_SECONDS
             self.machine.events.post(
                 "spider_men_super_ready",
-                value=self.SUPER_VALUE,
+                value=self.super_value,
                 seconds=self.seconds_left,
             )
             self._show_countdown(
                 "SUPER JACKPOT LIT",
                 "CENTER WEB",
                 self.seconds_left,
-                value=self.SUPER_VALUE,
+                value=self.super_value,
                 reminder=False,
             )
             self._update_status()
@@ -334,16 +350,16 @@ class SpiderMen(CaseFileMixin, Mode):
 
         self.delay.remove("spider_men_super_tick")
         self.super_collected = True
-        self._score(self.SUPER_VALUE)
+        self._score(self.super_value)
         self._sync_vars(update_status=False)
         self.machine.events.post(
-            "spider_men_super_collected", value=self.SUPER_VALUE
+            "spider_men_super_collected", value=self.super_value
         )
         self.machine.events.post(
             "show_mode_jackpot",
             message_mode_title="HOMEWORLD SUPER",
             message_mode_subtitle="CENTER WEB",
-            message_mode_value=self.SUPER_VALUE,
+            message_mode_value=self.super_value,
             message_mode_seconds="",
         )
         self.machine.events.post("play_mode_super_jackpot")

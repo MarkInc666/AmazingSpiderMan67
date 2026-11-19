@@ -33,48 +33,48 @@ main playfield.
 
 TIMER
 
-- Base countdown: 40 seconds
-- More Time countdown: 60 seconds
-- The timer starts only when the first pulsing position is completed.
-- Later Jackpots do not reset or extend it.
-- Timer expiry fails the mode.
+- The first Jackpot starts a 20-second shot timer (30 seconds with More Time).
+- Every subsequent hit on any of the six alignment positions restarts the entire
+  20/30-second timer, including hits on already-solid/unlit positions.
+- Flipper rotations alone do not reset the timer.
+- If the timer expires before all six positions are aligned, the mode fails.
+- The alignment timer stops when the sixth position is completed.
 
 
 SCORING
 
-- New pulsing position: 100,000 Jackpot
-- New pulsing position with Bigger Jackpots: 150,000 Jackpot
-- Sixth position: double the current Jackpot value (200,000 or 300,000)
-- Already-solid position: 25,000 Fine Adjustment
-- More Jackpots center-web Super: 500,000
-
-Shot Assist's free position awards its normal 100,000 or 150,000 and counts as
-a Jackpot. The Super is included in Mode Points but not in the regular Jackpot
-count.
+- Each of the first five newly aligned positions: 250,000 Jackpot.
+- With Bigger Jackpots: 375,000 per normal alignment.
+- Sixth position: 500,000 Jackpot (750,000 with Bigger Jackpots).
+- Already-solid/unlit position: 50,000 Fine Adjustment, and refresh shot timer.
+- More Jackpots center-web Super: 1,000,000, or 1,500,000 with Bigger Jackpots.
+- Normal clean six-position total: 1,750,000 points, excluding starting award.
+- Shot Assist's free position awards its full corresponding alignment value.
+  The Super counts toward Mode Points, not the regular Jackpot count.
 
 
 CASE FILES
 
-- More Jackpots: after all six positions are solid, flash the center web for a
-  fixed 500,000 Super Jackpot for 10 seconds. Collecting it or letting the
-  window expire completes the mode.
-- Bigger Jackpots: increase alignment Jackpots from 100,000 to 150,000; the
-  sixth remains double. The fixed Super remains 500,000.
-- More Time: increase the proton countdown from 40 to 60 seconds.
-- Safety Net: start the standard 10-second Case File ball save.
-- Shot Assist: the first completed pulsing position also completes one random
-  uncompleted position and awards its normal value.
+- More Jackpots: after six alignments, light center web for the Super Jackpot
+  (1,000,000, or 1,500,000 with Bigger Jackpots) for 20 seconds. Collecting
+  or letting the window expire completes the mode.
+- Bigger Jackpots: first five alignments 375,000 each; final 750,000;
+  optional Super 1,500,000.
+- More Time: increase the resetting alignment shot timer from 20 to 30 seconds.
+- Safety Net: retain the shared opening Case File ball save.
+- Shot Assist: first completed pulsing position also completes one additional
+  random uncompleted position and awards its corresponding Jackpot value.
 
 
 LIGHTING
 
 Alignment lights pulse/hold red. The full playfield GI uses the shared physical
 height bands 1-8 as a continuous bottom-to-top chase. All bands use soft blue
-8080F0 while a three-band F080F0/F08080/F080F0 wave advances through the bands
+8080F0 while a subtler three-band A090E8/B090D8/A090E8 wave advances through the bands
 every 250ms, wrapping around at the ends, and then repeats.
 
 During the optional Super window, the six positions remain solid red, the
-soft-blue/pink band chase continues, and the center web flashes red. A shared
+soft-blue/muted-lavender band chase continues, and the center web flashes red. A shared
 white approach chase also runs from Multibonus through Advance Multiplier and
 Special to the center-web insert. The approach chase stops immediately when
 the Super is collected, the window expires, or the mode stops.

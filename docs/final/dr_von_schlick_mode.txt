@@ -54,7 +54,11 @@ Shot Assist
 LIGHTING
 --------
 - Base GI is D08080 pink, contrasting with the green moving-shot indicators.
-- The current moving shot flashes green at 250ms on / 250ms off.
+- The current moving shot flashes green at 250ms on / 250ms off and moves
+  to the next shot every 5 seconds, or immediately after a pellet collection.
+- The center web uses l_mid_web_target and the nearby l_gi_mid_spider,
+  not the lower-spinner GI. Its GI alternates D08080 pink and 00FF00 green
+  and restores to pink when the shot moves.
 - The reactor flood remains the eight-band blue rise.
 
 PLAYTEST CHECKLIST

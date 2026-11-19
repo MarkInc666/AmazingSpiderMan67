@@ -178,21 +178,21 @@ shows:
   # (band_8) every 250ms, wrapping around at the ends.
   spider_men_band_chase_show:
     - duration: 250ms
-      lights: {band_1: "F080F0", band_2: "F08080", band_3: "F080F0", band_4: "8080F0", band_5: "8080F0", band_6: "8080F0", band_7: "8080F0", band_8: "8080F0"}
+      lights: {band_1: "A090E8", band_2: "B090D8", band_3: "A090E8", band_4: "8080F0", band_5: "8080F0", band_6: "8080F0", band_7: "8080F0", band_8: "8080F0"}
     - duration: 250ms
-      lights: {band_1: "8080F0", band_2: "F080F0", band_3: "F08080", band_4: "F080F0", band_5: "8080F0", band_6: "8080F0", band_7: "8080F0", band_8: "8080F0"}
+      lights: {band_1: "8080F0", band_2: "A090E8", band_3: "B090D8", band_4: "A090E8", band_5: "8080F0", band_6: "8080F0", band_7: "8080F0", band_8: "8080F0"}
     - duration: 250ms
-      lights: {band_1: "8080F0", band_2: "8080F0", band_3: "F080F0", band_4: "F08080", band_5: "F080F0", band_6: "8080F0", band_7: "8080F0", band_8: "8080F0"}
+      lights: {band_1: "8080F0", band_2: "8080F0", band_3: "A090E8", band_4: "B090D8", band_5: "A090E8", band_6: "8080F0", band_7: "8080F0", band_8: "8080F0"}
     - duration: 250ms
-      lights: {band_1: "8080F0", band_2: "8080F0", band_3: "8080F0", band_4: "F080F0", band_5: "F08080", band_6: "F080F0", band_7: "8080F0", band_8: "8080F0"}
+      lights: {band_1: "8080F0", band_2: "8080F0", band_3: "8080F0", band_4: "A090E8", band_5: "B090D8", band_6: "A090E8", band_7: "8080F0", band_8: "8080F0"}
     - duration: 250ms
-      lights: {band_1: "8080F0", band_2: "8080F0", band_3: "8080F0", band_4: "8080F0", band_5: "F080F0", band_6: "F08080", band_7: "F080F0", band_8: "8080F0"}
+      lights: {band_1: "8080F0", band_2: "8080F0", band_3: "8080F0", band_4: "8080F0", band_5: "A090E8", band_6: "B090D8", band_7: "A090E8", band_8: "8080F0"}
     - duration: 250ms
-      lights: {band_1: "8080F0", band_2: "8080F0", band_3: "8080F0", band_4: "8080F0", band_5: "8080F0", band_6: "F080F0", band_7: "F08080", band_8: "F080F0"}
+      lights: {band_1: "8080F0", band_2: "8080F0", band_3: "8080F0", band_4: "8080F0", band_5: "8080F0", band_6: "A090E8", band_7: "B090D8", band_8: "A090E8"}
     - duration: 250ms
-      lights: {band_1: "F080F0", band_2: "8080F0", band_3: "8080F0", band_4: "8080F0", band_5: "8080F0", band_6: "8080F0", band_7: "F080F0", band_8: "F08080"}
+      lights: {band_1: "A090E8", band_2: "8080F0", band_3: "8080F0", band_4: "8080F0", band_5: "8080F0", band_6: "8080F0", band_7: "A090E8", band_8: "B090D8"}
     - duration: 250ms
-      lights: {band_1: "F08080", band_2: "F080F0", band_3: "8080F0", band_4: "8080F0", band_5: "8080F0", band_6: "8080F0", band_7: "8080F0", band_8: "F080F0"}
+      lights: {band_1: "B090D8", band_2: "A090E8", band_3: "8080F0", band_4: "8080F0", band_5: "8080F0", band_6: "8080F0", band_7: "8080F0", band_8: "A090E8"}
 
   # Unaligned positions pulse between full and low red. Completed positions
   # are set solid red by light_player and rotate with the same state array.
